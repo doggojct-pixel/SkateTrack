@@ -56,3 +56,34 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Known Issues / Follow-up
 - This task does not add real product screens, GPS, session recording, or data models.
 - Task-003 should add shared data models without hardcoded user-visible strings.
+
+## 2026-06-09 Phase 0 — Task-003 Shared Data Models Completed
+
+### Completed
+- Added `Shared/Models/SessionData.swift` as the root cross-platform session container.
+- Added `Shared/Models/SportMode.swift` with `BoardMode`, `InlineMode`, and unified `SportMode` cases.
+- Added `Shared/Models/PowerType.swift` with centralized validation that electric power only applies to skateboard modes.
+- Added `Shared/Models/MotionSample.swift` with reusable `GeoCoordinate` and `ThreeAxisValue` value types.
+- Added `Shared/Models/TrickEvent.swift` and `Shared/Models/FallEvent.swift` for session timeline events.
+- Added `Shared/Models/EquipmentProfile.swift` and `Shared/Models/SpotProfile.swift` for gear and riding spot management foundations.
+- Added `Shared/Protocols/SensorProvider.swift` and `Shared/Protocols/SyncProvider.swift` as cross-platform provider boundaries.
+- Updated `SkateTrack.xcodeproj/project.pbxproj` so the new shared files are included in iOS, watchOS, and macOS targets.
+- Added `scripts/verify_shared_models.py` for required-file, zone-header, line-count, and UI-import checks.
+- Added the Task-003 prompt pack under `tasks/Task-003-SharedDataModels/`.
+- Updated `docs/FILE_STRUCTURE.md` for the new model, protocol, script, and task files.
+
+### Reason / Context
+- Build Plan v1.0 defines Task-003 as the shared data model foundation for later GPS, IMU, fall detection, sync, equipment, spot, and analytics tasks.
+- DevProcess v1.0 §3.3 requires all shared models to live in `Shared/Models/` and conform to `Codable` and `Sendable`.
+- The PRD requires skateboard, electric skateboard, and inline skating to share the same session-recording foundation while keeping mode-specific analysis possible.
+
+### Validation Notes
+- Required model/protocol files were checked with `python3 scripts/verify_shared_models.py`.
+- `Shared/Models/*.swift` type-checks with Swift on the local generation environment.
+- No `SwiftUI`, `UIKit`, `AppKit`, or `WatchKit` imports were added to `Shared/Models/` or `Shared/Protocols/`.
+- Swift source file line counts remain below the 500-line hard limit.
+
+### Known Issues / Follow-up
+- This task defines data shapes and protocols only; it does not create persistence, GPS recording, sensor fusion, UI screens, or sync implementation.
+- Actual JSON round-trip tests should be added once real test targets are introduced.
+- Task-004 should build feature gating on top of these shared types without duplicating sport-mode or power-type logic.
