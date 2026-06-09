@@ -200,3 +200,30 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Known Issues / Follow-up
 - Raw CoreMotion object streams cannot emit fabricated `CMAccelerometerData`, `CMGyroData`, or `CMAltitudeData` objects on unsupported devices. Normalized helper streams expose safe zero / nil values for simulator stability.
 - No UI starts these providers yet; Task-009 Sensor Fusion and later Session Recording tasks will consume them.
+
+## 2026-06-09 Phase 1a — Task-009 + Task-010 Sensor Fusion and Fall Detection Completed
+
+### Completed
+- Added `iOS/Core/SensorEngine/SensorFusionEngine.swift` to merge GPS, IMU, and barometer provider streams into a unified 10Hz `MotionSample` publisher.
+- Implemented `SensorProvider` conformance through `startRecording(mode:)` and `stopRecording()` while also exposing Build Plan method names `startSession(mode:)` and `stopSession()`.
+- Added `iOS/Core/SensorEngine/SensorCalibrationEngine.swift` for startup bias calibration and sport-mode sensor priority planning.
+- Added `iOS/Core/SensorEngine/FallDetectionEngine.swift` to monitor impact G-force, confirm post-impact stationary state, publish `FallEvent`, run a 15-second countdown, and publish SOS trigger events.
+- Added DEBUG-sensitive fall-detection thresholds for simulator/development testing without touching production thresholds.
+- Added `scripts/verify_sensor_fusion_engine.py` and `scripts/verify_fall_detection_engine.py`.
+- Added Task-009 and Task-010 prompt packs.
+
+### Reason / Context
+- Build Plan v1.0 defines Task-009 as the core `MotionSample` fusion engine and Task-010 as the last Sensor Engine task before formal Session Recording UI work begins.
+- PRD v1.2 §5.1 requires MotionSample data as the source for HUD metrics, summaries, route analysis, and fall detection.
+- PRD v1.2 §5.2 requires fall detection from impact threshold plus post-impact inactivity and a user-cancellable SOS countdown.
+
+### Validation Notes
+- Run `python3 scripts/verify_sensor_fusion_engine.py` to confirm 10Hz publishing, provider integration, `SensorProvider` conformance, sport-mode priority planning, line limits, UI-import bans, and iOS target membership.
+- Run `python3 scripts/verify_fall_detection_engine.py` to confirm 4g production threshold, DEBUG low threshold, 3-second stationary confirmation, 15-second countdown, `cancelFallAlert()`, `FallEvent` publishing, and iOS target membership.
+- Run existing Task-002 through Task-008 scripts to confirm localization, shared models, feature flags, GPS, IMU, and barometer providers remain valid.
+- iOS should Build / Run. watchOS and macOS should still Build / Run unchanged because these new engines are iOS-only.
+
+### Known Issues / Follow-up
+- No production UI starts the engines yet; Task-011 and later Session Recording tasks will connect UI flows to these providers.
+- Simulator sensor behavior is limited. DEBUG fall thresholds exist for development validation, while real 4g behavior must be tested on hardware.
+- SOS delivery is intentionally represented as a published event only; actual emergency-contact messaging and user-facing alert UI are later tasks.

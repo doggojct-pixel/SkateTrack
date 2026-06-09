@@ -64,6 +64,9 @@
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
 		12A700000000000000000101 /* IMUProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A700000000000000000001 /* IMUProvider.swift */; };
 		12A800000000000000000101 /* BarometerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A800000000000000000001 /* BarometerProvider.swift */; };
+		12A900000000000000000101 /* SensorFusionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A900000000000000000001 /* SensorFusionEngine.swift */; };
+		12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A900000000000000000002 /* SensorCalibrationEngine.swift */; };
+		12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA00000000000000000001 /* FallDetectionEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +102,9 @@
 		12A600000000000000000004 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		12A700000000000000000001 /* IMUProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMUProvider.swift; sourceTree = "<group>"; };
 		12A800000000000000000001 /* BarometerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometerProvider.swift; sourceTree = "<group>"; };
+		12A900000000000000000001 /* SensorFusionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorFusionEngine.swift; sourceTree = "<group>"; };
+		12A900000000000000000002 /* SensorCalibrationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorCalibrationEngine.swift; sourceTree = "<group>"; };
+		12AA00000000000000000001 /* FallDetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +214,9 @@
 				12A600000000000000000002 /* GPSAuthorizationHandler.swift */,
 				12A700000000000000000001 /* IMUProvider.swift */,
 				12A800000000000000000001 /* BarometerProvider.swift */,
+				12A900000000000000000001 /* SensorFusionEngine.swift */,
+				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
+				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
 			path = iOS/Core/SensorEngine;
 			sourceTree = SOURCE_ROOT;
@@ -436,6 +445,9 @@
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
 				12A700000000000000000101 /* IMUProvider.swift in Sources */,
 				12A800000000000000000101 /* BarometerProvider.swift in Sources */,
+				12A900000000000000000101 /* SensorFusionEngine.swift in Sources */,
+				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
+				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,

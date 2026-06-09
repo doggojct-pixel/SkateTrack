@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-09  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Task:** Task-007 + Task-008 — IMU Provider + Barometer Provider  
-**Scope:** Source-controlled repository structure after Tasks 001–008.
+**Task:** Task-009 + Task-010 — Sensor Fusion Engine + Fall Detection Engine  
+**Scope:** Source-controlled repository structure after Tasks 001–010.
 
 This document records the current SkateTrack repository layout after Phase 0 foundation work. It must be updated whenever three or more files are added or changed, or when a phase is completed.
 
@@ -80,9 +80,12 @@ SkateTrack/
 │   │   ├── SensorEngine/                           # [自主區] GPS, IMU, barometer, fusion, and fall detection providers.
 │   │   │   ├── .gitkeep                            # [佔位] Keeps the sensor engine directory committed.
 │   │   │   ├── BarometerProvider.swift              # [自主區] CMAltimeter wrapper publishing relative altitude and pressure streams for future elevation analysis.
+│   │   │   ├── FallDetectionEngine.swift            # [自主區] G-force spike, stationary pattern, 15-second countdown, and SOS event publisher.
 │   │   │   ├── GPSAuthorizationHandler.swift        # [自主區] CLLocation permission request and authorization-state wrapper.
 │   │   │   ├── GPSProvider.swift                    # [自主區] Filtered CLLocation and km/h speed stream provider for iOS session recording.
-│   │   │   └── IMUProvider.swift                    # [自主區] CMMotionManager wrapper publishing 50Hz accelerometer and gyroscope streams.
+│   │   │   ├── IMUProvider.swift                    # [自主區] CMMotionManager wrapper publishing 50Hz accelerometer and gyroscope streams.
+│   │   │   ├── SensorCalibrationEngine.swift        # [自主區] Sensor bias calibration and sport-mode priority plan for fusion.
+│   │   │   └── SensorFusionEngine.swift             # [自主區] 10Hz MotionSample fusion engine combining GPS, IMU, and barometer streams.
 │   │   └── Subscription/                           # [自主區] Subscription and access-control internals.
 │   │       └── FeatureFlagEngine.swift             # [自主區] Single source of truth for subscription access checks with DEBUG override support.
 │   ├── Features/                                   # [協作區] iOS feature modules; real UI screens are implemented in later tasks.
@@ -154,6 +157,8 @@ SkateTrack/
 │   ├── verify_gps_provider.py                      # [工程設定] Validates Task-006 GPS provider files, permission strings, and Xcode membership.
 │   ├── verify_imu_provider.py                      # [工程設定] Validates Task-007 IMU provider, 50Hz settings, UI-import ban, and Xcode membership.
 │   ├── verify_localization_keys.py                 # [工程設定] Validates English and Traditional Chinese localization key parity.
+│   ├── verify_sensor_fusion_engine.py              # [工程設定] Validates Task-009 fusion engine, 10Hz cadence, protocol conformance, and Xcode membership.
+│   ├── verify_fall_detection_engine.py             # [工程設定] Validates Task-010 fall detection threshold, countdown, cancel API, and Xcode membership.
 │   └── verify_shared_models.py                     # [工程設定] Validates Task-003 required shared files, zone headers, line counts, and forbidden UI imports.
 └── tasks/                                          # [任務文件] Cursor / agent task prompt packs and acceptance checklists.
     ├── .gitkeep                                    # [佔位] Keeps the tasks directory committed.
@@ -182,11 +187,21 @@ SkateTrack/
     │   ├── context.md                              # [任務文件] Task-007 context and source references.
     │   ├── files_expected.md                       # [任務文件] Task-007 expected file list.
     │   └── prompt.md                               # [任務文件] Task-007 agent prompt.
-    └── Task-008-BarometerProvider/
-        ├── acceptance.md                           # [任務文件] Task-008 acceptance checklist.
-        ├── context.md                              # [任務文件] Task-008 context and source references.
-        ├── files_expected.md                       # [任務文件] Task-008 expected file list.
-        └── prompt.md                               # [任務文件] Task-008 agent prompt.
+    ├── Task-008-BarometerProvider/
+    │   ├── acceptance.md                           # [任務文件] Task-008 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-008 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-008 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-008 agent prompt.
+    ├── Task-009-SensorFusionEngine/
+    │   ├── acceptance.md                           # [任務文件] Task-009 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-009 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-009 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-009 agent prompt.
+    └── Task-010-FallDetectionEngine/
+        ├── acceptance.md                           # [任務文件] Task-010 acceptance checklist.
+        ├── context.md                              # [任務文件] Task-010 context and source references.
+        ├── files_expected.md                       # [任務文件] Task-010 expected file list.
+        └── prompt.md                               # [任務文件] Task-010 agent prompt.
 ```
 
 ## Current Phase 0 Status
@@ -199,8 +214,20 @@ SkateTrack/
 - Task-006 GPS Provider is complete.
 - Task-007 IMU Provider is complete.
 - Task-008 Barometer Provider is complete.
+- Task-009 Sensor Fusion Engine is complete.
+- Task-010 Fall Detection Engine is complete.
 
 ## History
+
+
+### 2026-06-09 — Task-009 + Task-010 Sensor Fusion + Fall Detection
+
+- Added `iOS/Core/SensorEngine/SensorFusionEngine.swift` for 10Hz `MotionSample` publishing from GPS, IMU, and barometer streams.
+- Added `iOS/Core/SensorEngine/SensorCalibrationEngine.swift` for startup bias calibration and sport-mode sensor priority plans.
+- Added `iOS/Core/SensorEngine/FallDetectionEngine.swift` for impact-threshold detection, stationary confirmation, 15-second countdown, cancellation, and SOS event publishing.
+- Added `scripts/verify_sensor_fusion_engine.py` and `scripts/verify_fall_detection_engine.py`.
+- Added Task-009 and Task-010 prompt packs.
+- Updated the iOS target project membership so fusion and fall detection compile only in the iOS app target.
 
 
 ### 2026-06-09 — Task-007 + Task-008 Sensor Providers
