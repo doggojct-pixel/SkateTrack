@@ -22,3 +22,9 @@ This log is append-only. Do not delete or overwrite old entries.
 - GitHub remote still requires the real repository URL. Use `scripts/set_github_remote.sh` after creating the GitHub repository.
 - SwiftLint SPM package is referenced in the Xcode project; Xcode may resolve packages on first open.
 - Task-002 should add the actual localization resources and replace any future user-visible text with localization keys.
+
+### 2026-06-09 — Task-001 hotfix
+
+- Fixed malformed empty build setting in `SkateTrack.xcodeproj/project.pbxproj`.
+- Changed `SWIFT_ACTIVE_COMPILATION_CONDITIONS = ;` to `SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";` so Xcode can parse the project file.
+- No product feature scope was added; this remains Task-001 scaffold only.
