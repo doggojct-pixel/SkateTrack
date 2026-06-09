@@ -173,3 +173,30 @@ This log is append-only. Do not delete or overwrite old entries.
 - This task does not start a real session, draw a route map, or display live speed UI.
 - Background location mode is not enabled yet; `requestAlwaysAuthorization()` is available for later recording tasks but not exercised by the current shell UI.
 - Task-007 will add the IMU provider. Task-009 will fuse GPS with motion data.
+
+
+## 2026-06-09 Phase 1a — Task-007 + Task-008 Sensor Providers Completed
+
+### Completed
+- Added `iOS/Core/SensorEngine/IMUProvider.swift` to wrap `CMMotionManager` for accelerometer and gyroscope streams at 50Hz.
+- Added raw `CMAccelerometerData` and `CMGyroData` Combine publishers for future sensor fusion.
+- Added normalized `ThreeAxisValue` publishers so unavailable simulator sensors can stay stable at zero values without fabricating CoreMotion objects.
+- Added `iOS/Core/SensorEngine/BarometerProvider.swift` to wrap `CMAltimeter` for relative altitude and pressure streams.
+- Added unavailable-device guards for IMU and barometer behavior so simulators and unsupported devices do not crash.
+- Added `scripts/verify_imu_provider.py` and `scripts/verify_barometer_provider.py`.
+- Added Task-007 and Task-008 prompt packs.
+
+### Reason / Context
+- Build Plan v1.0 defines Tasks 007 and 008 as the next Sensor Engine providers after GPS.
+- PRD v1.2 §5.1.1 identifies accelerometer, gyroscope, and barometer data as required inputs for motion tracking, elevation analysis, and fall detection.
+- Task-009 will fuse GPS, IMU, and barometer data into a unified `MotionSample` stream.
+
+### Validation Notes
+- Run `python3 scripts/verify_imu_provider.py` to confirm 50Hz CoreMotion settings, publisher types, line limit, UI-import ban, and Xcode membership.
+- Run `python3 scripts/verify_barometer_provider.py` to confirm CMAltimeter usage, unavailable-device guard, line limit, UI-import ban, and Xcode membership.
+- Run existing Task-002 through Task-006 scripts to confirm localization, shared models, feature flags, and GPS provider remain valid.
+- iOS should Build / Run. watchOS and macOS should still Build / Run unchanged because these new providers are iOS-only.
+
+### Known Issues / Follow-up
+- Raw CoreMotion object streams cannot emit fabricated `CMAccelerometerData`, `CMGyroData`, or `CMAltitudeData` objects on unsupported devices. Normalized helper streams expose safe zero / nil values for simulator stability.
+- No UI starts these providers yet; Task-009 Sensor Fusion and later Session Recording tasks will consume them.

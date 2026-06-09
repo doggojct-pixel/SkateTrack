@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-09  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Task:** Task-005 — FILE_STRUCTURE.md + DEV_LOG.md Init  
-**Scope:** Source-controlled repository structure after Tasks 001–005.
+**Task:** Task-007 + Task-008 — IMU Provider + Barometer Provider  
+**Scope:** Source-controlled repository structure after Tasks 001–008.
 
 This document records the current SkateTrack repository layout after Phase 0 foundation work. It must be updated whenever three or more files are added or changed, or when a phase is completed.
 
@@ -79,8 +79,10 @@ SkateTrack/
 │   │   │   └── .gitkeep                            # [佔位] Keeps the ML engine directory committed.
 │   │   ├── SensorEngine/                           # [自主區] GPS, IMU, barometer, fusion, and fall detection providers.
 │   │   │   ├── .gitkeep                            # [佔位] Keeps the sensor engine directory committed.
+│   │   │   ├── BarometerProvider.swift              # [自主區] CMAltimeter wrapper publishing relative altitude and pressure streams for future elevation analysis.
 │   │   │   ├── GPSAuthorizationHandler.swift        # [自主區] CLLocation permission request and authorization-state wrapper.
-│   │   │   └── GPSProvider.swift                    # [自主區] Filtered CLLocation and km/h speed stream provider for iOS session recording.
+│   │   │   ├── GPSProvider.swift                    # [自主區] Filtered CLLocation and km/h speed stream provider for iOS session recording.
+│   │   │   └── IMUProvider.swift                    # [自主區] CMMotionManager wrapper publishing 50Hz accelerometer and gyroscope streams.
 │   │   └── Subscription/                           # [自主區] Subscription and access-control internals.
 │   │       └── FeatureFlagEngine.swift             # [自主區] Single source of truth for subscription access checks with DEBUG override support.
 │   ├── Features/                                   # [協作區] iOS feature modules; real UI screens are implemented in later tasks.
@@ -148,7 +150,9 @@ SkateTrack/
 │   ├── .gitkeep                                    # [佔位] Keeps the scripts directory committed.
 │   ├── set_github_remote.sh                        # [工程設定] Helper to set GitHub origin remote after repo creation.
 │   ├── verify_feature_flags.py                     # [工程設定] Validates Task-004 gated feature enum, engine, hook, and localization keys.
+│   ├── verify_barometer_provider.py                # [工程設定] Validates Task-008 barometer provider, line limit, UI-import ban, and Xcode membership.
 │   ├── verify_gps_provider.py                      # [工程設定] Validates Task-006 GPS provider files, permission strings, and Xcode membership.
+│   ├── verify_imu_provider.py                      # [工程設定] Validates Task-007 IMU provider, 50Hz settings, UI-import ban, and Xcode membership.
 │   ├── verify_localization_keys.py                 # [工程設定] Validates English and Traditional Chinese localization key parity.
 │   └── verify_shared_models.py                     # [工程設定] Validates Task-003 required shared files, zone headers, line counts, and forbidden UI imports.
 └── tasks/                                          # [任務文件] Cursor / agent task prompt packs and acceptance checklists.
@@ -168,11 +172,21 @@ SkateTrack/
     │   ├── context.md                              # [任務文件] Task-004 context and source references.
     │   ├── files_expected.md                       # [任務文件] Task-004 expected file list.
     │   └── prompt.md                               # [任務文件] Task-004 agent prompt.
-    └── Task-006-GPSProvider/
-        ├── acceptance.md                           # [任務文件] Task-006 acceptance checklist.
-        ├── context.md                              # [任務文件] Task-006 context and source references.
-        ├── files_expected.md                       # [任務文件] Task-006 expected file list.
-        └── prompt.md                               # [任務文件] Task-006 agent prompt.
+    ├── Task-006-GPSProvider/
+    │   ├── acceptance.md                           # [任務文件] Task-006 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-006 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-006 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-006 agent prompt.
+    ├── Task-007-IMUProvider/
+    │   ├── acceptance.md                           # [任務文件] Task-007 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-007 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-007 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-007 agent prompt.
+    └── Task-008-BarometerProvider/
+        ├── acceptance.md                           # [任務文件] Task-008 acceptance checklist.
+        ├── context.md                              # [任務文件] Task-008 context and source references.
+        ├── files_expected.md                       # [任務文件] Task-008 expected file list.
+        └── prompt.md                               # [任務文件] Task-008 agent prompt.
 ```
 
 ## Current Phase 0 Status
@@ -183,8 +197,19 @@ SkateTrack/
 - Task-004 feature flag system is complete.
 - Task-005 living documentation initialization is complete with this file and `docs/DEV_LOG.md`.
 - Task-006 GPS Provider is complete.
+- Task-007 IMU Provider is complete.
+- Task-008 Barometer Provider is complete.
 
 ## History
+
+
+### 2026-06-09 — Task-007 + Task-008 Sensor Providers
+
+- Added `iOS/Core/SensorEngine/IMUProvider.swift` for 50Hz accelerometer and gyroscope streams.
+- Added `iOS/Core/SensorEngine/BarometerProvider.swift` for relative altitude and pressure streams.
+- Added `scripts/verify_imu_provider.py` and `scripts/verify_barometer_provider.py`.
+- Added Task-007 and Task-008 prompt packs.
+- Updated the iOS target project membership so both providers compile only in the iOS app target.
 
 ### 2026-06-09 — Task-006 GPS Provider
 
