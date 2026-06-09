@@ -58,3 +58,29 @@
 "session.error.invalidPowerType" = "Electric mode is only available for skateboard sessions.";
 "session.error.sensorUnavailable" = "Motion sensors are unavailable.";
 "session.error.invalidStateTransition" = "Invalid session state. Please try again.";
+
+/* Session start flow */
+"home.greeting.morning" = "Good Morning";
+"home.readyToSkate" = "Ready to Skate?";
+"session.start.selectSport" = "Select Sport";
+"session.start.skateboard.subtitle" = "4 modes";
+"session.start.inline.subtitle" = "4 modes";
+"session.start.cta" = "Start Session";
+"session.start.unlockToStart" = "Upgrade to start this mode";
+"mode.tag.speed" = "Speed";
+"mode.tag.pump" = "Pump";
+"mode.tag.carve" = "Carve";
+"mode.tag.cadence" = "Cadence";
+"mode.tag.tricks" = "Tricks";
+"mode.tag.rhythm" = "Rhythm";
+"mode.locked.subscriberOnly" = "Subscriber only";
+"mode.description.streetpark" = "Street lines, parks, rails, and trick-focused sessions.";
+"mode.description.longboard" = "Cruising, downhill, carving, and distance sessions.";
+"mode.description.surfskate" = "Pump, carve, flow, and surf-style training.";
+"mode.description.freebord" = "Slide-oriented sessions with snowboard-like rotation.";
+"mode.description.inline.urban" = "City cruising, freestyle lines, and daily inline sessions.";
+"mode.description.inline.fitness" = "Fitness, speed intervals, and endurance skating.";
+"mode.description.inline.aggressive" = "Park, street, grinds, and aggressive inline sessions.";
+"mode.description.inline.slalom" = "Cone lines, rhythm, edge control, and precision drills.";
+"power.type.title" = "Power Type";
+"power.electric.phase1a.note" = "Electric skateboard sessions are tracked manually in Phase 1a.";

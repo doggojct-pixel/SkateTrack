@@ -52,9 +52,9 @@ final class SensorFusionEngine: SensorProvider {
     }
 
     func startSession(mode: SportMode) async throws {
-        stateLock.lock()
-        let alreadyRunning = sessionStartDate != nil
-        stateLock.unlock()
+        let alreadyRunning = stateLock.withLock {
+            sessionStartDate != nil
+        }
 
         guard !alreadyRunning else {
             throw SensorFusionEngineError.sessionAlreadyRunning
@@ -95,18 +95,18 @@ final class SensorFusionEngine: SensorProvider {
     }
 
     private func resetSessionState(mode: SportMode) {
-        stateLock.lock()
-        currentMode = mode
-        currentPriorityPlan = calibrationEngine.priorityPlan(for: mode)
-        sessionStartDate = Date()
-        sessionSamples = []
-        latestCoordinate = nil
-        latestSpeedKmh = 0
-        latestAcceleration = .zero
-        latestGyroscope = .zero
-        latestAltitudeMeters = nil
-        calibrationEngine.reset()
-        stateLock.unlock()
+        stateLock.withLock {
+            currentMode = mode
+            currentPriorityPlan = calibrationEngine.priorityPlan(for: mode)
+            sessionStartDate = Date()
+            sessionSamples = []
+            latestCoordinate = nil
+            latestSpeedKmh = 0
+            latestAcceleration = .zero
+            latestGyroscope = .zero
+            latestAltitudeMeters = nil
+            calibrationEngine.reset()
+        }
     }
 
     private func bindProviderStreams() {
@@ -176,87 +176,105 @@ final class SensorFusionEngine: SensorProvider {
     private func publishCurrentMotionSample() {
         let sample = makeMotionSample()
 
-        stateLock.lock()
-        sessionSamples.append(sample)
-        stateLock.unlock()
+        stateLock.withLock {
+            sessionSamples.append(sample)
+        }
 
         motionSampleSubject.send(sample)
     }
 
     private func makeMotionSample() -> MotionSample {
-        stateLock.lock()
-        let coordinate = latestCoordinate
-        let speedKmh = latestSpeedKmh
-        let acceleration = latestAcceleration
-        let gyroscope = latestGyroscope
-        let altitude = latestAltitudeMeters
-        calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
-        let calibratedAcceleration = calibrationEngine.calibratedAcceleration(from: acceleration)
-        let calibratedGyroscope = calibrationEngine.calibratedGyroscope(from: gyroscope)
-        stateLock.unlock()
+        let snapshot = stateLock.withLock { () -> (
+            coordinate: GeoCoordinate?,
+            speedKmh: Double,
+            acceleration: ThreeAxisValue,
+            gyroscope: ThreeAxisValue,
+            altitude: Double?,
+            calibratedAcceleration: ThreeAxisValue,
+            calibratedGyroscope: ThreeAxisValue
+        ) in
+            let coordinate = latestCoordinate
+            let speedKmh = latestSpeedKmh
+            let acceleration = latestAcceleration
+            let gyroscope = latestGyroscope
+            let altitude = latestAltitudeMeters
+            calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
+            let calibratedAcceleration = calibrationEngine.calibratedAcceleration(from: acceleration)
+            let calibratedGyroscope = calibrationEngine.calibratedGyroscope(from: gyroscope)
+
+            return (
+                coordinate,
+                speedKmh,
+                acceleration,
+                gyroscope,
+                altitude,
+                calibratedAcceleration,
+                calibratedGyroscope
+            )
+        }
 
         return MotionSample(
             timestamp: Date(),
-            gpsCoordinate: coordinate,
-            speedKmh: speedKmh,
-            accelerometerG: calibratedAcceleration,
-            gyroscopeRadPS: calibratedGyroscope,
-            altitudeMeters: altitude
+            gpsCoordinate: snapshot.coordinate,
+            speedKmh: snapshot.speedKmh,
+            accelerometerG: snapshot.calibratedAcceleration,
+            gyroscopeRadPS: snapshot.calibratedGyroscope,
+            altitudeMeters: snapshot.altitude
         )
     }
 
     private func updateLocation(_ location: CLLocation) {
-        stateLock.lock()
-        latestCoordinate = GeoCoordinate(
-            latitude: location.coordinate.latitude,
-            longitude: location.coordinate.longitude
-        )
-        stateLock.unlock()
+        stateLock.withLock {
+            latestCoordinate = GeoCoordinate(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude
+            )
+        }
     }
 
     private func updateSpeed(_ speedKmh: Double) {
-        stateLock.lock()
-        latestSpeedKmh = speedKmh
-        stateLock.unlock()
+        stateLock.withLock {
+            latestSpeedKmh = speedKmh
+        }
     }
 
     private func updateAcceleration(_ acceleration: ThreeAxisValue) {
-        stateLock.lock()
-        latestAcceleration = acceleration
-        stateLock.unlock()
+        stateLock.withLock {
+            latestAcceleration = acceleration
+        }
     }
 
     private func updateGyroscope(_ gyroscope: ThreeAxisValue) {
-        stateLock.lock()
-        latestGyroscope = gyroscope
-        stateLock.unlock()
+        stateLock.withLock {
+            latestGyroscope = gyroscope
+        }
     }
 
     private func updateAltitude(_ altitude: Double?) {
-        stateLock.lock()
-        latestAltitudeMeters = altitude
-        stateLock.unlock()
+        stateLock.withLock {
+            latestAltitudeMeters = altitude
+        }
     }
 
     private func sessionSnapshot() -> (startDate: Date, mode: SportMode, samples: [MotionSample]) {
-        stateLock.lock()
-        let startDate = sessionStartDate ?? Date()
-        let mode = currentMode ?? .skateboard(.streetPark)
-        let samples = sessionSamples
-        stateLock.unlock()
-        return (startDate, mode, samples)
+        stateLock.withLock {
+            let startDate = sessionStartDate ?? Date()
+            let mode = currentMode ?? .skateboard(.streetPark)
+            let samples = sessionSamples
+            return (startDate, mode, samples)
+        }
     }
 
     private func resetTransientState() {
-        stateLock.lock()
-        currentMode = nil
-        currentPriorityPlan = nil
-        sessionStartDate = nil
-        latestCoordinate = nil
-        latestSpeedKmh = 0
-        latestAcceleration = .zero
-        latestGyroscope = .zero
-        latestAltitudeMeters = nil
-        stateLock.unlock()
+        stateLock.withLock {
+            currentMode = nil
+            currentPriorityPlan = nil
+            sessionStartDate = nil
+            latestCoordinate = nil
+            latestSpeedKmh = 0
+            latestAcceleration = .zero
+            latestGyroscope = .zero
+            latestAltitudeMeters = nil
+        }
     }
 }

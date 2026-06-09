@@ -254,3 +254,36 @@ This log is append-only. Do not delete or overwrite old entries.
 - No production Session Start or Live HUD screens yet; Task-012 and Task-013 will consume `useSessionRecording`.
 - Fall alert UI and SOS dispatch remain deferred to Task-014.
 - Session persistence is deferred to Task-015; completed `SessionData` is returned in memory only.
+
+
+## 2026-06-09 Phase 1a — Task-012 Session Start Flow Completed
+
+### Completed
+- Added `iOS/App/RootNavigationView.swift` and replaced the placeholder iOS shell with the first real Session Start Flow.
+- Added `SessionStartView`, category picker, skateboard mode selector, inline mode selector, power type toggle, reusable mode cards, and start CTA components.
+- Connected the UI to `useSessionRecording` for start-session actions and to `useSubscriptionStatus` for inline subscription gates.
+- Added all eight mode cards while keeping Inline Fitness / Speed, Aggressive, and Slalom locked for free users.
+- Added Task-012 localization keys, `scripts/verify_session_start_flow.py`, and Task-012 prompt pack.
+
+### Reason / Context
+- Build Plan Task 012 requires iOS Screen 01, Screen 02, and Screen 12 to become the first visible user-facing UI after the sensor and session lifecycle foundation.
+- Task-011 established `SessionRecordingCoordinator` and `useSessionRecording`; Task-012 is the first View layer consuming that boundary.
+- Feature gates remain stub-compatible until Task-016 StoreKit and Paywall implementation.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_start_flow.py` to confirm UI files, gated inline modes, localization keys, and iOS project membership.
+- Run existing Task-002 through Task-011 scripts to confirm localization, shared models, feature flags, sensor providers, engines, and session lifecycle remain valid.
+- iOS should Build / Run and show the Session Start UI. watchOS and macOS should still Build / Run unchanged.
+
+### Known Issues / Follow-up
+- Task-012 intentionally does not include Live HUD; after starting a session it only updates session state. Task-013 will add the in-session HUD.
+- Paywall routing is a stub prompt until Task-016.
+- Real sensor availability still depends on device capabilities; DEBUG uses the mock coordinator for simulator-friendly start flow testing.
+
+## 2026-06-09 — Task-012 Hotfix: Align Session Start UI with iOS mockup
+
+- Reworked the iOS Session Start Flow from a white system-card layout to the uploaded SkateTrack dark visual system.
+- Replaced system backgrounds with navy / card / accent tokens matching the iOS UI v3 mockup.
+- Kept Task-012 scope unchanged: sport category selection, mode selection, power type toggle, subscription gating, and start action only.
+- Did not add pause, stop, swipe-to-end, Live HUD, Fall Alert, persistence, or history features; those remain scheduled for later tasks.
+- Pinned the Start Session CTA to the bottom safe area so the entry action is discoverable without scrolling to the very bottom.

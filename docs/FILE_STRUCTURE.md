@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-09  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Task:** Task-011 — Session Recording Coordinator + Hook  
-**Scope:** Source-controlled repository structure after Tasks 001–011.
+**Task:** Task-012 — Session Start Flow + Sport Mode Selection  
+**Scope:** Source-controlled repository structure after Tasks 001–012.
 
 This document records the current SkateTrack repository layout after Phase 0 foundation work. It must be updated whenever three or more files are added or changed, or when a phase is completed.
 
@@ -72,7 +72,8 @@ SkateTrack/
 ├── iOS/                                            # iOS app source tree.
 │   ├── App/                                        # [協作區] iOS app entry and root shell.
 │   │   ├── .gitkeep                                # [佔位] Keeps the iOS app directory committed.
-│   │   └── SkateTrackApp.swift                     # [協作區] iOS app entry with localized placeholder shell and DEBUG subscription toggle.
+│   │   ├── RootNavigationView.swift                 # [協作區] iOS root NavigationStack that hosts SessionStartView and shared hooks.
+│   │   └── SkateTrackApp.swift                     # [協作區] iOS app entry wiring subscription and session-recording view models into root navigation.
 │   ├── Core/                                       # [自主區] iOS implementation engines and data processing internals.
 │   │   ├── DataPipeline/                           # [自主區] Placeholder for session/sensor data pipeline tasks.
 │   │   │   └── .gitkeep                            # [佔位] Keeps the data pipeline directory committed.
@@ -102,8 +103,15 @@ SkateTrack/
 │   │   │   └── .gitkeep                            # [佔位] Placeholder for hydration, rest, stretch, and heat reminder UI.
 │   │   ├── RouteMap/
 │   │   │   └── .gitkeep                            # [佔位] Placeholder for route map and mini-map UI.
-│   │   ├── SessionRecording/
-│   │   │   └── .gitkeep                            # [佔位] Placeholder for GPS session recording UI.
+│   │   ├── SessionRecording/                       # [協作區] iOS session start and recording-facing UI components.
+│   │   │   ├── .gitkeep                            # [佔位] Keeps the session recording feature directory committed.
+│   │   │   ├── BoardModeSelectorView.swift         # [協作區] Four-card skateboard mode selector for street/park, longboard, surfskate, and freebord.
+│   │   │   ├── InlineModeSelectorView.swift        # [協作區] Four-card inline selector with subscriber locks for paid inline modes.
+│   │   │   ├── ModeSelectionCardView.swift         # [協作區] Reusable sport-mode card with icon, description, tag, selected, and locked states.
+│   │   │   ├── PowerTypeToggleView.swift           # [協作區] Human/electric power selector shown only for skateboard sessions.
+│   │   │   ├── SessionStartView.swift              # [協作區] Home/session-start container connecting mode selection to useSessionRecording.
+│   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard versus inline category selector.
+│   │   │   └── StartSessionCTAView.swift           # [協作區] Start/locked/loading CTA for the session start flow.
 │   │   ├── Social/
 │   │   │   └── .gitkeep                            # [佔位] Placeholder for session share cards and social export.
 │   │   ├── SpotManagement/
@@ -165,6 +173,7 @@ SkateTrack/
 │   ├── verify_localization_keys.py                 # [工程設定] Validates English and Traditional Chinese localization key parity.
 │   ├── verify_sensor_fusion_engine.py              # [工程設定] Validates Task-009 fusion engine, 10Hz cadence, protocol conformance, and Xcode membership.
 │   ├── verify_fall_detection_engine.py             # [工程設定] Validates Task-010 fall detection threshold, countdown, cancel API, and Xcode membership.
+│   ├── verify_session_start_flow.py                 # [工程設定] Verifies Task-012 session-start UI files, inline gates, localization, and iOS target membership.
 │   ├── verify_session_recording_coordinator.py     # [工程設定] Validates Task-011 session coordinator, hook, metrics, tests, and localization keys.
 │   └── verify_shared_models.py                     # [工程設定] Validates Task-003 required shared files, zone headers, line counts, and forbidden UI imports.
 └── tasks/                                          # [任務文件] Cursor / agent task prompt packs and acceptance checklists.
@@ -293,3 +302,10 @@ SkateTrack/
 - Created the Xcode workspace, Xcode project, platform app entries, baseline folder structure, SwiftLint config, README, and initial docs.
 
 No deprecated structure entries yet.
+
+### Task-012 Hotfix Notes
+
+- `iOS/Features/SessionRecording/SessionStartView.swift` — updated to match the uploaded dark iOS Session Start / Mode Selector visual direction.
+- `iOS/Features/SessionRecording/SportCategoryPickerView.swift` — updated sport category cards to use dark gradient tiles, selected glow, and checkmark treatment.
+- `iOS/Features/SessionRecording/ModeSelectionCardView.swift` — updated shared mode cards to dark card surfaces and mockup-aligned accent treatments.
+- `iOS/Features/SessionRecording/StartSessionCTAView.swift` — pinned bottom CTA styling aligned with the mockup start button visual language.

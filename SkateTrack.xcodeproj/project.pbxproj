@@ -75,6 +75,14 @@
 		12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
 		12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
 		12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */; };
+		12AD01000000000000000101 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD01000000000000000001 /* RootNavigationView.swift */; };
+		12AD02000000000000000101 /* SessionStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD02000000000000000001 /* SessionStartView.swift */; };
+		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
+		12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD04000000000000000001 /* BoardModeSelectorView.swift */; };
+		12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD05000000000000000001 /* InlineModeSelectorView.swift */; };
+		12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD06000000000000000001 /* PowerTypeToggleView.swift */; };
+		12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD07000000000000000001 /* ModeSelectionCardView.swift */; };
+		12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD08000000000000000001 /* StartSessionCTAView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +128,14 @@
 		12AB05000000000000000001 /* SessionSummaryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryMetrics.swift; sourceTree = "<group>"; };
 		12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SkateTrack-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinatorTests.swift; sourceTree = "<group>"; };
+		12AD01000000000000000001 /* RootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
+		12AD02000000000000000001 /* SessionStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartView.swift; sourceTree = "<group>"; };
+		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
+		12AD04000000000000000001 /* BoardModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModeSelectorView.swift; sourceTree = "<group>"; };
+		12AD05000000000000000001 /* InlineModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineModeSelectorView.swift; sourceTree = "<group>"; };
+		12AD06000000000000000001 /* PowerTypeToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerTypeToggleView.swift; sourceTree = "<group>"; };
+		12AD07000000000000000001 /* ModeSelectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelectionCardView.swift; sourceTree = "<group>"; };
+		12AD08000000000000000001 /* StartSessionCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionCTAView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +290,7 @@
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
 				12A400000000000000000005 /* iOS/Hooks */,
+				12AD00000000000000000011 /* iOS/Features/SessionRecording */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
@@ -295,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				A991274AD53212097B6F7721 /* SkateTrackApp.swift */,
+				12AD01000000000000000001 /* RootNavigationView.swift */,
 			);
 			path = iOS/App;
 			sourceTree = SOURCE_ROOT;
@@ -343,6 +361,20 @@
 				12A200000000000000000008 /* Utilities */,
 			);
 			path = Shared;
+			sourceTree = SOURCE_ROOT;
+		};
+		12AD00000000000000000011 /* iOS/Features/SessionRecording */ = {
+			isa = PBXGroup;
+			children = (
+				12AD02000000000000000001 /* SessionStartView.swift */,
+				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
+				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
+				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
+				12AD06000000000000000001 /* PowerTypeToggleView.swift */,
+				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
+				12AD08000000000000000001 /* StartSessionCTAView.swift */,
+			);
+			path = iOS/Features/SessionRecording;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -507,6 +539,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
+				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
+				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
+				12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */,
+				12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */,
+				12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */,
+				12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */,
+				12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */,
+				12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

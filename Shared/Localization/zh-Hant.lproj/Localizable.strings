@@ -58,3 +58,29 @@
 "session.error.invalidPowerType" = "電動模式僅支援滑板。";
 "session.error.sensorUnavailable" = "無法啟用動作感測器。";
 "session.error.invalidStateTransition" = "Session 狀態無效，請再試一次。";
+
+/* Session start flow */
+"home.greeting.morning" = "早安";
+"home.readyToSkate" = "準備好滑了嗎？";
+"session.start.selectSport" = "選擇運動";
+"session.start.skateboard.subtitle" = "4 種模式";
+"session.start.inline.subtitle" = "4 種模式";
+"session.start.cta" = "開始 Session";
+"session.start.unlockToStart" = "升級後即可開始此模式";
+"mode.tag.speed" = "速度";
+"mode.tag.pump" = "Pump";
+"mode.tag.carve" = "Carve";
+"mode.tag.cadence" = "步頻";
+"mode.tag.tricks" = "招式";
+"mode.tag.rhythm" = "節奏";
+"mode.locked.subscriberOnly" = "訂閱解鎖";
+"mode.description.streetpark" = "街式路線、公園、道具與招式為主的滑板紀錄。";
+"mode.description.longboard" = "巡航、下坡、刻滑與長距離滑行紀錄。";
+"mode.description.surfskate" = "Pump、Carve、Flow 與衝浪感訓練。";
+"mode.description.freebord" = "偏向滑行轉向與類單板滑雪旋轉的紀錄。";
+"mode.description.inline.urban" = "城市巡航、自由式路線與日常直排輪紀錄。";
+"mode.description.inline.fitness" = "體能、速度間歇與耐力型直排輪訓練。";
+"mode.description.inline.aggressive" = "公園、街式、磨桿與極限直排輪紀錄。";
+"mode.description.inline.slalom" = "樁線、節奏、刃感控制與精準訓練。";
+"power.type.title" = "動力類型";
+"power.electric.phase1a.note" = "Phase 1a 的電動滑板 Session 先以手動資料追蹤。";

@@ -12,7 +12,7 @@ final class SubscriptionStatusViewModel: ObservableObject {
     private let engine: FeatureFlagEngine
     private var cancellables = Set<AnyCancellable>()
 
-    init(engine: FeatureFlagEngine = .shared) {
+    init(engine: FeatureFlagEngine) {
         self.engine = engine
         self.isSubscriber = engine.isSubscriber
 
@@ -23,6 +23,10 @@ final class SubscriptionStatusViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    convenience init() {
+        self.init(engine: FeatureFlagEngine.shared)
     }
 
     func hasAccess(to feature: GatedFeature) -> Bool {
@@ -57,7 +61,7 @@ final class SubscriptionStatusViewModel: ObservableObject {
 
 @MainActor
 func useSubscriptionStatus() -> SubscriptionStatusViewModel {
-    SubscriptionStatusViewModel()
+    SubscriptionStatusViewModel(engine: FeatureFlagEngine.shared)
 }
 
 #if DEBUG

@@ -1,29 +1,32 @@
 // [協作區] SkateTrackApp.swift
-// 用途：定義 SkateTrack iOS App 入口點，並用本地化鍵值顯示目前任務驗證用空殼畫面。
-// 委派至：iOS/Hooks/useSubscriptionStatus.swift 提供 DEBUG 訂閱狀態切換。
+// 用途：定義 SkateTrack iOS App 入口點，並把 root 導航交給 Task-012 Session Start Flow。
+// 委派至：RootNavigationView.swift 管理 iOS 主入口與 SessionRecording / Subscription hooks。
 
 import SwiftUI
 
 @main
 struct SkateTrackApp: App {
     @StateObject private var subscriptionStatus = useSubscriptionStatus()
+    @StateObject private var sessionRecording = SkateTrackAppDependencies.makeSessionRecordingViewModel()
 
     var body: some Scene {
         WindowGroup {
-            VStack(spacing: 16) {
-                VStack(spacing: 8) {
-                    Text("app.name")
-                        .font(.largeTitle.bold())
-                    Text("app.tagline")
-                        .font(.headline)
-                }
-
-                #if DEBUG
-                SubscriptionDebugPanel(subscriptionStatus: subscriptionStatus)
-                    .frame(maxWidth: 320)
-                #endif
-            }
-            .padding()
+            RootNavigationView(
+                subscriptionStatus: subscriptionStatus,
+                sessionRecording: sessionRecording
+            )
         }
+    }
+
+}
+
+enum SkateTrackAppDependencies {
+    @MainActor
+    static func makeSessionRecordingViewModel() -> SessionRecordingViewModel {
+        #if DEBUG
+        return useSessionRecording(coordinator: .makeMockCoordinator())
+        #else
+        return useSessionRecording()
+        #endif
     }
 }
