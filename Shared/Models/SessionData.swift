@@ -13,6 +13,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
     let motionSamples: [MotionSample]
     let trickEvents: [TrickEvent]
     let fallEvents: [FallEvent]
+    let summaryMetrics: SessionSummaryMetrics?
     let equipmentID: UUID?
     let spotID: UUID?
 
@@ -25,6 +26,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         motionSamples: [MotionSample] = [],
         trickEvents: [TrickEvent] = [],
         fallEvents: [FallEvent] = [],
+        summaryMetrics: SessionSummaryMetrics? = nil,
         equipmentID: UUID? = nil,
         spotID: UUID? = nil
     ) throws {
@@ -40,6 +42,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         self.motionSamples = motionSamples
         self.trickEvents = trickEvents
         self.fallEvents = fallEvents
+        self.summaryMetrics = summaryMetrics
         self.equipmentID = equipmentID
         self.spotID = spotID
     }
@@ -62,6 +65,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         case motionSamples
         case trickEvents
         case fallEvents
+        case summaryMetrics
         case equipmentID
         case spotID
     }
@@ -87,6 +91,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         motionSamples = try container.decode([MotionSample].self, forKey: .motionSamples)
         trickEvents = try container.decode([TrickEvent].self, forKey: .trickEvents)
         fallEvents = try container.decode([FallEvent].self, forKey: .fallEvents)
+        summaryMetrics = try container.decodeIfPresent(SessionSummaryMetrics.self, forKey: .summaryMetrics)
         equipmentID = try container.decodeIfPresent(UUID.self, forKey: .equipmentID)
         spotID = try container.decodeIfPresent(UUID.self, forKey: .spotID)
     }

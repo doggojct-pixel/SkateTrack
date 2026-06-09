@@ -67,6 +67,14 @@
 		12A900000000000000000101 /* SensorFusionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A900000000000000000001 /* SensorFusionEngine.swift */; };
 		12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A900000000000000000002 /* SensorCalibrationEngine.swift */; };
 		12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA00000000000000000001 /* FallDetectionEngine.swift */; };
+		12AB01000000000000000101 /* SessionStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB01000000000000000001 /* SessionStateMachine.swift */; };
+		12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB02000000000000000001 /* SessionMetricsAccumulator.swift */; };
+		12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB03000000000000000001 /* SessionRecordingCoordinator.swift */; };
+		12AB04000000000000000101 /* useSessionRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB04000000000000000001 /* useSessionRecording.swift */; };
+		12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
+		12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
+		12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
+		12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +113,13 @@
 		12A900000000000000000001 /* SensorFusionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorFusionEngine.swift; sourceTree = "<group>"; };
 		12A900000000000000000002 /* SensorCalibrationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorCalibrationEngine.swift; sourceTree = "<group>"; };
 		12AA00000000000000000001 /* FallDetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionEngine.swift; sourceTree = "<group>"; };
+		12AB01000000000000000001 /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
+		12AB02000000000000000001 /* SessionMetricsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetricsAccumulator.swift; sourceTree = "<group>"; };
+		12AB03000000000000000001 /* SessionRecordingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinator.swift; sourceTree = "<group>"; };
+		12AB04000000000000000001 /* useSessionRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionRecording.swift; sourceTree = "<group>"; };
+		12AB05000000000000000001 /* SessionSummaryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryMetrics.swift; sourceTree = "<group>"; };
+		12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SkateTrack-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +138,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EDE998383CD5AFC847FA492A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12AC00000000000000000201 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -170,6 +192,7 @@
 				12A300000000000000000006 /* FallEvent.swift */,
 				12A300000000000000000007 /* EquipmentProfile.swift */,
 				12A300000000000000000008 /* SpotProfile.swift */,
+				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -191,6 +214,17 @@
 			sourceTree = SOURCE_ROOT;
 		};
 
+		12AB00000000000000000001 /* iOS/Core/SessionRecording */ = {
+			isa = PBXGroup;
+			children = (
+				12AB01000000000000000001 /* SessionStateMachine.swift */,
+				12AB02000000000000000001 /* SessionMetricsAccumulator.swift */,
+				12AB03000000000000000001 /* SessionRecordingCoordinator.swift */,
+			);
+			path = iOS/Core/SessionRecording;
+			sourceTree = SOURCE_ROOT;
+		};
+
 		12A400000000000000000004 /* iOS/Core/Subscription */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				12A400000000000000000003 /* useSubscriptionStatus.swift */,
+				12AB04000000000000000001 /* useSessionRecording.swift */,
 			);
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
@@ -237,6 +272,7 @@
 				D3E87B7133C8F3A255023A90 /* iOS/App */,
 				12A400000000000000000004 /* iOS/Core/Subscription */,
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
+				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
@@ -274,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */,
+				12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */,
 				23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */,
 				BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */,
 			);
@@ -283,9 +320,18 @@
 		E1B7981D5F0CC62B8BC6C4A0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				12AC02000000000000000001 /* iOSTests */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
+		};
+		12AC02000000000000000001 /* iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
+			);
+			path = iOSTests;
+			sourceTree = "<group>";
 		};
 		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {
 			isa = PBXGroup;
@@ -359,6 +405,25 @@
 			productReference = CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		12AC00000000000000000101 /* SkateTrack-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */;
+			buildPhases = (
+				12AC00000000000000000401 /* Sources */,
+				12AC00000000000000000201 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				12AC00000000000000000501 /* PBXTargetDependency */,
+			);
+			name = "SkateTrack-iOSTests";
+			packageProductDependencies = (
+			);
+			productName = "SkateTrack-iOSTests";
+			productReference = 12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -377,6 +442,10 @@
 					};
 					F5A9DC98C215C4019ED77B35 = {
 						CreatedOnToolsVersion = 26.0;
+					};
+					12AC00000000000000000101 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = F5A9DC98C215C4019ED77B35;
 					};
 				};
 			};
@@ -397,6 +466,7 @@
 			projectRoot = "";
 			targets = (
 				F5A9DC98C215C4019ED77B35 /* SkateTrack-iOS */,
+				12AC00000000000000000101 /* SkateTrack-iOSTests */,
 				48B69A8CFEFBF3E402EC6500 /* SkateTrack-watchOS */,
 				6EF344145815B7E47CBF538D /* SkateTrack-macOS */,
 			);
@@ -448,6 +518,11 @@
 				12A900000000000000000101 /* SensorFusionEngine.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
+				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
+				12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */,
+				12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */,
+				12AB04000000000000000101 /* useSessionRecording.swift in Sources */,
+				12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,
@@ -480,6 +555,7 @@
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				12A300000000000000000115 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000118 /* SpotProfile.swift in Sources */,
+				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
 			);
@@ -502,12 +578,39 @@
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				12A300000000000000000114 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000117 /* SpotProfile.swift in Sources */,
+				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12AC00000000000000000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXContainerItemProxy section */
+		12AC00000000000000000601 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0F7C355FAF8ABA9345D359A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5A9DC98C215C4019ED77B35;
+			remoteInfo = "SkateTrack-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		12AC00000000000000000501 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F5A9DC98C215C4019ED77B35 /* SkateTrack-iOS */;
+			targetProxy = 12AC00000000000000000601 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		12A200000000000000000005 /* Localizable.strings */ = {
@@ -765,6 +868,56 @@
 			};
 			name = Release;
 		};
+		12AC00000000000000000701 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
+			};
+			name = Debug;
+		};
+		12AC00000000000000000801 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
+			};
+			name = Release;
+		};
 		FA183D56793E312A3AD20523 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -821,6 +974,15 @@
 			buildConfigurations = (
 				82698E43B0DB10E4874FC1A6 /* Debug */,
 				D4D4C1715970BFE92A3D78C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12AC00000000000000000701 /* Debug */,
+				12AC00000000000000000801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

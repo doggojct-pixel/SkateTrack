@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-09  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Task:** Task-009 + Task-010 — Sensor Fusion Engine + Fall Detection Engine  
-**Scope:** Source-controlled repository structure after Tasks 001–010.
+**Task:** Task-011 — Session Recording Coordinator + Hook  
+**Scope:** Source-controlled repository structure after Tasks 001–011.
 
 This document records the current SkateTrack repository layout after Phase 0 foundation work. It must be updated whenever three or more files are added or changed, or when a phase is completed.
 
@@ -58,6 +58,7 @@ SkateTrack/
 │   │   ├── MotionSample.swift                      # [協作區] GPS, speed, accelerometer, gyroscope, altitude, and accuracy sample types.
 │   │   ├── PowerType.swift                         # [協作區] Human-powered / electric power type plus skateboard-only electric validation.
 │   │   ├── SessionData.swift                       # [協作區] Root session container for sport mode, power, samples, tricks, falls, equipment, and spot links.
+│   │   ├── SessionSummaryMetrics.swift             # [協作區] Aggregated session metrics and live HUD metric snapshot structs.
 │   │   ├── SportMode.swift                         # [協作區] BoardMode, InlineMode, and unified SportMode enum for skateboard and inline skating.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot with coordinates, surface rating, photos, visit data, and preferred modes.
 │   │   └── TrickEvent.swift                        # [協作區] Trick timeline event with type, confidence, air height, and landing quality.
@@ -86,6 +87,10 @@ SkateTrack/
 │   │   │   ├── IMUProvider.swift                    # [自主區] CMMotionManager wrapper publishing 50Hz accelerometer and gyroscope streams.
 │   │   │   ├── SensorCalibrationEngine.swift        # [自主區] Sensor bias calibration and sport-mode priority plan for fusion.
 │   │   │   └── SensorFusionEngine.swift             # [自主區] 10Hz MotionSample fusion engine combining GPS, IMU, and barometer streams.
+│   │   ├── SessionRecording/                       # [自主區] Session lifecycle coordination and live metrics accumulation.
+│   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving-ratio accumulation from MotionSample.
+│   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Session lifecycle owner wiring SensorFusionEngine and FallDetectionEngine.
+│   │   │   └── SessionStateMachine.swift           # [自主區] idle/preparing/recording/paused/ending/saving/failed transition rules.
 │   │   └── Subscription/                           # [自主區] Subscription and access-control internals.
 │   │       └── FeatureFlagEngine.swift             # [自主區] Single source of truth for subscription access checks with DEBUG override support.
 │   ├── Features/                                   # [協作區] iOS feature modules; real UI screens are implemented in later tasks.
@@ -109,6 +114,7 @@ SkateTrack/
 │   │       └── .gitkeep                            # [佔位] Placeholder for tutorial browsing and bookmarks.
 │   └── Hooks/                                      # [協作區] UI-to-Core boundary adapters.
 │       ├── .gitkeep                                # [佔位] Keeps the hooks directory committed.
+│       ├── useSessionRecording.swift               # [協作區 — 邊界適配層] SwiftUI-facing session lifecycle state and action adapter.
 │       └── useSubscriptionStatus.swift             # [協作區 — 邊界適配層] SwiftUI-facing subscription state and access-check adapter.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/                                        # [協作區] watchOS app entry and root shell.
@@ -137,9 +143,9 @@ SkateTrack/
 │       │   └── .gitkeep                            # [佔位] Placeholder for macOS tutorial browsing.
 │       └── VideoOverlay/
 │           └── .gitkeep                            # [佔位] Placeholder for Phase 2 video overlay editor.
-├── Tests/                                          # Test target placeholders.
+├── Tests/                                          # iOS unit test target and placeholders for other platforms.
 │   ├── iOSTests/
-│   │   └── .gitkeep                                # [佔位] Placeholder for future iOS tests.
+│   │   └── SessionRecordingCoordinatorTests.swift  # [測試] Session state machine, metrics, coordinator, and UI-import guard tests.
 │   ├── watchOSTests/
 │   │   └── .gitkeep                                # [佔位] Placeholder for future watchOS tests.
 │   └── macOSTests/
@@ -159,6 +165,7 @@ SkateTrack/
 │   ├── verify_localization_keys.py                 # [工程設定] Validates English and Traditional Chinese localization key parity.
 │   ├── verify_sensor_fusion_engine.py              # [工程設定] Validates Task-009 fusion engine, 10Hz cadence, protocol conformance, and Xcode membership.
 │   ├── verify_fall_detection_engine.py             # [工程設定] Validates Task-010 fall detection threshold, countdown, cancel API, and Xcode membership.
+│   ├── verify_session_recording_coordinator.py     # [工程設定] Validates Task-011 session coordinator, hook, metrics, tests, and localization keys.
 │   └── verify_shared_models.py                     # [工程設定] Validates Task-003 required shared files, zone headers, line counts, and forbidden UI imports.
 └── tasks/                                          # [任務文件] Cursor / agent task prompt packs and acceptance checklists.
     ├── .gitkeep                                    # [佔位] Keeps the tasks directory committed.
@@ -197,11 +204,16 @@ SkateTrack/
     │   ├── context.md                              # [任務文件] Task-009 context and source references.
     │   ├── files_expected.md                       # [任務文件] Task-009 expected file list.
     │   └── prompt.md                               # [任務文件] Task-009 agent prompt.
-    └── Task-010-FallDetectionEngine/
-        ├── acceptance.md                           # [任務文件] Task-010 acceptance checklist.
-        ├── context.md                              # [任務文件] Task-010 context and source references.
-        ├── files_expected.md                       # [任務文件] Task-010 expected file list.
-        └── prompt.md                               # [任務文件] Task-010 agent prompt.
+    ├── Task-010-FallDetectionEngine/
+    │   ├── acceptance.md                           # [任務文件] Task-010 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-010 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-010 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-010 agent prompt.
+    └── Task-011-SessionRecordingCoordinator/
+        ├── acceptance.md                           # [任務文件] Task-011 acceptance checklist.
+        ├── context.md                              # [任務文件] Task-011 context and source references.
+        ├── files_expected.md                       # [任務文件] Task-011 expected file list.
+        └── prompt.md                               # [任務文件] Task-011 agent prompt.
 ```
 
 ## Current Phase 0 Status
@@ -216,9 +228,19 @@ SkateTrack/
 - Task-008 Barometer Provider is complete.
 - Task-009 Sensor Fusion Engine is complete.
 - Task-010 Fall Detection Engine is complete.
+- Task-011 Session Recording Coordinator + Hook is complete.
 
 ## History
 
+
+### 2026-06-09 — Task-011 Session Recording Coordinator
+
+- Added `iOS/Core/SessionRecording/SessionStateMachine.swift`, `SessionMetricsAccumulator.swift`, and `SessionRecordingCoordinator.swift`.
+- Added `iOS/Hooks/useSessionRecording.swift` as the SwiftUI boundary adapter for session lifecycle actions and live HUD state.
+- Added `Shared/Models/SessionSummaryMetrics.swift` and extended `SessionData` with optional `summaryMetrics`.
+- Added `Tests/iOSTests/SessionRecordingCoordinatorTests.swift` and the `SkateTrack-iOSTests` Xcode target.
+- Added session status/error localization keys and `scripts/verify_session_recording_coordinator.py`.
+- Added Task-011 prompt pack.
 
 ### 2026-06-09 — Task-009 + Task-010 Sensor Fusion + Fall Detection
 

@@ -227,3 +227,30 @@ This log is append-only. Do not delete or overwrite old entries.
 - No production UI starts the engines yet; Task-011 and later Session Recording tasks will connect UI flows to these providers.
 - Simulator sensor behavior is limited. DEBUG fall thresholds exist for development validation, while real 4g behavior must be tested on hardware.
 - SOS delivery is intentionally represented as a published event only; actual emergency-contact messaging and user-facing alert UI are later tasks.
+
+## 2026-06-09 Phase 1a — Task-011 Session Recording Coordinator Completed
+
+### Completed
+- Added `iOS/Core/SessionRecording/SessionStateMachine.swift` with strict lifecycle transitions from idle through saving.
+- Added `iOS/Core/SessionRecording/SessionMetricsAccumulator.swift` for live distance, speed, elevation, tilt, and moving-ratio accumulation.
+- Added `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` as the sole session entry point wiring `SensorFusionEngine` and `FallDetectionEngine`.
+- Added `iOS/Hooks/useSessionRecording.swift` exposing `SessionRecordingState`, `SessionRecordingActions`, and a DEBUG mock-data preview panel.
+- Extended `Shared/Models/SessionData.swift` and added `SessionSummaryMetrics.swift` for completed-session summary output.
+- Added `Tests/iOSTests/SessionRecordingCoordinatorTests.swift` with six unit tests and the `SkateTrack-iOSTests` target/scheme configuration.
+- Added session localization keys, `scripts/verify_session_recording_coordinator.py`, and Task-011 prompt pack.
+
+### Reason / Context
+- Build Plan Task 011-020 pack defines Task-011 as the session lifecycle layer required before Session Start UI (Task-012) and Live HUD (Task-013).
+- PRD v1.2 §5.1 and §5.5 require a managed recording lifecycle with live metrics and completed `SessionData` output.
+- DevProcess principle B/C requires Views to use hooks instead of calling sensor engines directly.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_recording_coordinator.py` to confirm coordinator files, localization keys, line limits, and Xcode membership.
+- Run `xcodebuild test -scheme SkateTrack-iOS -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:SkateTrack-iOSTests`.
+- Run existing Task-002 through Task-010 scripts to confirm prior infrastructure remains valid.
+- iOS should Build / Run. watchOS and macOS should still Build / Run unchanged.
+
+### Known Issues / Follow-up
+- No production Session Start or Live HUD screens yet; Task-012 and Task-013 will consume `useSessionRecording`.
+- Fall alert UI and SOS dispatch remain deferred to Task-014.
+- Session persistence is deferred to Task-015; completed `SessionData` is returned in memory only.

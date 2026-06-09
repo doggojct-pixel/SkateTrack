@@ -48,3 +48,13 @@
 /* 權限 */
 "permission.location.whenInUse" = "SkateTrack 需要存取位置來記錄您的滑行路線。";
 "permission.location.always" = "背景位置存取讓 SkateTrack 在螢幕關閉時繼續記錄路線。";
+
+/* Session 記錄 */
+"session.status.idle" = "尚未開始";
+"session.status.preparing" = "正在準備感測器…";
+"session.status.recording" = "記錄中";
+"session.status.paused" = "已暫停";
+"session.status.saving" = "正在儲存…";
+"session.error.invalidPowerType" = "電動模式僅支援滑板。";
+"session.error.sensorUnavailable" = "無法啟用動作感測器。";
+"session.error.invalidStateTransition" = "Session 狀態無效，請再試一次。";

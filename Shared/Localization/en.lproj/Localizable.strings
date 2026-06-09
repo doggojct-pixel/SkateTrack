@@ -48,3 +48,13 @@
 /* Permissions */
 "permission.location.whenInUse" = "SkateTrack needs location access to record your riding route.";
 "permission.location.always" = "Background location access lets SkateTrack keep recording routes when the screen is off.";
+
+/* Session recording */
+"session.status.idle" = "Ready";
+"session.status.preparing" = "Preparing sensors…";
+"session.status.recording" = "Recording";
+"session.status.paused" = "Paused";
+"session.status.saving" = "Saving…";
+"session.error.invalidPowerType" = "Electric mode is only available for skateboard sessions.";
+"session.error.sensorUnavailable" = "Motion sensors are unavailable.";
+"session.error.invalidStateTransition" = "Invalid session state. Please try again.";

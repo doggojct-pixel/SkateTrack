@@ -38,3 +38,6 @@ fastlane/test_output/
 # macOS
 .AppleDouble
 .LSOverride
+
+# Local planning scratchpads
+.plan-tmp/
