@@ -30,3 +30,17 @@
 "unit.length.kilometer.short" = "km";
 "unit.length.mile.short" = "mi";
 "unit.pace.format" = "%@ / %@";
+
+/* Debug */
+"debug.subscription.title" = "Debug Subscription";
+"debug.subscription.override_subscriber" = "Simulate subscriber access";
+"feature.unlimited_history" = "Unlimited session history";
+"feature.advanced_charts" = "Advanced charts";
+"feature.health_reminders" = "Health reminders";
+"feature.equipment_manager" = "Equipment manager";
+"feature.spot_management" = "Spot management";
+"feature.google_drive_sync" = "Google Drive sync";
+"feature.inline_fitness_mode" = "Inline fitness mode";
+"feature.inline_aggressive_mode" = "Inline aggressive mode";
+"feature.inline_slalom_mode" = "Inline slalom mode";
+"feature.session_share_card" = "Session share card";

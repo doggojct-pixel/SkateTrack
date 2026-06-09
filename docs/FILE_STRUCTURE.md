@@ -115,3 +115,15 @@ SkateTrack/
 - Added a local script for localization key parity checks.
 
 No deprecated structure entries yet.
+
+## Task-004 Additions — Feature Flag System
+
+```text
+Shared/Constants/FeatureFlags.swift              # [協作區] Phase 1a gated feature enum and free feature enum
+iOS/Core/Subscription/FeatureFlagEngine.swift   # [自主區] Single source of truth for subscription access checks
+iOS/Hooks/useSubscriptionStatus.swift           # [協作區] SwiftUI-facing subscription status boundary adapter
+scripts/verify_feature_flags.py                 # Local Task-004 feature gate verification script
+tasks/Task-004-FeatureFlags/                    # Task-004 prompt, context, expected files, and acceptance checklist
+```
+
+Task-004 also updates the iOS app shell with a DEBUG-only subscription toggle used only for simulator validation. The app still has no production feature screen, paywall, StoreKit purchase flow, GPS recording, or dashboard UI.

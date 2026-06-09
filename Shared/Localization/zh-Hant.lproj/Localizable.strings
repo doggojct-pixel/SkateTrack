@@ -30,3 +30,17 @@
 "unit.length.kilometer.short" = "公里";
 "unit.length.mile.short" = "英里";
 "unit.pace.format" = "%@ / %@";
+
+/* Debug */
+"debug.subscription.title" = "Debug 訂閱狀態";
+"debug.subscription.override_subscriber" = "模擬訂閱者權限";
+"feature.unlimited_history" = "無限 Session 歷史";
+"feature.advanced_charts" = "進階圖表";
+"feature.health_reminders" = "健康提醒";
+"feature.equipment_manager" = "裝備管理";
+"feature.spot_management" = "場地管理";
+"feature.google_drive_sync" = "Google Drive 同步";
+"feature.inline_fitness_mode" = "直排輪健身模式";
+"feature.inline_aggressive_mode" = "直排輪 Aggressive 模式";
+"feature.inline_slalom_mode" = "直排輪 Slalom 模式";
+"feature.session_share_card" = "Session 分享卡片";

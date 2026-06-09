@@ -87,3 +87,30 @@ This log is append-only. Do not delete or overwrite old entries.
 - This task defines data shapes and protocols only; it does not create persistence, GPS recording, sensor fusion, UI screens, or sync implementation.
 - Actual JSON round-trip tests should be added once real test targets are introduced.
 - Task-004 should build feature gating on top of these shared types without duplicating sport-mode or power-type logic.
+
+## 2026-06-09 Phase 0 — Task-004 Feature Flag System Completed
+
+### Completed
+- Added `Shared/Constants/FeatureFlags.swift` with all 10 Build Plan Phase 1a gated features.
+- Added `FreeFeature` so free access checks always return `true` without subscription state.
+- Added `iOS/Core/Subscription/FeatureFlagEngine.swift` as the single source of truth for feature access.
+- Stubbed subscription entitlement reading until Task-016 StoreKit integration.
+- Added DEBUG-only subscription override support for simulator testing.
+- Added `iOS/Hooks/useSubscriptionStatus.swift` as the SwiftUI-facing boundary adapter.
+- Updated the iOS placeholder shell with a DEBUG-only subscription toggle.
+- Added localized keys for debug subscription UI and gated feature display names.
+- Added `scripts/verify_feature_flags.py` for Task-004 validation.
+- Added the Task-004 prompt pack under `tasks/Task-004-FeatureFlags/`.
+
+### Reason / Context
+- Build Plan v1.0 requires feature gating before subscriber UI, paywall overlays, equipment manager, spot manager, Google Drive sync, advanced charts, or premium inline modes are built.
+- DevProcess requires Views to call a clean hook boundary instead of hardcoding subscription logic.
+
+### Validation Notes
+- Run `python3 scripts/verify_feature_flags.py` to confirm all 10 gated features, zone headers, and debug override API exist.
+- Run existing Task-002 and Task-003 scripts to confirm localization and shared models remain valid.
+- iOS DEBUG simulator should show a small subscription toggle below the placeholder app title.
+
+### Known Issues / Follow-up
+- Real StoreKit entitlement reading remains intentionally stubbed until Task-016.
+- This task does not add a paywall screen or lock-icon UI; future Views should call `hasAccess(to:)` through `useSubscriptionStatus`.
