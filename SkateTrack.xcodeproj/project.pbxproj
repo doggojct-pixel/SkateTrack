@@ -1,0 +1,432 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+/* Begin PBXBuildFile section */
+		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
+		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
+		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
+		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
+		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EDE998383CD5AFC847FA492A /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		3A1237D03908322ABC695769 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		107C3DEEB19B7D4669BACD4A /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA3E9A5944CB760F04640508 = {isa = PBXGroup; children = ( F5168E4BB74FFD31A60E8CE0 /* Shared */, D3E87B7133C8F3A255023A90 /* iOS */, 8EC3D2CF02A3326DF14F23BF /* watchOS */, BB66BE6E71B096E496503051 /* macOS */, E1B7981D5F0CC62B8BC6C4A0 /* Tests */, DA3F5B38A0177725491BBD32 /* docs */, 3963F8F31F93F511E309A0BF /* scripts */, DB0FE2794C17B0CCB9393690 /* Products */, ); sourceTree = "<group>"; };
+		DB0FE2794C17B0CCB9393690 /* Products */ = {isa = PBXGroup; children = ( CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */, 23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */, BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */, ); name = Products; sourceTree = "<group>"; };
+		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {isa = PBXGroup; children = ( 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */, ); path = Shared/Constants; sourceTree = SOURCE_ROOT; };
+		D3E87B7133C8F3A255023A90 /* iOS */ = {isa = PBXGroup; children = ( A991274AD53212097B6F7721 /* SkateTrackApp.swift */, ); path = iOS/App; sourceTree = SOURCE_ROOT; };
+		8EC3D2CF02A3326DF14F23BF /* watchOS */ = {isa = PBXGroup; children = ( 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */, ); path = watchOS/App; sourceTree = SOURCE_ROOT; };
+		BB66BE6E71B096E496503051 /* macOS */ = {isa = PBXGroup; children = ( 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */, ); path = macOS/App; sourceTree = SOURCE_ROOT; };
+		E1B7981D5F0CC62B8BC6C4A0 /* Tests */ = {isa = PBXGroup; children = ( ); path = Tests; sourceTree = SOURCE_ROOT; };
+		DA3F5B38A0177725491BBD32 /* docs */ = {isa = PBXGroup; children = ( ); path = docs; sourceTree = SOURCE_ROOT; };
+		3963F8F31F93F511E309A0BF /* scripts */ = {isa = PBXGroup; children = ( ); path = scripts; sourceTree = SOURCE_ROOT; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5A9DC98C215C4019ED77B35 /* SkateTrack-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 712330F37F9C1DA0AD88B2CC /* Build configuration list for PBXNativeTarget "SkateTrack-iOS" */;
+			buildPhases = (
+				2EAF53E66952909850FC43F9 /* Sources */,
+				EDE998383CD5AFC847FA492A /* Frameworks */,
+				D42D017734D699577CFB8200 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SkateTrack-iOS";
+			packageProductDependencies = (
+				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
+			);
+			productName = "SkateTrack-iOS";
+			productReference = CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		48B69A8CFEFBF3E402EC6500 /* SkateTrack-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69AD211194AA945008A85444 /* Build configuration list for PBXNativeTarget "SkateTrack-watchOS" */;
+			buildPhases = (
+				ED9AF23D1D970FDDE003E284 /* Sources */,
+				3A1237D03908322ABC695769 /* Frameworks */,
+				B3C398016D6DEC6FC2AE0CDC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SkateTrack-watchOS";
+			packageProductDependencies = (
+				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
+			);
+			productName = "SkateTrack-watchOS";
+			productReference = 23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		6EF344145815B7E47CBF538D /* SkateTrack-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F55D69A043F1FC7A3559BB5 /* Build configuration list for PBXNativeTarget "SkateTrack-macOS" */;
+			buildPhases = (
+				A2EF5573281ED5113A3645DD /* Sources */,
+				107C3DEEB19B7D4669BACD4A /* Frameworks */,
+				B4D4AE488B79C2877CF61ED1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SkateTrack-macOS";
+			packageProductDependencies = (
+				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
+			);
+			productName = "SkateTrack-macOS";
+			productReference = BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0F7C355FAF8ABA9345D359A0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					F5A9DC98C215C4019ED77B35 = { CreatedOnToolsVersion = 26.0; };
+					48B69A8CFEFBF3E402EC6500 = { CreatedOnToolsVersion = 26.0; };
+					6EF344145815B7E47CBF538D = { CreatedOnToolsVersion = 26.0; };
+				};
+			};
+			buildConfigurationList = 6BC2077449E9DFC2234D689D /* Build configuration list for PBXProject "SkateTrack" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA3E9A5944CB760F04640508;
+			packageReferences = (
+				92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
+			productRefGroup = DB0FE2794C17B0CCB9393690 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5A9DC98C215C4019ED77B35 /* SkateTrack-iOS */,
+				48B69A8CFEFBF3E402EC6500 /* SkateTrack-watchOS */,
+				6EF344145815B7E47CBF538D /* SkateTrack-macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D42D017734D699577CFB8200 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		B3C398016D6DEC6FC2AE0CDC /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		B4D4AE488B79C2877CF61ED1 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2EAF53E66952909850FC43F9 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */, BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		ED9AF23D1D970FDDE003E284 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */, 39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		A2EF5573281ED5113A3645DD /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */, 6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.63.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = SwiftLintBuildToolPlugin;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3BD34FD18B3AE0D318D4B1A4 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)");
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			}; name = Debug; };
+		8F9E1C296A8D29D702B21171 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			}; name = Release; };
+		82698E43B0DB10E4874FC1A6 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			}; name = Debug; };
+		D4D4C1715970BFE92A3D78C2 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			}; name = Release; };
+		12841EF75074AC70BEFB9B23 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_KEY_WKApplication = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			}; name = Debug; };
+		70F4173000E793A450D74922 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_KEY_WKApplication = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			}; name = Release; };
+		0405AECF8DC0647A70DD743F /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx";
+				SWIFT_VERSION = 5.9;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+			}; name = Debug; };
+		FA183D56793E312A3AD20523 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx";
+				SWIFT_VERSION = 5.9;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+			}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6BC2077449E9DFC2234D689D /* Build configuration list for PBXProject "SkateTrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BD34FD18B3AE0D318D4B1A4 /* Debug */,
+				8F9E1C296A8D29D702B21171 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		712330F37F9C1DA0AD88B2CC /* Build configuration list for PBXNativeTarget "SkateTrack-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82698E43B0DB10E4874FC1A6 /* Debug */,
+				D4D4C1715970BFE92A3D78C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		69AD211194AA945008A85444 /* Build configuration list for PBXNativeTarget "SkateTrack-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12841EF75074AC70BEFB9B23 /* Debug */,
+				70F4173000E793A450D74922 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F55D69A043F1FC7A3559BB5 /* Build configuration list for PBXNativeTarget "SkateTrack-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0405AECF8DC0647A70DD743F /* Debug */,
+				FA183D56793E312A3AD20523 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 0F7C355FAF8ABA9345D359A0 /* Project object */;
+}
