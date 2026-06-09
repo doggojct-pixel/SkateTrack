@@ -114,3 +114,35 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Known Issues / Follow-up
 - Real StoreKit entitlement reading remains intentionally stubbed until Task-016.
 - This task does not add a paywall screen or lock-icon UI; future Views should call `hasAccess(to:)` through `useSubscriptionStatus`.
+
+## 2026-06-09 Phase 0 — Foundation Complete (Tasks 001–005)
+
+### Completed
+- Xcode workspace with iOS, watchOS, and macOS targets.
+- Localized app shell infrastructure for English and Traditional Chinese (`en` + `zh-Hant`).
+- Shared data model foundation for sessions, sport modes, power types, motion samples, trick events, fall events, equipment, and spots.
+- Shared provider protocols for future sensor and sync implementations.
+- Feature flag system for the 10 Phase 1a gated features, including DEBUG subscription override support.
+- Living documentation initialized with a full annotated `docs/FILE_STRUCTURE.md` and this Phase 0 completion entry.
+
+### Decisions Made
+- Subscription model remains free download + $2.99/month subscription through StoreKit 2 in a later task.
+- Free tier includes session recording, fall detection, sport mode selection, Urban/Freestyle inline mode, and limited recent history.
+- Subscriber tier gates unlimited history, advanced charts, health reminders, equipment manager, spot management, Google Drive sync, premium inline modes, and session share cards.
+- Locale strategy remains Traditional Chinese for `zh-Hant` / Taiwan users and English fallback for other locales.
+- macOS remains a functional shell in Phase 1a and is intentionally deferred until Phase 2 feature work.
+- SwiftLint configuration is retained in `.swiftlint.yml`, but the SwiftLint Xcode build plugin is not attached to targets to avoid blocking local Xcode builds.
+- Current watchOS target is treated as a watch-only shell for scaffold validation; paired watch/iPhone connectivity is deferred to Phase 1b.
+
+### Validation Notes
+- Run `python3 scripts/verify_localization_keys.py` to verify localization key parity.
+- Run `python3 scripts/verify_shared_models.py` to verify shared model presence, zone headers, line limits, and forbidden UI imports.
+- Run `python3 scripts/verify_feature_flags.py` to verify all Phase 1a gated features and debug access paths.
+- iOS, watchOS, and macOS still display placeholder localized shells; product UI begins in later tasks.
+
+### Known Issues / Follow-up
+- StoreKit integration is deferred to Task-016.
+- GPS Provider begins in Task-006.
+- Watch connectivity and companion flows remain deferred to Phase 1b.
+- Real JSON round-trip tests should be added when formal test targets are populated.
+
