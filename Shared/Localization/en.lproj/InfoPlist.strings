@@ -1,0 +1,3 @@
+/* Location permissions */
+NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";

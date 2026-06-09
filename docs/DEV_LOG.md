@@ -146,3 +146,30 @@ This log is append-only. Do not delete or overwrite old entries.
 - Watch connectivity and companion flows remain deferred to Phase 1b.
 - Real JSON round-trip tests should be added when formal test targets are populated.
 
+
+## 2026-06-09 Phase 1a — Task-006 GPS Provider Completed
+
+### Completed
+- Added `iOS/Core/SensorEngine/GPSAuthorizationHandler.swift` to centralize CLLocation authorization requests and state checks.
+- Added `iOS/Core/SensorEngine/GPSProvider.swift` to publish filtered `CLLocation` updates and km/h speed values through Combine.
+- Implemented active-ride and stationary power-saving accuracy modes.
+- Filtered invalid or low-quality location points where horizontal accuracy is unavailable or greater than 20 meters.
+- Added location permission copy to `Localizable.strings` and localized `InfoPlist.strings` files for English and Traditional Chinese.
+- Updated the iOS target generated Info.plist settings with When-In-Use and Always-and-When-In-Use location usage descriptions.
+- Added `scripts/verify_gps_provider.py` and the Task-006 prompt pack.
+
+### Reason / Context
+- Build Plan v1.0 defines Task-006 as the first Sensor Engine task and requires a GPS provider before sensor fusion, fall detection, and session recording UI can be implemented.
+- PRD v1.2 §5.1.1 identifies GPS as the source for route, speed, and elevation data.
+- iOS UI Screen 03 will eventually consume speed and route data in the Live HUD mini-map and speed display.
+
+### Validation Notes
+- Run `python3 scripts/verify_gps_provider.py` to confirm the two provider files, permissions, localization hooks, and Xcode membership.
+- Run existing Task-002 to Task-004 scripts to confirm localization, shared models, and feature flags remain valid.
+- iOS should Build / Run. watchOS and macOS should still Build / Run unchanged because GPS files are iOS-only.
+- In a simulator, GPS stream behavior can be validated after a future session-recording/debug UI starts the provider; this task intentionally adds provider infrastructure only.
+
+### Known Issues / Follow-up
+- This task does not start a real session, draw a route map, or display live speed UI.
+- Background location mode is not enabled yet; `requestAlwaysAuthorization()` is available for later recording tasks but not exercised by the current shell UI.
+- Task-007 will add the IMU provider. Task-009 will fuse GPS with motion data.

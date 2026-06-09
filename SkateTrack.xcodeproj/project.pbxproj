@@ -58,6 +58,10 @@
 		12A400000000000000000103 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000002 /* FeatureFlagEngine.swift */; };
 		12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000003 /* useSubscriptionStatus.swift */; };
+
+		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
+		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
+		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +90,11 @@
 		12A400000000000000000001 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		12A400000000000000000002 /* FeatureFlagEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagEngine.swift; sourceTree = "<group>"; };
 		12A400000000000000000003 /* useSubscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSubscriptionStatus.swift; sourceTree = "<group>"; };
+
+		12A600000000000000000001 /* GPSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSProvider.swift; sourceTree = "<group>"; };
+		12A600000000000000000002 /* GPSAuthorizationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSAuthorizationHandler.swift; sourceTree = "<group>"; };
+		12A600000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		12A600000000000000000004 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				12A200000000000000000005 /* Localizable.strings */,
+				12A600000000000000000005 /* InfoPlist.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -187,6 +197,16 @@
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
 		};
+		12A600000000000000000006 /* iOS/Core/SensorEngine */ = {
+			isa = PBXGroup;
+			children = (
+				12A600000000000000000001 /* GPSProvider.swift */,
+				12A600000000000000000002 /* GPSAuthorizationHandler.swift */,
+			);
+			path = iOS/Core/SensorEngine;
+			sourceTree = SOURCE_ROOT;
+		};
+
 		8EC3D2CF02A3326DF14F23BF /* watchOS/App */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +221,7 @@
 				F5168E4BB74FFD31A60E8CE0 /* Shared */,
 				D3E87B7133C8F3A255023A90 /* iOS/App */,
 				12A400000000000000000004 /* iOS/Core/Subscription */,
+				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
@@ -389,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12A20000000000000000000F /* Localizable.strings in Resources */,
+				12A600000000000000000103 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +426,8 @@
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,
 				12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */,
+				12A600000000000000000101 /* GPSProvider.swift in Sources */,
+				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,
@@ -473,6 +497,16 @@
 				12A200000000000000000004 /* zh-Hant */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+
+		12A600000000000000000005 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12A600000000000000000003 /* en */,
+				12A600000000000000000004 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -613,6 +647,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
@@ -695,6 +731,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;

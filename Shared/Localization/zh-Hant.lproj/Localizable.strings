@@ -44,3 +44,7 @@
 "feature.inline_aggressive_mode" = "直排輪 Aggressive 模式";
 "feature.inline_slalom_mode" = "直排輪 Slalom 模式";
 "feature.session_share_card" = "Session 分享卡片";
+
+/* 權限 */
+"permission.location.whenInUse" = "SkateTrack 需要存取位置來記錄您的滑行路線。";
+"permission.location.always" = "背景位置存取讓 SkateTrack 在螢幕關閉時繼續記錄路線。";

@@ -44,3 +44,7 @@
 "feature.inline_aggressive_mode" = "Inline aggressive mode";
 "feature.inline_slalom_mode" = "Inline slalom mode";
 "feature.session_share_card" = "Session share card";
+
+/* Permissions */
+"permission.location.whenInUse" = "SkateTrack needs location access to record your riding route.";
+"permission.location.always" = "Background location access lets SkateTrack keep recording routes when the screen is off.";

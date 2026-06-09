@@ -77,8 +77,10 @@ SkateTrack/
 │   │   │   └── .gitkeep                            # [佔位] Keeps the data pipeline directory committed.
 │   │   ├── MLEngine/                               # [自主區] Placeholder for future Core ML inference engines.
 │   │   │   └── .gitkeep                            # [佔位] Keeps the ML engine directory committed.
-│   │   ├── SensorEngine/                           # [自主區] Placeholder for GPS, IMU, barometer, fusion, and fall detection tasks.
-│   │   │   └── .gitkeep                            # [佔位] Keeps the sensor engine directory committed.
+│   │   ├── SensorEngine/                           # [自主區] GPS, IMU, barometer, fusion, and fall detection providers.
+│   │   │   ├── .gitkeep                            # [佔位] Keeps the sensor engine directory committed.
+│   │   │   ├── GPSAuthorizationHandler.swift        # [自主區] CLLocation permission request and authorization-state wrapper.
+│   │   │   └── GPSProvider.swift                    # [自主區] Filtered CLLocation and km/h speed stream provider for iOS session recording.
 │   │   └── Subscription/                           # [自主區] Subscription and access-control internals.
 │   │       └── FeatureFlagEngine.swift             # [自主區] Single source of truth for subscription access checks with DEBUG override support.
 │   ├── Features/                                   # [協作區] iOS feature modules; real UI screens are implemented in later tasks.
@@ -146,6 +148,7 @@ SkateTrack/
 │   ├── .gitkeep                                    # [佔位] Keeps the scripts directory committed.
 │   ├── set_github_remote.sh                        # [工程設定] Helper to set GitHub origin remote after repo creation.
 │   ├── verify_feature_flags.py                     # [工程設定] Validates Task-004 gated feature enum, engine, hook, and localization keys.
+│   ├── verify_gps_provider.py                      # [工程設定] Validates Task-006 GPS provider files, permission strings, and Xcode membership.
 │   ├── verify_localization_keys.py                 # [工程設定] Validates English and Traditional Chinese localization key parity.
 │   └── verify_shared_models.py                     # [工程設定] Validates Task-003 required shared files, zone headers, line counts, and forbidden UI imports.
 └── tasks/                                          # [任務文件] Cursor / agent task prompt packs and acceptance checklists.
@@ -160,11 +163,16 @@ SkateTrack/
     │   ├── context.md                              # [任務文件] Task-003 context and source references.
     │   ├── files_expected.md                       # [任務文件] Task-003 expected file list.
     │   └── prompt.md                               # [任務文件] Task-003 agent prompt.
-    └── Task-004-FeatureFlags/
-        ├── acceptance.md                           # [任務文件] Task-004 acceptance checklist.
-        ├── context.md                              # [任務文件] Task-004 context and source references.
-        ├── files_expected.md                       # [任務文件] Task-004 expected file list.
-        └── prompt.md                               # [任務文件] Task-004 agent prompt.
+    ├── Task-004-FeatureFlags/
+    │   ├── acceptance.md                           # [任務文件] Task-004 acceptance checklist.
+    │   ├── context.md                              # [任務文件] Task-004 context and source references.
+    │   ├── files_expected.md                       # [任務文件] Task-004 expected file list.
+    │   └── prompt.md                               # [任務文件] Task-004 agent prompt.
+    └── Task-006-GPSProvider/
+        ├── acceptance.md                           # [任務文件] Task-006 acceptance checklist.
+        ├── context.md                              # [任務文件] Task-006 context and source references.
+        ├── files_expected.md                       # [任務文件] Task-006 expected file list.
+        └── prompt.md                               # [任務文件] Task-006 agent prompt.
 ```
 
 ## Current Phase 0 Status
@@ -174,8 +182,16 @@ SkateTrack/
 - Task-003 shared data models are complete.
 - Task-004 feature flag system is complete.
 - Task-005 living documentation initialization is complete with this file and `docs/DEV_LOG.md`.
+- Task-006 GPS Provider is complete.
 
 ## History
+
+### 2026-06-09 — Task-006 GPS Provider
+
+- Added iOS-only GPS sensor provider and authorization wrapper under `iOS/Core/SensorEngine/`.
+- Added localized location permission strings in both `Localizable.strings` and `InfoPlist.strings`.
+- Updated the iOS target project settings with generated Info.plist location usage descriptions.
+- Added `scripts/verify_gps_provider.py` and the Task-006 prompt pack.
 
 ### 2026-06-09 — Task-005 Living Documentation Initialization
 
