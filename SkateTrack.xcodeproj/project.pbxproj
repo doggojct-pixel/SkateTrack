@@ -73,7 +73,6 @@
 			);
 			name = "SkateTrack-iOS";
 			packageProductDependencies = (
-				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
 			);
 			productName = "SkateTrack-iOS";
 			productReference = CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */;
@@ -93,7 +92,6 @@
 			);
 			name = "SkateTrack-watchOS";
 			packageProductDependencies = (
-				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
 			);
 			productName = "SkateTrack-watchOS";
 			productReference = 23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */;
@@ -113,7 +111,6 @@
 			);
 			name = "SkateTrack-macOS";
 			packageProductDependencies = (
-				ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */,
 			);
 			productName = "SkateTrack-macOS";
 			productReference = BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */;
@@ -145,7 +142,6 @@
 			);
 			mainGroup = AA3E9A5944CB760F04640508;
 			packageReferences = (
-				92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = DB0FE2794C17B0CCB9393690 /* Products */;
 			projectDirPath = "";
@@ -182,24 +178,7 @@
 		};
 /* End PBXVariantGroup section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.63.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
-/* Begin XCSwiftPackageProductDependency section */
-		ACEF968F6225960190D09141 /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = SwiftLintBuildToolPlugin;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3BD34FD18B3AE0D318D4B1A4 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
