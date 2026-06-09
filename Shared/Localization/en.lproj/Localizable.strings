@@ -1,0 +1,32 @@
+/* App General */
+"app.name" = "SkateTrack";
+"app.tagline" = "Ride. Track. Improve.";
+"general.start" = "Start";
+"general.stop" = "Stop";
+"general.cancel" = "Cancel";
+"general.save" = "Save";
+"general.done" = "Done";
+"general.value.unavailable" = "—";
+
+/* Sport modes */
+"sport.skateboard" = "Skateboard";
+"sport.inline" = "Inline Skating";
+"sport.mode.streetpark" = "Street / Park";
+"sport.mode.longboard" = "Longboard";
+"sport.mode.surfskate" = "Surfskate";
+"sport.mode.freebord" = "Freebord";
+"sport.mode.inline.urban" = "Urban / Freestyle";
+"sport.mode.inline.fitness" = "Fitness / Speed";
+"sport.mode.inline.aggressive" = "Aggressive";
+"sport.mode.inline.slalom" = "Slalom";
+
+/* Subscription */
+"subscription.free" = "Free";
+"subscription.subscriber" = "Subscriber";
+"subscription.subscribe_cta" = "Unlock All Features";
+"subscription.price" = "$2.99 / month";
+
+/* Units */
+"unit.length.kilometer.short" = "km";
+"unit.length.mile.short" = "mi";
+"unit.pace.format" = "%@ / %@";

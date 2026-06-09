@@ -12,6 +12,15 @@
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
+		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
+		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
+		12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */; };
+		12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */; };
+		12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */; };
+		12A20000000000000000000F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000005 /* Localizable.strings */; };
+		12A200000000000000000010 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000005 /* Localizable.strings */; };
+		12A200000000000000000011 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000005 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +28,10 @@
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
 		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
+		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
+		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12A200000000000000000004 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = zh-Hant.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,7 +46,10 @@
 /* Begin PBXGroup section */
 		AA3E9A5944CB760F04640508 = {isa = PBXGroup; children = ( F5168E4BB74FFD31A60E8CE0 /* Shared */, D3E87B7133C8F3A255023A90 /* iOS */, 8EC3D2CF02A3326DF14F23BF /* watchOS */, BB66BE6E71B096E496503051 /* macOS */, E1B7981D5F0CC62B8BC6C4A0 /* Tests */, DA3F5B38A0177725491BBD32 /* docs */, 3963F8F31F93F511E309A0BF /* scripts */, DB0FE2794C17B0CCB9393690 /* Products */, ); sourceTree = "<group>"; };
 		DB0FE2794C17B0CCB9393690 /* Products */ = {isa = PBXGroup; children = ( CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */, 23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */, BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */, ); name = Products; sourceTree = "<group>"; };
-		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {isa = PBXGroup; children = ( 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */, ); path = Shared/Constants; sourceTree = SOURCE_ROOT; };
+		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {isa = PBXGroup; children = ( 12A200000000000000000006 /* Constants */, 12A200000000000000000007 /* Localization */, 12A200000000000000000008 /* Utilities */, ); path = Shared; sourceTree = SOURCE_ROOT; };
+		12A200000000000000000006 /* Constants */ = {isa = PBXGroup; children = ( 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */, ); path = Constants; sourceTree = "<group>"; };
+		12A200000000000000000007 /* Localization */ = {isa = PBXGroup; children = ( 12A200000000000000000005 /* Localizable.strings */, ); path = Localization; sourceTree = "<group>"; };
+		12A200000000000000000008 /* Utilities */ = {isa = PBXGroup; children = ( 12A200000000000000000001 /* UnitFormatter.swift */, 12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */, ); path = Utilities; sourceTree = "<group>"; };
 		D3E87B7133C8F3A255023A90 /* iOS */ = {isa = PBXGroup; children = ( A991274AD53212097B6F7721 /* SkateTrackApp.swift */, ); path = iOS/App; sourceTree = SOURCE_ROOT; };
 		8EC3D2CF02A3326DF14F23BF /* watchOS */ = {isa = PBXGroup; children = ( 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */, ); path = watchOS/App; sourceTree = SOURCE_ROOT; };
 		BB66BE6E71B096E496503051 /* macOS */ = {isa = PBXGroup; children = ( 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */, ); path = macOS/App; sourceTree = SOURCE_ROOT; };
@@ -125,6 +141,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = AA3E9A5944CB760F04640508;
 			packageReferences = (
@@ -142,16 +159,28 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D42D017734D699577CFB8200 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
-		B3C398016D6DEC6FC2AE0CDC /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
-		B4D4AE488B79C2877CF61ED1 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		D42D017734D699577CFB8200 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 12A20000000000000000000F /* Localizable.strings in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		B3C398016D6DEC6FC2AE0CDC /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 12A200000000000000000010 /* Localizable.strings in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		B4D4AE488B79C2877CF61ED1 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 12A200000000000000000011 /* Localizable.strings in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2EAF53E66952909850FC43F9 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */, BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
-		ED9AF23D1D970FDDE003E284 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */, 39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
-		A2EF5573281ED5113A3645DD /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */, 6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		2EAF53E66952909850FC43F9 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */, BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */, 12A200000000000000000009 /* UnitFormatter.swift in Sources */, 12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		ED9AF23D1D970FDDE003E284 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */, 39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */, 12A20000000000000000000A /* UnitFormatter.swift in Sources */, 12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		A2EF5573281ED5113A3645DD /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */, 6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */, 12A20000000000000000000B /* UnitFormatter.swift in Sources */, 12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		12A200000000000000000005 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12A200000000000000000003 /* en */,
+				12A200000000000000000004 /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		92C934CA81E74274B7F105F0 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {

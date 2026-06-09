@@ -28,3 +28,31 @@ This log is append-only. Do not delete or overwrite old entries.
 - Fixed malformed empty build setting in `SkateTrack.xcodeproj/project.pbxproj`.
 - Changed `SWIFT_ACTIVE_COMPILATION_CONDITIONS = ;` to `SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";` so Xcode can parse the project file.
 - No product feature scope was added; this remains Task-001 scaffold only.
+
+## 2026-06-09 Phase 0 — Task-002 Localization Infrastructure Completed
+
+### Completed
+- Added `Shared/Localization/en.lproj/Localizable.strings` as the English base localization file.
+- Added `Shared/Localization/zh-Hant.lproj/Localizable.strings` as the Traditional Chinese localization file.
+- Added matching key sets for app general strings, sport modes, subscription labels, and unit formatting support keys.
+- Added `Shared/Utilities/UnitFormatter.swift` to centralize distance, temperature, and pace formatting.
+- Added `Shared/Utilities/NumberFormatter+SkateTrack.swift` to centralize number formatting presets.
+- Updated iOS, watchOS, and macOS app entry shells to display `app.name` and `app.tagline` through SwiftUI localization keys.
+- Updated the Xcode project so localization resources and shared utility files are included in all three targets.
+- Added `scripts/verify_localization_keys.py` for local localization key parity checks.
+- Added the Task-002 prompt pack under `tasks/Task-002-Localization/`.
+- Updated `docs/FILE_STRUCTURE.md` for the new localization, utilities, script, and task files.
+
+### Reason / Context
+- Build Plan v1.0 defines Task-002 as the localization infrastructure task.
+- DevProcess v1.0 Principle A requires all user-visible strings, units, and locale-specific values to pass through the localization and formatter layers.
+- The localized placeholder shells exist only to verify Task-002 in the simulator; product features still begin in later tasks.
+
+### Validation Notes
+- Localization keys were checked with `python3 scripts/verify_localization_keys.py`.
+- Swift source file line counts remain below the 500-line hard limit.
+- Xcode simulator validation should focus on verifying the tagline changes between English and Traditional Chinese.
+
+### Known Issues / Follow-up
+- This task does not add real product screens, GPS, session recording, or data models.
+- Task-003 should add shared data models without hardcoded user-visible strings.

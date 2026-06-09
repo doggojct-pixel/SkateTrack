@@ -1,0 +1,32 @@
+/* App 通用 */
+"app.name" = "SkateTrack";
+"app.tagline" = "滑行。記錄。進步。";
+"general.start" = "開始";
+"general.stop" = "停止";
+"general.cancel" = "取消";
+"general.save" = "儲存";
+"general.done" = "完成";
+"general.value.unavailable" = "—";
+
+/* 運動模式 */
+"sport.skateboard" = "滑板";
+"sport.inline" = "直排輪";
+"sport.mode.streetpark" = "街式 / 公園";
+"sport.mode.longboard" = "長板";
+"sport.mode.surfskate" = "衝浪滑板";
+"sport.mode.freebord" = "Freebord";
+"sport.mode.inline.urban" = "街式 / Freestyle";
+"sport.mode.inline.fitness" = "健身 / 速度";
+"sport.mode.inline.aggressive" = "Aggressive";
+"sport.mode.inline.slalom" = "Slalom 繞樁";
+
+/* 訂閱 */
+"subscription.free" = "免費";
+"subscription.subscriber" = "訂閱者";
+"subscription.subscribe_cta" = "解鎖全部功能";
+"subscription.price" = "$2.99 / 月";
+
+/* 單位 */
+"unit.length.kilometer.short" = "公里";
+"unit.length.mile.short" = "英里";
+"unit.pace.format" = "%@ / %@";
