@@ -21,7 +21,6 @@ enum SessionRecordingError: Error, Sendable, Equatable {
         }
     }
 }
-
 #if DEBUG
 enum SessionRecordingDataSource: Sendable, Equatable {
     case live
@@ -37,6 +36,8 @@ protocol SessionSensorProviding: AnyObject {
 
 protocol SessionFallDetecting: AnyObject {
     var fallEventPublisher: AnyPublisher<FallEvent, Never> { get }
+    var sosTriggerPublisher: AnyPublisher<FallEvent, Never> { get }
+    var countdownPublisher: AnyPublisher<Int?, Never> { get }
     var detectedFallEvents: [FallEvent] { get }
     func startMonitoring(samples: AnyPublisher<MotionSample, Never>, mode: SportMode)
     func stopMonitoring()
@@ -50,27 +51,29 @@ final class SessionRecordingCoordinator {
     static let shared = SessionRecordingCoordinator()
 
     private let sensorEngine: SessionSensorProviding
-    private let fallDetectionEngine: SessionFallDetecting
+    let fallDetectionEngine: SessionFallDetecting
+    let sosDispatcher: SOSEventDispatcher
     private var stateMachine = SessionStateMachine()
-    private var metricsAccumulator = SessionMetricsAccumulator()
+    var metricsAccumulator = SessionMetricsAccumulator()
 
-    private var selectedSportMode: SportMode?
+    var selectedSportMode: SportMode?
     private var selectedPowerType: PowerType = .humanPowered
     private var sessionStartDate: Date?
-    private var activeFallEvent: FallEvent?
+    var activeFallEvent: FallEvent?
     private var completedSession: SessionData?
 
     private let stateSubject = CurrentValueSubject<SessionRecordingStatus, Never>(.idle)
     private let metricsSubject = CurrentValueSubject<LiveSessionMetrics, Never>(.zero)
     private let errorSubject = PassthroughSubject<String, Never>()
-    private let fallEventSubject = CurrentValueSubject<FallEvent?, Never>(nil)
+    let fallEventSubject = CurrentValueSubject<FallEvent?, Never>(nil)
+    let fallCountdownSubject = CurrentValueSubject<Int?, Never>(nil)
+    let sosTriggerEventSubject = CurrentValueSubject<SOSTriggerEvent?, Never>(nil)
     private let completedSessionSubject = PassthroughSubject<SessionData, Never>()
 
     private var sampleCancellables = Set<AnyCancellable>()
     private var fallCancellables = Set<AnyCancellable>()
     private var mockSampleTimer: DispatchSourceTimer?
     private var mockSampleIndex = 0
-
     #if DEBUG
     private var dataSource: SessionRecordingDataSource = .live
     #endif
@@ -94,10 +97,12 @@ final class SessionRecordingCoordinator {
 
     init(
         sensorEngine: SessionSensorProviding = SensorFusionEngine(),
-        fallDetectionEngine: SessionFallDetecting = FallDetectionEngine()
+        fallDetectionEngine: SessionFallDetecting = FallDetectionEngine(),
+        sosDispatcher: SOSEventDispatcher = .shared
     ) {
         self.sensorEngine = sensorEngine
         self.fallDetectionEngine = fallDetectionEngine
+        self.sosDispatcher = sosDispatcher
     }
 
     #if DEBUG
@@ -118,6 +123,9 @@ final class SessionRecordingCoordinator {
         selectedPowerType = powerType
         sessionStartDate = Date()
         activeFallEvent = nil
+        fallEventSubject.send(nil)
+        fallCountdownSubject.send(nil)
+        sosTriggerEventSubject.send(nil)
         completedSession = nil
         metricsAccumulator.beginSession(at: sessionStartDate ?? Date())
 
@@ -188,7 +196,9 @@ final class SessionRecordingCoordinator {
         stateSubject.send(.idle)
         metricsSubject.send(.zero)
         fallEventSubject.send(nil)
+        fallCountdownSubject.send(nil)
     }
+
 
     private func bindLiveSampleStream(for mode: SportMode) {
         sampleCancellables.removeAll()
@@ -202,7 +212,6 @@ final class SessionRecordingCoordinator {
 
         bindFallDetection(for: mode)
     }
-
     private func bindFallDetection(for mode: SportMode) {
         fallCancellables.removeAll()
 
@@ -215,6 +224,20 @@ final class SessionRecordingCoordinator {
             .sink { [weak self] fallEvent in
                 self?.activeFallEvent = fallEvent
                 self?.fallEventSubject.send(fallEvent)
+            }
+            .store(in: &fallCancellables)
+
+        fallDetectionEngine.countdownPublisher
+            .sink { [weak self] seconds in self?.fallCountdownSubject.send(seconds) }
+            .store(in: &fallCancellables)
+
+        fallDetectionEngine.sosTriggerPublisher
+            .sink { [weak self] fallEvent in
+                guard let self else { return }
+                activeFallEvent = nil
+                fallEventSubject.send(nil)
+                fallCountdownSubject.send(nil)
+                _ = dispatchSOS(source: SOSTriggerSource.fallCountdownExpired, fallEvent: fallEvent)
             }
             .store(in: &fallCancellables)
     }
@@ -245,6 +268,7 @@ final class SessionRecordingCoordinator {
     private func finalizeSession(discard: Bool) async -> SessionData {
         stopMockSampleFeed()
         fallDetectionEngine.stopMonitoring()
+        fallCountdownSubject.send(nil)
         sampleCancellables.removeAll()
         fallCancellables.removeAll()
 
@@ -276,6 +300,8 @@ final class SessionRecordingCoordinator {
         )
 
         resetCoordinatorState()
+        fallEventSubject.send(nil)
+        fallCountdownSubject.send(nil)
         return enrichedSession
     }
 
@@ -351,6 +377,7 @@ final class SessionRecordingCoordinator {
         #endif
 
         resetCoordinatorState()
+        fallCountdownSubject.send(nil)
 
         if resetToIdle {
             stateMachine.resetToIdle()
@@ -359,6 +386,7 @@ final class SessionRecordingCoordinator {
             fallEventSubject.send(nil)
         }
     }
+
 
     private func resetCoordinatorState() {
         selectedSportMode = nil

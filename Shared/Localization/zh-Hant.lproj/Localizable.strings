@@ -103,3 +103,15 @@
 "session.hud.noMode" = "Session";
 "unit.speed.kmh" = "公里 / 小時";
 "unit.speed.kmh.short" = "km/h";
+
+/* 跌倒警示 / SOS */
+"fall.alert.title" = "偵測到跌倒";
+"fall.alert.message" = "你還好嗎？若沒有回應，SkateTrack 會啟動 SOS 流程。";
+"fall.alert.countdown" = "SOS 倒數";
+"fall.alert.impact" = "衝擊：";
+"fall.alert.locationSaved" = "位置已儲存";
+"fall.alert.locationUnavailable" = "無定位資料";
+"fall.alert.imOkay" = "我沒事";
+"fall.alert.sosNow" = "立即 SOS";
+"sos.message.template" = "我可能在滑行時跌倒，需要協助。位置：%@";
+"safety.contacts.title" = "緊急聯絡人";

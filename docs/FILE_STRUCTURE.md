@@ -3,7 +3,7 @@
 **Last Updated:** 2026-06-10  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
 **Current Baseline:** Source-controlled repository after Tasks 001–013, inspected from `SkateTrack_Current_For_UI_Diagnosis.zip`  
-**Current Development Gate:** Do **not** proceed to Task-014 until the Task-013 iOS visual alignment and app-icon runtime wiring issues are resolved.
+**Current Development Gate:** Validate Task-014a Fall Alert Overlay + SOS Event Skeleton, then continue with Task-014b Emergency Contacts Settings + SOS Contact Flow.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -23,7 +23,8 @@ This document records the current SkateTrack repository structure and developmen
 | Task-010 Fall Detection Engine | Complete | Impact / stationary confirmation / SOS event foundation. |
 | Task-011 Session Recording Coordinator | Complete | Session state machine, metrics accumulator, coordinator, hook, and iOS unit tests. |
 | Task-012 Session Start Flow | Functionally complete | Start flow, sport category selection, mode selection, power selection, and gating are implemented. Visual alignment remains tied to Task-013 UI cleanup. |
-| Task-013 Live HUD + Slide-to-End | Functionally implemented, visually not accepted yet | Live HUD, pause/resume, slide-to-end, and inline placeholders exist. Current screenshots show fullscreen/layout clipping problems and inline glyph regression, so UI acceptance is still blocked. |
+| Task-013 Live HUD + Slide-to-End | Functionally complete after hotfixes | Live HUD, pause/resume, slide-to-end, speed trace, icon cleanup, and inline placeholders exist. Remaining visual polish should be handled as focused UI refinements. |
+| Task-014a Fall Alert Overlay + SOS Event Skeleton | Implemented in this hotfix | Fall alert overlay, countdown bridge, cancel / immediate SOS / countdown SOS actions, SOS event model, and dispatcher skeleton are added. Emergency contacts settings remain Task-014b. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues Blocking Task-014
@@ -122,6 +123,9 @@ SkateTrack/
 │   │   │   ├── IMUProvider.swift                   # [自主區] 50Hz accelerometer and gyro provider.
 │   │   │   ├── SensorCalibrationEngine.swift       # [自主區] Startup bias calibration and mode sensor priority planning.
 │   │   │   └── SensorFusionEngine.swift            # [自主區] 10Hz fused `MotionSample` engine.
+│   │   ├── Safety/                                 # [自主區] iOS safety event dispatch and fall/SOS bridge.
+│   │   │   ├── SOSEventDispatcher.swift            # [自主區] Phase 1a SOS event dispatcher skeleton; records events without pretending to auto-send SMS.
+│   │   │   └── SessionRecordingCoordinator+FallSafety.swift # [自主區] Fall alert cancel / manual SOS / immediate SOS actions.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
@@ -130,7 +134,9 @@ SkateTrack/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
 │   ├── Features/                                   # [協作區] iOS feature modules.
 │   │   ├── EquipmentManager/                       # [佔位] Future equipment management UI.
-│   │   ├── FallDetection/                          # [佔位] Future fall alert / SOS UI, scheduled for Task-014.
+│   │   ├── FallDetection/                          # [協作區] Fall alert / SOS overlay UI.
+│   │   │   ├── FallDetectionAlertView.swift        # [協作區] Dark neon fall alert card, countdown, impact badge, cancel and SOS buttons.
+│   │   │   └── FallDetectionOverlayPresenter.swift # [協作區] High-priority overlay presenter for Live HUD.
 │   │   ├── HealthReminders/                        # [佔位] Future rest, hydration, heat, and safety reminders.
 │   │   ├── RouteMap/                               # [佔位] Future full route map and replay UI.
 │   │   ├── SessionRecording/                       # [協作區] Session Start and Live HUD UI components.
@@ -140,6 +146,7 @@ SkateTrack/
 │   │   │   ├── LiveHUDMetricCardView.swift         # [協作區] Reusable metric card for HUD values.
 │   │   │   ├── LiveHUDView.swift                   # [協作區] Active riding HUD; currently under visual-alignment review.
 │   │   │   ├── LiveSpeedDisplayView.swift          # [協作區] Large speed / max-speed display component.
+│   │   │   ├── LiveSpeedTraceView.swift            # [協作區] Time × speed background trace for the Live HUD speed hero.
 │   │   │   ├── MiniRouteMapView.swift              # [協作區] Lightweight route preview from recent coordinates.
 │   │   │   ├── ModeSelectionCardView.swift         # [協作區] Reusable sport/mode card; contains current custom icon work.
 │   │   │   ├── PowerTypeToggleView.swift           # [協作區] Human/electric skateboard power-type toggle.
@@ -154,6 +161,7 @@ SkateTrack/
 │   │   └── Tutorials/                              # [佔位] Future tutorials and onboarding.
 │   └── Hooks/                                      # [協作區 — 邊界適配層] SwiftUI-facing adapters.
 │       ├── useSessionRecording.swift              # [協作區 — 邊界適配層] Observable session state/actions and mock preview support.
+│       ├── useFallDetection.swift                 # [協作區 — 邊界適配層] Observable fall alert state, countdown, cancel and SOS actions.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/
@@ -186,6 +194,7 @@ SkateTrack/
 │   ├── verify_app_icons.py                        # [工程設定] Checks icon asset folders and selected project icon settings; does not prove runtime Dock/simulator display.
 │   ├── verify_barometer_provider.py               # [工程設定] Task-008 verification.
 │   ├── verify_fall_detection_engine.py            # [工程設定] Task-010 verification.
+│   ├── verify_fall_alert_ui.py                    # [工程設定] Task-014a Fall Alert overlay / SOS skeleton verification.
 │   ├── verify_feature_flags.py                    # [工程設定] Task-004 verification.
 │   ├── verify_gps_provider.py                     # [工程設定] Task-006 verification.
 │   ├── verify_imu_provider.py                     # [工程設定] Task-007 verification.

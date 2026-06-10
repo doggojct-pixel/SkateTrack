@@ -154,10 +154,20 @@ private final class MockSessionSensorEngine: SessionSensorProviding {
 
 private final class MockFallDetectionEngine: SessionFallDetecting {
     let fallEventSubject = PassthroughSubject<FallEvent, Never>()
+    let sosTriggerSubject = PassthroughSubject<FallEvent, Never>()
+    let countdownSubject = CurrentValueSubject<Int?, Never>(nil)
     private(set) var detectedFallEvents: [FallEvent] = []
 
     var fallEventPublisher: AnyPublisher<FallEvent, Never> {
         fallEventSubject.eraseToAnyPublisher()
+    }
+
+    var sosTriggerPublisher: AnyPublisher<FallEvent, Never> {
+        sosTriggerSubject.eraseToAnyPublisher()
+    }
+
+    var countdownPublisher: AnyPublisher<Int?, Never> {
+        countdownSubject.eraseToAnyPublisher()
     }
 
     func startMonitoring(samples: AnyPublisher<MotionSample, Never>, mode: SportMode) {}

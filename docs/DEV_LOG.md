@@ -350,3 +350,29 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Next Recommended Action
 - Perform a focused Task-013 repair pass using the current full project source, not incremental speculative hotfixes.
 - Strengthen the UI/icon verification scripts so they do not pass purely on source-pattern checks when visual acceptance is failing.
+
+
+## 2026-06-10 — Task-014a Fall Alert Overlay + SOS Event Skeleton
+
+### Completed
+- Added `SOSTriggerEvent` as the shared SOS event model for manual HUD SOS, immediate fall SOS, and countdown-expired SOS paths.
+- Added `SOSEventDispatcher` as the Phase 1a SOS abstraction layer. It records and publishes events without pretending iOS can silently auto-send SMS.
+- Added `useFallDetection` to expose active fall alert state, countdown seconds, latest SOS event, cancel, immediate SOS, and manual SOS actions to SwiftUI.
+- Added `FallDetectionAlertView` and `FallDetectionOverlayPresenter` for the high-priority dark SkateTrack fall alert overlay.
+- Moved `LiveSpeedTraceView` out of `LiveHUDView` so the Live HUD remains below the 500-line file guideline while adding Task-014a overlay wiring.
+- Wired Live HUD SOS button to the Task-014a manual SOS event path.
+- Extended `SessionRecordingCoordinator` with fall countdown publishing and SOS event dispatch bridging.
+- Added localized Fall Alert / SOS strings and `scripts/verify_fall_alert_ui.py`.
+
+### Scope Boundary
+- Emergency contact CRUD, contact settings UI, Contacts framework integration, and real message/phone handoff remain Task-014b.
+- No Launch Screen, safe-area, bottom dock, AppIcon, watchOS UI, macOS UI, or SwiftLint plugin wiring was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_fall_alert_ui.py` to confirm Task-014a files, project membership, localization, and key source tokens.
+- Run `python3 scripts/verify_fall_detection_engine.py`, `python3 scripts/verify_session_recording_coordinator.py`, `python3 scripts/verify_localization_keys.py`, and the AppIcon verification scripts to confirm previous task baselines.
+
+### Task-014a Debug Verify
+- Added a DEBUG-only Live HUD simulate fall trigger for safe Fall Alert overlay QA on simulator and physical iPhone.
+- The trigger does not lower real FallDetectionEngine thresholds and is not visible in Release builds.
+

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13B001000000000000000101 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13B001000000000000000001 /* LaunchScreen.storyboard */; };
-		13AF04000000000000000101 /* SkateTrack.icns in Resources */ = {isa = PBXBuildFile; fileRef = 13AF04000000000000000001 /* SkateTrack.icns */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -48,19 +46,11 @@
 		12A30000000000000000011C /* SyncProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A30000000000000000000A /* SyncProvider.swift */; };
 		12A30000000000000000011D /* SyncProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A30000000000000000000A /* SyncProvider.swift */; };
 		12A30000000000000000011E /* SyncProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A30000000000000000000A /* SyncProvider.swift */; };
-		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
-		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
-		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
-		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-
 		12A400000000000000000101 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000102 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000103 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000002 /* FeatureFlagEngine.swift */; };
 		12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000003 /* useSubscriptionStatus.swift */; };
-
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -92,14 +82,39 @@
 		12AE05000000000000000101 /* MiniRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE05000000000000000001 /* MiniRouteMapView.swift */; };
 		12AE06000000000000000101 /* SlideToEndSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE06000000000000000001 /* SlideToEndSessionControl.swift */; };
 		12AE07000000000000000101 /* InlineLiveMetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE07000000000000000001 /* InlineLiveMetricsView.swift */; };
-
 		13AF01000000000000000101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13AF01000000000000000001 /* Assets.xcassets */; };
 		13AF02000000000000000101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13AF02000000000000000001 /* Assets.xcassets */; };
 		13AF03000000000000000101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13AF03000000000000000001 /* Assets.xcassets */; };
+		13AF04000000000000000101 /* SkateTrack.icns in Resources */ = {isa = PBXBuildFile; fileRef = 13AF04000000000000000001 /* SkateTrack.icns */; };
+		13B001000000000000000101 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
+		14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
+		14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
+		14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A100000000000000000001 /* SOSEventDispatcher.swift */; };
+		14A101000000000000000101 /* SessionRecordingCoordinator+FallSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */; };
+		14A200000000000000000101 /* useFallDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A200000000000000000001 /* useFallDetection.swift */; };
+		14A300000000000000000101 /* FallDetectionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A300000000000000000001 /* FallDetectionAlertView.swift */; };
+		14A300000000000000000102 /* FallDetectionOverlayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */; };
+		14A400000000000000000101 /* LiveSpeedTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A400000000000000000001 /* LiveSpeedTraceView.swift */; };
+		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
+		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
+		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
+		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		12AC00000000000000000601 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0F7C355FAF8ABA9345D359A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5A9DC98C215C4019ED77B35;
+			remoteInfo = "SkateTrack-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		13AF04000000000000000001 /* SkateTrack.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SkateTrack.icns; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -114,18 +129,9 @@
 		12A300000000000000000008 /* SpotProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotProfile.swift; sourceTree = "<group>"; };
 		12A300000000000000000009 /* SensorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorProvider.swift; sourceTree = "<group>"; };
 		12A30000000000000000000A /* SyncProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncProvider.swift; sourceTree = "<group>"; };
-		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
-		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
-		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
-		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-
 		12A400000000000000000001 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		12A400000000000000000002 /* FeatureFlagEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagEngine.swift; sourceTree = "<group>"; };
 		12A400000000000000000003 /* useSubscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSubscriptionStatus.swift; sourceTree = "<group>"; };
-
 		12A600000000000000000001 /* GPSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSProvider.swift; sourceTree = "<group>"; };
 		12A600000000000000000002 /* GPSAuthorizationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSAuthorizationHandler.swift; sourceTree = "<group>"; };
 		12A600000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -157,14 +163,35 @@
 		12AE05000000000000000001 /* MiniRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniRouteMapView.swift; sourceTree = "<group>"; };
 		12AE06000000000000000001 /* SlideToEndSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideToEndSessionControl.swift; sourceTree = "<group>"; };
 		12AE07000000000000000001 /* InlineLiveMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineLiveMetricsView.swift; sourceTree = "<group>"; };
-
 		13AF01000000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		13AF02000000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		13AF03000000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		13AF04000000000000000001 /* SkateTrack.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SkateTrack.icns; sourceTree = "<group>"; };
+		14A000000000000000000001 /* SOSTriggerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSTriggerEvent.swift; sourceTree = "<group>"; };
+		14A100000000000000000001 /* SOSEventDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSEventDispatcher.swift; sourceTree = "<group>"; };
+		14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+FallSafety.swift"; sourceTree = "<group>"; };
+		14A200000000000000000001 /* useFallDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useFallDetection.swift; sourceTree = "<group>"; };
+		14A300000000000000000001 /* FallDetectionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionAlertView.swift; sourceTree = "<group>"; };
+		14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionOverlayPresenter.swift; sourceTree = "<group>"; };
+		14A400000000000000000001 /* LiveSpeedTraceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeedTraceView.swift; sourceTree = "<group>"; };
+		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
+		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
+		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		107C3DEEB19B7D4669BACD4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12AC00000000000000000201 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -179,13 +206,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EDE998383CD5AFC847FA492A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		12AC00000000000000000201 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -231,6 +251,7 @@
 				12A300000000000000000004 /* MotionSample.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
+				14A000000000000000000001 /* SOSTriggerEvent.swift */,
 				12A300000000000000000007 /* EquipmentProfile.swift */,
 				12A300000000000000000008 /* SpotProfile.swift */,
 				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
@@ -247,25 +268,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		3963F8F31F93F511E309A0BF /* scripts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = scripts;
-			sourceTree = SOURCE_ROOT;
-		};
-
-		12AB00000000000000000001 /* iOS/Core/SessionRecording */ = {
-			isa = PBXGroup;
-			children = (
-				12AB01000000000000000001 /* SessionStateMachine.swift */,
-				12AB02000000000000000001 /* SessionMetricsAccumulator.swift */,
-				12AB03000000000000000001 /* SessionRecordingCoordinator.swift */,
-			);
-			path = iOS/Core/SessionRecording;
-			sourceTree = SOURCE_ROOT;
-		};
-
 		12A400000000000000000004 /* iOS/Core/Subscription */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +281,7 @@
 			children = (
 				12A400000000000000000003 /* useSubscriptionStatus.swift */,
 				12AB04000000000000000001 /* useSessionRecording.swift */,
+				14A200000000000000000001 /* useFallDetection.swift */,
 			);
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
@@ -297,7 +300,71 @@
 			path = iOS/Core/SensorEngine;
 			sourceTree = SOURCE_ROOT;
 		};
-
+		12AB00000000000000000001 /* iOS/Core/SessionRecording */ = {
+			isa = PBXGroup;
+			children = (
+				12AB01000000000000000001 /* SessionStateMachine.swift */,
+				12AB02000000000000000001 /* SessionMetricsAccumulator.swift */,
+				12AB03000000000000000001 /* SessionRecordingCoordinator.swift */,
+			);
+			path = iOS/Core/SessionRecording;
+			sourceTree = SOURCE_ROOT;
+		};
+		12AC02000000000000000001 /* iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
+			);
+			path = iOSTests;
+			sourceTree = "<group>";
+		};
+		12AD00000000000000000011 /* iOS/Features/SessionRecording */ = {
+			isa = PBXGroup;
+			children = (
+				12AD02000000000000000001 /* SessionStartView.swift */,
+				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
+				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
+				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
+				12AD06000000000000000001 /* PowerTypeToggleView.swift */,
+				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
+				12AD08000000000000000001 /* StartSessionCTAView.swift */,
+				12AE01000000000000000001 /* LiveHUDView.swift */,
+				12AE02000000000000000001 /* LiveHUDMetricCardView.swift */,
+				12AE03000000000000000001 /* LiveSpeedDisplayView.swift */,
+				14A400000000000000000001 /* LiveSpeedTraceView.swift */,
+				12AE04000000000000000001 /* TiltIndicatorView.swift */,
+				12AE05000000000000000001 /* MiniRouteMapView.swift */,
+				12AE06000000000000000001 /* SlideToEndSessionControl.swift */,
+				12AE07000000000000000001 /* InlineLiveMetricsView.swift */,
+			);
+			path = iOS/Features/SessionRecording;
+			sourceTree = SOURCE_ROOT;
+		};
+		14A100000000000000000000 /* iOS/Core/Safety */ = {
+			isa = PBXGroup;
+			children = (
+				14A100000000000000000001 /* SOSEventDispatcher.swift */,
+				14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */,
+			);
+			path = iOS/Core/Safety;
+			sourceTree = SOURCE_ROOT;
+		};
+		14A300000000000000000000 /* iOS/Features/FallDetection */ = {
+			isa = PBXGroup;
+			children = (
+				14A300000000000000000001 /* FallDetectionAlertView.swift */,
+				14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */,
+			);
+			path = iOS/Features/FallDetection;
+			sourceTree = SOURCE_ROOT;
+		};
+		3963F8F31F93F511E309A0BF /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = scripts;
+			sourceTree = SOURCE_ROOT;
+		};
 		8EC3D2CF02A3326DF14F23BF /* watchOS/App */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,8 +382,10 @@
 				12A400000000000000000004 /* iOS/Core/Subscription */,
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
+				14A100000000000000000000 /* iOS/Core/Safety */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				12AD00000000000000000011 /* iOS/Features/SessionRecording */,
+				14A300000000000000000000 /* iOS/Features/FallDetection */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
@@ -341,7 +410,6 @@
 			children = (
 				A991274AD53212097B6F7721 /* SkateTrackApp.swift */,
 				12AD01000000000000000001 /* RootNavigationView.swift */,
-				13B001000000000000000001 /* LaunchScreen.storyboard */,
 				13AF01000000000000000001 /* Assets.xcassets */,
 			);
 			path = iOS/App;
@@ -373,14 +441,6 @@
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		12AC02000000000000000001 /* iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
-			);
-			path = iOSTests;
-			sourceTree = "<group>";
-		};
 		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,30 +453,28 @@
 			path = Shared;
 			sourceTree = SOURCE_ROOT;
 		};
-		12AD00000000000000000011 /* iOS/Features/SessionRecording */ = {
-			isa = PBXGroup;
-			children = (
-				12AD02000000000000000001 /* SessionStartView.swift */,
-				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
-				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
-				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
-				12AD06000000000000000001 /* PowerTypeToggleView.swift */,
-				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
-				12AD08000000000000000001 /* StartSessionCTAView.swift */,
-				12AE01000000000000000001 /* LiveHUDView.swift */,
-				12AE02000000000000000001 /* LiveHUDMetricCardView.swift */,
-				12AE03000000000000000001 /* LiveSpeedDisplayView.swift */,
-				12AE04000000000000000001 /* TiltIndicatorView.swift */,
-				12AE05000000000000000001 /* MiniRouteMapView.swift */,
-				12AE06000000000000000001 /* SlideToEndSessionControl.swift */,
-				12AE07000000000000000001 /* InlineLiveMetricsView.swift */,
-			);
-			path = iOS/Features/SessionRecording;
-			sourceTree = SOURCE_ROOT;
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		12AC00000000000000000101 /* SkateTrack-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */;
+			buildPhases = (
+				12AC00000000000000000401 /* Sources */,
+				12AC00000000000000000201 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				12AC00000000000000000501 /* PBXTargetDependency */,
+			);
+			name = "SkateTrack-iOSTests";
+			packageProductDependencies = (
+			);
+			productName = "SkateTrack-iOSTests";
+			productReference = 12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		48B69A8CFEFBF3E402EC6500 /* SkateTrack-watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69AD211194AA945008A85444 /* Build configuration list for PBXNativeTarget "SkateTrack-watchOS" */;
@@ -474,25 +532,6 @@
 			productReference = CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		12AC00000000000000000101 /* SkateTrack-iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */;
-			buildPhases = (
-				12AC00000000000000000401 /* Sources */,
-				12AC00000000000000000201 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				12AC00000000000000000501 /* PBXTargetDependency */,
-			);
-			name = "SkateTrack-iOSTests";
-			packageProductDependencies = (
-			);
-			productName = "SkateTrack-iOSTests";
-			productReference = 12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -503,6 +542,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					12AC00000000000000000101 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = F5A9DC98C215C4019ED77B35;
+					};
 					48B69A8CFEFBF3E402EC6500 = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -511,10 +554,6 @@
 					};
 					F5A9DC98C215C4019ED77B35 = {
 						CreatedOnToolsVersion = 26.0;
-					};
-					12AC00000000000000000101 = {
-						CreatedOnToolsVersion = 26.0;
-						TestTargetID = F5A9DC98C215C4019ED77B35;
 					};
 				};
 			};
@@ -568,7 +607,7 @@
 			files = (
 				12A20000000000000000000F /* Localizable.strings in Resources */,
 				13AF01000000000000000101 /* Assets.xcassets in Resources */,
-				13B001000000000000000101 /* LaunchScreen.storyboard in Resources */,
+				13B001000000000000000101 /* (null) in Resources */,
 				12A600000000000000000103 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,6 +615,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		12AC00000000000000000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2EAF53E66952909850FC43F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -592,6 +639,7 @@
 				12AE01000000000000000101 /* LiveHUDView.swift in Sources */,
 				12AE02000000000000000101 /* LiveHUDMetricCardView.swift in Sources */,
 				12AE03000000000000000101 /* LiveSpeedDisplayView.swift in Sources */,
+				14A400000000000000000101 /* LiveSpeedTraceView.swift in Sources */,
 				12AE04000000000000000101 /* TiltIndicatorView.swift in Sources */,
 				12AE05000000000000000101 /* MiniRouteMapView.swift in Sources */,
 				12AE06000000000000000101 /* SlideToEndSessionControl.swift in Sources */,
@@ -611,6 +659,11 @@
 				12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */,
 				12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */,
 				12AB04000000000000000101 /* useSessionRecording.swift in Sources */,
+				14A200000000000000000101 /* useFallDetection.swift in Sources */,
+				14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */,
+				14A101000000000000000101 /* SessionRecordingCoordinator+FallSafety.swift in Sources */,
+				14A300000000000000000101 /* FallDetectionAlertView.swift in Sources */,
+				14A300000000000000000102 /* FallDetectionOverlayPresenter.swift in Sources */,
 				12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
@@ -620,6 +673,7 @@
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
+				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
 				12A300000000000000000113 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000116 /* SpotProfile.swift in Sources */,
 				12A300000000000000000119 /* SensorProvider.swift in Sources */,
@@ -642,6 +696,7 @@
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
+				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
 				12A300000000000000000115 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000118 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
@@ -665,6 +720,7 @@
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
+				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,
 				12A300000000000000000114 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000117 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,
@@ -673,25 +729,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		12AC00000000000000000401 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXContainerItemProxy section */
-		12AC00000000000000000601 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0F7C355FAF8ABA9345D359A0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F5A9DC98C215C4019ED77B35;
-			remoteInfo = "SkateTrack-iOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXTargetDependency section */
 		12AC00000000000000000501 /* PBXTargetDependency */ = {
@@ -711,7 +749,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-
 		12A600000000000000000005 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -727,18 +764,18 @@
 		0405AECF8DC0647A70DD743F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
-				INFOPLIST_KEY_CFBundleIconFile = SkateTrack;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconFile = SkateTrack;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.mac;
@@ -752,15 +789,15 @@
 		12841EF75074AC70BEFB9B23 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				MARKETING_VERSION = 0.1.0;
@@ -773,6 +810,56 @@
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
+		};
+		12AC00000000000000000701 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
+			};
+			name = Debug;
+		};
+		12AC00000000000000000801 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
+			};
+			name = Release;
 		};
 		3BD34FD18B3AE0D318D4B1A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -837,15 +924,15 @@
 		70F4173000E793A450D74922 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				MARKETING_VERSION = 0.1.0;
@@ -862,20 +949,20 @@
 		82698E43B0DB10E4874FC1A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack;
@@ -950,20 +1037,20 @@
 		D4D4C1715970BFE92A3D78C2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack;
@@ -975,71 +1062,21 @@
 			};
 			name = Release;
 		};
-		12AC00000000000000000701 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
-			};
-			name = Debug;
-		};
-		12AC00000000000000000801 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkateTrack-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkateTrack-iOS";
-			};
-			name = Release;
-		};
 		FA183D56793E312A3AD20523 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_KEY_CFBundleIconName = AppIcon;
-				INFOPLIST_KEY_CFBundleIconFile = SkateTrack;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleIconFile = SkateTrack;
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjf.skatetrack.mac;
@@ -1053,6 +1090,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12AC00000000000000000701 /* Debug */,
+				12AC00000000000000000801 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3F55D69A043F1FC7A3559BB5 /* Build configuration list for PBXNativeTarget "SkateTrack-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1085,15 +1131,6 @@
 			buildConfigurations = (
 				82698E43B0DB10E4874FC1A6 /* Debug */,
 				D4D4C1715970BFE92A3D78C2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		12AC00000000000000000301 /* Build configuration list for PBXNativeTarget "SkateTrack-iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				12AC00000000000000000701 /* Debug */,
-				12AC00000000000000000801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

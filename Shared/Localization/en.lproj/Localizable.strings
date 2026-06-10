@@ -103,3 +103,15 @@
 "session.hud.noMode" = "Session";
 "unit.speed.kmh" = "KM / H";
 "unit.speed.kmh.short" = "km/h";
+
+/* Fall alert / SOS */
+"fall.alert.title" = "Fall Detected";
+"fall.alert.message" = "Are you okay? If you do not respond, SkateTrack will start the SOS flow.";
+"fall.alert.countdown" = "SOS in";
+"fall.alert.impact" = "Impact:";
+"fall.alert.locationSaved" = "Location saved";
+"fall.alert.locationUnavailable" = "Location unavailable";
+"fall.alert.imOkay" = "I'm Okay";
+"fall.alert.sosNow" = "SOS Now";
+"sos.message.template" = "I may have fallen while skating and need help. Location: %@";
+"safety.contacts.title" = "Emergency Contacts";
