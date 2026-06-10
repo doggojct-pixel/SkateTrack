@@ -7,6 +7,9 @@ import SwiftUI
 
 struct LiveHUDView: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
+    @State private var speedTraceSamples: [LiveSpeedTraceSample] = []
+
+    private let speedTraceTimer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
 
     var body: some View {
         GeometryReader { proxy in
@@ -64,6 +67,16 @@ struct LiveHUDView: View {
         .preferredColorScheme(.dark)
         .toolbar(.hidden, for: .navigationBar)
         .accessibilityIdentifier("live-hud-view")
+        .onReceive(speedTraceTimer) { _ in
+            appendSpeedTraceSampleIfNeeded()
+        }
+        .onChange(of: sessionRecording.state.status) { _, status in
+            if status == .idle || status == .failed {
+                speedTraceSamples.removeAll(keepingCapacity: true)
+            } else if status == .recording {
+                appendSpeedTraceSampleIfNeeded()
+            }
+        }
     }
 
     private var liveBackground: some View {
@@ -88,22 +101,9 @@ struct LiveHUDView: View {
                 startRadius: 20,
                 endRadius: 420
             )
-
-            diagonalSpeedLine
-                .allowsHitTesting(false)
         }
     }
 
-    private var diagonalSpeedLine: some View {
-        GeometryReader { proxy in
-            Path { path in
-                path.move(to: CGPoint(x: proxy.size.width * 0.18, y: proxy.size.height * 0.72))
-                path.addLine(to: CGPoint(x: proxy.size.width * 0.78, y: proxy.size.height * 0.04))
-            }
-            .stroke(accentColor.opacity(0.70), style: StrokeStyle(lineWidth: 5, lineCap: .round))
-            .shadow(color: accentColor.opacity(0.45), radius: 12)
-        }
-    }
 
     private var motionGrid: some View {
         Canvas { context, size in
@@ -191,11 +191,28 @@ struct LiveHUDView: View {
 
     private var speedHero: some View {
         VStack(spacing: 14) {
-            LiveSpeedDisplayView(
-                speedKilometersPerHour: sessionRecording.state.currentSpeedKilometersPerHour,
-                maxSpeedKilometersPerHour: sessionRecording.state.maxSpeedKilometersPerHour,
-                accentColor: accentColor
-            )
+            ZStack {
+                LiveSpeedTraceView(
+                    samples: speedTraceSamples,
+                    maxSpeedKilometersPerHour: max(
+                        sessionRecording.state.maxSpeedKilometersPerHour,
+                        sessionRecording.state.currentSpeedKilometersPerHour
+                    ),
+                    accentColor: accentColor
+                )
+                .frame(height: 172)
+                .padding(.horizontal, 2)
+                .allowsHitTesting(false)
+
+                LiveSpeedDisplayView(
+                    speedKilometersPerHour: sessionRecording.state.currentSpeedKilometersPerHour,
+                    maxSpeedKilometersPerHour: sessionRecording.state.maxSpeedKilometersPerHour,
+                    accentColor: accentColor
+                )
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 184)
+            .accessibilityIdentifier("live-hud-speed-trace-area")
 
             Text(LocalizedStringKey(modeLocalizationKey))
                 .font(.system(size: 15, weight: .heavy, design: .rounded))
@@ -353,6 +370,28 @@ struct LiveHUDView: View {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
+    private func appendSpeedTraceSampleIfNeeded() {
+        guard sessionRecording.state.status == .recording else { return }
+
+        let elapsedTime = max(0, sessionRecording.state.elapsedTime)
+        let speed = max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+
+        if let last = speedTraceSamples.last, elapsedTime <= last.elapsedTime + 0.25 {
+            return
+        }
+
+        speedTraceSamples.append(
+            LiveSpeedTraceSample(
+                elapsedTime: elapsedTime,
+                speedKilometersPerHour: speed
+            )
+        )
+
+        if speedTraceSamples.count > 90 {
+            speedTraceSamples.removeFirst(speedTraceSamples.count - 90)
+        }
+    }
+
     private func pauseOrResume() {
         Task {
             if sessionRecording.state.status == .paused {
@@ -371,6 +410,62 @@ struct LiveHUDView: View {
 
     private func sosStubAction() {
         // Task-014 will replace this stub with Fall Alert / SOS flow routing.
+    }
+}
+
+private struct LiveSpeedTraceSample: Equatable {
+    let elapsedTime: TimeInterval
+    let speedKilometersPerHour: Double
+}
+
+private struct LiveSpeedTraceView: View {
+    let samples: [LiveSpeedTraceSample]
+    let maxSpeedKilometersPerHour: Double
+    let accentColor: Color
+
+    var body: some View {
+        Canvas { context, size in
+            let rect = CGRect(x: 8, y: 14, width: max(1, size.width - 16), height: max(1, size.height - 28))
+            var guidePath = Path()
+            for index in 0...3 {
+                let y = rect.minY + rect.height * CGFloat(index) / 3
+                guidePath.move(to: CGPoint(x: rect.minX, y: y))
+                guidePath.addLine(to: CGPoint(x: rect.maxX, y: y))
+            }
+            context.stroke(guidePath, with: .color(Color.white.opacity(0.045)), style: StrokeStyle(lineWidth: 1, dash: [4, 12]))
+
+            let traceSamples = Array(samples.filter { $0.elapsedTime.isFinite && $0.speedKilometersPerHour.isFinite }.suffix(90))
+            guard traceSamples.count >= 2, let firstSample = traceSamples.first, let lastSample = traceSamples.last else { return }
+
+            let timeSpan = max(lastSample.elapsedTime - firstSample.elapsedTime, 1)
+            let visibleMaxSpeed = max(8, maxSpeedKilometersPerHour, traceSamples.map(\.speedKilometersPerHour).max() ?? 0)
+            var linePath = Path()
+            var firstPoint: CGPoint = .zero
+            var lastPoint: CGPoint = .zero
+
+            for (index, sample) in traceSamples.enumerated() {
+                let timeRatio = CGFloat((sample.elapsedTime - firstSample.elapsedTime) / timeSpan)
+                let speedRatio = CGFloat(min(max(sample.speedKilometersPerHour / visibleMaxSpeed, 0), 1))
+                let point = CGPoint(x: rect.minX + rect.width * timeRatio, y: rect.maxY - rect.height * speedRatio)
+                if index == 0 {
+                    firstPoint = point
+                    linePath.move(to: point)
+                } else {
+                    linePath.addLine(to: point)
+                }
+                lastPoint = point
+            }
+
+            var fillPath = linePath
+            fillPath.addLine(to: CGPoint(x: lastPoint.x, y: rect.maxY))
+            fillPath.addLine(to: CGPoint(x: firstPoint.x, y: rect.maxY))
+            fillPath.closeSubpath()
+            context.fill(fillPath, with: .color(accentColor.opacity(0.10)))
+            context.addFilter(.shadow(color: accentColor.opacity(0.30), radius: 8))
+            context.stroke(linePath, with: .color(accentColor.opacity(0.68)), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+        }
+        .opacity(0.92)
+        .accessibilityIdentifier("live-hud-speed-trace")
     }
 }
 
