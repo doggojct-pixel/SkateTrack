@@ -56,11 +56,23 @@ struct ModeSelectionCardView: View {
         .buttonStyle(.plain)
     }
 
-    private var topRow: some View {
-        HStack(alignment: .top) {
+    @ViewBuilder
+    private var modeIcon: some View {
+        if iconName == "skateTrack.inlineGlyph" || iconName == "figure.roll" {
+            InlineSkateGlyphView(
+                color: isLocked ? SkateTrackSessionStartColors.textTertiary : accentColor,
+                size: 34
+            )
+        } else {
             Image(systemName: iconName)
                 .font(.system(size: 26, weight: .bold))
                 .foregroundStyle(isLocked ? SkateTrackSessionStartColors.textTertiary : accentColor)
+        }
+    }
+
+    private var topRow: some View {
+        HStack(alignment: .top) {
+            modeIcon
                 .frame(width: 34, height: 34)
 
             Spacer()

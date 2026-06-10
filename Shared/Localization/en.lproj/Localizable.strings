@@ -82,5 +82,24 @@
 "mode.description.inline.fitness" = "Fitness, speed intervals, and endurance skating.";
 "mode.description.inline.aggressive" = "Park, street, grinds, and aggressive inline sessions.";
 "mode.description.inline.slalom" = "Cone lines, rhythm, edge control, and precision drills.";
+"power.human" = "Human";
+"power.electric" = "Electric";
 "power.type.title" = "Power Type";
 "power.electric.phase1a.note" = "Electric skateboard sessions are tracked manually in Phase 1a.";
+
+/* Live HUD */
+"session.hud.maxSpeed" = "Max";
+"session.hud.distance" = "Distance";
+"session.hud.time" = "Time";
+"session.hud.tilt" = "Tilt";
+"session.hud.heartRate" = "Heart Rate";
+"session.hud.tricks" = "Tricks";
+"session.hud.slideToEnd" = "Slide to End Session";
+"session.hud.sos" = "SOS";
+"session.hud.inline.cadence" = "Cadence";
+"session.hud.inline.rhythm" = "Rhythm";
+"session.hud.inline.placeholder" = "Inline-specific metrics will activate when stride analysis is available.";
+"session.hud.routeWaiting" = "Waiting for route signal";
+"session.hud.noMode" = "Session";
+"unit.speed.kmh" = "KM / H";
+"unit.speed.kmh.short" = "km/h";

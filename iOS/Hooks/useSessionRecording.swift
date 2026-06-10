@@ -16,6 +16,7 @@ struct SessionRecordingState: Equatable {
     var elapsedTime: TimeInterval
     var currentTiltDegrees: Double
     var latestMotionSample: MotionSample?
+    var recentRouteCoordinates: [GeoCoordinate]
     var activeFallEvent: FallEvent?
     var errorMessageKey: String?
 
@@ -30,6 +31,7 @@ struct SessionRecordingState: Equatable {
         elapsedTime: 0,
         currentTiltDegrees: 0,
         latestMotionSample: nil,
+        recentRouteCoordinates: [],
         activeFallEvent: nil,
         errorMessageKey: nil
     )
@@ -80,7 +82,13 @@ final class SessionRecordingViewModel: ObservableObject {
         coordinator.statePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
-                self?.updateState { $0.status = status }
+                self?.updateState {
+                    if status == .idle {
+                        $0 = .initial
+                    } else {
+                        $0.status = status
+                    }
+                }
             }
             .store(in: &cancellables)
 
@@ -95,6 +103,12 @@ final class SessionRecordingViewModel: ObservableObject {
                     $0.elapsedTime = metrics.elapsedTime
                     $0.currentTiltDegrees = metrics.currentTiltDegrees
                     $0.latestMotionSample = metrics.latestMotionSample
+                    if let coordinate = metrics.latestMotionSample?.gpsCoordinate {
+                        $0.recentRouteCoordinates.append(coordinate)
+                        if $0.recentRouteCoordinates.count > 80 {
+                            $0.recentRouteCoordinates.removeFirst($0.recentRouteCoordinates.count - 80)
+                        }
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -125,6 +139,7 @@ final class SessionRecordingViewModel: ObservableObject {
         updateState {
             $0.selectedSportMode = mode
             $0.selectedPowerType = powerType
+            $0.recentRouteCoordinates = []
             $0.errorMessageKey = nil
         }
 

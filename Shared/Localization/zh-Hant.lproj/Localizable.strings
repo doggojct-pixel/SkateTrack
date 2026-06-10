@@ -82,5 +82,24 @@
 "mode.description.inline.fitness" = "體能、速度間歇與耐力型直排輪訓練。";
 "mode.description.inline.aggressive" = "公園、街式、磨桿與極限直排輪紀錄。";
 "mode.description.inline.slalom" = "樁線、節奏、刃感控制與精準訓練。";
+"power.human" = "人力";
+"power.electric" = "電動";
 "power.type.title" = "動力類型";
 "power.electric.phase1a.note" = "Phase 1a 的電動滑板 Session 先以手動資料追蹤。";
+
+/* Live HUD */
+"session.hud.maxSpeed" = "最高速";
+"session.hud.distance" = "距離";
+"session.hud.time" = "時間";
+"session.hud.tilt" = "傾角";
+"session.hud.heartRate" = "心率";
+"session.hud.tricks" = "招式";
+"session.hud.slideToEnd" = "滑動結束 Session";
+"session.hud.sos" = "SOS";
+"session.hud.inline.cadence" = "步頻";
+"session.hud.inline.rhythm" = "節奏";
+"session.hud.inline.placeholder" = "直排輪專屬指標會在步頻分析完成後啟用。";
+"session.hud.routeWaiting" = "等待路線訊號";
+"session.hud.noMode" = "Session";
+"unit.speed.kmh" = "公里 / 小時";
+"unit.speed.kmh.short" = "km/h";

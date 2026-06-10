@@ -29,14 +29,24 @@ struct SportCategoryPickerView: View {
         }
     }
 
+    @ViewBuilder
+    private func sportIcon(for category: SessionStartSportCategory) -> some View {
+        switch category {
+        case .skateboard:
+            Image(systemName: category.iconName)
+                .font(.system(size: 26, weight: .bold))
+                .foregroundStyle(category.accentColor)
+        case .inline:
+            InlineSkateGlyphView(color: category.accentColor, size: 34)
+        }
+    }
+
     private func categoryCard(_ category: SessionStartSportCategory) -> some View {
         let isSelected = selectedCategory == category
 
         return VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .top) {
-                Image(systemName: category.iconName)
-                    .font(.system(size: 26, weight: .bold))
-                    .foregroundStyle(category.accentColor)
+                sportIcon(for: category)
 
                 Spacer()
 

@@ -73,9 +73,18 @@ for path in REQUIRED_FILES:
 session_start = read("iOS/Features/SessionRecording/SessionStartView.swift")
 if "sessionRecording.actions.startSession" not in session_start:
     fail("SessionStartView must call useSessionRecording actions.startSession")
-for required_dark_token in ["navy2", "card", "safeAreaInset", "preferredColorScheme(.dark)"]:
+for required_dark_token in ["navy2", "card", "preferredColorScheme(.dark)", "ignoresSafeArea"]:
     if required_dark_token not in session_start:
         fail(f"SessionStartView missing UI mockup dark-layout token {required_dark_token}")
+for required_layout_token in [
+    "ZStack(alignment: .bottom)",
+    "frame(width: proxy.size.width, height: proxy.size.height)",
+    "bottomDock(bottomPadding:",
+    "session-start-bottom-dock",
+    "frame(minHeight: proxy.size.height",
+]:
+    if required_layout_token not in session_start:
+        fail(f"SessionStartView missing true full-screen layout token {required_layout_token}")
 if "Color(.systemBackground)" in session_start or "secondarySystemBackground" in session_start:
     fail("SessionStartView must not use default white system backgrounds after ST-12 hotfix")
 if "PowerType.humanPowered" not in session_start and ".humanPowered" not in session_start:
@@ -101,4 +110,4 @@ for key in REQUIRED_KEYS:
     if key not in localized_zh:
         fail(f"missing Traditional Chinese localization key {key}")
 
-print("Session start flow check passed: 8 UI files, gated inline modes, localized dark start flow")
+print("Session start flow check passed: 8 UI files, true full-screen dark start flow, gated inline modes")

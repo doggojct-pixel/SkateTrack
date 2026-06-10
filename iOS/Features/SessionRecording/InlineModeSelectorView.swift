@@ -99,7 +99,7 @@ extension InlineMode {
     var iconName: String {
         switch self {
         case .urbanFreestyle:
-            return "figure.roll"
+            return "skateTrack.inlineGlyph"
         case .fitnessSpeed:
             return "speedometer"
         case .aggressive:

@@ -15,6 +15,8 @@ struct SkateTrackApp: App {
                 subscriptionStatus: subscriptionStatus,
                 sessionRecording: sessionRecording
             )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
         }
     }
 
