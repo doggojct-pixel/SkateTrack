@@ -287,3 +287,66 @@ This log is append-only. Do not delete or overwrite old entries.
 - Kept Task-012 scope unchanged: sport category selection, mode selection, power type toggle, subscription gating, and start action only.
 - Did not add pause, stop, swipe-to-end, Live HUD, Fall Alert, persistence, or history features; those remain scheduled for later tasks.
 - Pinned the Start Session CTA to the bottom safe area so the entry action is discoverable without scrolling to the very bottom.
+
+## 2026-06-10 Phase 1a — Task-013 Live HUD + Slide-to-End Completed
+
+### Completed
+- Added `LiveHUDView.swift` as the dark full-screen iOS riding HUD following iOS UI mockup Screen 03 / 03b.
+- Added reusable HUD components: `LiveSpeedDisplayView`, `LiveHUDMetricCardView`, `TiltIndicatorView`, `MiniRouteMapView`, `SlideToEndSessionControl`, and `InlineLiveMetricsView`.
+- Routed active session states from `RootNavigationView` to `LiveHUDView` while preserving Task-012 Session Start UI for idle / failed states.
+- Extended `SessionRecordingState` with `recentRouteCoordinates` so the HUD can render recent route context without directly accessing sensor engines.
+- Added localized HUD keys and `scripts/verify_live_hud.py`.
+
+### Reason / Context
+- Build Plan Task-013 requires iOS Screen 03 / 03b Live HUD, a dark outdoor-friendly riding interface, and a slide-to-end control to avoid accidental session termination.
+- Task-011 already provides session lifecycle actions; Task-013 consumes those actions without directly stopping sensors.
+- Task-014 will replace the SOS stub with Fall Alert / SOS flow.
+
+### Validation Notes
+- Run `python3 scripts/verify_live_hud.py` to confirm HUD files, localized keys, slide threshold, route state, and iOS project membership.
+- Run existing Task-002 through Task-012 scripts to confirm prior functionality remains valid.
+- iOS should Build / Run and switch from Session Start to Live HUD after pressing Start Session.
+- watchOS and macOS should still Build / Run unchanged.
+
+### Known Issues / Follow-up
+- Heart-rate, trick count, inline cadence, and inline rhythm are placeholders until their dedicated engine / HealthKit tasks exist.
+- SOS button is a stub until Task-014.
+- Mini route is driven by recent coordinates collected in memory only; persistence and full route replay are later tasks.
+
+
+## 2026-06-10 — Task-013 UI/Icon Hotfix
+
+- Reworked iOS Session Start and Live HUD root layout to use the whole phone canvas instead of nested mid-screen cards.
+- Replaced inline skating glyph usage with a custom lightweight inline-skate glyph so it no longer reads as a wheelchair.
+- Added unified AppIcon asset catalogs for iOS, watchOS, and macOS from the provided SkateTrack icon artwork.
+
+## 2026-06-10 — Task-013 Final UI/Icon Hotfix
+
+- Rebuilt the iOS Session Start and Live HUD layouts as true edge-to-edge screens instead of nested mid-screen panels.
+- Moved the primary Start Session and Live HUD controls into bottom safe-area docks so controls no longer sit at the old working-area lower edge.
+- Reworked the Live HUD to remove the fixed-height map/HUD container that clipped the speed hero and lower controls.
+- Refined the custom inline-skate glyph so the skater and wheels lean together and no longer resemble a wheelchair.
+- Regenerated iOS, watchOS, and macOS app icon assets from the approved SkateTrack artwork and added a macOS `.icns` fallback.
+- Updated generated Info.plist app icon keys so all three app targets explicitly point to `AppIcon`.
+
+## 2026-06-10 — Task-013 Status Review / File Structure Documentation Update
+
+### Reviewed Current State
+- Inspected the repository from `SkateTrack_Current_For_UI_Diagnosis.zip` after Tasks 001–013 and the Task-013 UI/icon hotfix attempts.
+- Confirmed the project contains iOS Session Start UI, iOS Live HUD UI, session recording coordinator, iOS tests, sensor providers, sensor fusion, fall detection foundation, localization, generated AppIcon assets, and macOS `.icns` fallback.
+- Confirmed source-pattern verification scripts can pass for Session Start, Live HUD, localization, app icons, and session recording.
+
+### Correction / Important Finding
+- Passing verification scripts are not sufficient for Task-013 visual acceptance. Current screenshots show the iOS Session Start and Live HUD still do not meet the intended full-screen mockup alignment.
+- Current screenshots also show the bottom Start / Slide-to-End controls can still be clipped.
+- The custom inline-skating glyph regressed visually and should not be treated as accepted.
+- AppIcon asset folders exist for iOS, watchOS, and macOS, but runtime app icon display is still unresolved on the user's machine.
+
+### Documentation Change
+- Rewrote `docs/FILE_STRUCTURE.md` to reflect the current repository structure, current progress, and unresolved Task-013 blockers honestly.
+- Reclassified Task-013 as functionally implemented but visually not accepted yet.
+- Added an explicit gate: Task-014 should not begin until Task-013 visual layout, inline icon, and runtime AppIcon issues are resolved.
+
+### Next Recommended Action
+- Perform a focused Task-013 repair pass using the current full project source, not incremental speculative hotfixes.
+- Strengthen the UI/icon verification scripts so they do not pass purely on source-pattern checks when visual acceptance is failing.
