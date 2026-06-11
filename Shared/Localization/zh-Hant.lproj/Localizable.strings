@@ -167,3 +167,4 @@
 "repository.error.decodingFailed" = "Session 資料無法讀取。";
 "repository.error.exportFailed" = "Session 匯出失敗。";
 "repository.error.deleteFailed" = "Session 無法刪除。";
+"repository.error.saveFailed" = "Session 無法儲存到本機。";

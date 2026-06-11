@@ -167,3 +167,4 @@
 "repository.error.decodingFailed" = "Session data could not be read.";
 "repository.error.exportFailed" = "Session export failed.";
 "repository.error.deleteFailed" = "Session could not be deleted.";
+"repository.error.saveFailed" = "Session could not be saved locally.";

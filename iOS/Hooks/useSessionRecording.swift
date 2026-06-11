@@ -178,6 +178,8 @@ final class SessionRecordingViewModel: ObservableObject {
         do {
             let sessionData = try await coordinator.requestEndSession()
             lastCompletedSession = sessionData
+        } catch let error as RepositoryError {
+            updateState { $0.errorMessageKey = error.localizationKey }
         } catch {
             updateState { $0.errorMessageKey = SessionRecordingError.invalidStateTransition.localizationKey }
         }

@@ -12,6 +12,7 @@ enum RepositoryError: Error, Sendable, Equatable {
     case decodingFailed
     case exportFailed
     case deleteFailed
+    case saveFailed
 
     var localizationKey: String {
         switch self {
@@ -29,6 +30,8 @@ enum RepositoryError: Error, Sendable, Equatable {
             return "repository.error.exportFailed"
         case .deleteFailed:
             return "repository.error.deleteFailed"
+        case .saveFailed:
+            return "repository.error.saveFailed"
         }
     }
 }

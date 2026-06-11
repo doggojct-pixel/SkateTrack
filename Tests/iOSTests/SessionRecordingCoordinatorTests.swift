@@ -74,9 +74,11 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
 
     func testRequestEndSessionReturnsCompleteSessionData() async throws {
         let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
         let coordinator = SessionRecordingCoordinator(
             sensorEngine: sensorEngine,
-            fallDetectionEngine: MockFallDetectionEngine()
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
         )
 
         try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
@@ -101,7 +103,69 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertNotNil(sessionData.endDate)
         XCTAssertNotNil(sessionData.durationSeconds)
         XCTAssertNotNil(sessionData.summaryMetrics)
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
         XCTAssertTrue(sensorEngine.stopCalled)
+    }
+
+    func testRequestEndSessionPublishesOnlyAfterPersistenceSucceeds() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+        var publishedSessions: [SessionData] = []
+        let cancellable = coordinator.completedSessionPublisher
+            .sink { publishedSessions.append($0) }
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+        let sessionData = try await coordinator.requestEndSession()
+
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
+        XCTAssertEqual(publishedSessions.map(\.id), [sessionData.id])
+        cancellable.cancel()
+    }
+
+    func testDiscardCurrentSessionDoesNotPersist() async throws {
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: MockSessionSensorEngine(),
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+        await coordinator.discardCurrentSession()
+
+        XCTAssertTrue(repository.savedSessions.isEmpty)
+    }
+
+    func testPersistenceFailurePublishesRepositoryError() async throws {
+        let repository = MockSessionRepository()
+        repository.saveError = .saveFailed
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: MockSessionSensorEngine(),
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+        var errorKeys: [String] = []
+        let cancellable = coordinator.errorPublisher.sink { errorKeys.append($0) }
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+
+        do {
+            _ = try await coordinator.requestEndSession()
+            XCTFail("Expected repository save failure")
+        } catch let error as RepositoryError {
+            XCTAssertEqual(error, .saveFailed)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        XCTAssertTrue(errorKeys.contains(RepositoryError.saveFailed.localizationKey))
+        XCTAssertEqual(coordinator.status, .failed)
+        cancellable.cancel()
     }
 
     func testCoreSessionRecordingFilesDoNotImportUIFrameworks() throws {
@@ -175,4 +239,41 @@ private final class MockFallDetectionEngine: SessionFallDetecting {
     func stopMonitoring() {}
 
     func cancelFallAlert() {}
+}
+
+private final class MockSessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
+    var savedSessions: [SessionData] = []
+    var saveError: RepositoryError?
+
+    @discardableResult
+    func saveCompletedSession(_ session: SessionData) async throws -> SessionData {
+        if let saveError {
+            throw saveError
+        }
+        savedSessions.append(session)
+        return session
+    }
+
+    func fetchRecentSessions(limit: Int) async throws -> [SessionData] {
+        Array(savedSessions.prefix(limit))
+    }
+
+    func fetchSession(id: UUID) async throws -> SessionData {
+        guard let session = savedSessions.first(where: { $0.id == id }) else {
+            throw RepositoryError.sessionNotFound
+        }
+        return session
+    }
+
+    func loadMotionSamples(for sessionID: UUID) async throws -> [MotionSample] {
+        try await fetchSession(id: sessionID).motionSamples
+    }
+
+    func deleteSession(id: UUID) async throws {
+        savedSessions.removeAll { $0.id == id }
+    }
+
+    func exportSessionBundle(id: UUID) async throws -> URL {
+        FileManager.default.temporaryDirectory.appendingPathComponent(id.uuidString, isDirectory: true)
+    }
 }

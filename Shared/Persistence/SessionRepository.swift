@@ -5,7 +5,7 @@
 import CoreData
 import Foundation
 
-protocol SessionRepositoryProtocol: AnyObject {
+protocol SessionRepositoryProtocol: AnyObject, Sendable {
     @discardableResult
     func saveCompletedSession(_ session: SessionData) async throws -> SessionData
     func fetchRecentSessions(limit: Int) async throws -> [SessionData]

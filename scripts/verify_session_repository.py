@@ -29,7 +29,7 @@ PROJECT_FILES = [
 ]
 
 REQUIRED_SESSION_REPOSITORY_TOKENS = [
-    "protocol SessionRepositoryProtocol",
+    "protocol SessionRepositoryProtocol: AnyObject, Sendable",
     "func saveCompletedSession",
     "func fetchRecentSessions",
     "func fetchSession",
@@ -105,13 +105,6 @@ def verify_project_membership() -> None:
         sys.exit(1)
 
 
-def verify_no_task015b_integration_yet() -> None:
-    coordinator = read("iOS/Core/SessionRecording/SessionRecordingCoordinator.swift")
-    if "saveCompletedSession" in coordinator or "SessionRepository" in coordinator:
-        print("Task-015a must not auto-save from SessionRecordingCoordinator yet", file=sys.stderr)
-        sys.exit(1)
-
-
 def verify_localization_keys() -> None:
     en = read("Shared/Localization/en.lproj/Localizable.strings")
     zh = read("Shared/Localization/zh-Hant.lproj/Localizable.strings")
@@ -123,6 +116,7 @@ def verify_localization_keys() -> None:
         "repository.error.decodingFailed",
         "repository.error.exportFailed",
         "repository.error.deleteFailed",
+        "repository.error.saveFailed",
     ]
     for key in keys:
         if f'"{key}"' not in en or f'"{key}"' not in zh:
@@ -146,9 +140,8 @@ def main() -> None:
         "XCTUnwrap(fetchedSession.summaryMetrics)",
     ])
     verify_project_membership()
-    verify_no_task015b_integration_yet()
     verify_localization_keys()
-    print("Session repository check passed: Task-015a persistence foundation, Core Data model, motion sample file store, repository API, and tests are present")
+    print("Session repository check passed: persistence foundation, Core Data model, motion sample file store, repository API, and tests are present")
 
 
 if __name__ == "__main__":

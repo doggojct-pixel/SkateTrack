@@ -1,6 +1,6 @@
 // [自主區] iOS/Core/SessionRecording/SessionRecordingCoordinator.swift
 // 用途：Session lifecycle 唯一入口，協調感測器融合、跌倒偵測與即時指標累積。
-// 委派至：useSessionRecording Hook、Task-012 Session Start UI、Task-014 Fall Alert UI。
+// 委派至：useSessionRecording Hook、Task-012 Session Start UI、Task-014 Fall Alert UI、Task-015 persistence。
 import Combine
 import Foundation
 enum SessionRecordingError: Error, Sendable, Equatable {
@@ -45,6 +45,7 @@ final class SessionRecordingCoordinator {
     private let sensorEngine: SessionSensorProviding
     let fallDetectionEngine: SessionFallDetecting
     let sosDispatcher: SOSEventDispatcher
+    let sessionRepository: SessionRepositoryProtocol
     private var stateMachine = SessionStateMachine()
     var metricsAccumulator = SessionMetricsAccumulator()
 
@@ -64,10 +65,10 @@ final class SessionRecordingCoordinator {
 
     private var sampleCancellables = Set<AnyCancellable>()
     private var fallCancellables = Set<AnyCancellable>()
-    private var mockSampleTimer: DispatchSourceTimer?
-    private var mockSampleIndex = 0
+    var mockSampleTimer: DispatchSourceTimer?
+    var mockSampleIndex = 0
     #if DEBUG
-    private var dataSource: SessionRecordingDataSource = .live
+    var dataSource: SessionRecordingDataSource = .live
     #endif
 
     var status: SessionRecordingStatus { stateMachine.status }
@@ -90,11 +91,13 @@ final class SessionRecordingCoordinator {
     init(
         sensorEngine: SessionSensorProviding = SensorFusionEngine(),
         fallDetectionEngine: SessionFallDetecting = FallDetectionEngine(),
-        sosDispatcher: SOSEventDispatcher = .shared
+        sosDispatcher: SOSEventDispatcher = .shared,
+        sessionRepository: SessionRepositoryProtocol = SessionRepository.shared
     ) {
         self.sensorEngine = sensorEngine
         self.fallDetectionEngine = fallDetectionEngine
         self.sosDispatcher = sosDispatcher
+        self.sessionRepository = sessionRepository
     }
 
     #if DEBUG
@@ -175,10 +178,21 @@ final class SessionRecordingCoordinator {
         try applyTransition(to: .saving)
 
         let sessionData = await finalizeSession(discard: false)
-        try applyTransition(to: .idle)
-        completedSession = sessionData
-        completedSessionSubject.send(sessionData)
-        return sessionData
+        do {
+            let savedSession = try await sessionRepository.saveCompletedSession(sessionData)
+            try applyTransition(to: .idle)
+            completedSession = savedSession
+            completedSessionSubject.send(savedSession)
+            return savedSession
+        } catch let error as RepositoryError {
+            publishError(error.localizationKey)
+            try? applyTransition(to: .failed)
+            throw error
+        } catch {
+            publishError(RepositoryError.saveFailed.localizationKey)
+            try? applyTransition(to: .failed)
+            throw RepositoryError.saveFailed
+        }
     }
 
     func discardCurrentSession() async {
@@ -244,7 +258,7 @@ final class SessionRecordingCoordinator {
             .store(in: &fallCancellables)
     }
 
-    private func handleMotionSample(_ sample: MotionSample) {
+    func handleMotionSample(_ sample: MotionSample) {
         guard stateMachine.status == .recording else { return }
         metricsAccumulator.process(sample)
         publishMetrics()
@@ -398,53 +412,5 @@ final class SessionRecordingCoordinator {
         mockSampleIndex = 0
     }
 
-    #if DEBUG
-    private func startMockSampleFeed(for mode: SportMode) {
-        stopMockSampleFeed()
-
-        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .userInitiated))
-        timer.schedule(deadline: .now() + 1, repeating: 1)
-        timer.setEventHandler { [weak self] in
-            guard let self else { return }
-            let sample = self.makeMockSample(for: mode)
-            self.handleMotionSample(sample)
-        }
-        mockSampleTimer = timer
-        timer.resume()
-    }
-
-    private func stopMockSampleFeed() {
-        mockSampleTimer?.cancel()
-        mockSampleTimer = nil
-    }
-
-    private func makeMockSample(for _: SportMode) -> MotionSample {
-        mockSampleIndex += 1
-        let speedKmh = 12 + Double(mockSampleIndex % 5)
-        let latitude = 25.033 + (Double(mockSampleIndex) * 0.00005)
-        let longitude = 121.565 + (Double(mockSampleIndex) * 0.00005)
-
-        return MotionSample(
-            timestamp: Date(),
-            gpsCoordinate: GeoCoordinate(latitude: latitude, longitude: longitude),
-            speedKmh: speedKmh,
-            accelerometerG: ThreeAxisValue(x: 0.05, y: 0.1, z: 0.98),
-            gyroscopeRadPS: ThreeAxisValue(x: 0.02, y: 0.03, z: 0.01),
-            altitudeMeters: 20 + Double(mockSampleIndex)
-        )
-    }
-    #endif
 }
 
-#if DEBUG
-extension SessionRecordingCoordinator {
-    static func makeMockCoordinator() -> SessionRecordingCoordinator {
-        let coordinator = SessionRecordingCoordinator(
-            sensorEngine: SensorFusionEngine(),
-            fallDetectionEngine: FallDetectionEngine()
-        )
-        coordinator.setDataSource(.mock)
-        return coordinator
-    }
-}
-#endif

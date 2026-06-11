@@ -62,6 +62,7 @@
 		12AB01000000000000000101 /* SessionStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB01000000000000000001 /* SessionStateMachine.swift */; };
 		12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB02000000000000000001 /* SessionMetricsAccumulator.swift */; };
 		12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB03000000000000000001 /* SessionRecordingCoordinator.swift */; };
+		15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */; };
 		12AB04000000000000000101 /* useSessionRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB04000000000000000001 /* useSessionRecording.swift */; };
 		12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
 		12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
@@ -161,6 +162,7 @@
 		12AB01000000000000000001 /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		12AB02000000000000000001 /* SessionMetricsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetricsAccumulator.swift; sourceTree = "<group>"; };
 		12AB03000000000000000001 /* SessionRecordingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinator.swift; sourceTree = "<group>"; };
+		15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+DebugMock.swift"; sourceTree = "<group>"; };
 		12AB04000000000000000001 /* useSessionRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionRecording.swift; sourceTree = "<group>"; };
 		12AB05000000000000000001 /* SessionSummaryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryMetrics.swift; sourceTree = "<group>"; };
 		12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SkateTrack-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -355,6 +357,7 @@
 				12AB01000000000000000001 /* SessionStateMachine.swift */,
 				12AB02000000000000000001 /* SessionMetricsAccumulator.swift */,
 				12AB03000000000000000001 /* SessionRecordingCoordinator.swift */,
+					15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */,
 			);
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
@@ -730,6 +733,7 @@
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
 				12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */,
 				12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */,
+					15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */,
 				12AB04000000000000000101 /* useSessionRecording.swift in Sources */,
 				14A200000000000000000101 /* useFallDetection.swift in Sources */,
 				14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */,

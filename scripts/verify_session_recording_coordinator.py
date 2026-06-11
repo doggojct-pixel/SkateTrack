@@ -9,6 +9,7 @@ REQUIRED_FILES = [
     ROOT / "iOS/Core/SessionRecording/SessionStateMachine.swift",
     ROOT / "iOS/Core/SessionRecording/SessionMetricsAccumulator.swift",
     ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift",
+    ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift",
     ROOT / "iOS/Hooks/useSessionRecording.swift",
     ROOT / "Shared/Models/SessionSummaryMetrics.swift",
     ROOT / "Tests/iOSTests/SessionRecordingCoordinatorTests.swift",
@@ -30,13 +31,22 @@ REQUIRED_SNIPPETS = {
     "SessionRecordingCoordinator.swift": [
         "// [自主區]",
         "final class SessionRecordingCoordinator",
+        "let sessionRepository: SessionRepositoryProtocol",
         "func startSession(mode:",
         "func pauseSession()",
         "func resumeSession()",
         "func requestEndSession()",
+        "sessionRepository.saveCompletedSession",
         "func discardCurrentSession()",
         "FallDetectionEngine",
         "SensorFusionEngine",
+    ],
+    "SessionRecordingCoordinator+DebugMock.swift": [
+        "// [自主區]",
+        "#if DEBUG",
+        "func startMockSampleFeed",
+        "func stopMockSampleFeed",
+        "func makeMockSample",
     ],
     "useSessionRecording.swift": [
         "// [協作區",
@@ -66,6 +76,7 @@ LINE_LIMITS = {
     "SessionStateMachine.swift": 250,
     "SessionMetricsAccumulator.swift": 350,
     "SessionRecordingCoordinator.swift": 450,
+    "SessionRecordingCoordinator+DebugMock.swift": 180,
     "useSessionRecording.swift": 350,
 }
 
