@@ -311,3 +311,46 @@
 "summary.share.stub.alert.title" = "分享卡尚未建立";
 "summary.share.stub.alert.message" = "Task-018b 只先準備 Summary 分享入口。真正分享卡與匯出流程仍保留給後續任務。";
 "summary.share.stub.alert.dismiss" = "好";
+"subscription.pro_badge" = "PRO";
+
+"summary.advancedCharts.title" = "進階圖表";
+
+"summary.advancedCharts.unlocked.subtitle" = "訂閱權限已啟用，速度與海拔圖表會使用本機動態樣本產生。";
+
+"summary.advancedCharts.locked.subtitle" = "SkateTrack Pro 可解鎖完整速度與海拔分析；正式 StoreKit 接上前仍使用 DEBUG / 本機權限模擬。";
+
+"summary.advancedCharts.speed.title" = "速度時間軸";
+
+"summary.advancedCharts.speed.subtitle" = "依已儲存動態樣本產生每段時間的速度變化。";
+
+"summary.advancedCharts.speed.empty" = "這筆 Session 沒有可用速度樣本。";
+
+"summary.advancedCharts.speed.empty.title" = "沒有速度圖表";
+
+"summary.advancedCharts.speed.empty.detail" = "至少需要兩筆有效速度樣本，才會繪製速度時間軸。";
+
+"summary.advancedCharts.elevation.title" = "海拔剖面";
+
+"summary.advancedCharts.elevation.subtitle" = "依已儲存動態樣本檔案呈現高度變化。";
+
+"summary.advancedCharts.elevation.empty" = "這筆 Session 沒有可用海拔樣本。";
+
+"summary.advancedCharts.elevation.empty.title" = "沒有海拔圖表";
+
+"summary.advancedCharts.elevation.empty.detail" = "至少需要兩筆有效海拔樣本，才會繪製海拔剖面。";
+
+"summary.advancedCharts.axis.time" = "時間（分）";
+
+"summary.advancedCharts.axis.speed" = "速度（km/h）";
+
+"summary.advancedCharts.axis.elevation" = "海拔（m）";
+
+"summary.advancedCharts.locked.preview.speed" = "速度趨勢預覽已準備好，完整圖表屬於 Pro 功能。";
+
+"summary.advancedCharts.locked.preview.elevation" = "海拔剖面預覽已準備好，完整圖表屬於 Pro 功能。";
+
+"summary.advancedCharts.heartRate.title" = "心率區間";
+
+"summary.advancedCharts.heartRate.subtitle" = "已先為未來 HealthKit / 穿戴裝置整合預留。";
+
+"summary.advancedCharts.heartRate.noFakeData" = "在真實穿戴資料存在前，不顯示假的心率區間。";

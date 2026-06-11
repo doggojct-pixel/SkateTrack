@@ -75,6 +75,11 @@
 		18B100000000000000000101 /* SessionRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000001 /* SessionRouteMapView.swift */; };
 		18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */; };
 		18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000003 /* SessionSummaryShareStubView.swift */; };
+		18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000001 /* SessionAdvancedChartsView.swift */; };
+		18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000002 /* SpeedTimelineChartView.swift */; };
+		18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000003 /* ElevationProfileChartView.swift */; };
+		18C100000000000000000104 /* AdvancedChartsLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000004 /* AdvancedChartsLockedView.swift */; };
+		18C100000000000000000105 /* HeartRateZonePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000005 /* HeartRateZonePlaceholderView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -264,6 +269,11 @@
 		18B100000000000000000001 /* SessionRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRouteMapView.swift; sourceTree = "<group>"; };
 		18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummarySafetyStatusView.swift; sourceTree = "<group>"; };
 		18B100000000000000000003 /* SessionSummaryShareStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryShareStubView.swift; sourceTree = "<group>"; };
+		18C100000000000000000001 /* SessionAdvancedChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAdvancedChartsView.swift; sourceTree = "<group>"; };
+		18C100000000000000000002 /* SpeedTimelineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedTimelineChartView.swift; sourceTree = "<group>"; };
+		18C100000000000000000003 /* ElevationProfileChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationProfileChartView.swift; sourceTree = "<group>"; };
+		18C100000000000000000004 /* AdvancedChartsLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedChartsLockedView.swift; sourceTree = "<group>"; };
+		18C100000000000000000005 /* HeartRateZonePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateZonePlaceholderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +512,11 @@
 				18B100000000000000000001 /* SessionRouteMapView.swift */,
 				18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */,
 				18B100000000000000000003 /* SessionSummaryShareStubView.swift */,
+				18C100000000000000000001 /* SessionAdvancedChartsView.swift */,
+				18C100000000000000000002 /* SpeedTimelineChartView.swift */,
+				18C100000000000000000003 /* ElevationProfileChartView.swift */,
+				18C100000000000000000004 /* AdvancedChartsLockedView.swift */,
+				18C100000000000000000005 /* HeartRateZonePlaceholderView.swift */,
 			);
 			path = iOS/Features/SessionSummary;
 			sourceTree = SOURCE_ROOT;
@@ -833,6 +848,11 @@
 				18B100000000000000000101 /* SessionRouteMapView.swift in Sources */,
 				18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */,
 				18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */,
+				18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */,
+				18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */,
+				18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */,
+				18C100000000000000000104 /* AdvancedChartsLockedView.swift in Sources */,
+				18C100000000000000000105 /* HeartRateZonePlaceholderView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

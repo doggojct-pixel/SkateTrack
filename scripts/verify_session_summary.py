@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-018a/018b Session Summary foundation, route, safety, and share contracts."""
+"""Verify Task-018a/018b/018c Session Summary, route, safety, share, and advanced chart contracts."""
 
 from pathlib import Path
 import re
@@ -14,6 +14,11 @@ REQUIRED_FILES = [
     "iOS/Features/SessionSummary/SessionRouteMapView.swift",
     "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift",
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift",
+    "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift",
+    "iOS/Features/SessionSummary/SpeedTimelineChartView.swift",
+    "iOS/Features/SessionSummary/ElevationProfileChartView.swift",
+    "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift",
+    "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift",
     "iOS/Hooks/useSessionSummary.swift",
 ]
 
@@ -61,6 +66,28 @@ LOCALIZATION_KEYS = [
     "summary.charts.placeholder.subtitle",
     "summary.health.placeholder.title",
     "summary.health.placeholder.subtitle",
+    "summary.advancedCharts.title",
+    "summary.advancedCharts.unlocked.subtitle",
+    "summary.advancedCharts.locked.subtitle",
+    "summary.advancedCharts.speed.title",
+    "summary.advancedCharts.speed.subtitle",
+    "summary.advancedCharts.speed.empty",
+    "summary.advancedCharts.speed.empty.title",
+    "summary.advancedCharts.speed.empty.detail",
+    "summary.advancedCharts.elevation.title",
+    "summary.advancedCharts.elevation.subtitle",
+    "summary.advancedCharts.elevation.empty",
+    "summary.advancedCharts.elevation.empty.title",
+    "summary.advancedCharts.elevation.empty.detail",
+    "summary.advancedCharts.axis.time",
+    "summary.advancedCharts.axis.speed",
+    "summary.advancedCharts.axis.elevation",
+    "summary.advancedCharts.locked.preview.speed",
+    "summary.advancedCharts.locked.preview.elevation",
+    "summary.advancedCharts.heartRate.title",
+    "summary.advancedCharts.heartRate.subtitle",
+    "summary.advancedCharts.heartRate.noFakeData",
+    "subscription.pro_badge",
 ]
 
 PROJECT_TOKENS = [
@@ -71,6 +98,11 @@ PROJECT_TOKENS = [
     "SessionSummarySafetyStatusView.swift in Sources",
     "SessionSummaryShareStubView.swift in Sources",
     "useSessionSummary.swift in Sources",
+    "SessionAdvancedChartsView.swift in Sources",
+    "SpeedTimelineChartView.swift in Sources",
+    "ElevationProfileChartView.swift in Sources",
+    "AdvancedChartsLockedView.swift in Sources",
+    "HeartRateZonePlaceholderView.swift in Sources",
     "iOS/Features/SessionSummary",
 ]
 
@@ -90,8 +122,9 @@ SOURCE_TOKENS = {
         "SessionRouteMapView",
         "SessionSummarySafetyStatusView",
         "SessionSummaryShareStubView",
-        "summary.charts.placeholder.title",
-        "summary.health.placeholder.title",
+        "SessionAdvancedChartsView",
+        "SubscriptionPaywallView",
+        "lockedFeature: .advancedCharts",
         "refreshable",
     ],
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift": [
@@ -119,26 +152,66 @@ SOURCE_TOKENS = {
         "summary.share.stub.alert.title",
         "session-summary-share-stub",
     ],
+
+    "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
+        "SessionAdvancedChartsView",
+        "SessionSummaryChartPoint",
+        "downsample",
+        "subscriptionStatus.hasAccess(to: .advancedCharts)",
+        "AdvancedChartsLockedView",
+        "SpeedTimelineChartView",
+        "ElevationProfileChartView",
+        "HeartRateZonePlaceholderView",
+    ],
+    "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": [
+        "import Charts",
+        "Chart(points)",
+        "LineMark",
+        "AreaMark",
+        "summary-speed-timeline-chart",
+    ],
+    "iOS/Features/SessionSummary/ElevationProfileChartView.swift": [
+        "import Charts",
+        "Chart(points)",
+        "LineMark",
+        "AreaMark",
+        "summary-elevation-profile-chart",
+    ],
+    "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": [
+        "AdvancedChartsLockedView",
+        "LockedFeatureOverlayView",
+        "feature: .advancedCharts",
+        "advanced-charts-locked-view",
+    ],
+    "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift": [
+        "HeartRateZonePlaceholderView",
+        "ChartCard",
+        "ChartEmptyState",
+        "heart-rate-zone-placeholder-view",
+    ],
     "iOS/Features/SessionHistory/SessionHistoryView.swift": [
-        "SessionSummaryView(sessionID:",
+        "SessionSummaryView(",
         "selectedSummarySession",
     ],
     "docs/DEV_LOG.md": [
-        "Task-018b Route Map + Safety / Share Stub",
-        "SessionRouteMapView",
+        "Task-018c Advanced Charts + Subscription Gating",
+        "SpeedTimelineChartView",
+        "GatedFeature.advancedCharts",
     ],
     "docs/FILE_STRUCTURE.md": [
-        "Task-018b Route Map + Safety / Share Stub",
-        "SessionRouteMapView.swift",
+        "Task-018c Advanced Charts + Subscription Gating",
+        "SessionAdvancedChartsView.swift",
+        "SpeedTimelineChartView.swift",
         "verify_session_summary.py",
     ],
 }
 
 FORBIDDEN_TOKENS = [
-    "import Charts",
     "AppStore.sync()",
     "Transaction.currentEntitlements",
     "Product.products(for:",
+    "HKHealthStore",
+    "calories",
 ]
 
 MAX_LINES = {
@@ -148,6 +221,11 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": 260,
     "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift": 220,
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": 180,
+    "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": 260,
+    "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": 180,
+    "iOS/Features/SessionSummary/ElevationProfileChartView.swift": 180,
+    "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": 220,
+    "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift": 240,
     "iOS/Hooks/useSessionSummary.swift": 240,
 }
 
@@ -226,7 +304,7 @@ def main() -> None:
     verify_project_membership()
     verify_localization()
     verify_source_contracts()
-    print("✅ Task-018b Session Summary route map / safety verification passed")
+    print("✅ Task-018c Session Summary advanced charts verification passed")
 
 
 if __name__ == "__main__":

@@ -90,3 +90,8 @@ Task-018a introduces the first real Session Summary foundation and core local me
 ## Task-018b confirmation
 
 Task-018b adds the local Summary route map, safety recap, and share-entry stub without introducing subscriber-only chart access or production monetization. Advanced charts remain deferred to Task-018c and must continue following the project-wide paid feature rule: use `FeatureFlagEngine` and `useSubscriptionStatus` as the app-facing boundaries, keep DEBUG/local entitlement simulation as the development path, and defer production App Store monetization until a future `AppStoreSubscriptionProvider` task.
+
+
+## Task-018c confirmation
+
+Task-018c is the first Summary task that introduces subscriber-only advanced chart UI. It follows the project-wide paid feature rule by gating chart access with `GatedFeature.advancedCharts`, `useSubscriptionStatus`, and the existing Task-016b Paywall. Free users receive a locked advanced-chart preview; DEBUG/local entitlement simulation can unlock the full speed and elevation charts during development. No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, or `AppStore.sync()` path is introduced.

@@ -651,3 +651,28 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
 - Manual validation should confirm unlocked History cards open Summary, route sessions show a route map with start / finish markers, no-route sessions show the empty route state, safety status reflects fall-event data, and the share button only shows the deferred share-card notice.
+
+
+## 2026-06-11 — Task-018c Advanced Charts + Subscription Gating
+
+### Completed
+- Added subscriber-gated advanced chart rendering to the existing `SessionSummaryView` instead of creating a second Summary screen.
+- Added `SessionAdvancedChartsView` to centralize Task-018c chart access, chart-point generation, and lightweight downsampling for large motion-sample sets.
+- Added `SpeedTimelineChartView` and `ElevationProfileChartView` using Swift Charts for subscriber-visible speed and altitude analysis.
+- Added `AdvancedChartsLockedView` so free users see a Pro preview and are routed to the existing Task-016b Paywall through `GatedFeature.advancedCharts`.
+- Added `HeartRateZonePlaceholderView` to keep heart-rate zones visible as a future-ready placeholder without fabricating health data.
+- Updated `SessionHistoryView` / `SessionSummaryView` handoff so Summary receives the existing `SubscriptionStatusViewModel` and does not create a separate paid-access path.
+- Updated Summary localization keys and `scripts/verify_session_summary.py` so verification now covers Swift Charts, downsampling, paid gating, Paywall routing, project membership, localization, and documentation.
+- Updated living documentation for the Task-018c advanced chart phase.
+
+### Paid Feature / Monetization Boundary
+- Task-018c implements subscriber-only advanced chart access but still does not implement production StoreKit purchase, App Store Connect products, sandbox tester flow, transaction validation, or `AppStore.sync()`.
+- Advanced chart access is routed through `GatedFeature.advancedCharts`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture.
+- DEBUG/local entitlement simulation remains the development path; production monetization remains deferred to a future `AppStoreSubscriptionProvider` task.
+
+### Scope Boundary
+- No real StoreKit purchase, App Store Connect setup, sandbox tester flow, `AppStore.sync()`, transaction validation, production subscription claim, real HealthKit / watchOS heart-rate data, real share-card export, delete, calendar view, GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
+- Manual validation should confirm free users see locked advanced chart previews that open the Paywall, DEBUG subscriber simulation unlocks speed and elevation charts, heart-rate zones remain a no-fake-data placeholder, and route/safety/share Summary sections still work.

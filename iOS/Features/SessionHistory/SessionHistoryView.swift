@@ -63,7 +63,11 @@ struct SessionHistoryView: View {
             )
         }
         .sheet(item: $selectedSummarySession) { session in
-            SessionSummaryView(sessionID: session.id, initialSession: session) {
+            SessionSummaryView(
+                sessionID: session.id,
+                initialSession: session,
+                subscriptionStatus: subscriptionStatus
+            ) {
                 selectedSummarySession = nil
             }
         }

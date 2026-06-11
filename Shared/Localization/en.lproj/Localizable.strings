@@ -311,3 +311,46 @@
 "summary.share.stub.alert.title" = "Share card not built yet";
 "summary.share.stub.alert.message" = "Task-018b only prepares the Summary share entry point. The real share card and export flow remain deferred.";
 "summary.share.stub.alert.dismiss" = "OK";
+"subscription.pro_badge" = "PRO";
+
+"summary.advancedCharts.title" = "Advanced charts";
+
+"summary.advancedCharts.unlocked.subtitle" = "Subscriber access is active. Speed and elevation charts are rendered from local motion samples.";
+
+"summary.advancedCharts.locked.subtitle" = "SkateTrack Pro unlocks full speed and elevation analysis. This still uses DEBUG/local entitlement simulation until real StoreKit is added.";
+
+"summary.advancedCharts.speed.title" = "Speed timeline";
+
+"summary.advancedCharts.speed.subtitle" = "Minute-by-minute speed trend generated from recorded motion samples.";
+
+"summary.advancedCharts.speed.empty" = "Speed samples are not available for this session.";
+
+"summary.advancedCharts.speed.empty.title" = "No speed chart";
+
+"summary.advancedCharts.speed.empty.detail" = "At least two valid speed samples are required before the speed timeline can be drawn.";
+
+"summary.advancedCharts.elevation.title" = "Elevation profile";
+
+"summary.advancedCharts.elevation.subtitle" = "Altitude trend from the saved motion-sample file.";
+
+"summary.advancedCharts.elevation.empty" = "Altitude samples are not available for this session.";
+
+"summary.advancedCharts.elevation.empty.title" = "No elevation chart";
+
+"summary.advancedCharts.elevation.empty.detail" = "At least two valid altitude samples are required before the elevation profile can be drawn.";
+
+"summary.advancedCharts.axis.time" = "Time (min)";
+
+"summary.advancedCharts.axis.speed" = "Speed (km/h)";
+
+"summary.advancedCharts.axis.elevation" = "Elevation (m)";
+
+"summary.advancedCharts.locked.preview.speed" = "Speed trend preview is ready, but the full chart is a Pro feature.";
+
+"summary.advancedCharts.locked.preview.elevation" = "Elevation profile preview is ready, but the full chart is a Pro feature.";
+
+"summary.advancedCharts.heartRate.title" = "Heart-rate zones";
+
+"summary.advancedCharts.heartRate.subtitle" = "Prepared for future HealthKit / wearable integration.";
+
+"summary.advancedCharts.heartRate.noFakeData" = "No fake heart-rate zones are shown before real wearable data exists.";

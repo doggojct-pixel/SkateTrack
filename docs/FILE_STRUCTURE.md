@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-11
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-018b Route Map + Safety / Share Stub
-**Current Development Gate:** Task-018b is complete as the Summary route-map, safety recap, and share-entry stub layer. Advanced charts, real share-card export, and production App Store Connect monetization remain deferred.
+**Current Baseline:** Source-controlled repository after Task-018c Advanced Charts + Subscription Gating
+**Current Development Gate:** Task-018c is complete as the subscriber-gated advanced chart layer using DEBUG/local entitlement simulation. Real share-card export, real HealthKit / watchOS heart-rate data, and production App Store Connect monetization remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -34,7 +34,8 @@ This document records the current SkateTrack repository structure and developmen
 | Task-017a Session History Foundation + Free Limit | Complete | Local Session History screen, filters, month grouping, weekly distance summary, free 5-session limit, locked older cards, Paywall routing, and DEBUG/local entitlement strategy documentation are implemented. |
 | Task-017b History Navigation + Summary Handoff | Complete | Unlocked History cards now open a dedicated Summary handoff path; locked cards continue to open Paywall. |
 | Task-018a Session Summary Foundation + Core Metrics | Complete | Unlocked History cards now open the real Summary foundation with repository-loaded core metrics plus route/chart/health placeholders. |
-| Task-018b Route Map + Safety / Share Stub | Complete | Summary now renders a MapKit route preview when valid GPS samples exist, preserves no-route empty states, summarizes local fall-event safety status, and exposes a deferred share stub. Advanced charts and production monetization remain deferred. |
+| Task-018b Route Map + Safety / Share Stub | Complete | Summary now renders a MapKit route preview when valid GPS samples exist, preserves no-route empty states, summarizes local fall-event safety status, and exposes a deferred share stub. |
+| Task-018c Advanced Charts + Subscription Gating | Complete | Summary now renders subscriber-gated speed and elevation Swift Charts, keeps free users on a locked Pro preview routed through the existing Paywall, and preserves the no-fake-data heart-rate placeholder. Production monetization remains deferred. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -44,7 +45,7 @@ This document records the current SkateTrack repository structure and developmen
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
-| Advanced charts, real share-card export, and detailed analysis are not built yet. | Task-018b provides the Summary route map, safety recap, and share-entry stub only; Swift Charts, subscriber-only chart gating, export, and deeper analysis remain future Task-018 phases. | `iOS/Features/SessionSummary`, future Swift Charts components, `SessionRepositoryProtocol`, `FeatureFlagEngine`. |
+| Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
 | Equipment mileage, spot linkage, and cloud sync remain future tasks. | Core Data entities exist as foundations, but product flows are not connected. | Future equipment, spot, Google Drive / CloudKit tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
@@ -198,13 +199,18 @@ SkateTrack/
 │   │   │   ├── SessionHistoryFilterBar.swift       # [協作區] All / Skate / Inline / Electric filter bar.
 │   │   │   ├── SessionSummaryHandoffView.swift     # [協作區] Legacy Task-017b handoff placeholder retained for reference; Task-018a now opens `SessionSummaryView`.
 │   │   │   └── HistoryLimitPaywallBanner.swift     # [協作區] Free 5-session limit upgrade banner.
-│   │   ├── SessionSummary/                         # [協作區] Task-018a/018b Summary foundation, route map, safety recap, and share stub.
+│   │   ├── SessionSummary/                         # [協作區] Task-018a/018b/018c Summary foundation, route map, safety recap, share stub, and subscriber-gated advanced charts.
 │   │   │   ├── SessionSummaryView.swift            # [協作區] Real Summary foundation opened from unlocked History cards.
 │   │   │   ├── SessionSummaryMetricsGridView.swift # [協作區] Core metrics grid for distance, speed, duration, elevation, falls, and tricks.
-│   │   │   ├── SessionSummaryPlaceholderSectionView.swift # [協作區] Chart / health placeholders for later Task-018 phases.
+│   │   │   ├── SessionSummaryPlaceholderSectionView.swift # [協作區] Legacy reusable placeholder card retained for future Summary sections.
 │   │   │   ├── SessionRouteMapView.swift           # [協作區] MapKit route preview, start / finish markers, and no-route empty state.
 │   │   │   ├── SessionSummarySafetyStatusView.swift # [協作區] Local fall-event and safety recap for Summary.
-│   │   │   └── SessionSummaryShareStubView.swift   # [協作區] Deferred share-card entry point; no real export yet.
+│   │   │   ├── SessionSummaryShareStubView.swift   # [協作區] Deferred share-card entry point; no real export yet.
+│   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
+│   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline for Pro / DEBUG subscriber state.
+│   │   │   ├── ElevationProfileChartView.swift     # [協作區] Swift Charts elevation profile for Pro / DEBUG subscriber state.
+│   │   │   ├── AdvancedChartsLockedView.swift      # [協作區] Free-user Pro preview and Paywall entry for advanced charts.
+│   │   │   └── HeartRateZonePlaceholderView.swift  # [協作區] No-fake-data heart-rate zone placeholder for future wearable / HealthKit work.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
 │   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
@@ -260,7 +266,7 @@ SkateTrack/
 │   ├── verify_subscription_entitlement_simulation.py # [工程設定] Task-016a subscription entitlement provider architecture verification.
 │   ├── verify_subscription_paywall.py              # [工程設定] Task-016b Paywall / locked feature flow verification.
 │   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit plus Task-017b/018a handoff verification.
-│   ├── verify_session_summary.py                   # [工程設定] Task-018a/018b Session Summary, route map, safety, and share-stub verification.
+│   ├── verify_session_summary.py                   # [工程設定] Task-018a/018b/018c Session Summary, route map, safety, share-stub, and advanced-chart gating verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.
@@ -316,10 +322,11 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with Task-018c advanced chart work on top of `SessionSummaryView`, not by recreating a second Summary screen.
-2. Keep Task-018c advanced chart gating separate from Task-018b route/safety work and route subscriber-only chart access through `FeatureFlagEngine` / `useSubscriptionStatus`.
-3. Keep Task-016c real StoreKit work separate from Paywall / Summary UI. The future StoreKit provider should replace the entitlement provider behind `FeatureFlagEngine` instead of rewriting Paywall / locked-feature UI.
-4. History / Summary UI should keep reading from the repository layer added in Task-015a / Task-015b; Views should not import or manipulate `NSManagedObject` directly.
+1. Continue with post-Task-018 work without recreating a second Summary screen; extend the existing `SessionSummaryView` when needed.
+2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
+3. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
+4. Keep Task-016c real StoreKit work separate from Paywall / Summary UI. The future StoreKit provider should replace the entitlement provider behind `FeatureFlagEngine` instead of rewriting Paywall / locked-feature UI.
+5. History / Summary UI should keep reading from the repository layer added in Task-015a / Task-015b; Views should not import or manipulate `NSManagedObject` directly.
 
 ## Task-016b Subscription UI Note
 

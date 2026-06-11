@@ -86,7 +86,7 @@ SOURCE_TOKENS = {
         "HistoryLimitPaywallBanner",
         "SessionHistoryFilterBar",
         "SessionHistoryListView",
-        "SessionSummaryView(sessionID:",
+        "SessionSummaryView(",
         "refreshable",
         "history.loadIfNeeded()",
     ],

@@ -1,6 +1,6 @@
 // [協作區] SessionSummaryView.swift
-// 用途：建立 Task-018a 的真實 Session Summary Foundation，顯示核心指標與後續 map/chart placeholder。
-// 委派至：useSessionSummary 讀取 Repository；Task-018b/018c 接手 route map 與進階圖表。
+// 用途：建立 Task-018a/018b/018c 的 Session Summary，顯示核心指標、路線、安全狀態與進階圖表門禁。
+// 委派至：useSessionSummary 讀取 Repository；useSubscriptionStatus / FeatureFlagEngine 處理進階圖表付費門禁。
 
 import SwiftUI
 
@@ -9,15 +9,19 @@ struct SessionSummaryView: View {
     let onClose: () -> Void
 
     @StateObject private var summary: SessionSummaryViewModel
+    @ObservedObject private var subscriptionStatus: SubscriptionStatusViewModel
+    @State private var isAdvancedChartsPaywallPresented = false
 
     @MainActor
     init(
         sessionID: UUID,
         initialSession: SessionData? = nil,
+        subscriptionStatus: SubscriptionStatusViewModel,
         onClose: @escaping () -> Void
     ) {
         self.sessionID = sessionID
         self.onClose = onClose
+        self.subscriptionStatus = subscriptionStatus
         _summary = StateObject(
             wrappedValue: useSessionSummary(sessionID: sessionID, initialSession: initialSession)
         )
@@ -48,6 +52,12 @@ struct SessionSummaryView: View {
         }
         .preferredColorScheme(.dark)
         .task { await summary.loadIfNeeded() }
+        .sheet(isPresented: $isAdvancedChartsPaywallPresented) {
+            SubscriptionPaywallView(
+                subscriptionStatus: subscriptionStatus,
+                lockedFeature: .advancedCharts
+            )
+        }
         .accessibilityIdentifier("session-summary-view")
     }
 
@@ -129,18 +139,10 @@ struct SessionSummaryView: View {
             SessionRouteMapView(samples: content.motionSamples)
             SessionSummarySafetyStatusView(content: content)
 
-            SessionSummaryPlaceholderSectionView(
-                titleKey: "summary.charts.placeholder.title",
-                subtitleKey: "summary.charts.placeholder.subtitle",
-                systemImage: "chart.xyaxis.line",
-                accentColor: SkateTrackSessionStartColors.purple
-            )
-
-            SessionSummaryPlaceholderSectionView(
-                titleKey: "summary.health.placeholder.title",
-                subtitleKey: "summary.health.placeholder.subtitle",
-                systemImage: "heart.text.square.fill",
-                accentColor: SkateTrackSessionStartColors.amber
+            SessionAdvancedChartsView(
+                content: content,
+                subscriptionStatus: subscriptionStatus,
+                onUnlock: { isAdvancedChartsPaywallPresented = true }
             )
 
             SessionSummaryShareStubView()
@@ -279,6 +281,10 @@ private extension SessionSummaryView {
         sportMode: .skateboard(.streetPark),
         summaryMetrics: .zero
     ) {
-        SessionSummaryView(sessionID: session.id, initialSession: session) {}
+        SessionSummaryView(
+            sessionID: session.id,
+            initialSession: session,
+            subscriptionStatus: useSubscriptionStatus()
+        ) {}
     }
 }
