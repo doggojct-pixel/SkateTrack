@@ -49,12 +49,18 @@ struct SessionRecordingActions {
 final class SessionRecordingViewModel: ObservableObject {
     @Published private(set) var state: SessionRecordingState = .initial
     @Published private(set) var lastCompletedSession: SessionData?
+    #if DEBUG
+    @Published private(set) var debugDemoSpeedSessionEnabled: Bool
+    #endif
 
     private let coordinator: SessionRecordingCoordinator
     private var cancellables = Set<AnyCancellable>()
 
     init(coordinator: SessionRecordingCoordinator = .shared) {
         self.coordinator = coordinator
+        #if DEBUG
+        self.debugDemoSpeedSessionEnabled = coordinator.debugDataSource == .mock
+        #endif
         bindCoordinator()
     }
 
@@ -183,6 +189,13 @@ final class SessionRecordingViewModel: ObservableObject {
             $0 = .initial
         }
     }
+
+    #if DEBUG
+    func setDebugDemoSpeedSessionEnabled(_ isEnabled: Bool) {
+        coordinator.setDataSource(isEnabled ? .mock : .live)
+        debugDemoSpeedSessionEnabled = isEnabled
+    }
+    #endif
 
     private func updateState(_ mutation: (inout SessionRecordingState) -> Void) {
         var nextState = state

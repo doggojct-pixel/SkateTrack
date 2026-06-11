@@ -106,6 +106,8 @@ final class SessionRecordingCoordinator {
     }
 
     #if DEBUG
+    var debugDataSource: SessionRecordingDataSource { dataSource }
+
     func setDataSource(_ source: SessionRecordingDataSource) {
         dataSource = source
     }
@@ -198,7 +200,6 @@ final class SessionRecordingCoordinator {
         fallEventSubject.send(nil)
         fallCountdownSubject.send(nil)
     }
-
 
     private func bindLiveSampleStream(for mode: SportMode) {
         sampleCancellables.removeAll()

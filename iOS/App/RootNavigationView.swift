@@ -8,6 +8,11 @@ struct RootNavigationView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
 
+    #if DEBUG
+    @StateObject private var debugFallDetection = useFallDetection()
+    @StateObject private var debugRuntimeOptions = DebugRuntimeOptions.shared
+    #endif
+
     var body: some View {
         ZStack {
             SkateTrackSessionStartColors.navy
@@ -28,12 +33,55 @@ struct RootNavigationView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            #if DEBUG
+            debugToolsButton
+            #endif
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.24), value: sessionRecording.state.status)
         .preferredColorScheme(.dark)
+        #if DEBUG
+        .sheet(isPresented: $debugRuntimeOptions.isDebugToolsPresented) {
+            DebugToolsPanelView(
+                subscriptionStatus: subscriptionStatus,
+                sessionRecording: sessionRecording,
+                fallDetection: debugFallDetection,
+                emergencyContactStore: .shared
+            )
+        }
+        #endif
     }
+
+    #if DEBUG
+    private var debugToolsButton: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button {
+                    debugRuntimeOptions.isDebugToolsPresented = true
+                } label: {
+                    Text("DEV")
+                        .font(.system(size: 10, weight: .black, design: .monospaced))
+                        .foregroundStyle(SkateTrackSessionStartColors.amber)
+                        .padding(.horizontal, 11)
+                        .padding(.vertical, 8)
+                        .background(SkateTrackSessionStartColors.card.opacity(0.82))
+                        .clipShape(Capsule())
+                        .overlay(Capsule().stroke(SkateTrackSessionStartColors.amber.opacity(0.4), lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Debug Tools")
+                .accessibilityIdentifier(DebugToolAction.openPanel.accessibilityIdentifier)
+            }
+            .padding(.top, 58)
+            .padding(.trailing, 16)
+            Spacer()
+        }
+        .allowsHitTesting(true)
+    }
+    #endif
 
     private var shouldShowLiveHUD: Bool {
         switch sessionRecording.state.status {

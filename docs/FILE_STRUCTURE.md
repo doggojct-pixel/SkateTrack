@@ -1,9 +1,9 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-10  
+**Last Updated:** 2026-06-11  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
 **Current Baseline:** Source-controlled repository after Tasks 001–013, inspected from `SkateTrack_Current_For_UI_Diagnosis.zip`  
-**Current Development Gate:** Validate Task-014a Fall Alert Overlay + SOS Event Skeleton, then continue with Task-014b Emergency Contacts Settings + SOS Contact Flow.
+**Current Development Gate:** Task-014b is complete; centralized DEBUG tooling now keeps mock speed out of normal app runtime.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -24,7 +24,9 @@ This document records the current SkateTrack repository structure and developmen
 | Task-011 Session Recording Coordinator | Complete | Session state machine, metrics accumulator, coordinator, hook, and iOS unit tests. |
 | Task-012 Session Start Flow | Functionally complete | Start flow, sport category selection, mode selection, power selection, and gating are implemented. Visual alignment remains tied to Task-013 UI cleanup. |
 | Task-013 Live HUD + Slide-to-End | Functionally complete after hotfixes | Live HUD, pause/resume, slide-to-end, speed trace, icon cleanup, and inline placeholders exist. Remaining visual polish should be handled as focused UI refinements. |
-| Task-014a Fall Alert Overlay + SOS Event Skeleton | Implemented in this hotfix | Fall alert overlay, countdown bridge, cancel / immediate SOS / countdown SOS actions, SOS event model, and dispatcher skeleton are added. Emergency contacts settings remain Task-014b. |
+| Task-014a Fall Alert Overlay + SOS Event Skeleton | Complete | Fall alert overlay, countdown bridge, cancel / immediate SOS / countdown SOS actions, SOS event model, dispatcher skeleton, and DEBUG simulate-fall support exist. |
+| Task-014b Emergency Contacts Settings + SOS Contact Flow | Complete | Local emergency contact settings, contact-aware SOS event payloads, and visible SOS status feedback are implemented. |
+| Debug Tools Follow-up | Complete | DEBUG tools are centralized under `iOS/Features/Debug`; mock speed is explicit Demo Mode only and normal runtime uses real sensor data. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues Blocking Task-014
@@ -136,6 +138,12 @@ SkateTrack/
 │   │   └── Subscription/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
 │   ├── Features/                                   # [協作區] iOS feature modules.
+│   │   ├── Debug/                               # [協作區] DEBUG-only unified development tools.
+│   │   │   ├── DebugFeatureFlag.swift           # [協作區] Central DEBUG tool feature definitions.
+│   │   │   ├── DebugMockSessionFactory.swift    # [協作區] Explicit demo speed / mock session helper; not used by normal app runtime.
+│   │   │   ├── DebugRuntimeOptions.swift        # [協作區] Shared DEBUG runtime presentation state.
+│   │   │   ├── DebugToolAction.swift            # [協作區] Central DEBUG tool action identifiers.
+│   │   │   └── DebugToolsPanelView.swift        # [協作區] Unified Debug Tools panel for fall simulation, demo speed, subscription override, and test data reset.
 │   │   ├── EquipmentManager/                       # [佔位] Future equipment management UI.
 │   │   ├── FallDetection/                          # [協作區] Fall alert / SOS overlay UI.
 │   │   │   ├── EmergencyContactsSettingsView.swift # [協作區] Dark contact settings sheet for local emergency contacts.
@@ -164,7 +172,7 @@ SkateTrack/
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
 │   │   └── Tutorials/                              # [佔位] Future tutorials and onboarding.
 │   └── Hooks/                                      # [協作區 — 邊界適配層] SwiftUI-facing adapters.
-│       ├── useSessionRecording.swift              # [協作區 — 邊界適配層] Observable session state/actions and mock preview support.
+│       ├── useSessionRecording.swift              # [協作區 — 邊界適配層] Observable session state/actions; DEBUG demo speed mode is explicit, not app-runtime default.
 │       ├── useFallDetection.swift                 # [協作區 — 邊界適配層] Observable fall alert state, countdown, cancel and SOS actions.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
@@ -200,6 +208,7 @@ SkateTrack/
 │   ├── verify_fall_detection_engine.py            # [工程設定] Task-010 verification.
 │   ├── verify_fall_alert_ui.py                    # [工程設定] Task-014a Fall Alert overlay / SOS skeleton verification.
 │   ├── verify_feature_flags.py                    # [工程設定] Task-004 verification.
+│   ├── verify_debug_tools.py                      # [工程設定] DEBUG tools centralization and real-speed runtime default verification.
 │   ├── verify_gps_provider.py                     # [工程設定] Task-006 verification.
 │   ├── verify_imu_provider.py                     # [工程設定] Task-007 verification.
 │   ├── verify_live_hud.py                         # [工程設定] Task-013 source-pattern verification; not a visual-layout test.

@@ -193,9 +193,6 @@ struct SessionStartView: View {
                             upgradePrompt(for: upgradePromptFeature)
                         }
 
-                        #if DEBUG
-                        debugSection
-                        #endif
                     }
                     .padding(.horizontal, horizontalPadding)
                     .padding(.bottom, dockHeight + bottomPadding)
@@ -412,16 +409,6 @@ struct SessionStartView: View {
         )
         .accessibilityIdentifier("session-start-upgrade-prompt")
     }
-
-    #if DEBUG
-    private var debugSection: some View {
-        VStack(spacing: 12) {
-            SubscriptionDebugPanel(subscriptionStatus: subscriptionStatus)
-            SessionRecordingPreviewPanel(sessionRecording: sessionRecording)
-        }
-        .padding(.top, 4)
-    }
-    #endif
 }
 
 #Preview("Free User") {

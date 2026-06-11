@@ -394,3 +394,19 @@ This log is append-only. Do not delete or overwrite old entries.
 
 ### Scope Boundary
 - No Contacts framework permission, no real automatic SMS/iMessage dispatch, and no Task-015 persistence were added.
+
+
+## 2026-06-11 — Task-014 Follow-up: Centralized Debug Tools + Real-Speed Runtime Default
+
+### Completed
+- Added a DEBUG-only `iOS/Features/Debug` module as the centralized entry for development tools.
+- Moved Fall Alert simulation out of the Live HUD top bar into `DebugToolsPanelView`.
+- Moved subscription override testing into the same Debug Tools panel instead of leaving it as a separate Start Session section.
+- Changed the normal app runtime to use `useSessionRecording()` so real device Debug runs use live GPS / sensor data by default.
+- Kept mock speed samples available only as an explicit Debug Tools Demo Speed Session option for UI demos and previews.
+- Added `scripts/verify_debug_tools.py` to guard against reintroducing mock speed into the app entry point.
+
+### Scope Boundary
+- No GPSProvider or SensorFusionEngine algorithm changes were made.
+- No Task-014b SOS / emergency contacts production flow changes were made.
+- No Launch Screen, AppIcon, bottom dock, watchOS, macOS, or SwiftLint plugin changes were made.

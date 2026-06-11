@@ -25,10 +25,6 @@ struct SkateTrackApp: App {
 enum SkateTrackAppDependencies {
     @MainActor
     static func makeSessionRecordingViewModel() -> SessionRecordingViewModel {
-        #if DEBUG
-        return useSessionRecording(coordinator: .makeMockCoordinator())
-        #else
-        return useSessionRecording()
-        #endif
+        useSessionRecording()
     }
 }

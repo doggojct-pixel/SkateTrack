@@ -19,6 +19,7 @@ REQUIRED_FILES = [
     "iOS/Features/FallDetection/EmergencyContactsSettingsView.swift",
     "iOS/Features/SessionRecording/LiveSpeedTraceView.swift",
     "iOS/Features/SessionRecording/LiveHUDView.swift",
+    "iOS/Features/Debug/DebugToolsPanelView.swift",
 ]
 
 REQUIRED_KEYS = [
@@ -115,11 +116,15 @@ REQUIRED_SNIPPETS = {
         "@StateObject private var fallDetection",
         "FallDetectionOverlayPresenter",
         "fallDetection.actions.triggerManualSOS",
-        "debug-simulate-fall-button",
         "live-hud-emergency-contacts-button",
         "EmergencyContactsSettingsView",
-        "#if DEBUG",
         "LiveSpeedTraceView",
+    ],
+
+    "iOS/Features/Debug/DebugToolsPanelView.swift": [
+        "DebugToolsPanelView",
+        "fallDetection.actions.simulateFallAlert",
+        "DebugToolAction.simulateFallAlert.accessibilityIdentifier",
     ],
     "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift": [
         "countdownPublisher",

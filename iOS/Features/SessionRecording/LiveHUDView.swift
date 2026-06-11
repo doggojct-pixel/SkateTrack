@@ -202,10 +202,6 @@ struct LiveHUDView: View {
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("live-hud-sos-button")
-
-            #if DEBUG
-            debugSimulateFallButton
-            #endif
         }
     }
 
@@ -225,24 +221,6 @@ struct LiveHUDView: View {
         .accessibilityLabel("Emergency Contacts")
         .accessibilityIdentifier("live-hud-emergency-contacts-button")
     }
-
-    #if DEBUG
-    private var debugSimulateFallButton: some View {
-        Button(action: fallDetection.actions.simulateFallAlert) {
-            Text("FALL")
-                .font(.system(size: 10, weight: .black, design: .monospaced))
-                .foregroundStyle(SkateTrackSessionStartColors.amber)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 8)
-                .background(SkateTrackSessionStartColors.amber.opacity(0.12))
-                .clipShape(Capsule())
-                .overlay(Capsule().stroke(SkateTrackSessionStartColors.amber.opacity(0.42), lineWidth: 1))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Simulate Fall Alert")
-        .accessibilityIdentifier("debug-simulate-fall-button")
-    }
-    #endif
 
     private var speedHero: some View {
         VStack(spacing: 14) {
