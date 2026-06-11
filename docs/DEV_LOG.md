@@ -446,3 +446,36 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_session_repository.py` to verify Task-015a persistence source structure and Xcode project membership.
 - Run the iOS unit-test target in Xcode to execute `SessionRepositoryTests`.
 - Continue running existing session, localization, sensor, fall alert, and debug tools verification scripts after applying this task.
+
+## 2026-06-11 — Task-015b Session Recording Persistence Integration
+
+### Completed
+- Connected `SessionRecordingCoordinator.requestEndSession()` to `SessionRepositoryProtocol.saveCompletedSession(_:)`.
+- Completed sessions are now saved through the local repository before `completedSessionPublisher` emits.
+- Added repository error surfacing so local save failures publish localized repository error keys instead of crashing or being mislabeled as state-transition errors.
+- Confirmed `discardCurrentSession()` does not save discarded sessions.
+- Moved DEBUG-only mock speed feed helpers into `SessionRecordingCoordinator+DebugMock.swift` to keep the core coordinator under the file-size guideline while preserving Demo Speed Session behavior.
+- Added iOS unit coverage for save-before-publish, discard-without-save, and persistence failure behavior.
+- Added `scripts/verify_session_persistence_integration.py` for Task-015b source-structure and integration checks.
+
+### Scope Boundary
+- No History UI, Session Summary UI, map UI, equipment mileage, spot management, Google Drive sync, or CloudKit sync was added.
+- No GPSProvider, IMUProvider, SensorFusionEngine, FallDetectionEngine algorithm, Debug Tools UI, SOS / Emergency Contacts, Launch Screen, AppIcon, bottom dock, watchOS UI, or macOS UI changes were made.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_persistence_integration.py` with the existing repository, session coordinator, localization, sensor, debug tools, fall alert, and emergency contacts verification scripts.
+- Run the iOS unit-test target in Xcode to execute the expanded `SessionRecordingCoordinatorTests` and existing `SessionRepositoryTests`.
+
+
+## 2026-06-11 — Task-015 Documentation Refresh
+
+### Completed
+- Updated the living file-structure documentation after Task-015b was validated in Xcode.
+- Marked Task-015b Session Recording Persistence Integration as complete rather than hotfix-pending.
+- Refreshed the repository inventory, validation command list, current known follow-ups, and next-step guidance to match the persistence-enabled baseline.
+- Confirmed Task-015a / Task-015b documentation now records both the local persistence foundation and session-end auto-save integration.
+
+### Scope Boundary
+- No product source, persistence logic, session recording behavior, UI, sensor, safety, icon, watchOS, or macOS code was changed by this documentation refresh.
+- This entry only documents the already-tested Task-015b state before committing the documentation update.
+

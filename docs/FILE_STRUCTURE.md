@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-11  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Current Baseline:** Source-controlled repository after Tasks 001–013, inspected from `SkateTrack_Current_For_UI_Diagnosis.zip`  
-**Current Development Gate:** Task-014b is complete; centralized DEBUG tooling now keeps mock speed out of normal app runtime.
+**Current Baseline:** Source-controlled repository after Task-015b Session Recording Persistence Integration  
+**Current Development Gate:** Task-015b is complete; completed sessions now save through the local repository before publish.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -27,18 +27,20 @@ This document records the current SkateTrack repository structure and developmen
 | Task-014a Fall Alert Overlay + SOS Event Skeleton | Complete | Fall alert overlay, countdown bridge, cancel / immediate SOS / countdown SOS actions, SOS event model, dispatcher skeleton, and DEBUG simulate-fall support exist. |
 | Task-014b Emergency Contacts Settings + SOS Contact Flow | Complete | Local emergency contact settings, contact-aware SOS event payloads, and visible SOS status feedback are implemented. |
 | Debug Tools Follow-up | Complete | DEBUG tools are centralized under `iOS/Features/Debug`; mock speed is explicit Demo Mode only and normal runtime uses real sensor data. |
-| Task-015a Local Persistence Foundation | Complete in hotfix | Core Data stack, session repository, motion sample file store, fall-event read repository, export/delete API, and repository unit tests are prepared. Task-015b will connect session end auto-save. |
+| Task-015a Local Persistence Foundation | Complete | Core Data stack, session repository, motion sample file store, fall-event read repository, export/delete API, and repository unit tests are prepared. |
+| Task-015b Session Persistence Integration | Complete | Session end now saves through SessionRepository before completed-session publish; discard does not save; repository errors surface as localized keys. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
-## Current Known Issues Blocking Task-014
+## Current Known Issues / Follow-up
 
 | Issue | Impact | Likely Area |
 |---|---|---|
-| iOS Session Start and Live HUD still do not visually occupy the intended full phone canvas. | UI does not match uploaded full-screen mockups. | `SessionStartView.swift`, `LiveHUDView.swift`, root layout, safe-area / bottom-control architecture. |
-| Start Session / Slide-to-End controls can be clipped near the bottom. | Manual testing cannot confidently validate Task-013 controls. | Bottom dock, `ScrollView`, container height, safe-area padding. |
-| Custom inline-skating glyph regressed visually. | Inline mode icon is not acceptable and should be redrawn from a stable vector/asset approach. | `SportCategoryPickerView.swift`, `InlineModeSelectorView.swift`, `ModeSelectionCardView.swift`, related glyph component. |
-| App icon assets are present but runtime app icon is not applied correctly. | iOS/watchOS/macOS app icon is not reliably visible in the actual running app / Dock / simulator. | Asset catalog membership, target build settings, generated Info.plist icon keys, Xcode cache. |
-| Verification scripts passed despite visual failure. | Current scripts verify source patterns, not actual rendered layout or target runtime icon result. | `scripts/verify_live_hud.py`, `verify_session_start_flow.py`, `verify_app_icons.py`. |
+| Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
+| Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
+| Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
+| History UI and Session Summary UI are not built yet. | Task-015b saves completed sessions, but users cannot browse persisted sessions in the UI yet. | Future History / Summary tasks consuming `SessionRepositoryProtocol`. |
+| Equipment mileage, spot linkage, and cloud sync remain future tasks. | Core Data entities exist as foundations, but product flows are not connected. | Future equipment, spot, Google Drive / CloudKit tasks. |
+
 
 ## Zone Legend
 
@@ -57,11 +59,11 @@ This document records the current SkateTrack repository structure and developmen
 
 | Area | Current Contents | Count / Notes |
 |---|---|---:|
-| Swift source files | App entries, shared models/utilities, iOS engines, iOS UI, hooks, watchOS/macOS shells, tests | 47 Swift files |
-| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, app icons | 12 scripts |
+| Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~70 Swift files |
+| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, and persistence | 18 scripts |
 | Task prompt packs | Task-002 through Task-013 task documentation folders | 11 task folders |
 | App-icon images | Generated iOS/watchOS/macOS PNG icon assets plus macOS `.icns` | 103 image/icon files in current baseline |
-| Tests | iOS session recording coordinator tests | 1 active iOS test file |
+| Tests | iOS session recording coordinator and session repository tests | 2 active iOS test files |
 | Living docs | `docs/FILE_STRUCTURE.md`, `docs/DEV_LOG.md` | Active |
 
 ## Annotated Repository Tree
@@ -143,6 +145,7 @@ SkateTrack/
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
+│   │   │   ├── SessionRecordingCoordinator+DebugMock.swift # [自主區] DEBUG-only demo speed sample feed.
 │   │   │   └── SessionStateMachine.swift           # [自主區] Strict session-state transition rules.
 │   │   └── Subscription/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
@@ -207,7 +210,7 @@ SkateTrack/
 │       └── VideoOverlay/                          # [佔位] Future video overlay analysis.
 ├── Tests/                                         # Test source tree.
 │   ├── iOSTests/
-│   │   ├── SessionRecordingCoordinatorTests.swift  # [工程設定] Six iOS unit tests for state transitions and session coordinator behavior.
+│   │   ├── SessionRecordingCoordinatorTests.swift  # [工程設定] iOS unit tests for state transitions, session coordinator behavior, and Task-015b persistence integration.
 │   │   └── SessionRepositoryTests.swift            # [工程設定] Task-015a persistence save / fetch / export / delete tests.
 │   ├── watchOSTests/                              # [佔位] Future watchOS tests.
 │   └── macOSTests/                                # [佔位] Future macOS tests.
@@ -226,7 +229,8 @@ SkateTrack/
 │   ├── verify_portrait_fall_tilt_rework.py        # [工程設定] Portrait lock, conservative tilt display, and fall-alert surfacing gate verification.
 │   ├── verify_sensor_fusion_engine.py             # [工程設定] Task-009 verification.
 │   ├── verify_session_recording_coordinator.py    # [工程設定] Task-011 verification.
-│   ├── verify_session_repository.py               # [工程設定] Task-015a persistence foundation verification.
+│   ├── verify_session_repository.py               # [工程設定] Task-015 persistence foundation verification.
+│   ├── verify_session_persistence_integration.py   # [工程設定] Task-015b recording-to-repository integration verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.
@@ -263,18 +267,21 @@ python3 scripts/verify_fall_detection_engine.py
 python3 scripts/verify_session_recording_coordinator.py
 python3 scripts/verify_session_start_flow.py
 python3 scripts/verify_live_hud.py
+python3 scripts/verify_debug_tools.py
+python3 scripts/verify_fall_alert_ui.py
+python3 scripts/verify_emergency_contacts.py
+python3 scripts/verify_portrait_fall_tilt_rework.py
+python3 scripts/verify_session_repository.py
+python3 scripts/verify_session_persistence_integration.py
 python3 scripts/verify_app_icons.py
 ```
 
-Important: the UI-related scripts currently verify file existence, localization keys, and source-pattern contracts. They do **not** prove that rendered iPhone layout is visually full-screen, and they do **not** prove that runtime Dock/simulator app icons are actually applied. Manual Xcode / simulator validation remains required for Task-013 UI acceptance.
+Important: the UI-related scripts currently verify file existence, localization keys, and source-pattern contracts. They do **not** prove rendered iPhone layout or runtime app-icon cache behavior. Manual Xcode / simulator / device validation remains required for visual acceptance.
+
 
 ## Recommended Next Step
 
-Before Task-014, run a focused Task-013 repair pass with the following scope only:
-
-1. Diagnose the actual SwiftUI container that still constrains Session Start / Live HUD layout.
-2. Replace the custom inline glyph with a stable, previewable vector asset or a clearly isolated `InlineSkateGlyph` component.
-3. Verify iOS/watchOS/macOS AppIcon target wiring directly against `project.pbxproj`, asset-catalog membership, and runtime cache behavior.
-4. Strengthen the verification scripts so they no longer pass while the visual acceptance criteria fail.
-
-Task-014 Fall Alert / SOS UI should remain blocked until the Task-013 visual and icon issues are accepted.
+1. Commit the Task-015b documentation refresh together with the already-tested Task-015b source changes if those source changes are still staged locally.
+2. Create a fresh post-Task-015b baseline zip before beginning the next Build Plan task.
+3. Continue to keep Task-016+ work separate from persistence foundation work. The next task should consume `SessionRepositoryProtocol` instead of duplicating Core Data access in Views.
+4. History / Summary UI should read from the repository layer added in Task-015a / Task-015b; Views should not import or manipulate `NSManagedObject` directly.
