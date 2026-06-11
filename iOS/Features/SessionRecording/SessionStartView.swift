@@ -150,6 +150,7 @@ struct SessionStartView: View {
     @State private var selectedPowerType: PowerType = .humanPowered
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
+    @State private var isHealthReminderSettingsPresented = false
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
@@ -185,6 +186,12 @@ struct SessionStartView: View {
                             }
 
                         previewMetricStrip
+
+                        HealthReminderSettingsEntryCardView(
+                            subscriptionStatus: subscriptionStatus,
+                            onOpen: { isHealthReminderSettingsPresented = true }
+                        )
+
                         modeSelector
 
                         if selectedCategory == .skateboard {
@@ -228,6 +235,9 @@ struct SessionStartView: View {
                 subscriptionStatus: subscriptionStatus,
                 lockedFeature: feature
             )
+        }
+        .sheet(isPresented: $isHealthReminderSettingsPresented) {
+            HealthReminderSettingsView(subscriptionStatus: subscriptionStatus)
         }
         .onChange(of: subscriptionStatus.isSubscriber) { _, isSubscriber in
             if isSubscriber {

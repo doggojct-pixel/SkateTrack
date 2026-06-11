@@ -354,3 +354,38 @@
 "summary.advancedCharts.heartRate.subtitle" = "已先為未來 HealthKit / 穿戴裝置整合預留。";
 
 "summary.advancedCharts.heartRate.noFakeData" = "在真實穿戴資料存在前，不顯示假的心率區間。";
+
+// Task-019a health reminder settings foundation
+"health.reminders.nav_title" = "健康提醒";
+"health.reminders.eyebrow" = "安全";
+"health.reminders.title" = "健康提醒";
+"health.reminders.subtitle" = "先建立喝水、休息、伸展、高溫與 UV 提醒規則；Session 中提醒與天氣風險會在 Task-019 後續階段接上。";
+"health.reminders.entry.title" = "健康提醒";
+"health.reminders.entry.enabled_badge" = "READY";
+"health.reminders.entry.pro_badge" = "PRO";
+"health.reminders.entry.subtitle.unlocked" = "設定本機喝水、休息、伸展、高溫與 UV 提醒規則。";
+"health.reminders.entry.subtitle.locked" = "可預覽 Pro 健康提醒設定；儲存規則需要訂閱者權限。";
+"health.reminders.access.unlocked.title" = "訂閱者權限已啟用";
+"health.reminders.access.unlocked.subtitle" = "設定會儲存在本機。Session 內提醒與天氣風險監測會在 Task-019 後續階段接上。";
+"health.reminders.access.locked.title" = "Pro 設定已鎖定";
+"health.reminders.access.locked.subtitle" = "免費用戶可以預覽提醒內容；儲存設定需要 SkateTrack Pro。";
+"health.reminders.settings.section_title" = "提醒規則";
+"health.reminders.locked.title" = "解鎖健康提醒設定";
+"health.reminders.locked.subtitle" = "喝水、休息、伸展、高溫與 UV 提醒設定是 SkateTrack Pro 的安全輔助層。本版本仍使用 Task-016 的 DEBUG / 本機權限模擬。";
+"health.reminders.locked.cta" = "查看 SkateTrack Pro";
+"health.reminders.locked.deferred_notice" = "正式 App Store 購買仍延後接入。未來盈利時會替換 provider 層，不重寫這個設定 UI。";
+"health.reminders.reset" = "重設提醒預設值";
+"health.reminders.interval.label" = "間隔";
+"health.reminders.threshold.heat" = "高溫門檻";
+"health.reminders.threshold.uv" = "UV 門檻";
+"health.reminders.hydration.title" = "喝水提醒";
+"health.reminders.hydration.subtitle" = "準備在有效滑行時間累積後，提醒使用者補充水分。";
+"health.reminders.rest.title" = "休息提醒";
+"health.reminders.rest.subtitle" = "準備在長時間連續滑行後，提醒使用者休息。";
+"health.reminders.cooldown.title" = "結束後伸展";
+"health.reminders.cooldown.subtitle" = "準備在 Session 結束後提醒收操伸展。";
+"health.reminders.heat.title" = "高溫警示";
+"health.reminders.heat.subtitle" = "先建立高溫警示本機規則；真實天氣資料延後接入。";
+"health.reminders.uv.title" = "UV 警示";
+"health.reminders.uv.subtitle" = "先建立 UV 門檻規則；真實 UV 資料延後接入。";
+"health.reminders.preview.section_title" = "預覽規則";

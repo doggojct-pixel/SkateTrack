@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-11
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-018c Advanced Charts + Subscription Gating
-**Current Development Gate:** Task-018c is complete as the subscriber-gated advanced chart layer using DEBUG/local entitlement simulation. Real share-card export, real HealthKit / watchOS heart-rate data, and production App Store Connect monetization remain deferred.
+**Current Baseline:** Source-controlled repository after Task-019a Health Reminder Rules + Settings Foundation
+**Current Development Gate:** Task-019a is complete as a subscriber-gated health reminder settings foundation using DEBUG/local entitlement simulation. Live reminder banners, UserNotifications scheduling, real WeatherKit / weather providers, and production App Store Connect monetization remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -36,6 +36,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-018a Session Summary Foundation + Core Metrics | Complete | Unlocked History cards now open the real Summary foundation with repository-loaded core metrics plus route/chart/health placeholders. |
 | Task-018b Route Map + Safety / Share Stub | Complete | Summary now renders a MapKit route preview when valid GPS samples exist, preserves no-route empty states, summarizes local fall-event safety status, and exposes a deferred share stub. |
 | Task-018c Advanced Charts + Subscription Gating | Complete | Summary now renders subscriber-gated speed and elevation Swift Charts, keeps free users on a locked Pro preview routed through the existing Paywall, and preserves the no-fake-data heart-rate placeholder. Production monetization remains deferred. |
+| Task-019a Health Reminder Rules + Settings Foundation | Complete | Health reminder rules, local settings store, SwiftUI hook, settings sheet, Ride entry card, Pro locked preview, DEBUG/local entitlement editing, localization, docs, and verification script are implemented. Live reminders and real weather remain deferred. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -46,6 +47,7 @@ This document records the current SkateTrack repository structure and developmen
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
 | Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
+| Live health reminders, UserNotifications scheduling, and real weather risk are not built yet. | Task-019a saves local reminder settings only. Session banners, notification permission flow, WeatherKit / weather providers, high-temperature live alerts, and UV live alerts remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future Task-019b / Task-019c. |
 | Equipment mileage, spot linkage, and cloud sync remain future tasks. | Core Data entities exist as foundations, but product flows are not connected. | Future equipment, spot, Google Drive / CloudKit tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
@@ -150,6 +152,9 @@ SkateTrack/
 │   │   │   ├── EmergencyContactStore.swift         # [自主區] Local UserDefaults-backed emergency contact store for Phase 1a.
 │   │   │   ├── SOSEventDispatcher.swift            # [自主區] Phase 1a contact-aware SOS event dispatcher; records events without pretending to auto-send SMS.
 │   │   │   └── SessionRecordingCoordinator+FallSafety.swift # [自主區] Fall alert cancel / manual SOS / immediate SOS actions.
+│   │   ├── HealthReminders/                        # [自主區] Task-019a local health reminder settings foundation.
+│   │   │   ├── HealthReminderRule.swift            # [自主區] Codable reminder rule models for hydration, rest, stretch, heat, and UV settings.
+│   │   │   └── HealthReminderSettingsStore.swift   # [自主區] UserDefaults-backed local settings store; no scheduling or real weather provider yet.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
@@ -169,7 +174,8 @@ SkateTrack/
 │   │   │   ├── EmergencyContactsSettingsView.swift # [協作區] Dark contact settings sheet for local emergency contacts.
 │   │   │   ├── FallDetectionAlertView.swift        # [協作區] Dark neon fall alert card, countdown, contact status, cancel and SOS buttons.
 │   │   │   └── FallDetectionOverlayPresenter.swift # [協作區] High-priority overlay and SOS status presenter for Live HUD.
-│   │   ├── HealthReminders/                        # [佔位] Future rest, hydration, heat, and safety reminders.
+│   │   ├── HealthReminders/                        # [協作區] Task-019a health reminder settings UI.
+│   │   │   └── HealthReminderSettingsView.swift    # [協作區] Dark Pro-gated settings sheet plus Ride entry card for health reminders.
 │   │   ├── RouteMap/                               # [佔位] Future full route map and replay UI.
 │   │   ├── SessionRecording/                       # [協作區] Session Start and Live HUD UI components.
 │   │   │   ├── BoardModeSelectorView.swift         # [協作區] Skateboard mode selector.
@@ -218,6 +224,7 @@ SkateTrack/
 │   └── Hooks/                                      # [協作區 — 邊界適配層] SwiftUI-facing adapters.
 │       ├── useSessionRecording.swift              # [協作區 — 邊界適配層] Observable session state/actions; DEBUG demo speed mode is explicit, not app-runtime default.
 │       ├── useFallDetection.swift                 # [協作區 — 邊界適配層] Observable fall alert state, countdown, cancel and SOS actions.
+│       ├── useHealthReminders.swift               # [協作區 — 邊界適配層] Observable health reminder settings and Pro access boundary.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/
@@ -314,6 +321,7 @@ python3 scripts/verify_subscription_entitlement_simulation.py
 python3 scripts/verify_subscription_paywall.py
 python3 scripts/verify_session_history.py
 python3 scripts/verify_session_summary.py
+python3 scripts/verify_health_reminders.py
 python3 scripts/verify_app_icons.py
 ```
 

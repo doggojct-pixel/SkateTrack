@@ -95,3 +95,8 @@ Task-018b adds the local Summary route map, safety recap, and share-entry stub w
 ## Task-018c confirmation
 
 Task-018c is the first Summary task that introduces subscriber-only advanced chart UI. It follows the project-wide paid feature rule by gating chart access with `GatedFeature.advancedCharts`, `useSubscriptionStatus`, and the existing Task-016b Paywall. Free users receive a locked advanced-chart preview; DEBUG/local entitlement simulation can unlock the full speed and elevation charts during development. No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, or `AppStore.sync()` path is introduced.
+
+
+## Task-019a confirmation
+
+Task-019a introduces the health reminder settings foundation as a subscriber-gated Phase 1a safety feature. It follows the project-wide paid feature rule by gating editable reminder settings with `GatedFeature.healthReminders`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture. Free users can preview the settings and open the existing Paywall; DEBUG/local entitlement simulation can unlock editable local settings during development. No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, `AppStore.sync()`, WeatherKit, UserNotifications scheduling, or real weather-risk provider path is introduced.

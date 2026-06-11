@@ -676,3 +676,28 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
 - Manual validation should confirm free users see locked advanced chart previews that open the Paywall, DEBUG subscriber simulation unlocks speed and elevation charts, heart-rate zones remain a no-fake-data placeholder, and route/safety/share Summary sections still work.
+
+
+## 2026-06-11 — Task-019a Health Reminder Rules + Settings Foundation
+
+### Completed
+- Added the Task-019a health reminder settings foundation without introducing live-session scheduling, system notifications, or real weather data.
+- Added `HealthReminderRule` and `HealthReminderSettingsStore` under `iOS/Core/HealthReminders` to define hydration, rest, cooldown stretch, heat-risk, and UV-risk reminder preferences.
+- Added `useHealthReminders` as the SwiftUI-facing boundary so Views do not directly manipulate reminder storage or subscription entitlement state.
+- Added `HealthReminderSettingsView` and a compact `HealthReminderSettingsEntryCardView` using the existing SkateTrack dark / neon visual language.
+- Connected the health reminder entry card to the Ride start screen while keeping Start Session, Live HUD, History, Summary, and Paywall flows unchanged.
+- Free users can preview the health reminder settings and are routed to the existing Task-016b Paywall; subscriber / DEBUG-local entitlement simulation users can save reminder settings locally.
+- Added `scripts/verify_health_reminders.py` to guard file presence, project membership, localization, paid-feature boundaries, deferred notification/weather scope, and documentation updates.
+- Updated living documentation and ADR-0001 to record that Task-019 health reminder paid functionality continues the project-wide DEBUG/local entitlement simulation strategy.
+
+### Paid Feature / Monetization Boundary
+- Health reminders are gated through `GatedFeature.healthReminders`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture.
+- Task-019a does not introduce production StoreKit purchase, App Store Connect products, sandbox tester flow, transaction validation, `AppStore.sync()`, real WeatherKit, or real notification scheduling.
+- DEBUG/local entitlement simulation remains the development path; production monetization remains deferred to a future `AppStoreSubscriptionProvider` task.
+
+### Scope Boundary
+- No live-session reminder banner, UserNotifications scheduling, WeatherKit, real weather provider, high-temperature live alert, UV live alert, Watch haptic, GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_health_reminders.py` together with localization, subscription entitlement simulation, subscription Paywall, feature flag, debug tools, and existing session summary/history verification scripts.
+- Manual validation should confirm free users can preview health reminders but cannot save settings, Paywall routing works, DEBUG subscriber simulation unlocks editable settings, and Ride / History / Summary flows remain unchanged.

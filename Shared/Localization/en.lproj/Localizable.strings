@@ -354,3 +354,38 @@
 "summary.advancedCharts.heartRate.subtitle" = "Prepared for future HealthKit / wearable integration.";
 
 "summary.advancedCharts.heartRate.noFakeData" = "No fake heart-rate zones are shown before real wearable data exists.";
+
+// Task-019a health reminder settings foundation
+"health.reminders.nav_title" = "Health Reminders";
+"health.reminders.eyebrow" = "Safety";
+"health.reminders.title" = "Health reminders";
+"health.reminders.subtitle" = "Prepare hydration, rest, stretch, heat, and UV reminder rules before live-session banners and weather risk are connected.";
+"health.reminders.entry.title" = "Health reminders";
+"health.reminders.entry.enabled_badge" = "READY";
+"health.reminders.entry.pro_badge" = "PRO";
+"health.reminders.entry.subtitle.unlocked" = "Set local reminder rules for hydration, breaks, stretch, heat, and UV checks.";
+"health.reminders.entry.subtitle.locked" = "Preview the Pro health reminder settings. Saving rules requires subscriber access.";
+"health.reminders.access.unlocked.title" = "Subscriber access active";
+"health.reminders.access.unlocked.subtitle" = "Settings are saved locally. Session banners and weather risk monitoring will be connected in later Task-019 phases.";
+"health.reminders.access.locked.title" = "Pro setting locked";
+"health.reminders.access.locked.subtitle" = "Free users can preview these reminders, but saving settings requires SkateTrack Pro.";
+"health.reminders.settings.section_title" = "Reminder rules";
+"health.reminders.locked.title" = "Unlock health reminder settings";
+"health.reminders.locked.subtitle" = "Hydration, rest, stretch, heat, and UV reminder settings are planned as a SkateTrack Pro safety layer. This build still uses the Task-016 DEBUG/local entitlement simulation.";
+"health.reminders.locked.cta" = "View SkateTrack Pro";
+"health.reminders.locked.deferred_notice" = "Production App Store purchases remain deferred. Future monetization will replace the provider layer without rewriting this settings UI.";
+"health.reminders.reset" = "Reset reminder defaults";
+"health.reminders.interval.label" = "Interval";
+"health.reminders.threshold.heat" = "Heat threshold";
+"health.reminders.threshold.uv" = "UV threshold";
+"health.reminders.hydration.title" = "Hydration reminder";
+"health.reminders.hydration.subtitle" = "Prepare an in-session reminder to drink water after active riding time.";
+"health.reminders.rest.title" = "Rest reminder";
+"health.reminders.rest.subtitle" = "Prepare a break reminder for long continuous sessions.";
+"health.reminders.cooldown.title" = "Post-session stretch";
+"health.reminders.cooldown.subtitle" = "Prepare a cooldown reminder after the session ends.";
+"health.reminders.heat.title" = "High temperature warning";
+"health.reminders.heat.subtitle" = "Prepare a local rule for high-temperature warnings. Real weather data is deferred.";
+"health.reminders.uv.title" = "UV warning";
+"health.reminders.uv.subtitle" = "Prepare a local UV threshold rule. Real UV data is deferred.";
+"health.reminders.preview.section_title" = "Preview rules";
