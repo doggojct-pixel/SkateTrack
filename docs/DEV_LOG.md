@@ -590,3 +590,20 @@ This log is append-only. Do not delete or overwrite old entries.
 
 ### Scope Boundary
 - No Ride screen spacing, History data loading, free-limit gating, Paywall behavior, subscription entitlement logic, project settings, sensor engines, or persistence behavior was changed.
+
+
+## 2026-06-11 — Task-017b History Navigation + Summary Handoff
+
+### Completed
+- Extracted the History selected-session placeholder into `SessionSummaryHandoffView` so Task-018 can replace one dedicated handoff screen with the real Summary UI.
+- Kept unlocked History card taps routed to the Summary handoff and locked old-session taps routed to the Task-016b Paywall.
+- Added a compact session identity and metric preview to the handoff screen without implementing route maps, charts, export, or detailed analytics.
+- Updated History localization keys and `scripts/verify_session_history.py` so the verification script covers the Task-017b handoff file, project membership, and localization.
+- Preserved the project-wide paid-feature rule from ADR-0001: free-limit and Paywall behavior still consume `useSubscriptionStatus` / `FeatureFlagEngine` and DEBUG/local entitlement simulation only.
+
+### Scope Boundary
+- No real StoreKit purchase, App Store Connect setup, sandbox tester flow, `AppStore.sync()`, transaction validation, production subscription claim, real Session Summary, route map, charts, export, delete, calendar view, GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_history.py` together with localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
+- Manual validation should confirm unlocked History cards open the Summary handoff, locked cards still open Paywall, and DEBUG subscriber simulation still unlocks full History.

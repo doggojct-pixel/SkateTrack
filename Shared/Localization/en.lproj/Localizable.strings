@@ -252,3 +252,14 @@
 "history.summary.placeholder.title" = "Summary opens next";
 "history.summary.placeholder.subtitle" = "Task-017a confirms this saved session is accessible. The full Summary, route map, and charts arrive in Task-018.";
 "history.summary.placeholder.close" = "Close";
+
+// Task-017b history-to-summary handoff readiness
+"history.summary.handoff.title" = "Summary handoff ready";
+"history.summary.handoff.subtitle" = "This saved session is ready for the Task-018 Summary screen. Full route, charts, and deeper analysis are intentionally not shown yet.";
+"history.summary.handoff.distance" = "Distance";
+"history.summary.handoff.maxSpeed" = "Max speed";
+"history.summary.handoff.duration" = "Duration";
+"history.summary.handoff.avgSpeed" = "Avg speed";
+"history.summary.handoff.nextTaskTitle" = "Task-018 takes over next";
+"history.summary.handoff.nextTaskSubtitle" = "History now owns the selected-session handoff. Task-018 can replace this placeholder with the real Summary UI without changing free-limit or Paywall routing.";
+"history.summary.handoff.close" = "Back to History";

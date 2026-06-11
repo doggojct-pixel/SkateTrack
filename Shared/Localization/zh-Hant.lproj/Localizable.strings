@@ -252,3 +252,14 @@
 "history.summary.placeholder.title" = "Summary 下一步接上";
 "history.summary.placeholder.subtitle" = "Task-017a 先確認這筆 Session 可被開啟。完整 Summary、路線地圖與圖表會在 Task-018 實作。";
 "history.summary.placeholder.close" = "關閉";
+
+// Task-017b history-to-summary handoff readiness
+"history.summary.handoff.title" = "Summary 銜接已就緒";
+"history.summary.handoff.subtitle" = "這筆已儲存 Session 已經可以交給 Task-018 Summary 畫面。完整路線、圖表與深入分析目前刻意尚未顯示。";
+"history.summary.handoff.distance" = "距離";
+"history.summary.handoff.maxSpeed" = "最高速度";
+"history.summary.handoff.duration" = "時間";
+"history.summary.handoff.avgSpeed" = "平均速度";
+"history.summary.handoff.nextTaskTitle" = "下一步交給 Task-018";
+"history.summary.handoff.nextTaskSubtitle" = "History 現在已經負責 selected-session handoff。Task-018 可以用真正 Summary UI 取代這個佔位畫面，不需要改動免費限制或 Paywall 路由。";
+"history.summary.handoff.close" = "回到歷史紀錄";

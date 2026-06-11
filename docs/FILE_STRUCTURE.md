@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-11
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-017a Session History Foundation + Free Limit
-**Current Development Gate:** Task-017a is complete as a local Session History foundation with free 5-session limit and Paywall routing through DEBUG/local entitlement simulation; production App Store Connect monetization remains deferred until Apple Developer Program setup.
+**Current Baseline:** Source-controlled repository after Task-017b History Navigation + Summary Handoff
+**Current Development Gate:** Task-017b is complete as a History-to-Summary handoff layer on top of the local History foundation. Real Session Summary, route maps, charts, export, and production App Store Connect monetization remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -32,6 +32,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-016a Subscription Entitlement Simulation Architecture | Complete | Replaceable entitlement provider architecture, local/free simulation, DEBUG-only override provider, product catalog constants, ADR-0001, and verification script are implemented. Production App Store Connect subscription remains deferred. |
 | Task-016b Paywall UI + Locked Feature Flow | Complete | Reusable Paywall, subscriber benefits list, restore button, locked-feature overlay, locked inline-mode Paywall routing, DEBUG purchase state simulation, localization, and verification script are implemented. |
 | Task-017a Session History Foundation + Free Limit | Complete | Local Session History screen, filters, month grouping, weekly distance summary, free 5-session limit, locked older cards, Paywall routing, and DEBUG/local entitlement strategy documentation are implemented. |
+| Task-017b History Navigation + Summary Handoff | Complete | Unlocked History cards now open a dedicated Summary handoff placeholder; locked cards continue to open Paywall. Real Summary, route maps, charts, and export remain Task-018+. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -41,7 +42,7 @@ This document records the current SkateTrack repository structure and developmen
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
-| Session Summary UI is not built yet. | Task-017a can browse persisted sessions, but detailed Summary, route map, and charts remain Task-018. | Future Summary tasks consuming `SessionRepositoryProtocol`; Task-017a History UI lives under `iOS/Features/SessionHistory`. |
+| Session Summary UI is not built yet. | Task-017b provides a selected-session handoff placeholder, but detailed Summary, route map, charts, export, and analysis remain Task-018+. | Future Summary tasks consuming `SessionRepositoryProtocol`; History handoff UI lives under `iOS/Features/SessionHistory`. |
 | Equipment mileage, spot linkage, and cloud sync remain future tasks. | Core Data entities exist as foundations, but product flows are not connected. | Future equipment, spot, Google Drive / CloudKit tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
@@ -188,11 +189,12 @@ SkateTrack/
 │   │   │   ├── SubscriberBenefitsListView.swift    # [協作區] Reusable subscriber benefit rows.
 │   │   │   ├── RestorePurchaseButton.swift         # [協作區] Restore UI that refreshes local entitlement until real StoreKit restore is added.
 │   │   │   └── LockedFeatureOverlayView.swift      # [協作區] Locked-feature prompt used by Session Start before opening Paywall.
-│   │   ├── SessionHistory/                         # [協作區] Task-017a local History UI and free-limit Paywall flow.
+│   │   ├── SessionHistory/                         # [協作區] Task-017a local History UI plus Task-017b Summary handoff readiness.
 │   │   │   ├── SessionHistoryView.swift            # [協作區] Main History screen with summary, filters, repository state, and Paywall routing.
 │   │   │   ├── SessionHistoryListView.swift        # [協作區] Month-grouped saved-session list.
 │   │   │   ├── SessionHistoryCardView.swift        # [協作區] Saved-session card with locked old-session state.
 │   │   │   ├── SessionHistoryFilterBar.swift       # [協作區] All / Skate / Inline / Electric filter bar.
+│   │   │   ├── SessionSummaryHandoffView.swift      # [協作區] Task-017b selected-session placeholder handoff for Task-018 Summary.
 │   │   │   └── HistoryLimitPaywallBanner.swift     # [協作區] Free 5-session limit upgrade banner.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
 │   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
@@ -248,7 +250,7 @@ SkateTrack/
 │   ├── verify_session_persistence_integration.py   # [工程設定] Task-015b recording-to-repository integration verification.
 │   ├── verify_subscription_entitlement_simulation.py # [工程設定] Task-016a subscription entitlement provider architecture verification.
 │   ├── verify_subscription_paywall.py              # [工程設定] Task-016b Paywall / locked feature flow verification.
-│   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit verification.
+│   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit plus Task-017b handoff verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.

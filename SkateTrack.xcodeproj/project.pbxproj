@@ -67,6 +67,7 @@
 		17A100000000000000000104 /* SessionHistoryFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000004 /* SessionHistoryFilterBar.swift */; };
 		17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */; };
 		17A100000000000000000106 /* useSessionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000006 /* useSessionHistory.swift */; };
+		17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B200000000000000000001 /* SessionSummaryHandoffView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -248,6 +249,7 @@
 		17A100000000000000000004 /* SessionHistoryFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryFilterBar.swift; sourceTree = "<group>"; };
 		17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryLimitPaywallBanner.swift; sourceTree = "<group>"; };
 		17A100000000000000000006 /* useSessionHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionHistory.swift; sourceTree = "<group>"; };
+		17B200000000000000000001 /* SessionSummaryHandoffView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryHandoffView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,6 +473,7 @@
 				17A100000000000000000003 /* SessionHistoryCardView.swift */,
 				17A100000000000000000004 /* SessionHistoryFilterBar.swift */,
 				17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */,
+				17B200000000000000000001 /* SessionSummaryHandoffView.swift */,
 			);
 			path = iOS/Features/SessionHistory;
 			sourceTree = SOURCE_ROOT;
@@ -793,6 +796,7 @@
 				17A100000000000000000104 /* SessionHistoryFilterBar.swift in Sources */,
 				17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */,
 				17A100000000000000000106 /* useSessionHistory.swift in Sources */,
+				17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

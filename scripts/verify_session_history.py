@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-017a Session History foundation and free-limit contracts."""
+"""Verify Task-017a/017b Session History, free-limit, and Summary handoff contracts."""
 
 from pathlib import Path
 import re
@@ -13,6 +13,7 @@ REQUIRED_FILES = [
     "iOS/Features/SessionHistory/SessionHistoryCardView.swift",
     "iOS/Features/SessionHistory/SessionHistoryFilterBar.swift",
     "iOS/Features/SessionHistory/HistoryLimitPaywallBanner.swift",
+    "iOS/Features/SessionHistory/SessionSummaryHandoffView.swift",
     "iOS/Hooks/useSessionHistory.swift",
 ]
 
@@ -46,6 +47,15 @@ LOCALIZATION_KEYS = [
     "history.summary.placeholder.title",
     "history.summary.placeholder.subtitle",
     "history.summary.placeholder.close",
+    "history.summary.handoff.title",
+    "history.summary.handoff.subtitle",
+    "history.summary.handoff.distance",
+    "history.summary.handoff.maxSpeed",
+    "history.summary.handoff.duration",
+    "history.summary.handoff.avgSpeed",
+    "history.summary.handoff.nextTaskTitle",
+    "history.summary.handoff.nextTaskSubtitle",
+    "history.summary.handoff.close",
 ]
 
 PROJECT_TOKENS = [
@@ -54,6 +64,7 @@ PROJECT_TOKENS = [
     "SessionHistoryCardView.swift in Sources",
     "SessionHistoryFilterBar.swift in Sources",
     "HistoryLimitPaywallBanner.swift in Sources",
+    "SessionSummaryHandoffView.swift in Sources",
     "useSessionHistory.swift in Sources",
     "iOS/Features/SessionHistory",
 ]
@@ -75,8 +86,17 @@ SOURCE_TOKENS = {
         "HistoryLimitPaywallBanner",
         "SessionHistoryFilterBar",
         "SessionHistoryListView",
+        "SessionSummaryHandoffView",
         "refreshable",
         "history.loadIfNeeded()",
+    ],
+
+    "iOS/Features/SessionHistory/SessionSummaryHandoffView.swift": [
+        "SessionSummaryHandoffView",
+        "Task-018",
+        "history.summary.handoff.title",
+        "history.summary.handoff.nextTaskTitle",
+        "session-summary-handoff-view",
     ],
     "iOS/App/RootNavigationView.swift": [
         "RootPrimaryScreen",
@@ -91,11 +111,14 @@ SOURCE_TOKENS = {
     ],
     "docs/DEV_LOG.md": [
         "Task-017a Session History Foundation + Free Limit",
+        "Task-017b History Navigation + Summary Handoff",
         "free 5-session History limit",
     ],
     "docs/FILE_STRUCTURE.md": [
         "Task-017a Session History Foundation + Free Limit",
+        "Task-017b History Navigation + Summary Handoff",
         "iOS/Features/SessionHistory",
+        "SessionSummaryHandoffView.swift",
         "verify_session_history.py",
     ],
 }
@@ -113,6 +136,7 @@ MAX_LINES = {
     "iOS/Features/SessionHistory/SessionHistoryCardView.swift": 200,
     "iOS/Features/SessionHistory/SessionHistoryFilterBar.swift": 180,
     "iOS/Features/SessionHistory/HistoryLimitPaywallBanner.swift": 180,
+    "iOS/Features/SessionHistory/SessionSummaryHandoffView.swift": 260,
     "iOS/Hooks/useSessionHistory.swift": 350,
 }
 
@@ -194,7 +218,7 @@ def main() -> None:
     verify_project_membership()
     verify_localization()
     verify_source_contracts()
-    print("✅ Task-017a Session History verification passed")
+    print("✅ Task-017a/017b Session History verification passed")
 
 
 if __name__ == "__main__":

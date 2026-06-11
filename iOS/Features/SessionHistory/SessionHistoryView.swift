@@ -8,7 +8,7 @@ struct SessionHistoryView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @StateObject private var history: SessionHistoryViewModel
     @State private var isPaywallPresented = false
-    @State private var selectedPreviewSession: SessionData?
+    @State private var selectedSummarySession: SessionData?
 
     @MainActor
     init(
@@ -62,8 +62,10 @@ struct SessionHistoryView: View {
                 lockedFeature: .unlimitedHistory
             )
         }
-        .sheet(item: $selectedPreviewSession) { session in
-            summaryPlaceholder(for: session)
+        .sheet(item: $selectedSummarySession) { session in
+            SessionSummaryHandoffView(session: session) {
+                selectedSummarySession = nil
+            }
         }
         .accessibilityIdentifier("session-history-view")
     }
@@ -277,45 +279,11 @@ struct SessionHistoryView: View {
         if entry.isLocked {
             isPaywallPresented = true
         } else {
-            selectedPreviewSession = entry.session
+            selectedSummarySession = entry.session
         }
     }
 
-    private func summaryPlaceholder(for session: SessionData) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Capsule()
-                .fill(SkateTrackSessionStartColors.border)
-                .frame(width: 44, height: 5)
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 6)
 
-            Text("history.summary.placeholder.title")
-                .font(.system(size: 24, weight: .black, design: .rounded))
-                .foregroundStyle(.white)
-
-            Text(LocalizedStringKey(session.sportMode.modeLocalizationKey))
-                .font(.system(size: 16, weight: .heavy, design: .rounded))
-                .foregroundStyle(SkateTrackSessionStartColors.teal)
-
-            Text("history.summary.placeholder.subtitle")
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
-                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Button("history.summary.placeholder.close") {
-                selectedPreviewSession = nil
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(SkateTrackSessionStartColors.teal)
-            .padding(.top, 6)
-
-            Spacer()
-        }
-        .padding(24)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
-        .preferredColorScheme(.dark)
-    }
 }
 
 #Preview("History") {

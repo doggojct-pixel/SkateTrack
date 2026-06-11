@@ -77,3 +77,8 @@ Task-017a extends this decision from Task-016-specific subscription work into a 
 - When production monetization begins, add or swap in `AppStoreSubscriptionProvider` behind the existing `SubscriptionEntitlementProviding` boundary instead of rewriting History, Paywall, locked-feature, or other subscriber UI.
 
 Task-017a therefore implements the free 5-session History limit and unlimited-history subscriber behavior using `GatedFeature.unlimitedHistory`, `useSubscriptionStatus`, and the existing Task-016b Paywall. Real App Store purchase, restore, transaction, and subscription validation remain deferred.
+
+
+## Task-017b confirmation
+
+Task-017b continues the same rule while preparing the History-to-Summary handoff. Locked older History entries still open the existing Paywall, unlocked entries open only a local Summary handoff placeholder, and no production StoreKit purchase or restore path is introduced. Future Task-018 Summary UI must consume the same selected-session handoff without bypassing `FeatureFlagEngine`, `useSubscriptionStatus`, or the replaceable entitlement provider strategy.
