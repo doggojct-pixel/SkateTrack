@@ -1,8 +1,8 @@
 # ADR-0001 — Subscription Entitlement Strategy
 
-**Date:** 2026-06-11  
-**Status:** Accepted  
-**Related Task:** Task-016a Subscription Entitlement Simulation Architecture  
+**Date:** 2026-06-11
+**Status:** Accepted
+**Related Task:** Task-016a Subscription Entitlement Simulation Architecture
 **Decision Owner:** SkateTrack project development workflow
 
 ## Context
@@ -82,3 +82,7 @@ Task-017a therefore implements the free 5-session History limit and unlimited-hi
 ## Task-017b confirmation
 
 Task-017b continues the same rule while preparing the History-to-Summary handoff. Locked older History entries still open the existing Paywall, unlocked entries open only a local Summary handoff placeholder, and no production StoreKit purchase or restore path is introduced. Future Task-018 Summary UI must consume the same selected-session handoff without bypassing `FeatureFlagEngine`, `useSubscriptionStatus`, or the replaceable entitlement provider strategy.
+
+## Task-018a confirmation
+
+Task-018a introduces the first real Session Summary foundation and core local metrics, but it does not introduce paid chart gating or production monetization. Route maps, advanced charts, and health/calorie data remain deferred. When Task-018c adds subscriber-only advanced charts, it must continue using the project-wide paid feature rule: `FeatureFlagEngine` and `useSubscriptionStatus` are the app-facing boundaries, DEBUG/local entitlement simulation remains the development path, and production App Store monetization is still deferred until a future `AppStoreSubscriptionProvider` task.

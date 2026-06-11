@@ -607,3 +607,25 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_history.py` together with localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
 - Manual validation should confirm unlocked History cards open the Summary handoff, locked cards still open Paywall, and DEBUG subscriber simulation still unlocks full History.
+
+
+## 2026-06-11 — Task-018a Session Summary Foundation + Core Metrics
+
+### Completed
+- Replaced the Task-017b Summary handoff sheet with the first real `SessionSummaryView` foundation.
+- Added `useSessionSummary` as the SwiftUI-facing boundary for loading a selected session through `SessionRepositoryProtocol` without exposing Core Data to Views.
+- Added `SessionSummaryMetricsGridView` for core local metrics: distance, duration, max speed, average speed, elevation gain, moving ratio, falls, and tricks.
+- Added `SessionSummaryPlaceholderSectionView` for route, chart, and health/calorie placeholders so Task-018b / Task-018c can extend the screen without rewriting History routing.
+- Kept History unlocked-card taps routed into the new Summary foundation and locked old-session taps routed to the existing Paywall.
+- Added `scripts/verify_session_summary.py` and updated History verification to recognize the real Summary handoff target.
+- Updated localization and living documentation for the Task-018a Summary foundation.
+
+### Paid Feature / Monetization Boundary
+- Task-018a does not add paid chart gating yet. Future advanced charts in Task-018c must continue the project-wide Task-016 entitlement-provider strategy: `FeatureFlagEngine` / `useSubscriptionStatus`, DEBUG/local simulation during development, and future `AppStoreSubscriptionProvider` for production monetization.
+
+### Scope Boundary
+- No MapKit route map, Swift Charts, advanced chart gating, real StoreKit purchase, App Store Connect setup, sandbox tester flow, `AppStore.sync()`, transaction validation, production subscription claim, export, delete, calendar view, GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
+- Manual validation should confirm unlocked History cards open the real Summary foundation, locked cards still open Paywall, and Summary shows only core metrics plus route/chart/health placeholders.

@@ -86,7 +86,7 @@ SOURCE_TOKENS = {
         "HistoryLimitPaywallBanner",
         "SessionHistoryFilterBar",
         "SessionHistoryListView",
-        "SessionSummaryHandoffView",
+        "SessionSummaryView(sessionID:",
         "refreshable",
         "history.loadIfNeeded()",
     ],
@@ -117,8 +117,9 @@ SOURCE_TOKENS = {
     "docs/FILE_STRUCTURE.md": [
         "Task-017a Session History Foundation + Free Limit",
         "Task-017b History Navigation + Summary Handoff",
-        "iOS/Features/SessionHistory",
+        "SessionHistory/",
         "SessionSummaryHandoffView.swift",
+        "SessionSummary/",
         "verify_session_history.py",
     ],
 }

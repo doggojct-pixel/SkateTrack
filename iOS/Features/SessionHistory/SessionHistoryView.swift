@@ -63,7 +63,7 @@ struct SessionHistoryView: View {
             )
         }
         .sheet(item: $selectedSummarySession) { session in
-            SessionSummaryHandoffView(session: session) {
+            SessionSummaryView(sessionID: session.id, initialSession: session) {
                 selectedSummarySession = nil
             }
         }

@@ -121,6 +121,8 @@
 "session.hud.noMode" = "Session";
 "unit.speed.kmh" = "KM / H";
 "unit.speed.kmh.short" = "km/h";
+"unit.speed.kmh.valueFormat" = "%.1f %@";
+"unit.length.meter.valueFormat" = "%.0f m";
 
 /* Fall alert / SOS */
 "fall.alert.title" = "Fall Detected";
@@ -263,3 +265,28 @@
 "history.summary.handoff.nextTaskTitle" = "Task-018 takes over next";
 "history.summary.handoff.nextTaskSubtitle" = "History now owns the selected-session handoff. Task-018 can replace this placeholder with the real Summary UI without changing free-limit or Paywall routing.";
 "history.summary.handoff.close" = "Back to History";
+
+// Task-018a session summary foundation
+"summary.title" = "Session Summary";
+"summary.subtitle" = "Core metrics are loaded from your local SkateTrack session. Route map and advanced charts arrive in later Task-018 phases.";
+"summary.loading" = "Loading session summary…";
+"summary.error.title" = "Summary unavailable";
+"summary.error.generic" = "Session summary could not be loaded.";
+"summary.retry" = "Retry";
+"summary.close" = "Back to History";
+"summary.metric.distance" = "Distance";
+"summary.metric.duration" = "Duration";
+"summary.metric.maxSpeed" = "Max speed";
+"summary.metric.avgSpeed" = "Avg speed";
+"summary.metric.elevationGain" = "Elevation gain";
+"summary.metric.movingRatio" = "Moving ratio";
+"summary.metric.falls" = "Falls";
+"summary.metric.tricks" = "Tricks";
+"summary.route.preview.title" = "Route data ready";
+"summary.route.preview.subtitle" = "GPS samples are available. Task-018b will render the route map and start / finish markers without changing History access rules.";
+"summary.route.empty.title" = "No route samples";
+"summary.route.empty.subtitle" = "This session has no GPS route samples. Task-018b will keep this graceful empty state when the map arrives.";
+"summary.charts.placeholder.title" = "Advanced charts next";
+"summary.charts.placeholder.subtitle" = "Speed and elevation charts stay prepared for Task-018c, where subscriber gating will still use the Task-016 entitlement provider strategy.";
+"summary.health.placeholder.title" = "Health and calories placeholder";
+"summary.health.placeholder.subtitle" = "Heart-rate zones and calories remain placeholders until HealthKit / wearable data exists. No fake health metrics are shown.";
