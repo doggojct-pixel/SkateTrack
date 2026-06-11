@@ -1,5 +1,5 @@
 // [協作區] Shared/Models/SOSTriggerEvent.swift
-// 用途：定義 SOS 觸發事件，記錄來源、跌倒資料、位置與 Phase 1a 派送狀態。
+// 用途：定義 SOS 觸發事件，記錄來源、跌倒資料、位置、聯絡人狀態與 Phase 1a 派送狀態。
 // 委派至：SOSEventDispatcher、Fall Alert UI、後續持久化與安全事件摘要。
 
 import Foundation
@@ -13,6 +13,7 @@ enum SOSTriggerSource: String, Codable, Sendable, Equatable {
 enum SOSDispatchStatus: String, Codable, Sendable, Equatable {
     case recorded
     case readyForUserAction
+    case contactSetupRequired
     case unavailable
 }
 
@@ -24,7 +25,10 @@ struct SOSTriggerEvent: Identifiable, Codable, Sendable, Equatable {
     let relatedFallEvent: FallEvent?
     let locationCoordinate: GeoCoordinate?
     let sportMode: SportMode?
+    let emergencyContacts: [EmergencyContact]
     let messageLocalizationKey: String
+    let messagePreview: String
+    let userActionHintLocalizationKey: String
 
     init(
         id: UUID = UUID(),
@@ -34,7 +38,10 @@ struct SOSTriggerEvent: Identifiable, Codable, Sendable, Equatable {
         relatedFallEvent: FallEvent? = nil,
         locationCoordinate: GeoCoordinate? = nil,
         sportMode: SportMode? = nil,
-        messageLocalizationKey: String = "sos.message.template"
+        emergencyContacts: [EmergencyContact] = [],
+        messageLocalizationKey: String = "sos.message.template",
+        messagePreview: String = "",
+        userActionHintLocalizationKey: String = "sos.event.ready"
     ) {
         self.id = id
         self.timestamp = timestamp
@@ -43,6 +50,17 @@ struct SOSTriggerEvent: Identifiable, Codable, Sendable, Equatable {
         self.relatedFallEvent = relatedFallEvent
         self.locationCoordinate = locationCoordinate
         self.sportMode = sportMode
+        self.emergencyContacts = emergencyContacts
         self.messageLocalizationKey = messageLocalizationKey
+        self.messagePreview = messagePreview
+        self.userActionHintLocalizationKey = userActionHintLocalizationKey
+    }
+
+    var hasEmergencyContacts: Bool {
+        !emergencyContacts.isEmpty
+    }
+
+    var primaryEmergencyContact: EmergencyContact? {
+        emergencyContacts.first(where: \.isPrimary) ?? emergencyContacts.first
     }
 }

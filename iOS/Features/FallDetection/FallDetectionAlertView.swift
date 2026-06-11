@@ -8,8 +8,10 @@ import SwiftUI
 struct FallDetectionAlertView: View {
     let fallEvent: FallEvent
     let countdownSecondsRemaining: Int
+    let emergencyContacts: [EmergencyContact]
     let onCancel: () -> Void
     let onSOSNow: () -> Void
+    let onManageContacts: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
@@ -29,6 +31,7 @@ struct FallDetectionAlertView: View {
 
             countdownRing
             impactBadge
+            contactStatusCard
             actionButtons
         }
         .padding(.horizontal, 24)
@@ -94,6 +97,42 @@ struct FallDetectionAlertView: View {
         .accessibilityIdentifier("fall-alert-impact-badge")
     }
 
+    private var contactStatusCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: emergencyContacts.isEmpty ? "person.crop.circle.badge.exclamationmark" : "person.2.crop.square.stack.fill")
+                    .foregroundStyle(emergencyContacts.isEmpty ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
+                Text(LocalizedStringKey(emergencyContacts.isEmpty ? "safety.contacts.noneConfigured" : "safety.contacts.ready"))
+                    .font(.system(size: 12, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white)
+                Spacer()
+            }
+
+            if emergencyContacts.isEmpty {
+                Text("safety.contacts.noneConfigured.detail")
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button(action: onManageContacts) {
+                    Label("safety.contacts.setNow", systemImage: "plus.circle.fill")
+                        .font(.system(size: 12, weight: .heavy, design: .rounded))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(SkateTrackSessionStartColors.teal)
+                .accessibilityIdentifier("fall-alert-manage-contacts-button")
+            } else if let primary = primaryEmergencyContact {
+                Text(String(format: NSLocalizedString("safety.contacts.primaryFormat", comment: ""), primary.displayName))
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+            }
+        }
+        .padding(14)
+        .background(SkateTrackSessionStartColors.card.opacity(0.72))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(SkateTrackSessionStartColors.border, lineWidth: 1))
+        .accessibilityIdentifier("fall-alert-contact-status-card")
+    }
+
     private var actionButtons: some View {
         VStack(spacing: 10) {
             Button(action: onCancel) {
@@ -135,6 +174,10 @@ struct FallDetectionAlertView: View {
         }
     }
 
+    private var primaryEmergencyContact: EmergencyContact? {
+        emergencyContacts.first(where: \.isPrimary) ?? emergencyContacts.first
+    }
+
     private var countdownProgress: CGFloat {
         CGFloat(min(max(Double(countdownSecondsRemaining) / 15.0, 0), 1))
     }
@@ -153,8 +196,10 @@ struct FallDetectionAlertView: View {
             sportMode: .skateboard(.streetPark)
         ),
         countdownSecondsRemaining: 10,
+        emergencyContacts: [EmergencyContact(displayName: "Alex", phoneNumber: "+886900000000", isPrimary: true)],
         onCancel: {},
-        onSOSNow: {}
+        onSOSNow: {},
+        onManageContacts: {}
     )
     .padding()
     .background(SkateTrackSessionStartColors.navy)

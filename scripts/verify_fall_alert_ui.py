@@ -9,11 +9,14 @@ PROJECT = ROOT / "SkateTrack.xcodeproj/project.pbxproj"
 
 REQUIRED_FILES = [
     "Shared/Models/SOSTriggerEvent.swift",
+    "Shared/Models/EmergencyContact.swift",
     "iOS/Core/Safety/SOSEventDispatcher.swift",
+    "iOS/Core/Safety/EmergencyContactStore.swift",
     "iOS/Core/Safety/SessionRecordingCoordinator+FallSafety.swift",
     "iOS/Hooks/useFallDetection.swift",
     "iOS/Features/FallDetection/FallDetectionAlertView.swift",
     "iOS/Features/FallDetection/FallDetectionOverlayPresenter.swift",
+    "iOS/Features/FallDetection/EmergencyContactsSettingsView.swift",
     "iOS/Features/SessionRecording/LiveSpeedTraceView.swift",
     "iOS/Features/SessionRecording/LiveHUDView.swift",
 ]
@@ -29,6 +32,10 @@ REQUIRED_KEYS = [
     "fall.alert.sosNow",
     "sos.message.template",
     "safety.contacts.title",
+    "safety.contacts.noneConfigured",
+    "safety.contacts.setNow",
+    "sos.event.needsContacts",
+    "sos.event.recorded",
 ]
 
 REQUIRED_SNIPPETS = {
@@ -39,12 +46,30 @@ REQUIRED_SNIPPETS = {
         "case fallCountdownExpired",
         "struct SOSTriggerEvent",
         "relatedFallEvent: FallEvent?",
+        "emergencyContacts: [EmergencyContact]",
+        "contactSetupRequired",
+        "messagePreview",
+    ],
+    "Shared/Models/EmergencyContact.swift": [
+        "struct EmergencyContact",
+        "EmergencyContactRelationship",
+        "isUsableForSOS",
+        "sanitizedPhoneNumber",
     ],
     "iOS/Core/Safety/SOSEventDispatcher.swift": [
         "final class SOSEventDispatcher",
         "eventPublisher",
         "func dispatch(",
-        "dispatchStatus: .readyForUserAction",
+        "EmergencyContactStore",
+        "contactSetupRequired",
+        "makeMessagePreview",
+    ],
+    "iOS/Core/Safety/EmergencyContactStore.swift": [
+        "final class EmergencyContactStore",
+        "@Published private(set) var contacts",
+        "func saveContact",
+        "func removeContact",
+        "UserDefaults",
     ],
     "iOS/Core/Safety/SessionRecordingCoordinator+FallSafety.swift": [
         "fallCountdownPublisher",
@@ -70,17 +95,29 @@ REQUIRED_SNIPPETS = {
         "fall.alert.sosNow",
         "fall-alert-countdown",
         "fall-alert-impact-badge",
+        "fall-alert-contact-status-card",
+        "fall-alert-manage-contacts-button",
     ],
     "iOS/Features/FallDetection/FallDetectionOverlayPresenter.swift": [
         "FallDetectionOverlayPresenter",
         "FallDetectionAlertView",
         "fall-detection-overlay",
+        "SOSTriggerStatusBanner",
+        "sos-trigger-status-overlay",
+    ],
+    "iOS/Features/FallDetection/EmergencyContactsSettingsView.swift": [
+        "EmergencyContactsSettingsView",
+        "EmergencyContactStore",
+        "emergency-contacts-settings-view",
+        "emergency-contact-save-button",
     ],
     "iOS/Features/SessionRecording/LiveHUDView.swift": [
         "@StateObject private var fallDetection",
         "FallDetectionOverlayPresenter",
         "fallDetection.actions.triggerManualSOS",
         "debug-simulate-fall-button",
+        "live-hud-emergency-contacts-button",
+        "EmergencyContactsSettingsView",
         "#if DEBUG",
         "LiveSpeedTraceView",
     ],
@@ -98,12 +135,15 @@ LINE_LIMITS = {
     "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift": 450,
     "iOS/Hooks/useFallDetection.swift": 320,
     "iOS/Core/Safety/SOSEventDispatcher.swift": 350,
+    "iOS/Core/Safety/EmergencyContactStore.swift": 260,
     "iOS/Features/FallDetection/FallDetectionAlertView.swift": 320,
-    "iOS/Features/FallDetection/FallDetectionOverlayPresenter.swift": 180,
+    "iOS/Features/FallDetection/FallDetectionOverlayPresenter.swift": 220,
+    "iOS/Features/FallDetection/EmergencyContactsSettingsView.swift": 320,
 }
 
 FORBIDDEN_UI_IMPORTS = {
     "iOS/Core/Safety/SOSEventDispatcher.swift": ["import SwiftUI", "import UIKit", "import AppKit", "import WatchKit"],
+    "iOS/Core/Safety/EmergencyContactStore.swift": ["import SwiftUI", "import UIKit", "import AppKit", "import WatchKit"],
     "iOS/Core/Safety/SessionRecordingCoordinator+FallSafety.swift": ["import SwiftUI", "import UIKit", "import AppKit", "import WatchKit"],
 }
 

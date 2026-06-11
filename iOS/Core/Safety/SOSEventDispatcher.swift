@@ -9,7 +9,12 @@ final class SOSEventDispatcher {
     static let shared = SOSEventDispatcher()
 
     private let eventSubject = PassthroughSubject<SOSTriggerEvent, Never>()
+    private let contactStore: EmergencyContactStore
     private(set) var dispatchedEvents: [SOSTriggerEvent] = []
+
+    init(contactStore: EmergencyContactStore = .shared) {
+        self.contactStore = contactStore
+    }
 
     var eventPublisher: AnyPublisher<SOSTriggerEvent, Never> {
         eventSubject.eraseToAnyPublisher()
@@ -22,16 +27,34 @@ final class SOSEventDispatcher {
         locationCoordinate: GeoCoordinate?,
         sportMode: SportMode?
     ) -> SOSTriggerEvent {
+        let resolvedLocation = locationCoordinate ?? fallEvent?.locationCoordinate
+        let resolvedSportMode = sportMode ?? fallEvent?.sportMode
+        let contacts = contactStore.usableContacts
+        let status: SOSDispatchStatus = contacts.isEmpty ? .contactSetupRequired : .readyForUserAction
         let event = SOSTriggerEvent(
             source: source,
-            dispatchStatus: .readyForUserAction,
+            dispatchStatus: status,
             relatedFallEvent: fallEvent,
-            locationCoordinate: locationCoordinate ?? fallEvent?.locationCoordinate,
-            sportMode: sportMode ?? fallEvent?.sportMode
+            locationCoordinate: resolvedLocation,
+            sportMode: resolvedSportMode,
+            emergencyContacts: contacts,
+            messagePreview: makeMessagePreview(locationCoordinate: resolvedLocation),
+            userActionHintLocalizationKey: contacts.isEmpty ? "sos.event.needsContacts" : "sos.event.ready"
         )
 
         dispatchedEvents.append(event)
         eventSubject.send(event)
         return event
+    }
+
+    private func makeMessagePreview(locationCoordinate: GeoCoordinate?) -> String {
+        var message = "I may have fallen while skating and need help."
+        if let coordinate = locationCoordinate {
+            let location = String(format: "https://maps.apple.com/?ll=%.6f,%.6f", coordinate.latitude, coordinate.longitude)
+            message += " Location: \(location)"
+        } else {
+            message += " Location unavailable."
+        }
+        return message
     }
 }

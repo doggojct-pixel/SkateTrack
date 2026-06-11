@@ -90,11 +90,16 @@
 		14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
 		14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
 		14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A000000000000000000001 /* SOSTriggerEvent.swift */; };
+		14B000000000000000000101 /* EmergencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B000000000000000000001 /* EmergencyContact.swift */; };
+		14B000000000000000000102 /* EmergencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B000000000000000000001 /* EmergencyContact.swift */; };
+		14B000000000000000000103 /* EmergencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B000000000000000000001 /* EmergencyContact.swift */; };
 		14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A100000000000000000001 /* SOSEventDispatcher.swift */; };
 		14A101000000000000000101 /* SessionRecordingCoordinator+FallSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */; };
+		14B100000000000000000101 /* EmergencyContactStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B100000000000000000001 /* EmergencyContactStore.swift */; };
 		14A200000000000000000101 /* useFallDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A200000000000000000001 /* useFallDetection.swift */; };
 		14A300000000000000000101 /* FallDetectionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A300000000000000000001 /* FallDetectionAlertView.swift */; };
 		14A300000000000000000102 /* FallDetectionOverlayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */; };
+		14B200000000000000000101 /* EmergencyContactsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B200000000000000000001 /* EmergencyContactsSettingsView.swift */; };
 		14A400000000000000000101 /* LiveSpeedTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A400000000000000000001 /* LiveSpeedTraceView.swift */; };
 		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -168,11 +173,14 @@
 		13AF03000000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		13AF04000000000000000001 /* SkateTrack.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SkateTrack.icns; sourceTree = "<group>"; };
 		14A000000000000000000001 /* SOSTriggerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSTriggerEvent.swift; sourceTree = "<group>"; };
+		14B000000000000000000001 /* EmergencyContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContact.swift; sourceTree = "<group>"; };
 		14A100000000000000000001 /* SOSEventDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSEventDispatcher.swift; sourceTree = "<group>"; };
+		14B100000000000000000001 /* EmergencyContactStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContactStore.swift; sourceTree = "<group>"; };
 		14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+FallSafety.swift"; sourceTree = "<group>"; };
 		14A200000000000000000001 /* useFallDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useFallDetection.swift; sourceTree = "<group>"; };
 		14A300000000000000000001 /* FallDetectionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionAlertView.swift; sourceTree = "<group>"; };
 		14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionOverlayPresenter.swift; sourceTree = "<group>"; };
+		14B200000000000000000001 /* EmergencyContactsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContactsSettingsView.swift; sourceTree = "<group>"; };
 		14A400000000000000000001 /* LiveSpeedTraceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeedTraceView.swift; sourceTree = "<group>"; };
 		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
@@ -252,6 +260,7 @@
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
+				14B000000000000000000001 /* EmergencyContact.swift */,
 				12A300000000000000000007 /* EquipmentProfile.swift */,
 				12A300000000000000000008 /* SpotProfile.swift */,
 				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
@@ -344,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				14A100000000000000000001 /* SOSEventDispatcher.swift */,
+				14B100000000000000000001 /* EmergencyContactStore.swift */,
 				14A101000000000000000001 /* SessionRecordingCoordinator+FallSafety.swift */,
 			);
 			path = iOS/Core/Safety;
@@ -354,6 +364,7 @@
 			children = (
 				14A300000000000000000001 /* FallDetectionAlertView.swift */,
 				14A300000000000000000002 /* FallDetectionOverlayPresenter.swift */,
+				14B200000000000000000001 /* EmergencyContactsSettingsView.swift */,
 			);
 			path = iOS/Features/FallDetection;
 			sourceTree = SOURCE_ROOT;
@@ -661,9 +672,11 @@
 				12AB04000000000000000101 /* useSessionRecording.swift in Sources */,
 				14A200000000000000000101 /* useFallDetection.swift in Sources */,
 				14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */,
+				14B100000000000000000101 /* EmergencyContactStore.swift in Sources */,
 				14A101000000000000000101 /* SessionRecordingCoordinator+FallSafety.swift in Sources */,
 				14A300000000000000000101 /* FallDetectionAlertView.swift in Sources */,
 				14A300000000000000000102 /* FallDetectionOverlayPresenter.swift in Sources */,
+				14B200000000000000000101 /* EmergencyContactsSettingsView.swift in Sources */,
 				12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
@@ -674,6 +687,7 @@
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
+				14B000000000000000000101 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000113 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000116 /* SpotProfile.swift in Sources */,
 				12A300000000000000000119 /* SensorProvider.swift in Sources */,
@@ -697,6 +711,7 @@
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
+				14B000000000000000000103 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000115 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000118 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
@@ -721,6 +736,7 @@
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,
+				14B000000000000000000102 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000114 /* EquipmentProfile.swift in Sources */,
 				12A300000000000000000117 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,

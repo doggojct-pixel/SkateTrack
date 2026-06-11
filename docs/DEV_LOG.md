@@ -376,3 +376,21 @@ This log is append-only. Do not delete or overwrite old entries.
 - Added a DEBUG-only Live HUD simulate fall trigger for safe Fall Alert overlay QA on simulator and physical iPhone.
 - The trigger does not lower real FallDetectionEngine thresholds and is not visible in Release builds.
 
+
+
+## 2026-06-11 — Task-014b Emergency Contacts Settings + SOS Contact Flow
+
+### Completed
+- Added `EmergencyContact` and `EmergencyContactRelationship` shared models for local SOS contact metadata.
+- Added `EmergencyContactStore`, a Phase 1a local storage layer backed by `UserDefaults`.
+- Added `EmergencyContactsSettingsView` so users can add, view, and delete emergency contacts without importing the system address book.
+- Updated `SOSEventDispatcher` to read usable contacts from `EmergencyContactStore`, attach them to `SOSTriggerEvent`, and mark SOS events as `contactSetupRequired` when no contacts exist.
+- Updated Fall Alert UI and Live HUD to expose contact readiness, open the contact settings sheet, and show visible SOS status feedback after manual / fall-triggered SOS.
+- Added localization keys and `scripts/verify_emergency_contacts.py`.
+
+### Validation Notes
+- Run `python3 scripts/verify_emergency_contacts.py` in addition to the existing Task-014a and session/fall verification scripts.
+- Manual Xcode validation should confirm the emergency contacts sheet opens from Live HUD, contact add/delete works, Fall Alert shows contact status, and SOS status feedback appears after SOS actions.
+
+### Scope Boundary
+- No Contacts framework permission, no real automatic SMS/iMessage dispatch, and no Task-015 persistence were added.

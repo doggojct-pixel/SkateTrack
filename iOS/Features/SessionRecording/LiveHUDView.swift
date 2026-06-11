@@ -8,6 +8,8 @@ import SwiftUI
 struct LiveHUDView: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     @StateObject private var fallDetection = useFallDetection()
+    @StateObject private var emergencyContactStore = EmergencyContactStore.shared
+    @State private var isShowingEmergencyContactsSettings = false
     @State private var speedTraceSamples: [LiveSpeedTraceSample] = []
 
     private let speedTraceTimer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
@@ -63,7 +65,9 @@ struct LiveHUDView: View {
 
                 FallDetectionOverlayPresenter(
                     state: fallDetection.state,
-                    actions: fallDetection.actions
+                    actions: fallDetection.actions,
+                    emergencyContacts: emergencyContactStore.contacts,
+                    onManageContacts: { isShowingEmergencyContactsSettings = true }
                 )
                 .animation(.easeInOut(duration: 0.22), value: fallDetection.state.activeFallEvent)
             }
@@ -74,6 +78,9 @@ struct LiveHUDView: View {
         .preferredColorScheme(.dark)
         .toolbar(.hidden, for: .navigationBar)
         .accessibilityIdentifier("live-hud-view")
+        .sheet(isPresented: $isShowingEmergencyContactsSettings) {
+            EmergencyContactsSettingsView(store: emergencyContactStore)
+        }
         .onReceive(speedTraceTimer) { _ in
             appendSpeedTraceSampleIfNeeded()
         }
@@ -182,6 +189,8 @@ struct LiveHUDView: View {
 
             Spacer()
 
+            contactsSettingsButton
+
             Button(action: fallDetection.actions.triggerManualSOS) {
                 Text("session.hud.sos")
                     .font(.system(size: 12, weight: .heavy, design: .rounded))
@@ -200,6 +209,22 @@ struct LiveHUDView: View {
         }
     }
 
+
+    private var contactsSettingsButton: some View {
+        Button(action: { isShowingEmergencyContactsSettings = true }) {
+            Image(systemName: emergencyContactStore.hasUsableContacts ? "person.2.fill" : "person.crop.circle.badge.exclamationmark")
+                .font(.system(size: 12, weight: .heavy))
+                .foregroundStyle(emergencyContactStore.hasUsableContacts ? SkateTrackSessionStartColors.teal : SkateTrackSessionStartColors.amber)
+                .padding(.horizontal, 11)
+                .padding(.vertical, 9)
+                .background(SkateTrackSessionStartColors.card.opacity(0.84))
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(SkateTrackSessionStartColors.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Emergency Contacts")
+        .accessibilityIdentifier("live-hud-emergency-contacts-button")
+    }
 
     #if DEBUG
     private var debugSimulateFallButton: some View {

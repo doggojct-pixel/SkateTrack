@@ -91,12 +91,14 @@ SkateTrack/
 │   │       └── InfoPlist.strings                   # [原則 A] Traditional Chinese Info.plist permission copy.
 │   ├── Models/                                     # [協作區] Codable + Sendable domain models.
 │   │   ├── EquipmentProfile.swift                  # [協作區] Equipment identity, power type, mileage, wheel data, and notes.
+│   │   ├── EmergencyContact.swift                  # [協作區] Local emergency contact model used by SOS contact flow.
 │   │   ├── FallEvent.swift                         # [協作區] Fall timeline event and SOS-related fall metadata.
 │   │   ├── MotionSample.swift                      # [協作區] GPS, speed, acceleration, gyro, altitude, and accuracy sample model.
 │   │   ├── PowerType.swift                         # [協作區] Human-powered / electric power classification.
 │   │   ├── SessionData.swift                       # [協作區] Root session container for samples, tricks, falls, equipment, and summary metrics.
 │   │   ├── SessionSummaryMetrics.swift             # [協作區] Completed-session summary and live metric snapshot structs.
 │   │   ├── SportMode.swift                         # [協作區] Skateboard and inline skating mode enums plus unified `SportMode`.
+│   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
 │   │   └── TrickEvent.swift                        # [協作區] Trick timeline event with confidence and landing information.
 │   ├── Protocols/
@@ -124,7 +126,8 @@ SkateTrack/
 │   │   │   ├── SensorCalibrationEngine.swift       # [自主區] Startup bias calibration and mode sensor priority planning.
 │   │   │   └── SensorFusionEngine.swift            # [自主區] 10Hz fused `MotionSample` engine.
 │   │   ├── Safety/                                 # [自主區] iOS safety event dispatch and fall/SOS bridge.
-│   │   │   ├── SOSEventDispatcher.swift            # [自主區] Phase 1a SOS event dispatcher skeleton; records events without pretending to auto-send SMS.
+│   │   │   ├── EmergencyContactStore.swift         # [自主區] Local UserDefaults-backed emergency contact store for Phase 1a.
+│   │   │   ├── SOSEventDispatcher.swift            # [自主區] Phase 1a contact-aware SOS event dispatcher; records events without pretending to auto-send SMS.
 │   │   │   └── SessionRecordingCoordinator+FallSafety.swift # [自主區] Fall alert cancel / manual SOS / immediate SOS actions.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
@@ -135,8 +138,9 @@ SkateTrack/
 │   ├── Features/                                   # [協作區] iOS feature modules.
 │   │   ├── EquipmentManager/                       # [佔位] Future equipment management UI.
 │   │   ├── FallDetection/                          # [協作區] Fall alert / SOS overlay UI.
-│   │   │   ├── FallDetectionAlertView.swift        # [協作區] Dark neon fall alert card, countdown, impact badge, cancel and SOS buttons.
-│   │   │   └── FallDetectionOverlayPresenter.swift # [協作區] High-priority overlay presenter for Live HUD.
+│   │   │   ├── EmergencyContactsSettingsView.swift # [協作區] Dark contact settings sheet for local emergency contacts.
+│   │   │   ├── FallDetectionAlertView.swift        # [協作區] Dark neon fall alert card, countdown, contact status, cancel and SOS buttons.
+│   │   │   └── FallDetectionOverlayPresenter.swift # [協作區] High-priority overlay and SOS status presenter for Live HUD.
 │   │   ├── HealthReminders/                        # [佔位] Future rest, hydration, heat, and safety reminders.
 │   │   ├── RouteMap/                               # [佔位] Future full route map and replay UI.
 │   │   ├── SessionRecording/                       # [協作區] Session Start and Live HUD UI components.
