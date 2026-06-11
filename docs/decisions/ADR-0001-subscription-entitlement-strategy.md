@@ -104,3 +104,9 @@ Task-019a introduces the health reminder settings foundation as a subscriber-gat
 ## Task-019b Confirmation
 
 Task-019b continues the same subscription strategy for health reminder runtime behavior. The Live HUD in-app reminder banner is gated through `useSubscriptionStatus` and `GatedFeature.healthReminders`; DEBUG/local entitlement simulation remains the only development-time unlock path. No production StoreKit, App Store Connect, AppStore.sync, or transaction-validation behavior is introduced by Task-019b.
+
+## Task-019c Confirmation
+
+Task-019c extends the subscriber-gated health reminder layer with mock weather suitability and detailed risk guidance. It follows the project-wide paid feature rule by gating detailed heat, UV, and rain guidance through `GatedFeature.healthReminders`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture. Free users can see a basic mock weather summary, while DEBUG/local entitlement simulation can unlock the detailed risk rows during development.
+
+Task-019c intentionally does not implement production StoreKit, App Store Connect products, `AppStore.sync()`, transaction validation, real WeatherKit, network weather APIs, location permission requests, or background weather updates. Future real-weather integration should replace `MockWeatherProvider` behind the `WeatherProviding` boundary without rewriting the Ride-page suitability card or paid-access routing.

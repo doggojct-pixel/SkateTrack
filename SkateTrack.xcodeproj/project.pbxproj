@@ -87,6 +87,12 @@
 		19B100000000000000000101 /* HealthReminderEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000001 /* HealthReminderEvent.swift */; };
 		19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000002 /* HealthReminderScheduler.swift */; };
 		19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000003 /* HealthReminderBannerView.swift */; };
+		19C100000000000000000101 /* WeatherRiskSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000001 /* WeatherRiskSnapshot.swift */; };
+		19C100000000000000000102 /* WeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000002 /* WeatherProvider.swift */; };
+		19C100000000000000000103 /* MockWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000003 /* MockWeatherProvider.swift */; };
+		19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000004 /* WeatherRiskMonitor.swift */; };
+		19C100000000000000000105 /* useWeatherRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000005 /* useWeatherRisk.swift */; };
+		19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000006 /* WeatherSuitabilityCardView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -288,6 +294,12 @@
 		19B100000000000000000001 /* HealthReminderEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderEvent.swift; sourceTree = "<group>"; };
 		19B100000000000000000002 /* HealthReminderScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderScheduler.swift; sourceTree = "<group>"; };
 		19B100000000000000000003 /* HealthReminderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderBannerView.swift; sourceTree = "<group>"; };
+		19C100000000000000000001 /* WeatherRiskSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRiskSnapshot.swift; sourceTree = "<group>"; };
+		19C100000000000000000002 /* WeatherProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherProvider.swift; sourceTree = "<group>"; };
+		19C100000000000000000003 /* MockWeatherProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWeatherProvider.swift; sourceTree = "<group>"; };
+		19C100000000000000000004 /* WeatherRiskMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRiskMonitor.swift; sourceTree = "<group>"; };
+		19C100000000000000000005 /* useWeatherRisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useWeatherRisk.swift; sourceTree = "<group>"; };
+		19C100000000000000000006 /* WeatherSuitabilityCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSuitabilityCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -414,6 +426,7 @@
 				17A100000000000000000006 /* useSessionHistory.swift */,
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				19A100000000000000000003 /* useHealthReminders.swift */,
+				19C100000000000000000005 /* useWeatherRisk.swift */,
 			);
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
@@ -543,6 +556,10 @@
 				19A100000000000000000002 /* HealthReminderSettingsStore.swift */,
 				19B100000000000000000001 /* HealthReminderEvent.swift */,
 				19B100000000000000000002 /* HealthReminderScheduler.swift */,
+				19C100000000000000000001 /* WeatherRiskSnapshot.swift */,
+				19C100000000000000000002 /* WeatherProvider.swift */,
+				19C100000000000000000003 /* MockWeatherProvider.swift */,
+				19C100000000000000000004 /* WeatherRiskMonitor.swift */,
 			);
 			path = iOS/Core/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -552,6 +569,7 @@
 			children = (
 				19A100000000000000000004 /* HealthReminderSettingsView.swift */,
 				19B100000000000000000003 /* HealthReminderBannerView.swift */,
+				19C100000000000000000006 /* WeatherSuitabilityCardView.swift */,
 			);
 			path = iOS/Features/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -897,6 +915,12 @@
 				19B100000000000000000101 /* HealthReminderEvent.swift in Sources */,
 				19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */,
 				19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */,
+				19C100000000000000000101 /* WeatherRiskSnapshot.swift in Sources */,
+				19C100000000000000000102 /* WeatherProvider.swift in Sources */,
+				19C100000000000000000103 /* MockWeatherProvider.swift in Sources */,
+				19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */,
+				19C100000000000000000105 /* useWeatherRisk.swift in Sources */,
+				19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

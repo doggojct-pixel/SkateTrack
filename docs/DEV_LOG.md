@@ -761,3 +761,26 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Scope Boundary
 - No UserNotifications scheduling, background notification, WeatherKit, WeatherProvider, StoreKit purchase flow, health reminder settings range, Live HUD drinking/rest banner behavior, sensor engine, fall detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
 
+
+## 2026-06-11 — Task-019c Weather Risk Provider + Weather Suitability Card
+
+### Completed
+- Added a Task-019c weather-risk foundation without introducing real WeatherKit, network weather APIs, location permission requests, system notifications, or background updates.
+- Added `WeatherRiskSnapshot`, `WeatherSuitabilityLevel`, `WeatherRiskFactor`, and `WeatherSuitabilityReport` models under `iOS/Core/HealthReminders`.
+- Added `WeatherProviding` as a replaceable provider boundary and `MockWeatherProvider` as the development-time source of local mock weather data.
+- Added `WeatherRiskMonitor` to evaluate heat, UV, and rain risk against the existing local health reminder thresholds.
+- Added `useWeatherRisk` as the SwiftUI-facing boundary for weather suitability state and Pro detailed-risk access.
+- Added `WeatherSuitabilityCardView` to the Ride start screen using the existing dark / neon SkateTrack visual language.
+- Free users can see the basic mock weather summary, while detailed heat / UV / rain guidance remains gated behind `GatedFeature.healthReminders` through `useSubscriptionStatus` and the existing Task-016 entitlement-provider strategy.
+- Added `scripts/verify_weather_risk.py` and updated living documentation for Task-019c.
+
+### Paid Feature / Monetization Boundary
+- Task-019c continues the project-wide paid feature rule: detailed weather-risk guidance is gated through `GatedFeature.healthReminders`, `useSubscriptionStatus`, and DEBUG/local entitlement simulation during development.
+- No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, `AppStore.sync()`, WeatherKit entitlement, real network weather API, or location-based weather flow was introduced.
+
+### Scope Boundary
+- No UserNotifications scheduling, background notification, real WeatherKit provider, network weather API, location permission request, Watch haptic, GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_weather_risk.py` together with health reminders, localization, subscription entitlement simulation, subscription Paywall, feature flag, debug tools, and existing session summary/history verification scripts.
+- Manual validation should confirm the Ride page shows the weather suitability card, free users see only basic mock weather summary plus a Pro detailed-risk preview, DEBUG subscriber simulation unlocks detailed heat / UV / rain guidance, and no real weather permission or system notification prompt appears.

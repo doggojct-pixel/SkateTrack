@@ -151,6 +151,7 @@ struct SessionStartView: View {
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
     @State private var isHealthReminderSettingsPresented = false
+    @StateObject private var weatherRisk: WeatherRiskViewModel
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
@@ -160,6 +161,9 @@ struct SessionStartView: View {
         self.subscriptionStatus = subscriptionStatus
         self.sessionRecording = sessionRecording
         self.rootNavigationAccessory = rootNavigationAccessory
+        _weatherRisk = StateObject(
+            wrappedValue: useWeatherRisk(subscriptionStatus: subscriptionStatus)
+        )
     }
 
     var body: some View {
@@ -186,6 +190,11 @@ struct SessionStartView: View {
                             }
 
                         previewMetricStrip
+
+                        WeatherSuitabilityCardView(
+                            weatherRisk: weatherRisk,
+                            onOpenHealthReminders: { isHealthReminderSettingsPresented = true }
+                        )
 
                         HealthReminderSettingsEntryCardView(
                             subscriptionStatus: subscriptionStatus,
