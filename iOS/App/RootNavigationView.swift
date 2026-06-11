@@ -7,6 +7,7 @@ import SwiftUI
 enum RootPrimaryScreen: String, CaseIterable, Identifiable {
     case ride
     case history
+    case equipment
 
     var id: String { rawValue }
 
@@ -16,6 +17,8 @@ enum RootPrimaryScreen: String, CaseIterable, Identifiable {
             return "root.nav.ride"
         case .history:
             return "history.title"
+        case .equipment:
+            return "gear.title"
         }
     }
 }
@@ -24,6 +27,7 @@ struct RootNavigationView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     @State private var selectedPrimaryScreen: RootPrimaryScreen = .ride
+    @State private var isEquipmentDetailPresented = false
     @State private var pendingPostSessionStretchReminderEvent: HealthReminderEvent?
     @State private var postSessionStretchReminderTask: Task<Void, Never>?
 
@@ -69,17 +73,24 @@ struct RootNavigationView: View {
                         SessionHistoryView(subscriptionStatus: subscriptionStatus)
                             .id("session-history")
                             .transition(.opacity)
+                    case .equipment:
+                        EquipmentListView(
+                            subscriptionStatus: subscriptionStatus,
+                            isDetailPresented: $isEquipmentDetailPresented
+                        )
+                        .id("equipment-manager")
+                            .transition(.opacity)
                     }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            if !shouldShowLiveHUD && selectedPrimaryScreen == .history {
+            if !shouldShowLiveHUD && selectedPrimaryScreen != .ride && !isEquipmentDetailPresented {
                 rootPrimarySwitch
             }
 
             #if DEBUG
-            if !shouldShowLiveHUD {
+            if !shouldShowLiveHUD && !isEquipmentDetailPresented {
                 debugToolsButton
             }
             #endif
@@ -93,6 +104,12 @@ struct RootNavigationView: View {
         .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.24), value: sessionRecording.state.status)
         .animation(.easeInOut(duration: 0.20), value: selectedPrimaryScreen)
+        .animation(.easeInOut(duration: 0.20), value: isEquipmentDetailPresented)
+        .onChange(of: selectedPrimaryScreen) { _, newScreen in
+            if newScreen != .equipment {
+                isEquipmentDetailPresented = false
+            }
+        }
         .onChange(of: sessionRecording.state.status) { oldStatus, newStatus in
             handleSessionStatusChange(from: oldStatus, to: newStatus)
         }
@@ -129,7 +146,7 @@ struct RootNavigationView: View {
     }
 
     private var rootPrimarySwitchTopPadding: CGFloat {
-        selectedPrimaryScreen == .history ? 20 : 58
+        selectedPrimaryScreen == .ride ? 58 : 20
     }
 
     private var rootPrimarySwitchControls: some View {
@@ -193,7 +210,7 @@ struct RootNavigationView: View {
     #endif
 
     private var debugToolsTopPadding: CGFloat {
-        (!shouldShowLiveHUD && selectedPrimaryScreen == .history) ? rootPrimarySwitchTopPadding : 58
+        (!shouldShowLiveHUD && selectedPrimaryScreen != .ride) ? rootPrimarySwitchTopPadding : 58
     }
 
     private func handleSessionStatusChange(from oldStatus: SessionRecordingStatus, to newStatus: SessionRecordingStatus) {

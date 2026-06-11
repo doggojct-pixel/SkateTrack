@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Task015a">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Task020a">
     <entity name="PersistedSession" representedClassName="NSManagedObject" syncable="YES">
         <attribute name="averageSpeedKilometersPerHour" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
@@ -30,13 +30,25 @@
         <attribute name="userConfirmed" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
     <entity name="PersistedEquipment" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="bearingABEC" optional="YES" attributeType="String"/>
+        <attribute name="bearingSetMileageKm" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="bootType" optional="YES" attributeType="String"/>
+        <attribute name="brakeType" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="equipmentTypeRaw" optional="YES" attributeType="String"/>
+        <attribute name="frameLengthMillimeters" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastMaintenanceDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="NO" attributeType="String"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="photoLocalIdentifier" optional="YES" attributeType="String"/>
         <attribute name="powerTypeRaw" optional="NO" attributeType="String"/>
         <attribute name="purchaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="riserPadNote" optional="YES" attributeType="String"/>
         <attribute name="sportModeData" optional="NO" attributeType="Binary"/>
         <attribute name="totalDistanceKm" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="truckTightnessNote" optional="YES" attributeType="String"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="wheelDiameterMillimeters" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="wheelHardness" optional="YES" attributeType="String"/>
         <attribute name="wheelSetMileageKm" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>

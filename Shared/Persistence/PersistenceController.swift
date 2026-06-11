@@ -114,14 +114,26 @@ final class PersistenceController {
         entity.properties = [
             uuidAttribute("id", optional: false),
             stringAttribute("name", optional: false),
+            stringAttribute("equipmentTypeRaw", optional: true),
             binaryAttribute("sportModeData", optional: false),
             stringAttribute("powerTypeRaw", optional: false),
             dateAttribute("purchaseDate", optional: true),
             doubleAttribute("totalDistanceKm"),
             doubleAttribute("wheelSetMileageKm"),
+            doubleAttribute("bearingSetMileageKm", optional: true),
             doubleAttribute("wheelDiameterMillimeters", optional: true),
             stringAttribute("wheelHardness", optional: true),
-            stringAttribute("notes", optional: true)
+            stringAttribute("bearingABEC", optional: true),
+            stringAttribute("brakeType", optional: true),
+            stringAttribute("truckTightnessNote", optional: true),
+            stringAttribute("riserPadNote", optional: true),
+            stringAttribute("bootType", optional: true),
+            doubleAttribute("frameLengthMillimeters", optional: true),
+            dateAttribute("lastMaintenanceDate", optional: true),
+            stringAttribute("photoLocalIdentifier", optional: true),
+            stringAttribute("notes", optional: true),
+            dateAttribute("createdAt", optional: true),
+            dateAttribute("updatedAt", optional: true)
         ]
         return entity
     }

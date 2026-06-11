@@ -784,3 +784,60 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_weather_risk.py` together with health reminders, localization, subscription entitlement simulation, subscription Paywall, feature flag, debug tools, and existing session summary/history verification scripts.
 - Manual validation should confirm the Ride page shows the weather suitability card, free users see only basic mock weather summary plus a Pro detailed-risk preview, DEBUG subscriber simulation unlocks detailed heat / UV / rain guidance, and no real weather permission or system notification prompt appears.
+
+## 2026-06-11 — Task-020a Equipment Manager Foundation + CRUD UI
+
+### Completed
+- Added the first Equipment Manager slice for iOS Screen 07 without connecting runtime session mileage accumulation yet.
+- Expanded `EquipmentProfile` with equipment type, bearing mileage, maintenance date, optional photo identifier, and skateboard / inline setup fields while preserving the existing sport-mode and power-type validation rules.
+- Extended the local `PersistedEquipment` Core Data model and programmatic persistence model with optional Task-020a gear fields for lightweight migration safety.
+- Added `EquipmentRepository` for local equipment CRUD and wheel / bearing mileage reset actions.
+- Added `WearReminderEngine` to calculate semantic OK / CHECK / REPLACE wear states from wheel and bearing mileage; Views render engine results and do not own wear formulas.
+- Added `useEquipmentManager` as the SwiftUI-facing boundary for equipment state, CRUD actions, demo gear, and `.equipmentManager` subscription gating.
+- Added `EquipmentListView`, `EquipmentCardView`, `EquipmentDetailView`, and `EditEquipmentView` using the existing dark / neon SkateTrack visual language and the UI Screen 07 equipment-card structure.
+- Added the Gear entry to the root iOS navigation switch so free users can see sample gear cards and subscribers / DEBUG simulated subscribers can manage local gear profiles.
+- Added `scripts/verify_equipment_manager.py` and updated localization for English and Traditional Chinese.
+
+### Paid Feature / Monetization Boundary
+- Task-020a gates equipment management through `GatedFeature.equipmentManager`, `useSubscriptionStatus`, and the existing Task-016 `FeatureFlagEngine` / DEBUG-local entitlement simulation architecture.
+- Free users can view the Gear screen and sample cards, but creating, editing, deleting, and resetting real local gear profiles requires subscriber access.
+- No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, `AppStore.sync()`, or real App Store entitlement provider was added.
+
+### Scope Boundary
+- Task-020a does not connect SessionStart gear selection, SessionRepository equipment references, SessionRecordingCoordinator completion hooks, or automatic mileage accumulation; those remain Task-020b.
+- No photo picker, Photos permission, cloud sync, Google Drive sync, UserNotifications, WeatherKit, GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_equipment_manager.py` together with localization, subscription entitlement simulation, subscription Paywall, feature flag, health reminders, weather risk, debug tools, and existing session summary/history verification scripts.
+- Manual validation should confirm the Gear screen appears in the root switch, free users see sample gear cards plus the Pro upgrade prompt, DEBUG subscriber simulation unlocks add/edit/delete/reset actions, wheel and bearing reset buttons update local gear mileage, and Ride / History / Live HUD flows remain unchanged.
+
+## 2026-06-11 — Task-020a UI/UX Follow-up: Equipment Detail Header + Inline Skate Symbol
+
+### Completed
+- Reworked the equipment detail screen to use an in-content custom header below the root primary switch, preventing the back / title / edit controls from overlapping the root Ride / History / Gear tabs.
+- Hid the default NavigationStack bar on equipment details and kept the root navigation switch visible for consistency with the existing top-level navigation style.
+- Attempted to move the inline-skate icon toward the active platform symbol set, but follow-up validation showed `inline.skate` is unavailable in the current Xcode / iOS symbol set.
+- Tightened equipment manager verification around the detail-header layout contract and duplicate post-session stretch overlay declarations; the later follow-up rejects the invalid `inline.skate` dependency explicitly.
+
+### Scope Boundary
+- No EquipmentRepository CRUD behavior, Core Data schema, SessionStart equipment selection, automatic session mileage accumulation, photo picker, Photos permission, StoreKit, sensor engine, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+
+
+## 2026-06-11 — Task-020a UI/UX Follow-up 2: Detail Overlay Isolation + Safe Inline Skate Glyph
+
+### Completed
+- Fixed the remaining equipment-detail overlap by letting `EquipmentListView` report when a detail path is active and letting `RootNavigationView` hide the root primary switch and DEBUG floating button during equipment detail presentation.
+- Preserved the equipment detail custom header as the only visible detail-level navigation control, so the back button no longer competes with the top-level Ride / History / Gear switch.
+- Removed the invalid `inline.skate` SF Symbol dependency after Xcode confirmed the symbol is not available in the active system symbol set.
+- Reintroduced a local `InlineSkateGlyphView` for inline-skate equipment cards, backed by safe SwiftUI drawing and the stable `figure.walk` SF Symbol fallback.
+- Updated equipment manager verification to reject `inline.skate`, confirm root/detail handoff state, and confirm the safe inline-skate glyph path.
+
+### Scope Boundary
+- No EquipmentRepository CRUD behavior, Core Data schema, SessionStart equipment selection, automatic session mileage accumulation, photo picker, Photos permission, StoreKit, sensor engine, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+#### Task-020a UI/UX follow-up compile fix — Inline skate glyph scoped type
+- Fixed an `Invalid redeclaration of InlineSkateGlyphView` build error by renaming the equipment-card local inline-skate glyph to `EquipmentCardInlineSkateGlyphView`.
+- Kept the custom inline-skate glyph approach because `inline.skate` is not available in the current Xcode / SF Symbols set.
+- Fixed `verify_equipment_manager.py` string quoting so the verifier can run successfully after the glyph fallback check.
+

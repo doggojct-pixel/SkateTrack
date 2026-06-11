@@ -162,6 +162,13 @@
 		15A100000000000000000105 /* MotionSampleFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000005 /* MotionSampleFileStore.swift */; };
 		15A100000000000000000106 /* FallEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000006 /* FallEventRepository.swift */; };
 		15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000008 /* SessionRepositoryTests.swift */; };
+		20A100000000000000000101 /* EquipmentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000001 /* EquipmentRepository.swift */; };
+		20A100000000000000000102 /* WearReminderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000002 /* WearReminderEngine.swift */; };
+		20A100000000000000000103 /* useEquipmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000003 /* useEquipmentManager.swift */; };
+		20A100000000000000000104 /* EquipmentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000004 /* EquipmentListView.swift */; };
+		20A100000000000000000105 /* EquipmentCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000005 /* EquipmentCardView.swift */; };
+		20A100000000000000000106 /* EquipmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000006 /* EquipmentDetailView.swift */; };
+		20A100000000000000000107 /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000007 /* EditEquipmentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +307,13 @@
 		19C100000000000000000004 /* WeatherRiskMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRiskMonitor.swift; sourceTree = "<group>"; };
 		19C100000000000000000005 /* useWeatherRisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useWeatherRisk.swift; sourceTree = "<group>"; };
 		19C100000000000000000006 /* WeatherSuitabilityCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSuitabilityCardView.swift; sourceTree = "<group>"; };
+		20A100000000000000000001 /* EquipmentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentRepository.swift; sourceTree = "<group>"; };
+		20A100000000000000000002 /* WearReminderEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearReminderEngine.swift; sourceTree = "<group>"; };
+		20A100000000000000000003 /* useEquipmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useEquipmentManager.swift; sourceTree = "<group>"; };
+		20A100000000000000000004 /* EquipmentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentListView.swift; sourceTree = "<group>"; };
+		20A100000000000000000005 /* EquipmentCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentCardView.swift; sourceTree = "<group>"; };
+		20A100000000000000000006 /* EquipmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentDetailView.swift; sourceTree = "<group>"; };
+		20A100000000000000000007 /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,6 +441,7 @@
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				19A100000000000000000003 /* useHealthReminders.swift */,
 				19C100000000000000000005 /* useWeatherRisk.swift */,
+				20A100000000000000000003 /* useEquipmentManager.swift */,
 			);
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
@@ -574,6 +589,26 @@
 			path = iOS/Features/HealthReminders;
 			sourceTree = SOURCE_ROOT;
 		};
+		20A100000000000000000000 /* iOS/Core/EquipmentManager */ = {
+			isa = PBXGroup;
+			children = (
+				20A100000000000000000001 /* EquipmentRepository.swift */,
+				20A100000000000000000002 /* WearReminderEngine.swift */,
+			);
+			path = iOS/Core/EquipmentManager;
+			sourceTree = SOURCE_ROOT;
+		};
+		20A200000000000000000000 /* iOS/Features/EquipmentManager */ = {
+			isa = PBXGroup;
+			children = (
+				20A100000000000000000004 /* EquipmentListView.swift */,
+				20A100000000000000000005 /* EquipmentCardView.swift */,
+				20A100000000000000000006 /* EquipmentDetailView.swift */,
+				20A100000000000000000007 /* EditEquipmentView.swift */,
+			);
+			path = iOS/Features/EquipmentManager;
+			sourceTree = SOURCE_ROOT;
+		};
 		14D000000000000000000000 /* iOS/Features/Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,6 +647,7 @@
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
 				14A100000000000000000000 /* iOS/Core/Safety */,
 				19A100000000000000000000 /* iOS/Core/HealthReminders */,
+				20A100000000000000000000 /* iOS/Core/EquipmentManager */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				12AD00000000000000000011 /* iOS/Features/SessionRecording */,
 				14A300000000000000000000 /* iOS/Features/FallDetection */,
@@ -619,6 +655,7 @@
 				17A100000000000000000000 /* iOS/Features/SessionHistory */,
 				18A100000000000000000000 /* iOS/Features/SessionSummary */,
 				19A200000000000000000000 /* iOS/Features/HealthReminders */,
+				20A200000000000000000000 /* iOS/Features/EquipmentManager */,
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
@@ -921,6 +958,13 @@
 				19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */,
 				19C100000000000000000105 /* useWeatherRisk.swift in Sources */,
 				19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */,
+				20A100000000000000000101 /* EquipmentRepository.swift in Sources */,
+				20A100000000000000000102 /* WearReminderEngine.swift in Sources */,
+				20A100000000000000000103 /* useEquipmentManager.swift in Sources */,
+				20A100000000000000000104 /* EquipmentListView.swift in Sources */,
+				20A100000000000000000105 /* EquipmentCardView.swift in Sources */,
+				20A100000000000000000106 /* EquipmentDetailView.swift in Sources */,
+				20A100000000000000000107 /* EditEquipmentView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,
