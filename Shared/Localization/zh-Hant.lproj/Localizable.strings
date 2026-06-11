@@ -34,6 +34,23 @@
 /* Debug */
 "debug.subscription.title" = "Debug 訂閱狀態";
 "debug.subscription.override_subscriber" = "模擬訂閱者權限";
+
+// Task-016a subscription entitlement simulation
+"subscription.entitlement.status.unknown" = "訂閱狀態尚未載入。";
+"subscription.entitlement.status.free" = "目前為免費權限。";
+"subscription.entitlement.status.subscriber" = "目前為訂閱者權限。";
+"subscription.entitlement.status.failed" = "無法刷新訂閱狀態。";
+"subscription.entitlement.status.not_configured" = "尚未設定訂閱權限來源。";
+"subscription.entitlement.status.local_simulation_free" = "目前使用本機模擬；付費權限維持鎖定。";
+"subscription.entitlement.status.app_store_deferred" = "正式 App Store 訂閱延後到開發者帳號設定後再接入。";
+"subscription.entitlement.status.debug_override_inactive" = "Debug 訂閱覆寫目前未啟用。";
+"subscription.entitlement.status.debug_subscriber" = "DEBUG 覆寫正在授予訂閱者權限。";
+"subscription.entitlement.status.debug_free" = "DEBUG 覆寫正在強制免費權限。";
+"subscription.entitlement.source.not_configured" = "來源：尚未設定";
+"subscription.entitlement.source.local_simulation" = "來源：本機模擬";
+"subscription.entitlement.source.debug_override" = "來源：DEBUG 覆寫";
+"subscription.entitlement.source.app_store_deferred" = "來源：App Store 延後接入";
+"debug.subscription.clear_override" = "清除 Debug 覆寫";
 "feature.unlimited_history" = "無限 Session 歷史";
 "feature.advanced_charts" = "進階圖表";
 "feature.health_reminders" = "健康提醒";

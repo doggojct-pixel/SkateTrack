@@ -8,6 +8,13 @@ import SwiftUI
 @MainActor
 final class SubscriptionStatusViewModel: ObservableObject {
     @Published private(set) var isSubscriber: Bool
+    @Published private(set) var entitlementState: SubscriptionEntitlementState
+    @Published private(set) var entitlementSourceDescriptionKey: String
+    @Published private(set) var entitlementStatusMessageKey: String
+
+    #if DEBUG
+    @Published private(set) var debugSubscriptionOverride: Bool?
+    #endif
 
     private let engine: FeatureFlagEngine
     private var cancellables = Set<AnyCancellable>()
@@ -15,11 +22,18 @@ final class SubscriptionStatusViewModel: ObservableObject {
     init(engine: FeatureFlagEngine) {
         self.engine = engine
         self.isSubscriber = engine.isSubscriber
+        self.entitlementState = engine.entitlementState
+        self.entitlementSourceDescriptionKey = engine.entitlementSourceDescriptionKey
+        self.entitlementStatusMessageKey = engine.entitlementStatusMessageKey
+
+        #if DEBUG
+        self.debugSubscriptionOverride = engine.debugSubscriptionOverride
+        #endif
 
         engine.objectWillChange
             .sink { [weak self] _ in
                 Task { @MainActor [weak self] in
-                    self?.isSubscriber = engine.isSubscriber
+                    self?.syncFromEngine()
                 }
             }
             .store(in: &cancellables)
@@ -39,22 +53,37 @@ final class SubscriptionStatusViewModel: ObservableObject {
 
     func refreshEntitlements() {
         engine.refreshEntitlements()
+        syncFromEngine()
+    }
+
+    private func syncFromEngine() {
         isSubscriber = engine.isSubscriber
+        entitlementState = engine.entitlementState
+        entitlementSourceDescriptionKey = engine.entitlementSourceDescriptionKey
+        entitlementStatusMessageKey = engine.entitlementStatusMessageKey
+
+        #if DEBUG
+        debugSubscriptionOverride = engine.debugSubscriptionOverride
+        #endif
     }
 
     #if DEBUG
     var debugSubscriptionOverrideEnabled: Bool {
-        engine.isSubscriber
+        debugSubscriptionOverride == true
+    }
+
+    var debugSubscriptionOverrideActive: Bool {
+        debugSubscriptionOverride != nil
     }
 
     func setDebugSubscriptionOverride(_ isEnabled: Bool) {
         engine.setDebugSubscriptionOverride(isEnabled)
-        isSubscriber = engine.isSubscriber
+        syncFromEngine()
     }
 
     func clearDebugSubscriptionOverride() {
         engine.clearDebugSubscriptionOverride()
-        isSubscriber = engine.isSubscriber
+        syncFromEngine()
     }
     #endif
 }
@@ -69,7 +98,7 @@ struct SubscriptionDebugPanel: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("debug.subscription.title")
                 .font(.caption.bold())
 
@@ -82,9 +111,26 @@ struct SubscriptionDebugPanel: View {
             )
             .font(.caption)
 
-            Text(LocalizedStringKey(subscriptionStatus.isSubscriber ? "subscription.subscriber" : "subscription.free"))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(LocalizedStringKey(subscriptionStatus.isSubscriber ? "subscription.subscriber" : "subscription.free"))
+                    .font(.caption2.bold())
+                    .foregroundStyle(.primary)
+
+                Text(LocalizedStringKey(subscriptionStatus.entitlementSourceDescriptionKey))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
+                Text(LocalizedStringKey(subscriptionStatus.entitlementStatusMessageKey))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            if subscriptionStatus.debugSubscriptionOverrideActive {
+                Button("debug.subscription.clear_override") {
+                    subscriptionStatus.clearDebugSubscriptionOverride()
+                }
+                .font(.caption.bold())
+            }
         }
         .padding(12)
         .background(.thinMaterial)

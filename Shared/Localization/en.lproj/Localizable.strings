@@ -34,6 +34,23 @@
 /* Debug */
 "debug.subscription.title" = "Debug Subscription";
 "debug.subscription.override_subscriber" = "Simulate subscriber access";
+
+// Task-016a subscription entitlement simulation
+"subscription.entitlement.status.unknown" = "Subscription status not loaded yet.";
+"subscription.entitlement.status.free" = "Free access active.";
+"subscription.entitlement.status.subscriber" = "Subscriber access active.";
+"subscription.entitlement.status.failed" = "Subscription status could not be refreshed.";
+"subscription.entitlement.status.not_configured" = "Subscription entitlement provider is not configured yet.";
+"subscription.entitlement.status.local_simulation_free" = "Local simulation is active; paid access remains locked.";
+"subscription.entitlement.status.app_store_deferred" = "Real App Store subscription is deferred until developer account setup.";
+"subscription.entitlement.status.debug_override_inactive" = "Debug subscription override is inactive.";
+"subscription.entitlement.status.debug_subscriber" = "DEBUG override is granting subscriber access.";
+"subscription.entitlement.status.debug_free" = "DEBUG override is forcing free access.";
+"subscription.entitlement.source.not_configured" = "Source: not configured";
+"subscription.entitlement.source.local_simulation" = "Source: local simulation";
+"subscription.entitlement.source.debug_override" = "Source: DEBUG override";
+"subscription.entitlement.source.app_store_deferred" = "Source: App Store deferred";
+"debug.subscription.clear_override" = "Clear debug override";
 "feature.unlimited_history" = "Unlimited session history";
 "feature.advanced_charts" = "Advanced charts";
 "feature.health_reminders" = "Health reminders";

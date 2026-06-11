@@ -479,3 +479,39 @@ This log is append-only. Do not delete or overwrite old entries.
 - No product source, persistence logic, session recording behavior, UI, sensor, safety, icon, watchOS, or macOS code was changed by this documentation refresh.
 - This entry only documents the already-tested Task-015b state before committing the documentation update.
 
+
+## 2026-06-11 — Task-016a Subscription Entitlement Simulation Architecture
+
+### Completed
+- Added ADR-0001 to document the subscription entitlement strategy before real Apple Developer Program / App Store Connect setup exists.
+- Split Task-016 into a safer entitlement architecture phase first, rather than implementing production StoreKit monetization immediately.
+- Added a replaceable `SubscriptionEntitlementProviding` boundary, local/free simulation provider, DEBUG-only entitlement override provider, and `SubscriptionEntitlementStore`.
+- Moved subscription state into reusable entitlement snapshots so `FeatureFlagEngine` can consume local simulation now and a future `AppStoreSubscriptionProvider` later.
+- Added `PurchaseProductCatalog` to centralize future StoreKit product IDs and avoid scattering identifiers through Views.
+- Updated `useSubscriptionStatus` so SwiftUI can observe entitlement state, entitlement source, and status message keys without directly reading DEBUG flags.
+- Updated DEBUG subscription tooling copy to show whether access comes from local simulation or DEBUG override.
+- Added `scripts/verify_subscription_entitlement_simulation.py` to guard Task-016a file presence, Xcode membership, localization keys, debug boundaries, product ID centralization, and documentation requirements.
+- Updated `scripts/verify_debug_tools.py` so it recognizes the existing `SessionRecordingCoordinator+DebugMock.swift` split instead of expecting DEBUG mock helpers only inside the core coordinator file.
+
+### Decision / Context
+- The project does not currently have an Apple Developer Program account, so Task-016a intentionally does not implement production App Store Connect products or real StoreKit purchase flow.
+- Current development should use DEBUG/local simulation only through the entitlement provider boundary.
+- Future monetization should add an `AppStoreSubscriptionProvider` behind the same provider boundary instead of rewriting Paywall UI, locked-feature UI, or `FeatureFlagEngine` access rules.
+
+### Scope Boundary
+- No real App Store Connect subscription setup, sandbox tester workflow, production purchase, receipt/transaction validation, Paywall UI, History UI, unlimited-history enforcement, charts, equipment, spot, sync, GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS changes were added.
+
+### Validation Notes
+- Run `python3 scripts/verify_subscription_entitlement_simulation.py` together with existing localization, feature flag, debug tools, and persistence verification scripts.
+- Xcode should still Build / Test the existing iOS target and iOS unit tests after applying this task.
+
+## 2026-06-11 — Task-016a Compile Fix: Subscription source membership
+
+### Completed
+- Fixed the Xcode project source membership for the Task-016a subscription entitlement Swift files.
+- Added the missing `PBXFileReference` records for the new subscription files so `FeatureFlagEngine.swift` can resolve `SubscriptionEntitlementSnapshot`, `SubscriptionEntitlementStore`, and DEBUG entitlement provider types during iOS builds.
+- Strengthened `scripts/verify_subscription_entitlement_simulation.py` so future verification checks `PBXFileReference`, `PBXBuildFile`, `PBXSourcesBuildPhase`, and dangling `fileRef` consistency instead of only matching filenames.
+
+### Scope Boundary
+- No subscription business logic, Paywall UI, StoreKit purchase flow, sensor engine, persistence logic, Launch Screen, AppIcon, watchOS, or macOS behavior was changed.
+

@@ -51,6 +51,12 @@
 		12A400000000000000000103 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000002 /* FeatureFlagEngine.swift */; };
 		12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000003 /* useSubscriptionStatus.swift */; };
+		16A100000000000000000101 /* SubscriptionEntitlementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000001 /* SubscriptionEntitlementState.swift */; };
+		16A100000000000000000102 /* SubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000103 /* LocalSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000104 /* DebugSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000105 /* SubscriptionEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000005 /* SubscriptionEntitlementStore.swift */; };
+		16A100000000000000000106 /* PurchaseProductCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000006 /* PurchaseProductCatalog.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -149,6 +155,12 @@
 		12A30000000000000000000A /* SyncProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncProvider.swift; sourceTree = "<group>"; };
 		12A400000000000000000001 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		12A400000000000000000002 /* FeatureFlagEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagEngine.swift; sourceTree = "<group>"; };
+		16A100000000000000000001 /* SubscriptionEntitlementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementState.swift; sourceTree = "<group>"; };
+		16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000005 /* SubscriptionEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementStore.swift; sourceTree = "<group>"; };
+		16A100000000000000000006 /* PurchaseProductCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProductCatalog.swift; sourceTree = "<group>"; };
 		12A400000000000000000003 /* useSubscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSubscriptionStatus.swift; sourceTree = "<group>"; };
 		12A600000000000000000001 /* GPSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSProvider.swift; sourceTree = "<group>"; };
 		12A600000000000000000002 /* GPSAuthorizationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSAuthorizationHandler.swift; sourceTree = "<group>"; };
@@ -323,6 +335,12 @@
 			isa = PBXGroup;
 			children = (
 				12A400000000000000000002 /* FeatureFlagEngine.swift */,
+				16A100000000000000000001 /* SubscriptionEntitlementState.swift */,
+				16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */,
+				16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */,
+				16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */,
+				16A100000000000000000005 /* SubscriptionEntitlementStore.swift */,
+				16A100000000000000000006 /* PurchaseProductCatalog.swift */,
 			);
 			path = iOS/Core/Subscription;
 			sourceTree = SOURCE_ROOT;
@@ -722,6 +740,12 @@
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,
+				16A100000000000000000101 /* SubscriptionEntitlementState.swift in Sources */,
+				16A100000000000000000102 /* SubscriptionEntitlementProvider.swift in Sources */,
+				16A100000000000000000103 /* LocalSubscriptionEntitlementProvider.swift in Sources */,
+				16A100000000000000000104 /* DebugSubscriptionEntitlementProvider.swift in Sources */,
+				16A100000000000000000105 /* SubscriptionEntitlementStore.swift in Sources */,
+				16A100000000000000000106 /* PurchaseProductCatalog.swift in Sources */,
 				12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */,
 				12A600000000000000000101 /* GPSProvider.swift in Sources */,
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,

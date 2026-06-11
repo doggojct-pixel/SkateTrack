@@ -73,13 +73,16 @@ for token in [
         sys.exit(f"useSessionRecording.swift missing debug demo speed token: {token}")
 
 coordinator_text = (ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift").read_text()
+debug_extension_path = ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift"
+debug_extension_text = debug_extension_path.read_text() if debug_extension_path.exists() else ""
+combined_debug_text = coordinator_text + "\n" + debug_extension_text
 for token in [
     "var debugDataSource: SessionRecordingDataSource",
     "static func makeMockCoordinator()",
     "let speedKmh = 12 + Double(mockSampleIndex % 5)",
 ]:
-    if token not in coordinator_text:
-        sys.exit(f"SessionRecordingCoordinator.swift missing expected debug support token: {token}")
+    if token not in combined_debug_text:
+        sys.exit(f"SessionRecordingCoordinator debug support missing expected token: {token}")
 
 panel_text = (ROOT / "iOS/Features/Debug/DebugToolsPanelView.swift").read_text()
 for token in [
