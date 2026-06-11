@@ -1,15 +1,12 @@
 // [自主區] iOS/Core/SessionRecording/SessionRecordingCoordinator.swift
 // 用途：Session lifecycle 唯一入口，協調感測器融合、跌倒偵測與即時指標累積。
 // 委派至：useSessionRecording Hook、Task-012 Session Start UI、Task-014 Fall Alert UI。
-
 import Combine
 import Foundation
-
 enum SessionRecordingError: Error, Sendable, Equatable {
     case invalidPowerType
     case sensorUnavailable
     case invalidStateTransition
-
     var localizationKey: String {
         switch self {
         case .invalidPowerType:
@@ -27,13 +24,11 @@ enum SessionRecordingDataSource: Sendable, Equatable {
     case mock
 }
 #endif
-
 protocol SessionSensorProviding: AnyObject {
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> { get }
     func startRecording(mode: SportMode) async throws
     func stopRecording() async -> SessionData
 }
-
 protocol SessionFallDetecting: AnyObject {
     var fallEventPublisher: AnyPublisher<FallEvent, Never> { get }
     var sosTriggerPublisher: AnyPublisher<FallEvent, Never> { get }
@@ -43,13 +38,10 @@ protocol SessionFallDetecting: AnyObject {
     func stopMonitoring()
     func cancelFallAlert()
 }
-
 extension SensorFusionEngine: SessionSensorProviding {}
 extension FallDetectionEngine: SessionFallDetecting {}
-
 final class SessionRecordingCoordinator {
     static let shared = SessionRecordingCoordinator()
-
     private let sensorEngine: SessionSensorProviding
     let fallDetectionEngine: SessionFallDetecting
     let sosDispatcher: SOSEventDispatcher
@@ -133,9 +125,7 @@ final class SessionRecordingCoordinator {
 
         do {
             #if DEBUG
-            if dataSource == .mock {
-                startMockSampleFeed(for: mode)
-            } else {
+            if dataSource == .mock { startMockSampleFeed(for: mode) } else {
                 try await sensorEngine.startRecording(mode: mode)
                 bindLiveSampleStream(for: mode)
             }
@@ -223,8 +213,15 @@ final class SessionRecordingCoordinator {
 
         fallDetectionEngine.fallEventPublisher
             .sink { [weak self] fallEvent in
-                self?.activeFallEvent = fallEvent
-                self?.fallEventSubject.send(fallEvent)
+                guard let self else { return }
+                let isArmed = metricsAccumulator.elapsedTime >= 10
+                let hasRideMotion = metricsAccumulator.currentSpeedKilometersPerHour >= 4 || metricsAccumulator.distanceKilometers >= 0.01
+                guard isArmed && hasRideMotion else {
+                    fallEventSubject.send(nil)
+                    return
+                }
+                activeFallEvent = fallEvent
+                fallEventSubject.send(fallEvent)
             }
             .store(in: &fallCancellables)
 
@@ -235,6 +232,10 @@ final class SessionRecordingCoordinator {
         fallDetectionEngine.sosTriggerPublisher
             .sink { [weak self] fallEvent in
                 guard let self else { return }
+                guard activeFallEvent?.id == fallEvent.id else {
+                    fallCountdownSubject.send(nil)
+                    return
+                }
                 activeFallEvent = nil
                 fallEventSubject.send(nil)
                 fallCountdownSubject.send(nil)
@@ -387,7 +388,6 @@ final class SessionRecordingCoordinator {
             fallEventSubject.send(nil)
         }
     }
-
 
     private func resetCoordinatorState() {
         selectedSportMode = nil

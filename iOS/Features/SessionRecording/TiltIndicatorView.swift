@@ -1,6 +1,6 @@
 // [協作區] TiltIndicatorView.swift
-// 用途：以小型水平儀視覺化目前滑行傾角，作為 Live HUD 的輔助指標。
-// 委派至：LiveHUDView 從 SessionRecordingState.currentTiltDegrees 讀取數值。
+// 用途：以小型姿態狀態卡呈現目前手機姿態資料；Phase 1a 不將手機絕對角度視為滑板傾角。
+// 委派至：LiveHUDView 從 SessionRecordingState.currentTiltDegrees 讀取原始參考值，但本 View 僅做保守顯示。
 
 import SwiftUI
 
@@ -17,9 +17,12 @@ struct TiltIndicatorView: View {
                     .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
                     .textCase(.uppercase)
                 Spacer()
-                Text("\(abs(tiltDegrees), format: .number.precision(.fractionLength(0)))°")
+                Text("session.hud.tiltPending")
                     .font(.system(size: 13, weight: .heavy, design: .rounded))
                     .foregroundStyle(accentColor)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+                    .accessibilityLabel(Text("session.hud.tiltPending"))
             }
 
             ZStack(alignment: .center) {
@@ -32,12 +35,16 @@ struct TiltIndicatorView: View {
                     .frame(width: 2, height: 22)
 
                 Circle()
-                    .fill(accentColor)
+                    .fill(accentColor.opacity(0.92))
                     .frame(width: 18, height: 18)
-                    .shadow(color: accentColor.opacity(0.55), radius: 9, x: 0, y: 0)
-                    .offset(x: markerOffset)
+                    .shadow(color: accentColor.opacity(0.42), radius: 9, x: 0, y: 0)
             }
             .frame(height: 24)
+
+            Text("session.hud.tiltUncalibrated")
+                .font(.system(size: 9, weight: .bold, design: .rounded))
+                .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
+                .lineLimit(1)
         }
         .padding(12)
         .background(SkateTrackSessionStartColors.card.opacity(0.92))
@@ -47,11 +54,6 @@ struct TiltIndicatorView: View {
                 .stroke(SkateTrackSessionStartColors.border, lineWidth: 1)
         )
         .accessibilityIdentifier("live-hud-tilt-indicator")
-    }
-
-    private var markerOffset: CGFloat {
-        let clamped = max(-30, min(30, tiltDegrees))
-        return CGFloat(clamped / 30) * 56
     }
 }
 

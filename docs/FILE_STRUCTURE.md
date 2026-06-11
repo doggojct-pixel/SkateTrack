@@ -166,7 +166,7 @@ SkateTrack/
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
 │   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
-│   │   │   └── TiltIndicatorView.swift             # [協作區] Tilt visualization for Live HUD.
+│   │   │   └── TiltIndicatorView.swift             # [協作區] Conservative phone-posture card; does not claim calibrated board tilt in Phase 1a.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
 │   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
@@ -213,6 +213,7 @@ SkateTrack/
 │   ├── verify_imu_provider.py                     # [工程設定] Task-007 verification.
 │   ├── verify_live_hud.py                         # [工程設定] Task-013 source-pattern verification; not a visual-layout test.
 │   ├── verify_localization_keys.py                # [工程設定] Task-002 localization key parity check.
+│   ├── verify_portrait_fall_tilt_rework.py        # [工程設定] Portrait lock, conservative tilt display, and fall-alert surfacing gate verification.
 │   ├── verify_sensor_fusion_engine.py             # [工程設定] Task-009 verification.
 │   ├── verify_session_recording_coordinator.py    # [工程設定] Task-011 verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.

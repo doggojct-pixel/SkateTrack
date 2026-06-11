@@ -15,10 +15,10 @@ struct PowerTypeToggleView: View {
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(.white)
 
-                Text(selectedPowerType == .electric ? "power.electric.phase1a.note" : "session.start.skateboard.subtitle")
+                Text("session.start.skateboard.subtitle")
                     .font(.caption2)
                     .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
-                    .lineLimit(2)
+                    .lineLimit(1)
             }
 
             Spacer(minLength: 8)

@@ -85,13 +85,14 @@
 "power.human" = "Human";
 "power.electric" = "Electric";
 "power.type.title" = "Power Type";
-"power.electric.phase1a.note" = "Electric skateboard sessions are tracked manually in Phase 1a.";
 
 /* Live HUD */
 "session.hud.maxSpeed" = "Max";
 "session.hud.distance" = "Distance";
 "session.hud.time" = "Time";
-"session.hud.tilt" = "Tilt";
+"session.hud.tiltPending" = "Awaiting calibration";
+"session.hud.tiltUncalibrated" = "Board tilt needs calibration";
+"session.hud.tilt" = "Phone posture";
 "session.hud.heartRate" = "Heart Rate";
 "session.hud.tricks" = "Tricks";
 "session.hud.slideToEnd" = "Slide to End Session";

@@ -1,5 +1,12 @@
 # SkateTrack Development Log
 
+## Task-014 follow-up: Clean power type subtitle
+
+- Removed the Phase 1a electric skateboard note from the Session Start power type card.
+- The power type card now keeps the concise shared subtitle so human-powered and electric modes stay visually aligned.
+- Removed the unused `power.electric.phase1a.note` localization key from English and Traditional Chinese strings.
+
+
 This log is append-only. Do not delete or overwrite old entries.
 
 ## 2026-06-09 Phase 0 — Task-001 Project Scaffold Completed
@@ -410,3 +417,9 @@ This log is append-only. Do not delete or overwrite old entries.
 - No GPSProvider or SensorFusionEngine algorithm changes were made.
 - No Task-014b SOS / emergency contacts production flow changes were made.
 - No Launch Screen, AppIcon, bottom dock, watchOS, macOS, or SwiftLint plugin changes were made.
+## Task-014 follow-up: Portrait + Conservative Tilt/Fall Surfacing
+
+- Locked iOS generated Info.plist orientation settings to portrait/full-screen for the current riding UI.
+- Reframed the Live HUD tilt card as an uncalibrated phone-posture status instead of rendering raw phone angle as skateboard lean.
+- Added a SessionRecordingCoordinator surfacing gate so automatic fall alerts require an armed session window and ride motion before showing the SOS overlay.
+
