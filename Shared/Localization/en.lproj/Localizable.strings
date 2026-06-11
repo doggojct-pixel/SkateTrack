@@ -221,3 +221,34 @@
 "subscription.benefit.insights.description" = "Keeps charts, health reminders, equipment, and spots behind the same entitlement source.";
 "subscription.benefit.share.title" = "Share card readiness";
 "subscription.benefit.share.description" = "Future subscriber share cards will consume the same gating boundary.";
+
+// Task-017a session history and free history limit
+"root.nav.ride" = "Ride";
+"history.title" = "History";
+"history.subtitle" = "Review saved sessions, spot patterns, and subscriber history access from your local SkateTrack data.";
+"history.thisWeek" = "This Week";
+"history.totalDistance" = "Total Distance";
+"history.totalSessions" = "Sessions";
+"history.allTime" = "All Time";
+"history.filter.all" = "All";
+"history.filter.skate" = "Skate";
+"history.filter.inline" = "Inline";
+"history.filter.electric" = "Electric";
+"history.empty.title" = "No sessions yet";
+"history.empty.subtitle" = "Start your first ride and it will appear here.";
+"history.filtered.empty.title" = "No sessions match this filter";
+"history.filtered.empty.subtitle" = "Try another sport filter or record a new session.";
+"history.loading" = "Loading local history…";
+"history.error.title" = "History unavailable";
+"history.error.generic" = "History could not be loaded.";
+"history.retry" = "Retry";
+"history.limit.title" = "Free plan includes your latest 5 sessions";
+"history.limit.subtitleFormat" = "%d older sessions are locked until SkateTrack Pro is unlocked.";
+"history.limit.cta" = "Upgrade for full history";
+"history.card.distance" = "Distance";
+"history.card.maxSpeed" = "Max speed";
+"history.card.duration" = "Duration";
+"history.card.locked" = "Pro history";
+"history.summary.placeholder.title" = "Summary opens next";
+"history.summary.placeholder.subtitle" = "Task-017a confirms this saved session is accessible. The full Summary, route map, and charts arrive in Task-018.";
+"history.summary.placeholder.close" = "Close";

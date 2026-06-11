@@ -1,9 +1,9 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-11  
-**Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Current Baseline:** Source-controlled repository after Task-016b Paywall UI + Locked Feature Flow  
-**Current Development Gate:** Task-016b is complete as a Paywall / locked-feature UI layer on top of DEBUG/local entitlement simulation; production App Store Connect monetization remains deferred until Apple Developer Program setup.
+**Last Updated:** 2026-06-11
+**Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
+**Current Baseline:** Source-controlled repository after Task-017a Session History Foundation + Free Limit
+**Current Development Gate:** Task-017a is complete as a local Session History foundation with free 5-session limit and Paywall routing through DEBUG/local entitlement simulation; production App Store Connect monetization remains deferred until Apple Developer Program setup.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -31,6 +31,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-015b Session Persistence Integration | Complete | Session end now saves through SessionRepository before completed-session publish; discard does not save; repository errors surface as localized keys. |
 | Task-016a Subscription Entitlement Simulation Architecture | Complete | Replaceable entitlement provider architecture, local/free simulation, DEBUG-only override provider, product catalog constants, ADR-0001, and verification script are implemented. Production App Store Connect subscription remains deferred. |
 | Task-016b Paywall UI + Locked Feature Flow | Complete | Reusable Paywall, subscriber benefits list, restore button, locked-feature overlay, locked inline-mode Paywall routing, DEBUG purchase state simulation, localization, and verification script are implemented. |
+| Task-017a Session History Foundation + Free Limit | Complete | Local Session History screen, filters, month grouping, weekly distance summary, free 5-session limit, locked older cards, Paywall routing, and DEBUG/local entitlement strategy documentation are implemented. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -40,7 +41,7 @@ This document records the current SkateTrack repository structure and developmen
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
-| History UI and Session Summary UI are not built yet. | Task-015b saves completed sessions, but users cannot browse persisted sessions in the UI yet. | Future History / Summary tasks consuming `SessionRepositoryProtocol`. |
+| Session Summary UI is not built yet. | Task-017a can browse persisted sessions, but detailed Summary, route map, and charts remain Task-018. | Future Summary tasks consuming `SessionRepositoryProtocol`; Task-017a History UI lives under `iOS/Features/SessionHistory`. |
 | Equipment mileage, spot linkage, and cloud sync remain future tasks. | Core Data entities exist as foundations, but product flows are not connected. | Future equipment, spot, Google Drive / CloudKit tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
@@ -62,8 +63,8 @@ This document records the current SkateTrack repository structure and developmen
 
 | Area | Current Contents | Count / Notes |
 |---|---|---:|
-| Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~70 Swift files |
-| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, Task-016a subscription entitlement simulation, and Task-016b Paywall validation | 20 scripts |
+| Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~76 Swift files |
+| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, subscription entitlement simulation, Paywall validation, and Session History validation | 21 scripts |
 | Task prompt packs | Task-002 through Task-013 task documentation folders | 11 task folders |
 | App-icon images | Generated iOS/watchOS/macOS PNG icon assets plus macOS `.icns` | 103 image/icon files in current baseline |
 | Tests | iOS session recording coordinator and session repository tests | 2 active iOS test files |
@@ -187,6 +188,12 @@ SkateTrack/
 │   │   │   ├── SubscriberBenefitsListView.swift    # [協作區] Reusable subscriber benefit rows.
 │   │   │   ├── RestorePurchaseButton.swift         # [協作區] Restore UI that refreshes local entitlement until real StoreKit restore is added.
 │   │   │   └── LockedFeatureOverlayView.swift      # [協作區] Locked-feature prompt used by Session Start before opening Paywall.
+│   │   ├── SessionHistory/                         # [協作區] Task-017a local History UI and free-limit Paywall flow.
+│   │   │   ├── SessionHistoryView.swift            # [協作區] Main History screen with summary, filters, repository state, and Paywall routing.
+│   │   │   ├── SessionHistoryListView.swift        # [協作區] Month-grouped saved-session list.
+│   │   │   ├── SessionHistoryCardView.swift        # [協作區] Saved-session card with locked old-session state.
+│   │   │   ├── SessionHistoryFilterBar.swift       # [協作區] All / Skate / Inline / Electric filter bar.
+│   │   │   └── HistoryLimitPaywallBanner.swift     # [協作區] Free 5-session limit upgrade banner.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
 │   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
@@ -241,6 +248,7 @@ SkateTrack/
 │   ├── verify_session_persistence_integration.py   # [工程設定] Task-015b recording-to-repository integration verification.
 │   ├── verify_subscription_entitlement_simulation.py # [工程設定] Task-016a subscription entitlement provider architecture verification.
 │   ├── verify_subscription_paywall.py              # [工程設定] Task-016b Paywall / locked feature flow verification.
+│   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.
@@ -285,6 +293,8 @@ python3 scripts/verify_portrait_fall_tilt_rework.py
 python3 scripts/verify_session_repository.py
 python3 scripts/verify_session_persistence_integration.py
 python3 scripts/verify_subscription_entitlement_simulation.py
+python3 scripts/verify_subscription_paywall.py
+python3 scripts/verify_session_history.py
 python3 scripts/verify_app_icons.py
 ```
 

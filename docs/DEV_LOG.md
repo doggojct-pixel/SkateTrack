@@ -539,3 +539,54 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_subscription_paywall.py` with the existing subscription entitlement, localization, feature flag, debug tools, persistence, and session-start verification scripts.
 - Manual validation should confirm locked inline modes open the Paywall, DEBUG success unlocks premium inline modes, DEBUG cancelled / failed states do not grant access, restore refreshes local entitlement only, and normal Session Start / Live HUD flows remain unchanged.
+
+## 2026-06-11 — Task-017a Session History Foundation + Free Limit
+
+### Completed
+- Added the first iOS Session History screen with local repository loading, loading / empty / error / content states, pull-to-refresh, sport filters, month grouping, weekly distance summary, and saved-session cards.
+- Added `useSessionHistory` as the SwiftUI-facing boundary for Task-015 `SessionRepositoryProtocol`, including free-plan gating calculations and subscriber-aware grouping.
+- Connected a lightweight Ride / History root switch in `RootNavigationView` without replacing the existing Session Start / Live HUD flow or adding a full tab system.
+- Implemented the free 5-session History limit: free users can access the latest five sessions, older cards render as locked Pro history and open the Task-016b Paywall.
+- Kept unlimited-history access behind `GatedFeature.unlimitedHistory`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture.
+- Added a Task-018 placeholder sheet for accessible session taps so History can confirm session selection without implementing Summary, route map, or charts in Task-017a.
+- Added `scripts/verify_session_history.py` to guard History file presence, Xcode project membership, localization keys, free-limit tokens, Paywall routing, and documentation updates.
+- Expanded ADR-0001 so all future paid-feature tasks continue using DEBUG/local entitlement simulation until real App Store Connect monetization is intentionally implemented.
+
+### Scope Boundary
+- No real StoreKit purchase, App Store Connect product setup, sandbox tester flow, `AppStore.sync()`, transaction validation, production subscription claim, Session Summary, route map, charts, swipe delete, calendar view, export, GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_history.py` together with localization, subscription entitlement simulation, subscription Paywall, feature flag, debug tools, and persistence verification scripts.
+- Xcode should Build / Run / Test the iOS target after applying this task. Manual validation should confirm free users see older sessions locked and DEBUG subscriber simulation unlocks the full History list.
+
+
+
+## 2026-06-11 — Task-017a UI Alignment Hotfix
+
+### Completed
+- Moved the Ride / History switch out of the Ride screen global overlay path so it no longer overlaps the Session Start header.
+- Kept the History screen switch in the lightweight top overlay but reduced the header top spacing so the switch and title feel visually connected.
+
+### Scope Boundary
+- No History repository logic, free-limit gating, Paywall behavior, subscription entitlement behavior, session recording, Live HUD, sensor, Launch Screen, AppIcon, watchOS, or macOS code was changed.
+
+
+## 2026-06-11 — Task-017a UI Alignment Follow-up 2
+
+### Completed
+- Fine-tuned the Task-017a root Ride / History switch placement after simulator review.
+- Moved the History switch and debug control slightly upward to reduce excess top spacing.
+- Lowered the Ride page header so the SkateTrack title no longer visually collides with the Dynamic Island.
+
+### Scope Boundary
+- No History repository, free-limit gating, Paywall, subscription entitlement, Session Start behavior, Live HUD, project membership, watchOS, macOS, Launch Screen, AppIcon, or bottom dock logic was changed.
+
+
+## 2026-06-11 — Task-017a UI Alignment Follow-up: History top spacing
+
+### Completed
+- Tightened the History screen top rhythm by moving the Ride / History switch and DEBUG tools button upward together.
+- Pulled the History header content upward to preserve the spacing relationship after the top controls were raised.
+
+### Scope Boundary
+- No Ride screen spacing, History data loading, free-limit gating, Paywall behavior, subscription entitlement logic, project settings, sensor engines, or persistence behavior was changed.

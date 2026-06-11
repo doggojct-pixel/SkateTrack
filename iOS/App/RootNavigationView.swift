@@ -4,9 +4,26 @@
 
 import SwiftUI
 
+enum RootPrimaryScreen: String, CaseIterable, Identifiable {
+    case ride
+    case history
+
+    var id: String { rawValue }
+
+    var localizationKey: String {
+        switch self {
+        case .ride:
+            return "root.nav.ride"
+        case .history:
+            return "history.title"
+        }
+    }
+}
+
 struct RootNavigationView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
+    @State private var selectedPrimaryScreen: RootPrimaryScreen = .ride
 
     #if DEBUG
     @StateObject private var debugFallDetection = useFallDetection()
@@ -24,15 +41,27 @@ struct RootNavigationView: View {
                         .id("live-hud")
                         .transition(.opacity.combined(with: .scale(scale: 0.98)))
                 } else {
-                    SessionStartView(
-                        subscriptionStatus: subscriptionStatus,
-                        sessionRecording: sessionRecording
-                    )
-                    .id("session-start")
-                    .transition(.opacity)
+                    switch selectedPrimaryScreen {
+                    case .ride:
+                        SessionStartView(
+                            subscriptionStatus: subscriptionStatus,
+                            sessionRecording: sessionRecording,
+                            rootNavigationAccessory: AnyView(rootPrimarySwitchControls)
+                        )
+                        .id("session-start")
+                        .transition(.opacity)
+                    case .history:
+                        SessionHistoryView(subscriptionStatus: subscriptionStatus)
+                            .id("session-history")
+                            .transition(.opacity)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            if !shouldShowLiveHUD && selectedPrimaryScreen == .history {
+                rootPrimarySwitch
+            }
 
             #if DEBUG
             debugToolsButton
@@ -41,6 +70,7 @@ struct RootNavigationView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.24), value: sessionRecording.state.status)
+        .animation(.easeInOut(duration: 0.20), value: selectedPrimaryScreen)
         .preferredColorScheme(.dark)
         #if DEBUG
         .sheet(isPresented: $debugRuntimeOptions.isDebugToolsPresented) {
@@ -52,6 +82,55 @@ struct RootNavigationView: View {
             )
         }
         #endif
+    }
+
+
+    private var rootPrimarySwitch: some View {
+        VStack {
+            rootPrimarySwitchControls
+                .padding(.top, rootPrimarySwitchTopPadding)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Spacer()
+        }
+        .allowsHitTesting(true)
+        .accessibilityIdentifier("root-primary-switch")
+    }
+
+    private var rootPrimarySwitchTopPadding: CGFloat {
+        selectedPrimaryScreen == .history ? 20 : 58
+    }
+
+    private var rootPrimarySwitchControls: some View {
+        HStack(spacing: 8) {
+            ForEach(RootPrimaryScreen.allCases) { screen in
+                Button {
+                    selectedPrimaryScreen = screen
+                } label: {
+                    Text(LocalizedStringKey(screen.localizationKey))
+                        .font(.system(size: 11, weight: .black, design: .rounded))
+                        .foregroundStyle(selectedPrimaryScreen == screen ? .white : SkateTrackSessionStartColors.textSecondary)
+                        .padding(.horizontal, 13)
+                        .padding(.vertical, 9)
+                        .background(rootPrimarySwitchBackground(for: screen))
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule()
+                                .stroke(selectedPrimaryScreen == screen ? SkateTrackSessionStartColors.teal.opacity(0.52) : SkateTrackSessionStartColors.border, lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("root-nav-\(screen.rawValue)")
+            }
+        }
+        .accessibilityIdentifier("root-primary-switch-controls")
+    }
+
+    private func rootPrimarySwitchBackground(for screen: RootPrimaryScreen) -> Color {
+        selectedPrimaryScreen == screen
+            ? SkateTrackSessionStartColors.teal.opacity(0.28)
+            : SkateTrackSessionStartColors.card.opacity(0.82)
     }
 
     #if DEBUG
@@ -75,13 +154,17 @@ struct RootNavigationView: View {
                 .accessibilityLabel("Debug Tools")
                 .accessibilityIdentifier(DebugToolAction.openPanel.accessibilityIdentifier)
             }
-            .padding(.top, 58)
+            .padding(.top, debugToolsTopPadding)
             .padding(.trailing, 16)
             Spacer()
         }
         .allowsHitTesting(true)
     }
     #endif
+
+    private var debugToolsTopPadding: CGFloat {
+        (!shouldShowLiveHUD && selectedPrimaryScreen == .history) ? rootPrimarySwitchTopPadding : 58
+    }
 
     private var shouldShowLiveHUD: Bool {
         switch sessionRecording.state.status {

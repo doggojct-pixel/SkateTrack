@@ -142,6 +142,7 @@ struct InlineSkateGlyphView: View {
 struct SessionStartView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
+    private let rootNavigationAccessory: AnyView?
 
     @State private var selectedCategory: SessionStartSportCategory = .skateboard
     @State private var selectedBoardMode: BoardMode = .streetPark
@@ -150,9 +151,19 @@ struct SessionStartView: View {
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
 
+    init(
+        subscriptionStatus: SubscriptionStatusViewModel,
+        sessionRecording: SessionRecordingViewModel,
+        rootNavigationAccessory: AnyView? = nil
+    ) {
+        self.subscriptionStatus = subscriptionStatus
+        self.sessionRecording = sessionRecording
+        self.rootNavigationAccessory = rootNavigationAccessory
+    }
+
     var body: some View {
         GeometryReader { proxy in
-            let topPadding = proxy.safeAreaInsets.top + 52
+            let topPadding = proxy.safeAreaInsets.top + (rootNavigationAccessory == nil ? 52 : 52)
             let bottomPadding = max(12, proxy.safeAreaInsets.bottom - 12)
             let horizontalPadding: CGFloat = 20
             let dockHeight: CGFloat = selectedModeLocked ? 126 : 96
@@ -295,6 +306,13 @@ struct SessionStartView: View {
                 .font(.system(size: 36, weight: .heavy, design: .rounded))
                 .foregroundStyle(.white)
                 .accessibilityIdentifier("session-start-app-name")
+
+            if let rootNavigationAccessory {
+                rootNavigationAccessory
+                    .padding(.top, 2)
+                    .padding(.bottom, 2)
+                    .accessibilityIdentifier("session-start-root-navigation-accessory")
+            }
 
             Text("home.greeting.morning")
                 .tracking(2)

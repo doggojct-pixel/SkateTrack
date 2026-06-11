@@ -65,3 +65,15 @@ Create a later task, likely Task-016c or a monetization-readiness task, to imple
 - No History UI or unlimited-history enforcement.
 - No Session Summary / charts implementation.
 - No changes to GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS.
+
+## Project-wide paid feature rule after Task-017a
+
+Task-017a extends this decision from Task-016-specific subscription work into a project-wide rule for Phase 1a paid features. Any future task that touches paid access, subscriber-only UI, feature limits, or upgrade prompts must keep using the same replaceable entitlement strategy:
+
+- Do not implement production App Store Connect / StoreKit monetization until the Apple Developer Program account and App Store Connect products are ready.
+- Do not hardcode paid access in Views, repositories, or feature modules.
+- Route feature access through `FeatureFlagEngine` and SwiftUI state through `useSubscriptionStatus`.
+- Use DEBUG/local simulation only through the entitlement provider boundary during development.
+- When production monetization begins, add or swap in `AppStoreSubscriptionProvider` behind the existing `SubscriptionEntitlementProviding` boundary instead of rewriting History, Paywall, locked-feature, or other subscriber UI.
+
+Task-017a therefore implements the free 5-session History limit and unlimited-history subscriber behavior using `GatedFeature.unlimitedHistory`, `useSubscriptionStatus`, and the existing Task-016b Paywall. Real App Store purchase, restore, transaction, and subscription validation remain deferred.

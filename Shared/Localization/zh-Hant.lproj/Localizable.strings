@@ -221,3 +221,34 @@
 "subscription.benefit.insights.description" = "Charts、健康提醒、裝備與地點管理都會共用同一個權限來源。";
 "subscription.benefit.share.title" = "分享卡片準備";
 "subscription.benefit.share.description" = "未來訂閱者分享卡片會沿用同一個 gating 邊界。";
+
+// Task-017a session history and free history limit
+"root.nav.ride" = "滑行";
+"history.title" = "歷史紀錄";
+"history.subtitle" = "從本機 SkateTrack 資料查看已儲存的 Session、滑行趨勢與訂閱歷史權限。";
+"history.thisWeek" = "本週";
+"history.totalDistance" = "總距離";
+"history.totalSessions" = "Session 數";
+"history.allTime" = "全部期間";
+"history.filter.all" = "全部";
+"history.filter.skate" = "滑板";
+"history.filter.inline" = "直排輪";
+"history.filter.electric" = "電動";
+"history.empty.title" = "還沒有 Session";
+"history.empty.subtitle" = "開始第一場滑行後，紀錄會出現在這裡。";
+"history.filtered.empty.title" = "沒有符合篩選的紀錄";
+"history.filtered.empty.subtitle" = "可以切換其他運動篩選，或先記錄新的 Session。";
+"history.loading" = "正在讀取本機歷史紀錄…";
+"history.error.title" = "無法讀取歷史紀錄";
+"history.error.generic" = "歷史紀錄載入失敗。";
+"history.retry" = "重試";
+"history.limit.title" = "免費版保留最近 5 筆紀錄";
+"history.limit.subtitleFormat" = "還有 %d 筆較舊紀錄已鎖定，解鎖 SkateTrack Pro 後可查看完整歷史。";
+"history.limit.cta" = "升級查看完整歷史";
+"history.card.distance" = "距離";
+"history.card.maxSpeed" = "最高速度";
+"history.card.duration" = "時間";
+"history.card.locked" = "Pro 歷史";
+"history.summary.placeholder.title" = "Summary 下一步接上";
+"history.summary.placeholder.subtitle" = "Task-017a 先確認這筆 Session 可被開啟。完整 Summary、路線地圖與圖表會在 Task-018 實作。";
+"history.summary.placeholder.close" = "關閉";
