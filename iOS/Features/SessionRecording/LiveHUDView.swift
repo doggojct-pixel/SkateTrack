@@ -7,12 +7,28 @@ import SwiftUI
 
 struct LiveHUDView: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
+    @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
+    @StateObject private var healthReminders: HealthReminderViewModel
     @StateObject private var fallDetection = useFallDetection()
     @StateObject private var emergencyContactStore = EmergencyContactStore.shared
     @State private var isShowingEmergencyContactsSettings = false
     @State private var speedTraceSamples: [LiveSpeedTraceSample] = []
 
+    private let onOpenDebugTools: (() -> Void)?
     private let speedTraceTimer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
+
+    init(
+        sessionRecording: SessionRecordingViewModel,
+        subscriptionStatus: SubscriptionStatusViewModel,
+        onOpenDebugTools: (() -> Void)? = nil
+    ) {
+        self.sessionRecording = sessionRecording
+        self.subscriptionStatus = subscriptionStatus
+        self.onOpenDebugTools = onOpenDebugTools
+        _healthReminders = StateObject(
+            wrappedValue: useHealthReminders(subscriptionStatus: subscriptionStatus)
+        )
+    }
 
     var body: some View {
         GeometryReader { proxy in
@@ -34,6 +50,14 @@ struct LiveHUDView: View {
 
                             topBar
                                 .padding(.top, topPadding)
+
+                            if let reminderEvent = healthReminders.activeReminderEvent {
+                                HealthReminderBannerView(
+                                    event: reminderEvent,
+                                    onDismiss: healthReminders.dismissActiveReminder
+                                )
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                            }
 
                             speedHero
                             metricGrid
@@ -83,6 +107,7 @@ struct LiveHUDView: View {
         }
         .onReceive(speedTraceTimer) { _ in
             appendSpeedTraceSampleIfNeeded()
+            healthReminders.updateSessionReminderState(sessionRecording.state)
         }
         .onChange(of: sessionRecording.state.status) { _, status in
             if status == .idle || status == .failed {
@@ -90,6 +115,14 @@ struct LiveHUDView: View {
             } else if status == .recording {
                 appendSpeedTraceSampleIfNeeded()
             }
+            healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
+        .onChange(of: sessionRecording.state.elapsedTime) { _, _ in
+            healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
+        .onChange(of: subscriptionStatus.isSubscriber) { _, _ in
+            healthReminders.syncAccess()
+            healthReminders.updateSessionReminderState(sessionRecording.state)
         }
     }
 
@@ -191,6 +224,10 @@ struct LiveHUDView: View {
 
             contactsSettingsButton
 
+            if let onOpenDebugTools {
+                debugToolsInlineButton(onOpen: onOpenDebugTools)
+            }
+
             Button(action: fallDetection.actions.triggerManualSOS) {
                 Text("session.hud.sos")
                     .font(.system(size: 12, weight: .heavy, design: .rounded))
@@ -220,6 +257,22 @@ struct LiveHUDView: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Emergency Contacts")
         .accessibilityIdentifier("live-hud-emergency-contacts-button")
+    }
+
+    private func debugToolsInlineButton(onOpen: @escaping () -> Void) -> some View {
+        Button(action: onOpen) {
+            Text("DEV")
+                .font(.system(size: 10, weight: .black, design: .monospaced))
+                .foregroundStyle(SkateTrackSessionStartColors.amber)
+                .padding(.horizontal, 11)
+                .padding(.vertical, 9)
+                .background(SkateTrackSessionStartColors.card.opacity(0.84))
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(SkateTrackSessionStartColors.amber.opacity(0.42), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Debug Tools")
+        .accessibilityIdentifier("live-hud-debug-tools-button")
     }
 
     private var speedHero: some View {
@@ -444,5 +497,8 @@ struct LiveHUDView: View {
 }
 
 #Preview("Live HUD Mock") {
-    LiveHUDView(sessionRecording: useSessionRecording(coordinator: .makeMockCoordinator()))
+    LiveHUDView(
+        sessionRecording: useSessionRecording(coordinator: .makeMockCoordinator()),
+        subscriptionStatus: useSubscriptionStatus()
+    )
 }

@@ -24,6 +24,8 @@ struct RootNavigationView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     @State private var selectedPrimaryScreen: RootPrimaryScreen = .ride
+    @State private var pendingPostSessionStretchReminderEvent: HealthReminderEvent?
+    @State private var postSessionStretchReminderTask: Task<Void, Never>?
 
     #if DEBUG
     @StateObject private var debugFallDetection = useFallDetection()
@@ -37,9 +39,22 @@ struct RootNavigationView: View {
 
             Group {
                 if shouldShowLiveHUD {
-                    LiveHUDView(sessionRecording: sessionRecording)
-                        .id("live-hud")
-                        .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                    #if DEBUG
+                    LiveHUDView(
+                        sessionRecording: sessionRecording,
+                        subscriptionStatus: subscriptionStatus,
+                        onOpenDebugTools: { debugRuntimeOptions.isDebugToolsPresented = true }
+                    )
+                    .id("live-hud")
+                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                    #else
+                    LiveHUDView(
+                        sessionRecording: sessionRecording,
+                        subscriptionStatus: subscriptionStatus
+                    )
+                    .id("live-hud")
+                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                    #endif
                 } else {
                     switch selectedPrimaryScreen {
                     case .ride:
@@ -64,13 +79,28 @@ struct RootNavigationView: View {
             }
 
             #if DEBUG
-            debugToolsButton
+            if !shouldShowLiveHUD {
+                debugToolsButton
+            }
             #endif
+
+            if let event = pendingPostSessionStretchReminderEvent, !shouldShowLiveHUD, selectedPrimaryScreen == .ride {
+                postSessionStretchReminderOverlay(for: event)
+                    .zIndex(20)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.24), value: sessionRecording.state.status)
         .animation(.easeInOut(duration: 0.20), value: selectedPrimaryScreen)
+        .onChange(of: sessionRecording.state.status) { oldStatus, newStatus in
+            handleSessionStatusChange(from: oldStatus, to: newStatus)
+        }
+        .onChange(of: subscriptionStatus.isSubscriber) { _, _ in
+            if subscriptionStatus.hasAccess(to: .healthReminders) == false {
+                cancelPostSessionStretchReminder(clearEvent: true)
+            }
+        }
         .preferredColorScheme(.dark)
         #if DEBUG
         .sheet(isPresented: $debugRuntimeOptions.isDebugToolsPresented) {
@@ -164,6 +194,91 @@ struct RootNavigationView: View {
 
     private var debugToolsTopPadding: CGFloat {
         (!shouldShowLiveHUD && selectedPrimaryScreen == .history) ? rootPrimarySwitchTopPadding : 58
+    }
+
+    private func handleSessionStatusChange(from oldStatus: SessionRecordingStatus, to newStatus: SessionRecordingStatus) {
+        if isLiveSessionStatus(newStatus) {
+            cancelPostSessionStretchReminder(clearEvent: true)
+            return
+        }
+
+        if newStatus == .idle, isLiveSessionStatus(oldStatus) {
+            schedulePostSessionStretchReminderIfNeeded()
+        } else if newStatus == .failed {
+            cancelPostSessionStretchReminder(clearEvent: true)
+        }
+    }
+
+    private func isLiveSessionStatus(_ status: SessionRecordingStatus) -> Bool {
+        switch status {
+        case .preparing, .recording, .paused, .ending, .saving:
+            return true
+        case .idle, .failed:
+            return false
+        }
+    }
+
+    private func schedulePostSessionStretchReminderIfNeeded() {
+        cancelPostSessionStretchReminder(clearEvent: true)
+
+        guard subscriptionStatus.hasAccess(to: .healthReminders) else { return }
+
+        let rule = HealthReminderSettingsStore.shared.settings.rule(for: .cooldownStretch)
+        guard rule.isEnabled,
+              let intervalMinutes = rule.intervalMinutes else {
+            return
+        }
+
+        let delaySeconds = UInt64(max(1, intervalMinutes) * 60)
+        postSessionStretchReminderTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: delaySeconds * 1_000_000_000)
+            guard Task.isCancelled == false else { return }
+            guard sessionRecording.state.status == .idle else { return }
+            guard subscriptionStatus.hasAccess(to: .healthReminders) else { return }
+
+            let latestRule = HealthReminderSettingsStore.shared.settings.rule(for: .cooldownStretch)
+            guard latestRule.isEnabled else { return }
+
+            pendingPostSessionStretchReminderEvent = HealthReminderEvent(
+                kind: .cooldownStretch,
+                activeElapsedTime: 0
+            )
+        }
+    }
+
+    private func dismissPostSessionStretchReminder() {
+        cancelPostSessionStretchReminder(clearEvent: true)
+    }
+
+    private func postSessionStretchReminderOverlay(for event: HealthReminderEvent) -> some View {
+        ZStack {
+            Color.black.opacity(0.34)
+                .ignoresSafeArea()
+                .accessibilityHidden(true)
+
+            VStack {
+                Spacer(minLength: 0)
+
+                HealthReminderBannerView(
+                    event: event,
+                    onDismiss: dismissPostSessionStretchReminder
+                )
+                .padding(.horizontal, 22)
+                .frame(maxWidth: 430)
+
+                Spacer(minLength: 0)
+            }
+        }
+        .transition(.opacity.combined(with: .scale(scale: 0.98)))
+        .accessibilityIdentifier("post-session-stretch-reminder-overlay")
+    }
+
+    private func cancelPostSessionStretchReminder(clearEvent: Bool) {
+        postSessionStretchReminderTask?.cancel()
+        postSessionStretchReminderTask = nil
+        if clearEvent {
+            pendingPostSessionStretchReminderEvent = nil
+        }
     }
 
     private var shouldShowLiveHUD: Bool {

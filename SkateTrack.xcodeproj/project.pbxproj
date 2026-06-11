@@ -84,6 +84,9 @@
 		19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000002 /* HealthReminderSettingsStore.swift */; };
 		19A100000000000000000103 /* useHealthReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000003 /* useHealthReminders.swift */; };
 		19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000004 /* HealthReminderSettingsView.swift */; };
+		19B100000000000000000101 /* HealthReminderEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000001 /* HealthReminderEvent.swift */; };
+		19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000002 /* HealthReminderScheduler.swift */; };
+		19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000003 /* HealthReminderBannerView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -282,6 +285,9 @@
 		19A100000000000000000002 /* HealthReminderSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderSettingsStore.swift; sourceTree = "<group>"; };
 		19A100000000000000000003 /* useHealthReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useHealthReminders.swift; sourceTree = "<group>"; };
 		19A100000000000000000004 /* HealthReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderSettingsView.swift; sourceTree = "<group>"; };
+		19B100000000000000000001 /* HealthReminderEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderEvent.swift; sourceTree = "<group>"; };
+		19B100000000000000000002 /* HealthReminderScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderScheduler.swift; sourceTree = "<group>"; };
+		19B100000000000000000003 /* HealthReminderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthReminderBannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -535,6 +541,8 @@
 			children = (
 				19A100000000000000000001 /* HealthReminderRule.swift */,
 				19A100000000000000000002 /* HealthReminderSettingsStore.swift */,
+				19B100000000000000000001 /* HealthReminderEvent.swift */,
+				19B100000000000000000002 /* HealthReminderScheduler.swift */,
 			);
 			path = iOS/Core/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -543,6 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				19A100000000000000000004 /* HealthReminderSettingsView.swift */,
+				19B100000000000000000003 /* HealthReminderBannerView.swift */,
 			);
 			path = iOS/Features/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -885,6 +894,9 @@
 				19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */,
 				19A100000000000000000103 /* useHealthReminders.swift in Sources */,
 				19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */,
+				19B100000000000000000101 /* HealthReminderEvent.swift in Sources */,
+				19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */,
+				19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

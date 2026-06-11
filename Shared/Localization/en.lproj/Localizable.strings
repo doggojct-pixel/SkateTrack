@@ -389,3 +389,10 @@
 "health.reminders.uv.title" = "UV warning";
 "health.reminders.uv.subtitle" = "Prepare a local UV threshold rule. Real UV data is deferred.";
 "health.reminders.preview.section_title" = "Preview rules";
+"health.reminders.banner.hydration.title" = "Time to hydrate";
+"health.reminders.banner.hydration.message" = "You have been riding actively. Take a quick water break when it is safe.";
+"health.reminders.banner.rest.title" = "Take a short rest";
+"health.reminders.banner.rest.message" = "Long sessions are easier to control with planned breaks. Pause somewhere safe if needed.";
+"health.reminders.banner.cooldown.title" = "Stretch after the session";
+"health.reminders.banner.cooldown.message" = "Your ride is ending. Do a short cooldown and stretch before packing up.";
+"health.reminders.banner.dismiss" = "Dismiss health reminder";

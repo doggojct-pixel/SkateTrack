@@ -353,8 +353,8 @@ private struct HealthReminderRuleCard: View {
                     get: { rule.intervalMinutes ?? kind.defaultIntervalMinutes ?? 20 },
                     set: onIntervalChange
                 ),
-                in: 5...180,
-                step: 5
+                in: 1...180,
+                step: 1
             ) {
                 settingLabel(
                     titleKey: "health.reminders.interval.label",

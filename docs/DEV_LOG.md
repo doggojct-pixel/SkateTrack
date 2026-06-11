@@ -701,3 +701,63 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_health_reminders.py` together with localization, subscription entitlement simulation, subscription Paywall, feature flag, debug tools, and existing session summary/history verification scripts.
 - Manual validation should confirm free users can preview health reminders but cannot save settings, Paywall routing works, DEBUG subscriber simulation unlocks editable settings, and Ride / History / Summary flows remain unchanged.
+
+## 2026-06-11 — Task-019b Health Reminder Scheduler + In-App Reminder Banner
+
+### Completed
+- Added `HealthReminderEvent` and `HealthReminderScheduler` to convert saved health-reminder rules into in-app reminder events during active sessions.
+- Connected `useHealthReminders` to session state so hydration and rest reminders are generated from active recording time while paused sessions do not accumulate new reminder events.
+- Added a cooldown-stretch reminder event for the session ending / saving path.
+- Added `HealthReminderBannerView` and integrated it into the Live HUD as an in-app banner that can be dismissed for the current event.
+- Passed subscription state into `LiveHUDView` so health reminders continue to use the Task-016 `FeatureFlagEngine` / `useSubscriptionStatus` boundary and DEBUG/local entitlement simulation.
+- Updated health reminder localization and verification coverage.
+
+### Scope Boundary
+- No UserNotifications scheduling, notification permission request, WeatherKit, real weather provider, high-temperature / UV live risk monitoring, Watch haptic feedback, StoreKit purchase flow, App Store Connect setup, AppStore.sync, transaction validation, sensor-engine algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_health_reminders.py` together with localization, subscription, debug tools, session recording, persistence, history, and summary verification scripts.
+- Manual validation should confirm Live HUD in-app health reminder banners appear only when health reminders are enabled under subscriber / DEBUG simulated subscriber access.
+
+## 2026-06-11 — Task-019b UI/UX Hotfix: Live HUD Debug Button and Minute-Level Reminder Intervals
+
+### Completed
+- Moved the DEBUG tools entry out of the Live HUD floating overlay path and into the Live HUD top control row so health reminder banners remain tappable.
+- Kept the DEBUG tools entry visible only through the existing DEBUG-only root wiring; no Release behavior or subscription logic was changed.
+- Changed health reminder interval steppers from 5-minute increments to 1-minute increments while preserving the existing valid range.
+
+### Scope Boundary
+- No health reminder scheduler logic, UserNotifications integration, WeatherKit, WeatherProvider, StoreKit purchase flow, sensor engine, fall detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+## 2026-06-11 — Task-019b UI/UX Hotfix: One-Minute Reminder Minimum
+
+### Completed
+- Updated health reminder interval validation so minute-based reminders can be set as low as 1 minute instead of being clamped to 5 minutes.
+- Updated the health reminder settings steppers so hydration, rest, and cooldown stretch intervals use a 1-minute minimum with 1-minute adjustment steps.
+- Kept existing upper bounds and did not change heat or UV threshold controls.
+
+### Scope Boundary
+- No scheduler timing logic, UserNotifications integration, WeatherKit, WeatherProvider, StoreKit purchase flow, Live HUD layout, sensor engine, fall detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+## 2026-06-11 — Task-019b Follow-up: Post-session Stretch Reminder Handoff
+
+### Completed
+- Moved the cooldown stretch reminder behavior out of the Live HUD ending/saving-only path and into a post-session handoff owned by the root navigation layer.
+- After a session returns to the Ride start screen, the app now waits for the configured cooldown stretch interval and then shows the in-app stretch reminder on the Ride screen.
+- Reused the existing `HealthReminderBannerView` and `GatedFeature.healthReminders` subscription boundary; free users still do not receive Pro health reminder events.
+- Updated health reminder verification coverage for the post-session stretch reminder handoff.
+
+### Scope Boundary
+- No UserNotifications scheduling, notification permission request, background notification, WeatherKit, WeatherProvider, StoreKit purchase flow, sensor engine, fall detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+## 2026-06-11 — Task-019b UI/UX Follow-up: Post-session Stretch Overlay
+
+### Completed
+- Changed the post-session cooldown stretch reminder from an inline Ride-screen content card into a root-level overlay so it appears above the current Ride screen position instead of being embedded under the health reminder entry card.
+- Kept the reminder explicitly dismissible through the existing `HealthReminderBannerView` close action.
+- Preserved the Task-019b post-session delay, `GatedFeature.healthReminders` subscription boundary, and DEBUG/local entitlement simulation behavior.
+- Updated health reminder verification coverage so the overlay handoff is owned by `RootNavigationView` rather than `SessionStartView` content flow.
+
+### Scope Boundary
+- No UserNotifications scheduling, background notification, WeatherKit, WeatherProvider, StoreKit purchase flow, health reminder settings range, Live HUD drinking/rest banner behavior, sensor engine, fall detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+

@@ -100,3 +100,7 @@ Task-018c is the first Summary task that introduces subscriber-only advanced cha
 ## Task-019a confirmation
 
 Task-019a introduces the health reminder settings foundation as a subscriber-gated Phase 1a safety feature. It follows the project-wide paid feature rule by gating editable reminder settings with `GatedFeature.healthReminders`, `useSubscriptionStatus`, and the existing Task-016 entitlement provider architecture. Free users can preview the settings and open the existing Paywall; DEBUG/local entitlement simulation can unlock editable local settings during development. No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, `AppStore.sync()`, WeatherKit, UserNotifications scheduling, or real weather-risk provider path is introduced.
+
+## Task-019b Confirmation
+
+Task-019b continues the same subscription strategy for health reminder runtime behavior. The Live HUD in-app reminder banner is gated through `useSubscriptionStatus` and `GatedFeature.healthReminders`; DEBUG/local entitlement simulation remains the only development-time unlock path. No production StoreKit, App Store Connect, AppStore.sync, or transaction-validation behavior is introduced by Task-019b.

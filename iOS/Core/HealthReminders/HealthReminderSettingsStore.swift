@@ -27,7 +27,7 @@ final class HealthReminderSettingsStore: ObservableObject {
 
     func setIntervalMinutes(_ minutes: Int, for kind: HealthReminderKind) {
         var nextRule = settings.rule(for: kind)
-        nextRule.intervalMinutes = max(5, min(minutes, 180))
+        nextRule.intervalMinutes = max(1, min(minutes, 180))
         save(rule: nextRule)
     }
 

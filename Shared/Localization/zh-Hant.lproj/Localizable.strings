@@ -389,3 +389,10 @@
 "health.reminders.uv.title" = "UV 警示";
 "health.reminders.uv.subtitle" = "先建立 UV 門檻規則；真實 UV 資料延後接入。";
 "health.reminders.preview.section_title" = "預覽規則";
+"health.reminders.banner.hydration.title" = "該補充水分了";
+"health.reminders.banner.hydration.message" = "你已經累積一段有效滑行時間。請在安全位置短暫補水。";
+"health.reminders.banner.rest.title" = "短暫休息一下";
+"health.reminders.banner.rest.message" = "長時間滑行更需要安排休息。需要時請在安全位置暫停。";
+"health.reminders.banner.cooldown.title" = "Session 結束後伸展";
+"health.reminders.banner.cooldown.message" = "這次滑行即將結束。收拾前請做簡短收操與伸展。";
+"health.reminders.banner.dismiss" = "關閉健康提醒";
