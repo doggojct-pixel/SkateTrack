@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-11  
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol  
-**Current Baseline:** Source-controlled repository after Task-016a Subscription Entitlement Simulation Architecture  
-**Current Development Gate:** Task-016a is complete as a DEBUG/local entitlement architecture baseline; production App Store Connect monetization remains deferred until Apple Developer Program setup.
+**Current Baseline:** Source-controlled repository after Task-016b Paywall UI + Locked Feature Flow  
+**Current Development Gate:** Task-016b is complete as a Paywall / locked-feature UI layer on top of DEBUG/local entitlement simulation; production App Store Connect monetization remains deferred until Apple Developer Program setup.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -30,6 +30,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-015a Local Persistence Foundation | Complete | Core Data stack, session repository, motion sample file store, fall-event read repository, export/delete API, and repository unit tests are prepared. |
 | Task-015b Session Persistence Integration | Complete | Session end now saves through SessionRepository before completed-session publish; discard does not save; repository errors surface as localized keys. |
 | Task-016a Subscription Entitlement Simulation Architecture | Complete | Replaceable entitlement provider architecture, local/free simulation, DEBUG-only override provider, product catalog constants, ADR-0001, and verification script are implemented. Production App Store Connect subscription remains deferred. |
+| Task-016b Paywall UI + Locked Feature Flow | Complete | Reusable Paywall, subscriber benefits list, restore button, locked-feature overlay, locked inline-mode Paywall routing, DEBUG purchase state simulation, localization, and verification script are implemented. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -62,7 +63,7 @@ This document records the current SkateTrack repository structure and developmen
 | Area | Current Contents | Count / Notes |
 |---|---|---:|
 | Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~70 Swift files |
-| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, and Task-016a subscription entitlement simulation | 19 scripts |
+| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, Task-016a subscription entitlement simulation, and Task-016b Paywall validation | 20 scripts |
 | Task prompt packs | Task-002 through Task-013 task documentation folders | 11 task folders |
 | App-icon images | Generated iOS/watchOS/macOS PNG icon assets plus macOS `.icns` | 103 image/icon files in current baseline |
 | Tests | iOS session recording coordinator and session repository tests | 2 active iOS test files |
@@ -181,6 +182,11 @@ SkateTrack/
 │   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
 │   │   │   └── TiltIndicatorView.swift             # [協作區] Conservative phone-posture card; does not claim calibrated board tilt in Phase 1a.
+│   │   ├── Subscription/                           # [協作區] Task-016b Paywall and locked feature UI.
+│   │   │   ├── SubscriptionPaywallView.swift       # [協作區] Dark neon Paywall using DEBUG/local entitlement simulation; no real payment processing.
+│   │   │   ├── SubscriberBenefitsListView.swift    # [協作區] Reusable subscriber benefit rows.
+│   │   │   ├── RestorePurchaseButton.swift         # [協作區] Restore UI that refreshes local entitlement until real StoreKit restore is added.
+│   │   │   └── LockedFeatureOverlayView.swift      # [協作區] Locked-feature prompt used by Session Start before opening Paywall.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
 │   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
@@ -234,6 +240,7 @@ SkateTrack/
 │   ├── verify_session_repository.py               # [工程設定] Task-015 persistence foundation verification.
 │   ├── verify_session_persistence_integration.py   # [工程設定] Task-015b recording-to-repository integration verification.
 │   ├── verify_subscription_entitlement_simulation.py # [工程設定] Task-016a subscription entitlement provider architecture verification.
+│   ├── verify_subscription_paywall.py              # [工程設定] Task-016b Paywall / locked feature flow verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.
@@ -288,5 +295,9 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 1. Commit the Task-015b documentation refresh together with the already-tested Task-015b source changes if those source changes are still staged locally.
 2. Create a fresh post-Task-015b baseline zip before beginning the next Build Plan task.
-3. Continue to keep Task-016+ work separate from persistence foundation work. The next task should consume `SessionRepositoryProtocol` instead of duplicating Core Data access in Views.
+3. Continue to keep Task-016c real StoreKit work separate from Paywall UI. The future StoreKit provider should replace the entitlement provider behind `FeatureFlagEngine` instead of rewriting Paywall / locked-feature UI.
 4. History / Summary UI should read from the repository layer added in Task-015a / Task-015b; Views should not import or manipulate `NSManagedObject` directly.
+
+## Task-016b Subscription UI Note
+
+Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-feature UI. This module is UI-only in Task-016b and must continue to consume `useSubscriptionStatus` rather than directly reading DEBUG flags or StoreKit state.

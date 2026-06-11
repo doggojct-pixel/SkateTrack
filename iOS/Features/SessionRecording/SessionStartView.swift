@@ -148,6 +148,7 @@ struct SessionStartView: View {
     @State private var selectedInlineMode: InlineMode = .urbanFreestyle
     @State private var selectedPowerType: PowerType = .humanPowered
     @State private var upgradePromptFeature: GatedFeature?
+    @State private var paywallFeature: GatedFeature?
 
     var body: some View {
         GeometryReader { proxy in
@@ -211,6 +212,18 @@ struct SessionStartView: View {
         .background(SkateTrackSessionStartColors.navy)
         .preferredColorScheme(.dark)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(item: $paywallFeature) { feature in
+            SubscriptionPaywallView(
+                subscriptionStatus: subscriptionStatus,
+                lockedFeature: feature
+            )
+        }
+        .onChange(of: subscriptionStatus.isSubscriber) { _, isSubscriber in
+            if isSubscriber {
+                upgradePromptFeature = nil
+                paywallFeature = nil
+            }
+        }
     }
 
     private var fullScreenBackground: some View {
@@ -351,7 +364,7 @@ struct SessionStartView: View {
                 subscriptionStatus: subscriptionStatus,
                 accentColor: selectedCategory.accentColor,
                 onLockedModeTap: { feature in
-                    upgradePromptFeature = feature
+                    showPaywall(for: feature)
                 }
             )
         }
@@ -384,28 +397,20 @@ struct SessionStartView: View {
     }
 
     private func showUpgradePrompt() {
-        upgradePromptFeature = selectedInlineMode.gatedFeature
+        guard let feature = selectedInlineMode.gatedFeature else { return }
+        showPaywall(for: feature)
+    }
+
+    private func showPaywall(for feature: GatedFeature) {
+        upgradePromptFeature = feature
+        paywallFeature = feature
     }
 
     private func upgradePrompt(for feature: GatedFeature) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("mode.locked.subscriberOnly")
-                .font(.headline)
-                .foregroundStyle(.white)
-            Text(LocalizedStringKey(feature.localizationKey))
-                .font(.subheadline)
-                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
-            Text("session.start.unlockToStart")
-                .font(.footnote.weight(.medium))
-                .foregroundStyle(selectedCategory.accentColor)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(selectedCategory.accentColor.opacity(0.12))
-        .clipShape(RoundedRectangle(cornerRadius: 18))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(selectedCategory.accentColor.opacity(0.24), lineWidth: 1)
+        LockedFeatureOverlayView(
+            feature: feature,
+            accentColor: selectedCategory.accentColor,
+            onUnlock: { showPaywall(for: feature) }
         )
         .accessibilityIdentifier("session-start-upgrade-prompt")
     }

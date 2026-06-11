@@ -51,9 +51,17 @@ final class SubscriptionStatusViewModel: ObservableObject {
         engine.hasAccess(to: feature)
     }
 
+    var productionPurchaseAvailable: Bool {
+        false
+    }
+
     func refreshEntitlements() {
         engine.refreshEntitlements()
         syncFromEngine()
+    }
+
+    func requestRestorePurchases() {
+        refreshEntitlements()
     }
 
     private func syncFromEngine() {

@@ -515,3 +515,27 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Scope Boundary
 - No subscription business logic, Paywall UI, StoreKit purchase flow, sensor engine, persistence logic, Launch Screen, AppIcon, watchOS, or macOS behavior was changed.
 
+
+## 2026-06-11 — Task-016b Paywall UI + Locked Feature Flow
+
+### Completed
+- Added the first SkateTrack Pro Paywall UI under `iOS/Features/Subscription` using the existing dark / neon outdoor-readable visual language.
+- Added reusable subscription UI components: `SubscriptionPaywallView`, `SubscriberBenefitsListView`, `RestorePurchaseButton`, and `LockedFeatureOverlayView`.
+- Connected locked Inline Fitness / Speed, Aggressive, and Slalom mode taps to open the Paywall instead of only showing an inline upgrade prompt.
+- Updated the locked bottom CTA path so trying to start a locked inline mode opens the Paywall.
+- Kept all entitlement changes routed through `useSubscriptionStatus` and `FeatureFlagEngine`; Views still do not hardcode subscriber state.
+- Added DEBUG-only Paywall simulation controls for success, cancelled, and failed purchase states. Success grants subscriber access through the existing DEBUG entitlement override path.
+- Added restore-purchase UI that refreshes the local entitlement snapshot only; real `AppStore.sync()` remains deferred to the future StoreKit task.
+- Added subscription Paywall localization keys and `scripts/verify_subscription_paywall.py`.
+
+### Decision / Context
+- Task-016b intentionally does not process real payments because the project does not currently have an Apple Developer Program / App Store Connect subscription setup.
+- Paywall UI is now reusable and should be wired to a future `AppStoreSubscriptionProvider` / StoreKit 2 purchase implementation in Task-016c rather than rewritten.
+- The Paywall can be validated now through DEBUG/local entitlement simulation while keeping production monetization clearly deferred.
+
+### Scope Boundary
+- No real StoreKit 2 purchase, App Store Connect product, sandbox tester flow, transaction validation, receipt validation, History UI, unlimited-history enforcement, charts, equipment, spot management, sync, GPS, IMU, Sensor Fusion, Fall Detection, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_subscription_paywall.py` with the existing subscription entitlement, localization, feature flag, debug tools, persistence, and session-start verification scripts.
+- Manual validation should confirm locked inline modes open the Paywall, DEBUG success unlocks premium inline modes, DEBUG cancelled / failed states do not grant access, restore refreshes local entitlement only, and normal Session Start / Live HUD flows remain unchanged.
