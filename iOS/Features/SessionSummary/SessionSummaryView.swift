@@ -76,7 +76,7 @@ struct SessionSummaryView: View {
             header(content)
             identityCard(content)
             SessionSummaryMetricsGridView(items: metricItems(for: content))
-            insightPlaceholderStack(content)
+            summaryDetailStack(content)
             closeButton
         }
     }
@@ -124,14 +124,10 @@ struct SessionSummaryView: View {
         .accessibilityIdentifier("session-summary-identity")
     }
 
-    private func insightPlaceholderStack(_ content: SessionSummaryContent) -> some View {
+    private func summaryDetailStack(_ content: SessionSummaryContent) -> some View {
         VStack(spacing: 10) {
-            SessionSummaryPlaceholderSectionView(
-                titleKey: content.hasRouteSamples ? "summary.route.preview.title" : "summary.route.empty.title",
-                subtitleKey: content.hasRouteSamples ? "summary.route.preview.subtitle" : "summary.route.empty.subtitle",
-                systemImage: "map.fill",
-                accentColor: SkateTrackSessionStartColors.teal
-            )
+            SessionRouteMapView(samples: content.motionSamples)
+            SessionSummarySafetyStatusView(content: content)
 
             SessionSummaryPlaceholderSectionView(
                 titleKey: "summary.charts.placeholder.title",
@@ -146,8 +142,10 @@ struct SessionSummaryView: View {
                 systemImage: "heart.text.square.fill",
                 accentColor: SkateTrackSessionStartColors.amber
             )
+
+            SessionSummaryShareStubView()
         }
-        .accessibilityIdentifier("session-summary-placeholder-stack")
+        .accessibilityIdentifier("session-summary-detail-stack")
     }
 
     private var loadingState: some View {

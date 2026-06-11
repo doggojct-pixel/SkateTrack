@@ -629,3 +629,25 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
 - Manual validation should confirm unlocked History cards open the real Summary foundation, locked cards still open Paywall, and Summary shows only core metrics plus route/chart/health placeholders.
+
+## 2026-06-11 — Task-018b Route Map + Safety / Share Stub
+
+### Completed
+- Added `SessionRouteMapView` with a MapKit route preview, local GPS polyline rendering, and start / finish annotations when at least two valid GPS samples exist.
+- Preserved a graceful no-route state for sessions without enough valid GPS coordinates.
+- Added `SessionSummarySafetyStatusView` to summarize local fall-event count, peak impact, and user-confirmed fall count without changing the fall-detection engine.
+- Added `SessionSummaryShareStubView` as a visible Summary share entry point while keeping real share-card generation, image export, and system share-sheet flow deferred.
+- Updated `SessionSummaryView` so the Task-018a route placeholder is replaced by the Task-018b route map / empty route state, while advanced charts and health data remain placeholders.
+- Updated Session Summary localization keys and `scripts/verify_session_summary.py` so verification now checks MapKit route rendering, safety recap, share stub, project membership, and documentation updates.
+- Updated living documentation for the Task-018b Summary route-map phase.
+
+### Paid Feature / Monetization Boundary
+- Task-018b does not introduce subscriber-only advanced chart access or production monetization.
+- Future Task-018c advanced charts must continue using the project-wide Task-016 entitlement-provider strategy: `FeatureFlagEngine` / `useSubscriptionStatus`, DEBUG/local entitlement simulation during development, and future `AppStoreSubscriptionProvider` only when production monetization is intentionally implemented.
+
+### Scope Boundary
+- No Swift Charts, advanced chart gating, real StoreKit purchase, App Store Connect setup, sandbox tester flow, `AppStore.sync()`, transaction validation, production subscription claim, real share-card export, delete, calendar view, GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, watchOS, or macOS behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_summary.py` together with session history, localization, subscription Paywall, entitlement simulation, feature flag, debug tools, and persistence verification scripts.
+- Manual validation should confirm unlocked History cards open Summary, route sessions show a route map with start / finish markers, no-route sessions show the empty route state, safety status reflects fall-event data, and the share button only shows the deferred share-card notice.

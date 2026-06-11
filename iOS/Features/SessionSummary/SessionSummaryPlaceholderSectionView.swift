@@ -1,6 +1,6 @@
 // [協作區] SessionSummaryPlaceholderSectionView.swift
-// 用途：呈現 Task-018a 中尚未開啟的 route / chart / health placeholder 區塊。
-// 委派至：後續 Task-018b / 018c 實作 MapKit、Swift Charts 與付費進階圖表 gating。
+// 用途：呈現 Task-018a/018b 中尚未開啟的 chart / health placeholder 區塊。
+// 委派至：後續 Task-018c+ 實作 Swift Charts、HealthKit 與付費進階圖表 gating。
 
 import SwiftUI
 

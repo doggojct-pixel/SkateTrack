@@ -268,7 +268,7 @@
 
 // Task-018a session summary foundation
 "summary.title" = "Session 摘要";
-"summary.subtitle" = "核心指標會從本機 SkateTrack Session 載入。路線地圖與進階圖表會在後續 Task-018 階段接上。";
+"summary.subtitle" = "核心指標、路線預覽與安全回顧會從本機 SkateTrack Session 載入。進階圖表會在下一個 Task-018 階段接上。";
 "summary.loading" = "正在載入 Session 摘要…";
 "summary.error.title" = "無法顯示摘要";
 "summary.error.generic" = "Session 摘要無法載入。";
@@ -283,10 +283,31 @@
 "summary.metric.falls" = "跌倒";
 "summary.metric.tricks" = "招式";
 "summary.route.preview.title" = "路線資料已就緒";
-"summary.route.preview.subtitle" = "這筆 Session 有 GPS 樣本。Task-018b 會接上路線地圖與起終點標記，且不改動 History 權限規則。";
+"summary.route.preview.subtitle" = "這筆 Session 有 GPS 樣本可供摘要使用。";
 "summary.route.empty.title" = "沒有路線樣本";
 "summary.route.empty.subtitle" = "這筆 Session 沒有 GPS 路線樣本。Task-018b 接上地圖時會保留這個安全的空狀態。";
 "summary.charts.placeholder.title" = "下一步接進階圖表";
 "summary.charts.placeholder.subtitle" = "速度與海拔圖表會在 Task-018c 接上；訂閱限制仍沿用 Task-016 的 entitlement provider 策略。";
 "summary.health.placeholder.title" = "健康與熱量佔位";
 "summary.health.placeholder.subtitle" = "心率區間與熱量會等 HealthKit / 穿戴資料存在後再接上，目前不顯示假的健康數據。";
+
+"summary.route.map.title" = "路線地圖";
+"summary.route.map.subtitle" = "使用本機 GPS 樣本顯示路線預覽、起點與終點標記；詳細回放仍保留給後續任務。";
+"summary.route.empty.detail" = "有效 GPS 樣本少於兩筆時，路線地圖會維持安全空狀態。";
+"summary.route.start" = "起點";
+"summary.route.finish" = "終點";
+"summary.route.sampleCountFormat" = "%d GPS";
+"summary.safety.clear.title" = "未偵測到跌倒";
+"summary.safety.clear.subtitle" = "這筆已儲存 Session 沒有記錄跌倒事件。";
+"summary.safety.falls.title" = "已記錄安全事件";
+"summary.safety.falls.subtitleFormat" = "這筆 Session 本機記錄了 %d 筆跌倒事件。分享前請先仔細確認騎乘狀態。";
+"summary.safety.metric.falls" = "跌倒";
+"summary.safety.metric.impact" = "最大衝擊";
+"summary.safety.metric.confirmed" = "已確認";
+"summary.safety.impactFormat" = "%.1fg";
+"summary.share.title" = "分享摘要入口";
+"summary.share.subtitle" = "分享入口已先準備給後續分享卡任務；目前不輸出圖片，也不開啟系統分享。";
+"summary.share.button" = "預覽分享動作";
+"summary.share.stub.alert.title" = "分享卡尚未建立";
+"summary.share.stub.alert.message" = "Task-018b 只先準備 Summary 分享入口。真正分享卡與匯出流程仍保留給後續任務。";
+"summary.share.stub.alert.dismiss" = "好";

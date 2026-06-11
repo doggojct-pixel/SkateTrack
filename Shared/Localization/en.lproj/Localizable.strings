@@ -268,7 +268,7 @@
 
 // Task-018a session summary foundation
 "summary.title" = "Session Summary";
-"summary.subtitle" = "Core metrics are loaded from your local SkateTrack session. Route map and advanced charts arrive in later Task-018 phases.";
+"summary.subtitle" = "Core metrics, route preview, and safety recap are loaded from your local SkateTrack session. Advanced charts arrive in the next Task-018 phase.";
 "summary.loading" = "Loading session summary…";
 "summary.error.title" = "Summary unavailable";
 "summary.error.generic" = "Session summary could not be loaded.";
@@ -283,10 +283,31 @@
 "summary.metric.falls" = "Falls";
 "summary.metric.tricks" = "Tricks";
 "summary.route.preview.title" = "Route data ready";
-"summary.route.preview.subtitle" = "GPS samples are available. Task-018b will render the route map and start / finish markers without changing History access rules.";
+"summary.route.preview.subtitle" = "GPS samples are available for this session.";
 "summary.route.empty.title" = "No route samples";
 "summary.route.empty.subtitle" = "This session has no GPS route samples. Task-018b will keep this graceful empty state when the map arrives.";
 "summary.charts.placeholder.title" = "Advanced charts next";
 "summary.charts.placeholder.subtitle" = "Speed and elevation charts stay prepared for Task-018c, where subscriber gating will still use the Task-016 entitlement provider strategy.";
 "summary.health.placeholder.title" = "Health and calories placeholder";
 "summary.health.placeholder.subtitle" = "Heart-rate zones and calories remain placeholders until HealthKit / wearable data exists. No fake health metrics are shown.";
+
+"summary.route.map.title" = "Route map";
+"summary.route.map.subtitle" = "A local GPS route preview with start and finish markers. Detailed replay stays deferred.";
+"summary.route.empty.detail" = "The route map stays hidden when fewer than two valid GPS samples are available.";
+"summary.route.start" = "Start";
+"summary.route.finish" = "Finish";
+"summary.route.sampleCountFormat" = "%d GPS";
+"summary.safety.clear.title" = "No falls detected";
+"summary.safety.clear.subtitle" = "No fall events were recorded for this saved session.";
+"summary.safety.falls.title" = "Safety event recorded";
+"summary.safety.falls.subtitleFormat" = "%d fall event(s) were recorded locally for this session. Review the ride carefully before sharing.";
+"summary.safety.metric.falls" = "Falls";
+"summary.safety.metric.impact" = "Peak impact";
+"summary.safety.metric.confirmed" = "Confirmed";
+"summary.safety.impactFormat" = "%.1fg";
+"summary.share.title" = "Share recap stub";
+"summary.share.subtitle" = "The share entry is prepared for a later share-card task. No image export or system share sheet is launched yet.";
+"summary.share.button" = "Preview share action";
+"summary.share.stub.alert.title" = "Share card not built yet";
+"summary.share.stub.alert.message" = "Task-018b only prepares the Summary share entry point. The real share card and export flow remain deferred.";
+"summary.share.stub.alert.dismiss" = "OK";

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-018a Session Summary Foundation contracts."""
+"""Verify Task-018a/018b Session Summary foundation, route, safety, and share contracts."""
 
 from pathlib import Path
 import re
@@ -11,6 +11,9 @@ REQUIRED_FILES = [
     "iOS/Features/SessionSummary/SessionSummaryView.swift",
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift",
     "iOS/Features/SessionSummary/SessionSummaryPlaceholderSectionView.swift",
+    "iOS/Features/SessionSummary/SessionRouteMapView.swift",
+    "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift",
+    "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift",
     "iOS/Hooks/useSessionSummary.swift",
 ]
 
@@ -32,8 +35,28 @@ LOCALIZATION_KEYS = [
     "summary.metric.tricks",
     "summary.route.preview.title",
     "summary.route.preview.subtitle",
+    "summary.route.map.title",
+    "summary.route.map.subtitle",
     "summary.route.empty.title",
     "summary.route.empty.subtitle",
+    "summary.route.empty.detail",
+    "summary.route.start",
+    "summary.route.finish",
+    "summary.route.sampleCountFormat",
+    "summary.safety.clear.title",
+    "summary.safety.clear.subtitle",
+    "summary.safety.falls.title",
+    "summary.safety.falls.subtitleFormat",
+    "summary.safety.metric.falls",
+    "summary.safety.metric.impact",
+    "summary.safety.metric.confirmed",
+    "summary.safety.impactFormat",
+    "summary.share.title",
+    "summary.share.subtitle",
+    "summary.share.button",
+    "summary.share.stub.alert.title",
+    "summary.share.stub.alert.message",
+    "summary.share.stub.alert.dismiss",
     "summary.charts.placeholder.title",
     "summary.charts.placeholder.subtitle",
     "summary.health.placeholder.title",
@@ -44,6 +67,9 @@ PROJECT_TOKENS = [
     "SessionSummaryView.swift in Sources",
     "SessionSummaryMetricsGridView.swift in Sources",
     "SessionSummaryPlaceholderSectionView.swift in Sources",
+    "SessionRouteMapView.swift in Sources",
+    "SessionSummarySafetyStatusView.swift in Sources",
+    "SessionSummaryShareStubView.swift in Sources",
     "useSessionSummary.swift in Sources",
     "iOS/Features/SessionSummary",
 ]
@@ -61,8 +87,9 @@ SOURCE_TOKENS = {
         "SessionSummaryView",
         "useSessionSummary(sessionID:",
         "SessionSummaryMetricsGridView",
-        "SessionSummaryPlaceholderSectionView",
-        "summary.route.preview.title",
+        "SessionRouteMapView",
+        "SessionSummarySafetyStatusView",
+        "SessionSummaryShareStubView",
         "summary.charts.placeholder.title",
         "summary.health.placeholder.title",
         "refreshable",
@@ -75,24 +102,39 @@ SOURCE_TOKENS = {
         "SessionSummaryPlaceholderSectionView",
         "session-summary-placeholder-section",
     ],
+    "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
+        "import MapKit",
+        "MapPolyline",
+        "Annotation",
+        "session-route-map-view",
+        "session-route-map-empty",
+    ],
+    "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift": [
+        "SessionSummarySafetyStatusView",
+        "FallEvent",
+        "session-summary-safety-status",
+    ],
+    "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": [
+        "SessionSummaryShareStubView",
+        "summary.share.stub.alert.title",
+        "session-summary-share-stub",
+    ],
     "iOS/Features/SessionHistory/SessionHistoryView.swift": [
         "SessionSummaryView(sessionID:",
         "selectedSummarySession",
     ],
     "docs/DEV_LOG.md": [
-        "Task-018a Session Summary Foundation + Core Metrics",
-        "SessionSummaryView",
+        "Task-018b Route Map + Safety / Share Stub",
+        "SessionRouteMapView",
     ],
     "docs/FILE_STRUCTURE.md": [
-        "Task-018a Session Summary Foundation + Core Metrics",
-        "iOS/Features/SessionSummary",
+        "Task-018b Route Map + Safety / Share Stub",
+        "SessionRouteMapView.swift",
         "verify_session_summary.py",
     ],
 }
 
 FORBIDDEN_TOKENS = [
-    "Map(",
-    "import MapKit",
     "import Charts",
     "AppStore.sync()",
     "Transaction.currentEntitlements",
@@ -103,6 +145,9 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionSummaryView.swift": 360,
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift": 180,
     "iOS/Features/SessionSummary/SessionSummaryPlaceholderSectionView.swift": 160,
+    "iOS/Features/SessionSummary/SessionRouteMapView.swift": 260,
+    "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift": 220,
+    "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": 180,
     "iOS/Hooks/useSessionSummary.swift": 240,
 }
 
@@ -181,7 +226,7 @@ def main() -> None:
     verify_project_membership()
     verify_localization()
     verify_source_contracts()
-    print("✅ Task-018a Session Summary verification passed")
+    print("✅ Task-018b Session Summary route map / safety verification passed")
 
 
 if __name__ == "__main__":

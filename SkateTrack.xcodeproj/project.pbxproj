@@ -72,6 +72,9 @@
 		18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */; };
 		18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */; };
 		18A100000000000000000104 /* useSessionSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000004 /* useSessionSummary.swift */; };
+		18B100000000000000000101 /* SessionRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000001 /* SessionRouteMapView.swift */; };
+		18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */; };
+		18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000003 /* SessionSummaryShareStubView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -258,6 +261,9 @@
 		18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryMetricsGridView.swift; sourceTree = "<group>"; };
 		18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryPlaceholderSectionView.swift; sourceTree = "<group>"; };
 		18A100000000000000000004 /* useSessionSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionSummary.swift; sourceTree = "<group>"; };
+		18B100000000000000000001 /* SessionRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRouteMapView.swift; sourceTree = "<group>"; };
+		18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummarySafetyStatusView.swift; sourceTree = "<group>"; };
+		18B100000000000000000003 /* SessionSummaryShareStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryShareStubView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +499,9 @@
 				18A100000000000000000001 /* SessionSummaryView.swift */,
 				18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */,
 				18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */,
+				18B100000000000000000001 /* SessionRouteMapView.swift */,
+				18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */,
+				18B100000000000000000003 /* SessionSummaryShareStubView.swift */,
 			);
 			path = iOS/Features/SessionSummary;
 			sourceTree = SOURCE_ROOT;
@@ -821,6 +830,9 @@
 				18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */,
 				18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */,
 				18A100000000000000000104 /* useSessionSummary.swift in Sources */,
+				18B100000000000000000101 /* SessionRouteMapView.swift in Sources */,
+				18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */,
+				18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

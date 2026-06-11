@@ -86,3 +86,7 @@ Task-017b continues the same rule while preparing the History-to-Summary handoff
 ## Task-018a confirmation
 
 Task-018a introduces the first real Session Summary foundation and core local metrics, but it does not introduce paid chart gating or production monetization. Route maps, advanced charts, and health/calorie data remain deferred. When Task-018c adds subscriber-only advanced charts, it must continue using the project-wide paid feature rule: `FeatureFlagEngine` and `useSubscriptionStatus` are the app-facing boundaries, DEBUG/local entitlement simulation remains the development path, and production App Store monetization is still deferred until a future `AppStoreSubscriptionProvider` task.
+
+## Task-018b confirmation
+
+Task-018b adds the local Summary route map, safety recap, and share-entry stub without introducing subscriber-only chart access or production monetization. Advanced charts remain deferred to Task-018c and must continue following the project-wide paid feature rule: use `FeatureFlagEngine` and `useSubscriptionStatus` as the app-facing boundaries, keep DEBUG/local entitlement simulation as the development path, and defer production App Store monetization until a future `AppStoreSubscriptionProvider` task.
