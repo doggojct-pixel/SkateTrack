@@ -160,3 +160,10 @@
 "debug.tools.resetContacts.description" = "Clear local emergency contact test data without affecting production storage architecture.";
 "debug.tools.resetContacts.button" = "Clear Contacts";
 "debug.tools.contacts.count" = "Saved contacts";
+"repository.error.storeUnavailable" = "Local database is unavailable.";
+"repository.error.sessionNotFound" = "Session could not be found.";
+"repository.error.motionSampleFileMissing" = "Motion sample file is missing.";
+"repository.error.encodingFailed" = "Session data could not be saved.";
+"repository.error.decodingFailed" = "Session data could not be read.";
+"repository.error.exportFailed" = "Session export failed.";
+"repository.error.deleteFailed" = "Session could not be deleted.";

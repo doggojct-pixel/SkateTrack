@@ -160,3 +160,10 @@
 "debug.tools.resetContacts.description" = "清除本機緊急聯絡人測試資料，不影響正式儲存架構。";
 "debug.tools.resetContacts.button" = "清除聯絡人";
 "debug.tools.contacts.count" = "已儲存聯絡人";
+"repository.error.storeUnavailable" = "本機資料庫無法使用。";
+"repository.error.sessionNotFound" = "找不到這筆 Session。";
+"repository.error.motionSampleFileMissing" = "感測樣本檔案遺失。";
+"repository.error.encodingFailed" = "Session 資料無法儲存。";
+"repository.error.decodingFailed" = "Session 資料無法讀取。";
+"repository.error.exportFailed" = "Session 匯出失敗。";
+"repository.error.deleteFailed" = "Session 無法刪除。";

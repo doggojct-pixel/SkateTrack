@@ -27,6 +27,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-014a Fall Alert Overlay + SOS Event Skeleton | Complete | Fall alert overlay, countdown bridge, cancel / immediate SOS / countdown SOS actions, SOS event model, dispatcher skeleton, and DEBUG simulate-fall support exist. |
 | Task-014b Emergency Contacts Settings + SOS Contact Flow | Complete | Local emergency contact settings, contact-aware SOS event payloads, and visible SOS status feedback are implemented. |
 | Debug Tools Follow-up | Complete | DEBUG tools are centralized under `iOS/Features/Debug`; mock speed is explicit Demo Mode only and normal runtime uses real sensor data. |
+| Task-015a Local Persistence Foundation | Complete in hotfix | Core Data stack, session repository, motion sample file store, fall-event read repository, export/delete API, and repository unit tests are prepared. Task-015b will connect session end auto-save. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues Blocking Task-014
@@ -103,6 +104,14 @@ SkateTrack/
 │   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
 │   │   └── TrickEvent.swift                        # [協作區] Trick timeline event with confidence and landing information.
+│   ├── Persistence/                                # [協作區 — 邊界適配層] Task-015a local persistence foundation.
+│   │   ├── FallEventRepository.swift               # [協作區 — 邊界適配層] Session-linked fall-event query boundary.
+│   │   ├── MotionSampleFileStore.swift             # [自主區] Stores high-frequency MotionSample arrays as compact JSON files.
+│   │   ├── PersistenceController.swift             # [自主區] Core Data stack and programmatic Task-015a model.
+│   │   ├── RepositoryError.swift                   # [協作區] Localized repository error keys.
+│   │   ├── SessionEntityMapper.swift               # [自主區] NSManagedObject / domain-model mapping.
+│   │   ├── SessionRepository.swift                 # [協作區 — 邊界適配層] Completed-session save / fetch / delete / export API.
+│   │   └── SkateTrackDataModel.xcdatamodeld/       # [工程設定] Core Data schema reference for Task-015a entities.
 │   ├── Protocols/
 │   │   ├── SensorProvider.swift                    # [協作區] Cross-platform sensor recording contract.
 │   │   └── SyncProvider.swift                      # [協作區] Future cloud-sync contract.
@@ -198,7 +207,8 @@ SkateTrack/
 │       └── VideoOverlay/                          # [佔位] Future video overlay analysis.
 ├── Tests/                                         # Test source tree.
 │   ├── iOSTests/
-│   │   └── SessionRecordingCoordinatorTests.swift  # [工程設定] Six iOS unit tests for state transitions and session coordinator behavior.
+│   │   ├── SessionRecordingCoordinatorTests.swift  # [工程設定] Six iOS unit tests for state transitions and session coordinator behavior.
+│   │   └── SessionRepositoryTests.swift            # [工程設定] Task-015a persistence save / fetch / export / delete tests.
 │   ├── watchOSTests/                              # [佔位] Future watchOS tests.
 │   └── macOSTests/                                # [佔位] Future macOS tests.
 ├── scripts/                                       # [工程設定] Repository verification scripts.
@@ -216,6 +226,7 @@ SkateTrack/
 │   ├── verify_portrait_fall_tilt_rework.py        # [工程設定] Portrait lock, conservative tilt display, and fall-alert surfacing gate verification.
 │   ├── verify_sensor_fusion_engine.py             # [工程設定] Task-009 verification.
 │   ├── verify_session_recording_coordinator.py    # [工程設定] Task-011 verification.
+│   ├── verify_session_repository.py               # [工程設定] Task-015a persistence foundation verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
 ├── docs/                                          # [原則 E] Living documentation.

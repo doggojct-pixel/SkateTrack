@@ -112,6 +112,13 @@
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
+		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
+		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
+		15A100000000000000000104 /* SessionEntityMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000004 /* SessionEntityMapper.swift */; };
+		15A100000000000000000105 /* MotionSampleFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000005 /* MotionSampleFileStore.swift */; };
+		15A100000000000000000106 /* FallEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000006 /* FallEventRepository.swift */; };
+		15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000008 /* SessionRepositoryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +206,14 @@
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		15A100000000000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		15A100000000000000000002 /* RepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryError.swift; sourceTree = "<group>"; };
+		15A100000000000000000003 /* SessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
+		15A100000000000000000004 /* SessionEntityMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEntityMapper.swift; sourceTree = "<group>"; };
+		15A100000000000000000005 /* MotionSampleFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSampleFileStore.swift; sourceTree = "<group>"; };
+		15A100000000000000000006 /* FallEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallEventRepository.swift; sourceTree = "<group>"; };
+		15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SkateTrackDataModel.xcdatamodeld; sourceTree = "<group>"; };
+		15A100000000000000000008 /* SessionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepositoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +275,21 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		15A100000000000000000000 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				15A100000000000000000001 /* PersistenceController.swift */,
+				15A100000000000000000002 /* RepositoryError.swift */,
+				15A100000000000000000003 /* SessionRepository.swift */,
+				15A100000000000000000004 /* SessionEntityMapper.swift */,
+				15A100000000000000000005 /* MotionSampleFileStore.swift */,
+				15A100000000000000000006 /* FallEventRepository.swift */,
+				15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+
 		12A30000000000000000000B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
+				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -480,6 +511,7 @@
 			children = (
 				12A200000000000000000006 /* Constants */,
 				12A30000000000000000000B /* Models */,
+				15A100000000000000000000 /* Persistence */,
 				12A30000000000000000000C /* Protocols */,
 				12A200000000000000000007 /* Localization */,
 				12A200000000000000000008 /* Utilities */,
@@ -654,6 +686,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
+				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +741,12 @@
 				12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
+				15A100000000000000000101 /* PersistenceController.swift in Sources */,
+				15A100000000000000000102 /* RepositoryError.swift in Sources */,
+				15A100000000000000000103 /* SessionRepository.swift in Sources */,
+				15A100000000000000000104 /* SessionEntityMapper.swift in Sources */,
+				15A100000000000000000105 /* MotionSampleFileStore.swift in Sources */,
+				15A100000000000000000106 /* FallEventRepository.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,
 				12A300000000000000000104 /* SportMode.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,

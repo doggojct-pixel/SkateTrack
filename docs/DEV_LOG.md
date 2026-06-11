@@ -423,3 +423,26 @@ This log is append-only. Do not delete or overwrite old entries.
 - Reframed the Live HUD tilt card as an uncalibrated phone-posture status instead of rendering raw phone angle as skateboard lean.
 - Added a SessionRecordingCoordinator surfacing gate so automatic fall alerts require an armed session window and ride motion before showing the SOS overlay.
 
+
+
+## 2026-06-11 — Task-015a Local Persistence Foundation
+
+### Completed
+- Added a Task-015a persistence foundation under `Shared/Persistence`.
+- Added `PersistenceController` with a Core Data stack and Task-015a model entities for sessions, fall events, equipment, and spots.
+- Added `SessionRepositoryProtocol` and `SessionRepository` for local completed-session save, recent fetch, single-session fetch, motion-sample load, delete, and export bundle operations.
+- Added `SessionEntityMapper` so Core Data `NSManagedObject` values do not leak into UI, hooks, or session recording coordinator code.
+- Added `MotionSampleFileStore` so high-frequency `MotionSample` arrays are stored as session files instead of being written row-by-row into Core Data.
+- Added `FallEventRepository` as a narrow read boundary for session-linked fall events.
+- Added iOS unit coverage in `SessionRepositoryTests` for save / fetch / load / export / delete using an isolated temporary store.
+- Added `scripts/verify_session_repository.py` to guard Task-015a file presence, project membership, model fields, and repository APIs.
+
+### Scope Boundary
+- Session recording is not yet auto-saving through the repository. That integration remains Task-015b.
+- No History UI, Summary UI, route map, equipment UI, spot UI, Google Drive sync, or CloudKit sync was added.
+- No GPSProvider, IMUProvider, SensorFusionEngine, FallDetectionEngine, Debug Tools, SOS, Launch Screen, AppIcon, bottom dock, watchOS UI, or macOS UI changes were made.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_repository.py` to verify Task-015a persistence source structure and Xcode project membership.
+- Run the iOS unit-test target in Xcode to execute `SessionRepositoryTests`.
+- Continue running existing session, localization, sensor, fall alert, and debug tools verification scripts after applying this task.
