@@ -9,6 +9,7 @@ enum RootPrimaryScreen: String, CaseIterable, Identifiable {
     case history
     case equipment
     case spots
+    case achievements
 
     var id: String { rawValue }
 
@@ -22,6 +23,8 @@ enum RootPrimaryScreen: String, CaseIterable, Identifiable {
             return "gear.title"
         case .spots:
             return "spots.title"
+        case .achievements:
+            return "achievements.title"
         }
     }
 }
@@ -91,6 +94,10 @@ struct RootNavigationView: View {
                         )
                         .id("spots")
                         .transition(.opacity)
+                    case .achievements:
+                        AchievementListView(subscriptionStatus: subscriptionStatus)
+                            .id("achievements")
+                            .transition(.opacity)
                     }
                 }
             }

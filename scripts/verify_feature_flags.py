@@ -19,6 +19,7 @@ expected = [
     "inlineAggressiveMode",
     "inlineSlalomMode",
     "sessionShareCard",
+    "advancedChallenges",
 ]
 
 required_files = [feature_file, engine_file, hook_file]

@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-023c Save Share Card to Photos + Export Scope ADR.
-**Current Development Gate:** Task-023c adds add-only Photos save support for generated share-card PNG images and ADR-0004 records that AirDrop-specific packages / portable archives remain deferred to Task-027 / Task-028. Google Drive, cloud sync, production StoreKit, real WeatherKit, developer-account-dependent live services, and indoor odometry remain deferred. ADR-0003 continues to prohibit fake indoor route / speed data in Task-023 through Task-030.
+**Current Baseline:** Source-controlled repository after Task-024a Achievements Foundation + Local Progress UI.
+**Current Development Gate:** Task-024a adds local achievement and weekly challenge foundation with UserDefaults-backed unlock records, repository-derived progress, a root Achievements screen, and `GatedFeature.advancedChallenges` for Pro / DEBUG-local advanced challenge access. Remote leaderboards, Game Center, server verification, push notifications, cloud sync, production StoreKit, and developer-account-dependent services remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -46,6 +46,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-023a Session Share Card Preview Foundation | Complete | Summary has a real local share-card preview foundation, shared data model, SwiftUI hook, Pro locked preview, Paywall route, localization, docs, and verification. |
 | Task-023b Session Share Card Quick Export + Share Sheet | Complete | Pro / DEBUG subscriber simulation can render a share-card PNG, lightweight text, and JSON to temporary storage, open the iOS system share sheet, and clean up exported temp files. No Photos write, AirDrop-specific package, Google Drive, cloud sync, or signing / capabilities changes. |
 | Task-023c Save Share Card to Photos + Export Scope ADR | Complete | Pro / DEBUG subscriber simulation can save the generated share-card PNG to Photos through add-only permission; ADR-0004 defers AirDrop-specific packages and portable archives to Task-027 / Task-028. No full photo-library read access, Google Drive, cloud sync, or signing / capabilities changes. |
+| Task-024a Achievements Foundation + Local Progress UI | Complete | Local achievement models, weekly challenge models, catalog, engines, UserDefaults unlock store, SwiftUI hook, root Achievements screen, Pro-gated advanced challenge previews, localization, docs, and verification are implemented. No Game Center, remote leaderboard, server verification, cloud sync, production StoreKit, signing, or capabilities. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -122,6 +123,8 @@ SkateTrack/
 │   │   ├── SessionData.swift                       # [協作區] Root session container for samples, tricks, falls, equipment, and summary metrics.
 │   │   ├── SessionSummaryMetrics.swift             # [協作區] Completed-session summary and live metric snapshot structs.
 │   │   ├── SessionShareCardData.swift              # [協作區] Task-023a/023b share-card data model used by preview and local export.
+│   │   ├── Achievement.swift                       # [協作區] Task-024a local achievement definition, progress, category, and unlock record models.
+│   │   ├── WeeklyChallenge.swift                   # [協作區] Task-024a weekly challenge definition and progress models.
 │   │   ├── SportMode.swift                         # [協作區] Skateboard and inline skating mode enums plus unified `SportMode`.
 │   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
@@ -179,6 +182,11 @@ SkateTrack/
 │   │   │   ├── SpotRepository.swift                # [自主區] Local Spot CRUD, favorite toggling, nearby distance query, and visit record APIs.
 │   │   │   └── SpotVisitTracker.swift              # [自主區] Applies completed-session visits to selected Spots only after session save succeeds.
 │   │   ├── SessionSharing/                         # [自主區] Task-023b / 023c local share export and Photos save boundary.
+│   │   ├── Achievements/                           # [自主區] Task-024a local achievement and weekly challenge engines.
+│   │   │   ├── AchievementCatalog.swift            # [自主區] Central local achievement definitions.
+│   │   │   ├── AchievementEngine.swift             # [自主區] Evaluates achievement progress from local repository-derived stats.
+│   │   │   ├── AchievementUnlockStore.swift        # [自主區] UserDefaults-backed local unlock records; no Core Data migration.
+│   │   │   └── WeeklyChallengeEngine.swift         # [自主區] Local weekly challenge progress engine.
 │   │   │   ├── SessionShareExportPayload.swift     # [協作區] Describes generated PNG / TXT / JSON temporary export files.
 │   │   │   ├── SessionShareExportService.swift     # [自主區] Writes share-card export files to temporary storage and cleans them up.
 │   │   │   └── SessionSharePhotoLibrarySaver.swift # [自主區] Add-only Photo Library authorization and PNG save bridge.
@@ -191,6 +199,11 @@ SkateTrack/
 │   │   └── Subscription/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
 │   ├── Features/                                   # [協作區] iOS feature modules.
+│   │   ├── Achievements/                           # [協作區] Task-024a Achievements screen and reusable achievement/challenge cards.
+│   │   │   ├── AchievementListView.swift           # [協作區] Root Achievements screen with stats, weekly challenges, basic achievements, and Pro advanced previews.
+│   │   │   ├── AchievementCardView.swift           # [協作區] Single achievement progress / lock card.
+│   │   │   ├── AchievementProgressRingView.swift   # [協作區] Reusable circular progress indicator.
+│   │   │   └── WeeklyChallengeCardView.swift       # [協作區] Weekly challenge progress / advanced lock card.
 │   │   ├── Debug/                               # [協作區] DEBUG-only unified development tools.
 │   │   │   ├── DebugFeatureFlag.swift           # [協作區] Central DEBUG tool feature definitions.
 │   │   │   ├── DebugMockSessionFactory.swift    # [協作區] Explicit demo speed / mock session helper; not used by normal app runtime.
@@ -570,6 +583,7 @@ iOS/Features/SessionSummary/SessionSummaryShareStubView.swift  # [協作區] Rew
 scripts/verify_session_share_card.py                           # [工程設定] Task-023b-compatible share-card verification script.
 scripts/verify_session_share_export.py                         # [工程設定] Task-023c-compatible export / share-sheet boundary verification script.
 scripts/verify_session_share_photos.py                         # [工程設定] Task-023c Photos save boundary and permission verification script.
+scripts/verify_achievements.py                                  # [工程設定] Task-024a local achievement / weekly challenge verification script.
 scripts/verify_session_summary.py                              # [工程設定] Updated Summary verification for share-card export foundation.
 ```
 
@@ -586,3 +600,10 @@ Task-023b remains local-first and account-safe. It introduces no Photos permissi
 Task-023c adds a separate Save to Photos action for the generated share-card PNG. It uses add-only Photo Library permission, localized InfoPlist copy, and a dedicated Photos bridge so Summary Views do not directly access `PHPhotoLibrary`.
 
 Task-023c intentionally does not request full photo-library read access, use `UIImageWriteToSavedPhotosAlbum`, create an AirDrop-specific package, define the portable archive format, integrate cloud sync, or change signing / capabilities. ADR-0004 records that AirDrop-specific packages and portable archives remain Task-027 / Task-028 work.
+
+
+### Task-024a Achievements Addendum
+
+Task-024a adds a local-first Achievements root screen. Achievement progress is computed from saved Session, Equipment, and Spot repository data through `useAchievements`; Views do not directly access Core Data or repositories. Local unlock records are stored as JSON in UserDefaults through `AchievementUnlockStore`, intentionally avoiding a Core Data migration in this phase.
+
+Advanced achievements and advanced weekly challenge previews are gated by `GatedFeature.advancedChallenges`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Task-024a does not add Game Center, remote leaderboards, server verification, cloud sync, production StoreKit, signing, capabilities, push notifications, watchOS UI, or macOS UI.

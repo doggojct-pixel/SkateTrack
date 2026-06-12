@@ -1059,3 +1059,23 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_share_photos.py` together with the existing Task-023b share export, share card, Summary, and localization verification scripts.
 - Manual validation should confirm Pro / DEBUG-local subscriber simulation can save the generated share-card PNG to Photos, denied Photos add permission shows a clear localized message, free users remain on the locked preview / Paywall route, and no full photo-library read permission is requested.
+
+## 2026-06-12 — Task-024a Achievements Foundation + Local Progress UI
+
+### Completed
+- Added shared `Achievement` and `WeeklyChallenge` models for local milestone and weekly-goal data.
+- Added `iOS/Core/Achievements` with `AchievementCatalog`, `AchievementEngine`, `AchievementUnlockStore`, and `WeeklyChallengeEngine` so rule evaluation and local unlock persistence stay out of SwiftUI Views.
+- Added `useAchievements` as the SwiftUI-facing boundary that reads local Session, Equipment, and Spot repositories, evaluates progress, and persists unlocked achievement records through UserDefaults.
+- Added the iOS Achievements screen with dark SkateTrack visual styling, local progress stats, weekly challenge cards, achievement cards, and Pro-locked advanced challenge previews.
+- Added `GatedFeature.advancedChallenges` so advanced challenge access follows `FeatureFlagEngine`, `useSubscriptionStatus`, and DEBUG/local entitlement simulation.
+- Added root navigation access to the Achievements screen without changing Session Start, History, Equipment, Spot, or Summary flows.
+- Added localization keys and `scripts/verify_achievements.py`; updated the feature flag verification script for the new gated feature.
+
+### Scope Boundary
+- Task-024a is local-first and does not add Game Center, remote leaderboards, friends, server verification, push notifications, calendar integration, cloud sync, Google services, production StoreKit, App Store Connect, signing, capabilities, watchOS UI, or macOS UI.
+- Achievement unlock state is intentionally stored in UserDefaults as local JSON; Core Data schema is not changed in this phase.
+- The task does not modify GPS, IMU, SensorFusion, FallDetection, Launch Screen, AppIcon, bottom dock, WeatherKit, or the share/export pipeline.
+
+### Validation Notes
+- Run `python3 scripts/verify_achievements.py`, `python3 scripts/verify_feature_flags.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
+- Manual validation should confirm the new Achievements tab opens, local stats load from saved sessions, basic achievements show progress, advanced challenges open the existing Paywall for free users, and DEBUG/local subscriber simulation unlocks advanced challenge progress.

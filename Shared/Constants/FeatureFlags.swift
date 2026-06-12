@@ -15,6 +15,7 @@ enum GatedFeature: String, CaseIterable, Codable, Identifiable, Sendable {
     case inlineAggressiveMode
     case inlineSlalomMode
     case sessionShareCard
+    case advancedChallenges
 
     var id: String { rawValue }
 
@@ -40,6 +41,8 @@ enum GatedFeature: String, CaseIterable, Codable, Identifiable, Sendable {
             return "feature.inline_slalom_mode"
         case .sessionShareCard:
             return "feature.session_share_card"
+        case .advancedChallenges:
+            return "feature.advanced_challenges"
         }
     }
 }

@@ -181,3 +181,9 @@ Task-023c extends the Task-023 share-card export flow with Save to Photos while 
 Pro / DEBUG-local subscriber simulation can render the share-card preview to PNG and save that image to Photos through add-only Photo Library authorization. Free users remain on the locked preview and Paywall route, and no Photos save attempt is started for them.
 
 Task-023c intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, full Photo Library read access, `NSPhotoLibraryUsageDescription`, AirDrop-specific export packages, portable archives, Google Drive, cloud sync, signing, capabilities, watchOS UI, or macOS UI. Future production monetization should replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting share-card export, Photos save, Summary, or Paywall routing.
+
+## Task-024a Confirmation
+
+Task-024a introduces local Achievements and Weekly Challenge foundation without adding production monetization or remote services. Basic achievements are local-first and are computed from saved Session, Equipment, and Spot repository data. Advanced achievements and advanced weekly challenge previews are gated through the new `GatedFeature.advancedChallenges`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation.
+
+Task-024a intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, Game Center, remote leaderboards, server verification, cloud sync, push notifications, Google services, signing, or capability changes. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting achievement or weekly challenge UI.
