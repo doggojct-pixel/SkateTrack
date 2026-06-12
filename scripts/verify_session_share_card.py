@@ -24,6 +24,11 @@ PROJECT_TOKENS = [
     "SessionShareCardMetricView.swift in Sources",
     "SessionShareCardLockedView.swift in Sources",
     "SessionShareCardActionView.swift in Sources",
+    "SessionShareCardRenderer.swift in Sources",
+    "SessionShareExportViewModel.swift in Sources",
+    "SessionShareSheetView.swift in Sources",
+    "SessionShareExportPayload.swift in Sources",
+    "SessionShareExportService.swift in Sources",
 ]
 
 LOCALIZATION_KEYS = [
@@ -48,9 +53,14 @@ LOCALIZATION_KEYS = [
     "summary.share.action.title",
     "summary.share.action.subtitle",
     "summary.share.action.button",
-    "summary.share.action.alert.title",
-    "summary.share.action.alert.message",
-    "summary.share.action.alert.dismiss",
+    "summary.share.export.preparing",
+    "summary.share.export.error.title",
+    "summary.share.export.error.image",
+    "summary.share.export.error.file",
+    "summary.share.export.error.generic",
+    "summary.share.export.error.dismiss",
+    "summary.share.export.text.title",
+    "summary.share.export.text.footer",
     "feature.session_share_card",
 ]
 
@@ -92,8 +102,8 @@ SOURCE_TOKENS = {
     ],
     "iOS/Features/SessionSummary/SessionShareCardActionView.swift": [
         "SessionShareCardActionView",
-        "summary.share.action.alert.message",
-        "Task-023b",
+        "SessionShareExportViewModel",
+        "summary.share.export.preparing",
         "session-share-card-action-view",
     ],
     "iOS/Features/SessionSummary/SessionSummaryView.swift": [
@@ -102,29 +112,26 @@ SOURCE_TOKENS = {
         "isShareCardPaywallPresented",
     ],
     "docs/DEV_LOG.md": [
-        "Task-023a",
-        "Session Share Card Preview Foundation",
+        "Task-023b",
+        "Quick Export",
     ],
     "docs/FILE_STRUCTURE.md": [
-        "Task-023a",
+        "Task-023b",
         "SessionShareCardPreviewView.swift",
-        "verify_session_share_card.py",
+        "SessionShareExportService.swift",
+        "verify_session_share_export.py",
     ],
     "docs/decisions/ADR-0001-subscription-entitlement-strategy.md": [
-        "Task-023a Confirmation",
+        "Task-023b Confirmation",
         "GatedFeature.sessionShareCard",
     ],
 }
 
 FORBIDDEN_TOKENS = [
-    "ImageRenderer",
-    "UIActivityViewController",
-    "UIImage",
     "UIPasteboard",
     "PhotosUI",
     "PHPhotoLibrary",
     "URLSession",
-    "FileManager.default.temporaryDirectory",
     "AirDrop",
     "GoogleDrive",
     "WeatherKit",
@@ -138,7 +145,12 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift": 240,
     "iOS/Features/SessionSummary/SessionShareCardMetricView.swift": 120,
     "iOS/Features/SessionSummary/SessionShareCardLockedView.swift": 140,
-    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": 140,
+    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": 180,
+    "iOS/Features/SessionSummary/SessionShareCardRenderer.swift": 120,
+    "iOS/Features/SessionSummary/SessionShareExportViewModel.swift": 140,
+    "iOS/Features/SessionSummary/SessionShareSheetView.swift": 100,
+    "iOS/Core/SessionSharing/SessionShareExportPayload.swift": 120,
+    "iOS/Core/SessionSharing/SessionShareExportService.swift": 220,
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": 160,
     "iOS/Features/SessionSummary/SessionSummaryView.swift": 360,
 }
@@ -216,7 +228,7 @@ def main() -> None:
     verify_source_tokens()
     verify_line_counts()
     verify_scope_boundaries()
-    print("✅ Task-023a Session Share Card preview verification passed")
+    print("✅ Task-023b Session Share Card preview/export verification passed")
 
 
 if __name__ == "__main__":

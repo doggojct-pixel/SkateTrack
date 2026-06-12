@@ -19,6 +19,11 @@ REQUIRED_FILES = [
     "iOS/Features/SessionSummary/SessionShareCardMetricView.swift",
     "iOS/Features/SessionSummary/SessionShareCardLockedView.swift",
     "iOS/Features/SessionSummary/SessionShareCardActionView.swift",
+    "iOS/Features/SessionSummary/SessionShareCardRenderer.swift",
+    "iOS/Features/SessionSummary/SessionShareExportViewModel.swift",
+    "iOS/Features/SessionSummary/SessionShareSheetView.swift",
+    "iOS/Core/SessionSharing/SessionShareExportPayload.swift",
+    "iOS/Core/SessionSharing/SessionShareExportService.swift",
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift",
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift",
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift",
@@ -93,9 +98,14 @@ LOCALIZATION_KEYS = [
     "summary.share.action.title",
     "summary.share.action.subtitle",
     "summary.share.action.button",
-    "summary.share.action.alert.title",
-    "summary.share.action.alert.message",
-    "summary.share.action.alert.dismiss",
+    "summary.share.export.preparing",
+    "summary.share.export.error.title",
+    "summary.share.export.error.image",
+    "summary.share.export.error.file",
+    "summary.share.export.error.generic",
+    "summary.share.export.error.dismiss",
+    "summary.share.export.text.title",
+    "summary.share.export.text.footer",
     "summary.charts.placeholder.title",
     "summary.charts.placeholder.subtitle",
     "summary.health.placeholder.title",
@@ -138,6 +148,11 @@ PROJECT_TOKENS = [
     "SessionShareCardMetricView.swift in Sources",
     "SessionShareCardLockedView.swift in Sources",
     "SessionShareCardActionView.swift in Sources",
+    "SessionShareCardRenderer.swift in Sources",
+    "SessionShareExportViewModel.swift in Sources",
+    "SessionShareSheetView.swift in Sources",
+    "SessionShareExportPayload.swift in Sources",
+    "SessionShareExportService.swift in Sources",
     "useSessionSummary.swift in Sources",
     "SessionAdvancedChartsView.swift in Sources",
     "SpeedTimelineChartView.swift in Sources",
@@ -227,7 +242,8 @@ SOURCE_TOKENS = {
     ],
     "iOS/Features/SessionSummary/SessionShareCardActionView.swift": [
         "SessionShareCardActionView",
-        "summary.share.action.alert.message",
+        "SessionShareExportViewModel",
+        "summary.share.export.preparing",
     ],
 
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
@@ -293,8 +309,6 @@ FORBIDDEN_TOKENS = [
     "Product.products(for:",
     "HKHealthStore",
     "calories",
-    "ImageRenderer",
-    "UIActivityViewController",
     "PHPhotoLibrary",
 ]
 
@@ -308,7 +322,12 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift": 240,
     "iOS/Features/SessionSummary/SessionShareCardMetricView.swift": 120,
     "iOS/Features/SessionSummary/SessionShareCardLockedView.swift": 140,
-    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": 140,
+    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": 180,
+    "iOS/Features/SessionSummary/SessionShareCardRenderer.swift": 120,
+    "iOS/Features/SessionSummary/SessionShareExportViewModel.swift": 140,
+    "iOS/Features/SessionSummary/SessionShareSheetView.swift": 100,
+    "iOS/Core/SessionSharing/SessionShareExportPayload.swift": 120,
+    "iOS/Core/SessionSharing/SessionShareExportService.swift": 220,
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": 260,
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": 180,
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift": 180,
@@ -394,7 +413,7 @@ def main() -> None:
     verify_project_membership()
     verify_localization()
     verify_source_contracts()
-    print("✅ Task-023a Session Summary share-card verification passed")
+    print("✅ Task-023b Session Summary share/export verification passed")
 
 
 if __name__ == "__main__":

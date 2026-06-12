@@ -641,14 +641,14 @@
 "weather.rideability.spot.locked.subtitle" = "免費用戶可查看基本場地滑行適合度。Pro 可透過本機模擬解鎖天氣、路面、人潮與安全因素細節。";
 "spots.surface.unknown" = "未知";
 
-/* Task-023a Session Share Card Preview Foundation */
+/* Task-023a/023b Session Share Card Preview + Quick Export */
 "summary.share.card.eyebrow" = "滑行摘要";
 "summary.share.brand" = "SkateTrack";
-"summary.share.footer" = "僅本機預覽 · Task-023b 才加入匯出";
-"summary.share.unlocked.subtitle" = "SkateTrack Pro 分享卡預覽已就緒。PNG 匯出與系統分享保留給下一階段。";
-"summary.share.locked.sectionSubtitle" = "分享卡屬於 Pro 功能。免費用戶可以先看到版型預覽，之後再解鎖匯出。";
+"summary.share.footer" = "本機匯出 · 由 SkateTrack 產生";
+"summary.share.unlocked.subtitle" = "SkateTrack Pro 分享卡已就緒，可透過本機系統分享匯出 PNG、文字與 JSON。";
+"summary.share.locked.sectionSubtitle" = "分享卡屬於 Pro 功能。免費用戶可以先看到版型預覽；Pro 可解鎖本機匯出。";
 "summary.share.locked.title" = "分享卡屬於 Pro";
-"summary.share.locked.subtitle" = "解鎖精美的 SkateTrack 滑行摘要卡，替重要 Session 留下可分享的紀錄。圖片匯出會在下一階段加入。";
+"summary.share.locked.subtitle" = "解鎖精美的 SkateTrack 滑行摘要卡，並為重要 Session 匯出本機 PNG、文字與 JSON。";
 "summary.share.spot" = "場地";
 "summary.share.spot.none" = "未綁定場地";
 "summary.share.equipment" = "裝備";
@@ -659,9 +659,14 @@
 "summary.share.safety" = "安全";
 "summary.share.safety.clear" = "未記錄跌倒";
 "summary.share.safety.fallsFormat" = "記錄到 %d 次跌倒事件";
-"summary.share.action.title" = "下一階段快速匯出";
-"summary.share.action.subtitle" = "這一階段只預覽分享卡。Task-023b 會渲染圖片並開啟本機系統分享。";
-"summary.share.action.button" = "Task-023b 匯出";
-"summary.share.action.alert.title" = "目前僅預覽";
-"summary.share.action.alert.message" = "分享卡預覽已完成。PNG 匯出、暫存檔與系統分享流程刻意保留給 Task-023b。";
-"summary.share.action.alert.dismiss" = "好";
+"summary.share.action.title" = "快速匯出";
+"summary.share.action.subtitle" = "將這張分享卡匯出成 PNG，並附上輕量文字與 JSON 檔，再開啟 iOS 系統分享。";
+"summary.share.action.button" = "分享卡片";
+"summary.share.export.preparing" = "正在準備匯出…";
+"summary.share.export.error.title" = "匯出失敗";
+"summary.share.export.error.image" = "無法渲染分享卡圖片。";
+"summary.share.export.error.file" = "無法將分享檔案寫入暫存空間。";
+"summary.share.export.error.generic" = "無法準備分享匯出。";
+"summary.share.export.error.dismiss" = "好";
+"summary.share.export.text.title" = "SkateTrack Session 分享";
+"summary.share.export.text.footer" = "由 SkateTrack 在本機匯出。天氣、路線與安全資料僅供參考。";

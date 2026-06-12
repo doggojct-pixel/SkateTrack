@@ -1019,3 +1019,24 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_share_card.py`, `python3 scripts/verify_session_summary.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
 - Manual validation should confirm locked preview for free users, Paywall routing for `sessionShareCard`, full preview in DEBUG/local subscriber simulation, Summary still loads route / safety / equipment / Spot attribution, and no export or system share sheet appears in Task-023a.
+
+
+## 2026-06-12 — Task-023b Session Share Card Quick Export + Share Sheet Integration
+
+### Completed
+- Added `iOS/Core/SessionSharing` as the local share export boundary for Task-023b payloads and temporary file writing / cleanup.
+- Added `SessionShareExportPayload` and `SessionShareExportService` to create a PNG / TXT / JSON quick-export set inside `FileManager.default.temporaryDirectory` without writing to Photos or cloud storage.
+- Added `SessionShareCardRenderer` so the Task-023a SwiftUI share-card preview can be rendered into a PNG only inside the dedicated renderer boundary.
+- Added `SessionShareExportViewModel` to keep render, export, share-sheet state, errors, and cleanup out of `SessionSummaryView` and `SessionSummaryShareStubView`.
+- Added `SessionShareSheetView` as the only `UIActivityViewController` wrapper for the generated local file URLs.
+- Updated `SessionShareCardActionView` so Pro / DEBUG-local subscriber simulation can prepare the export and open the iOS system share sheet.
+- Updated localization keys, `scripts/verify_session_share_export.py`, `scripts/verify_session_share_card.py`, and `scripts/verify_session_summary.py` for the quick-export flow.
+
+### Scope Boundary
+- Task-023b does not write to Photos, request Photo Library permission, create an AirDrop-specific package, integrate Google Drive, iCloud / CloudKit, external APIs, production StoreKit, signing, capabilities, watchOS UI, or macOS UI.
+- Share-card export remains gated through `GatedFeature.sessionShareCard`, `useSubscriptionStatus`, and DEBUG/local entitlement simulation.
+- Task-027 remains responsible for a fuller AirDrop / export package format; Task-023b is only Summary quick export.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_share_export.py`, `python3 scripts/verify_session_share_card.py`, `python3 scripts/verify_session_summary.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
+- Manual validation should confirm free users cannot export, Pro / DEBUG-local subscriber simulation can open the share sheet with PNG / TXT / JSON items, cancelling the sheet does not crash, and no Photos permission prompt appears.
