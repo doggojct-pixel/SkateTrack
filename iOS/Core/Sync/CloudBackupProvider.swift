@@ -53,4 +53,5 @@ protocol CloudBackupProvider: AnyObject, Sendable {
     var kind: CloudBackupProviderKind { get }
     func currentAvailability() async -> CloudBackupAvailability
     func createBackupPackage() async throws -> BackupPackageExportResult
+    func previewRestorePackage(from fileURL: URL) async throws -> BackupRestorePreview
 }

@@ -1255,3 +1255,29 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_backup_sync.py` after applying this task.
 - Also run localization, shared-model, account-provider, and subscription entitlement simulation verification scripts.
 - Xcode validation should confirm the iOS target compiles, the Account screen shows 「備份與同步」, the local backup share sheet opens, and no Google OAuth / Drive permission / signing prompt appears.
+
+## 2026-06-12 Task-026b — Local Restore Preview + Conflict Policy Simulation
+
+### Completed
+
+- Added `BackupRestorePreview` shared preview models for non-destructive restore inspection.
+- Added `BackupPackageDecoder` to validate local backup files with `schemaVersion == 1` and `packageType = backup` before previewing contents.
+- Extended `CloudBackupProvider` with a restore-preview boundary while keeping Views behind `useBackupSync`.
+- Added `BackupRestorePreviewView` to the Account → Backup UI so users can choose a local `.skatetrack-backup.json` file and inspect section counts / validation issues.
+- Added `.fileImporter`-based local file selection using JSON / data types only; no custom UTType, capabilities, or entitlements were added.
+- Displayed conflict-policy simulation: `localWins` is the only safe policy represented in Task-026b, while `remoteWins` and `mergeByDate` remain deferred.
+- Added `verify_backup_restore_preview.py` and updated documentation / localization for restore preview.
+
+### Safety Notes
+
+- Task-026b is intentionally non-destructive. It never writes sessions, equipment, spots, achievement unlocks, or weekly challenge completion records back to Core Data or UserDefaults.
+- The preview decodes each store independently so one corrupted section can be shown as a validation issue without crashing the whole screen.
+- Google Drive restore, Drive download, OAuth, Drive scopes, production token lifecycle, and server verification remain blocked by the same external-service constraints recorded in ADR-0002 and ADR-0006.
+
+### Deferred from Task-026b
+
+- Real restore execution, local overwrite, local database replacement, and UserDefaults replacement.
+- `remoteWins` implementation and any UX that replaces local data with backup data.
+- `mergeByDate` implementation and cross-device conflict resolution.
+- Google Drive download / restore, background sync, Drive provider integration, OAuth / Drive scopes, and server verification.
+- AirDrop `.skatetrack` package import / export and macOS package viewer remain Task-027 / Task-028.

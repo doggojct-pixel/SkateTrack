@@ -4,10 +4,12 @@
 
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 struct BackupSyncSettingsView: View {
     @StateObject private var viewModel: BackupSyncViewModel
     @State private var shareItem: BackupSyncShareItem?
+    @State private var isRestoreImporterPresented = false
 
     @MainActor
     init(viewModel: BackupSyncViewModel? = nil) {
@@ -17,6 +19,10 @@ struct BackupSyncSettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             localBackupCard
+            BackupRestorePreviewView(
+                viewModel: viewModel,
+                isImporterPresented: $isRestoreImporterPresented
+            )
             driveStatusCard
             restoreDeferredCard
         }
@@ -24,6 +30,22 @@ struct BackupSyncSettingsView: View {
         .sheet(item: $shareItem) { item in
             BackupSyncShareSheetView(activityItems: [item.url])
                 .ignoresSafeArea()
+        }
+        .fileImporter(
+            isPresented: $isRestoreImporterPresented,
+            allowedContentTypes: [.json, .data],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                guard let url = urls.first else {
+                    viewModel.handleRestoreImporterFailure()
+                    return
+                }
+                viewModel.previewRestorePackage(from: url)
+            case .failure:
+                viewModel.handleRestoreImporterFailure()
+            }
         }
         .accessibilityIdentifier("backup-sync-settings-view")
     }

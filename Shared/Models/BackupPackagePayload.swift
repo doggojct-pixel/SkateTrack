@@ -13,6 +13,21 @@ enum BackupPackageStoreKey: String, Codable, Sendable, CaseIterable, Identifiabl
 
     var id: String { rawValue }
 
+    var localizationKey: String {
+        switch self {
+        case .sessions:
+            return "backup.store.sessions"
+        case .equipment:
+            return "backup.store.equipment"
+        case .spots:
+            return "backup.store.spots"
+        case .achievements:
+            return "backup.store.achievements"
+        case .weeklyChallengeCompletions:
+            return "backup.store.weekly_challenge_completions"
+        }
+    }
+
     var fileName: String {
         switch self {
         case .sessions:

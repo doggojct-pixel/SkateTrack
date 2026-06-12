@@ -56,3 +56,17 @@ Task-027 `.skatetrack` export package is a separate portable sharing / AirDrop /
 ## Follow-up
 
 Task-026b should implement local restore preview and explicit conflict-policy confirmation without silent overwrite. Task-026c / future Google work should only add a real Drive provider after Google OAuth credentials, minimum Drive scopes, privacy copy, token lifecycle, and signing review are ready.
+
+## Task-026b addendum — Restore preview before restore execution
+
+Task-026b extends the backup provider strategy with a non-destructive local restore preview. The decoder validates `schemaVersion == 1` and `packageType = backup`, then decodes each store independently to produce section counts and validation issues.
+
+The preview is intentionally not a restore engine. It does not write to `SessionRepository`, `EquipmentRepository`, `SpotRepository`, `AchievementUnlockStore`, `WeeklyChallengeCompletionStore`, Core Data, or UserDefaults. SwiftUI continues to use `useBackupSync`; Views must not instantiate providers, repositories, or storage layers directly.
+
+### Deferred from Task-026b
+
+- Real restore execution and any local overwrite behavior.
+- `remoteWins` and `mergeByDate` conflict-policy implementation.
+- Backup-to-local-data merge rules, duplicate detection, and cross-device reconciliation.
+- Google Drive download / restore, OAuth / Drive scopes, background sync, and server verification.
+- AirDrop `.skatetrack` package import and macOS import viewer.

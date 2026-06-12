@@ -57,6 +57,10 @@ final class LocalBackupProvider: CloudBackupProvider, @unchecked Sendable {
         }
     }
 
+    func previewRestorePackage(from fileURL: URL) async throws -> BackupRestorePreview {
+        try BackupPackageDecoder().preview(from: fileURL)
+    }
+
     static func defaultExportDirectory() -> URL {
         FileManager.default.temporaryDirectory
             .appendingPathComponent("SkateTrackBackup", isDirectory: true)

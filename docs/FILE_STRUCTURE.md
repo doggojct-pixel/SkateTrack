@@ -703,3 +703,18 @@ docs/decisions/ADR-0006-backup-provider-and-package-strategy.md # Backup provide
 - Restore preview, validation, conflict resolution, and local overwrite behavior are Task-026b.
 - Production Google Drive provider, OAuth credentials, Drive scopes, remote upload / download, background sync, cross-device merge, and server verification remain blocked.
 - AirDrop `.skatetrack` package and macOS import viewer remain Task-027 / Task-028.
+
+## Task-026b Local Restore Preview + Conflict Policy Simulation
+
+```text
+Shared/Models/BackupRestorePreview.swift              # [協作區] Non-destructive restore-preview summary, store statuses, and validation issues.
+iOS/Core/Sync/BackupPackageDecoder.swift              # [自主區] Validates schemaVersion/packageType and decodes backup sections independently for preview.
+iOS/Features/Settings/BackupRestorePreviewView.swift  # [協作區] Account backup UI section for file selection, preview counts, and conflict-policy simulation.
+scripts/verify_backup_restore_preview.py              # Verifies Task-026b restore-preview boundaries, docs, localization, and no destructive writes.
+```
+
+### Deferred from Task-026b
+
+- No restore writer or local overwrite service was added.
+- No Core Data / UserDefaults mutation is performed from restore preview.
+- `remoteWins`, `mergeByDate`, Google Drive download / restore, AirDrop package import, and macOS viewer work remain deferred to later tasks.

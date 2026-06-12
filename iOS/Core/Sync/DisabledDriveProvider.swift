@@ -16,4 +16,8 @@ final class DisabledDriveProvider: CloudBackupProvider, @unchecked Sendable {
     func createBackupPackage() async throws -> BackupPackageExportResult {
         throw BackupPackageError.googleDriveUnavailable
     }
+
+    func previewRestorePackage(from fileURL: URL) async throws -> BackupRestorePreview {
+        throw BackupPackageError.googleDriveUnavailable
+    }
 }

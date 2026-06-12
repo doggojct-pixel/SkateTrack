@@ -44,11 +44,20 @@ struct BackupPackageManifest: Codable, Sendable, Equatable {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let raw = try decoder.decode(BackupPackageManifest.self, from: data)
-        switch raw.schemaVersion {
+        try validate(raw)
+        return raw
+    }
+
+    static func validate(_ manifest: BackupPackageManifest) throws {
+        switch manifest.schemaVersion {
         case currentSchemaVersion:
-            return raw
+            break
         default:
-            throw BackupPackageError.unsupportedSchemaVersion(raw.schemaVersion)
+            throw BackupPackageError.unsupportedSchemaVersion(manifest.schemaVersion)
+        }
+
+        guard manifest.packageType == .backup else {
+            throw BackupPackageError.unsupportedPackageType(manifest.packageType.rawValue)
         }
     }
 }
@@ -91,6 +100,8 @@ struct BackupPackageStoreIssue: Codable, Sendable, Equatable, Identifiable {
 
 enum BackupPackageError: Error, Sendable, Equatable {
     case unsupportedSchemaVersion(Int)
+    case unsupportedPackageType(String)
+    case invalidBackupPackage
     case packageEncodingFailed
     case fileWriteFailed
     case localBackupUnavailable

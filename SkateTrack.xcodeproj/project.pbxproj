@@ -51,64 +51,6 @@
 		12A400000000000000000103 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000001 /* FeatureFlags.swift */; };
 		12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000002 /* FeatureFlagEngine.swift */; };
 		12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A400000000000000000003 /* useSubscriptionStatus.swift */; };
-		16A100000000000000000101 /* SubscriptionEntitlementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000001 /* SubscriptionEntitlementState.swift */; };
-		16A100000000000000000102 /* SubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */; };
-		16A100000000000000000103 /* LocalSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */; };
-		16A100000000000000000104 /* DebugSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */; };
-		16A100000000000000000105 /* SubscriptionEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000005 /* SubscriptionEntitlementStore.swift */; };
-		16A100000000000000000106 /* PurchaseProductCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000006 /* PurchaseProductCatalog.swift */; };
-		16B200000000000000000101 /* SubscriptionPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000001 /* SubscriptionPaywallView.swift */; };
-		16B200000000000000000102 /* SubscriberBenefitsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000002 /* SubscriberBenefitsListView.swift */; };
-		16B200000000000000000103 /* RestorePurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000003 /* RestorePurchaseButton.swift */; };
-		16B200000000000000000104 /* LockedFeatureOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000004 /* LockedFeatureOverlayView.swift */; };
-		17A100000000000000000101 /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000001 /* SessionHistoryView.swift */; };
-		17A100000000000000000102 /* SessionHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000002 /* SessionHistoryListView.swift */; };
-		17A100000000000000000103 /* SessionHistoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000003 /* SessionHistoryCardView.swift */; };
-		17A100000000000000000104 /* SessionHistoryFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000004 /* SessionHistoryFilterBar.swift */; };
-		17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */; };
-		17A100000000000000000106 /* useSessionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000006 /* useSessionHistory.swift */; };
-		17A100000000000000000107 /* SessionHistoryBulkActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000007 /* SessionHistoryBulkActionBarView.swift */; };
-		17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B200000000000000000001 /* SessionSummaryHandoffView.swift */; };
-		18A100000000000000000101 /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000001 /* SessionSummaryView.swift */; };
-		18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */; };
-		18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */; };
-		18A100000000000000000104 /* useSessionSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000004 /* useSessionSummary.swift */; };
-		18B100000000000000000101 /* SessionRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000001 /* SessionRouteMapView.swift */; };
-		18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */; };
-		18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000003 /* SessionSummaryShareStubView.swift */; };
-		23A100000000000000000101 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
-		23A100000000000000000102 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
-		23A100000000000000000103 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
-		23A200000000000000000101 /* useSessionShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A200000000000000000001 /* useSessionShareCard.swift */; };
-		23A300000000000000000101 /* SessionShareCardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000001 /* SessionShareCardPreviewView.swift */; };
-		23A300000000000000000102 /* SessionShareCardMetricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000002 /* SessionShareCardMetricView.swift */; };
-		23A300000000000000000103 /* SessionShareCardLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000003 /* SessionShareCardLockedView.swift */; };
-		23A300000000000000000104 /* SessionShareCardActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000004 /* SessionShareCardActionView.swift */; };
-		23B100000000000000000101 /* SessionShareExportPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B100000000000000000001 /* SessionShareExportPayload.swift */; };
-		23B100000000000000000102 /* SessionShareExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B100000000000000000002 /* SessionShareExportService.swift */; };
-		23B200000000000000000101 /* SessionShareCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000001 /* SessionShareCardRenderer.swift */; };
-		23B200000000000000000102 /* SessionShareExportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000002 /* SessionShareExportViewModel.swift */; };
-		23B200000000000000000103 /* SessionShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000003 /* SessionShareSheetView.swift */; };
-		23C100000000000000000101 /* SessionSharePhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */; };
-		23C200000000000000000101 /* SessionSharePhotoSaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C200000000000000000001 /* SessionSharePhotoSaveState.swift */; };
-		18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000001 /* SessionAdvancedChartsView.swift */; };
-		18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000002 /* SpeedTimelineChartView.swift */; };
-		18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000003 /* ElevationProfileChartView.swift */; };
-		18C100000000000000000104 /* AdvancedChartsLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000004 /* AdvancedChartsLockedView.swift */; };
-		18C100000000000000000105 /* HeartRateZonePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000005 /* HeartRateZonePlaceholderView.swift */; };
-		19A100000000000000000101 /* HealthReminderRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000001 /* HealthReminderRule.swift */; };
-		19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000002 /* HealthReminderSettingsStore.swift */; };
-		19A100000000000000000103 /* useHealthReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000003 /* useHealthReminders.swift */; };
-		19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000004 /* HealthReminderSettingsView.swift */; };
-		19B100000000000000000101 /* HealthReminderEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000001 /* HealthReminderEvent.swift */; };
-		19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000002 /* HealthReminderScheduler.swift */; };
-		19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000003 /* HealthReminderBannerView.swift */; };
-		19C100000000000000000101 /* WeatherRiskSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000001 /* WeatherRiskSnapshot.swift */; };
-		19C100000000000000000102 /* WeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000002 /* WeatherProvider.swift */; };
-		19C100000000000000000103 /* MockWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000003 /* MockWeatherProvider.swift */; };
-		19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000004 /* WeatherRiskMonitor.swift */; };
-		19C100000000000000000105 /* useWeatherRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000005 /* useWeatherRisk.swift */; };
-		19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000006 /* WeatherSuitabilityCardView.swift */; };
 		12A600000000000000000101 /* GPSProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000001 /* GPSProvider.swift */; };
 		12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000002 /* GPSAuthorizationHandler.swift */; };
 		12A600000000000000000103 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A600000000000000000005 /* InfoPlist.strings */; };
@@ -120,8 +62,6 @@
 		12AB01000000000000000101 /* SessionStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB01000000000000000001 /* SessionStateMachine.swift */; };
 		12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB02000000000000000001 /* SessionMetricsAccumulator.swift */; };
 		12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB03000000000000000001 /* SessionRecordingCoordinator.swift */; };
-		15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */; };
-		21B00000000000000000CE01 /* SessionRecordingCoordinator+CompletionEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */; };
 		12AB04000000000000000101 /* useSessionRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB04000000000000000001 /* useSessionRecording.swift */; };
 		12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
 		12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
@@ -166,12 +106,6 @@
 		14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000003 /* DebugRuntimeOptions.swift */; };
 		14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000004 /* DebugMockSessionFactory.swift */; };
 		14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000005 /* DebugToolsPanelView.swift */; };
-		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
-		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
-		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
-		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
 		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
 		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
@@ -179,6 +113,50 @@
 		15A100000000000000000105 /* MotionSampleFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000005 /* MotionSampleFileStore.swift */; };
 		15A100000000000000000106 /* FallEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000006 /* FallEventRepository.swift */; };
 		15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000008 /* SessionRepositoryTests.swift */; };
+		15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */; };
+		16A100000000000000000101 /* SubscriptionEntitlementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000001 /* SubscriptionEntitlementState.swift */; };
+		16A100000000000000000102 /* SubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000103 /* LocalSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000104 /* DebugSubscriptionEntitlementProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */; };
+		16A100000000000000000105 /* SubscriptionEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000005 /* SubscriptionEntitlementStore.swift */; };
+		16A100000000000000000106 /* PurchaseProductCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A100000000000000000006 /* PurchaseProductCatalog.swift */; };
+		16B200000000000000000101 /* SubscriptionPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000001 /* SubscriptionPaywallView.swift */; };
+		16B200000000000000000102 /* SubscriberBenefitsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000002 /* SubscriberBenefitsListView.swift */; };
+		16B200000000000000000103 /* RestorePurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000003 /* RestorePurchaseButton.swift */; };
+		16B200000000000000000104 /* LockedFeatureOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B200000000000000000004 /* LockedFeatureOverlayView.swift */; };
+		17A100000000000000000101 /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000001 /* SessionHistoryView.swift */; };
+		17A100000000000000000102 /* SessionHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000002 /* SessionHistoryListView.swift */; };
+		17A100000000000000000103 /* SessionHistoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000003 /* SessionHistoryCardView.swift */; };
+		17A100000000000000000104 /* SessionHistoryFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000004 /* SessionHistoryFilterBar.swift */; };
+		17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */; };
+		17A100000000000000000106 /* useSessionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000006 /* useSessionHistory.swift */; };
+		17A100000000000000000107 /* SessionHistoryBulkActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A100000000000000000007 /* SessionHistoryBulkActionBarView.swift */; };
+		17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B200000000000000000001 /* SessionSummaryHandoffView.swift */; };
+		18A100000000000000000101 /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000001 /* SessionSummaryView.swift */; };
+		18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */; };
+		18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */; };
+		18A100000000000000000104 /* useSessionSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A100000000000000000004 /* useSessionSummary.swift */; };
+		18B100000000000000000101 /* SessionRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000001 /* SessionRouteMapView.swift */; };
+		18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */; };
+		18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000003 /* SessionSummaryShareStubView.swift */; };
+		18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000001 /* SessionAdvancedChartsView.swift */; };
+		18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000002 /* SpeedTimelineChartView.swift */; };
+		18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000003 /* ElevationProfileChartView.swift */; };
+		18C100000000000000000104 /* AdvancedChartsLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000004 /* AdvancedChartsLockedView.swift */; };
+		18C100000000000000000105 /* HeartRateZonePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000005 /* HeartRateZonePlaceholderView.swift */; };
+		19A100000000000000000101 /* HealthReminderRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000001 /* HealthReminderRule.swift */; };
+		19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000002 /* HealthReminderSettingsStore.swift */; };
+		19A100000000000000000103 /* useHealthReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000003 /* useHealthReminders.swift */; };
+		19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A100000000000000000004 /* HealthReminderSettingsView.swift */; };
+		19B100000000000000000101 /* HealthReminderEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000001 /* HealthReminderEvent.swift */; };
+		19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000002 /* HealthReminderScheduler.swift */; };
+		19B100000000000000000103 /* HealthReminderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B100000000000000000003 /* HealthReminderBannerView.swift */; };
+		19C100000000000000000101 /* WeatherRiskSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000001 /* WeatherRiskSnapshot.swift */; };
+		19C100000000000000000102 /* WeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000002 /* WeatherProvider.swift */; };
+		19C100000000000000000103 /* MockWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000003 /* MockWeatherProvider.swift */; };
+		19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000004 /* WeatherRiskMonitor.swift */; };
+		19C100000000000000000105 /* useWeatherRisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000005 /* useWeatherRisk.swift */; };
+		19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C100000000000000000006 /* WeatherSuitabilityCardView.swift */; };
 		20A100000000000000000101 /* EquipmentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000001 /* EquipmentRepository.swift */; };
 		20A100000000000000000102 /* WearReminderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000002 /* WearReminderEngine.swift */; };
 		20A100000000000000000103 /* useEquipmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000003 /* useEquipmentManager.swift */; };
@@ -192,7 +170,6 @@
 		20C100000000000000000102 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
 		20C100000000000000000103 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
 		20C100000000000000000104 /* SessionEquipmentAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000002 /* SessionEquipmentAttributionView.swift */; };
-
 		21A100000000000000000101 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
 		21A100000000000000000102 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
 		21A100000000000000000103 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
@@ -205,14 +182,13 @@
 		21A200000000000000000106 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000006 /* SpotDetailView.swift */; };
 		21A200000000000000000107 /* SpotEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000007 /* SpotEditorView.swift */; };
 		21A200000000000000000108 /* SpotFavoriteLimitBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */; };
-
+		21B00000000000000000CE01 /* SessionRecordingCoordinator+CompletionEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */; };
 		21B100000000000000000101 /* SpotSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B100000000000000000001 /* SpotSessionSnapshot.swift */; };
 		21B100000000000000000102 /* SpotSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B100000000000000000001 /* SpotSessionSnapshot.swift */; };
 		21B100000000000000000103 /* SpotSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B100000000000000000001 /* SpotSessionSnapshot.swift */; };
 		21B200000000000000000101 /* SpotVisitTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B200000000000000000001 /* SpotVisitTracker.swift */; };
 		21B300000000000000000101 /* SessionSpotPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B300000000000000000001 /* SessionSpotPickerView.swift */; };
 		21B400000000000000000101 /* SessionSpotAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B400000000000000000001 /* SessionSpotAttributionView.swift */; };
-
 		22A100000000000000000101 /* WeatherQueryContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000001 /* WeatherQueryContext.swift */; };
 		22A100000000000000000102 /* DisabledWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000002 /* DisabledWeatherProvider.swift */; };
 		22A100000000000000000103 /* WeatherRideabilityReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000003 /* WeatherRideabilityReport.swift */; };
@@ -221,7 +197,21 @@
 		22A200000000000000000102 /* WeatherRideabilityStatusChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A200000000000000000002 /* WeatherRideabilityStatusChipView.swift */; };
 		22A300000000000000000101 /* SessionStartWeatherSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A300000000000000000001 /* SessionStartWeatherSectionView.swift */; };
 		22A400000000000000000101 /* SpotRideabilityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A400000000000000000001 /* SpotRideabilityCardView.swift */; };
-	
+		23A100000000000000000101 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A100000000000000000102 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A100000000000000000103 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A200000000000000000101 /* useSessionShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A200000000000000000001 /* useSessionShareCard.swift */; };
+		23A300000000000000000101 /* SessionShareCardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000001 /* SessionShareCardPreviewView.swift */; };
+		23A300000000000000000102 /* SessionShareCardMetricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000002 /* SessionShareCardMetricView.swift */; };
+		23A300000000000000000103 /* SessionShareCardLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000003 /* SessionShareCardLockedView.swift */; };
+		23A300000000000000000104 /* SessionShareCardActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000004 /* SessionShareCardActionView.swift */; };
+		23B100000000000000000101 /* SessionShareExportPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B100000000000000000001 /* SessionShareExportPayload.swift */; };
+		23B100000000000000000102 /* SessionShareExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B100000000000000000002 /* SessionShareExportService.swift */; };
+		23B200000000000000000101 /* SessionShareCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000001 /* SessionShareCardRenderer.swift */; };
+		23B200000000000000000102 /* SessionShareExportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000002 /* SessionShareExportViewModel.swift */; };
+		23B200000000000000000103 /* SessionShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000003 /* SessionShareSheetView.swift */; };
+		23C100000000000000000101 /* SessionSharePhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */; };
+		23C200000000000000000101 /* SessionSharePhotoSaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C200000000000000000001 /* SessionSharePhotoSaveState.swift */; };
 		24A100000000000000000101 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A100000000000000000001 /* Achievement.swift */; };
 		24A100000000000000000102 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A100000000000000000001 /* Achievement.swift */; };
 		24A100000000000000000103 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A100000000000000000001 /* Achievement.swift */; };
@@ -256,7 +246,7 @@
 		25A200000000000000000104 /* AuthTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000004 /* AuthTokenStore.swift */; };
 		25A300000000000000000101 /* useAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A300000000000000000001 /* useAccount.swift */; };
 		25B100000000000000000101 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B100000000000000000001 /* AccountSettingsView.swift */; };
-
+		261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */; };
 		26A100000000000000000101 /* BackupPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A100000000000000000001 /* BackupPackageManifest.swift */; };
 		26A100000000000000000102 /* BackupPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A100000000000000000001 /* BackupPackageManifest.swift */; };
 		26A100000000000000000103 /* BackupPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A100000000000000000001 /* BackupPackageManifest.swift */; };
@@ -269,6 +259,16 @@
 		26A200000000000000000104 /* DisabledDriveProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A200000000000000000004 /* DisabledDriveProvider.swift */; };
 		26A300000000000000000101 /* useBackupSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A300000000000000000001 /* useBackupSync.swift */; };
 		26A400000000000000000101 /* BackupSyncSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A400000000000000000001 /* BackupSyncSettingsView.swift */; };
+		26B100000000000000000101 /* BackupRestorePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B100000000000000000001 /* BackupRestorePreview.swift */; };
+		26B100000000000000000102 /* BackupRestorePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B100000000000000000001 /* BackupRestorePreview.swift */; };
+		26B100000000000000000103 /* BackupRestorePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B100000000000000000001 /* BackupRestorePreview.swift */; };
+		26B200000000000000000101 /* BackupPackageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B200000000000000000001 /* BackupPackageDecoder.swift */; };
+		26B400000000000000000101 /* BackupRestorePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B400000000000000000001 /* BackupRestorePreviewView.swift */; };
+		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
+		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
+		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -298,12 +298,6 @@
 		12A30000000000000000000A /* SyncProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncProvider.swift; sourceTree = "<group>"; };
 		12A400000000000000000001 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		12A400000000000000000002 /* FeatureFlagEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagEngine.swift; sourceTree = "<group>"; };
-		16A100000000000000000001 /* SubscriptionEntitlementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementState.swift; sourceTree = "<group>"; };
-		16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
-		16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
-		16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
-		16A100000000000000000005 /* SubscriptionEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementStore.swift; sourceTree = "<group>"; };
-		16A100000000000000000006 /* PurchaseProductCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProductCatalog.swift; sourceTree = "<group>"; };
 		12A400000000000000000003 /* useSubscriptionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSubscriptionStatus.swift; sourceTree = "<group>"; };
 		12A600000000000000000001 /* GPSProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSProvider.swift; sourceTree = "<group>"; };
 		12A600000000000000000002 /* GPSAuthorizationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSAuthorizationHandler.swift; sourceTree = "<group>"; };
@@ -317,8 +311,6 @@
 		12AB01000000000000000001 /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		12AB02000000000000000001 /* SessionMetricsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetricsAccumulator.swift; sourceTree = "<group>"; };
 		12AB03000000000000000001 /* SessionRecordingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinator.swift; sourceTree = "<group>"; };
-		15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+DebugMock.swift"; sourceTree = "<group>"; };
-		21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+CompletionEffects.swift"; sourceTree = "<group>"; };
 		12AB04000000000000000001 /* useSessionRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionRecording.swift; sourceTree = "<group>"; };
 		12AB05000000000000000001 /* SessionSummaryMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryMetrics.swift; sourceTree = "<group>"; };
 		12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SkateTrack-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,13 +349,6 @@
 		14D000000000000000000003 /* DebugRuntimeOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugRuntimeOptions.swift; sourceTree = "<group>"; };
 		14D000000000000000000004 /* DebugMockSessionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMockSessionFactory.swift; sourceTree = "<group>"; };
 		14D000000000000000000005 /* DebugToolsPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugToolsPanelView.swift; sourceTree = "<group>"; };
-		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
-		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
-		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
-		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A100000000000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		15A100000000000000000002 /* RepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryError.swift; sourceTree = "<group>"; };
 		15A100000000000000000003 /* SessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
@@ -372,6 +357,13 @@
 		15A100000000000000000006 /* FallEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallEventRepository.swift; sourceTree = "<group>"; };
 		15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SkateTrackDataModel.xcdatamodeld; sourceTree = "<group>"; };
 		15A100000000000000000008 /* SessionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepositoryTests.swift; sourceTree = "<group>"; };
+		15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+DebugMock.swift"; sourceTree = "<group>"; };
+		16A100000000000000000001 /* SubscriptionEntitlementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementState.swift; sourceTree = "<group>"; };
+		16A100000000000000000002 /* SubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000003 /* LocalSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000004 /* DebugSubscriptionEntitlementProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSubscriptionEntitlementProvider.swift; sourceTree = "<group>"; };
+		16A100000000000000000005 /* SubscriptionEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionEntitlementStore.swift; sourceTree = "<group>"; };
+		16A100000000000000000006 /* PurchaseProductCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProductCatalog.swift; sourceTree = "<group>"; };
 		16B200000000000000000001 /* SubscriptionPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPaywallView.swift; sourceTree = "<group>"; };
 		16B200000000000000000002 /* SubscriberBenefitsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberBenefitsListView.swift; sourceTree = "<group>"; };
 		16B200000000000000000003 /* RestorePurchaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseButton.swift; sourceTree = "<group>"; };
@@ -391,19 +383,6 @@
 		18B100000000000000000001 /* SessionRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRouteMapView.swift; sourceTree = "<group>"; };
 		18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummarySafetyStatusView.swift; sourceTree = "<group>"; };
 		18B100000000000000000003 /* SessionSummaryShareStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryShareStubView.swift; sourceTree = "<group>"; };
-		23A100000000000000000001 /* SessionShareCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardData.swift; sourceTree = "<group>"; };
-		23A200000000000000000001 /* useSessionShareCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionShareCard.swift; sourceTree = "<group>"; };
-		23A300000000000000000001 /* SessionShareCardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardPreviewView.swift; sourceTree = "<group>"; };
-		23A300000000000000000002 /* SessionShareCardMetricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardMetricView.swift; sourceTree = "<group>"; };
-		23A300000000000000000003 /* SessionShareCardLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardLockedView.swift; sourceTree = "<group>"; };
-		23A300000000000000000004 /* SessionShareCardActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardActionView.swift; sourceTree = "<group>"; };
-		23B100000000000000000001 /* SessionShareExportPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportPayload.swift; sourceTree = "<group>"; };
-		23B100000000000000000002 /* SessionShareExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportService.swift; sourceTree = "<group>"; };
-		23B200000000000000000001 /* SessionShareCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardRenderer.swift; sourceTree = "<group>"; };
-		23B200000000000000000002 /* SessionShareExportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportViewModel.swift; sourceTree = "<group>"; };
-		23B200000000000000000003 /* SessionShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareSheetView.swift; sourceTree = "<group>"; };
-		23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoLibrarySaver.swift; sourceTree = "<group>"; };
-		23C200000000000000000001 /* SessionSharePhotoSaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoSaveState.swift; sourceTree = "<group>"; };
 		18C100000000000000000001 /* SessionAdvancedChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAdvancedChartsView.swift; sourceTree = "<group>"; };
 		18C100000000000000000002 /* SpeedTimelineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedTimelineChartView.swift; sourceTree = "<group>"; };
 		18C100000000000000000003 /* ElevationProfileChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationProfileChartView.swift; sourceTree = "<group>"; };
@@ -443,12 +422,11 @@
 		21A200000000000000000006 /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
 		21A200000000000000000007 /* SpotEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditorView.swift; sourceTree = "<group>"; };
 		21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotFavoriteLimitBanner.swift; sourceTree = "<group>"; };
-
+		21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionRecordingCoordinator+CompletionEffects.swift"; sourceTree = "<group>"; };
 		21B100000000000000000001 /* SpotSessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotSessionSnapshot.swift; sourceTree = "<group>"; };
 		21B200000000000000000001 /* SpotVisitTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotVisitTracker.swift; sourceTree = "<group>"; };
 		21B300000000000000000001 /* SessionSpotPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSpotPickerView.swift; sourceTree = "<group>"; };
 		21B400000000000000000001 /* SessionSpotAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSpotAttributionView.swift; sourceTree = "<group>"; };
-
 		22A100000000000000000001 /* WeatherQueryContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherQueryContext.swift; sourceTree = "<group>"; };
 		22A100000000000000000002 /* DisabledWeatherProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledWeatherProvider.swift; sourceTree = "<group>"; };
 		22A100000000000000000003 /* WeatherRideabilityReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRideabilityReport.swift; sourceTree = "<group>"; };
@@ -457,7 +435,20 @@
 		22A200000000000000000002 /* WeatherRideabilityStatusChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRideabilityStatusChipView.swift; sourceTree = "<group>"; };
 		22A300000000000000000001 /* SessionStartWeatherSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartWeatherSectionView.swift; sourceTree = "<group>"; };
 		22A400000000000000000001 /* SpotRideabilityCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotRideabilityCardView.swift; sourceTree = "<group>"; };
-
+		23A100000000000000000001 /* SessionShareCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardData.swift; sourceTree = "<group>"; };
+		23A200000000000000000001 /* useSessionShareCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionShareCard.swift; sourceTree = "<group>"; };
+		23A300000000000000000001 /* SessionShareCardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardPreviewView.swift; sourceTree = "<group>"; };
+		23A300000000000000000002 /* SessionShareCardMetricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardMetricView.swift; sourceTree = "<group>"; };
+		23A300000000000000000003 /* SessionShareCardLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardLockedView.swift; sourceTree = "<group>"; };
+		23A300000000000000000004 /* SessionShareCardActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardActionView.swift; sourceTree = "<group>"; };
+		23A3A96761E5424BA8124DF4 /* SkateTrack-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23B100000000000000000001 /* SessionShareExportPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportPayload.swift; sourceTree = "<group>"; };
+		23B100000000000000000002 /* SessionShareExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportService.swift; sourceTree = "<group>"; };
+		23B200000000000000000001 /* SessionShareCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardRenderer.swift; sourceTree = "<group>"; };
+		23B200000000000000000002 /* SessionShareExportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportViewModel.swift; sourceTree = "<group>"; };
+		23B200000000000000000003 /* SessionShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareSheetView.swift; sourceTree = "<group>"; };
+		23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoLibrarySaver.swift; sourceTree = "<group>"; };
+		23C200000000000000000001 /* SessionSharePhotoSaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoSaveState.swift; sourceTree = "<group>"; };
 		24A100000000000000000001 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		24A100000000000000000002 /* WeeklyChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallenge.swift; sourceTree = "<group>"; };
 		24A200000000000000000001 /* AchievementCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCatalog.swift; sourceTree = "<group>"; };
@@ -484,7 +475,6 @@
 		25A200000000000000000004 /* AuthTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTokenStore.swift; sourceTree = "<group>"; };
 		25A300000000000000000001 /* useAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useAccount.swift; sourceTree = "<group>"; };
 		25B100000000000000000001 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
-
 		26A100000000000000000001 /* BackupPackageManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPackageManifest.swift; sourceTree = "<group>"; };
 		26A100000000000000000002 /* BackupPackagePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPackagePayload.swift; sourceTree = "<group>"; };
 		26A200000000000000000001 /* CloudBackupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudBackupProvider.swift; sourceTree = "<group>"; };
@@ -493,6 +483,15 @@
 		26A200000000000000000004 /* DisabledDriveProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledDriveProvider.swift; sourceTree = "<group>"; };
 		26A300000000000000000001 /* useBackupSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useBackupSync.swift; sourceTree = "<group>"; };
 		26A400000000000000000001 /* BackupSyncSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSyncSettingsView.swift; sourceTree = "<group>"; };
+		26B100000000000000000001 /* BackupRestorePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestorePreview.swift; sourceTree = "<group>"; };
+		26B200000000000000000001 /* BackupPackageDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPackageDecoder.swift; sourceTree = "<group>"; };
+		26B400000000000000000001 /* BackupRestorePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestorePreviewView.swift; sourceTree = "<group>"; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
+		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
+		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -554,21 +553,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		15A100000000000000000000 /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				15A100000000000000000001 /* PersistenceController.swift */,
-				15A100000000000000000002 /* RepositoryError.swift */,
-				15A100000000000000000003 /* SessionRepository.swift */,
-				15A100000000000000000004 /* SessionEntityMapper.swift */,
-				15A100000000000000000005 /* MotionSampleFileStore.swift */,
-				15A100000000000000000006 /* FallEventRepository.swift */,
-				15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */,
-			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-
 		12A30000000000000000000B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +576,7 @@
 				24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */,
 				26A100000000000000000001 /* BackupPackageManifest.swift */,
 				26A100000000000000000002 /* BackupPackagePayload.swift */,
+				26B100000000000000000001 /* BackupRestorePreview.swift */,
 				25A100000000000000000001 /* AuthSession.swift */,
 			);
 			path = Models;
@@ -641,28 +626,6 @@
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
 		};
-		25A200000000000000000000 /* iOS/Core/Account */ = {
-			isa = PBXGroup;
-			children = (
-				25A200000000000000000001 /* AuthProvider.swift */,
-				25A200000000000000000002 /* LocalAccountProvider.swift */,
-				25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */,
-				25A200000000000000000004 /* AuthTokenStore.swift */,
-			);
-			path = iOS/Core/Account;
-			sourceTree = SOURCE_ROOT;
-		};
-		26A200000000000000000000 /* iOS/Core/Sync */ = {
-			isa = PBXGroup;
-			children = (
-				26A200000000000000000001 /* CloudBackupProvider.swift */,
-				26A200000000000000000002 /* BackupPackageEncoder.swift */,
-				26A200000000000000000003 /* LocalBackupProvider.swift */,
-				26A200000000000000000004 /* DisabledDriveProvider.swift */,
-			);
-			path = iOS/Core/Sync;
-			sourceTree = SOURCE_ROOT;
-		};
 		12A600000000000000000006 /* iOS/Core/SensorEngine */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,8 +646,8 @@
 				12AB01000000000000000001 /* SessionStateMachine.swift */,
 				12AB02000000000000000001 /* SessionMetricsAccumulator.swift */,
 				12AB03000000000000000001 /* SessionRecordingCoordinator.swift */,
-					15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */,
-					21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */,
+				15B100000000000000000001 /* SessionRecordingCoordinator+DebugMock.swift */,
+				21B00000000000000000CE00 /* SessionRecordingCoordinator+CompletionEffects.swift */,
 			);
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
@@ -745,6 +708,32 @@
 			);
 			path = iOS/Features/FallDetection;
 			sourceTree = SOURCE_ROOT;
+		};
+		14D000000000000000000000 /* iOS/Features/Debug */ = {
+			isa = PBXGroup;
+			children = (
+				14D000000000000000000001 /* DebugFeatureFlag.swift */,
+				14D000000000000000000002 /* DebugToolAction.swift */,
+				14D000000000000000000003 /* DebugRuntimeOptions.swift */,
+				14D000000000000000000004 /* DebugMockSessionFactory.swift */,
+				14D000000000000000000005 /* DebugToolsPanelView.swift */,
+			);
+			path = iOS/Features/Debug;
+			sourceTree = SOURCE_ROOT;
+		};
+		15A100000000000000000000 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				15A100000000000000000001 /* PersistenceController.swift */,
+				15A100000000000000000002 /* RepositoryError.swift */,
+				15A100000000000000000003 /* SessionRepository.swift */,
+				15A100000000000000000004 /* SessionEntityMapper.swift */,
+				15A100000000000000000005 /* MotionSampleFileStore.swift */,
+				15A100000000000000000006 /* FallEventRepository.swift */,
+				15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
 		};
 		16B200000000000000000000 /* iOS/Features/Subscription */ = {
 			isa = PBXGroup;
@@ -861,16 +850,6 @@
 			path = iOS/Core/Spots;
 			sourceTree = SOURCE_ROOT;
 		};
-		23B100000000000000000000 /* iOS/Core/SessionSharing */ = {
-			isa = PBXGroup;
-			children = (
-				23B100000000000000000001 /* SessionShareExportPayload.swift */,
-				23B100000000000000000002 /* SessionShareExportService.swift */,
-				23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */,
-			);
-			path = iOS/Core/SessionSharing;
-			sourceTree = SOURCE_ROOT;
-		};
 		21A210000000000000000000 /* iOS/Features/Spots */ = {
 			isa = PBXGroup;
 			children = (
@@ -885,28 +864,16 @@
 			path = iOS/Features/Spots;
 			sourceTree = SOURCE_ROOT;
 		};
-		25B100000000000000000000 /* iOS/Features/Settings */ = {
+		23B100000000000000000000 /* iOS/Core/SessionSharing */ = {
 			isa = PBXGroup;
 			children = (
-				25B100000000000000000001 /* AccountSettingsView.swift */,
-				26A400000000000000000001 /* BackupSyncSettingsView.swift */,
+				23B100000000000000000001 /* SessionShareExportPayload.swift */,
+				23B100000000000000000002 /* SessionShareExportService.swift */,
+				23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */,
 			);
-			path = iOS/Features/Settings;
+			path = iOS/Core/SessionSharing;
 			sourceTree = SOURCE_ROOT;
 		};
-		14D000000000000000000000 /* iOS/Features/Debug */ = {
-			isa = PBXGroup;
-			children = (
-				14D000000000000000000001 /* DebugFeatureFlag.swift */,
-				14D000000000000000000002 /* DebugToolAction.swift */,
-				14D000000000000000000003 /* DebugRuntimeOptions.swift */,
-				14D000000000000000000004 /* DebugMockSessionFactory.swift */,
-				14D000000000000000000005 /* DebugToolsPanelView.swift */,
-			);
-			path = iOS/Features/Debug;
-			sourceTree = SOURCE_ROOT;
-		};
-
 		24A200000000000000000000 /* iOS/Core/Achievements */ = {
 			isa = PBXGroup;
 			children = (
@@ -930,6 +897,39 @@
 				24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */,
 			);
 			path = iOS/Features/Achievements;
+			sourceTree = SOURCE_ROOT;
+		};
+		25A200000000000000000000 /* iOS/Core/Account */ = {
+			isa = PBXGroup;
+			children = (
+				25A200000000000000000001 /* AuthProvider.swift */,
+				25A200000000000000000002 /* LocalAccountProvider.swift */,
+				25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */,
+				25A200000000000000000004 /* AuthTokenStore.swift */,
+			);
+			path = iOS/Core/Account;
+			sourceTree = SOURCE_ROOT;
+		};
+		25B100000000000000000000 /* iOS/Features/Settings */ = {
+			isa = PBXGroup;
+			children = (
+				25B100000000000000000001 /* AccountSettingsView.swift */,
+				26A400000000000000000001 /* BackupSyncSettingsView.swift */,
+				26B400000000000000000001 /* BackupRestorePreviewView.swift */,
+			);
+			path = iOS/Features/Settings;
+			sourceTree = SOURCE_ROOT;
+		};
+		26A200000000000000000000 /* iOS/Core/Sync */ = {
+			isa = PBXGroup;
+			children = (
+				26A200000000000000000001 /* CloudBackupProvider.swift */,
+				26A200000000000000000002 /* BackupPackageEncoder.swift */,
+				26B200000000000000000001 /* BackupPackageDecoder.swift */,
+				26A200000000000000000003 /* LocalBackupProvider.swift */,
+				26A200000000000000000004 /* DisabledDriveProvider.swift */,
+			);
+			path = iOS/Core/Sync;
 			sourceTree = SOURCE_ROOT;
 		};
 		3963F8F31F93F511E309A0BF /* scripts */ = {
@@ -1356,12 +1356,15 @@
 				25B100000000000000000101 /* AccountSettingsView.swift in Sources */,
 				26A100000000000000000101 /* BackupPackageManifest.swift in Sources */,
 				26A100000000000000000104 /* BackupPackagePayload.swift in Sources */,
+				26B100000000000000000101 /* BackupRestorePreview.swift in Sources */,
 				26A200000000000000000101 /* CloudBackupProvider.swift in Sources */,
 				26A200000000000000000102 /* BackupPackageEncoder.swift in Sources */,
+				26B200000000000000000101 /* BackupPackageDecoder.swift in Sources */,
 				26A200000000000000000103 /* LocalBackupProvider.swift in Sources */,
 				26A200000000000000000104 /* DisabledDriveProvider.swift in Sources */,
 				26A300000000000000000101 /* useBackupSync.swift in Sources */,
 				26A400000000000000000101 /* BackupSyncSettingsView.swift in Sources */,
+				26B400000000000000000101 /* BackupRestorePreviewView.swift in Sources */,
 				12A600000000000000000101 /* GPSProvider.swift in Sources */,
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
 				12A700000000000000000101 /* IMUProvider.swift in Sources */,
@@ -1372,8 +1375,8 @@
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
 				12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */,
 				12AB03000000000000000101 /* SessionRecordingCoordinator.swift in Sources */,
-					15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */,
-					21B00000000000000000CE01 /* SessionRecordingCoordinator+CompletionEffects.swift in Sources */,
+				15B100000000000000000101 /* SessionRecordingCoordinator+DebugMock.swift in Sources */,
+				21B00000000000000000CE01 /* SessionRecordingCoordinator+CompletionEffects.swift in Sources */,
 				12AB04000000000000000101 /* useSessionRecording.swift in Sources */,
 				14A200000000000000000101 /* useFallDetection.swift in Sources */,
 				14A100000000000000000101 /* SOSEventDispatcher.swift in Sources */,
@@ -1442,6 +1445,7 @@
 				25A100000000000000000103 /* AuthSession.swift in Sources */,
 				26A100000000000000000103 /* BackupPackageManifest.swift in Sources */,
 				26A100000000000000000106 /* BackupPackagePayload.swift in Sources */,
+				26B100000000000000000103 /* BackupRestorePreview.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
 			);
@@ -1477,6 +1481,7 @@
 				25A100000000000000000102 /* AuthSession.swift in Sources */,
 				26A100000000000000000102 /* BackupPackageManifest.swift in Sources */,
 				26A100000000000000000105 /* BackupPackagePayload.swift in Sources */,
+				26B100000000000000000102 /* BackupRestorePreview.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,
 			);
