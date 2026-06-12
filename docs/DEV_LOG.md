@@ -891,3 +891,26 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_equipment_attribution.py` together with equipment mileage, equipment manager, session history, session summary, localization, feature flag, and subscription simulation verification scripts.
 - Manual validation should confirm a saved session with selected equipment shows the archived gear line in History and the Used Equipment card in Summary, and that those UI elements still render even if the original gear is later deleted.
+
+## 2026-06-12 — Task-021a Spot Management Foundation + SessionStart Split
+
+### Completed
+- Split `SessionStartView.swift` by moving shared Session Start support types, colors, and the custom inline-skate glyph into `SessionStartSupportTypes.swift` without changing Session Start behavior or visuals.
+- Expanded `SpotProfile` for Task-021a local-first management with radius, activity family, safety rating, crowd level, favorite status, and created / updated timestamps.
+- Added `SpotVisit` as a shared future association model for Task-021b route / summary linking, without wiring runtime visit detection yet.
+- Extended the local Core Data `PersistedSpot` schema for the new Spot fields while keeping migration-friendly optional storage for newly added columns.
+- Added `SpotRepository` for local Spot CRUD, favorite toggling, and nearby distance filtering behind a Core Data boundary.
+- Added `useSpots` as the SwiftUI-facing Spot state boundary, including the free 3-favorite limit and Paywall intent through `GatedFeature.spotManagement`.
+- Added iOS Spot Management UI: Spot list, local MapKit marker foundation, Spot detail, Spot editor, Spot cards, and favorite-limit banner.
+- Added a root-level `場地 / Spots` entry while making the root primary switch horizontally scrollable to avoid top-tab crowding.
+- Added Task-021a localization keys and `scripts/verify_spots.py`.
+- Added ADR-0002 for developer-account-dependent services and appended Task-021a confirmation to ADR-0001.
+
+### Scope Boundary
+- Task-021a does not connect WeatherKit, Google services, public spot databases, location permission requests, cloud sync, route-to-spot detection, SessionStart spot selection, Summary spot attribution, social sharing, App Store Connect, production StoreKit, signing, capabilities, Launch Screen, AppIcon, watchOS, or macOS UI.
+- MapKit is used only to render coordinates that users manually save in local Spot records.
+- Spot favorite gating continues to use `FeatureFlagEngine`, `useSubscriptionStatus`, and DEBUG/local entitlement simulation; no production monetization behavior was added.
+
+### Validation Notes
+- Run `python3 scripts/verify_spots.py` to verify Task-021a files, Spot model fields, repository boundary, UI boundaries, localization keys, project membership, docs, and SessionStart split.
+- Continue running localization, feature-flag, subscription entitlement, Paywall, weather-risk, equipment, and session-recording verification scripts after applying this task.

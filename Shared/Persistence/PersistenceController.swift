@@ -148,12 +148,19 @@ final class PersistenceController {
             stringAttribute("name", optional: false),
             doubleAttribute("latitude", optional: true),
             doubleAttribute("longitude", optional: true),
+            doubleAttribute("radiusMeters", optional: true),
+            stringAttribute("activityFamilyRaw", optional: true),
             intAttribute("surfaceRatingRaw", optional: true),
+            intAttribute("safetyRating", optional: true),
+            stringAttribute("crowdLevelRaw", optional: true),
             stringAttribute("notes", optional: true),
+            boolAttribute("isFavorite", optional: true),
             binaryAttribute("photoAssetIdentifiersData", optional: false),
             intAttribute("visitCount"),
             dateAttribute("lastVisitedAt", optional: true),
-            binaryAttribute("preferredSportModesData", optional: false)
+            binaryAttribute("preferredSportModesData", optional: false),
+            dateAttribute("createdAt", optional: true),
+            dateAttribute("updatedAt", optional: true)
         ]
         return entity
     }
@@ -182,8 +189,8 @@ final class PersistenceController {
         attribute(name, type: .integer64AttributeType, optional: optional)
     }
 
-    private static func boolAttribute(_ name: String) -> NSAttributeDescription {
-        attribute(name, type: .booleanAttributeType, optional: false)
+    private static func boolAttribute(_ name: String, optional: Bool = false) -> NSAttributeDescription {
+        attribute(name, type: .booleanAttributeType, optional: optional)
     }
 
     private static func attribute(

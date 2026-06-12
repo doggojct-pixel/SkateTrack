@@ -1,9 +1,9 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-11
+**Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-019c Weather Risk Provider + Weather Suitability Card
-**Current Development Gate:** Task-019c is complete as a mock-weather suitability card and risk-provider foundation using DEBUG/local entitlement simulation for detailed Pro risk guidance. UserNotifications scheduling, real WeatherKit / live weather providers, and production App Store Connect monetization remain deferred.
+**Current Baseline:** Source-controlled repository after Task-021a Spot Management Foundation
+**Current Development Gate:** Task-021a is complete as local-first Spot Management with local CRUD, MapKit marker foundation, free favorite limit, and SessionStartView split. Route-to-spot association, WeatherKit / rideability integration, cloud sync, public spot discovery, production StoreKit, and developer-account-dependent services remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -39,6 +39,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-019a Health Reminder Rules + Settings Foundation | Complete | Health reminder rules, local settings store, SwiftUI hook, settings sheet, Ride entry card, Pro locked preview, DEBUG/local entitlement editing, localization, docs, and verification script are implemented. |
 | Task-019b Health Reminder Scheduler + In-App Reminder Banner | Complete | Live HUD now surfaces subscriber-gated in-app hydration, rest, and cooldown-stretch reminder banners from active Session time; system notification scheduling remains deferred. |
 | Task-019c Weather Risk Provider + Weather Suitability Card | Complete | Mock weather provider, weather suitability report, heat / UV / rain risk evaluation, Ride-page weather suitability card, free basic summary, Pro detailed guidance, localization, docs, and verification script are implemented. Real WeatherKit remains deferred. |
+| Task-021a Spot Management Foundation | Complete | Local Spot model extension, SpotVisit future model, Core Data spot schema extension, SpotRepository, useSpots, Spot list / map / detail / editor, free 3-favorite limit, root Spots entry, ADR-0002, docs, and verify script are implemented. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -392,3 +393,31 @@ Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-fea
 - `SkateTrack.xcodeproj/project.pbxproj` — added source membership for `EquipmentSessionSnapshot.swift` and `SessionEquipmentAttributionView.swift`.
 - `scripts/verify_session_history.py` and `scripts/verify_session_summary.py` — expanded verification tokens for equipment attribution.
 - `docs/DEV_LOG.md`, `docs/FILE_STRUCTURE.md`, and `docs/decisions/ADR-0001-subscription-entitlement-strategy.md` — synchronized Task-020c architecture and paid-feature boundaries.
+
+
+## Task-021a Spot Management Foundation Addendum
+
+### New / Updated Source Areas
+
+```text
+Shared/Models/SpotProfile.swift                  # [協作區] Extended local Spot profile with radius, activity family, safety, crowd, favorite, and timestamps.
+Shared/Models/SpotVisit.swift                    # [協作區] Future Spot ↔ Session association model for Task-021b.
+iOS/Core/Spots/SpotRepository.swift              # [自主區] Local Spot CRUD, favorite toggling, and nearby distance query boundary.
+iOS/Hooks/useSpots.swift                         # [協作區 — 邊界適配層] SwiftUI Spot state boundary and favorite-limit Paywall intent.
+iOS/Features/Spots/SpotListView.swift            # [協作區] Local Spot list / map mode shell and CRUD routing.
+iOS/Features/Spots/SpotCardView.swift            # [協作區] Low-density dark Spot summary card.
+iOS/Features/Spots/SpotMapView.swift             # [協作區] MapKit marker foundation for manually saved coordinates only.
+iOS/Features/Spots/SpotDetailView.swift          # [協作區] Local Spot detail, edit, delete, and favorite UI.
+iOS/Features/Spots/SpotEditorView.swift          # [協作區] Add / edit form with optional manual coordinates; no location permission.
+iOS/Features/Spots/SpotFavoriteLimitBanner.swift # [協作區] Free favorite limit / local privacy banner.
+iOS/Features/SessionRecording/SessionStartSupportTypes.swift # [協作區] Session Start colors, category enum, and inline glyph split out from SessionStartView.
+scripts/verify_spots.py                          # [工程設定] Task-021a verification script.
+docs/decisions/ADR-0002-developer-account-dependent-services.md # [原則 E] Provider-boundary policy for Apple / Google / external services.
+```
+
+### Deferred After Task-021a
+
+- SessionStart spot selection remains deferred because `SessionStartView.swift` was only split, not behaviorally changed.
+- Route-to-spot detection, SpotVisit persistence updates, and Summary spot linking remain Task-021b.
+- Spot rideability and weather risk chips remain Task-022 and must use the existing weather provider boundary.
+- Public spot discovery, Google / cloud sync, WeatherKit, production StoreKit, signing, capabilities, watchOS, and macOS UI are not part of Task-021a.

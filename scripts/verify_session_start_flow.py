@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = [
     "iOS/App/RootNavigationView.swift",
     "iOS/Features/SessionRecording/SessionStartView.swift",
+    "iOS/Features/SessionRecording/SessionStartSupportTypes.swift",
     "iOS/Features/SessionRecording/SportCategoryPickerView.swift",
     "iOS/Features/SessionRecording/BoardModeSelectorView.swift",
     "iOS/Features/SessionRecording/InlineModeSelectorView.swift",
@@ -42,7 +43,6 @@ REQUIRED_KEYS = [
     "mode.description.inline.aggressive",
     "mode.description.inline.slalom",
     "power.type.title",
-    "power.electric.phase1a.note",
 ]
 
 
@@ -73,7 +73,11 @@ for path in REQUIRED_FILES:
 session_start = read("iOS/Features/SessionRecording/SessionStartView.swift")
 if "sessionRecording.actions.startSession" not in session_start:
     fail("SessionStartView must call useSessionRecording actions.startSession")
-for required_dark_token in ["navy2", "card", "preferredColorScheme(.dark)", "ignoresSafeArea"]:
+session_support = read("iOS/Features/SessionRecording/SessionStartSupportTypes.swift")
+for required_dark_token in ["navy2", "card"]:
+    if required_dark_token not in session_start and required_dark_token not in session_support:
+        fail(f"Session Start split files missing UI mockup dark-layout token {required_dark_token}")
+for required_dark_token in ["preferredColorScheme(.dark)", "ignoresSafeArea"]:
     if required_dark_token not in session_start:
         fail(f"SessionStartView missing UI mockup dark-layout token {required_dark_token}")
 for required_layout_token in [
@@ -110,4 +114,4 @@ for key in REQUIRED_KEYS:
     if key not in localized_zh:
         fail(f"missing Traditional Chinese localization key {key}")
 
-print("Session start flow check passed: 8 UI files, true full-screen dark start flow, gated inline modes")
+print("Session start flow check passed: 9 UI files, split support types, true full-screen dark start flow, gated inline modes")

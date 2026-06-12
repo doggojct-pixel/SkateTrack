@@ -175,6 +175,19 @@
 		20C100000000000000000102 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
 		20C100000000000000000103 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
 		20C100000000000000000104 /* SessionEquipmentAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000002 /* SessionEquipmentAttributionView.swift */; };
+
+		21A100000000000000000101 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
+		21A100000000000000000102 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
+		21A100000000000000000103 /* SpotVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A100000000000000000001 /* SpotVisit.swift */; };
+		21A110000000000000000101 /* SessionStartSupportTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A110000000000000000001 /* SessionStartSupportTypes.swift */; };
+		21A200000000000000000101 /* SpotRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000001 /* SpotRepository.swift */; };
+		21A200000000000000000102 /* useSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000002 /* useSpots.swift */; };
+		21A200000000000000000103 /* SpotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000003 /* SpotListView.swift */; };
+		21A200000000000000000104 /* SpotCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000004 /* SpotCardView.swift */; };
+		21A200000000000000000105 /* SpotMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000005 /* SpotMapView.swift */; };
+		21A200000000000000000106 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000006 /* SpotDetailView.swift */; };
+		21A200000000000000000107 /* SpotEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000007 /* SpotEditorView.swift */; };
+		21A200000000000000000108 /* SpotFavoriteLimitBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -324,6 +337,16 @@
 		20B100000000000000000002 /* SessionEquipmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEquipmentPickerView.swift; sourceTree = "<group>"; };
 		20C100000000000000000001 /* EquipmentSessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentSessionSnapshot.swift; sourceTree = "<group>"; };
 		20C100000000000000000002 /* SessionEquipmentAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEquipmentAttributionView.swift; sourceTree = "<group>"; };
+		21A100000000000000000001 /* SpotVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotVisit.swift; sourceTree = "<group>"; };
+		21A110000000000000000001 /* SessionStartSupportTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartSupportTypes.swift; sourceTree = "<group>"; };
+		21A200000000000000000001 /* SpotRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotRepository.swift; sourceTree = "<group>"; };
+		21A200000000000000000002 /* useSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSpots.swift; sourceTree = "<group>"; };
+		21A200000000000000000003 /* SpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListView.swift; sourceTree = "<group>"; };
+		21A200000000000000000004 /* SpotCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotCardView.swift; sourceTree = "<group>"; };
+		21A200000000000000000005 /* SpotMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotMapView.swift; sourceTree = "<group>"; };
+		21A200000000000000000006 /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
+		21A200000000000000000007 /* SpotEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditorView.swift; sourceTree = "<group>"; };
+		21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotFavoriteLimitBanner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -414,6 +437,7 @@
 				12A300000000000000000007 /* EquipmentProfile.swift */,
 				20C100000000000000000001 /* EquipmentSessionSnapshot.swift */,
 				12A300000000000000000008 /* SpotProfile.swift */,
+				21A100000000000000000001 /* SpotVisit.swift */,
 				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
 			);
 			path = Models;
@@ -453,6 +477,7 @@
 				19A100000000000000000003 /* useHealthReminders.swift */,
 				19C100000000000000000005 /* useWeatherRisk.swift */,
 				20A100000000000000000003 /* useEquipmentManager.swift */,
+				21A200000000000000000002 /* useSpots.swift */,
 			);
 			path = iOS/Hooks;
 			sourceTree = SOURCE_ROOT;
@@ -495,6 +520,7 @@
 			isa = PBXGroup;
 			children = (
 				12AD02000000000000000001 /* SessionStartView.swift */,
+				21A110000000000000000001 /* SessionStartSupportTypes.swift */,
 				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
 				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
 				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
@@ -623,6 +649,27 @@
 			path = iOS/Features/EquipmentManager;
 			sourceTree = SOURCE_ROOT;
 		};
+		21A200000000000000000000 /* iOS/Core/Spots */ = {
+			isa = PBXGroup;
+			children = (
+				21A200000000000000000001 /* SpotRepository.swift */,
+			);
+			path = iOS/Core/Spots;
+			sourceTree = SOURCE_ROOT;
+		};
+		21A210000000000000000000 /* iOS/Features/Spots */ = {
+			isa = PBXGroup;
+			children = (
+				21A200000000000000000003 /* SpotListView.swift */,
+				21A200000000000000000004 /* SpotCardView.swift */,
+				21A200000000000000000005 /* SpotMapView.swift */,
+				21A200000000000000000006 /* SpotDetailView.swift */,
+				21A200000000000000000007 /* SpotEditorView.swift */,
+				21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */,
+			);
+			path = iOS/Features/Spots;
+			sourceTree = SOURCE_ROOT;
+		};
 		14D000000000000000000000 /* iOS/Features/Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +709,7 @@
 				14A100000000000000000000 /* iOS/Core/Safety */,
 				19A100000000000000000000 /* iOS/Core/HealthReminders */,
 				20A100000000000000000000 /* iOS/Core/EquipmentManager */,
+				21A200000000000000000000 /* iOS/Core/Spots */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				12AD00000000000000000011 /* iOS/Features/SessionRecording */,
 				14A300000000000000000000 /* iOS/Features/FallDetection */,
@@ -670,6 +718,7 @@
 				18A100000000000000000000 /* iOS/Features/SessionSummary */,
 				19A200000000000000000000 /* iOS/Features/HealthReminders */,
 				20A200000000000000000000 /* iOS/Features/EquipmentManager */,
+				21A210000000000000000000 /* iOS/Features/Spots */,
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
@@ -917,6 +966,7 @@
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
+				21A110000000000000000101 /* SessionStartSupportTypes.swift in Sources */,
 				12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */,
 				12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */,
 				12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */,
@@ -982,6 +1032,14 @@
 				20B100000000000000000101 /* EquipmentMileageTracker.swift in Sources */,
 				20B100000000000000000102 /* SessionEquipmentPickerView.swift in Sources */,
 				20C100000000000000000104 /* SessionEquipmentAttributionView.swift in Sources */,
+				21A200000000000000000101 /* SpotRepository.swift in Sources */,
+				21A200000000000000000102 /* useSpots.swift in Sources */,
+				21A200000000000000000103 /* SpotListView.swift in Sources */,
+				21A200000000000000000104 /* SpotCardView.swift in Sources */,
+				21A200000000000000000105 /* SpotMapView.swift in Sources */,
+				21A200000000000000000106 /* SpotDetailView.swift in Sources */,
+				21A200000000000000000107 /* SpotEditorView.swift in Sources */,
+				21A200000000000000000108 /* SpotFavoriteLimitBanner.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,
@@ -1031,6 +1089,7 @@
 				12A300000000000000000113 /* EquipmentProfile.swift in Sources */,
 				20C100000000000000000101 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000116 /* SpotProfile.swift in Sources */,
+				21A100000000000000000101 /* SpotVisit.swift in Sources */,
 				12A300000000000000000119 /* SensorProvider.swift in Sources */,
 				12A30000000000000000011C /* SyncProvider.swift in Sources */,
 			);
@@ -1056,6 +1115,7 @@
 				12A300000000000000000115 /* EquipmentProfile.swift in Sources */,
 				20C100000000000000000103 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000118 /* SpotProfile.swift in Sources */,
+				21A100000000000000000103 /* SpotVisit.swift in Sources */,
 				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
@@ -1082,6 +1142,7 @@
 				12A300000000000000000114 /* EquipmentProfile.swift in Sources */,
 				20C100000000000000000102 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000117 /* SpotProfile.swift in Sources */,
+				21A100000000000000000102 /* SpotVisit.swift in Sources */,
 				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,

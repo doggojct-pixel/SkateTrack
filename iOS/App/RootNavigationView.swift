@@ -8,6 +8,7 @@ enum RootPrimaryScreen: String, CaseIterable, Identifiable {
     case ride
     case history
     case equipment
+    case spots
 
     var id: String { rawValue }
 
@@ -19,6 +20,8 @@ enum RootPrimaryScreen: String, CaseIterable, Identifiable {
             return "history.title"
         case .equipment:
             return "gear.title"
+        case .spots:
+            return "spots.title"
         }
     }
 }
@@ -28,6 +31,7 @@ struct RootNavigationView: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     @State private var selectedPrimaryScreen: RootPrimaryScreen = .ride
     @State private var isEquipmentDetailPresented = false
+    @State private var isSpotDetailPresented = false
     @State private var pendingPostSessionStretchReminderEvent: HealthReminderEvent?
     @State private var postSessionStretchReminderTask: Task<Void, Never>?
 
@@ -79,18 +83,25 @@ struct RootNavigationView: View {
                             isDetailPresented: $isEquipmentDetailPresented
                         )
                         .id("equipment-manager")
-                            .transition(.opacity)
+                        .transition(.opacity)
+                    case .spots:
+                        SpotListView(
+                            subscriptionStatus: subscriptionStatus,
+                            isDetailPresented: $isSpotDetailPresented
+                        )
+                        .id("spots")
+                        .transition(.opacity)
                     }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            if !shouldShowLiveHUD && selectedPrimaryScreen != .ride && !isEquipmentDetailPresented {
+            if !shouldShowLiveHUD && selectedPrimaryScreen != .ride && !isEquipmentDetailPresented && !isSpotDetailPresented {
                 rootPrimarySwitch
             }
 
             #if DEBUG
-            if !shouldShowLiveHUD && !isEquipmentDetailPresented {
+            if !shouldShowLiveHUD && !isEquipmentDetailPresented && !isSpotDetailPresented {
                 debugToolsButton
             }
             #endif
@@ -105,9 +116,13 @@ struct RootNavigationView: View {
         .animation(.easeInOut(duration: 0.24), value: sessionRecording.state.status)
         .animation(.easeInOut(duration: 0.20), value: selectedPrimaryScreen)
         .animation(.easeInOut(duration: 0.20), value: isEquipmentDetailPresented)
+        .animation(.easeInOut(duration: 0.20), value: isSpotDetailPresented)
         .onChange(of: selectedPrimaryScreen) { _, newScreen in
             if newScreen != .equipment {
                 isEquipmentDetailPresented = false
+            }
+            if newScreen != .spots {
+                isSpotDetailPresented = false
             }
         }
         .onChange(of: sessionRecording.state.status) { oldStatus, newStatus in
@@ -150,25 +165,27 @@ struct RootNavigationView: View {
     }
 
     private var rootPrimarySwitchControls: some View {
-        HStack(spacing: 8) {
-            ForEach(RootPrimaryScreen.allCases) { screen in
-                Button {
-                    selectedPrimaryScreen = screen
-                } label: {
-                    Text(LocalizedStringKey(screen.localizationKey))
-                        .font(.system(size: 11, weight: .black, design: .rounded))
-                        .foregroundStyle(selectedPrimaryScreen == screen ? .white : SkateTrackSessionStartColors.textSecondary)
-                        .padding(.horizontal, 13)
-                        .padding(.vertical, 9)
-                        .background(rootPrimarySwitchBackground(for: screen))
-                        .clipShape(Capsule())
-                        .overlay(
-                            Capsule()
-                                .stroke(selectedPrimaryScreen == screen ? SkateTrackSessionStartColors.teal.opacity(0.52) : SkateTrackSessionStartColors.border, lineWidth: 1)
-                        )
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(RootPrimaryScreen.allCases) { screen in
+                    Button {
+                        selectedPrimaryScreen = screen
+                    } label: {
+                        Text(LocalizedStringKey(screen.localizationKey))
+                            .font(.system(size: 11, weight: .black, design: .rounded))
+                            .foregroundStyle(selectedPrimaryScreen == screen ? .white : SkateTrackSessionStartColors.textSecondary)
+                            .padding(.horizontal, 13)
+                            .padding(.vertical, 9)
+                            .background(rootPrimarySwitchBackground(for: screen))
+                            .clipShape(Capsule())
+                            .overlay(
+                                Capsule()
+                                    .stroke(selectedPrimaryScreen == screen ? SkateTrackSessionStartColors.teal.opacity(0.52) : SkateTrackSessionStartColors.border, lineWidth: 1)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("root-nav-\(screen.rawValue)")
                 }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("root-nav-\(screen.rawValue)")
             }
         }
         .accessibilityIdentifier("root-primary-switch-controls")

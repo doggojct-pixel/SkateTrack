@@ -136,3 +136,9 @@ Task-020c adds archived equipment attribution for History and Session Summary. I
 Completed sessions now store an optional `EquipmentSessionSnapshot` as `equipmentSnapshotData` on `PersistedSession`. This snapshot preserves the equipment name, type, sport mode, and power type used at ride time so History and Summary can render the original equipment attribution even if the mutable gear profile is later edited or deleted.
 
 Task-020c intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, gear photos, photo-library access, cloud sync, Summary-to-Gear deep links, maintenance calendar scheduling, or report export. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting equipment attribution, History, or Summary UI.
+
+## Task-021a Confirmation
+
+Task-021a introduces local-first Spot Management and keeps paid-access behavior behind the existing project-wide entitlement strategy. Basic local spot CRUD is available for the foundation workflow, while the free favorite limit is enforced through `GatedFeature.spotManagement`, `useSubscriptionStatus`, and the existing `FeatureFlagEngine` / DEBUG-local entitlement simulation path.
+
+Free users can favorite up to three local spots. Attempting to favorite a fourth spot routes to the existing Paywall through `SubscriptionPaywallView` and the `spotManagement` gated feature. DEBUG/local entitlement simulation can unlock unlimited favorites during development. Task-021a does not introduce production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, WeatherKit, Google services, cloud sync, or signing/capability changes.
