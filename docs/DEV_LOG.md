@@ -1434,3 +1434,24 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Re-run `python3 scripts/verify_macos_session_viewer.py` after applying this layout restructure.
 - Manual validation should confirm the top package-session summary does not truncate important file / session information, the bottom dashboard uses the primary vertical space, and the left sidebar remains stable.
+
+## 2026-06-12 — Task-028b macOS Route / Chart Visualization Foundation
+
+### Completed
+- Extended the Task-028a read-only macOS Session Viewer with a lightweight route / chart visualization foundation while preserving the right-side stacked dashboard layout learned from the Task-028a layout review.
+- Added `MacRoutePreviewView`, a normalized SwiftUI `Path` route preview that draws the package route shape from GPS samples without using system map frameworks, road matching, heat maps, or route editing.
+- Added viewer-side route points and route quality classification in `MacSessionViewerModel`, including route sample count, effective route point count, derived distance, and unavailable / limited / usable route states.
+- Upgraded the speed preview copy to a speed chart foundation and increased its chart height so route and speed visualization remain legible in the macOS dashboard.
+- Updated `MacSessionDetailView` so the lower dashboard shows metrics first, then route preview and speed chart, followed by route data and privacy / read-only boundary.
+- Added `scripts/verify_macos_route_chart_viewer.py` and updated `scripts/verify_macos_session_viewer.py` to guard against MapKit / Charts / document-association / persistence regressions.
+- Verified the uploaded successful simulator package (`SkateTrack-Session-20260612-180037.skatetrack`) contains non-zero distance, speed, GPS samples, and drawable route data suitable for Task-028b development.
+
+### Scope Boundary
+- Task-028b remains a read-only package viewer. It does not import sessions into Core Data, merge packages, restore backups, rewrite `.skatetrack` files, persist security-scoped bookmarks, add Finder open-with behavior, declare custom UTType, or add document association.
+- Task-028b intentionally avoids system map rendering frameworks and full chart frameworks in this phase. Road matching, heat maps, map overlays, multi-session comparison, report export, and route editing remain deferred.
+- No signing, provisioning, Bundle ID, entitlements, iCloud containers, Google Drive, CloudKit, StoreKit production, iOS runtime, GPSProvider, SensorFusionEngine, FallDetectionEngine, Launch Screen, AppIcon, bottom dock, or watchOS runtime changes are included.
+
+### Validation Notes
+- Run `python3 scripts/verify_macos_route_chart_viewer.py` after applying this task.
+- Also re-run `python3 scripts/verify_macos_session_viewer.py`, `python3 scripts/verify_macos_package_preview.py`, `python3 scripts/verify_skatetrack_package.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_shared_models.py`, and `python3 scripts/verify_macos_appiconset.py`.
+- Manual validation should open both an older low-data package and a successful simulator package with non-zero distance. The low-data package should show a useful empty / unavailable route state, while the successful package should show a route shape and speed chart without compressing dashboard text.

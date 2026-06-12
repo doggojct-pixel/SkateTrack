@@ -989,10 +989,23 @@
 "mac.viewer.route.derived_distance" = "Derived route distance";
 "mac.viewer.route.start" = "Start";
 "mac.viewer.route.finish" = "Finish";
-"mac.viewer.route.map_deferred" = "Map rendering, heat maps, and route editing remain deferred to Task-028b or later.";
+"mac.viewer.route.map_deferred" = "MapKit rendering, road matching, heat maps, and route editing remain deferred to a later task.";
 "mac.viewer.privacy.readonly" = "This viewer reads the selected package only. It does not import, merge, restore, sync, or upload data.";
 
 "mac.viewer.package.current" = "Current package session";
 "mac.viewer.package.single_session" = "1 session in this package";
 "mac.viewer.package.session_count.format" = "%d sessions in this package";
 "mac.viewer.detail.title" = "Session details";
+
+"mac.viewer.chart.speed.title" = "Speed chart";
+"mac.viewer.route.data.title" = "Route data";
+"mac.viewer.route.unique_points" = "Unique route points";
+"mac.viewer.route.preview.title" = "Route preview";
+"mac.viewer.route.preview.start" = "Start";
+"mac.viewer.route.preview.finish" = "Finish";
+"mac.viewer.route.preview.empty" = "Route shape unavailable";
+"mac.viewer.route.preview.empty.subtitle" = "This package has too few changing GPS points to draw a route shape.";
+"mac.viewer.route.preview.not_mapmatched" = "This is a lightweight package preview. It is not road-matched and does not use MapKit yet.";
+"mac.viewer.route.quality.unavailable" = "Unavailable";
+"mac.viewer.route.quality.limited" = "Limited GPS shape";
+"mac.viewer.route.quality.usable" = "Drawable route";

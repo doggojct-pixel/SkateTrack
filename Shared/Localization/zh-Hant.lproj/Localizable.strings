@@ -989,10 +989,23 @@
 "mac.viewer.route.derived_distance" = "推算路線距離";
 "mac.viewer.route.start" = "起點";
 "mac.viewer.route.finish" = "終點";
-"mac.viewer.route.map_deferred" = "地圖渲染、熱力圖與路線編輯延後到 Task-028b 或之後。";
+"mac.viewer.route.map_deferred" = "MapKit 地圖渲染、道路貼合、熱力圖與路線編輯延後到後續任務。";
 "mac.viewer.privacy.readonly" = "此 viewer 只讀取所選 package，不會匯入、合併、還原、同步或上傳資料。";
 
 "mac.viewer.package.current" = "目前開啟的 package session";
 "mac.viewer.package.single_session" = "此 package 內 1 個 Session";
 "mac.viewer.package.session_count.format" = "此 package 內 %d 個 Session";
 "mac.viewer.detail.title" = "Session 詳情";
+
+"mac.viewer.chart.speed.title" = "速度圖表";
+"mac.viewer.route.data.title" = "路線資料";
+"mac.viewer.route.unique_points" = "有效路線點";
+"mac.viewer.route.preview.title" = "路線預覽";
+"mac.viewer.route.preview.start" = "起點";
+"mac.viewer.route.preview.finish" = "終點";
+"mac.viewer.route.preview.empty" = "無法繪製路線形狀";
+"mac.viewer.route.preview.empty.subtitle" = "這個 package 的 GPS 座標變化太少，無法形成可視化路線。";
+"mac.viewer.route.preview.not_mapmatched" = "這是輕量 package 預覽，尚未進行道路貼合，也尚未使用 MapKit。";
+"mac.viewer.route.quality.unavailable" = "無法顯示";
+"mac.viewer.route.quality.limited" = "GPS 形狀有限";
+"mac.viewer.route.quality.usable" = "可繪製路線";

@@ -20,10 +20,8 @@ struct MacSessionDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
             detailTitleBar
             metricsSection
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 340), spacing: 16)], alignment: .leading, spacing: 16) {
-                MacSpeedSparklineView(points: model.speedPoints)
-                routeSection
-            }
+            visualizationSection
+            routeDataSection
             privacySection
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -42,6 +40,10 @@ struct MacSessionDetailView: View {
                 .frame(maxWidth: 320, alignment: .trailing)
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private var visualizationColumns: [GridItem] {
+        [GridItem(.adaptive(minimum: 360), spacing: 16)]
     }
 
     private var metricsSection: some View {
@@ -65,11 +67,19 @@ struct MacSessionDetailView: View {
         }
     }
 
-    private var routeSection: some View {
-        MacSessionViewerSection(titleKey: "mac.viewer.route.title", systemImage: "point.topleft.down.curvedto.point.bottomright.up") {
+    private var visualizationSection: some View {
+        LazyVGrid(columns: visualizationColumns, alignment: .leading, spacing: 16) {
+            MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)
+            MacSpeedSparklineView(points: model.speedPoints)
+        }
+    }
+
+    private var routeDataSection: some View {
+        MacSessionViewerSection(titleKey: "mac.viewer.route.data.title", systemImage: "point.topleft.down.curvedto.point.bottomright.up") {
             if model.hasRoute {
                 LazyVGrid(columns: routeGridColumns, alignment: .leading, spacing: 10) {
                     MacSessionViewerMetric(titleKey: "mac.viewer.route.points", value: "\(model.routeSummary.routePointCount)")
+                    MacSessionViewerMetric(titleKey: "mac.viewer.route.unique_points", value: "\(model.routeSummary.uniqueRoutePointCount)")
                     MacSessionViewerMetric(titleKey: "mac.viewer.route.derived_distance", value: formattedDistance(model.routeSummary.derivedDistanceKilometers))
                     MacSessionViewerMetric(titleKey: "mac.viewer.route.start", value: formattedCoordinate(model.routeSummary.startCoordinate))
                     MacSessionViewerMetric(titleKey: "mac.viewer.route.finish", value: formattedCoordinate(model.routeSummary.finishCoordinate))

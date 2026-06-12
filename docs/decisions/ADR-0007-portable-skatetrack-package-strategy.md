@@ -126,3 +126,18 @@ The Task-028a layout is therefore adjusted to a right-side stacked layout:
 - If a future export package contains multiple sessions, selection can appear as a compact horizontal selector inside the top package-session summary rather than as a permanent middle column.
 
 This is a presentation-only restructuring. It does not change package schema, reader / writer behavior, import persistence, document association, custom UTType registration, signing, entitlements, Google Drive, CloudKit, StoreKit production behavior, or iOS runtime.
+
+## Task-028b update — route / chart visualization foundation
+
+Task-028b extends the macOS package viewer with lightweight visualization while preserving ADR-0007 boundaries.
+
+- `MacRoutePreviewView` renders a normalized route shape from package GPS samples using SwiftUI `Path` drawing. This is a package preview, not a road-matched map.
+- `MacSessionViewerModel` derives route points, route quality, unique route point count, and derived route distance from the selected package without rewriting the package.
+- `MacSpeedSparklineView` remains a lightweight speed chart foundation and does not introduce full chart dependencies.
+- The layout remains a left function sidebar plus right-side stacked dashboard, avoiding the earlier three-column empty-session-list problem.
+
+Deferred after Task-028b:
+
+- System map rendering, road matching, heat maps, route overlays, route editing, multi-session comparison, report export, custom UTType registration, document association, persistent import, package merge / restore, cloud sync, and production paid features.
+
+No signing, capability, entitlement, document type, iCloud, Google Drive, CloudKit, StoreKit production, or iOS runtime changes are introduced by this update.

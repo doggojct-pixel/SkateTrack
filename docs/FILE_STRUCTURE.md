@@ -813,3 +813,19 @@ scripts/verify_macos_package_preview.py                      # Updated so Task-0
 - `macOS/Features/SessionBrowser/MacSessionBrowserView.swift` now owns the right-side stacked layout for the macOS read-only Session Viewer: top compact package-session summary, bottom detailed dashboard.
 - `macOS/Features/SessionBrowser/MacSessionDetailView.swift` now focuses on detail sections only and no longer duplicates a large package/session hero header.
 - `scripts/verify_macos_session_viewer.py` checks that Task-028a keeps the right-side stacked layout and does not regress to a separate middle session-list column.
+
+## Task-028b macOS Route / Chart Visualization Foundation
+
+```text
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift      # [協作區] Lightweight SwiftUI Path route shape preview from package GPS samples; no system map framework or road matching.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift    # [協作區] Adds route points, route quality, unique route point count, and read-only route derivation for visualization.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift     # [協作區] Places route preview and speed chart in the main dashboard after compact metrics.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift    # [協作區] Speed chart foundation using SwiftUI Path; keeps full chart framework deferred.
+scripts/verify_macos_route_chart_viewer.py                   # Verifies Task-028b route / chart visualization, read-only boundary, localization, docs, and no document / capability drift.
+scripts/verify_macos_session_viewer.py                       # Updated to include Task-028b route preview membership and compact visualization guardrails.
+```
+
+### Task-028b deferred items
+
+- System map rendering, road matching, heat maps, route overlays, route editing, full chart framework adoption, multi-session comparison, report export, persistent imports, drag-and-drop import, custom UTType, document association, Finder open-with behavior, Google Drive / iCloud / CloudKit sync, and StoreKit production behavior remain future tasks.
+- Task-028b remains read-only and package-backed. It does not mutate package contents, write Core Data, merge sessions, or restore backups.

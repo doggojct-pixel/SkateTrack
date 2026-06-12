@@ -18,6 +18,7 @@ REQUIRED_FILES = [
     "macOS/Features/SessionBrowser/MacSessionDetailView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
+    "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_session_viewer.py",
@@ -29,6 +30,7 @@ PROJECT_MEMBERSHIP = [
     "MacSessionDetailView.swift",
     "MacSessionViewerModel.swift",
     "MacSpeedSparklineView.swift",
+    "MacRoutePreviewView.swift",
 ]
 
 LOCALIZATION_KEYS = [
@@ -36,8 +38,10 @@ LOCALIZATION_KEYS = [
     "mac.viewer.empty.title",
     "mac.viewer.metrics.title",
     "mac.viewer.metrics.derived_notice",
-    "mac.viewer.sparkline.title",
+    "mac.viewer.chart.speed.title",
     "mac.viewer.route.title",
+    "mac.viewer.route.preview.title",
+    "mac.viewer.route.data.title",
     "mac.viewer.package.current",
     "mac.viewer.package.single_session",
     "mac.viewer.package.session_count.format",
@@ -124,6 +128,7 @@ def ensure_session_browser() -> None:
     detail = read("macOS/Features/SessionBrowser/MacSessionDetailView.swift")
     model = read("macOS/Features/SessionBrowser/MacSessionViewerModel.swift")
     sparkline = read("macOS/Features/SessionBrowser/MacSpeedSparklineView.swift")
+    route_preview = read("macOS/Features/SessionBrowser/MacRoutePreviewView.swift")
     preview = read("macOS/Features/Import/MacPackagePreviewView.swift")
 
     for token in [
@@ -150,6 +155,9 @@ def ensure_session_browser() -> None:
         "displayMetrics",
         "usesDerivedMetrics",
         "routeSummary",
+        "routePoints",
+        "MacRoutePreviewView",
+        "visualizationSection",
         "mac.viewer.privacy.readonly",
         "mac.viewer.route.map_deferred",
         "mac.viewer.detail.title",
@@ -163,6 +171,8 @@ def ensure_session_browser() -> None:
         fail("MacSessionDetailView should not duplicate the package-session hero; the top summary belongs in MacSessionBrowserView")
     for token in [
         "MacSessionViewerModel",
+        "MacRoutePoint",
+        "MacRouteVisualizationQuality",
         "deriveMetrics",
         "deriveDistanceKilometers",
         "motionSamples.isEmpty ? session.motionSamples : motionSamples",
@@ -172,9 +182,12 @@ def ensure_session_browser() -> None:
     ]:
         if token not in model:
             fail(f"MacSessionViewerModel missing derived metric token: {token}")
-    for token in ["Path", "speedPath", "gridLines", "mac.viewer.sparkline.empty", ".frame(height: 104)"]:
+    for token in ["Path", "speedPath", "gridLines", "mac.viewer.sparkline.empty", ".frame(height: 132)"]:
         if token not in sparkline:
             fail(f"MacSpeedSparklineView missing token: {token}")
+    for token in ["MacRoutePreviewView", "routePath", "routeGrid", "MacRoutePreviewPill", "mac.viewer.route.preview.title", "mac.viewer.route.preview.not_mapmatched"]:
+        if token not in route_preview:
+            fail(f"MacRoutePreviewView missing token: {token}")
     if "MacSessionViewerModel" not in preview or "viewer_ready" not in preview:
         fail("MacPackagePreviewView should use Task-028a viewer-derived metrics and no longer advertise viewer as locked")
 
@@ -190,6 +203,7 @@ def ensure_boundaries() -> None:
         "macOS/Features/SessionBrowser/MacSessionDetailView.swift",
         "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
         "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
+        "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     ]:
         text = read(path)
         for token in FORBIDDEN_VIEWER_TOKENS:
@@ -240,6 +254,8 @@ def ensure_docs() -> None:
         "right-side stacked layout",
         "read-only",
         "Task-028b",
+        "Route / Chart Visualization Foundation",
+        "MacRoutePreviewView",
         "custom UTType",
     ]:
         if token not in docs:

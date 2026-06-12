@@ -1,6 +1,6 @@
 // [協作區] MacSessionViewerModel.swift
 // 用途：將 .skatetrack package session 轉成 macOS 只讀 Session Viewer 可顯示的 derived view model。
-// 委派至：MacSessionBrowserView / MacSessionDetailView；不得寫入資料庫、merge、restore 或同步雲端。
+// 委派至：MacSessionBrowserView / MacSessionDetailView / MacRoutePreviewView；不得寫入資料庫、merge、restore 或同步雲端。
 
 import Foundation
 
@@ -18,6 +18,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
     let routeSampleCount: Int
     let privacyNotes: [String]
     let speedPoints: [MacSpeedPoint]
+    let routePoints: [MacRoutePoint]
     let routeSummary: MacRouteSummary
     let displayMetrics: SessionSummaryMetrics
     let usesDerivedMetrics: Bool
@@ -48,6 +49,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
         routeSampleCount = samples.filter { $0.gpsCoordinate != nil }.count
         privacyNotes = packageSession.privacyNotes
         speedPoints = MacSessionMetricsDeriver.speedPoints(from: samples)
+        routePoints = derived.routePoints
         routeSummary = derived.routeSummary
         self.displayMetrics = displayMetrics
         usesDerivedMetrics = MacSessionViewerModel.shouldUseDerivedMetrics(
@@ -62,6 +64,10 @@ struct MacSessionViewerModel: Identifiable, Equatable {
 
     var hasRoute: Bool {
         routeSampleCount > 0
+    }
+
+    var hasDrawableRoute: Bool {
+        routePoints.count >= 2 && routeSummary.quality != .unavailable
     }
 
     private static func title(for session: SessionData) -> String {
@@ -111,16 +117,33 @@ struct MacSpeedPoint: Identifiable, Equatable {
     let speedKmh: Double
 }
 
+struct MacRoutePoint: Identifiable, Equatable {
+    let id: Int
+    let timestamp: Date
+    let elapsedSeconds: TimeInterval
+    let coordinate: GeoCoordinate
+    let speedKmh: Double
+}
+
 struct MacRouteSummary: Equatable {
     let startCoordinate: GeoCoordinate?
     let finishCoordinate: GeoCoordinate?
     let routePointCount: Int
+    let uniqueRoutePointCount: Int
     let derivedDistanceKilometers: Double
+    let quality: MacRouteVisualizationQuality
+}
+
+enum MacRouteVisualizationQuality: Equatable {
+    case unavailable
+    case limited
+    case usable
 }
 
 private struct MacDerivedMetricsResult {
     let metrics: SessionSummaryMetrics
     let routeSummary: MacRouteSummary
+    let routePoints: [MacRoutePoint]
 }
 
 private enum MacSessionMetricsDeriver {
@@ -135,6 +158,7 @@ private enum MacSessionMetricsDeriver {
         }
 
         let distanceKilometers = deriveDistanceKilometers(from: routeSamples)
+        let routePoints = routePoints(from: routeSamples)
         let durationSeconds = max(0, session.durationSeconds ?? 0)
         let validSpeeds = sortedSamples.map(\.speedKmh).filter { $0.isFinite && $0 >= 0 }
         let maxSpeed = validSpeeds.max() ?? 0
@@ -150,13 +174,24 @@ private enum MacSessionMetricsDeriver {
             elevationGainMeters: elevationGain,
             movingRatio: movingRatio
         )
+        let quality = routeQuality(
+            routeSampleCount: routeSamples.count,
+            routePointCount: routePoints.count,
+            distanceKilometers: distanceKilometers
+        )
         let routeSummary = MacRouteSummary(
             startCoordinate: routeSamples.first?.coordinate,
             finishCoordinate: routeSamples.last?.coordinate,
             routePointCount: routeSamples.count,
-            derivedDistanceKilometers: distanceKilometers
+            uniqueRoutePointCount: routePoints.count,
+            derivedDistanceKilometers: distanceKilometers,
+            quality: quality
         )
-        return MacDerivedMetricsResult(metrics: metrics, routeSummary: routeSummary)
+        return MacDerivedMetricsResult(
+            metrics: metrics,
+            routeSummary: routeSummary,
+            routePoints: routePoints
+        )
     }
 
     static func speedPoints(from samples: [MotionSample]) -> [MacSpeedPoint] {
@@ -170,7 +205,41 @@ private enum MacSessionMetricsDeriver {
                 speedKmh: sample.speedKmh
             )
         }
-        return downsample(points: points, maxCount: 160)
+        return downsample(points: points, maxCount: 180)
+    }
+
+    private static func routePoints(
+        from routeSamples: [(timestamp: Date, coordinate: GeoCoordinate, speedKmh: Double)]
+    ) -> [MacRoutePoint] {
+        guard let first = routeSamples.first else { return [] }
+        let firstDate = first.timestamp
+        var accepted: [(timestamp: Date, coordinate: GeoCoordinate, speedKmh: Double)] = [first]
+        var anchor = first
+
+        for sample in routeSamples.dropFirst() {
+            let segmentMeters = distanceMetersBetween(anchor.coordinate, sample.coordinate)
+            if segmentMeters >= 3 {
+                accepted.append(sample)
+                anchor = sample
+            }
+        }
+
+        if let last = routeSamples.last,
+           accepted.last?.coordinate != last.coordinate,
+           distanceMetersBetween(accepted.last?.coordinate ?? first.coordinate, last.coordinate) >= 3 {
+            accepted.append(last)
+        }
+
+        let points = accepted.enumerated().map { index, sample in
+            MacRoutePoint(
+                id: index,
+                timestamp: sample.timestamp,
+                elapsedSeconds: sample.timestamp.timeIntervalSince(firstDate),
+                coordinate: sample.coordinate,
+                speedKmh: sample.speedKmh
+            )
+        }
+        return downsample(routePoints: points, maxCount: 220)
     }
 
     private static func deriveDistanceKilometers(
@@ -193,6 +262,20 @@ private enum MacSessionMetricsDeriver {
             anchor = sample
         }
         return distanceMeters / 1_000
+    }
+
+    private static func routeQuality(
+        routeSampleCount: Int,
+        routePointCount: Int,
+        distanceKilometers: Double
+    ) -> MacRouteVisualizationQuality {
+        guard routeSampleCount >= 2, routePointCount >= 2, distanceKilometers > 0.01 else {
+            return .unavailable
+        }
+        if routePointCount < 6 || distanceKilometers < 0.05 {
+            return .limited
+        }
+        return .usable
     }
 
     private static func deriveMovingRatio(from samples: [MotionSample]) -> Double {
@@ -232,6 +315,14 @@ private enum MacSessionMetricsDeriver {
         let stride = max(1, Int(ceil(Double(points.count) / Double(maxCount))))
         return points.enumerated().compactMap { index, point in
             index % stride == 0 || index == points.count - 1 ? point : nil
+        }
+    }
+
+    private static func downsample(routePoints: [MacRoutePoint], maxCount: Int) -> [MacRoutePoint] {
+        guard routePoints.count > maxCount, maxCount > 0 else { return routePoints }
+        let stride = max(1, Int(ceil(Double(routePoints.count) / Double(maxCount))))
+        return routePoints.enumerated().compactMap { index, point in
+            index % stride == 0 || index == routePoints.count - 1 ? point : nil
         }
     }
 }

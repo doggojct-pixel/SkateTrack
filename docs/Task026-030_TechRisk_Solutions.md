@@ -784,3 +784,16 @@ After the first Task-028a implementation, the macOS Session Viewer was adjusted 
 The macOS viewer foundation should avoid a three-column layout while iOS export packages remain single-session packages. The safer Task-028a UX is a right-side stacked layout: persistent function sidebar on the left, compact package-session summary at the top of the main content, and the main Session detail dashboard below. Multi-session package selection remains supported as a compact horizontal selector only if a future package contains more than one session.
 
 This restructure remains within the Task-028a safety boundary: read-only package viewer, no persistent import, no merge / restore, no MapKit / Charts, no custom UTType or document association, and no signing / capability changes.
+
+## Task-028b Implementation Note — Lightweight Route / Chart Foundation
+
+Task-028b continues the safe macOS path established in Task-028a:
+
+- The macOS viewer keeps the right-side stacked dashboard layout: compact package-session summary above, route / chart / detail dashboard below.
+- Route visualization uses a normalized route preview drawn with lightweight SwiftUI Path logic from package GPS samples.
+- Speed visualization continues to use a lightweight SwiftUI Path chart instead of introducing full chart frameworks.
+- The viewer can distinguish unavailable / limited / usable route data so old or stationary packages do not appear broken.
+- MapKit rendering, road matching, heat maps, route editing, Swift Charts, multi-session comparison, report export, document association, custom UTType registration, persistent import, and cloud sync remain deferred.
+- The package remains read-only. No data is imported, merged, restored, rewritten, uploaded, or synced.
+
+Task-028b verification token: lightweight SwiftUI Path route preview.

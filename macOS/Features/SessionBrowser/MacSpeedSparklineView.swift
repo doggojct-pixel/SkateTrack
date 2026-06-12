@@ -1,6 +1,6 @@
 // [協作區] MacSpeedSparklineView.swift
 // 用途：在 macOS Session Viewer 中以輕量 SwiftUI Path 顯示速度趨勢預覽。
-// 委派至：Task-028b 可替換為更完整的視覺化元件；本檔不引入額外圖表、地圖或外部服務。
+// 委派至：Task-028b Route / Chart Visualization Foundation；本檔不引入 system chart / map frameworks 或外部服務。
 
 import SwiftUI
 
@@ -10,7 +10,7 @@ struct MacSpeedSparklineView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Label("mac.viewer.sparkline.title", systemImage: "waveform.path.ecg")
+                Label("mac.viewer.chart.speed.title", systemImage: "waveform.path.ecg")
                     .font(.headline.bold())
                 Spacer()
                 Text(maxSpeedLabel)
@@ -34,7 +34,7 @@ struct MacSpeedSparklineView: View {
                     }
                 }
             }
-            .frame(height: 104)
+            .frame(height: 132)
         }
         .padding(16)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
