@@ -753,3 +753,34 @@ Task-027b applies the Task-027 / Task-028 risk controls without enabling custom 
 After manual macOS testing, Task-027b keeps `NavigationSplitView` but uses a custom fixed sidebar instead of `List(selection:)` to avoid sidebar jump / collapse behavior when selecting locked placeholder destinations. This still satisfies the Task-027 / Task-028 risk control that macOS navigation must be independent from iOS `RootNavigationView`, while keeping document association, custom UTType, import persistence, and cloud sync deferred.
 
 Task-027b verification token: stable custom sidebar.
+
+## Task-028a Implementation Note — Read-only Viewer First
+
+Task-028 was split into Task-028a / Task-028b to reduce macOS shell risk.
+
+Task-028a implements a read-only `Session Browser` foundation:
+
+- The macOS sidebar remains independent from iOS `RootNavigationView`.
+- `MacRootView` owns the shared package preview state so Import and Session Browser observe the same validated `.skatetrack` payload.
+- The viewer lists sessions from the package and shows only read-only detail metrics.
+- Older exports with route / speed samples but empty summary metrics can show viewer-side derived metrics without modifying package contents.
+- `MacSpeedSparklineView` uses SwiftUI `Path` instead of Swift Charts, keeping Charts / MapKit risk deferred to Task-028b.
+
+Task-028a explicitly does not add persistent imports, Core Data writes, document association, custom UTType, Finder open-with behavior, report export, MapKit route rendering, Swift Charts, Google Drive, iCloud, CloudKit, or StoreKit production behavior.
+
+## Task-028a Layout Polish Note — compact viewer before visualization
+
+After the first Task-028a implementation, the macOS Session Viewer was adjusted before Task-028b so the layout behaves like a desktop viewer rather than an iOS-style full-height card stack.
+
+- Session list column is compact and list-like.
+- Session detail uses a compact macOS dashboard layout.
+- Speed preview remains a lightweight SwiftUI `Path`; Swift Charts is still deferred.
+- Route information remains summary-only; MapKit route rendering is still deferred.
+- No storage import, merge, document association, custom UTType, signing, cloud sync, or paid feature behavior is added.
+
+
+### Task-028a Layout Restructure Note
+
+The macOS viewer foundation should avoid a three-column layout while iOS export packages remain single-session packages. The safer Task-028a UX is a right-side stacked layout: persistent function sidebar on the left, compact package-session summary at the top of the main content, and the main Session detail dashboard below. Multi-session package selection remains supported as a compact horizontal selector only if a future package contains more than one session.
+
+This restructure remains within the Task-028a safety boundary: read-only package viewer, no persistent import, no merge / restore, no MapKit / Charts, no custom UTType or document association, and no signing / capability changes.

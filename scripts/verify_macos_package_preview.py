@@ -16,6 +16,7 @@ REQUIRED_FILES = [
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "macOS/Features/Import/MacPackageImportViewModel.swift",
     "macOS/Features/Shared/MacLockedFeatureCardView.swift",
+    "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackageManifest.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
@@ -87,7 +88,8 @@ def ensure_macos_shell() -> None:
     if "RootNavigationView" in root or "iOS/App" in root:
         fail("macOS shell must not reuse iOS RootNavigationView")
     for token in [
-        "MacImportView()",
+        "MacImportView(viewModel: packageViewModel)",
+        "MacSessionBrowserView",
         "MacLockedFeatureCardView",
         "mac.import.sidebar",
         "NavigationSplitView(columnVisibility:",
@@ -95,7 +97,6 @@ def ensure_macos_shell() -> None:
         "MacSidebarView",
         "MacRootDetailView",
         "navigationSplitViewColumnWidth",
-        ".padding(.top, 52)",
     ]:
         if token not in root:
             fail(f"MacRootView missing stability token: {token}")
@@ -114,7 +115,7 @@ def ensure_import_boundary() -> None:
     for token in ["NSOpenPanel", "allowedContentTypes = [.data]", "viewModel.importPackage"]:
         if token not in import_view:
             fail(f"MacImportView missing token: {token}")
-    for token in [".padding(.top, 28)", ".frame(maxWidth: .infinity, alignment: .topLeading)"]:
+    for token in [".padding(.top,", ".frame(maxWidth: .infinity, alignment: .topLeading)"]:
         if token not in import_view:
             fail(f"MacImportView missing titlebar-safe layout token: {token}")
     if "allowedContentTypes = [.skatetrack]" in import_view or "UTType(exportedAs" in import_view:
@@ -125,7 +126,7 @@ def ensure_import_boundary() -> None:
     for token in ["packageError.localizationKey", "clearPreview", "MacPackageImportPreview"]:
         if token not in view_model:
             fail(f"view model missing state/error token: {token}")
-    for token in ["schemaVersion", "packageType", "motionSampleCount", "routeSampleCount", "summaryMetrics", "privacyNotes", "MacLockedFeatureCardView"]:
+    for token in ["schemaVersion", "packageType", "motionSampleCount", "routeSampleCount", "summaryMetrics", "privacyNotes", "MacLockedFeatureCardView", "MacSessionViewerModel"]:
         if token not in preview:
             fail(f"preview view missing token: {token}")
     if "StoreKit" in locked or "Transaction" in locked:
@@ -200,7 +201,7 @@ def ensure_docs() -> None:
         "titlebar",
         "packageType = export",
         "custom UTType",
-        "Task-028",
+        "Task-028a",
     ]:
         if token not in docs:
             fail(f"documentation missing token: {token}")

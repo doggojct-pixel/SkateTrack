@@ -7,7 +7,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct MacImportView: View {
-    @StateObject private var viewModel = MacPackageImportViewModel()
+    @ObservedObject private var viewModel: MacPackageImportViewModel
+
+    init(viewModel: MacPackageImportViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         ScrollView {
@@ -159,6 +163,6 @@ private struct MacImportEmptyStateView: View {
 
 #Preview {
     NavigationStack {
-        MacImportView()
+        MacImportView(viewModel: MacPackageImportViewModel())
     }
 }

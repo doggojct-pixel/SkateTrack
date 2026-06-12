@@ -8,8 +8,16 @@ import SwiftUI
 struct MacPackagePreviewView: View {
     let preview: MacPackageImportPreview
 
+    private var primaryViewerModel: MacSessionViewerModel? {
+        preview.primaryPackageSession.map(MacSessionViewerModel.init)
+    }
+
     private var summaryMetrics: SessionSummaryMetrics? {
-        preview.primarySession?.summaryMetrics
+        primaryViewerModel?.displayMetrics ?? preview.primarySession?.summaryMetrics
+    }
+
+    private var usesDerivedMetrics: Bool {
+        primaryViewerModel?.usesDerivedMetrics ?? false
     }
 
     var body: some View {
@@ -82,6 +90,12 @@ struct MacPackagePreviewView: View {
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
+
+            if usesDerivedMetrics {
+                Label("mac.viewer.metrics.derived_notice", systemImage: "function")
+                    .font(.callout)
+                    .foregroundStyle(.cyan)
+            }
         }
     }
 
@@ -105,9 +119,9 @@ struct MacPackagePreviewView: View {
 
     private var lockedNextSteps: some View {
         MacLockedFeatureCardView(
-            titleKey: "mac.package.preview.locked.viewer.title",
-            subtitleKey: "mac.package.preview.locked.viewer.subtitle",
-            systemImage: "chart.bar.doc.horizontal"
+            titleKey: "mac.package.preview.viewer_ready.title",
+            subtitleKey: "mac.package.preview.viewer_ready.subtitle",
+            systemImage: "list.bullet.rectangle"
         )
     }
 

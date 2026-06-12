@@ -60,6 +60,7 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
 }
 
 struct MacRootView: View {
+    @StateObject private var packageViewModel = MacPackageImportViewModel()
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selection: MacRootDestination = .importPackage
 
@@ -68,7 +69,11 @@ struct MacRootView: View {
             MacSidebarView(selection: $selection)
                 .navigationSplitViewColumnWidth(min: 224, ideal: 248, max: 300)
         } detail: {
-            MacRootDetailView(selection: selection)
+            MacRootDetailView(
+                selection: selection,
+                packageViewModel: packageViewModel,
+                openImportAction: { selection = .importPackage }
+            )
         }
         .navigationSplitViewStyle(.balanced)
         .frame(minWidth: 960, minHeight: 660)
@@ -112,17 +117,17 @@ private struct MacSidebarView: View {
 
 private struct MacRootDetailView: View {
     let selection: MacRootDestination
+    @ObservedObject var packageViewModel: MacPackageImportViewModel
+    let openImportAction: () -> Void
 
     var body: some View {
         switch selection {
         case .importPackage:
-            MacImportView()
+            MacImportView(viewModel: packageViewModel)
         case .sessionBrowser:
-            MacLockedDestinationView(
-                destination: selection,
-                titleKey: "mac.import.locked.sessions.title",
-                subtitleKey: "mac.import.locked.sessions.subtitle",
-                systemImage: "list.bullet.rectangle"
+            MacSessionBrowserView(
+                preview: packageViewModel.preview,
+                openImportAction: openImportAction
             )
         case .analytics:
             MacLockedDestinationView(

@@ -1377,3 +1377,60 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Re-run `python3 scripts/verify_macos_package_preview.py` after applying this hotfix.
 - Manual validation should click every sidebar destination repeatedly, confirm all sidebar rows remain visible and scrollable, confirm the macOS traffic-light controls are not visually covered, and then re-open a `.skatetrack` package preview.
+
+## 2026-06-12 — Task-028a macOS Read-only Session Viewer Foundation
+
+### Completed
+- Promoted the macOS sidebar `Session Browser` destination from a locked placeholder to a read-only viewer for the currently opened `.skatetrack` package.
+- Moved the package preview state to `MacRootView` via a shared `MacPackageImportViewModel`, so `MacImportView` and `MacSessionBrowserView` read the same validated package without writing any local storage.
+- Added `MacSessionBrowserView` with a package-scoped session list and selected-session detail pane.
+- Added `MacSessionDetailView` to show session title, mode, power type, package file, duration, distance, max speed, average speed, moving ratio, motion sample count, route sample count, exported time, route summary, and privacy boundary.
+- Added `MacSessionViewerModel` to derive read-only metrics from package motion samples when older exports have route / speed samples but empty summary metrics.
+- Added `MacSpeedSparklineView`, a lightweight SwiftUI `Path` speed preview that avoids introducing Swift Charts before Task-028b.
+- Updated `MacPackagePreviewView` so package preview can also use viewer-derived metrics and now points users to the sidebar Session Browser instead of saying the viewer is fully locked.
+- Added localized English and Traditional Chinese copy for the macOS Session Browser, derived-metric notice, route summary, speed preview, empty states, and read-only privacy boundary.
+- Added `scripts/verify_macos_session_viewer.py` and updated `scripts/verify_macos_package_preview.py` for the shared preview state and Task-028a viewer boundary.
+- Updated ADR-0007, `docs/FILE_STRUCTURE.md`, and `docs/Task026-030_TechRisk_Solutions.md` to record the Task-028a split from future Task-028b visualization work.
+
+### Scope Boundary
+- Task-028a remains a read-only package viewer. It does not import package data into Core Data, merge sessions, restore backups, persist security-scoped bookmarks, sync cloud state, or modify the selected `.skatetrack` package.
+- Task-028a does not introduce MapKit route rendering, Swift Charts, heat maps, session comparison, calendar / filter views, CSV / PDF export, drag-and-drop import, Finder open-with behavior, custom UTType registration, document association, Focus Mode, video overlay editing, or AI analysis.
+- Task-028a does not change signing, provisioning, Bundle ID, entitlements, iCloud containers, Google Drive, CloudKit, StoreKit production, iOS runtime, GPSProvider, SensorFusionEngine, FallDetectionEngine, Launch Screen, AppIcon, bottom dock, or watchOS runtime.
+
+### Deferred from Task-028a
+- Task-028b should decide whether to add MapKit route visualization, Swift Charts / richer charts, or continue with lightweight SwiftUI visualizations after a macOS build and UX check.
+- Session filtering, multi-session comparison, persistent imports, report export, drag-and-drop import, document association, custom UTType, Finder open-with behavior, Focus Mode, AI analysis, and video overlay remain later macOS tasks.
+- iPhone 13 Pro outdoor locked-screen GPS validation remains a Task-030 release-readiness gate.
+
+### Validation Notes
+- Run `python3 scripts/verify_macos_session_viewer.py` after applying this task.
+- Also re-run `python3 scripts/verify_macos_package_preview.py`, `python3 scripts/verify_skatetrack_package.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_macos_appiconset.py`, and `python3 scripts/verify_shared_models.py`.
+- Xcode validation should include a macOS build and an iOS build to confirm shared model and project membership changes did not regress either platform.
+
+## 2026-06-12 — Task-028a macOS Session Viewer Layout Polish
+
+### Completed
+- Refined the Task-028a macOS read-only Session Viewer after manual testing showed the first viewer layout was functionally correct but too iOS-like for a desktop viewer.
+- Narrowed the middle Session list column so it behaves like a true browser list instead of a second primary content pane.
+- Converted the right-side Session detail into a more compact macOS dashboard with a shorter header, denser metrics grid, smaller cards, and a shorter speed sparkline.
+- Grouped route summary and privacy boundary into compact responsive sections so the user can see more of the Session at the top of the window before Task-028b adds route / chart visualization.
+
+### Scope Boundary
+- This layout polish is presentation-only. It does not change package schema, package decoding, derived metrics, storage, import behavior, route calculation, MapKit, Charts, custom UTType, document association, signing, capabilities, Google Drive, CloudKit, StoreKit production, iOS runtime, GPS, FallDetection, or watchOS behavior.
+
+### Validation Notes
+- Run `python3 scripts/verify_macos_session_viewer.py`, `python3 scripts/verify_macos_package_preview.py`, and `python3 scripts/verify_localization_keys.py` after applying this polish.
+- Manual validation should confirm the Session Browser reads as a compact macOS dashboard rather than a large mobile-style card stack.
+
+## 2026-06-12 — Task-028a macOS Session Viewer Layout Restructure
+
+### Completed
+- Restructured the macOS Session Browser from the earlier three-column prototype into a right-side stacked layout: the left sidebar remains the function-area navigation, while the main viewer uses a compact package-session summary above the detailed Session dashboard.
+- Removed the separate middle `Package Sessions` column for the normal single-session package flow so the empty list area no longer consumes desktop space.
+- Added a compact `MacCurrentPackageSessionSummaryView` at the top of `MacSessionBrowserView` for the currently opened package session, with a horizontal selector only when a future package contains multiple sessions.
+- Kept `MacSessionDetailView` focused on the bottom dashboard area: metrics, speed preview, route summary, and privacy boundary.
+- Preserved Task-028a read-only boundaries: no database import, no package rewrite, no MapKit / Charts, no document association, no custom UTType, and no signing / capability changes.
+
+### Validation Notes
+- Re-run `python3 scripts/verify_macos_session_viewer.py` after applying this layout restructure.
+- Manual validation should confirm the top package-session summary does not truncate important file / session information, the bottom dashboard uses the primary vertical space, and the left sidebar remains stable.

@@ -87,3 +87,42 @@ Rationale:
 - The detail pane still uses user-initiated `NSOpenPanel` selection and `SkateTrackPackageReader`; no import, merge, restore, document association, or custom UTType behavior is added.
 
 This update does not change package schema, iOS export behavior, signing, capabilities, entitlements, App Groups, iCloud, Google Drive, CloudKit, or StoreKit production boundaries.
+
+## Task-028a update — macOS read-only Session Viewer foundation
+
+Task-028a builds on Task-027b by making the macOS `Session Browser` sidebar destination usable while preserving the portable package boundaries established in Task-027a and Task-027b.
+
+- `MacRootView` owns a shared `MacPackageImportViewModel`, so `MacImportView` and `MacSessionBrowserView` reference the same validated `.skatetrack` package state.
+- `MacSessionBrowserView` lists sessions contained in the currently opened package and shows a read-only detail pane for the selected session.
+- `MacSessionViewerModel` derives display metrics from motion samples when an older package has route / speed samples but empty summary metrics. This is a viewer-side presentation fallback only; it does not rewrite the package or import data.
+- `MacSpeedSparklineView` uses lightweight SwiftUI drawing instead of introducing Swift Charts in Task-028a.
+- Route support in Task-028a is limited to availability, start / finish coordinates, route point count, and derived distance. MapKit rendering and heat maps are deferred.
+
+This update intentionally keeps the viewer read-only. It does not add Core Data import, package merge, backup restore, persistent security-scoped bookmarks, drag-and-drop import, custom UTType registration, document association, Finder open-with behavior, Google Drive, iCloud, CloudKit, StoreKit production behavior, or signing / entitlement changes.
+
+Task-028b may extend the viewer with route / chart visualization after a dedicated macOS build and UX check, but must continue to keep storage import, document association, external cloud services, and production paid features out of scope until explicitly unlocked.
+
+## Task-028a layout polish — compact macOS dashboard
+
+Manual review of the first Task-028a viewer confirmed that the data flow was correct, but the visual density was still too close to the iOS card style. Task-028a now treats the macOS Session Browser as a compact macOS dashboard:
+
+- The middle Session list is intentionally narrow and list-like.
+- The right detail pane uses compact cards, a shorter hero header, a smaller speed sparkline, and grouped route / privacy sections.
+- The viewer remains read-only and package-backed. It does not import, merge, restore, persist, or rewrite package contents.
+- MapKit route rendering, Swift Charts, heat maps, multi-session comparison, report export, Finder document association, and custom UTType registration remain deferred to later tasks.
+
+This polish does not alter the ADR-0007 package boundary: `.skatetrack` remains a user-selected portable export file, and macOS still performs only read-only preview / viewing in Task-028a.
+
+
+## Task-028a layout restructure — right-side stacked layout
+
+Manual UX review found that the first Task-028a macOS Session Browser used a separate middle `Package Sessions` column even though current iOS `.skatetrack` exports are single-session packages. That made the viewer feel empty and consumed space that should belong to the Session detail dashboard.
+
+The Task-028a layout is therefore adjusted to a right-side stacked layout:
+
+- The left sidebar remains the stable macOS function-area navigation.
+- The main content top area shows the currently opened package session in a compact summary card.
+- The main content bottom area contains the detailed read-only Session dashboard.
+- If a future export package contains multiple sessions, selection can appear as a compact horizontal selector inside the top package-session summary rather than as a permanent middle column.
+
+This is a presentation-only restructuring. It does not change package schema, reader / writer behavior, import persistence, document association, custom UTType registration, signing, entitlements, Google Drive, CloudKit, StoreKit production behavior, or iOS runtime.

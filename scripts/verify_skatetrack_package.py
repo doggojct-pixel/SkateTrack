@@ -140,8 +140,13 @@ def ensure_no_forbidden_services() -> None:
     for path in checked_paths:
         text = read(path)
         for token in FORBIDDEN_TOKENS:
-            if token in text and path != "docs/KNOWN_LIMITATIONS_PRE_ADP.md":
-                fail(f"forbidden production/external-service token {token!r} found in {path}")
+            if token not in text:
+                continue
+            if path.startswith("docs/"):
+                # Documentation is expected to name deferred external services / capabilities
+                # as long as source code and project settings do not enable them.
+                continue
+            fail(f"forbidden production/external-service token {token!r} found in {path}")
 
 
 def ensure_localization() -> None:

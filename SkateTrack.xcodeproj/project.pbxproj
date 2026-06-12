@@ -284,6 +284,10 @@
 		27B200000000000000000102 /* MacPackagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000002 /* MacPackagePreviewView.swift */; };
 		27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000003 /* MacPackageImportViewModel.swift */; };
 		27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B300000000000000000001 /* MacLockedFeatureCardView.swift */; };
+		28A100000000000000000101 /* MacSessionBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000001 /* MacSessionBrowserView.swift */; };
+		28A100000000000000000102 /* MacSessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000002 /* MacSessionDetailView.swift */; };
+		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
+		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -520,6 +524,10 @@
 		27B200000000000000000002 /* MacPackagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackagePreviewView.swift; sourceTree = "<group>"; };
 		27B200000000000000000003 /* MacPackageImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageImportViewModel.swift; sourceTree = "<group>"; };
 		27B300000000000000000001 /* MacLockedFeatureCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacLockedFeatureCardView.swift; sourceTree = "<group>"; };
+		28A100000000000000000001 /* MacSessionBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionBrowserView.swift; sourceTree = "<group>"; };
+		28A100000000000000000002 /* MacSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionDetailView.swift; sourceTree = "<group>"; };
+		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
+		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1044,6 +1052,7 @@
 			isa = PBXGroup;
 			children = (
 				27B200000000000000000000 /* Import */,
+				28A100000000000000000000 /* SessionBrowser */,
 				27B300000000000000000000 /* Shared */,
 			);
 			path = macOS/Features;
@@ -1057,6 +1066,17 @@
 				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
 			);
 			path = Import;
+			sourceTree = "<group>";
+		};
+		28A100000000000000000000 /* SessionBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				28A100000000000000000001 /* MacSessionBrowserView.swift */,
+				28A100000000000000000002 /* MacSessionDetailView.swift */,
+				28A100000000000000000003 /* MacSessionViewerModel.swift */,
+				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
+			);
+			path = SessionBrowser;
 			sourceTree = "<group>";
 		};
 		27B300000000000000000000 /* Shared */ = {
@@ -1516,6 +1536,10 @@
 				27B200000000000000000102 /* MacPackagePreviewView.swift in Sources */,
 				27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */,
 				27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */,
+				28A100000000000000000101 /* MacSessionBrowserView.swift in Sources */,
+				28A100000000000000000102 /* MacSessionDetailView.swift in Sources */,
+				28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */,
+				28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,

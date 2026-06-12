@@ -780,3 +780,36 @@ scripts/verify_macos_package_preview.py                      # Adds stability ch
 
 - This hotfix does not add new files, custom UTType declarations, document association, signing changes, or persistent import behavior.
 - `.skatetrack` preview values continue to reflect the metrics stored inside the selected export package. Older simulator exports made before the GPS distance accumulator fix may validly show route samples but `0.00 km` distance.
+
+## Task-028a macOS Read-only Session Viewer Foundation
+
+```text
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift    # [協作區] Read-only package-scoped macOS Session Browser with session list and detail host.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift     # [協作區] Read-only session detail cards, derived metrics, route summary, and privacy boundary.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift    # [協作區] Converts package sessions into viewer models and derives display metrics from motion samples when needed.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift    # [協作區] Lightweight SwiftUI Path speed preview; keeps full Charts / MapKit visualization deferred.
+macOS/App/MacRootView.swift                                  # [協作區] Owns shared MacPackageImportViewModel so Import and Session Browser use the same package preview state.
+macOS/Features/Import/MacImportView.swift                    # [協作區] Uses an injected MacPackageImportViewModel instead of owning a separate StateObject.
+macOS/Features/Import/MacPackagePreviewView.swift            # [協作區] Package preview can show viewer-derived metrics and points users to Session Browser.
+scripts/verify_macos_session_viewer.py                       # Verifies Task-028a viewer files, shared preview state, read-only boundaries, localization, docs, and project membership.
+scripts/verify_macos_package_preview.py                      # Updated so Task-027b package preview verification stays compatible with Task-028a shared state.
+```
+
+### Task-028a deferred items
+
+- Route maps, heat maps, Swift Charts, richer graph interactions, report export, persistent imports, drag-and-drop import, document association, custom UTType, Finder open-with behavior, Focus Mode, AI analysis, and video overlay remain future macOS work.
+- The viewer reads `.skatetrack` package contents only. It does not mutate local storage, merge records, restore backup packages, upload to cloud, or claim Google Drive / iCloud sync is complete.
+
+### Task-028a layout polish update
+
+- `macOS/Features/SessionBrowser/MacSessionBrowserView.swift` — tightened the Session list into a compact browser column for the read-only package viewer.
+- `macOS/Features/SessionBrowser/MacSessionDetailView.swift` — refined the Session detail into a compact macOS dashboard with denser metrics and grouped route / privacy sections.
+- `macOS/Features/SessionBrowser/MacSpeedSparklineView.swift` — reduced the lightweight SwiftUI speed preview height for desktop information density.
+- `scripts/verify_macos_session_viewer.py` — now checks the compact layout guardrails in addition to the read-only package boundaries.
+
+
+### Task-028a layout restructure update
+
+- `macOS/Features/SessionBrowser/MacSessionBrowserView.swift` now owns the right-side stacked layout for the macOS read-only Session Viewer: top compact package-session summary, bottom detailed dashboard.
+- `macOS/Features/SessionBrowser/MacSessionDetailView.swift` now focuses on detail sections only and no longer duplicates a large package/session hero header.
+- `scripts/verify_macos_session_viewer.py` checks that Task-028a keeps the right-side stacked layout and does not regress to a separate middle session-list column.
