@@ -247,6 +247,14 @@
 		24B402000000000000000101 /* SessionStartHeaderMetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B402000000000000000001 /* SessionStartHeaderMetricsView.swift */; };
 		24B500000000000000000101 /* AchievementRelatedStatsLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B500000000000000000001 /* AchievementRelatedStatsLinksView.swift */; };
 		24B500000000000000000102 /* WeeklyChallengePeriodBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */; };
+		25A100000000000000000101 /* AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A100000000000000000001 /* AuthSession.swift */; };
+		25A100000000000000000102 /* AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A100000000000000000001 /* AuthSession.swift */; };
+		25A100000000000000000103 /* AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A100000000000000000001 /* AuthSession.swift */; };
+		25A200000000000000000101 /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000001 /* AuthProvider.swift */; };
+		25A200000000000000000102 /* LocalAccountProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000002 /* LocalAccountProvider.swift */; };
+		25A200000000000000000103 /* DisabledGoogleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */; };
+		25A200000000000000000104 /* AuthTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000004 /* AuthTokenStore.swift */; };
+		25A300000000000000000101 /* useAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A300000000000000000001 /* useAccount.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -455,6 +463,12 @@
 		24B402000000000000000001 /* SessionStartHeaderMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartHeaderMetricsView.swift; sourceTree = "<group>"; };
 		24B500000000000000000001 /* AchievementRelatedStatsLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementRelatedStatsLinksView.swift; sourceTree = "<group>"; };
 		24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallengePeriodBadgeView.swift; sourceTree = "<group>"; };
+		25A100000000000000000001 /* AuthSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSession.swift; sourceTree = "<group>"; };
+		25A200000000000000000001 /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
+		25A200000000000000000002 /* LocalAccountProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAccountProvider.swift; sourceTree = "<group>"; };
+		25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledGoogleAuthProvider.swift; sourceTree = "<group>"; };
+		25A200000000000000000004 /* AuthTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTokenStore.swift; sourceTree = "<group>"; };
+		25A300000000000000000001 /* useAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useAccount.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -552,6 +566,7 @@
 				24A100000000000000000001 /* Achievement.swift */,
 				24A100000000000000000002 /* WeeklyChallenge.swift */,
 				24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */,
+				25A100000000000000000001 /* AuthSession.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -583,6 +598,7 @@
 			isa = PBXGroup;
 			children = (
 				12A400000000000000000003 /* useSubscriptionStatus.swift */,
+				25A300000000000000000001 /* useAccount.swift */,
 				12AB04000000000000000001 /* useSessionRecording.swift */,
 				14A200000000000000000001 /* useFallDetection.swift */,
 				17A100000000000000000006 /* useSessionHistory.swift */,
@@ -596,6 +612,17 @@
 				21A200000000000000000002 /* useSpots.swift */,
 			);
 			path = iOS/Hooks;
+			sourceTree = SOURCE_ROOT;
+		};
+		25A200000000000000000000 /* iOS/Core/Account */ = {
+			isa = PBXGroup;
+			children = (
+				25A200000000000000000001 /* AuthProvider.swift */,
+				25A200000000000000000002 /* LocalAccountProvider.swift */,
+				25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */,
+				25A200000000000000000004 /* AuthTokenStore.swift */,
+			);
+			path = iOS/Core/Account;
 			sourceTree = SOURCE_ROOT;
 		};
 		12A600000000000000000006 /* iOS/Core/SensorEngine */ = {
@@ -880,6 +907,7 @@
 				F5168E4BB74FFD31A60E8CE0 /* Shared */,
 				D3E87B7133C8F3A255023A90 /* iOS/App */,
 				12A400000000000000000004 /* iOS/Core/Subscription */,
+				25A200000000000000000000 /* iOS/Core/Account */,
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
 				14A100000000000000000000 /* iOS/Core/Safety */,
@@ -1202,6 +1230,7 @@
 				24A400000000000000000103 /* AchievementProgressRingView.swift in Sources */,
 				24A400000000000000000104 /* WeeklyChallengeCardView.swift in Sources */,
 				24B100000000000000000101 /* WeeklyChallengeCompletionRecord.swift in Sources */,
+				25A100000000000000000101 /* AuthSession.swift in Sources */,
 				24B200000000000000000101 /* WeeklyChallengeCompletionStore.swift in Sources */,
 				24B300000000000000000101 /* useAchievementDashboard.swift in Sources */,
 				24B400000000000000000101 /* SessionStartAchievementDashboardCardView.swift in Sources */,
@@ -1269,7 +1298,12 @@
 				16A100000000000000000104 /* DebugSubscriptionEntitlementProvider.swift in Sources */,
 				16A100000000000000000105 /* SubscriptionEntitlementStore.swift in Sources */,
 				16A100000000000000000106 /* PurchaseProductCatalog.swift in Sources */,
+				25A200000000000000000101 /* AuthProvider.swift in Sources */,
+				25A200000000000000000102 /* LocalAccountProvider.swift in Sources */,
+				25A200000000000000000103 /* DisabledGoogleAuthProvider.swift in Sources */,
+				25A200000000000000000104 /* AuthTokenStore.swift in Sources */,
 				12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */,
+				25A300000000000000000101 /* useAccount.swift in Sources */,
 				12A600000000000000000101 /* GPSProvider.swift in Sources */,
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
 				12A700000000000000000101 /* IMUProvider.swift in Sources */,
@@ -1347,6 +1381,7 @@
 				24A100000000000000000103 /* Achievement.swift in Sources */,
 				24A100000000000000000106 /* WeeklyChallenge.swift in Sources */,
 				24B100000000000000000103 /* WeeklyChallengeCompletionRecord.swift in Sources */,
+				25A100000000000000000103 /* AuthSession.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
 			);
@@ -1379,6 +1414,7 @@
 				24A100000000000000000102 /* Achievement.swift in Sources */,
 				24A100000000000000000105 /* WeeklyChallenge.swift in Sources */,
 				24B100000000000000000102 /* WeeklyChallengeCompletionRecord.swift in Sources */,
+				25A100000000000000000102 /* AuthSession.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,
 			);

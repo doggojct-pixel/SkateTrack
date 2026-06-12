@@ -1148,3 +1148,33 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Scope Boundary
 - No Start Session behavior, recording lifecycle, achievement / challenge rules, repositories, sensor engines, platform targets, signing, capabilities, entitlements, AppIcon, Launch Screen, or bottom dock were changed.
 - This is a same-stage Task-024b UI positioning fix and should be committed together with the Task-024b main package and prior follow-up fixes.
+
+## 2026-06-12 — Task-025a Account Provider Foundation（Google Sign-In Deferred）
+
+### Completed
+- Added `AuthSession` shared account state models for signed-out, local simulation signed-in, and Google-unavailable states without storing OAuth token or external-service secrets.
+- Added `AuthProvider` and `GoogleSignInProviding` boundaries so future account providers can be swapped behind a protocol instead of being called directly from Views.
+- Added `LocalAccountProvider` for DEBUG-only local account simulation. Release builds stay signed out and do not expose a fake sign-in path.
+- Added `DisabledGoogleAuthProvider` to represent the current blocked Google Sign-In state without importing Google SDKs, launching OAuth, adding client IDs, or configuring URL schemes.
+- Added `AuthTokenStore` as a placeholder token-storage boundary that only records non-sensitive provider metadata and always reports no production token in Task-025a.
+- Added `useAccount` / `AccountViewModel` as the SwiftUI-facing account state adapter for future Account settings UI.
+- Added localized account / Google-deferred / DEBUG simulation strings in English and Traditional Chinese.
+- Added `scripts/verify_account_provider.py` to verify required files, project membership, localization keys, provider-boundary tokens, documentation, and the absence of production Google configuration.
+- Updated `docs/FILE_STRUCTURE.md` and ADR-0002 for the Task-025a account-provider boundary.
+
+### Scope Boundary
+- Task-025a does not add `AccountSettingsView`, root navigation entry, or visible Settings UI. That UI foundation remains Task-025b so provider architecture and navigation polish do not land in one oversized change.
+- Task-025a does not add Google Sign-In production, Google OAuth client ID, reversed client ID URL scheme, `GoogleService-Info.plist`, Google SDK package dependency, token refresh, real Google profile loading, Drive scope authorization, Google Drive sync, server verification, cloud backend, signing changes, capabilities, entitlements, production StoreKit, watchOS UI, or macOS UI.
+- The local account path is explicitly DEBUG-only simulation and must not be described as a real external login provider.
+- The token store is a placeholder boundary only; it intentionally does not save access tokens, refresh tokens, ID tokens, or secrets.
+
+### Deferred from Task-025a
+- `AccountSettingsView`, account status card, and root Settings / Account navigation entry move to Task-025b.
+- Real `GoogleSignInProvider`, OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real user profile, token refresh, token revocation, and server-side verification remain blocked until Google Cloud credentials and privacy review are ready.
+- Drive scope authorization and Google Drive sync are not part of Task-025 and should start no earlier than Task-026 behind a separate backup / sync provider boundary.
+- Production token persistence / Keychain policy should be completed only with the real provider integration task, after credentials, minimum scopes, logout / revocation behavior, and privacy copy are finalized.
+
+### Validation Notes
+- Run `python3 scripts/verify_account_provider.py` after applying this task.
+- Run existing localization and shared-model verification scripts to ensure account strings and shared models remain aligned.
+- Xcode validation should confirm the iOS target compiles with the new account provider files and that no Google OAuth prompt, URL-scheme setup, signing change, or capability change appears.

@@ -756,3 +756,22 @@
 "challenges.advanced.gearFlow.subtitle" = "本週使用已選裝備完成 3 筆已儲存 Session。";
 "challenges.period.format" = "%@ – %@";
 "challenges.period.completed" = "本週已完成";
+
+/* Task-025a Account Provider Foundation */
+"account.title" = "帳號";
+"account.provider.none" = "沒有帳號來源";
+"account.provider.local_simulation" = "本機模擬帳號";
+"account.provider.google_disabled" = "Google 登入尚不可用";
+"account.status.signed_out" = "尚未登入";
+"account.status.local_simulation_signed_in" = "已使用本機模擬帳號登入";
+"account.status.google_unavailable" = "Google 登入尚未設定。";
+"account.auth.error.google_unconfigured" = "Google 登入需等 OAuth credentials 與 URL scheme 設定完成後才可啟用。";
+"account.auth.error.production_credentials_missing" = "尚未提供正式帳號 credentials。";
+"account.auth.error.token_storage_unavailable" = "尚未設定安全 token 儲存機制。";
+"account.auth.error.local_simulation_release_unavailable" = "本機帳號模擬僅限 DEBUG build 使用。";
+"account.auth.error.generic" = "無法完成帳號操作。";
+"account.google.deferred.title" = "Google 登入延後接入";
+"account.google.deferred.subtitle" = "SkateTrack 需要 Google OAuth credentials、reversed client ID URL scheme 與正式隱私檢查後，才能啟用真正的 Google 登入。";
+"account.privacy.local_first" = "在您明確啟用未來的備份或同步 provider 前，SkateTrack 資料會優先保留在此裝置本機。";
+"account.debug.sign_in_local" = "DEBUG：使用本機帳號登入";
+"account.debug.sign_out_local" = "DEBUG：登出本機帳號";

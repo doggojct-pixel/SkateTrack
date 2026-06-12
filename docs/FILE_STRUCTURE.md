@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-024b Weekly Challenge Polish + Achievement Dashboard Links.
-**Current Development Gate:** Task-024b completes the local Task-024 achievements / weekly challenge scope with UserDefaults-backed unlock and completion records, a Ride-page dashboard card, related History / Gear / Spot links, weekly period badges, and ADR-0005 deferred-scope documentation. Remote leaderboards, Game Center, server verification, push notifications, cross-device challenge state, cloud sync, production StoreKit, and developer-account-dependent services remain deferred.
+**Current Baseline:** Source-controlled repository after Task-025a Account Provider Foundation.
+**Current Development Gate:** Task-025a adds the account provider boundary, DEBUG-only local account simulation, disabled Google Sign-In provider, account session model, token-store placeholder, `useAccount`, localized account copy, verification, and ADR-0002 deferred-scope documentation. Visible Account settings UI moves to Task-025b; production Google Sign-In, OAuth credentials, URL schemes, Drive scopes, token refresh, server verification, cloud sync, signing, capabilities, and entitlements remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -48,6 +48,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-023c Save Share Card to Photos + Export Scope ADR | Complete | Pro / DEBUG subscriber simulation can save the generated share-card PNG to Photos through add-only permission; ADR-0004 defers AirDrop-specific packages and portable archives to Task-027 / Task-028. No full photo-library read access, Google Drive, cloud sync, or signing / capabilities changes. |
 | Task-024a Achievements Foundation + Local Progress UI | Complete | Local achievement models, weekly challenge models, catalog, engines, UserDefaults unlock store, SwiftUI hook, root Achievements screen, Pro-gated advanced challenge previews, localization, docs, and verification are implemented. No Game Center, remote leaderboard, server verification, cloud sync, production StoreKit, signing, or capabilities. |
 | Task-024b Weekly Challenge Polish + Achievement Dashboard Links | Complete | Local weekly challenge completion records, Ride-page achievement dashboard, History / Gear / Spot related links, weekly period badges, extra safe local achievement / challenge definitions, ADR-0005 deferred-scope documentation, and verification updates are implemented. No Game Center, social challenge, remote config, server verification, push notification, cloud sync, or capability changes. |
+| Task-025a Account Provider Foundation | Complete | Account state model, AuthProvider / GoogleSignInProviding boundary, DEBUG-only LocalAccountProvider, DisabledGoogleAuthProvider, AuthTokenStore placeholder, useAccount hook, localization, ADR-0002 deferred documentation, and verification are implemented. No Account UI, Google OAuth client ID, URL scheme, Google SDK, Drive scopes, production token storage, signing, capabilities, or entitlements. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -127,6 +128,7 @@ SkateTrack/
 │   │   ├── Achievement.swift                       # [協作區] Task-024a local achievement definition, progress, category, and unlock record models.
 │   │   ├── WeeklyChallenge.swift                   # [協作區] Task-024a/024b weekly challenge definition, progress, period, and completion-state models.
 │   │   ├── WeeklyChallengeCompletionRecord.swift   # [協作區] Task-024b local weekly challenge completion record model.
+│   │   ├── AuthSession.swift                         # [協作區] Task-025a account session, provider kind, and local / disabled auth state models; no OAuth token.
 │   │   ├── SportMode.swift                         # [協作區] Skateboard and inline skating mode enums plus unified `SportMode`.
 │   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
@@ -153,6 +155,11 @@ SkateTrack/
 │   │   ├── RootNavigationView.swift                # [協作區] Routes idle/failed states to Session Start and active states to Live HUD.
 │   │   └── SkateTrackApp.swift                     # [協作區] iOS app entry and shared state-owner wiring.
 │   ├── Core/                                       # [自主區] iOS implementation engines.
+│   │   ├── Account/                                # [自主區] Task-025a account provider boundary and local / disabled auth providers.
+│   │   │   ├── AuthProvider.swift                      # [自主區] AuthProvider and GoogleSignInProviding protocols plus localized error boundary.
+│   │   │   ├── LocalAccountProvider.swift              # [自主區] DEBUG-only local account simulation; release builds do not fake sign-in.
+│   │   │   ├── DisabledGoogleAuthProvider.swift        # [自主區] Google Sign-In unavailable provider; no Google SDK, client ID, OAuth flow, or URL scheme.
+│   │   │   └── AuthTokenStore.swift                    # [自主區] Placeholder token-storage boundary; stores no production access / refresh / ID token.
 │   │   ├── DataPipeline/                           # [佔位] Future persistence and data-processing pipeline.
 │   │   ├── MLEngine/                               # [佔位] Future trick recognition and ML inference engines.
 │   │   ├── SensorEngine/                           # [自主區] iOS sensor providers and fusion/fall engines.
@@ -304,6 +311,7 @@ SkateTrack/
 │       ├── useEquipmentManager.swift              # [協作區 — 邊界適配層] Observable equipment CRUD state, demo gear, and `.equipmentManager` Pro access boundary.
 │       ├── useSpots.swift                         # [協作區 — 邊界適配層] Observable local Spot CRUD state and `.spotManagement` favorite-limit Paywall boundary.
 │       ├── useSessionShareCard.swift              # [協作區 — 邊界適配層] Formats Summary content into share-card preview / export data.
+│       ├── useAccount.swift                       # [協作區 — 邊界適配層] Task-025a account state adapter for local simulation and disabled Google status.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/
@@ -405,6 +413,7 @@ python3 scripts/verify_session_summary.py
 python3 scripts/verify_health_reminders.py
 python3 scripts/verify_weather_risk.py
 python3 scripts/verify_weather_rideability.py
+python3 scripts/verify_account_provider.py
 python3 scripts/verify_equipment_manager.py
 python3 scripts/verify_equipment_mileage_tracking.py
 python3 scripts/verify_app_icons.py
@@ -415,7 +424,7 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with Task-025 Google Sign-In Provider Foundation after Task-024b is verified and committed.
+1. Continue with Task-025b Account Settings UI Foundation after Task-025a is verified and committed.
 2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
 3. Future live WeatherKit / external-weather work should replace `MockWeatherProvider` or `DisabledWeatherProvider` behind `WeatherProviding` only after developer-account / privacy / capability review.
 4. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
@@ -641,3 +650,12 @@ Deferred Task-024 items are now documented in ADR-0005: global leaderboards, soc
 - Updated `SessionStartView.swift` to pass a Dynamic Island-safe sticky top inset into `SessionStartStickyRootNavigationView` while preserving the normal top-of-page title-first layout.
 - Updated `SessionStartStickyRootNavigationView.swift` with explicit minimum sticky navigation top-inset constants so the floating root navigation pins below the camera island / status area instead of under it.
 - Updated `scripts/verify_session_start_flow.py` to verify the sticky navigation safe-positioning constants.
+
+
+### Task-025a Account Provider Foundation Addendum
+
+Task-025a adds a local-first account architecture without enabling production Google Sign-In. The new `AuthSession` model, `AuthProvider` / `GoogleSignInProviding` protocols, `LocalAccountProvider`, `DisabledGoogleAuthProvider`, `AuthTokenStore`, and `useAccount` hook create the provider boundary required before Task-025b UI and Task-026 backup / sync work.
+
+Deferred from Task-025a: visible `AccountSettingsView`, account status card, root Settings / Account navigation entry, real `GoogleSignInProvider`, OAuth client ID, reversed client ID URL scheme, Google SDK package dependency, `GoogleService-Info.plist`, real profile loading, token refresh / revocation, Drive scope authorization, Google Drive sync, server verification, production token persistence / Keychain policy, signing changes, capabilities, entitlements, production StoreKit, watchOS UI, and macOS UI.
+
+`AuthTokenStore` is intentionally a placeholder boundary only. It records no access token, refresh token, ID token, client secret, or external-service credential. Future production token storage must be designed with the real provider integration task after credentials, minimum scopes, logout / revocation behavior, and privacy copy are finalized.

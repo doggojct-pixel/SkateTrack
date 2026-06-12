@@ -63,3 +63,16 @@ The `SessionSpotPickerView` only reads locally saved Spots from the app reposito
 Task-022 applies this ADR to weather services. WeatherKit and external weather APIs remain developer-account / external-service dependent and are not enabled in the current local-first phase. The app now uses a `WeatherProviding` boundary with `MockWeatherProvider` for offline development and `DisabledWeatherProvider` for explicit live-service-unavailable fallback.
 
 The new `WeatherRideabilityEngine` combines local mock weather with local Spot metadata, but it does not call WeatherKit, external APIs, URLSession, current-location services, background refresh, or any API-key based service. Future live weather work must add a provider behind the same boundary, keep credentials out of the client, update privacy copy, and perform a separate signing / capability review before integration. This Task-022 implementation is provider boundary + local simulation only, with no WeatherKit production service.
+
+## Task-025a Account Provider Confirmation
+
+Task-025a applies this ADR to account services. Google Sign-In production remains developer-account / external-service dependent and is not enabled in the current local-first phase. The app now has an `AuthProvider` boundary, a `GoogleSignInProviding` protocol, a DEBUG-only `LocalAccountProvider`, a `DisabledGoogleAuthProvider`, an `AuthTokenStore` placeholder, and `useAccount` as the SwiftUI-facing adapter.
+
+This implementation does not import Google SDKs, configure OAuth client IDs, add a reversed client ID URL scheme, add `GoogleService-Info.plist`, request Drive scopes, save access / refresh / ID tokens, perform server verification, or change signing, capabilities, provisioning, Bundle ID, entitlements, StoreKit, WeatherKit, CloudKit, watchOS, or macOS targets.
+
+### Deferred from Task-025a
+
+- Task-025b should add the visible Account settings UI and root navigation entry using the existing `useAccount` boundary.
+- Real `GoogleSignInProvider`, Google OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real profile loading, token refresh, token revocation, and server verification remain future blocked work.
+- Google Drive scope authorization and Google Drive sync remain Task-026 or later work and must use a separate backup / sync provider boundary.
+- Production token persistence / Keychain policy must not be completed until the real provider, credentials, minimum OAuth scopes, logout / revocation behavior, and privacy copy are finalized.

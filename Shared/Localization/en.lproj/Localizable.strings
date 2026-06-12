@@ -756,3 +756,22 @@
 "challenges.advanced.gearFlow.subtitle" = "Use selected gear in 3 saved sessions this week.";
 "challenges.period.format" = "%@ – %@";
 "challenges.period.completed" = "Completed this week";
+
+/* Task-025a Account Provider Foundation */
+"account.title" = "Account";
+"account.provider.none" = "No account provider";
+"account.provider.local_simulation" = "Local simulation account";
+"account.provider.google_disabled" = "Google Sign-In unavailable";
+"account.status.signed_out" = "Signed out";
+"account.status.local_simulation_signed_in" = "Signed in with local simulation";
+"account.status.google_unavailable" = "Google Sign-In is not configured yet.";
+"account.auth.error.google_unconfigured" = "Google Sign-In is unavailable until OAuth credentials and URL scheme setup are completed.";
+"account.auth.error.production_credentials_missing" = "Production account credentials are missing.";
+"account.auth.error.token_storage_unavailable" = "Secure token storage is not configured yet.";
+"account.auth.error.local_simulation_release_unavailable" = "Local account simulation is only available in DEBUG builds.";
+"account.auth.error.generic" = "Account action could not be completed.";
+"account.google.deferred.title" = "Google Sign-In deferred";
+"account.google.deferred.subtitle" = "SkateTrack needs Google OAuth credentials, a reversed client ID URL scheme, and a production privacy review before real Google Sign-In can be enabled.";
+"account.privacy.local_first" = "Your SkateTrack data stays local on this device until you explicitly enable a future backup or sync provider.";
+"account.debug.sign_in_local" = "DEBUG: Sign in locally";
+"account.debug.sign_out_local" = "DEBUG: Sign out local account";
