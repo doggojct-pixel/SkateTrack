@@ -1009,3 +1009,14 @@
 "mac.viewer.route.quality.unavailable" = "利用不可";
 "mac.viewer.route.quality.limited" = "限定的なGPS形状";
 "mac.viewer.route.quality.usable" = "描画可能なルート";
+
+// Task-029b Accessibility / Privacy / UX Quality Gate
+"session.hud.status.accessibility.label" = "ライブセッションの状態";
+"mac.accessibility.package_summary.label" = "現在のパッケージセッション概要";
+"mac.accessibility.package_summary.hint" = "開いている .skatetrack パッケージと選択中のセッションを要約します。データは読み込みません。";
+"mac.accessibility.session_detail.label" = "読み取り専用セッション詳細ダッシュボード";
+"mac.accessibility.route_preview.label" = "ルートプレビュー";
+"mac.accessibility.route_preview.hint" = "パッケージ内の GPS サンプルから軽量のルート形状を表示します。道路マッチングは行わず、まだ MapKit も使用していません。";
+"mac.accessibility.route_preview.value.format" = "ルートサンプル %d 件、変化のあるルートポイント %d 件、推算距離 %@";
+"mac.accessibility.speed_chart.label" = "速度チャート";
+"mac.accessibility.speed_chart.hint" = "選択したパッケージセッションのサンプルから軽量の速度推移を表示します。";

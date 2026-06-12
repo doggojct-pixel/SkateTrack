@@ -188,6 +188,9 @@ private struct MacCurrentPackageSessionSummaryView: View {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .stroke(.white.opacity(0.08), lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("mac.accessibility.package_summary.label"))
+        .accessibilityHint(Text("mac.accessibility.package_summary.hint"))
     }
 
     private var sessionCountText: String {

@@ -809,3 +809,16 @@ Task-029a adds Japanese localization while keeping the Task-026 to Task-030 risk
 - `pt-BR` Brazilian Portuguese and `es` Spanish are recorded in the deferred localization roadmap instead of being added in Task-029a.
 
 Task-029a verification token: Japanese localization with privacy-copy gate.
+
+## Task-029b Accessibility / Privacy / UX Quality Gate
+
+Task-029b keeps the Task-026 to Task-030 safety posture while improving commercial-readiness quality:
+
+- Accessibility labels / hints should use localized keys across `en`, `zh-Hant`, and `ja`; no new hard-coded English accessibility copy should be added to key iOS / macOS surfaces.
+- macOS route and speed previews remain lightweight SwiftUI Path visualizations. Accessibility copy must say they are previews and must not imply MapKit, road matching, heat maps, or full charting support.
+- The macOS viewer layout guardrail remains: left sidebar is only the function navigation; the right side is the working area with a compact package-session summary above the main dashboard.
+- Privacy copy must continue to state read-only package behavior: no import, merge, restore, upload, sync, Google Drive, CloudKit, or StoreKit production behavior is performed.
+- `verify_task029b_accessibility_privacy_gate.py` should be run before Task-030 so accessibility / privacy / layout regressions do not enter release-readiness checks.
+- Deferred localization roadmap remains `pt-BR` Brazilian Portuguese and `es` Spanish after Japanese QA and native review are stable.
+
+Task-029b verification token: accessibility privacy UX quality gate.

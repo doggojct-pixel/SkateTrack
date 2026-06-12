@@ -218,6 +218,8 @@ struct LiveHUDView: View {
             .padding(.vertical, 9)
             .background(accentColor.opacity(0.88))
             .clipShape(Capsule())
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Text("session.hud.status.accessibility.label"))
             .accessibilityIdentifier("live-hud-status-badge")
 
             Spacer()
@@ -255,7 +257,8 @@ struct LiveHUDView: View {
                 .overlay(Capsule().stroke(SkateTrackSessionStartColors.border, lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Emergency Contacts")
+        .accessibilityLabel(Text("safety.contacts.title"))
+        .accessibilityHint(Text("safety.contacts.description"))
         .accessibilityIdentifier("live-hud-emergency-contacts-button")
     }
 
@@ -271,7 +274,7 @@ struct LiveHUDView: View {
                 .overlay(Capsule().stroke(SkateTrackSessionStartColors.amber.opacity(0.42), lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Debug Tools")
+        .accessibilityLabel(Text("debug.tools.title"))
         .accessibilityIdentifier("live-hud-debug-tools-button")
     }
 

@@ -236,7 +236,7 @@ struct RootNavigationView: View {
                         .overlay(Capsule().stroke(SkateTrackSessionStartColors.amber.opacity(0.4), lineWidth: 1))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Debug Tools")
+                .accessibilityLabel(Text("debug.tools.title"))
                 .accessibilityIdentifier(DebugToolAction.openPanel.accessibilityIdentifier)
             }
             .padding(.trailing, 16)

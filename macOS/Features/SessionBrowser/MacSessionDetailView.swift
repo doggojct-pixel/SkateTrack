@@ -25,6 +25,8 @@ struct MacSessionDetailView: View {
             privacySection
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text("mac.accessibility.session_detail.label"))
     }
 
     private var detailTitleBar: some View {
@@ -174,6 +176,8 @@ private struct MacSessionViewerSection<Content: View>: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text(LocalizedStringKey(titleKey)))
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(.white.opacity(0.08), lineWidth: 1)
@@ -201,5 +205,6 @@ private struct MacSessionViewerMetric: View {
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
         .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .accessibilityElement(children: .combine)
     }
 }

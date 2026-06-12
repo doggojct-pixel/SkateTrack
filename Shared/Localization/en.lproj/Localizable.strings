@@ -1009,3 +1009,14 @@
 "mac.viewer.route.quality.unavailable" = "Unavailable";
 "mac.viewer.route.quality.limited" = "Limited GPS shape";
 "mac.viewer.route.quality.usable" = "Drawable route";
+
+// Task-029b Accessibility / Privacy / UX Quality Gate
+"session.hud.status.accessibility.label" = "Live session status";
+"mac.accessibility.package_summary.label" = "Current package session summary";
+"mac.accessibility.package_summary.hint" = "Summarizes the open .skatetrack package and the selected session without importing data.";
+"mac.accessibility.session_detail.label" = "Read-only session detail dashboard";
+"mac.accessibility.route_preview.label" = "Route preview";
+"mac.accessibility.route_preview.hint" = "Shows a lightweight route shape from package GPS samples. It is not road-matched and does not use MapKit.";
+"mac.accessibility.route_preview.value.format" = "%d route samples, %d changing route points, %@ derived distance";
+"mac.accessibility.speed_chart.label" = "Speed chart";
+"mac.accessibility.speed_chart.hint" = "Shows a lightweight speed trend from the selected package session samples.";

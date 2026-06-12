@@ -42,6 +42,10 @@ struct MacSpeedSparklineView: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(.white.opacity(0.08), lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("mac.accessibility.speed_chart.label"))
+        .accessibilityValue(Text(maxSpeedLabel))
+        .accessibilityHint(Text("mac.accessibility.speed_chart.hint"))
     }
 
     private var maxSpeedLabel: String {

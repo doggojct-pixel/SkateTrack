@@ -75,6 +75,20 @@ struct MacRoutePreviewView: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(.white.opacity(0.08), lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("mac.accessibility.route_preview.label"))
+        .accessibilityValue(Text(routeAccessibilityValue))
+        .accessibilityHint(Text("mac.accessibility.route_preview.hint"))
+    }
+
+    private var routeAccessibilityValue: String {
+        let distance = formattedDistance(summary.derivedDistanceKilometers)
+        return String(
+            format: String(localized: "mac.accessibility.route_preview.value.format"),
+            summary.routePointCount,
+            summary.uniqueRoutePointCount,
+            distance
+        )
     }
 
     private func formattedDistance(_ distance: Double) -> String {

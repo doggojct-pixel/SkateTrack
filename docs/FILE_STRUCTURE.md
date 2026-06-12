@@ -849,3 +849,22 @@ docs/decisions/ADR-0009-localization-and-privacy-copy-strategy.md # Records the 
 - `pt-BR` Brazilian Portuguese — deferred localization roadmap item.
 - `es` Spanish — deferred localization roadmap item.
 - Native Japanese review before public release remains a Task-030 release-readiness checkpoint.
+
+### Task-029b Accessibility / Privacy / UX Quality Gate
+
+```text
+iOS/App/RootNavigationView.swift                              # [協作區] DEBUG tools entry uses localized accessibility copy.
+iOS/Features/SessionRecording/LiveHUDView.swift               # [協作區] Live HUD status, emergency contacts, and debug tools accessibility labels are localized.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift     # [協作區] Current package-session summary gains accessibility label / hint while preserving stacked macOS layout.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift      # [協作區] Read-only dashboard sections and metric cards gain VoiceOver grouping guardrails.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift       # [協作區] Lightweight route preview gains localized accessibility label, hint, and route sample summary.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift     # [協作區] Lightweight speed chart gains localized accessibility label, value, and hint.
+Shared/Localization/en.lproj/Localizable.strings              # Adds Task-029b accessibility / quality-gate keys.
+Shared/Localization/zh-Hant.lproj/Localizable.strings         # Adds Task-029b accessibility / quality-gate keys.
+Shared/Localization/ja.lproj/Localizable.strings              # Adds Task-029b accessibility / quality-gate keys.
+scripts/verify_task029b_accessibility_privacy_gate.py         # Task-029b quality gate for accessibility, privacy copy, macOS layout, and no capability drift.
+docs/decisions/ADR-0010-accessibility-privacy-quality-gate.md # Records Task-029b accessibility / privacy / UX guardrails.
+```
+
+- This task does not change project membership, signing, capabilities, document association, custom UTType, Google Drive, CloudKit, StoreKit production, MapKit, Charts, or package persistence behavior.
+- Localization resource files remain governed by key parity, placeholder parity, syntax validity, and privacy-copy correctness rather than the Swift 500-line guideline.

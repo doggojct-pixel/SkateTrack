@@ -1475,3 +1475,30 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_localization_keys.py` and `python3 scripts/verify_task029_localization_privacy.py` after applying this task.
 - Also run the existing platform verification scripts and at least one iOS + macOS build because localization membership touches the Xcode project file.
+
+## 2026-06-12 — Task-029b Accessibility / Privacy / UX Quality Gate
+
+### Completed
+- Added a Task-029b quality gate for accessibility labels, privacy-copy guardrails, and macOS layout guardrails after Japanese localization and macOS route / speed visualization were completed.
+- Replaced remaining hard-coded accessibility copy for the iOS DEBUG tools entry and Live HUD emergency contacts entry with localized keys.
+- Added a localized Live HUD status accessibility label so VoiceOver receives a clearer status summary entry point during active sessions.
+- Added macOS accessibility labels / hints for the current package-session summary, read-only session detail dashboard, route preview, and speed chart.
+- Added route preview accessibility value copy that summarizes route sample count, unique route points, and derived distance without implying MapKit, road matching, or heat map support.
+- Added `scripts/verify_task029b_accessibility_privacy_gate.py` to protect Task-029b accessibility, privacy, read-only package boundaries, macOS layout guardrails, and no document / cloud capability drift.
+- Added ADR-0010 to document the accessibility, privacy, and UX quality gate strategy before Task-030 release readiness.
+
+### Scope Boundary
+- Task-029b does not add new product features, MapKit, Charts, Google Drive, Google OAuth, CloudKit / iCloud, StoreKit production, document association, custom UTType, report export, persistent import, backup restore execution, merge behavior, GPS algorithm changes, FallDetection changes, Launch Screen changes, AppIcon changes, bottom dock changes, watchOS runtime changes, signing changes, provisioning changes, or new entitlements.
+- The macOS viewer remains a read-only package viewer. Route and speed visualization remain lightweight SwiftUI Path-based previews.
+
+### Deferred from Task-029b
+- Full VoiceOver walkthrough on a physical iPhone and macOS device.
+- Dynamic Type / large-text visual QA across all iOS and macOS screens.
+- Native Japanese accessibility-copy review.
+- `pt-BR` Brazilian Portuguese and `es` Spanish localization remain deferred roadmap items.
+- MapKit, road matching, heat maps, Swift Charts, multi-session comparison, report export, and package library remain later tasks.
+
+### Validation Notes
+- Run `python3 scripts/verify_task029b_accessibility_privacy_gate.py` after applying this task.
+- Also run `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_task029_localization_privacy.py`, `python3 scripts/verify_macos_session_viewer.py`, `python3 scripts/verify_macos_route_chart_viewer.py`, `python3 scripts/verify_skatetrack_package.py`, and platform builds.
+- Manual validation should use English, Traditional Chinese, and Japanese app language settings and confirm that long Japanese labels do not overlap, truncate critical meaning, or cover macOS window controls.
