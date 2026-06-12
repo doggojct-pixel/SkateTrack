@@ -237,6 +237,16 @@
 		24A400000000000000000102 /* AchievementCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A400000000000000000002 /* AchievementCardView.swift */; };
 		24A400000000000000000103 /* AchievementProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A400000000000000000003 /* AchievementProgressRingView.swift */; };
 		24A400000000000000000104 /* WeeklyChallengeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A400000000000000000004 /* WeeklyChallengeCardView.swift */; };
+		24B100000000000000000101 /* WeeklyChallengeCompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */; };
+		24B100000000000000000102 /* WeeklyChallengeCompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */; };
+		24B100000000000000000103 /* WeeklyChallengeCompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */; };
+		24B200000000000000000101 /* WeeklyChallengeCompletionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B200000000000000000001 /* WeeklyChallengeCompletionStore.swift */; };
+		24B300000000000000000101 /* useAchievementDashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B300000000000000000001 /* useAchievementDashboard.swift */; };
+		24B400000000000000000101 /* SessionStartAchievementDashboardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B400000000000000000001 /* SessionStartAchievementDashboardCardView.swift */; };
+		24B401000000000000000101 /* SessionStartStickyRootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B401000000000000000001 /* SessionStartStickyRootNavigationView.swift */; };
+		24B402000000000000000101 /* SessionStartHeaderMetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B402000000000000000001 /* SessionStartHeaderMetricsView.swift */; };
+		24B500000000000000000101 /* AchievementRelatedStatsLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B500000000000000000001 /* AchievementRelatedStatsLinksView.swift */; };
+		24B500000000000000000102 /* WeeklyChallengePeriodBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -437,6 +447,14 @@
 		24A400000000000000000002 /* AchievementCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCardView.swift; sourceTree = "<group>"; };
 		24A400000000000000000003 /* AchievementProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementProgressRingView.swift; sourceTree = "<group>"; };
 		24A400000000000000000004 /* WeeklyChallengeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallengeCardView.swift; sourceTree = "<group>"; };
+		24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallengeCompletionRecord.swift; sourceTree = "<group>"; };
+		24B200000000000000000001 /* WeeklyChallengeCompletionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallengeCompletionStore.swift; sourceTree = "<group>"; };
+		24B300000000000000000001 /* useAchievementDashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useAchievementDashboard.swift; sourceTree = "<group>"; };
+		24B400000000000000000001 /* SessionStartAchievementDashboardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartAchievementDashboardCardView.swift; sourceTree = "<group>"; };
+		24B401000000000000000001 /* SessionStartStickyRootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartStickyRootNavigationView.swift; sourceTree = "<group>"; };
+		24B402000000000000000001 /* SessionStartHeaderMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartHeaderMetricsView.swift; sourceTree = "<group>"; };
+		24B500000000000000000001 /* AchievementRelatedStatsLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementRelatedStatsLinksView.swift; sourceTree = "<group>"; };
+		24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallengePeriodBadgeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +551,7 @@
 				23A100000000000000000001 /* SessionShareCardData.swift */,
 				24A100000000000000000001 /* Achievement.swift */,
 				24A100000000000000000002 /* WeeklyChallenge.swift */,
+				24B100000000000000000001 /* WeeklyChallengeCompletionRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -570,6 +589,7 @@
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				23A200000000000000000001 /* useSessionShareCard.swift */,
 				24A300000000000000000001 /* useAchievements.swift */,
+				24B300000000000000000001 /* useAchievementDashboard.swift */,
 				19A100000000000000000003 /* useHealthReminders.swift */,
 				19C100000000000000000005 /* useWeatherRisk.swift */,
 				20A100000000000000000003 /* useEquipmentManager.swift */,
@@ -620,6 +640,9 @@
 				21A110000000000000000001 /* SessionStartSupportTypes.swift */,
 				21B300000000000000000001 /* SessionSpotPickerView.swift */,
 				22A300000000000000000001 /* SessionStartWeatherSectionView.swift */,
+				24B400000000000000000001 /* SessionStartAchievementDashboardCardView.swift */,
+				24B401000000000000000001 /* SessionStartStickyRootNavigationView.swift */,
+				24B402000000000000000001 /* SessionStartHeaderMetricsView.swift */,
 				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
 				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
 				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
@@ -817,6 +840,7 @@
 				24A200000000000000000002 /* AchievementEngine.swift */,
 				24A200000000000000000003 /* AchievementUnlockStore.swift */,
 				24A200000000000000000004 /* WeeklyChallengeEngine.swift */,
+				24B200000000000000000001 /* WeeklyChallengeCompletionStore.swift */,
 			);
 			path = iOS/Core/Achievements;
 			sourceTree = SOURCE_ROOT;
@@ -828,6 +852,8 @@
 				24A400000000000000000002 /* AchievementCardView.swift */,
 				24A400000000000000000003 /* AchievementProgressRingView.swift */,
 				24A400000000000000000004 /* WeeklyChallengeCardView.swift */,
+				24B500000000000000000001 /* AchievementRelatedStatsLinksView.swift */,
+				24B500000000000000000002 /* WeeklyChallengePeriodBadgeView.swift */,
 			);
 			path = iOS/Features/Achievements;
 			sourceTree = SOURCE_ROOT;
@@ -1175,6 +1201,14 @@
 				24A400000000000000000102 /* AchievementCardView.swift in Sources */,
 				24A400000000000000000103 /* AchievementProgressRingView.swift in Sources */,
 				24A400000000000000000104 /* WeeklyChallengeCardView.swift in Sources */,
+				24B100000000000000000101 /* WeeklyChallengeCompletionRecord.swift in Sources */,
+				24B200000000000000000101 /* WeeklyChallengeCompletionStore.swift in Sources */,
+				24B300000000000000000101 /* useAchievementDashboard.swift in Sources */,
+				24B400000000000000000101 /* SessionStartAchievementDashboardCardView.swift in Sources */,
+				24B401000000000000000101 /* SessionStartStickyRootNavigationView.swift in Sources */,
+				24B402000000000000000101 /* SessionStartHeaderMetricsView.swift in Sources */,
+				24B500000000000000000101 /* AchievementRelatedStatsLinksView.swift in Sources */,
+				24B500000000000000000102 /* WeeklyChallengePeriodBadgeView.swift in Sources */,
 				18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */,
 				18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */,
 				18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */,
@@ -1312,6 +1346,7 @@
 				23A100000000000000000103 /* SessionShareCardData.swift in Sources */,
 				24A100000000000000000103 /* Achievement.swift in Sources */,
 				24A100000000000000000106 /* WeeklyChallenge.swift in Sources */,
+				24B100000000000000000103 /* WeeklyChallengeCompletionRecord.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
 			);
@@ -1343,6 +1378,7 @@
 				23A100000000000000000102 /* SessionShareCardData.swift in Sources */,
 				24A100000000000000000102 /* Achievement.swift in Sources */,
 				24A100000000000000000105 /* WeeklyChallenge.swift in Sources */,
+				24B100000000000000000102 /* WeeklyChallengeCompletionRecord.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,
 			);

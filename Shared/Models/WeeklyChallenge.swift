@@ -8,6 +8,8 @@ enum WeeklyChallengeKind: String, Codable, Sendable, CaseIterable {
     case weeklyDistanceKilometers
     case weeklySessionCount
     case weeklyUniqueSpotCount
+    case weeklyNoFallSessionCount
+    case weeklyGearTrackedSessionCount
 }
 
 struct WeeklyChallengeDefinition: Identifiable, Codable, Sendable, Equatable {
@@ -43,6 +45,8 @@ struct WeeklyChallengeProgress: Identifiable, Codable, Sendable, Equatable {
     let currentValue: Double
     let weekStart: Date
     let weekEnd: Date
+    let weekIdentifier: String
+    let completedAt: Date?
 
     var id: String { definition.id }
 
@@ -51,7 +55,7 @@ struct WeeklyChallengeProgress: Identifiable, Codable, Sendable, Equatable {
     }
 
     var isComplete: Bool {
-        currentValue >= definition.targetValue
+        completedAt != nil || currentValue >= definition.targetValue
     }
 
     var isAdvanced: Bool {

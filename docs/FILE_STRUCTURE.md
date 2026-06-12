@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-024a Achievements Foundation + Local Progress UI.
-**Current Development Gate:** Task-024a adds local achievement and weekly challenge foundation with UserDefaults-backed unlock records, repository-derived progress, a root Achievements screen, and `GatedFeature.advancedChallenges` for Pro / DEBUG-local advanced challenge access. Remote leaderboards, Game Center, server verification, push notifications, cloud sync, production StoreKit, and developer-account-dependent services remain deferred.
+**Current Baseline:** Source-controlled repository after Task-024b Weekly Challenge Polish + Achievement Dashboard Links.
+**Current Development Gate:** Task-024b completes the local Task-024 achievements / weekly challenge scope with UserDefaults-backed unlock and completion records, a Ride-page dashboard card, related History / Gear / Spot links, weekly period badges, and ADR-0005 deferred-scope documentation. Remote leaderboards, Game Center, server verification, push notifications, cross-device challenge state, cloud sync, production StoreKit, and developer-account-dependent services remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -47,6 +47,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-023b Session Share Card Quick Export + Share Sheet | Complete | Pro / DEBUG subscriber simulation can render a share-card PNG, lightweight text, and JSON to temporary storage, open the iOS system share sheet, and clean up exported temp files. No Photos write, AirDrop-specific package, Google Drive, cloud sync, or signing / capabilities changes. |
 | Task-023c Save Share Card to Photos + Export Scope ADR | Complete | Pro / DEBUG subscriber simulation can save the generated share-card PNG to Photos through add-only permission; ADR-0004 defers AirDrop-specific packages and portable archives to Task-027 / Task-028. No full photo-library read access, Google Drive, cloud sync, or signing / capabilities changes. |
 | Task-024a Achievements Foundation + Local Progress UI | Complete | Local achievement models, weekly challenge models, catalog, engines, UserDefaults unlock store, SwiftUI hook, root Achievements screen, Pro-gated advanced challenge previews, localization, docs, and verification are implemented. No Game Center, remote leaderboard, server verification, cloud sync, production StoreKit, signing, or capabilities. |
+| Task-024b Weekly Challenge Polish + Achievement Dashboard Links | Complete | Local weekly challenge completion records, Ride-page achievement dashboard, History / Gear / Spot related links, weekly period badges, extra safe local achievement / challenge definitions, ADR-0005 deferred-scope documentation, and verification updates are implemented. No Game Center, social challenge, remote config, server verification, push notification, cloud sync, or capability changes. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -124,7 +125,8 @@ SkateTrack/
 │   │   ├── SessionSummaryMetrics.swift             # [協作區] Completed-session summary and live metric snapshot structs.
 │   │   ├── SessionShareCardData.swift              # [協作區] Task-023a/023b share-card data model used by preview and local export.
 │   │   ├── Achievement.swift                       # [協作區] Task-024a local achievement definition, progress, category, and unlock record models.
-│   │   ├── WeeklyChallenge.swift                   # [協作區] Task-024a weekly challenge definition and progress models.
+│   │   ├── WeeklyChallenge.swift                   # [協作區] Task-024a/024b weekly challenge definition, progress, period, and completion-state models.
+│   │   ├── WeeklyChallengeCompletionRecord.swift   # [協作區] Task-024b local weekly challenge completion record model.
 │   │   ├── SportMode.swift                         # [協作區] Skateboard and inline skating mode enums plus unified `SportMode`.
 │   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
@@ -182,11 +184,12 @@ SkateTrack/
 │   │   │   ├── SpotRepository.swift                # [自主區] Local Spot CRUD, favorite toggling, nearby distance query, and visit record APIs.
 │   │   │   └── SpotVisitTracker.swift              # [自主區] Applies completed-session visits to selected Spots only after session save succeeds.
 │   │   ├── SessionSharing/                         # [自主區] Task-023b / 023c local share export and Photos save boundary.
-│   │   ├── Achievements/                           # [自主區] Task-024a local achievement and weekly challenge engines.
+│   │   ├── Achievements/                           # [自主區] Task-024a/024b local achievement and weekly challenge engines.
 │   │   │   ├── AchievementCatalog.swift            # [自主區] Central local achievement definitions.
 │   │   │   ├── AchievementEngine.swift             # [自主區] Evaluates achievement progress from local repository-derived stats.
 │   │   │   ├── AchievementUnlockStore.swift        # [自主區] UserDefaults-backed local unlock records; no Core Data migration.
-│   │   │   └── WeeklyChallengeEngine.swift         # [自主區] Local weekly challenge progress engine.
+│   │   │   ├── WeeklyChallengeEngine.swift         # [自主區] Local weekly challenge progress / period / completion engine.
+│   │   │   └── WeeklyChallengeCompletionStore.swift # [自主區] UserDefaults-backed weekly challenge completion records.
 │   │   │   ├── SessionShareExportPayload.swift     # [協作區] Describes generated PNG / TXT / JSON temporary export files.
 │   │   │   ├── SessionShareExportService.swift     # [自主區] Writes share-card export files to temporary storage and cleans them up.
 │   │   │   └── SessionSharePhotoLibrarySaver.swift # [自主區] Add-only Photo Library authorization and PNG save bridge.
@@ -199,11 +202,13 @@ SkateTrack/
 │   │   └── Subscription/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
 │   ├── Features/                                   # [協作區] iOS feature modules.
-│   │   ├── Achievements/                           # [協作區] Task-024a Achievements screen and reusable achievement/challenge cards.
-│   │   │   ├── AchievementListView.swift           # [協作區] Root Achievements screen with stats, weekly challenges, basic achievements, and Pro advanced previews.
+│   │   ├── Achievements/                           # [協作區] Task-024a/024b Achievements screen and reusable achievement/challenge cards.
+│   │   │   ├── AchievementListView.swift           # [協作區] Root Achievements screen with stats, weekly challenges, related links, basic achievements, and Pro advanced previews.
 │   │   │   ├── AchievementCardView.swift           # [協作區] Single achievement progress / lock card.
 │   │   │   ├── AchievementProgressRingView.swift   # [協作區] Reusable circular progress indicator.
-│   │   │   └── WeeklyChallengeCardView.swift       # [協作區] Weekly challenge progress / advanced lock card.
+│   │   │   ├── WeeklyChallengeCardView.swift       # [協作區] Weekly challenge progress / advanced lock card.
+│   │   │   ├── WeeklyChallengePeriodBadgeView.swift # [協作區] Local week period / completion badge for challenge cards.
+│   │   │   └── AchievementRelatedStatsLinksView.swift # [協作區] History / Gear / Spots related-stat navigation links.
 │   │   ├── Debug/                               # [協作區] DEBUG-only unified development tools.
 │   │   │   ├── DebugFeatureFlag.swift           # [協作區] Central DEBUG tool feature definitions.
 │   │   │   ├── DebugMockSessionFactory.swift    # [協作區] Explicit demo speed / mock session helper; not used by normal app runtime.
@@ -240,6 +245,8 @@ SkateTrack/
 │   │   │   ├── PowerTypeToggleView.swift           # [協作區] Human/electric skateboard power-type toggle.
 │   │   │   ├── SessionSpotPickerView.swift         # [協作區] In-flow local Spot selector for Session Start; no location permission or public discovery.
 │   │   │   ├── SessionStartSupportTypes.swift      # [協作區] Session Start colors, category enum, and inline glyph split out from SessionStartView.
+│   │   │   ├── SessionStartStickyRootNavigationView.swift # [協作區] Sticky floating root navigation for the Ride page when scrolled.
+│   │   │   ├── SessionStartHeaderMetricsView.swift # [協作區] Split Session Start title/header and preview metric strip, keeping SessionStartView under the file-size guardrail.
 │   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment and local Spot selection.
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
 │   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
@@ -408,7 +415,7 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with Task-024 Achievements + Weekly Challenges after Task-023c is verified and committed.
+1. Continue with Task-025 Google Sign-In Provider Foundation after Task-024b is verified and committed.
 2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
 3. Future live WeatherKit / external-weather work should replace `MockWeatherProvider` or `DisabledWeatherProvider` behind `WeatherProviding` only after developer-account / privacy / capability review.
 4. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
@@ -583,7 +590,7 @@ iOS/Features/SessionSummary/SessionSummaryShareStubView.swift  # [協作區] Rew
 scripts/verify_session_share_card.py                           # [工程設定] Task-023b-compatible share-card verification script.
 scripts/verify_session_share_export.py                         # [工程設定] Task-023c-compatible export / share-sheet boundary verification script.
 scripts/verify_session_share_photos.py                         # [工程設定] Task-023c Photos save boundary and permission verification script.
-scripts/verify_achievements.py                                  # [工程設定] Task-024a local achievement / weekly challenge verification script.
+scripts/verify_achievements.py                                  # [工程設定] Task-024b local achievement / weekly challenge verification script.
 scripts/verify_session_summary.py                              # [工程設定] Updated Summary verification for share-card export foundation.
 ```
 
@@ -607,3 +614,30 @@ Task-023c intentionally does not request full photo-library read access, use `UI
 Task-024a adds a local-first Achievements root screen. Achievement progress is computed from saved Session, Equipment, and Spot repository data through `useAchievements`; Views do not directly access Core Data or repositories. Local unlock records are stored as JSON in UserDefaults through `AchievementUnlockStore`, intentionally avoiding a Core Data migration in this phase.
 
 Advanced achievements and advanced weekly challenge previews are gated by `GatedFeature.advancedChallenges`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Task-024a does not add Game Center, remote leaderboards, server verification, cloud sync, production StoreKit, signing, capabilities, push notifications, watchOS UI, or macOS UI.
+
+
+### Task-024b Achievements / Weekly Challenge Polish Addendum
+
+Task-024b completes the local Task-024 scope by adding weekly challenge completion records, a Ride-page achievement dashboard card, related History / Gear / Spot stat links, weekly period badges, and additional safe local goals. Unlock and weekly completion state remains local JSON in UserDefaults; Core Data schema is intentionally unchanged.
+
+Deferred Task-024 items are now documented in ADR-0005: global leaderboards, social challenges, remote challenge configuration, server verification, Game Center, push notifications, calendar integration, cloud / cross-device challenge sync, trick-count achievements, indoor / ARKit / UWB achievements, and punitive daily streak mechanics remain future work and must be handled as explicit later tasks.
+
+## Task-024b Follow-up — Session Start Floating Root Navigation
+
+- Added `SessionStartStickyRootNavigationView.swift` so the Ride page root navigation behaves like a floating sticky control after scrolling while preserving the normal title-first layout at the top.
+- Added `SessionStartHeaderMetricsView.swift` to split the Ride-page title/header and preview metrics out of `SessionStartView.swift`, restoring a comfortable file-size margin after the sticky-navigation follow-up.
+- This follow-up does not change session recording behavior, achievement calculation, repositories, sensor engines, platform targets, signing, capabilities, or entitlements.
+
+
+### Task-024b Follow-up — Sticky Navigation Trigger + Compile Sources Cleanup
+
+- Updated `SessionStartStickyRootNavigationView.swift` and `SessionStartHeaderMetricsView.swift` so the Ride-page root navigation exposes its measured scroll position and pins below the Dynamic Island / safe area when the in-content navigation row reaches the sticky threshold.
+- Updated `SessionStartView.swift` to use the measured navigation-row position while preserving the existing full-screen dark Session Start layout and start-session behavior.
+- Cleaned `SkateTrack.xcodeproj/project.pbxproj` so `WeeklyChallengeCompletionRecord.swift` appears only once in the iOS target Compile Sources list.
+- Updated `scripts/verify_session_start_flow.py` and `scripts/verify_achievements.py` to guard the sticky-navigation measurement and duplicate Compile Sources warning.
+
+### Task-024b Follow-up — Dynamic Island Sticky Navigation Offset
+
+- Updated `SessionStartView.swift` to pass a Dynamic Island-safe sticky top inset into `SessionStartStickyRootNavigationView` while preserving the normal top-of-page title-first layout.
+- Updated `SessionStartStickyRootNavigationView.swift` with explicit minimum sticky navigation top-inset constants so the floating root navigation pins below the camera island / status area instead of under it.
+- Updated `scripts/verify_session_start_flow.py` to verify the sticky navigation safe-positioning constants.

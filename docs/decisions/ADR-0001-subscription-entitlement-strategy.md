@@ -187,3 +187,11 @@ Task-023c intentionally does not implement production StoreKit, App Store Connec
 Task-024a introduces local Achievements and Weekly Challenge foundation without adding production monetization or remote services. Basic achievements are local-first and are computed from saved Session, Equipment, and Spot repository data. Advanced achievements and advanced weekly challenge previews are gated through the new `GatedFeature.advancedChallenges`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation.
 
 Task-024a intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, Game Center, remote leaderboards, server verification, cloud sync, push notifications, Google services, signing, or capability changes. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting achievement or weekly challenge UI.
+
+## Task-024b Confirmation
+
+Task-024b completes the local Task-024 achievements / weekly challenge scope without introducing production monetization or remote services. It adds local weekly challenge completion records, a Ride-page achievement dashboard card, related History / Gear / Spot stat links, and additional locally-derived achievement / challenge definitions.
+
+Advanced challenges remain gated through `GatedFeature.advancedChallenges`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Free users can see basic achievements and weekly challenge progress, while advanced goals continue to route through the existing Paywall. Task-024b intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, Game Center, global leaderboards, social challenges, remote challenge configuration, server verification, push notifications, calendar integration, cloud sync, cross-device challenge state, signing, or capability changes.
+
+ADR-0005 records the Task-024 deferred scope so future leaderboard, sync, trick-count, ARKit, UWB, Game Center, or notification-based challenge work is handled as explicit later tasks rather than being silently folded into the local achievement foundation.

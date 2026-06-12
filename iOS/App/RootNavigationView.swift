@@ -72,7 +72,8 @@ struct RootNavigationView: View {
                         SessionStartView(
                             subscriptionStatus: subscriptionStatus,
                             sessionRecording: sessionRecording,
-                            rootNavigationAccessory: AnyView(rootPrimarySwitchControls)
+                            rootNavigationAccessory: AnyView(rootPrimarySwitchControls),
+                            onOpenAchievements: { selectedPrimaryScreen = .achievements }
                         )
                         .id("session-start")
                         .transition(.opacity)
@@ -95,9 +96,14 @@ struct RootNavigationView: View {
                         .id("spots")
                         .transition(.opacity)
                     case .achievements:
-                        AchievementListView(subscriptionStatus: subscriptionStatus)
-                            .id("achievements")
-                            .transition(.opacity)
+                        AchievementListView(
+                            subscriptionStatus: subscriptionStatus,
+                            onOpenHistory: { selectedPrimaryScreen = .history },
+                            onOpenEquipment: { selectedPrimaryScreen = .equipment },
+                            onOpenSpots: { selectedPrimaryScreen = .spots }
+                        )
+                        .id("achievements")
+                        .transition(.opacity)
                     }
                 }
             }

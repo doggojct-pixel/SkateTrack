@@ -35,6 +35,8 @@ enum AchievementRuleKind: String, Codable, Sendable, CaseIterable {
     case gearTrackedSessions
     case noFallSessions
     case shareReadySessions
+    case activeWeeks
+    case equipmentProfiles
 }
 
 struct AchievementDefinition: Identifiable, Codable, Sendable, Equatable {

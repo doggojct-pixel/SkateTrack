@@ -1079,3 +1079,72 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_achievements.py`, `python3 scripts/verify_feature_flags.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
 - Manual validation should confirm the new Achievements tab opens, local stats load from saved sessions, basic achievements show progress, advanced challenges open the existing Paywall for free users, and DEBUG/local subscriber simulation unlocks advanced challenge progress.
+
+## 2026-06-12 — Task-024b Weekly Challenge Polish + Achievement Dashboard Links
+
+### Completed
+- Added `WeeklyChallengeCompletionRecord` and `WeeklyChallengeCompletionStore` so completed weekly challenge periods can be preserved locally with UserDefaults-backed JSON rather than Core Data migration.
+- Extended the weekly challenge engine with local week identifiers, completion-record merging, a safe weekly no-fall challenge, and an advanced gear-tracking weekly challenge.
+- Extended the achievement catalog with safe local goals for gear setup, active weeks, and no-fall session flow while avoiding trick-count, indoor, ARKit, or UWB achievements.
+- Added `useAchievementDashboard` and `SessionStartAchievementDashboardCardView` so the Ride page can surface a lightweight weekly challenge / unlocked-achievement dashboard without reading repositories in `SessionStartView`.
+- Added related-stat links on the Achievements screen for History, Gear, and Spots, with navigation delegated back to `RootNavigationView`.
+- Added `WeeklyChallengePeriodBadgeView` to display local weekly challenge periods and completion state without growing `WeeklyChallengeCardView`.
+- Added ADR-0005 to record the local-first achievements / challenges scope and the Task-024 deferred items.
+- Updated localization keys and `scripts/verify_achievements.py` for the Task-024b dashboard, completion store, related links, and deferred-scope documentation.
+
+### Scope Boundary / Deferred Items
+- Task-024b does not add global leaderboards, friends, social challenges, remote challenge configuration, server verification, Game Center, push notifications, calendar integration, cloud sync, cross-device challenge state, Google / iCloud / CloudKit, production StoreKit, signing, capabilities, watchOS UI, or macOS UI.
+- Trick-count achievements remain deferred until a reliable trick engine exists.
+- Indoor, ARKit, and UWB achievements remain deferred according to ADR-0003 and ADR-0005.
+- Punitive daily streak mechanics are intentionally deferred to avoid pressure-based retention and rest-day penalties; the current implementation uses weekly progress and active-week style goals instead.
+
+### Validation Notes
+- Run `python3 scripts/verify_achievements.py`, `python3 scripts/verify_feature_flags.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
+- Manual validation should confirm the Ride page dashboard opens Achievements, related-stat links navigate to History / Gear / Spots, weekly challenge period badges render correctly, completed weekly challenges remain marked complete during the same local week, and advanced challenge progress remains behind the existing Paywall for free users.
+
+## 2026-06-12 — Task-024b Follow-up: Session Start Floating Root Navigation
+
+### Completed
+- Added a sticky floating root navigation component for the Ride / Session Start page.
+- The root navigation pills still appear below the SkateTrack title at the top of the Ride page.
+- When the Ride page scrolls down, the same navigation control now floats below the Dynamic Island / safe area while the title and dashboard content scroll away.
+- Preserved the existing root navigation behavior for History, Equipment, Spots, and Achievements pages.
+- Refreshed the SessionShareExportViewModel concurrency-safe initializer guard in the delivered fix package so stale local files cannot reintroduce the Task-023b main-actor default-argument compile error.
+
+### Scope Boundary
+- No Start Session behavior, recording lifecycle, achievement rules, repository logic, sensor engines, AppIcon, Launch Screen, bottom dock, watchOS, macOS, signing, capabilities, or entitlements were changed.
+
+## 2026-06-12 — Task-024b Follow-up: Split Session Start Header / Metrics
+
+### Completed
+- Split the Session Start page header and preview metric strip into `SessionStartHeaderMetricsView.swift`.
+- Reduced `SessionStartView.swift` from the sticky-navigation follow-up's 450-line edge case to a safer sub-400-line file so Task-022 / Session Start verification remains comfortably below the guardrail.
+- Updated `scripts/verify_session_start_flow.py` to require the new split header / metrics component and guard against regressing the Session Start file-size boundary.
+
+### Scope Boundary
+- No Session Start behavior, start-session parameters, recording lifecycle, achievement / challenge rules, repositories, sensor engines, platform targets, signing, capabilities, entitlements, AppIcon, Launch Screen, or bottom dock were changed.
+- This is a same-stage Task-024b compile / verification hygiene fix and should be committed together with the Task-024b main package and sticky-navigation follow-up.
+
+
+## 2026-06-12 — Task-024b Follow-up: Sticky Navigation Trigger + Compile Sources Cleanup
+
+### Completed
+- Refined the Ride-page sticky root navigation trigger to use the measured navigation-row position instead of relying only on scroll offset, so the pill navigation floats below the Dynamic Island / safe area as soon as the in-content row reaches the pinned position.
+- Kept the top-of-page layout unchanged: SkateTrack title, root navigation pills, greeting / ready state, and content cards remain in the normal scroll flow until the user scrolls down.
+- Cleaned the iOS target Compile Sources phase so `WeeklyChallengeCompletionRecord.swift` is included exactly once, removing the Xcode duplicate-build-file warning.
+- Updated verification scripts to guard against regressing the measured sticky-navigation trigger or reintroducing duplicate Compile Sources membership.
+
+### Scope Boundary
+- No achievement / weekly-challenge rules, session recording behavior, repositories, sensor engines, platform targets, signing, capabilities, entitlements, AppIcon, Launch Screen, or bottom dock were changed.
+- This is a same-stage Task-024b UI / project-warning correction and should be committed together with the Task-024b main package and previous follow-up fixes.
+
+## 2026-06-12 — Task-024b Follow-up: Dynamic Island Sticky Navigation Offset
+
+### Completed
+- Corrected the Ride-page floating root navigation vertical offset so the sticky pill row uses a minimum Dynamic Island-safe top inset even when SwiftUI reports a zero safe-area inset inside the full-screen Session Start layout.
+- Kept the top-of-page layout unchanged while ensuring the floating navigation pins below the Dynamic Island / status area after scrolling instead of being covered by the camera island, time, Wi-Fi, or battery indicators.
+- Updated `scripts/verify_session_start_flow.py` to guard the minimum sticky navigation top inset constants.
+
+### Scope Boundary
+- No Start Session behavior, recording lifecycle, achievement / challenge rules, repositories, sensor engines, platform targets, signing, capabilities, entitlements, AppIcon, Launch Screen, or bottom dock were changed.
+- This is a same-stage Task-024b UI positioning fix and should be committed together with the Task-024b main package and prior follow-up fixes.

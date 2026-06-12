@@ -8,6 +8,7 @@ struct SessionStartView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     private let rootNavigationAccessory: AnyView?
+    private let onOpenAchievements: () -> Void
 
     @State private var selectedCategory: SessionStartSportCategory = .skateboard
     @State private var selectedBoardMode: BoardMode = .streetPark
@@ -21,15 +22,20 @@ struct SessionStartView: View {
     @StateObject private var weatherRisk: WeatherRiskViewModel
     @StateObject private var equipmentManager: EquipmentManagerViewModel
     @StateObject private var spotsManager: SpotsViewModel
+    @StateObject private var achievementDashboard: AchievementDashboardViewModel
+    @State private var scrollOffset: CGFloat = 0
+    @State private var navigationRowMinY: CGFloat = .greatestFiniteMagnitude
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
         sessionRecording: SessionRecordingViewModel,
-        rootNavigationAccessory: AnyView? = nil
+        rootNavigationAccessory: AnyView? = nil,
+        onOpenAchievements: @escaping () -> Void = {}
     ) {
         self.subscriptionStatus = subscriptionStatus
         self.sessionRecording = sessionRecording
         self.rootNavigationAccessory = rootNavigationAccessory
+        self.onOpenAchievements = onOpenAchievements
         _weatherRisk = StateObject(
             wrappedValue: useWeatherRisk(subscriptionStatus: subscriptionStatus)
         )
@@ -39,11 +45,19 @@ struct SessionStartView: View {
         _spotsManager = StateObject(
             wrappedValue: useSpots(subscriptionStatus: subscriptionStatus)
         )
+        _achievementDashboard = StateObject(
+            wrappedValue: useAchievementDashboard(subscriptionStatus: subscriptionStatus)
+        )
     }
 
     var body: some View {
         GeometryReader { proxy in
-            let topPadding = proxy.safeAreaInsets.top + (rootNavigationAccessory == nil ? 52 : 52)
+            let safeTopInset = proxy.safeAreaInsets.top
+            let stickyTopInset = max(
+                safeTopInset,
+                SessionStartScrollMetrics.minimumStickyNavigationTopInset
+            )
+            let topPadding = safeTopInset + (rootNavigationAccessory == nil ? 52 : 52)
             let bottomPadding = max(12, proxy.safeAreaInsets.bottom - 12)
             let horizontalPadding: CGFloat = 20
             let dockHeight: CGFloat = selectedModeLocked ? 126 : 96
@@ -53,9 +67,15 @@ struct SessionStartView: View {
                     .ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
+                    scrollOffsetReader
+
                     VStack(alignment: .leading, spacing: 16) {
-                        homeHeader
-                            .padding(.top, topPadding)
+                        SessionStartHeaderView(
+                            selectedCategory: selectedCategory,
+                            statusLocalizationKey: sessionRecording.state.status.localizationKey,
+                            rootNavigationAccessory: rootNavigationAccessory
+                        )
+                        .padding(.top, topPadding)
 
                         SportCategoryPickerView(selectedCategory: $selectedCategory)
                             .onChange(of: selectedCategory) { _, newCategory in
@@ -79,7 +99,12 @@ struct SessionStartView: View {
                             selectedSpotID: $selectedSpotID
                         )
 
-                        previewMetricStrip
+                        SessionStartPreviewMetricStripView()
+
+                        SessionStartAchievementDashboardCardView(
+                            dashboard: achievementDashboard,
+                            onOpenAchievements: onOpenAchievements
+                        )
 
                         SessionStartWeatherSectionView(
                             weatherRisk: weatherRisk,
@@ -121,7 +146,25 @@ struct SessionStartView: View {
                            alignment: .topLeading)
                 }
                 .ignoresSafeArea()
+                .coordinateSpace(name: SessionStartScrollMetrics.coordinateSpaceName)
                 .scrollBounceBehavior(.basedOnSize)
+                .onPreferenceChange(SessionStartScrollOffsetPreferenceKey.self) { newValue in
+                    guard abs(scrollOffset - newValue) > 0.5 else { return }
+                    scrollOffset = newValue
+                }
+                .onPreferenceChange(SessionStartNavigationPositionPreferenceKey.self) { newValue in
+                    guard abs(navigationRowMinY - newValue) > 0.5 else { return }
+                    navigationRowMinY = newValue
+                }
+
+                if let rootNavigationAccessory {
+                    SessionStartStickyRootNavigationView(
+                        rootNavigationAccessory: rootNavigationAccessory,
+                        topInset: stickyTopInset,
+                        isVisible: shouldShowStickyRootNavigation(topInset: stickyTopInset)
+                    )
+                    .zIndex(8)
+                }
 
                 bottomDock(bottomPadding: bottomPadding, horizontalPadding: horizontalPadding)
             }
@@ -144,6 +187,7 @@ struct SessionStartView: View {
         .task {
             await equipmentManager.refresh()
             await spotsManager.refresh()
+            await achievementDashboard.reload()
             clearIncompatibleSelectedEquipment()
             clearUnavailableSelectedSpot()
         }
@@ -157,6 +201,7 @@ struct SessionStartView: View {
             Task {
                 await equipmentManager.refresh()
                 await spotsManager.refresh()
+                await achievementDashboard.reload()
                 clearIncompatibleSelectedEquipment()
                 clearUnavailableSelectedSpot()
             }
@@ -166,6 +211,24 @@ struct SessionStartView: View {
         .onChange(of: selectedPowerType) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: equipmentManager.equipment) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: spotsManager.spots) { _, _ in clearUnavailableSelectedSpot() }
+    }
+
+    private func shouldShowStickyRootNavigation(topInset: CGFloat) -> Bool {
+        let activationY = topInset + SessionStartScrollMetrics.stickyNavigationActivationPadding
+        let hasMeasuredNavigation = navigationRowMinY < .greatestFiniteMagnitude
+        return (hasMeasuredNavigation && navigationRowMinY <= activationY)
+            || scrollOffset < SessionStartScrollMetrics.stickyNavigationFallbackThreshold
+    }
+
+    private var scrollOffsetReader: some View {
+        GeometryReader { scrollProxy in
+            Color.clear.preference(
+                key: SessionStartScrollOffsetPreferenceKey.self,
+                value: scrollProxy.frame(in: .named(SessionStartScrollMetrics.coordinateSpaceName)).minY
+            )
+        }
+        .frame(height: 0)
+        .accessibilityHidden(true)
     }
 
     private var fullScreenBackground: some View {
@@ -228,74 +291,6 @@ struct SessionStartView: View {
             accentColor: selectedCategory.accentColor,
             onStart: startSelectedSession,
             onUnlock: showUpgradePrompt
-        )
-    }
-
-    private var homeHeader: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("app.name")
-                .font(.system(size: 36, weight: .heavy, design: .rounded))
-                .foregroundStyle(.white)
-                .accessibilityIdentifier("session-start-app-name")
-
-            if let rootNavigationAccessory {
-                rootNavigationAccessory
-                    .padding(.top, 2)
-                    .padding(.bottom, 2)
-                    .accessibilityIdentifier("session-start-root-navigation-accessory")
-            }
-
-            Text("home.greeting.morning")
-                .tracking(2)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
-                .textCase(.uppercase)
-
-            Text("home.readyToSkate")
-                .font(.system(size: 30, weight: .heavy, design: .rounded))
-                .foregroundStyle(.white)
-                .minimumScaleFactor(0.72)
-
-            Text(LocalizedStringKey(sessionRecording.state.status.localizationKey))
-                .font(.caption.weight(.bold))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(selectedCategory.accentColor.opacity(0.16))
-                .foregroundStyle(selectedCategory.accentColor)
-                .clipShape(Capsule())
-                .overlay(Capsule().stroke(selectedCategory.accentColor.opacity(0.28), lineWidth: 1))
-                .accessibilityIdentifier("session-status-pill")
-        }
-        .accessibilityIdentifier("session-start-header")
-    }
-
-    private var previewMetricStrip: some View {
-        HStack(spacing: 8) {
-            quickStat(value: "0.0", label: "KM")
-            quickStat(value: "—", label: "MAX")
-            quickStat(value: "10Hz", label: "SENSOR")
-        }
-        .accessibilityIdentifier("session-start-preview-metrics")
-    }
-
-    private func quickStat(value: String, label: String) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(value)
-                .font(.system(size: 18, weight: .heavy, design: .rounded))
-                .foregroundStyle(SkateTrackSessionStartColors.teal)
-
-            Text(label)
-                .tracking(1)
-                .font(.system(size: 9, weight: .semibold, design: .monospaced))
-                .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(10)
-        .background(SkateTrackSessionStartColors.card.opacity(0.90))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(SkateTrackSessionStartColors.border, lineWidth: 1)
         )
     }
 

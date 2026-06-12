@@ -41,6 +41,8 @@ struct WeeklyChallengeCardView: View {
                         }
                     }
 
+                    WeeklyChallengePeriodBadgeView(challenge: challenge)
+
                     Text(LocalizedStringKey(isLockedAdvanced ? "challenges.advanced.locked.subtitle" : challenge.definition.subtitleKey))
                         .font(.system(size: 12, weight: .semibold, design: .rounded))
                         .foregroundStyle(SkateTrackSessionStartColors.textSecondary)

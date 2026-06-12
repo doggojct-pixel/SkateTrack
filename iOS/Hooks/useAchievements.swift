@@ -17,6 +17,9 @@ struct AchievementDashboardStats: Equatable, Sendable {
     let weeklyDistanceKilometers: Double
     let unlockedCount: Int
     let totalVisibleAchievements: Int
+    let equipmentCount: Int
+    let spotCount: Int
+    let completedWeeklyChallengeCount: Int
 }
 
 @MainActor
@@ -29,13 +32,17 @@ final class AchievementsViewModel: ObservableObject {
         totalDistanceKilometers: 0,
         weeklyDistanceKilometers: 0,
         unlockedCount: 0,
-        totalVisibleAchievements: 0
+        totalVisibleAchievements: 0,
+        equipmentCount: 0,
+        spotCount: 0,
+        completedWeeklyChallengeCount: 0
     )
 
     private let sessionRepository: SessionRepositoryProtocol
     private let equipmentRepository: EquipmentRepositoryProtocol
     private let spotRepository: SpotRepositoryProtocol
     private let unlockStore: AchievementUnlockStoring
+    private let weeklyCompletionStore: WeeklyChallengeCompletionStoring
     private let subscriptionStatus: SubscriptionStatusViewModel
     private var hasLoaded = false
 
@@ -44,13 +51,15 @@ final class AchievementsViewModel: ObservableObject {
         sessionRepository: SessionRepositoryProtocol = SessionRepository.shared,
         equipmentRepository: EquipmentRepositoryProtocol = EquipmentRepository.shared,
         spotRepository: SpotRepositoryProtocol = SpotRepository.shared,
-        unlockStore: AchievementUnlockStoring = AchievementUnlockStore.shared
+        unlockStore: AchievementUnlockStoring = AchievementUnlockStore.shared,
+        weeklyCompletionStore: WeeklyChallengeCompletionStoring = WeeklyChallengeCompletionStore.shared
     ) {
         self.subscriptionStatus = subscriptionStatus
         self.sessionRepository = sessionRepository
         self.equipmentRepository = equipmentRepository
         self.spotRepository = spotRepository
         self.unlockStore = unlockStore
+        self.weeklyCompletionStore = weeklyCompletionStore
     }
 
     var hasAdvancedChallengeAccess: Bool {
@@ -107,11 +116,24 @@ final class AchievementsViewModel: ObservableObject {
             )
 
             achievements = sortAchievements(refreshed)
-            weeklyChallenges = WeeklyChallengeEngine.evaluate(
+
+            let weeklyRecords = weeklyCompletionStore.loadRecords()
+            let evaluatedChallenges = WeeklyChallengeEngine.evaluate(
                 context: context,
+                completionRecords: weeklyRecords,
                 canEvaluateAdvanced: hasAdvancedChallengeAccess
             )
-            stats = makeStats(context: context, achievements: achievements)
+            let newChallengeRecords = WeeklyChallengeEngine.newlyCompletedRecords(
+                from: evaluatedChallenges,
+                existingRecords: weeklyRecords
+            )
+            let mergedChallengeRecords = weeklyCompletionStore.mergeCompletedRecords(newChallengeRecords)
+            weeklyChallenges = WeeklyChallengeEngine.evaluate(
+                context: context,
+                completionRecords: mergedChallengeRecords,
+                canEvaluateAdvanced: hasAdvancedChallengeAccess
+            )
+            stats = makeStats(context: context, achievements: achievements, weeklyChallenges: weeklyChallenges)
             hasLoaded = true
             viewState = .content
         } catch let error as RepositoryError {
@@ -136,15 +158,20 @@ final class AchievementsViewModel: ObservableObject {
 
     private func makeStats(
         context: AchievementEvaluationContext,
-        achievements: [AchievementProgress]
+        achievements: [AchievementProgress],
+        weeklyChallenges: [WeeklyChallengeProgress]
     ) -> AchievementDashboardStats {
         let visibleAchievements = achievements.filter { !$0.isAdvanced || hasAdvancedChallengeAccess }
+        let visibleChallenges = weeklyChallenges.filter { !$0.isAdvanced || hasAdvancedChallengeAccess }
         return AchievementDashboardStats(
             totalSessions: context.sessions.count,
             totalDistanceKilometers: context.totalDistanceKilometers,
             weeklyDistanceKilometers: context.weeklyDistanceKilometers,
             unlockedCount: visibleAchievements.filter(\.isUnlocked).count,
-            totalVisibleAchievements: visibleAchievements.count
+            totalVisibleAchievements: visibleAchievements.count,
+            equipmentCount: context.equipment.count,
+            spotCount: context.spots.count,
+            completedWeeklyChallengeCount: visibleChallenges.filter(\.isComplete).count
         )
     }
 }

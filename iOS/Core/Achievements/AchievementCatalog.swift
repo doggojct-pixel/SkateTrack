@@ -79,6 +79,15 @@ enum AchievementCatalog {
             iconSystemName: "square.and.arrow.up.fill"
         ),
         AchievementDefinition(
+            id: "gear_ready",
+            titleKey: "achievements.gearReady.title",
+            subtitleKey: "achievements.gearReady.subtitle",
+            category: .gear,
+            ruleKind: .equipmentProfiles,
+            targetValue: 1,
+            iconSystemName: "skateboard.fill"
+        ),
+        AchievementDefinition(
             id: "distance_100_advanced",
             titleKey: "achievements.advanced.distance100.title",
             subtitleKey: "achievements.advanced.distance100.subtitle",
@@ -96,6 +105,26 @@ enum AchievementCatalog {
             ruleKind: .completedSessions,
             targetValue: 10,
             iconSystemName: "sparkles",
+            isAdvanced: true
+        ),
+        AchievementDefinition(
+            id: "two_active_weeks_advanced",
+            titleKey: "achievements.advanced.activeWeeks.title",
+            subtitleKey: "achievements.advanced.activeWeeks.subtitle",
+            category: .consistency,
+            ruleKind: .activeWeeks,
+            targetValue: 2,
+            iconSystemName: "calendar.badge.checkmark",
+            isAdvanced: true
+        ),
+        AchievementDefinition(
+            id: "five_safe_sessions_advanced",
+            titleKey: "achievements.advanced.safeFlow.title",
+            subtitleKey: "achievements.advanced.safeFlow.subtitle",
+            category: .safety,
+            ruleKind: .noFallSessions,
+            targetValue: 5,
+            iconSystemName: "shield.lefthalf.filled",
             isAdvanced: true
         )
     ]

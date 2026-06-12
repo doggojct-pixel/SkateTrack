@@ -11,6 +11,8 @@ REQUIRED_FILES = [
     "iOS/App/RootNavigationView.swift",
     "iOS/Features/SessionRecording/SessionStartView.swift",
     "iOS/Features/SessionRecording/SessionStartSupportTypes.swift",
+    "iOS/Features/SessionRecording/SessionStartStickyRootNavigationView.swift",
+    "iOS/Features/SessionRecording/SessionStartHeaderMetricsView.swift",
     "iOS/Features/SessionRecording/SportCategoryPickerView.swift",
     "iOS/Features/SessionRecording/BoardModeSelectorView.swift",
     "iOS/Features/SessionRecording/InlineModeSelectorView.swift",
@@ -82,6 +84,16 @@ for required_dark_token in ["preferredColorScheme(.dark)", "ignoresSafeArea"]:
         fail(f"SessionStartView missing UI mockup dark-layout token {required_dark_token}")
 for required_layout_token in [
     "ZStack(alignment: .bottom)",
+    "SessionStartHeaderView(",
+    "SessionStartPreviewMetricStripView()",
+    "SessionStartStickyRootNavigationView(",
+    "SessionStartScrollOffsetPreferenceKey.self",
+    "SessionStartNavigationPositionPreferenceKey.self",
+    "navigationRowMinY",
+    "stickyTopInset",
+    "minimumStickyNavigationTopInset",
+    "shouldShowStickyRootNavigation(topInset:",
+    "coordinateSpace(name: SessionStartScrollMetrics.coordinateSpaceName)",
     "frame(width: proxy.size.width, height: proxy.size.height)",
     "bottomDock(bottomPadding:",
     "session-start-bottom-dock",
@@ -93,6 +105,35 @@ if "Color(.systemBackground)" in session_start or "secondarySystemBackground" in
     fail("SessionStartView must not use default white system backgrounds after ST-12 hotfix")
 if "PowerType.humanPowered" not in session_start and ".humanPowered" not in session_start:
     fail("SessionStartView must reset inline sessions to humanPowered")
+
+
+header_metrics = read("iOS/Features/SessionRecording/SessionStartHeaderMetricsView.swift")
+for token in [
+    "SessionStartHeaderView",
+    "SessionStartPreviewMetricStripView",
+    "session-start-header",
+    "navigationPositionReader",
+    "SessionStartNavigationPositionPreferenceKey",
+    "session-start-preview-metrics",
+]:
+    if token not in header_metrics:
+        fail(f"SessionStartHeaderMetricsView missing split header/metric token {token}")
+
+sticky_nav = read("iOS/Features/SessionRecording/SessionStartStickyRootNavigationView.swift")
+for token in [
+    "SessionStartScrollMetrics",
+    "stickyNavigationFallbackThreshold",
+    "stickyNavigationActivationPadding",
+    "minimumStickyNavigationTopInset",
+    "stickyNavigationContentTopSpacing",
+    "SessionStartScrollOffsetPreferenceKey",
+    "SessionStartNavigationPositionPreferenceKey",
+    "rootNavigationAccessory",
+    "topInset",
+    "session-start-sticky-root-navigation",
+]:
+    if token not in sticky_nav:
+        fail(f"SessionStartStickyRootNavigationView missing sticky navigation token {token}")
 
 inline_selector = read("iOS/Features/SessionRecording/InlineModeSelectorView.swift")
 for feature_case in ["inlineFitnessMode", "inlineAggressiveMode", "inlineSlalomMode"]:
@@ -114,4 +155,4 @@ for key in REQUIRED_KEYS:
     if key not in localized_zh:
         fail(f"missing Traditional Chinese localization key {key}")
 
-print("Session start flow check passed: 9 UI files, split support types, true full-screen dark start flow, gated inline modes")
+print("Session start flow check passed: sticky root navigation, split header/metrics, split support types, true full-screen dark start flow, gated inline modes")

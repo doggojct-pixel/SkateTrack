@@ -8,13 +8,22 @@ struct AchievementListView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @StateObject private var viewModel: AchievementsViewModel
     @State private var isPaywallPresented = false
+    private let onOpenHistory: () -> Void
+    private let onOpenEquipment: () -> Void
+    private let onOpenSpots: () -> Void
 
     @MainActor
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
-        viewModel: AchievementsViewModel? = nil
+        viewModel: AchievementsViewModel? = nil,
+        onOpenHistory: @escaping () -> Void = {},
+        onOpenEquipment: @escaping () -> Void = {},
+        onOpenSpots: @escaping () -> Void = {}
     ) {
         self.subscriptionStatus = subscriptionStatus
+        self.onOpenHistory = onOpenHistory
+        self.onOpenEquipment = onOpenEquipment
+        self.onOpenSpots = onOpenSpots
         _viewModel = StateObject(
             wrappedValue: viewModel ?? AchievementsViewModel(subscriptionStatus: subscriptionStatus)
         )
@@ -30,6 +39,7 @@ struct AchievementListView: View {
                         header
                             .padding(.top, proxy.safeAreaInsets.top + 24)
                         dashboardStats
+                        relatedStatsLinks
                         content
                     }
                     .padding(.horizontal, 20)
@@ -97,8 +107,19 @@ struct AchievementListView: View {
             statTile(value: distanceText, labelKey: "achievements.stats.distance", accentColor: SkateTrackSessionStartColors.amber)
             statTile(value: "\(viewModel.stats.totalSessions)", labelKey: "achievements.stats.sessions", accentColor: SkateTrackSessionStartColors.purple)
             statTile(value: weeklyDistanceText, labelKey: "achievements.stats.weekly", accentColor: SkateTrackSessionStartColors.accent2)
+            statTile(value: "\(viewModel.stats.completedWeeklyChallengeCount)", labelKey: "achievements.stats.completedChallenges", accentColor: SkateTrackSessionStartColors.teal)
+            statTile(value: "\(viewModel.stats.equipmentCount)", labelKey: "achievements.stats.gear", accentColor: SkateTrackSessionStartColors.amber)
+            statTile(value: "\(viewModel.stats.spotCount)", labelKey: "achievements.stats.spots", accentColor: SkateTrackSessionStartColors.purple)
         }
         .accessibilityIdentifier("achievement-dashboard-stats")
+    }
+
+    private var relatedStatsLinks: some View {
+        AchievementRelatedStatsLinksView(
+            onOpenHistory: onOpenHistory,
+            onOpenEquipment: onOpenEquipment,
+            onOpenSpots: onOpenSpots
+        )
     }
 
     @ViewBuilder

@@ -57,9 +57,29 @@ struct AchievementEvaluationContext: Sendable {
         sessions.filter { $0.endDate != nil && $0.summaryMetrics != nil }.count
     }
 
+    var activeWeekCount: Int {
+        Set(sessions.map { weekIdentifier(for: $0.startDate) }).count
+    }
+
+    var equipmentProfileCount: Int {
+        equipment.count
+    }
+
     var sessionsInCurrentWeek: [SessionData] {
         guard let week = calendar.dateInterval(of: .weekOfYear, for: now) else { return [] }
         return sessions.filter { week.contains($0.startDate) }
+    }
+
+    var noFallSessionsInCurrentWeek: [SessionData] {
+        sessionsInCurrentWeek.filter { $0.endDate != nil && $0.fallEvents.isEmpty }
+    }
+
+    var gearTrackedSessionsInCurrentWeek: [SessionData] {
+        sessionsInCurrentWeek.filter { $0.equipmentID != nil || $0.equipmentSnapshot != nil }
+    }
+
+    private func weekIdentifier(for date: Date) -> String {
+        WeeklyChallengeEngine.weekIdentifier(for: date, calendar: calendar)
     }
 }
 
@@ -115,6 +135,10 @@ enum AchievementEngine {
             return Double(context.noFallSessionCount)
         case .shareReadySessions:
             return Double(context.shareReadySessionCount)
+        case .activeWeeks:
+            return Double(context.activeWeekCount)
+        case .equipmentProfiles:
+            return Double(context.equipmentProfileCount)
         }
     }
 }
