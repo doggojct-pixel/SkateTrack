@@ -11,6 +11,7 @@ struct SessionSummaryView: View {
     @StateObject private var summary: SessionSummaryViewModel
     @ObservedObject private var subscriptionStatus: SubscriptionStatusViewModel
     @State private var isAdvancedChartsPaywallPresented = false
+    @State private var isShareCardPaywallPresented = false
 
     @MainActor
     init(
@@ -56,6 +57,12 @@ struct SessionSummaryView: View {
             SubscriptionPaywallView(
                 subscriptionStatus: subscriptionStatus,
                 lockedFeature: .advancedCharts
+            )
+        }
+        .sheet(isPresented: $isShareCardPaywallPresented) {
+            SubscriptionPaywallView(
+                subscriptionStatus: subscriptionStatus,
+                lockedFeature: .sessionShareCard
             )
         }
         .accessibilityIdentifier("session-summary-view")
@@ -151,7 +158,11 @@ struct SessionSummaryView: View {
                 onUnlock: { isAdvancedChartsPaywallPresented = true }
             )
 
-            SessionSummaryShareStubView()
+            SessionSummaryShareStubView(
+                content: content,
+                subscriptionStatus: subscriptionStatus,
+                onUnlock: { isShareCardPaywallPresented = true }
+            )
         }
         .accessibilityIdentifier("session-summary-detail-stack")
     }

@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-022 Weather Provider Upgrade + Local Rideability Integration
-**Current Development Gate:** Task-022 is complete as a provider-boundary weather upgrade with mock / disabled providers and local rideability integration on Ride Start and Spot detail. Real WeatherKit, external weather APIs, API keys, current-location weather, background refresh, cloud sync, production StoreKit, and developer-account-dependent live services remain deferred.
+**Current Baseline:** Source-controlled repository after Task-022 Weather Provider Upgrade + Local Rideability Integration, with Task-022d documentation alignment plus Task-023a Session Share Card Preview Foundation prepared for a combined first-stage Task-023 commit.
+**Current Development Gate:** Task-023a is a local share-card preview and subscription-gating foundation only. PNG rendering, ImageRenderer, UIActivityViewController, temporary export files, AirDrop packages, Google Drive, cloud sync, Photos write, production StoreKit, real WeatherKit, developer-account-dependent live services, and indoor odometry remain deferred. ADR-0003 continues to prohibit fake indoor route / speed data in Task-023 through Task-030.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -42,6 +42,8 @@ This document records the current SkateTrack repository structure and developmen
 | Task-021a Spot Management Foundation | Complete | Local Spot model extension, SpotVisit future model, Core Data spot schema extension, SpotRepository, useSpots, Spot list / map / detail / editor, free 3-favorite limit, root Spots entry, ADR-0002, docs, and verify script are implemented. |
 | Task-021b Spot Association + Visit Tracking Foundation | Complete | Session Start can select a local Spot; completed sessions persist `SpotSessionSnapshot`; successful saves update local Spot visits; History and Summary display archived Spot attribution. Follow-up adds multi-select local History deletion and cleans Spot MapKit deprecation warnings. No route auto-detection, WeatherKit, public database, or cloud sync. |
 | Task-022 Weather Provider Upgrade + Local Rideability Integration | Complete | Weather query context, disabled provider, mock/local rideability engine, Ride Start weather context, Spot detail rideability card, lightweight Spot rideability chips, localization, docs, and verification are implemented without WeatherKit or external APIs. |
+| Task-022d GPS-Denied Indoor Recording Strategy | Documentation prepared / pending Task-023-stage commit | ADR-0003 records that Task-023 through Task-030 must not add production indoor speed, IMU-only route drawing, ARKit normal ride recording, UWB venue tracking, or fake route / speed data. Earliest safe work is a post-Task-030 Recording Data Quality + Indoor Fallback Foundation task. |
+| Task-023a Session Share Card Preview Foundation | Prepared / pending combined Task-023a commit | Summary now has a real local share-card preview foundation, shared data model, SwiftUI hook, Pro locked preview, Paywall route, localization, docs, and verification. PNG export and system share sheet remain Task-023b. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -50,8 +52,8 @@ This document records the current SkateTrack repository structure and developmen
 |---|---|---|
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
-| Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
-| Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
+| Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable. ADR-0003 now requires honest low-confidence / unavailable states before any future indoor odometry work. | `GPSProvider.swift`, `SensorFusionEngine.swift`, `docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md`, future Recording Data Quality task. |
+| Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-023a adds local share-card preview only. PNG rendering, system share sheet, and quick export remain Task-023b. Heart-rate zones remain a no-fake-data placeholder. | `iOS/Features/SessionSummary`, future Task-023b export, future HealthKit / watchOS data providers. |
 | UserNotifications scheduling and real weather data are not built yet. | Task-022 now provides mock / disabled provider boundaries and local rideability guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
 | Route-to-spot auto detection, real WeatherKit, and cloud sync remain future tasks. | Task-022 supports local mock rideability for manually saved Spots, but it does not infer Spots from GPS routes, fetch live weather, or query public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, `iOS/Core/HealthReminders`, future live-weather / sync tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
@@ -74,12 +76,12 @@ This document records the current SkateTrack repository structure and developmen
 
 | Area | Current Contents | Count / Notes |
 |---|---|---:|
-| Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~88 Swift files |
-| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, subscription entitlement simulation, Paywall validation, Session History, Session Summary, Health Reminder validation, and Weather Risk validation | 24 scripts |
+| Swift source files | App entries, shared models/utilities, persistence, iOS engines, iOS UI, hooks, watchOS/macOS shells, and tests | ~94 Swift files |
+| Verification scripts | Python scripts for localization, models, feature flags, sensors, session recording, HUD, start flow, debug tools, safety, icons, persistence, subscription entitlement simulation, Paywall validation, Session History, Session Summary, Health Reminder validation, Weather Risk validation, and Session Share Card validation | 25 scripts |
 | Task prompt packs | Task-002 through Task-013 task documentation folders | 11 task folders |
 | App-icon images | Generated iOS/watchOS/macOS PNG icon assets plus macOS `.icns` | 103 image/icon files in current baseline |
 | Tests | iOS session recording coordinator and session repository tests | 2 active iOS test files |
-| Living docs | `docs/FILE_STRUCTURE.md`, `docs/DEV_LOG.md` | Active |
+| Living docs | `docs/FILE_STRUCTURE.md`, `docs/DEV_LOG.md`, and ADR decisions under `docs/decisions/` | Active |
 
 ## Annotated Repository Tree
 
@@ -117,6 +119,7 @@ SkateTrack/
 │   │   ├── PowerType.swift                         # [協作區] Human-powered / electric power classification.
 │   │   ├── SessionData.swift                       # [協作區] Root session container for samples, tricks, falls, equipment, and summary metrics.
 │   │   ├── SessionSummaryMetrics.swift             # [協作區] Completed-session summary and live metric snapshot structs.
+│   │   ├── SessionShareCardData.swift              # [協作區] Task-023a share-card preview data model; no rendering or export behavior.
 │   │   ├── SportMode.swift                         # [協作區] Skateboard and inline skating mode enums plus unified `SportMode`.
 │   │   ├── SOSTriggerEvent.swift                   # [協作區] SOS event source, dispatch status, contact payload, and message preview.
 │   │   ├── SpotProfile.swift                       # [協作區] Saved riding spot profile and coordinates.
@@ -236,14 +239,18 @@ SkateTrack/
 │   │   │   ├── SessionHistoryBulkActionBarView.swift # [協作區] Multi-select local deletion toolbar for History cleanup.
 │   │   │   ├── SessionSummaryHandoffView.swift     # [協作區] Legacy Task-017b handoff placeholder retained for reference; Task-018a now opens `SessionSummaryView`.
 │   │   │   └── HistoryLimitPaywallBanner.swift     # [協作區] Free 5-session limit upgrade banner.
-│   │   ├── SessionSummary/                         # [協作區] Task-018a/018b/018c Summary foundation, route map, safety recap, share stub, and subscriber-gated advanced charts.
+│   │   ├── SessionSummary/                         # [協作區] Summary foundation, route map, safety recap, share-card preview, and subscriber-gated advanced charts.
 │   │   │   ├── SessionSummaryView.swift            # [協作區] Real Summary foundation opened from unlocked History cards.
 │   │   │   ├── SessionSummaryMetricsGridView.swift # [協作區] Core metrics grid for distance, speed, duration, elevation, falls, and tricks.
 │   │   │   ├── SessionSummaryPlaceholderSectionView.swift # [協作區] Legacy reusable placeholder card retained for future Summary sections.
 │   │   │   ├── SessionRouteMapView.swift           # [協作區] MapKit route preview, start / finish markers, and no-route empty state.
 │   │   │   ├── SessionSpotAttributionView.swift    # [協作區] Archived Spot snapshot attribution card for Summary.
 │   │   │   ├── SessionSummarySafetyStatusView.swift # [協作區] Local fall-event and safety recap for Summary.
-│   │   │   ├── SessionSummaryShareStubView.swift   # [協作區] Deferred share-card entry point; no real export yet.
+│   │   │   ├── SessionSummaryShareStubView.swift   # [協作區] Task-023a compatibility wrapper for share-card preview / locked state.
+│   │   │   ├── SessionShareCardPreviewView.swift   # [協作區] Dark neon local share-card preview; no image rendering or share sheet.
+│   │   │   ├── SessionShareCardMetricView.swift    # [協作區] Reusable metric tile inside the share-card preview.
+│   │   │   ├── SessionShareCardLockedView.swift    # [協作區] Free-user locked share-card preview routed through existing Paywall.
+│   │   │   ├── SessionShareCardActionView.swift    # [協作區] Preview-only Task-023a action area; export deferred to Task-023b.
 │   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
 │   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline for Pro / DEBUG subscriber state.
 │   │   │   ├── ElevationProfileChartView.swift     # [協作區] Swift Charts elevation profile for Pro / DEBUG subscriber state.
@@ -266,6 +273,7 @@ SkateTrack/
 │       ├── useWeatherRisk.swift                   # [協作區 — 邊界適配層] Observable mock weather suitability report and detailed Pro risk access.
 │       ├── useEquipmentManager.swift              # [協作區 — 邊界適配層] Observable equipment CRUD state, demo gear, and `.equipmentManager` Pro access boundary.
 │       ├── useSpots.swift                         # [協作區 — 邊界適配層] Observable local Spot CRUD state and `.spotManagement` favorite-limit Paywall boundary.
+│       ├── useSessionShareCard.swift              # [協作區 — 邊界適配層] Formats Summary content into Task-023a share-card preview data.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/
@@ -321,7 +329,9 @@ SkateTrack/
 │   ├── FILE_STRUCTURE.md                          # [原則 E] This source tree and status document.
 │   ├── DEV_LOG.md                                 # [原則 E] Chronological development log and correction notes.
 │   └── decisions/                                 # [原則 E] Architecture decision records.
-│       └── ADR-0001-subscription-entitlement-strategy.md # [原則 E] Decision to use replaceable entitlement providers before real App Store monetization.
+│       ├── ADR-0001-subscription-entitlement-strategy.md # [原則 E] Decision to use replaceable entitlement providers before real App Store monetization.
+│       ├── ADR-0002-developer-account-dependent-services.md # [原則 E] Provider-boundary policy for Apple / Google / external services.
+│       └── ADR-0003-gps-denied-indoor-recording-strategy.md # [原則 E] Deferred indoor recording strategy and no-fake-indoor-data guardrail.
 └── tasks/                                         # [任務文件] Task prompt packs and acceptance documentation.
     ├── Task-002-Localization/                     # [任務文件] Task-002 prompt pack.
     ├── Task-003-SharedDataModels/                 # [任務文件] Task-003 prompt pack.
@@ -503,3 +513,52 @@ scripts/verify_weather_rideability.py                     # [工程設定] Task-
 - Real WeatherKit, external weather APIs, API keys, URLSession networking, current-location weather lookup, background weather refresh, and live-weather caching remain deferred.
 - Route-to-Spot auto detection, public Spot discovery, Google / cloud sync, production StoreKit, signing, capabilities, watchOS, and macOS UI remain out of scope.
 - Future live-weather integration must replace providers behind `WeatherProviding` and update privacy / capability documentation in a separate integration task.
+
+
+## Task-022d GPS-Denied Indoor Recording Strategy Addendum
+
+### New / Updated Documentation Areas
+
+```text
+docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md # [原則 E] GPS-denied indoor recording strategy, deferred roadmap, and production guardrails.
+docs/DEV_LOG.md                                                 # [原則 E] Appends Task-022d documentation-only alignment notes.
+docs/FILE_STRUCTURE.md                                          # [原則 E] Records ADR-0003 and the Task-023–030 no-indoor-odometry guardrail.
+```
+
+### Deferred After Task-022d
+
+- Task-023 through Task-030 must not add production indoor speed, IMU-only route drawing, Core ML indoor velocity in normal runtime, ARKit normal ride tracking, UWB venue tracking, or fake route / speed data.
+- The earliest safe entry point is a post-Task-030 Recording Data Quality + Indoor Fallback Foundation task. That task should expose GPS quality, speed source, route confidence, and no-route fallback states before any indoor odometry experiment.
+- Phase 2 may explore dataset export and offline Core ML / inertial odometry experiments, but not as default production runtime.
+- Phase 3 may explore ARKit coach / video analysis as a separate camera-based workflow, not as pocket-based Session Recording.
+- Future UWB work belongs to a hardware-supported venue / B2B mode and must not affect the consumer app-only roadmap until explicitly planned.
+
+### Commit Note
+
+Task-022d is documentation-only and intentionally prepared for a later combined commit with the first Task-023 stage. No Swift source, Xcode project, Core Data schema, localization, signing, capabilities, permissions, or runtime behavior should change in this documentation-only patch.
+
+
+## Task-023a Session Share Card Preview Foundation Addendum
+
+### Added / Updated Files
+
+```text
+Shared/Models/SessionShareCardData.swift                       # [協作區] Codable / Sendable share-card preview data model.
+iOS/Hooks/useSessionShareCard.swift                            # [協作區 — 邊界適配層] Formats Summary content into share-card display data.
+iOS/Features/SessionSummary/SessionShareCardPreviewView.swift  # [協作區] Local dark neon share-card preview; no PNG export.
+iOS/Features/SessionSummary/SessionShareCardMetricView.swift   # [協作區] Share-card metric tile.
+iOS/Features/SessionSummary/SessionShareCardLockedView.swift   # [協作區] Locked Pro preview and Paywall routing.
+iOS/Features/SessionSummary/SessionShareCardActionView.swift   # [協作區] Preview-only Task-023a action area; export deferred.
+iOS/Features/SessionSummary/SessionSummaryShareStubView.swift  # [協作區] Reworked as share-card section wrapper.
+scripts/verify_session_share_card.py                           # [工程設定] Task-023a verification script.
+scripts/verify_session_summary.py                              # [工程設定] Updated Summary verification for share-card preview foundation.
+```
+
+### Deferred After Task-023a
+
+```text
+Task-023b should handle PNG rendering, temporary file export, UIActivityViewController, local summary text / JSON quick export, and cleanup.
+Task-023a must not be treated as real share/export readiness.
+```
+
+Task-023a remains local-first and account-safe. It introduces no Photos permission, Google Drive, iCloud / CloudKit, AirDrop package, production StoreKit, signing, capabilities, or external services.

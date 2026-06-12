@@ -76,6 +76,14 @@
 		18B100000000000000000101 /* SessionRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000001 /* SessionRouteMapView.swift */; };
 		18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */; };
 		18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B100000000000000000003 /* SessionSummaryShareStubView.swift */; };
+		23A100000000000000000101 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A100000000000000000102 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A100000000000000000103 /* SessionShareCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A100000000000000000001 /* SessionShareCardData.swift */; };
+		23A200000000000000000101 /* useSessionShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A200000000000000000001 /* useSessionShareCard.swift */; };
+		23A300000000000000000101 /* SessionShareCardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000001 /* SessionShareCardPreviewView.swift */; };
+		23A300000000000000000102 /* SessionShareCardMetricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000002 /* SessionShareCardMetricView.swift */; };
+		23A300000000000000000103 /* SessionShareCardLockedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000003 /* SessionShareCardLockedView.swift */; };
+		23A300000000000000000104 /* SessionShareCardActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A300000000000000000004 /* SessionShareCardActionView.swift */; };
 		18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000001 /* SessionAdvancedChartsView.swift */; };
 		18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000002 /* SpeedTimelineChartView.swift */; };
 		18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000003 /* ElevationProfileChartView.swift */; };
@@ -328,6 +336,12 @@
 		18B100000000000000000001 /* SessionRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRouteMapView.swift; sourceTree = "<group>"; };
 		18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummarySafetyStatusView.swift; sourceTree = "<group>"; };
 		18B100000000000000000003 /* SessionSummaryShareStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryShareStubView.swift; sourceTree = "<group>"; };
+		23A100000000000000000001 /* SessionShareCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardData.swift; sourceTree = "<group>"; };
+		23A200000000000000000001 /* useSessionShareCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSessionShareCard.swift; sourceTree = "<group>"; };
+		23A300000000000000000001 /* SessionShareCardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardPreviewView.swift; sourceTree = "<group>"; };
+		23A300000000000000000002 /* SessionShareCardMetricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardMetricView.swift; sourceTree = "<group>"; };
+		23A300000000000000000003 /* SessionShareCardLockedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardLockedView.swift; sourceTree = "<group>"; };
+		23A300000000000000000004 /* SessionShareCardActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardActionView.swift; sourceTree = "<group>"; };
 		18C100000000000000000001 /* SessionAdvancedChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAdvancedChartsView.swift; sourceTree = "<group>"; };
 		18C100000000000000000002 /* SpeedTimelineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedTimelineChartView.swift; sourceTree = "<group>"; };
 		18C100000000000000000003 /* ElevationProfileChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationProfileChartView.swift; sourceTree = "<group>"; };
@@ -474,6 +488,7 @@
 				21B100000000000000000001 /* SpotSessionSnapshot.swift */,
 				21A100000000000000000001 /* SpotVisit.swift */,
 				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
+				23A100000000000000000001 /* SessionShareCardData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -509,6 +524,7 @@
 				14A200000000000000000001 /* useFallDetection.swift */,
 				17A100000000000000000006 /* useSessionHistory.swift */,
 				18A100000000000000000004 /* useSessionSummary.swift */,
+				23A200000000000000000001 /* useSessionShareCard.swift */,
 				19A100000000000000000003 /* useHealthReminders.swift */,
 				19C100000000000000000005 /* useWeatherRisk.swift */,
 				20A100000000000000000003 /* useEquipmentManager.swift */,
@@ -633,6 +649,10 @@
 				18B100000000000000000001 /* SessionRouteMapView.swift */,
 				18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */,
 				18B100000000000000000003 /* SessionSummaryShareStubView.swift */,
+				23A300000000000000000001 /* SessionShareCardPreviewView.swift */,
+				23A300000000000000000002 /* SessionShareCardMetricView.swift */,
+				23A300000000000000000003 /* SessionShareCardLockedView.swift */,
+				23A300000000000000000004 /* SessionShareCardActionView.swift */,
 				18C100000000000000000001 /* SessionAdvancedChartsView.swift */,
 				18C100000000000000000002 /* SpeedTimelineChartView.swift */,
 				18C100000000000000000003 /* ElevationProfileChartView.swift */,
@@ -1053,6 +1073,11 @@
 				18B100000000000000000101 /* SessionRouteMapView.swift in Sources */,
 				18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */,
 				18B100000000000000000103 /* SessionSummaryShareStubView.swift in Sources */,
+				23A200000000000000000101 /* useSessionShareCard.swift in Sources */,
+				23A300000000000000000101 /* SessionShareCardPreviewView.swift in Sources */,
+				23A300000000000000000102 /* SessionShareCardMetricView.swift in Sources */,
+				23A300000000000000000103 /* SessionShareCardLockedView.swift in Sources */,
+				23A300000000000000000104 /* SessionShareCardActionView.swift in Sources */,
 				18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */,
 				18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */,
 				18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */,
@@ -1131,6 +1156,7 @@
 				14A300000000000000000102 /* FallDetectionOverlayPresenter.swift in Sources */,
 				14B200000000000000000101 /* EmergencyContactsSettingsView.swift in Sources */,
 				12AB05000000000000000101 /* SessionSummaryMetrics.swift in Sources */,
+				23A100000000000000000101 /* SessionShareCardData.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				15A100000000000000000101 /* PersistenceController.swift in Sources */,
@@ -1180,6 +1206,7 @@
 				21A100000000000000000103 /* SpotVisit.swift in Sources */,
 				21B100000000000000000103 /* SpotSessionSnapshot.swift in Sources */,
 				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
+				23A100000000000000000103 /* SessionShareCardData.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
 				12A30000000000000000011E /* SyncProvider.swift in Sources */,
 			);
@@ -1208,6 +1235,7 @@
 				21A100000000000000000102 /* SpotVisit.swift in Sources */,
 				21B100000000000000000102 /* SpotSessionSnapshot.swift in Sources */,
 				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,
+				23A100000000000000000102 /* SessionShareCardData.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,
 				12A30000000000000000011D /* SyncProvider.swift in Sources */,
 			);

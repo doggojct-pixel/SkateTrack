@@ -15,12 +15,18 @@ REQUIRED_FILES = [
     "iOS/Features/SessionSummary/SessionRouteMapView.swift",
     "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift",
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift",
+    "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift",
+    "iOS/Features/SessionSummary/SessionShareCardMetricView.swift",
+    "iOS/Features/SessionSummary/SessionShareCardLockedView.swift",
+    "iOS/Features/SessionSummary/SessionShareCardActionView.swift",
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift",
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift",
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift",
     "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift",
     "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift",
     "iOS/Hooks/useSessionSummary.swift",
+    "iOS/Hooks/useSessionShareCard.swift",
+    "Shared/Models/SessionShareCardData.swift",
 ]
 
 LOCALIZATION_KEYS = [
@@ -67,6 +73,29 @@ LOCALIZATION_KEYS = [
     "summary.share.stub.alert.title",
     "summary.share.stub.alert.message",
     "summary.share.stub.alert.dismiss",
+    "summary.share.card.eyebrow",
+    "summary.share.brand",
+    "summary.share.footer",
+    "summary.share.unlocked.subtitle",
+    "summary.share.locked.sectionSubtitle",
+    "summary.share.locked.title",
+    "summary.share.locked.subtitle",
+    "summary.share.spot",
+    "summary.share.spot.none",
+    "summary.share.equipment",
+    "summary.share.equipment.none",
+    "summary.share.route",
+    "summary.share.route.available",
+    "summary.share.route.unavailable",
+    "summary.share.safety",
+    "summary.share.safety.clear",
+    "summary.share.safety.fallsFormat",
+    "summary.share.action.title",
+    "summary.share.action.subtitle",
+    "summary.share.action.button",
+    "summary.share.action.alert.title",
+    "summary.share.action.alert.message",
+    "summary.share.action.alert.dismiss",
     "summary.charts.placeholder.title",
     "summary.charts.placeholder.subtitle",
     "summary.health.placeholder.title",
@@ -103,6 +132,12 @@ PROJECT_TOKENS = [
     "SessionRouteMapView.swift in Sources",
     "SessionSummarySafetyStatusView.swift in Sources",
     "SessionSummaryShareStubView.swift in Sources",
+    "SessionShareCardData.swift in Sources",
+    "useSessionShareCard.swift in Sources",
+    "SessionShareCardPreviewView.swift in Sources",
+    "SessionShareCardMetricView.swift in Sources",
+    "SessionShareCardLockedView.swift in Sources",
+    "SessionShareCardActionView.swift in Sources",
     "useSessionSummary.swift in Sources",
     "SessionAdvancedChartsView.swift in Sources",
     "SpeedTimelineChartView.swift in Sources",
@@ -129,6 +164,8 @@ SOURCE_TOKENS = {
         "SessionRouteMapView",
         "SessionSummarySafetyStatusView",
         "SessionSummaryShareStubView",
+        "lockedFeature: .sessionShareCard",
+        "isShareCardPaywallPresented",
         "SessionAdvancedChartsView",
         "SubscriptionPaywallView",
         "lockedFeature: .advancedCharts",
@@ -160,10 +197,37 @@ SOURCE_TOKENS = {
         "FallEvent",
         "session-summary-safety-status",
     ],
+    "Shared/Models/SessionShareCardData.swift": [
+        "SessionShareCardData",
+        "SessionShareCardMetricData",
+        "SessionShareCardAccent",
+    ],
+    "iOS/Hooks/useSessionShareCard.swift": [
+        "SessionShareCardViewModel",
+        "useSessionShareCard(content:",
+        "routeStatusLocalizationKey",
+    ],
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": [
         "SessionSummaryShareStubView",
-        "summary.share.stub.alert.title",
-        "session-summary-share-stub",
+        "subscriptionStatus.hasAccess(to: .sessionShareCard)",
+        "SessionShareCardPreviewView",
+        "SessionShareCardLockedView",
+        "session-summary-share-card-section",
+    ],
+    "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift": [
+        "SessionShareCardPreviewView",
+        "SessionShareCardMetricView",
+        "summary.share.card.eyebrow",
+        "session-share-card-preview",
+    ],
+    "iOS/Features/SessionSummary/SessionShareCardLockedView.swift": [
+        "SessionShareCardLockedView",
+        "LockedFeatureOverlayView",
+        "feature: .sessionShareCard",
+    ],
+    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": [
+        "SessionShareCardActionView",
+        "summary.share.action.alert.message",
     ],
 
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
@@ -218,6 +282,8 @@ SOURCE_TOKENS = {
         "SessionAdvancedChartsView.swift",
         "SpeedTimelineChartView.swift",
         "verify_session_summary.py",
+        "Task-023a",
+        "SessionShareCardPreviewView.swift",
     ],
 }
 
@@ -227,6 +293,9 @@ FORBIDDEN_TOKENS = [
     "Product.products(for:",
     "HKHealthStore",
     "calories",
+    "ImageRenderer",
+    "UIActivityViewController",
+    "PHPhotoLibrary",
 ]
 
 MAX_LINES = {
@@ -236,12 +305,18 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": 260,
     "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift": 220,
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": 180,
+    "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift": 240,
+    "iOS/Features/SessionSummary/SessionShareCardMetricView.swift": 120,
+    "iOS/Features/SessionSummary/SessionShareCardLockedView.swift": 140,
+    "iOS/Features/SessionSummary/SessionShareCardActionView.swift": 140,
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": 260,
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": 180,
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift": 180,
     "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": 220,
     "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift": 240,
     "iOS/Hooks/useSessionSummary.swift": 240,
+    "iOS/Hooks/useSessionShareCard.swift": 220,
+    "Shared/Models/SessionShareCardData.swift": 160,
 }
 
 
@@ -319,7 +394,7 @@ def main() -> None:
     verify_project_membership()
     verify_localization()
     verify_source_contracts()
-    print("✅ Task-018c Session Summary advanced charts verification passed")
+    print("✅ Task-023a Session Summary share-card verification passed")
 
 
 if __name__ == "__main__":

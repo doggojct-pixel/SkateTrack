@@ -982,3 +982,40 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_weather_rideability.py` together with `verify_weather_risk.py`, localization, subscription, Spot, and Session Start verification scripts.
 - Manual validation should confirm ride-start weather context changes when a local Spot is selected, Spot detail shows the local rideability card, free users see locked detailed factors, DEBUG/local subscriber simulation unlocks detailed factors, and no location or WeatherKit permission prompt appears.
+
+## 2026-06-12 — Task-022d Documentation Alignment: GPS-Denied Indoor Recording Strategy
+
+### Completed
+- Added ADR-0003 to document the GPS-denied indoor recording strategy before future indoor tracking work begins.
+- Recorded the decision that Task-023 through Task-030 must not add production indoor speed, IMU-only route drawing, ARKit normal ride recording, UWB venue tracking, or fake indoor route / speed data.
+- Defined the earliest safe follow-up as a post-Task-030 Recording Data Quality + Indoor Fallback Foundation task.
+- Split future indoor-related work into safer phases: Phase 1b data quality and honest fallback, Phase 2 dataset / offline experimentation, Phase 3 ARKit coach / video analysis, and future B2B UWB venue mode.
+- Documented product safety copy principles for GPS-unavailable sessions so SkateTrack presents low-confidence or unavailable data honestly.
+
+### Scope Boundary
+- Documentation only. No Swift source, Xcode project, Core Data schema, localization, sensors, Session Recording runtime, UI, signing, capabilities, WeatherKit, ARKit, UWB, or external service integration was changed.
+- This documentation alignment is intentionally left uncommitted until the first Task-023 stage is ready, so it can be committed together with that stage as requested.
+
+### Validation Notes
+- Review `docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md` before starting any task that mentions indoor mode, no-GPS speed, IMU-only odometry, ARKit tracking, or UWB venue analytics.
+- Future implementation tasks should treat ADR-0003 as a guardrail against introducing misleading indoor speed or route data.
+
+## 2026-06-12 — Task-023a Session Share Card Preview Foundation
+
+### Completed
+- Replaced the Task-018b Summary share stub with a real local share-card preview foundation while keeping export and the system share sheet deferred to Task-023b.
+- Added `SessionShareCardData` as a shared Codable / Sendable model for share-card preview data.
+- Added `useSessionShareCard` as the SwiftUI-facing formatter boundary so Summary Views do not directly format share-card metrics, route status, safety status, Spot attribution, or equipment attribution.
+- Added dark SkateTrack neon share-card preview UI with reusable metric, locked, and action components.
+- Gated full share-card preview access through `GatedFeature.sessionShareCard`, `useSubscriptionStatus`, and the existing Task-016b Paywall route.
+- Free users now see a locked share-card preview and can open the existing Paywall; Pro / DEBUG-local subscriber simulation shows the full card preview.
+- Added Task-023a localization keys, `scripts/verify_session_share_card.py`, and updated `scripts/verify_session_summary.py` for the new share-card foundation.
+
+### Scope Boundary
+- No PNG rendering, `ImageRenderer`, `UIActivityViewController`, temporary file export, AirDrop package, Photos write, Google Drive, iCloud / CloudKit, external API, Core Data schema, signing, capabilities, production StoreKit, watchOS UI, or macOS UI was added.
+- Task-023a is preview and gating foundation only. Task-023b should add local image / text export and the system share-sheet wrapper behind this foundation.
+- Task-022d ADR-0003 remains part of the same pending commit and continues to guard against adding misleading indoor speed or route data during Task-023 work.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_share_card.py`, `python3 scripts/verify_session_summary.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
+- Manual validation should confirm locked preview for free users, Paywall routing for `sessionShareCard`, full preview in DEBUG/local subscriber simulation, Summary still loads route / safety / equipment / Spot attribution, and no export or system share sheet appears in Task-023a.

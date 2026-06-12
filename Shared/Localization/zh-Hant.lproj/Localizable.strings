@@ -305,11 +305,11 @@
 "summary.safety.metric.impact" = "最大衝擊";
 "summary.safety.metric.confirmed" = "已確認";
 "summary.safety.impactFormat" = "%.1fg";
-"summary.share.title" = "分享摘要入口";
-"summary.share.subtitle" = "分享入口已先準備給後續分享卡任務；目前不輸出圖片，也不開啟系統分享。";
-"summary.share.button" = "預覽分享動作";
-"summary.share.stub.alert.title" = "分享卡尚未建立";
-"summary.share.stub.alert.message" = "Task-018b 只先準備 Summary 分享入口。真正分享卡與匯出流程仍保留給後續任務。";
+"summary.share.title" = "分享卡預覽";
+"summary.share.subtitle" = "先預覽 SkateTrack 滑行摘要卡；本機匯出會在下一階段加入。";
+"summary.share.button" = "預覽分享卡";
+"summary.share.stub.alert.title" = "分享匯出尚未建立";
+"summary.share.stub.alert.message" = "Task-023a 先建立 Pro 分享卡預覽基礎。PNG 匯出與系統分享表會保留給 Task-023b。";
 "summary.share.stub.alert.dismiss" = "好";
 "subscription.pro_badge" = "PRO";
 
@@ -640,3 +640,28 @@
 "weather.rideability.spot.locked.title" = "場地因素屬於 Pro";
 "weather.rideability.spot.locked.subtitle" = "免費用戶可查看基本場地滑行適合度。Pro 可透過本機模擬解鎖天氣、路面、人潮與安全因素細節。";
 "spots.surface.unknown" = "未知";
+
+/* Task-023a Session Share Card Preview Foundation */
+"summary.share.card.eyebrow" = "滑行摘要";
+"summary.share.brand" = "SkateTrack";
+"summary.share.footer" = "僅本機預覽 · Task-023b 才加入匯出";
+"summary.share.unlocked.subtitle" = "SkateTrack Pro 分享卡預覽已就緒。PNG 匯出與系統分享保留給下一階段。";
+"summary.share.locked.sectionSubtitle" = "分享卡屬於 Pro 功能。免費用戶可以先看到版型預覽，之後再解鎖匯出。";
+"summary.share.locked.title" = "分享卡屬於 Pro";
+"summary.share.locked.subtitle" = "解鎖精美的 SkateTrack 滑行摘要卡，替重要 Session 留下可分享的紀錄。圖片匯出會在下一階段加入。";
+"summary.share.spot" = "場地";
+"summary.share.spot.none" = "未綁定場地";
+"summary.share.equipment" = "裝備";
+"summary.share.equipment.none" = "未綁定裝備";
+"summary.share.route" = "路線";
+"summary.share.route.available" = "可顯示路線預覽";
+"summary.share.route.unavailable" = "沒有可靠路線預覽";
+"summary.share.safety" = "安全";
+"summary.share.safety.clear" = "未記錄跌倒";
+"summary.share.safety.fallsFormat" = "記錄到 %d 次跌倒事件";
+"summary.share.action.title" = "下一階段快速匯出";
+"summary.share.action.subtitle" = "這一階段只預覽分享卡。Task-023b 會渲染圖片並開啟本機系統分享。";
+"summary.share.action.button" = "Task-023b 匯出";
+"summary.share.action.alert.title" = "目前僅預覽";
+"summary.share.action.alert.message" = "分享卡預覽已完成。PNG 匯出、暫存檔與系統分享流程刻意保留給 Task-023b。";
+"summary.share.action.alert.dismiss" = "好";

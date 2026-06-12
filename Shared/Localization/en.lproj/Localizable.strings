@@ -305,11 +305,11 @@
 "summary.safety.metric.impact" = "Peak impact";
 "summary.safety.metric.confirmed" = "Confirmed";
 "summary.safety.impactFormat" = "%.1fg";
-"summary.share.title" = "Share recap stub";
-"summary.share.subtitle" = "The share entry is prepared for a later share-card task. No image export or system share sheet is launched yet.";
-"summary.share.button" = "Preview share action";
-"summary.share.stub.alert.title" = "Share card not built yet";
-"summary.share.stub.alert.message" = "Task-018b only prepares the Summary share entry point. The real share card and export flow remain deferred.";
+"summary.share.title" = "Share card preview";
+"summary.share.subtitle" = "Preview a SkateTrack recap card before local export is added in the next stage.";
+"summary.share.button" = "Preview share card";
+"summary.share.stub.alert.title" = "Share export not built yet";
+"summary.share.stub.alert.message" = "Task-023a builds the Pro share-card preview foundation. PNG export and the system share sheet remain Task-023b.";
 "summary.share.stub.alert.dismiss" = "OK";
 "subscription.pro_badge" = "PRO";
 
@@ -640,3 +640,28 @@
 "weather.rideability.spot.locked.title" = "Spot factors are Pro";
 "weather.rideability.spot.locked.subtitle" = "Free users can see the basic spot rideability status. Pro unlocks detailed weather, surface, crowd, and safety factors using local simulation.";
 "spots.surface.unknown" = "Unknown";
+
+/* Task-023a Session Share Card Preview Foundation */
+"summary.share.card.eyebrow" = "SESSION RECAP";
+"summary.share.brand" = "SkateTrack";
+"summary.share.footer" = "Local preview only · Export arrives in Task-023b";
+"summary.share.unlocked.subtitle" = "SkateTrack Pro preview is ready. PNG export and system sharing stay deferred to the next stage.";
+"summary.share.locked.sectionSubtitle" = "Share cards are a Pro feature. Free users can preview the layout and unlock export later.";
+"summary.share.locked.title" = "Share cards are Pro";
+"summary.share.locked.subtitle" = "Unlock a polished SkateTrack recap card for your best sessions. Image export is prepared for the next stage.";
+"summary.share.spot" = "Spot";
+"summary.share.spot.none" = "No spot attached";
+"summary.share.equipment" = "Gear";
+"summary.share.equipment.none" = "No gear attached";
+"summary.share.route" = "Route";
+"summary.share.route.available" = "Route preview available";
+"summary.share.route.unavailable" = "No reliable route preview";
+"summary.share.safety" = "Safety";
+"summary.share.safety.clear" = "No falls recorded";
+"summary.share.safety.fallsFormat" = "%d fall events recorded";
+"summary.share.action.title" = "Quick export next";
+"summary.share.action.subtitle" = "This stage only previews the card. Task-023b will render an image and open the local share sheet.";
+"summary.share.action.button" = "Export in Task-023b";
+"summary.share.action.alert.title" = "Preview only";
+"summary.share.action.alert.message" = "The share card preview is ready. PNG export, temporary files, and system sharing are intentionally deferred to Task-023b.";
+"summary.share.action.alert.dismiss" = "OK";
