@@ -7,10 +7,12 @@ import SwiftUI
 
 struct SpotDetailView: View {
     let spot: SpotProfile
+    @ObservedObject var weatherRisk: WeatherRiskViewModel
     let onBack: () -> Void
     let onToggleFavorite: () async -> Void
     let onSave: (SpotProfile) async -> Bool
     let onDelete: () async -> Void
+    let onOpenHealthReminders: () -> Void
 
     @State private var isEditorPresented = false
     @State private var isDeleteConfirmationPresented = false
@@ -24,6 +26,11 @@ struct SpotDetailView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     header
                     detailGrid
+                    SpotRideabilityCardView(
+                        spot: spot,
+                        weatherRisk: weatherRisk,
+                        onOpenHealthReminders: onOpenHealthReminders
+                    )
                     notesSection
                     localOnlySection
                     actionsSection

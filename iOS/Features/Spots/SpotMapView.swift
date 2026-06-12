@@ -9,17 +9,20 @@ struct SpotMapView: View {
     let spots: [SpotProfile]
     let onSelectSpot: (SpotProfile) -> Void
     let onToggleFavorite: (SpotProfile) async -> Void
+    var rideabilityLevelProvider: ((SpotProfile) -> WeatherSuitabilityLevel)?
 
     @State private var cameraPosition: MapCameraPosition
 
     init(
         spots: [SpotProfile],
         onSelectSpot: @escaping (SpotProfile) -> Void,
-        onToggleFavorite: @escaping (SpotProfile) async -> Void
+        onToggleFavorite: @escaping (SpotProfile) async -> Void,
+        rideabilityLevelProvider: ((SpotProfile) -> WeatherSuitabilityLevel)? = nil
     ) {
         self.spots = spots
         self.onSelectSpot = onSelectSpot
         self.onToggleFavorite = onToggleFavorite
+        self.rideabilityLevelProvider = rideabilityLevelProvider
         _cameraPosition = State(initialValue: .region(Self.defaultRegion(for: spots)))
     }
 
@@ -59,6 +62,9 @@ struct SpotMapView: View {
                     .font(.title2.weight(.black))
                     .foregroundStyle(spot.isFavorite ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
                     .shadow(radius: 4)
+                if let level = rideabilityLevelProvider?(spot) {
+                    WeatherRideabilityStatusChipView(level: level, compact: true)
+                }
                 Text(spot.name)
                     .font(.system(size: 9, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
@@ -104,6 +110,9 @@ struct SpotMapView: View {
                                 .font(.caption.weight(.bold))
                                 .foregroundStyle(.white)
                                 .lineLimit(1)
+                            if let level = rideabilityLevelProvider?(spot) {
+                                WeatherRideabilityStatusChipView(level: level, compact: true)
+                            }
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 8)

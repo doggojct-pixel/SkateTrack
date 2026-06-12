@@ -1,6 +1,6 @@
 // [協作區 — 邊界適配層] useWeatherRisk.swift
-// 用途：向 SwiftUI 暴露 Task-019c 天氣適合度與 Pro 詳細風險狀態，隱藏 provider / monitor 細節。
-// 委派至：WeatherProviding 提供可替換天氣來源，WeatherRiskMonitor 產生滑行適合度報告。
+// 用途：向 SwiftUI 暴露 Task-022 天氣適合度與本機 rideability 狀態，隱藏 provider / monitor / engine 細節。
+// 委派至：WeatherProviding 提供可替換天氣來源，WeatherRideabilityEngine 整合場地與天氣因素。
 
 import Combine
 import SwiftUI
@@ -8,31 +8,45 @@ import SwiftUI
 @MainActor
 final class WeatherRiskViewModel: ObservableObject {
     @Published private(set) var report: WeatherSuitabilityReport
+    @Published private(set) var rideabilityReport: WeatherRideabilityReport
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessageKey: String?
     @Published private(set) var canViewDetailedRisk: Bool
 
     private let provider: WeatherProviding
     private let monitor: WeatherRiskMonitor
+    private let rideabilityEngine: WeatherRideabilityEngine
     private let settingsStore: HealthReminderSettingsStore
     private let subscriptionStatus: SubscriptionStatusViewModel
+    private var currentContext: WeatherQueryContext
+    private var currentSpot: SpotProfile?
     private var cancellables = Set<AnyCancellable>()
 
     init(
         provider: WeatherProviding? = nil,
         monitor: WeatherRiskMonitor = WeatherRiskMonitor(),
+        rideabilityEngine: WeatherRideabilityEngine = WeatherRideabilityEngine(),
         settingsStore: HealthReminderSettingsStore? = nil,
-        subscriptionStatus: SubscriptionStatusViewModel
+        subscriptionStatus: SubscriptionStatusViewModel,
+        initialContext: WeatherQueryContext = .rideStart(),
+        initialSpot: SpotProfile? = nil
     ) {
         let resolvedSettingsStore = settingsStore ?? HealthReminderSettingsStore.shared
+        let initialSnapshot = WeatherRiskSnapshot.mockBaseline
+        let initialReport = monitor.report(for: initialSnapshot, settings: resolvedSettingsStore.settings)
         self.provider = provider ?? MockWeatherProvider()
         self.monitor = monitor
+        self.rideabilityEngine = rideabilityEngine
         self.settingsStore = resolvedSettingsStore
         self.subscriptionStatus = subscriptionStatus
+        self.currentContext = initialContext
+        self.currentSpot = initialSpot
         self.canViewDetailedRisk = subscriptionStatus.hasAccess(to: .healthReminders)
-        self.report = monitor.report(
-            for: .mockBaseline,
-            settings: resolvedSettingsStore.settings
+        self.report = initialReport
+        self.rideabilityReport = rideabilityEngine.report(
+            weatherReport: initialReport,
+            context: initialContext,
+            spot: initialSpot
         )
 
         resolvedSettingsStore.$settings
@@ -58,6 +72,14 @@ final class WeatherRiskViewModel: ObservableObject {
         }
     }
 
+    func updateContext(_ context: WeatherQueryContext, spot: SpotProfile?) {
+        guard context != currentContext || spot != currentSpot else { return }
+        currentContext = context
+        currentSpot = spot
+        rebuildReport(using: settingsStore.settings)
+        refresh()
+    }
+
     func syncAccess() {
         canViewDetailedRisk = subscriptionStatus.hasAccess(to: .healthReminders)
     }
@@ -66,8 +88,13 @@ final class WeatherRiskViewModel: ObservableObject {
         isLoading = true
         errorMessageKey = nil
         do {
-            let snapshot = try await provider.currentWeather()
+            let snapshot = try await provider.currentWeather(for: currentContext)
             report = monitor.report(for: snapshot, settings: settingsStore.settings)
+            rideabilityReport = rideabilityEngine.report(
+                weatherReport: report,
+                context: currentContext,
+                spot: currentSpot
+            )
             isLoading = false
         } catch {
             errorMessageKey = "weather.suitability.error"
@@ -77,13 +104,25 @@ final class WeatherRiskViewModel: ObservableObject {
 
     private func rebuildReport(using settings: HealthReminderSettings) {
         report = monitor.report(for: report.snapshot, settings: settings)
+        rideabilityReport = rideabilityEngine.report(
+            weatherReport: report,
+            context: currentContext,
+            spot: currentSpot
+        )
     }
 }
 
 @MainActor
 func useWeatherRisk(
     provider: WeatherProviding? = nil,
-    subscriptionStatus: SubscriptionStatusViewModel
+    subscriptionStatus: SubscriptionStatusViewModel,
+    initialContext: WeatherQueryContext = .rideStart(),
+    initialSpot: SpotProfile? = nil
 ) -> WeatherRiskViewModel {
-    WeatherRiskViewModel(provider: provider, subscriptionStatus: subscriptionStatus)
+    WeatherRiskViewModel(
+        provider: provider,
+        subscriptionStatus: subscriptionStatus,
+        initialContext: initialContext,
+        initialSpot: initialSpot
+    )
 }

@@ -69,11 +69,13 @@ enum WeatherConditionKind: String, Codable, CaseIterable, Identifiable, Sendable
 
 enum WeatherRiskSource: String, Codable, Sendable {
     case mock
+    case disabled
     case futureProvider
 
     var localizedDescriptionKey: String {
         switch self {
         case .mock: return "weather.source.mock"
+        case .disabled: return "weather.source.disabled"
         case .futureProvider: return "weather.source.future"
         }
     }
@@ -110,6 +112,8 @@ struct WeatherRiskSnapshot: Codable, Equatable, Sendable {
     var precipitationProbability: Double
     var condition: WeatherConditionKind
     var source: WeatherRiskSource
+    var contextPurpose: WeatherQueryPurpose
+    var contextSpotName: String?
 
     static var mockBaseline: WeatherRiskSnapshot {
         WeatherRiskSnapshot(
@@ -118,7 +122,22 @@ struct WeatherRiskSnapshot: Codable, Equatable, Sendable {
             uvIndex: 7,
             precipitationProbability: 0.24,
             condition: .sunny,
-            source: .mock
+            source: .mock,
+            contextPurpose: .rideStart,
+            contextSpotName: nil
+        )
+    }
+
+    static var disabledFallback: WeatherRiskSnapshot {
+        WeatherRiskSnapshot(
+            observedAt: Date(),
+            temperatureCelsius: 28,
+            uvIndex: 4,
+            precipitationProbability: 0.10,
+            condition: .cloudy,
+            source: .disabled,
+            contextPurpose: .rideStart,
+            contextSpotName: nil
         )
     }
 }

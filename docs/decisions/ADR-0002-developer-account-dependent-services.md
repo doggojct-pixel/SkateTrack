@@ -56,3 +56,10 @@ The Task-021a MapKit usage is limited to rendering user-entered local coordinate
 Task-021b remains account-safe. It adds local Session Start Spot selection, archived `SpotSessionSnapshot` persistence, local `SpotVisit` tracking, and History / Summary Spot attribution without requiring WeatherKit, Google services, public places APIs, cloud sync, background location, signing, capabilities, entitlements, or external secrets.
 
 The `SessionSpotPickerView` only reads locally saved Spots from the app repository boundary. It does not request device location, query public places, import Google SDKs, or claim live rideability. Future Task-022 Weather Provider Upgrade and later cloud / Drive tasks must continue replacing providers behind explicit boundaries rather than changing this local Spot association path directly.
+
+
+## Task-022 Weather Provider Confirmation
+
+Task-022 applies this ADR to weather services. WeatherKit and external weather APIs remain developer-account / external-service dependent and are not enabled in the current local-first phase. The app now uses a `WeatherProviding` boundary with `MockWeatherProvider` for offline development and `DisabledWeatherProvider` for explicit live-service-unavailable fallback.
+
+The new `WeatherRideabilityEngine` combines local mock weather with local Spot metadata, but it does not call WeatherKit, external APIs, URLSession, current-location services, background refresh, or any API-key based service. Future live weather work must add a provider behind the same boundary, keep credentials out of the client, update privacy copy, and perform a separate signing / capability review before integration. This Task-022 implementation is provider boundary + local simulation only, with no WeatherKit production service.

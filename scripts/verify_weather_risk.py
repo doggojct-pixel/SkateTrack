@@ -12,6 +12,10 @@ REQUIRED_FILES = [
     "iOS/Core/HealthReminders/WeatherProvider.swift",
     "iOS/Core/HealthReminders/MockWeatherProvider.swift",
     "iOS/Core/HealthReminders/WeatherRiskMonitor.swift",
+    "iOS/Core/HealthReminders/WeatherQueryContext.swift",
+    "iOS/Core/HealthReminders/DisabledWeatherProvider.swift",
+    "iOS/Core/HealthReminders/WeatherRideabilityReport.swift",
+    "iOS/Core/HealthReminders/WeatherRideabilityEngine.swift",
     "iOS/Hooks/useWeatherRisk.swift",
     "iOS/Features/HealthReminders/WeatherSuitabilityCardView.swift",
 ]
@@ -21,6 +25,10 @@ REQUIRED_PROJECT_TOKENS = [
     "WeatherProvider.swift in Sources",
     "MockWeatherProvider.swift in Sources",
     "WeatherRiskMonitor.swift in Sources",
+    "WeatherQueryContext.swift in Sources",
+    "DisabledWeatherProvider.swift in Sources",
+    "WeatherRideabilityReport.swift in Sources",
+    "WeatherRideabilityEngine.swift in Sources",
     "useWeatherRisk.swift in Sources",
     "WeatherSuitabilityCardView.swift in Sources",
 ]
@@ -37,6 +45,7 @@ REQUIRED_LOCALIZATION_KEYS = [
     "weather.suitability.locked.subtitle",
     "weather.suitability.locked.cta",
     "weather.source.mock",
+    "weather.source.disabled",
     "weather.condition.sunny",
     "weather.risk.heat.title",
     "weather.risk.uv.title",
@@ -47,7 +56,7 @@ REQUIRED_LOCALIZATION_KEYS = [
 ]
 
 FORBIDDEN_TOKENS = [
-    "WeatherKit",
+    "import WeatherKit",
     "URLSession",
     "CLLocationManager",
     "UNUserNotificationCenter",
@@ -97,7 +106,7 @@ def main() -> None:
         assert_contains(snapshot_text, token, "WeatherRiskSnapshot.swift")
 
     provider_text = read("iOS/Core/HealthReminders/WeatherProvider.swift")
-    for token in ["protocol WeatherProviding", "currentWeather", "WeatherProviderError"]:
+    for token in ["protocol WeatherProviding", "currentWeather(for context: WeatherQueryContext)", "WeatherProviderError"]:
         assert_contains(provider_text, token, "WeatherProvider.swift")
 
     mock_text = read("iOS/Core/HealthReminders/MockWeatherProvider.swift")
@@ -126,6 +135,8 @@ def main() -> None:
         "useWeatherRisk",
         "WeatherProviding",
         "MockWeatherProvider",
+        "rideabilityReport",
+        "updateContext(_ context: WeatherQueryContext, spot:",
         "subscriptionStatus.hasAccess(to: .healthReminders)",
         "canViewDetailedRisk",
         "refresh()",
@@ -136,6 +147,7 @@ def main() -> None:
     for token in [
         "struct WeatherSuitabilityCardView",
         "WeatherRiskViewModel",
+        "WeatherRideabilityReport",
         "weather-suitability-card",
         "weather-detailed-risk-list",
         "weather-detailed-risk-locked-preview",
@@ -147,7 +159,8 @@ def main() -> None:
     for token in [
         "@StateObject private var weatherRisk",
         "useWeatherRisk(subscriptionStatus: subscriptionStatus)",
-        "WeatherSuitabilityCardView",
+        "SessionStartWeatherSectionView",
+        "selectedSpot: selectedSpotForSession",
         "onOpenHealthReminders",
     ]:
         assert_contains(session_start_text, token, "SessionStartView.swift")
@@ -173,8 +186,10 @@ def main() -> None:
     for token in [
         "Task-019c",
         "Weather Risk Provider + Weather Suitability Card",
+        "Weather Provider Upgrade + Local Rideability Integration",
         "MockWeatherProvider",
         "WeatherSuitabilityCardView",
+        "WeatherRideabilityEngine",
         "DEBUG/local entitlement simulation",
         "WeatherKit",
     ]:

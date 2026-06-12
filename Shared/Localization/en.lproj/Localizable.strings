@@ -607,3 +607,36 @@
 "history.delete.confirm.messageFormat" = "This will permanently delete %d local session records and their motion samples from this device. This cannot be undone.";
 "history.delete.error.title" = "Delete failed";
 "history.delete.error.generic" = "Selected sessions could not be deleted.";
+
+/* Task-022 Weather Provider Upgrade + Local Rideability */
+"weather.source.disabled" = "Weather provider disabled · local fallback only";
+"weather.context.rideStart" = "Ride start context";
+"weather.context.spotPreview" = "Spot preview context";
+"weather.context.noSpot" = "No spot selected";
+"weather.rideability.summary.excellent" = "Local mock conditions and spot factors look excellent for skating.";
+"weather.rideability.summary.good" = "Local mock conditions look rideable. Keep normal safety checks in mind.";
+"weather.rideability.summary.caution" = "Local mock rideability is mixed. Adjust route, intensity, or timing.";
+"weather.rideability.summary.unsafe" = "Local mock rideability is high risk. Consider another spot, time, or indoor practice.";
+"weather.rideability.factor.surface.title" = "Surface";
+"weather.rideability.factor.crowd.title" = "Crowd";
+"weather.rideability.factor.safety.title" = "Safety";
+"weather.rideability.factor.local.title" = "Local context";
+"weather.rideability.factor.local.none.value" = "No spot";
+"weather.rideability.factor.local.none" = "No spot is selected yet, so this uses weather-only mock guidance.";
+"weather.rideability.factor.surface.excellent" = "The saved surface rating looks very friendly for skating.";
+"weather.rideability.factor.surface.good" = "The saved surface rating is suitable for normal riding.";
+"weather.rideability.factor.surface.fair" = "The saved surface rating suggests checking cracks, debris, or braking distance.";
+"weather.rideability.factor.surface.poor" = "The saved surface rating may be unsafe for confident skating.";
+"weather.rideability.factor.surface.unknown" = "No surface rating is saved yet. Inspect the ground before riding.";
+"weather.rideability.factor.crowd.quiet" = "The saved crowd level looks comfortable for practice.";
+"weather.rideability.factor.crowd.moderate" = "The saved crowd level is manageable with normal awareness.";
+"weather.rideability.factor.crowd.busy" = "The saved crowd level may reduce reaction space. Keep speed conservative.";
+"weather.rideability.factor.crowd.unknown" = "Crowd level is unknown. Re-check the area before starting.";
+"weather.rideability.factor.safety.excellent" = "The saved safety score looks excellent.";
+"weather.rideability.factor.safety.good" = "The saved safety score looks suitable for a normal session.";
+"weather.rideability.factor.safety.caution" = "The saved safety score suggests extra caution.";
+"weather.rideability.factor.safety.unsafe" = "The saved safety score is low. Consider choosing another spot.";
+"weather.rideability.spot.title" = "Spot rideability";
+"weather.rideability.spot.locked.title" = "Spot factors are Pro";
+"weather.rideability.spot.locked.subtitle" = "Free users can see the basic spot rideability status. Pro unlocks detailed weather, surface, crowd, and safety factors using local simulation.";
+"spots.surface.unknown" = "Unknown";

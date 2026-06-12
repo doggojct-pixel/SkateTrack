@@ -607,3 +607,36 @@
 "history.delete.confirm.messageFormat" = "這會從此裝置永久刪除 %d 筆本機滑行紀錄與動作樣本，刪除後無法復原。";
 "history.delete.error.title" = "刪除失敗";
 "history.delete.error.generic" = "無法刪除已選取的滑行紀錄。";
+
+/* Task-022 Weather Provider Upgrade + Local Rideability */
+"weather.source.disabled" = "天氣 provider 已停用 · 僅使用本機 fallback";
+"weather.context.rideStart" = "開始滑行脈絡";
+"weather.context.spotPreview" = "場地預覽脈絡";
+"weather.context.noSpot" = "尚未指定場地";
+"weather.rideability.summary.excellent" = "本機 mock 條件與場地因素看起來非常適合滑行。";
+"weather.rideability.summary.good" = "本機 mock 條件可以滑行，仍請維持基本安全檢查。";
+"weather.rideability.summary.caution" = "本機 mock 滑行適合度有些風險，建議調整路線、強度或時間。";
+"weather.rideability.summary.unsafe" = "本機 mock 滑行風險偏高，建議改選場地、時間或室內練習。";
+"weather.rideability.factor.surface.title" = "路面";
+"weather.rideability.factor.crowd.title" = "人潮";
+"weather.rideability.factor.safety.title" = "安全";
+"weather.rideability.factor.local.title" = "本機脈絡";
+"weather.rideability.factor.local.none.value" = "未選場地";
+"weather.rideability.factor.local.none" = "目前尚未選擇場地，因此只使用天氣 mock 指引。";
+"weather.rideability.factor.surface.excellent" = "已儲存的路面評分很適合滑行。";
+"weather.rideability.factor.surface.good" = "已儲存的路面評分適合一般滑行。";
+"weather.rideability.factor.surface.fair" = "已儲存的路面評分提醒你檢查裂縫、碎石與煞停距離。";
+"weather.rideability.factor.surface.poor" = "已儲存的路面評分可能不適合安心滑行。";
+"weather.rideability.factor.surface.unknown" = "尚未儲存路面評分，開始前請先觀察地面狀況。";
+"weather.rideability.factor.crowd.quiet" = "已儲存的人潮狀態很適合練習。";
+"weather.rideability.factor.crowd.moderate" = "已儲存的人潮狀態可接受，但仍要保持注意。";
+"weather.rideability.factor.crowd.busy" = "已儲存的人潮狀態可能壓縮反應空間，請降低速度。";
+"weather.rideability.factor.crowd.unknown" = "人潮狀態未知，開始前請重新確認周遭環境。";
+"weather.rideability.factor.safety.excellent" = "已儲存的安全評分非常好。";
+"weather.rideability.factor.safety.good" = "已儲存的安全評分適合一般滑行。";
+"weather.rideability.factor.safety.caution" = "已儲存的安全評分提醒你要更加小心。";
+"weather.rideability.factor.safety.unsafe" = "已儲存的安全評分偏低，建議改選其他場地。";
+"weather.rideability.spot.title" = "場地滑行適合度";
+"weather.rideability.spot.locked.title" = "場地因素屬於 Pro";
+"weather.rideability.spot.locked.subtitle" = "免費用戶可查看基本場地滑行適合度。Pro 可透過本機模擬解鎖天氣、路面、人潮與安全因素細節。";
+"spots.surface.unknown" = "未知";

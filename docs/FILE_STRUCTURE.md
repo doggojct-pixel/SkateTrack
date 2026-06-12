@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-021b Spot Association + Visit Tracking Foundation with History bulk-delete follow-up
-**Current Development Gate:** Task-021b is complete as local-first Session Start Spot selection, archived Spot snapshot persistence, local Spot visit tracking, History / Summary Spot attribution, and local multi-select History deletion. Route-to-spot auto detection, WeatherKit / rideability integration, cloud sync, public spot discovery, production StoreKit, and developer-account-dependent services remain deferred.
+**Current Baseline:** Source-controlled repository after Task-022 Weather Provider Upgrade + Local Rideability Integration
+**Current Development Gate:** Task-022 is complete as a provider-boundary weather upgrade with mock / disabled providers and local rideability integration on Ride Start and Spot detail. Real WeatherKit, external weather APIs, API keys, current-location weather, background refresh, cloud sync, production StoreKit, and developer-account-dependent live services remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -41,6 +41,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-019c Weather Risk Provider + Weather Suitability Card | Complete | Mock weather provider, weather suitability report, heat / UV / rain risk evaluation, Ride-page weather suitability card, free basic summary, Pro detailed guidance, localization, docs, and verification script are implemented. Real WeatherKit remains deferred. |
 | Task-021a Spot Management Foundation | Complete | Local Spot model extension, SpotVisit future model, Core Data spot schema extension, SpotRepository, useSpots, Spot list / map / detail / editor, free 3-favorite limit, root Spots entry, ADR-0002, docs, and verify script are implemented. |
 | Task-021b Spot Association + Visit Tracking Foundation | Complete | Session Start can select a local Spot; completed sessions persist `SpotSessionSnapshot`; successful saves update local Spot visits; History and Summary display archived Spot attribution. Follow-up adds multi-select local History deletion and cleans Spot MapKit deprecation warnings. No route auto-detection, WeatherKit, public database, or cloud sync. |
+| Task-022 Weather Provider Upgrade + Local Rideability Integration | Complete | Weather query context, disabled provider, mock/local rideability engine, Ride Start weather context, Spot detail rideability card, lightweight Spot rideability chips, localization, docs, and verification are implemented without WeatherKit or external APIs. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -51,8 +52,8 @@ This document records the current SkateTrack repository structure and developmen
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
 | Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
-| UserNotifications scheduling and real weather data are not built yet. | Task-019c surfaces mock weather suitability and detailed Pro risk guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
-| Route-to-spot auto detection, WeatherKit rideability, and cloud sync remain future tasks. | Task-021b supports manual local Spot selection and local visit tracking, but it does not infer Spots from GPS routes or fetch live weather / public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, future Task-022 weather provider integration, future sync tasks. |
+| UserNotifications scheduling and real weather data are not built yet. | Task-022 now provides mock / disabled provider boundaries and local rideability guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
+| Route-to-spot auto detection, real WeatherKit, and cloud sync remain future tasks. | Task-022 supports local mock rideability for manually saved Spots, but it does not infer Spots from GPS routes, fetch live weather, or query public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, `iOS/Core/HealthReminders`, future live-weather / sync tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
 
@@ -200,7 +201,9 @@ SkateTrack/
 │   │   ├── HealthReminders/                        # [協作區] Pro-gated health reminder settings, in-app banner UI, and weather suitability card.
 │   │   │   ├── HealthReminderSettingsView.swift    # [協作區] Dark Pro-gated settings sheet plus Ride entry card for health reminders.
 │   │   │   ├── HealthReminderBannerView.swift      # [協作區] Live HUD in-app hydration/rest/stretch reminder banner.
-│   │   │   └── WeatherSuitabilityCardView.swift    # [協作區] Ride-page mock weather suitability card with free summary and Pro detailed guidance.
+│   │   │   ├── WeatherSuitabilityCardView.swift    # [協作區] Ride-page mock / disabled weather rideability card with free summary and Pro detailed guidance.
+│   │   │   ├── WeatherRiskFactorRowView.swift      # [協作區] Reusable risk / rideability factor row for weather and Spot details.
+│   │   │   └── WeatherRideabilityStatusChipView.swift # [協作區] Reusable local rideability status chip.
 │   │   ├── RouteMap/                               # [佔位] Future full route map and replay UI.
 │   │   ├── SessionRecording/                       # [協作區] Session Start and Live HUD UI components.
 │   │   │   ├── BoardModeSelectorView.swift         # [協作區] Skateboard mode selector.
@@ -361,6 +364,7 @@ python3 scripts/verify_session_history.py
 python3 scripts/verify_session_summary.py
 python3 scripts/verify_health_reminders.py
 python3 scripts/verify_weather_risk.py
+python3 scripts/verify_weather_rideability.py
 python3 scripts/verify_equipment_manager.py
 python3 scripts/verify_equipment_mileage_tracking.py
 python3 scripts/verify_app_icons.py
@@ -371,10 +375,10 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with a small History / Summary gear-reference display task if desired; Task-020b intentionally leaves archived gear-name snapshots and deleted-equipment display semantics for a later task.
+1. Continue with Task-023 Session Share Card + Quick Export as a local-only export task.
 2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
-3. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
-4. Keep Task-016c real StoreKit work separate from Paywall / Summary UI. The future StoreKit provider should replace the entitlement provider behind `FeatureFlagEngine` instead of rewriting Paywall / locked-feature UI.
+3. Future live WeatherKit / external-weather work should replace `MockWeatherProvider` or `DisabledWeatherProvider` behind `WeatherProviding` only after developer-account / privacy / capability review.
+4. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
 5. History / Summary UI should keep reading from the repository layer added in Task-015a / Task-015b; Views should not import or manipulate `NSManagedObject` directly.
 
 ## Task-016b Subscription UI Note
@@ -470,3 +474,32 @@ scripts/verify_spot_session_association.py        # [工程設定] Task-021b ver
 - Deleting sessions remains local-only and removes linked motion samples through `SessionRepository.deleteSession(id:)`.
 - Linked `PersistedSpotVisit` rows are also removed and Spot visit summary fields are refreshed, so deleted sessions do not leave stale visit counts.
 - `SpotMapView` now uses iOS 17 `Map(position:)` and `Annotation` to avoid deprecated MapKit APIs.
+
+
+## Task-022 Weather Provider Upgrade + Local Rideability Addendum
+
+### New / Updated Source Areas
+
+```text
+iOS/Core/HealthReminders/WeatherQueryContext.swift        # [自主區] Ride Start / Spot Preview weather context without current-location permission.
+iOS/Core/HealthReminders/DisabledWeatherProvider.swift    # [自主區] Explicit fallback when live weather services are not enabled.
+iOS/Core/HealthReminders/WeatherRideabilityReport.swift   # [自主區] Local rideability report and factor model.
+iOS/Core/HealthReminders/WeatherRideabilityEngine.swift   # [自主區] Combines mock weather, surface, crowd, and safety factors.
+iOS/Core/HealthReminders/WeatherProvider.swift            # [自主區] Upgraded provider boundary accepting `WeatherQueryContext`.
+iOS/Core/HealthReminders/MockWeatherProvider.swift        # [自主區] Offline context-aware mock provider; no network or WeatherKit.
+iOS/Hooks/useWeatherRisk.swift                            # [協作區 — 邊界適配層] Exposes weather and local rideability reports to SwiftUI.
+iOS/Features/SessionRecording/SessionStartWeatherSectionView.swift # [協作區] Keeps ride-start weather context sync out of SessionStartView.
+iOS/Features/HealthReminders/WeatherSuitabilityCardView.swift # [協作區] Ride Start mock / disabled weather and rideability card.
+iOS/Features/HealthReminders/WeatherRiskFactorRowView.swift # [協作區] Reusable factor row for weather and Spot rideability details.
+iOS/Features/HealthReminders/WeatherRideabilityStatusChipView.swift # [協作區] Reusable rideability status chip.
+iOS/Features/Spots/SpotRideabilityCardView.swift          # [協作區] Spot Detail local rideability card with Pro-gated factors.
+iOS/Features/Spots/SpotCardView.swift                     # [協作區] Adds lightweight local rideability chip to Spot cards.
+iOS/Features/Spots/SpotMapView.swift                      # [協作區] Adds lightweight local rideability chip to Spot map markers / strips.
+scripts/verify_weather_rideability.py                     # [工程設定] Task-022 verification script.
+```
+
+### Deferred After Task-022
+
+- Real WeatherKit, external weather APIs, API keys, URLSession networking, current-location weather lookup, background weather refresh, and live-weather caching remain deferred.
+- Route-to-Spot auto detection, public Spot discovery, Google / cloud sync, production StoreKit, signing, capabilities, watchOS, and macOS UI remain out of scope.
+- Future live-weather integration must replace providers behind `WeatherProviding` and update privacy / capability documentation in a separate integration task.

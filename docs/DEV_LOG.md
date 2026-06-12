@@ -959,3 +959,26 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_history.py`, `python3 scripts/verify_spots.py`, and `python3 scripts/verify_spot_session_association.py` after applying this follow-up.
 - Manual validation should confirm selection mode, select-all-visible, clear selection, destructive delete confirmation, locked-card deletion, History refresh, Spot visit summary refresh, and absence of SpotMapView deprecation warnings.
+
+
+## 2026-06-12 — Task-022 Weather Provider Upgrade + Local Rideability Integration
+
+### Completed
+- Upgraded the Task-019c weather boundary with `WeatherQueryContext` so ride-start and spot-preview UI can request context-aware mock weather without reading current location or calling a network service.
+- Added `DisabledWeatherProvider` as the explicit fallback for developer-account-dependent live weather services that are not enabled yet.
+- Added `WeatherRideabilityReport` and `WeatherRideabilityEngine` to combine mock weather risk with local Spot surface, crowd, and safety factors.
+- Updated `MockWeatherProvider` to produce stable local mock snapshots from ride-start / spot-preview context while remaining fully offline.
+- Updated `useWeatherRisk` to expose both the original weather suitability report and the new local rideability report.
+- Split the Session Start weather section into `SessionStartWeatherSectionView` so `SessionStartView.swift` stays comfortably under the file-length warning threshold.
+- Added reusable weather UI rows and status chips to keep `WeatherSuitabilityCardView` readable.
+- Added Spot rideability UI on Spot detail, plus lightweight rideability chips in Spot cards and map markers.
+- Added Task-022 localization keys and `scripts/verify_weather_rideability.py`; updated the existing weather verification script for the upgraded provider boundary.
+
+### Scope Boundary
+- Task-022 does not implement WeatherKit, external weather APIs, API keys, URLSession networking, current-location permission, background weather refresh, signing, capabilities, production StoreKit, App Store Connect, Google services, watchOS UI, or macOS UI.
+- Rideability output is a local simulation built from mock weather and local Spot metadata; it must be presented as guidance, not as a production live-weather safety guarantee.
+- Detailed weather / spot-factor guidance remains gated through `GatedFeature.healthReminders`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation.
+
+### Validation Notes
+- Run `python3 scripts/verify_weather_rideability.py` together with `verify_weather_risk.py`, localization, subscription, Spot, and Session Start verification scripts.
+- Manual validation should confirm ride-start weather context changes when a local Spot is selected, Spot detail shows the local rideability card, free users see locked detailed factors, DEBUG/local subscriber simulation unlocks detailed factors, and no location or WeatherKit permission prompt appears.

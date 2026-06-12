@@ -151,3 +151,10 @@ Task-021b extends local Spot Management into Session Start selection, completed-
 Spot favorite limits remain governed by Task-021a through `GatedFeature.spotManagement`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Task-021b only associates a selected local Spot with a completed session and records a local `SpotVisit` after `SessionRepository.saveCompletedSession(_:)` succeeds. Discarded sessions and failed saves must not update Spot visit counts.
 
 Task-021b intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, WeatherKit, Google services, cloud sync, public Spot discovery, route-to-Spot auto detection, signing, or capability changes. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting Session Start, History, Summary, or Spot visit tracking UI.
+
+
+## Task-022 Confirmation
+
+Task-022 extends the Task-019c weather suitability layer into local rideability guidance for Ride Start and Spot detail. Detailed weather, surface, crowd, and safety factors remain gated through `GatedFeature.healthReminders`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Free users can view the basic local rideability status, while Pro / DEBUG subscriber simulation unlocks detailed factor rows.
+
+Task-022 intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, WeatherKit, external weather APIs, API keys, URLSession networking, current-location permission, background weather refresh, signing, capabilities, Google services, public spot discovery, cloud sync, watchOS UI, or macOS UI. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting weather or rideability UI.

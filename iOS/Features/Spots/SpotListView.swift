@@ -22,9 +22,12 @@ struct SpotListView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @Binding var isDetailPresented: Bool
     @StateObject private var viewModel: SpotsViewModel
+    @StateObject private var weatherRisk: WeatherRiskViewModel
     @State private var displayMode: SpotDisplayMode = .list
     @State private var selectedSpot: SpotProfile?
     @State private var isEditorPresented = false
+    @State private var isHealthReminderSettingsPresented = false
+    private let rideabilityEngine = WeatherRideabilityEngine()
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
@@ -33,6 +36,7 @@ struct SpotListView: View {
         self.subscriptionStatus = subscriptionStatus
         self._isDetailPresented = isDetailPresented
         _viewModel = StateObject(wrappedValue: useSpots(subscriptionStatus: subscriptionStatus))
+        _weatherRisk = StateObject(wrappedValue: useWeatherRisk(subscriptionStatus: subscriptionStatus))
     }
 
     var body: some View {
@@ -43,10 +47,12 @@ struct SpotListView: View {
             if let selectedSpot {
                 SpotDetailView(
                     spot: selectedSpot,
+                    weatherRisk: weatherRisk,
                     onBack: closeDetail,
                     onToggleFavorite: { await toggleFavoriteAndRefreshSelection(selectedSpot) },
                     onSave: saveFromDetail,
-                    onDelete: deleteSelectedSpot
+                    onDelete: deleteSelectedSpot,
+                    onOpenHealthReminders: { isHealthReminderSettingsPresented = true }
                 )
                 .transition(.move(edge: .trailing).combined(with: .opacity))
                 .zIndex(5)
@@ -65,7 +71,14 @@ struct SpotListView: View {
                 lockedFeature: feature
             )
         }
-        .task { await viewModel.refresh() }
+        .sheet(isPresented: $isHealthReminderSettingsPresented) {
+            HealthReminderSettingsView(subscriptionStatus: subscriptionStatus)
+        }
+        .task {
+            await viewModel.refresh()
+            weatherRisk.updateContext(.rideStart(), spot: nil)
+            weatherRisk.refresh()
+        }
         .onChange(of: selectedSpot) { _, newValue in
             isDetailPresented = newValue != nil
         }
@@ -177,6 +190,7 @@ struct SpotListView: View {
                     Button { openDetail(spot) } label: {
                         SpotCardView(
                             spot: spot,
+                            rideabilityLevel: rideabilityLevel(for: spot),
                             onToggleFavorite: { Task { await viewModel.toggleFavorite(spot) } }
                         )
                     }
@@ -235,6 +249,14 @@ struct SpotListView: View {
                 endRadius: 420
             )
         }
+    }
+
+    private func rideabilityLevel(for spot: SpotProfile) -> WeatherSuitabilityLevel {
+        rideabilityEngine.report(
+            weatherReport: weatherRisk.report,
+            context: .spotPreview(spot),
+            spot: spot
+        ).level
     }
 
     private func openDetail(_ spot: SpotProfile) {

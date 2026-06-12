@@ -197,6 +197,15 @@
 		21B200000000000000000101 /* SpotVisitTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B200000000000000000001 /* SpotVisitTracker.swift */; };
 		21B300000000000000000101 /* SessionSpotPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B300000000000000000001 /* SessionSpotPickerView.swift */; };
 		21B400000000000000000101 /* SessionSpotAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B400000000000000000001 /* SessionSpotAttributionView.swift */; };
+
+		22A100000000000000000101 /* WeatherQueryContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000001 /* WeatherQueryContext.swift */; };
+		22A100000000000000000102 /* DisabledWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000002 /* DisabledWeatherProvider.swift */; };
+		22A100000000000000000103 /* WeatherRideabilityReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000003 /* WeatherRideabilityReport.swift */; };
+		22A100000000000000000104 /* WeatherRideabilityEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A100000000000000000004 /* WeatherRideabilityEngine.swift */; };
+		22A200000000000000000101 /* WeatherRiskFactorRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A200000000000000000001 /* WeatherRiskFactorRowView.swift */; };
+		22A200000000000000000102 /* WeatherRideabilityStatusChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A200000000000000000002 /* WeatherRideabilityStatusChipView.swift */; };
+		22A300000000000000000101 /* SessionStartWeatherSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A300000000000000000001 /* SessionStartWeatherSectionView.swift */; };
+		22A400000000000000000101 /* SpotRideabilityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A400000000000000000001 /* SpotRideabilityCardView.swift */; };
 	/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,6 +372,15 @@
 		21B200000000000000000001 /* SpotVisitTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotVisitTracker.swift; sourceTree = "<group>"; };
 		21B300000000000000000001 /* SessionSpotPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSpotPickerView.swift; sourceTree = "<group>"; };
 		21B400000000000000000001 /* SessionSpotAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSpotAttributionView.swift; sourceTree = "<group>"; };
+
+		22A100000000000000000001 /* WeatherQueryContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherQueryContext.swift; sourceTree = "<group>"; };
+		22A100000000000000000002 /* DisabledWeatherProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledWeatherProvider.swift; sourceTree = "<group>"; };
+		22A100000000000000000003 /* WeatherRideabilityReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRideabilityReport.swift; sourceTree = "<group>"; };
+		22A100000000000000000004 /* WeatherRideabilityEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRideabilityEngine.swift; sourceTree = "<group>"; };
+		22A200000000000000000001 /* WeatherRiskFactorRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRiskFactorRowView.swift; sourceTree = "<group>"; };
+		22A200000000000000000002 /* WeatherRideabilityStatusChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRideabilityStatusChipView.swift; sourceTree = "<group>"; };
+		22A300000000000000000001 /* SessionStartWeatherSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartWeatherSectionView.swift; sourceTree = "<group>"; };
+		22A400000000000000000001 /* SpotRideabilityCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotRideabilityCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -540,6 +558,7 @@
 				12AD02000000000000000001 /* SessionStartView.swift */,
 				21A110000000000000000001 /* SessionStartSupportTypes.swift */,
 				21B300000000000000000001 /* SessionSpotPickerView.swift */,
+				22A300000000000000000001 /* SessionStartWeatherSectionView.swift */,
 				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
 				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
 				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
@@ -634,6 +653,10 @@
 				19C100000000000000000002 /* WeatherProvider.swift */,
 				19C100000000000000000003 /* MockWeatherProvider.swift */,
 				19C100000000000000000004 /* WeatherRiskMonitor.swift */,
+				22A100000000000000000001 /* WeatherQueryContext.swift */,
+				22A100000000000000000002 /* DisabledWeatherProvider.swift */,
+				22A100000000000000000003 /* WeatherRideabilityReport.swift */,
+				22A100000000000000000004 /* WeatherRideabilityEngine.swift */,
 			);
 			path = iOS/Core/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -644,6 +667,8 @@
 				19A100000000000000000004 /* HealthReminderSettingsView.swift */,
 				19B100000000000000000003 /* HealthReminderBannerView.swift */,
 				19C100000000000000000006 /* WeatherSuitabilityCardView.swift */,
+				22A200000000000000000001 /* WeatherRiskFactorRowView.swift */,
+				22A200000000000000000002 /* WeatherRideabilityStatusChipView.swift */,
 			);
 			path = iOS/Features/HealthReminders;
 			sourceTree = SOURCE_ROOT;
@@ -688,6 +713,7 @@
 				21A200000000000000000006 /* SpotDetailView.swift */,
 				21A200000000000000000007 /* SpotEditorView.swift */,
 				21A200000000000000000008 /* SpotFavoriteLimitBanner.swift */,
+				22A400000000000000000001 /* SpotRideabilityCardView.swift */,
 			);
 			path = iOS/Features/Spots;
 			sourceTree = SOURCE_ROOT;
@@ -1045,6 +1071,14 @@
 				19C100000000000000000104 /* WeatherRiskMonitor.swift in Sources */,
 				19C100000000000000000105 /* useWeatherRisk.swift in Sources */,
 				19C100000000000000000106 /* WeatherSuitabilityCardView.swift in Sources */,
+				22A100000000000000000101 /* WeatherQueryContext.swift in Sources */,
+				22A100000000000000000102 /* DisabledWeatherProvider.swift in Sources */,
+				22A100000000000000000103 /* WeatherRideabilityReport.swift in Sources */,
+				22A100000000000000000104 /* WeatherRideabilityEngine.swift in Sources */,
+				22A200000000000000000101 /* WeatherRiskFactorRowView.swift in Sources */,
+				22A200000000000000000102 /* WeatherRideabilityStatusChipView.swift in Sources */,
+				22A300000000000000000101 /* SessionStartWeatherSectionView.swift in Sources */,
+				22A400000000000000000101 /* SpotRideabilityCardView.swift in Sources */,
 				20A100000000000000000101 /* EquipmentRepository.swift in Sources */,
 				20A100000000000000000102 /* WearReminderEngine.swift in Sources */,
 				20A100000000000000000103 /* useEquipmentManager.swift in Sources */,

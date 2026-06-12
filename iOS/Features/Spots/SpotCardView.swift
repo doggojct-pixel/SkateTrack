@@ -6,6 +6,7 @@ import SwiftUI
 
 struct SpotCardView: View {
     let spot: SpotProfile
+    var rideabilityLevel: WeatherSuitabilityLevel?
     let onToggleFavorite: () -> Void
 
     var body: some View {
@@ -35,6 +36,9 @@ struct SpotCardView: View {
                         chip(surfaceRating.localizationKey, color: SkateTrackSessionStartColors.teal)
                     }
                     chip(spot.crowdLevel.localizationKey, color: SkateTrackSessionStartColors.amber)
+                    if let rideabilityLevel {
+                        WeatherRideabilityStatusChipView(level: rideabilityLevel, compact: true)
+                    }
                 }
 
                 if let notes = spot.notes, !notes.isEmpty {

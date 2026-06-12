@@ -1,6 +1,6 @@
 // [協作區] WeatherSuitabilityCardView.swift
-// 用途：呈現 Task-019c 滑行天氣適合度卡片；基本摘要免費可見，完整風險說明沿用 Pro 權限邊界。
-// 委派至：useWeatherRisk 提供 mock/provider-based suitability report；SubscriptionPaywallView 仍由外層設定入口負責。
+// 用途：呈現 Task-022 滑行天氣與本機 rideability 卡片；基本摘要免費可見，完整風險說明沿用 Pro 權限邊界。
+// 委派至：useWeatherRisk 提供 mock / disabled provider 報告；SessionStartWeatherSectionView 負責同步 context。
 
 import SwiftUI
 
@@ -8,13 +8,14 @@ struct WeatherSuitabilityCardView: View {
     @ObservedObject var weatherRisk: WeatherRiskViewModel
     let onOpenHealthReminders: () -> Void
 
-    private var report: WeatherSuitabilityReport {
-        weatherRisk.report
+    private var report: WeatherRideabilityReport {
+        weatherRisk.rideabilityReport
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             header
+            contextLine
             summaryMetrics
 
             if let errorMessageKey = weatherRisk.errorMessageKey {
@@ -34,10 +35,9 @@ struct WeatherSuitabilityCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(levelColor(for: report.level).opacity(0.34), lineWidth: 1)
+                .stroke(WeatherRideabilityStatusChipView.levelColor(for: report.level).opacity(0.34), lineWidth: 1)
         )
-        .shadow(color: levelColor(for: report.level).opacity(0.13), radius: 22, x: 0, y: 14)
-        .onAppear { weatherRisk.refresh() }
+        .shadow(color: WeatherRideabilityStatusChipView.levelColor(for: report.level).opacity(0.13), radius: 22, x: 0, y: 14)
         .accessibilityIdentifier("weather-suitability-card")
     }
 
@@ -45,9 +45,9 @@ struct WeatherSuitabilityCardView: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: report.snapshot.condition.systemImageName)
                 .font(.system(size: 16, weight: .black))
-                .foregroundStyle(levelColor(for: report.level))
+                .foregroundStyle(WeatherRideabilityStatusChipView.levelColor(for: report.level))
                 .frame(width: 40, height: 40)
-                .background(levelColor(for: report.level).opacity(0.16))
+                .background(WeatherRideabilityStatusChipView.levelColor(for: report.level).opacity(0.16))
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 5) {
@@ -56,16 +56,10 @@ struct WeatherSuitabilityCardView: View {
                         .font(.system(size: 15, weight: .heavy, design: .rounded))
                         .foregroundStyle(.white)
 
-                    Text(LocalizedStringKey(report.level.titleKey))
-                        .font(.system(size: 9, weight: .black, design: .monospaced))
-                        .foregroundStyle(levelColor(for: report.level))
-                        .padding(.horizontal, 7)
-                        .padding(.vertical, 4)
-                        .background(levelColor(for: report.level).opacity(0.16))
-                        .clipShape(Capsule())
+                    WeatherRideabilityStatusChipView(level: report.level)
                 }
 
-                Text(LocalizedStringKey(report.level.summaryKey))
+                Text(LocalizedStringKey(report.summaryKey))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -93,26 +87,40 @@ struct WeatherSuitabilityCardView: View {
         }
     }
 
+    private var contextLine: some View {
+        HStack(spacing: 8) {
+            Image(systemName: report.context.hasSpot ? "mappin.circle.fill" : "location.slash.fill")
+                .font(.system(size: 11, weight: .black))
+                .foregroundStyle(SkateTrackSessionStartColors.teal)
+            Text(LocalizedStringKey(report.context.purpose.localizationKey))
+                .font(.system(size: 10, weight: .black, design: .monospaced))
+                .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
+                .textCase(.uppercase)
+            if let spotName = report.spotName, !spotName.isEmpty {
+                Text(verbatim: spotName)
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.86))
+                    .lineLimit(1)
+            } else {
+                Text("weather.context.noSpot")
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+            }
+            Spacer(minLength: 0)
+        }
+    }
+
     private var summaryMetrics: some View {
         HStack(spacing: 8) {
-            metricPill(
-                titleKey: "weather.suitability.temperature",
-                value: String(format: "%.0f°C", report.snapshot.temperatureCelsius)
-            )
-            metricPill(
-                titleKey: "weather.suitability.uv",
-                value: String(format: "%.0f", report.snapshot.uvIndex)
-            )
-            metricPill(
-                titleKey: "weather.suitability.rain",
-                value: "\(Int(report.snapshot.precipitationProbability * 100))%"
-            )
+            metricPill(titleKey: "weather.suitability.temperature", value: String(format: "%.0f°C", report.snapshot.temperatureCelsius))
+            metricPill(titleKey: "weather.suitability.uv", value: String(format: "%.0f", report.snapshot.uvIndex))
+            metricPill(titleKey: "weather.suitability.rain", value: "\(Int(report.snapshot.precipitationProbability * 100))%")
         }
     }
 
     private func metricPill(titleKey: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(value)
+            Text(verbatim: value)
                 .font(.system(size: 15, weight: .heavy, design: .rounded))
                 .foregroundStyle(SkateTrackSessionStartColors.teal)
 
@@ -137,30 +145,7 @@ struct WeatherSuitabilityCardView: View {
                 .textCase(.uppercase)
 
             ForEach(report.factors) { factor in
-                HStack(alignment: .top, spacing: 10) {
-                    Image(systemName: factor.id.systemImageName)
-                        .font(.system(size: 12, weight: .black))
-                        .foregroundStyle(levelColor(for: factor.level))
-                        .frame(width: 28, height: 28)
-                        .background(levelColor(for: factor.level).opacity(0.14))
-                        .clipShape(Circle())
-
-                    VStack(alignment: .leading, spacing: 3) {
-                        HStack(spacing: 6) {
-                            Text(LocalizedStringKey(factor.id.titleKey))
-                                .font(.system(size: 12, weight: .heavy, design: .rounded))
-                                .foregroundStyle(.white)
-                            Text(factor.valueText)
-                                .font(.system(size: 11, weight: .black, design: .monospaced))
-                                .foregroundStyle(levelColor(for: factor.level))
-                        }
-
-                        Text(LocalizedStringKey(factor.messageKey))
-                            .font(.system(size: 11, weight: .semibold, design: .rounded))
-                            .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
+                WeatherRiskFactorRowView(factor: factor)
             }
         }
         .padding(12)
@@ -216,19 +201,6 @@ struct WeatherSuitabilityCardView: View {
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
-    }
-
-    private func levelColor(for level: WeatherSuitabilityLevel) -> Color {
-        switch level {
-        case .excellent:
-            return SkateTrackSessionStartColors.teal
-        case .good:
-            return SkateTrackSessionStartColors.green
-        case .caution:
-            return SkateTrackSessionStartColors.amber
-        case .unsafe:
-            return SkateTrackSessionStartColors.accent2
-        }
     }
 }
 

@@ -81,8 +81,10 @@ struct SessionStartView: View {
 
                         previewMetricStrip
 
-                        WeatherSuitabilityCardView(
+                        SessionStartWeatherSectionView(
                             weatherRisk: weatherRisk,
+                            selectedSportMode: selectedSportMode,
+                            selectedSpot: selectedSpotForSession,
                             onOpenHealthReminders: { isHealthReminderSettingsPresented = true }
                         )
 
