@@ -80,20 +80,17 @@ struct InlineSkateGlyphView: View {
 
             context.translateBy(x: xOffset, y: yOffset)
             context.scaleBy(x: scale, y: scale)
-
             let lineRects: [(CGRect, Double)] = [
                 (CGRect(x: 6.3, y: 33.3, width: 16.4, height: 2.3), 1.00),
                 (CGRect(x: 6.3, y: 38.3, width: 14.8, height: 2.3), 0.92),
                 (CGRect(x: 6.3, y: 43.4, width: 13.2, height: 2.3), 0.78)
             ]
-
             for (rect, opacity) in lineRects {
                 context.fill(
                     Path(roundedRect: rect, cornerRadius: rect.height / 2),
                     with: .color(color.opacity(opacity))
                 )
             }
-
             for contour in Self.figureContours {
                 context.fill(Self.smoothClosedPath(contour), with: .color(color))
             }
@@ -101,25 +98,20 @@ struct InlineSkateGlyphView: View {
         .frame(width: size, height: size)
         .accessibilityHidden(true)
     }
-
     private static func smoothClosedPath(_ points: [CGPoint]) -> Path {
         var path = Path()
         guard points.count > 2 else { return path }
-
         let firstMidpoint = midpoint(points[0], points[1])
         path.move(to: firstMidpoint)
-
         for index in 1..<points.count {
             let current = points[index]
             let next = points[(index + 1) % points.count]
             path.addQuadCurve(to: midpoint(current, next), control: current)
         }
-
         path.addQuadCurve(to: firstMidpoint, control: points[0])
         path.closeSubpath()
         return path
     }
-
     private static func midpoint(_ lhs: CGPoint, _ rhs: CGPoint) -> CGPoint {
         CGPoint(x: (lhs.x + rhs.x) / 2, y: (lhs.y + rhs.y) / 2)
     }
@@ -151,7 +143,9 @@ struct SessionStartView: View {
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
     @State private var isHealthReminderSettingsPresented = false
+    @State private var selectedEquipmentID: UUID?
     @StateObject private var weatherRisk: WeatherRiskViewModel
+    @StateObject private var equipmentManager: EquipmentManagerViewModel
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
@@ -163,6 +157,9 @@ struct SessionStartView: View {
         self.rootNavigationAccessory = rootNavigationAccessory
         _weatherRisk = StateObject(
             wrappedValue: useWeatherRisk(subscriptionStatus: subscriptionStatus)
+        )
+        _equipmentManager = StateObject(
+            wrappedValue: useEquipmentManager(subscriptionStatus: subscriptionStatus)
         )
     }
 
@@ -187,7 +184,17 @@ struct SessionStartView: View {
                                 if newCategory == .inline {
                                     selectedPowerType = .humanPowered
                                 }
+                                clearIncompatibleSelectedEquipment()
                             }
+
+                        SessionEquipmentPickerView(
+                            equipment: equipmentManager.equipment,
+                            selectedSportMode: selectedSportMode,
+                            selectedPowerType: selectedPowerType,
+                            hasAccess: equipmentManager.hasManagementAccess,
+                            selectedEquipmentID: $selectedEquipmentID,
+                            onUnlock: { showPaywall(for: .equipmentManager) }
+                        )
 
                         previewMetricStrip
 
@@ -248,12 +255,26 @@ struct SessionStartView: View {
         .sheet(isPresented: $isHealthReminderSettingsPresented) {
             HealthReminderSettingsView(subscriptionStatus: subscriptionStatus)
         }
+        .task {
+            await equipmentManager.refresh()
+            clearIncompatibleSelectedEquipment()
+        }
         .onChange(of: subscriptionStatus.isSubscriber) { _, isSubscriber in
             if isSubscriber {
                 upgradePromptFeature = nil
                 paywallFeature = nil
+            } else {
+                selectedEquipmentID = nil
+            }
+            Task {
+                await equipmentManager.refresh()
+                clearIncompatibleSelectedEquipment()
             }
         }
+        .onChange(of: selectedBoardMode) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: selectedInlineMode) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: selectedPowerType) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: equipmentManager.equipment) { _, _ in clearIncompatibleSelectedEquipment() }
     }
 
     private var fullScreenBackground: some View {
@@ -429,8 +450,23 @@ struct SessionStartView: View {
             return
         }
         Task {
-            await sessionRecording.actions.startSession(selectedSportMode, selectedPowerType)
+            await sessionRecording.actions.startSession(
+                selectedSportMode, selectedPowerType, selectedEquipmentIDForSession
+            )
         }
+    }
+
+    private var selectedEquipmentIDForSession: UUID? {
+        guard equipmentManager.hasManagementAccess, let selectedEquipmentID else { return nil }
+        return equipmentManager.equipment.contains { equipment in
+            equipment.id == selectedEquipmentID
+                && equipment.isCompatible(with: selectedSportMode, powerType: selectedPowerType)
+        } ? selectedEquipmentID : nil
+    }
+
+    private func clearIncompatibleSelectedEquipment() {
+        guard selectedEquipmentIDForSession != selectedEquipmentID else { return }
+        selectedEquipmentID = nil
     }
 
     private func showUpgradePrompt() {

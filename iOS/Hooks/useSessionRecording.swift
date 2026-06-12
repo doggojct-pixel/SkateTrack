@@ -9,6 +9,7 @@ struct SessionRecordingState: Equatable {
     var status: SessionRecordingStatus
     var selectedSportMode: SportMode?
     var selectedPowerType: PowerType
+    var selectedEquipmentID: UUID?
     var currentSpeedKilometersPerHour: Double
     var maxSpeedKilometersPerHour: Double
     var averageSpeedKilometersPerHour: Double
@@ -24,6 +25,7 @@ struct SessionRecordingState: Equatable {
         status: .idle,
         selectedSportMode: nil,
         selectedPowerType: .humanPowered,
+        selectedEquipmentID: nil,
         currentSpeedKilometersPerHour: 0,
         maxSpeedKilometersPerHour: 0,
         averageSpeedKilometersPerHour: 0,
@@ -38,7 +40,7 @@ struct SessionRecordingState: Equatable {
 }
 
 struct SessionRecordingActions {
-    let startSession: (SportMode, PowerType) async -> Void
+    let startSession: (SportMode, PowerType, UUID?) async -> Void
     let pauseSession: () async -> Void
     let resumeSession: () async -> Void
     let requestEndSession: () async -> Void
@@ -66,8 +68,12 @@ final class SessionRecordingViewModel: ObservableObject {
 
     var actions: SessionRecordingActions {
         SessionRecordingActions(
-            startSession: { [weak self] mode, powerType in
-                await self?.startSession(mode: mode, powerType: powerType)
+            startSession: { [weak self] mode, powerType, equipmentID in
+                await self?.startSession(
+                    mode: mode,
+                    powerType: powerType,
+                    equipmentID: equipmentID
+                )
             },
             pauseSession: { [weak self] in
                 await self?.pauseSession()
@@ -141,16 +147,25 @@ final class SessionRecordingViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func startSession(mode: SportMode, powerType: PowerType) async {
+    private func startSession(
+        mode: SportMode,
+        powerType: PowerType,
+        equipmentID: UUID?
+    ) async {
         updateState {
             $0.selectedSportMode = mode
             $0.selectedPowerType = powerType
+            $0.selectedEquipmentID = equipmentID
             $0.recentRouteCoordinates = []
             $0.errorMessageKey = nil
         }
 
         do {
-            try await coordinator.startSession(mode: mode, powerType: powerType)
+            try await coordinator.startSession(
+                mode: mode,
+                powerType: powerType,
+                equipmentID: equipmentID
+            )
         } catch let error as SessionRecordingError {
             updateState { $0.errorMessageKey = error.localizationKey }
         } catch {

@@ -116,3 +116,15 @@ Task-019c intentionally does not implement production StoreKit, App Store Connec
 Task-020a introduces the subscriber-gated Equipment Manager foundation and CRUD UI. It follows the project-wide paid feature rule by gating real equipment creation, editing, deletion, and wheel / bearing mileage reset actions through `GatedFeature.equipmentManager`, `useSubscriptionStatus`, and the existing `FeatureFlagEngine` / DEBUG-local entitlement simulation architecture. Free users can see the Gear screen and sample equipment cards, while DEBUG/local entitlement simulation can unlock local gear management during development.
 
 Task-020a intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, photo-library access, cloud sync, or automatic session mileage accumulation. Future Task-020b should connect selected equipment and session-completion mileage through the existing repository / recording-coordinator boundaries without bypassing the entitlement provider strategy.
+
+## Task-020b Confirmation
+
+Task-020b extends the subscriber-gated Equipment Manager into the Session Start and session-completion pipeline. Selecting current-session equipment and applying completed-session mileage to gear are gated through `GatedFeature.equipmentManager`, `useSubscriptionStatus`, and the existing `FeatureFlagEngine` / DEBUG-local entitlement simulation architecture.
+
+Task-020b intentionally applies mileage only after `SessionRepository.saveCompletedSession(_:)` succeeds. Free users do not select sample gear for runtime tracking, discard / failed-save flows do not update mileage, and Views do not mutate `PersistedEquipment` directly. `EquipmentMileageTracker` remains the boundary between session completion and `EquipmentRepository` mileage accumulation.
+
+Task-020b does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, photo-library access, cloud sync, History / Summary gear display, or archived deleted-equipment snapshots. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting the equipment picker or mileage-tracking UI.
+
+## Task-020b compatibility follow-up
+
+Task-020b also requires mode / power compatibility for subscriber-gated equipment tracking. Skateboard equipment must match the current board mode and human / electric power type before it can be selected for a runtime session. Inline equipment must match the current inline mode and remain human-powered. This keeps automatic mileage accumulation from applying to the wrong gear while preserving the same `GatedFeature.equipmentManager`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation boundary.

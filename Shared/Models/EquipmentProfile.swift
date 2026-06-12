@@ -131,6 +131,20 @@ struct EquipmentProfile: Identifiable, Codable, Sendable, Equatable {
         equipmentType == .skateboard
     }
 
+    func isCompatible(with sessionSportMode: SportMode, powerType sessionPowerType: PowerType) -> Bool {
+        guard equipmentType.isCompatible(with: sessionSportMode) else { return false }
+        guard sessionPowerType.isValid(for: sessionSportMode) else { return false }
+
+        switch (sportMode, sessionSportMode) {
+        case let (.skateboard(equipmentMode), .skateboard(sessionMode)):
+            return equipmentMode == sessionMode && powerType == sessionPowerType
+        case let (.inline(equipmentMode), .inline(sessionMode)):
+            return equipmentMode == sessionMode && powerType == .humanPowered && sessionPowerType == .humanPowered
+        case (.skateboard, .inline), (.inline, .skateboard):
+            return false
+        }
+    }
+
     static func inferredEquipmentType(from sportMode: SportMode) -> EquipmentType {
         switch sportMode {
         case .skateboard:

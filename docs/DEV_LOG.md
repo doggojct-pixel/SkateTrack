@@ -841,3 +841,34 @@ This log is append-only. Do not delete or overwrite old entries.
 - Kept the custom inline-skate glyph approach because `inline.skate` is not available in the current Xcode / SF Symbols set.
 - Fixed `verify_equipment_manager.py` string quoting so the verifier can run successfully after the glyph fallback check.
 
+
+## 2026-06-11 — Task-020b Session Equipment Selection + Auto Mileage Tracking
+
+### Completed
+- Added `SessionEquipmentPickerView` to the Ride start screen as a compact in-flow card, avoiding navigation overlays or top-control stacking risk.
+- Connected the Ride start flow to subscriber-gated real equipment only; free users see a Pro equipment-tracking prompt and do not select sample gear for runtime sessions.
+- Extended `useSessionRecording` and `SessionRecordingCoordinator.startSession` to carry an optional selected equipment ID into the active session lifecycle.
+- Ensured finalized `SessionData` now receives the selected `equipmentID` during coordinator enrichment before `SessionRepository.saveCompletedSession(_:)` persists the session.
+- Added `EquipmentMileageTracker` and repository mileage accumulation so saved sessions add distance to total gear mileage, wheel mileage, and bearing mileage.
+- Applied equipment mileage only after `saveCompletedSession` succeeds; discard, failed save, missing equipment, zero distance, and no-equipment sessions do not update gear mileage.
+- Added process-level duplicate protection in `EquipmentMileageTracker` so the same completed session ID is not applied twice during one app run.
+- Added `scripts/verify_equipment_mileage_tracking.py` and updated equipment / session-recording verification coverage.
+
+### Paid Feature / Monetization Boundary
+- Task-020b follows the existing Task-016 strategy: equipment selection and automatic mileage tracking are gated through `GatedFeature.equipmentManager`, `useSubscriptionStatus`, and DEBUG/local entitlement simulation.
+- No production StoreKit purchase, App Store Connect product, sandbox tester flow, transaction validation, `AppStore.sync()`, or real App Store entitlement provider was introduced.
+
+### Scope Boundary
+- Task-020b does not add History or Summary equipment-name display, archived gear-name snapshots, gear photos, photo-library permissions, cloud sync, Google Drive sync, maintenance calendar scheduling, Watch, or macOS behavior.
+- No GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, WeatherKit, UserNotifications, or background task behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_equipment_mileage_tracking.py` together with equipment manager, session recording coordinator, localization, subscription entitlement simulation, subscription Paywall, feature flag, health reminders, weather risk, debug tools, and existing history/summary verification scripts.
+- Manual validation should confirm Pro / DEBUG subscribers can select compatible gear on the Ride start screen, sessions without selected gear still start normally, saved sessions with selected gear increase total / wheel / bearing mileage, discard does not increase gear mileage, and free users cannot select sample gear for runtime mileage tracking.
+
+#### Task-020b follow-up — Equipment mode / power compatibility filter
+- Tightened the Ride start equipment picker so selectable gear must match the current `SportMode` and `PowerType`, not only the broad skateboard / inline equipment family.
+- Skateboard sessions now require matching board mode and matching human / electric power type before a gear profile can be selected.
+- Inline sessions now require matching inline mode and human-powered gear; electric power remains invalid for inline equipment.
+- Changing board mode, inline mode, power type, subscription access, or available gear clears an incompatible selected gear ID before a session starts.
+- Kept the picker as an in-flow Ride card to avoid root-tab, detail-navigation, or floating overlay overlap risk.

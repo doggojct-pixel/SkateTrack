@@ -169,6 +169,8 @@
 		20A100000000000000000105 /* EquipmentCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000005 /* EquipmentCardView.swift */; };
 		20A100000000000000000106 /* EquipmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000006 /* EquipmentDetailView.swift */; };
 		20A100000000000000000107 /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000007 /* EditEquipmentView.swift */; };
+		20B100000000000000000101 /* EquipmentMileageTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B100000000000000000001 /* EquipmentMileageTracker.swift */; };
+		20B100000000000000000102 /* SessionEquipmentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B100000000000000000002 /* SessionEquipmentPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +316,8 @@
 		20A100000000000000000005 /* EquipmentCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentCardView.swift; sourceTree = "<group>"; };
 		20A100000000000000000006 /* EquipmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentDetailView.swift; sourceTree = "<group>"; };
 		20A100000000000000000007 /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
+		20B100000000000000000001 /* EquipmentMileageTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentMileageTracker.swift; sourceTree = "<group>"; };
+		20B100000000000000000002 /* SessionEquipmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEquipmentPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -594,6 +598,7 @@
 			children = (
 				20A100000000000000000001 /* EquipmentRepository.swift */,
 				20A100000000000000000002 /* WearReminderEngine.swift */,
+				20B100000000000000000001 /* EquipmentMileageTracker.swift */,
 			);
 			path = iOS/Core/EquipmentManager;
 			sourceTree = SOURCE_ROOT;
@@ -605,6 +610,7 @@
 				20A100000000000000000005 /* EquipmentCardView.swift */,
 				20A100000000000000000006 /* EquipmentDetailView.swift */,
 				20A100000000000000000007 /* EditEquipmentView.swift */,
+				20B100000000000000000002 /* SessionEquipmentPickerView.swift */,
 			);
 			path = iOS/Features/EquipmentManager;
 			sourceTree = SOURCE_ROOT;
@@ -965,6 +971,8 @@
 				20A100000000000000000105 /* EquipmentCardView.swift in Sources */,
 				20A100000000000000000106 /* EquipmentDetailView.swift in Sources */,
 				20A100000000000000000107 /* EditEquipmentView.swift in Sources */,
+				20B100000000000000000101 /* EquipmentMileageTracker.swift in Sources */,
+				20B100000000000000000102 /* SessionEquipmentPickerView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,

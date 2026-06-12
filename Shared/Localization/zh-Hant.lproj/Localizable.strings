@@ -493,3 +493,13 @@
 "gear.form.brakeType" = "煞車類型";
 "gear.form.notes" = "備註";
 "gear.form.error.invalid" = "請檢查裝備名稱與數字里程欄位。";
+"gear.session.title" = "本次裝備";
+"gear.session.subtitle" = "選擇這次滑行使用的滑板或直排輪，Session 成功保存後會自動累加里程。";
+"gear.session.optional" = "可不選";
+"gear.session.none" = "不指定裝備";
+"gear.session.none.subtitle" = "不追蹤里程";
+"gear.session.empty.title" = "尚無相容裝備";
+"gear.session.empty.subtitle" = "仍可正常開始 Session。到「我的裝備」新增相符裝備後即可追蹤里程。";
+"gear.session.locked.subtitle" = "裝備選擇與自動累加里程屬於 Pro 功能。";
+"gear.session.locked.cta" = "解鎖裝備追蹤";
+"gear.error.mileageTrackingFailed" = "Session 已保存，但裝備里程無法更新。";

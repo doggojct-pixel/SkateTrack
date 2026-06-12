@@ -46,11 +46,13 @@ final class SessionRecordingCoordinator {
     let fallDetectionEngine: SessionFallDetecting
     let sosDispatcher: SOSEventDispatcher
     let sessionRepository: SessionRepositoryProtocol
+    let equipmentMileageTracker: EquipmentMileageTracking
     private var stateMachine = SessionStateMachine()
     var metricsAccumulator = SessionMetricsAccumulator()
 
     var selectedSportMode: SportMode?
     private var selectedPowerType: PowerType = .humanPowered
+    private var selectedEquipmentID: UUID?
     private var sessionStartDate: Date?
     var activeFallEvent: FallEvent?
     private var completedSession: SessionData?
@@ -92,12 +94,14 @@ final class SessionRecordingCoordinator {
         sensorEngine: SessionSensorProviding = SensorFusionEngine(),
         fallDetectionEngine: SessionFallDetecting = FallDetectionEngine(),
         sosDispatcher: SOSEventDispatcher = .shared,
-        sessionRepository: SessionRepositoryProtocol = SessionRepository.shared
+        sessionRepository: SessionRepositoryProtocol = SessionRepository.shared,
+        equipmentMileageTracker: EquipmentMileageTracking = EquipmentMileageTracker.shared
     ) {
         self.sensorEngine = sensorEngine
         self.fallDetectionEngine = fallDetectionEngine
         self.sosDispatcher = sosDispatcher
         self.sessionRepository = sessionRepository
+        self.equipmentMileageTracker = equipmentMileageTracker
     }
 
     #if DEBUG
@@ -108,7 +112,11 @@ final class SessionRecordingCoordinator {
     }
     #endif
 
-    func startSession(mode: SportMode, powerType: PowerType) async throws {
+    func startSession(
+        mode: SportMode,
+        powerType: PowerType,
+        equipmentID: UUID? = nil
+    ) async throws {
         guard powerType.isValid(for: mode) else {
             publishError(SessionRecordingError.invalidPowerType.localizationKey)
             throw SessionRecordingError.invalidPowerType
@@ -118,6 +126,7 @@ final class SessionRecordingCoordinator {
 
         selectedSportMode = mode
         selectedPowerType = powerType
+        selectedEquipmentID = equipmentID
         sessionStartDate = Date()
         activeFallEvent = nil
         fallEventSubject.send(nil)
@@ -180,6 +189,7 @@ final class SessionRecordingCoordinator {
         let sessionData = await finalizeSession(discard: false)
         do {
             let savedSession = try await sessionRepository.saveCompletedSession(sessionData)
+            await applyEquipmentMileageIfNeeded(for: savedSession)
             try applyTransition(to: .idle)
             completedSession = savedSession
             completedSessionSubject.send(savedSession)
@@ -338,7 +348,7 @@ final class SessionRecordingCoordinator {
             trickEvents: session.trickEvents,
             fallEvents: fallEvents,
             summaryMetrics: summaryMetrics,
-            equipmentID: session.equipmentID,
+            equipmentID: selectedEquipmentID,
             spotID: session.spotID
         )
     }
@@ -378,6 +388,17 @@ final class SessionRecordingCoordinator {
         )
     }
 
+
+    private func applyEquipmentMileageIfNeeded(for session: SessionData) async {
+        do {
+            _ = try await equipmentMileageTracker.applyMileageIfNeeded(to: session)
+        } catch let error as RepositoryError {
+            publishError(error.localizationKey)
+        } catch {
+            publishError("gear.error.mileageTrackingFailed")
+        }
+    }
+
     private func teardownActiveSession(resetToIdle: Bool) async {
         stopMockSampleFeed()
         fallDetectionEngine.stopMonitoring()
@@ -406,6 +427,7 @@ final class SessionRecordingCoordinator {
     private func resetCoordinatorState() {
         selectedSportMode = nil
         selectedPowerType = .humanPowered
+        selectedEquipmentID = nil
         sessionStartDate = nil
         activeFallEvent = nil
         metricsAccumulator.reset()

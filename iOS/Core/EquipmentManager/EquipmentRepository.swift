@@ -15,6 +15,8 @@ protocol EquipmentRepositoryProtocol: AnyObject, Sendable {
     func resetWheelMileage(id: UUID) async throws -> EquipmentProfile
     @discardableResult
     func resetBearingMileage(id: UUID) async throws -> EquipmentProfile
+    @discardableResult
+    func addMileage(id: UUID, distanceKilometers: Double) async throws -> EquipmentProfile?
 }
 
 final class EquipmentRepository: EquipmentRepositoryProtocol, @unchecked Sendable {
@@ -107,6 +109,33 @@ final class EquipmentRepository: EquipmentRepositoryProtocol, @unchecked Sendabl
     @discardableResult
     func resetBearingMileage(id: UUID) async throws -> EquipmentProfile {
         try await resetMileage(id: id, wheel: false)
+    }
+
+    @discardableResult
+    func addMileage(id: UUID, distanceKilometers: Double) async throws -> EquipmentProfile? {
+        let safeDistance = max(0, distanceKilometers)
+        guard safeDistance > 0 else {
+            return try await fetchEquipment(id: id)
+        }
+
+        let context = persistenceController.viewContext
+        return try await context.perform {
+            guard let object = try self.fetchObject(id: id, in: context) else { return nil }
+            let now = Date()
+            let totalDistance = (self.optionalDouble("totalDistanceKm", from: object) ?? 0) + safeDistance
+            let wheelMileage = (self.optionalDouble("wheelSetMileageKm", from: object) ?? 0) + safeDistance
+            let bearingMileage = (self.optionalDouble("bearingSetMileageKm", from: object) ?? 0) + safeDistance
+
+            object.setValue(totalDistance, forKey: "totalDistanceKm")
+            object.setValue(wheelMileage, forKey: "wheelSetMileageKm")
+            object.setValue(bearingMileage, forKey: "bearingSetMileageKm")
+            object.setValue(now, forKey: "updatedAt")
+
+            if context.hasChanges {
+                try context.save()
+            }
+            return try self.makeEquipmentProfile(from: object)
+        }
     }
 
     private func resetMileage(id: UUID, wheel: Bool) async throws -> EquipmentProfile {

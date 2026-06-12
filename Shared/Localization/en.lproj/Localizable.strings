@@ -493,3 +493,13 @@
 "gear.form.brakeType" = "Brake Type";
 "gear.form.notes" = "Notes";
 "gear.form.error.invalid" = "Please check the gear name and numeric mileage fields.";
+"gear.session.title" = "Session Gear";
+"gear.session.subtitle" = "Choose the board or skates used for this ride. Mileage updates after a saved session.";
+"gear.session.optional" = "OPTIONAL";
+"gear.session.none" = "No gear";
+"gear.session.none.subtitle" = "Do not track";
+"gear.session.empty.title" = "No compatible gear yet";
+"gear.session.empty.subtitle" = "You can still start a session. Add matching gear in My Gear to track mileage.";
+"gear.session.locked.subtitle" = "Gear selection and automatic mileage tracking are Pro features.";
+"gear.session.locked.cta" = "Unlock gear tracking";
+"gear.error.mileageTrackingFailed" = "The session was saved, but gear mileage could not be updated.";

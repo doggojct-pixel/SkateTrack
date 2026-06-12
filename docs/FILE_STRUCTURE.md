@@ -50,7 +50,7 @@ This document records the current SkateTrack repository structure and developmen
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
 | Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
 | UserNotifications scheduling and real weather data are not built yet. | Task-019c surfaces mock weather suitability and detailed Pro risk guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
-| Equipment auto-mileage, spot linkage, and cloud sync remain future tasks. | Task-020a adds Equipment Manager CRUD UI and local gear persistence, but SessionStart equipment selection and automatic session mileage accumulation remain deferred to Task-020b. | `iOS/Core/EquipmentManager`, `iOS/Features/EquipmentManager`, future equipment mileage, spot, Google Drive / CloudKit tasks. |
+| Equipment auto-mileage, spot linkage, and cloud sync remain future tasks. | Task-020b now adds SessionStart equipment selection plus save-success automatic mileage accumulation; History / Summary gear display, archived references, spot linkage, and cloud sync remain future work. | `iOS/Core/EquipmentManager`, `iOS/Features/EquipmentManager`, future equipment display, spot, Google Drive / CloudKit tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
 
@@ -163,8 +163,9 @@ SkateTrack/
 │   │   │   ├── WeatherProvider.swift               # [自主區] Replaceable weather provider protocol; no WeatherKit / network implementation yet.
 │   │   │   ├── MockWeatherProvider.swift           # [自主區] Local mock weather provider for Task-019c development.
 │   │   │   └── WeatherRiskMonitor.swift            # [自主區] Evaluates heat, UV, and rain risk against local reminder thresholds.
-│   │   ├── EquipmentManager/                       # [自主區] EquipmentRepository CRUD boundary and WearReminderEngine wear-status formulas.
-│   │   │   ├── EquipmentRepository.swift           # [自主區] Local PersistedEquipment CRUD, delete, and wheel / bearing mileage reset actions.
+│   │   ├── EquipmentManager/                       # [自主區] Equipment CRUD, wear-status formulas, and save-success mileage tracking.
+│   │   │   ├── EquipmentRepository.swift           # [自主區] Local PersistedEquipment CRUD, delete, wheel / bearing reset, and mileage accumulation actions.
+│   │   │   ├── EquipmentMileageTracker.swift       # [自主區] Applies completed-session distance to selected gear only after successful SessionRepository save.
 │   │   │   └── WearReminderEngine.swift            # [自主區] Central OK / CHECK / REPLACE wear status rules for wheels and bearings.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
@@ -180,11 +181,12 @@ SkateTrack/
 │   │   │   ├── DebugRuntimeOptions.swift        # [協作區] Shared DEBUG runtime presentation state.
 │   │   │   ├── DebugToolAction.swift            # [協作區] Central DEBUG tool action identifiers.
 │   │   │   └── DebugToolsPanelView.swift        # [協作區] Unified Debug Tools panel for fall simulation, demo speed, subscription override, and test data reset.
-│   │   ├── EquipmentManager/                       # [協作區] Task-020a Equipment Manager list, cards, detail, edit form UI, and detail-overlay handoff state.
+│   │   ├── EquipmentManager/                       # [協作區] Equipment Manager list, cards, detail, edit form, and SessionStart picker UI.
 │   │   │   ├── EquipmentListView.swift             # [協作區] Screen 07 My Gear screen, free sample cards, Pro gating, and CRUD entry points.
 │   │   │   ├── EquipmentCardView.swift             # [協作區] Gear card with mileage stats, skateboard SF Symbol, safe custom inline-skate glyph, wheel / bearing progress, and OK / CHECK / REPLACE badge.
 │   │   │   ├── EquipmentDetailView.swift           # [協作區] Gear maintenance details, custom non-overlapping detail header, wheel / bearing reset actions, edit and delete confirmation.
-│   │   │   └── EditEquipmentView.swift             # [協作區] Add / edit gear form for skateboard and inline gear setup.
+│   │   │   ├── EditEquipmentView.swift             # [協作區] Add / edit gear form for skateboard and inline gear setup.
+│   │   │   └── SessionEquipmentPickerView.swift    # [協作區] Ride-page compact gear picker for current session; no detail navigation overlay.
 │   │   ├── FallDetection/                          # [協作區] Fall alert / SOS overlay UI.
 │   │   │   ├── EmergencyContactsSettingsView.swift # [協作區] Dark contact settings sheet for local emergency contacts.
 │   │   │   ├── FallDetectionAlertView.swift        # [協作區] Dark neon fall alert card, countdown, contact status, cancel and SOS buttons.
@@ -343,6 +345,7 @@ python3 scripts/verify_session_summary.py
 python3 scripts/verify_health_reminders.py
 python3 scripts/verify_weather_risk.py
 python3 scripts/verify_equipment_manager.py
+python3 scripts/verify_equipment_mileage_tracking.py
 python3 scripts/verify_app_icons.py
 ```
 
@@ -351,7 +354,7 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with Task-020b Session equipment selection and automatic mileage accumulation after Task-020a Equipment Manager CRUD is validated; do not connect session completion mileage without inspecting the current recording coordinator pipeline.
+1. Continue with a small History / Summary gear-reference display task if desired; Task-020b intentionally leaves archived gear-name snapshots and deleted-equipment display semantics for a later task.
 2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
 3. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
 4. Keep Task-016c real StoreKit work separate from Paywall / Summary UI. The future StoreKit provider should replace the entitlement provider behind `FeatureFlagEngine` instead of rewriting Paywall / locked-feature UI.
@@ -360,3 +363,10 @@ Important: the UI-related scripts currently verify file existence, localization 
 ## Task-016b Subscription UI Note
 
 Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-feature UI. This module is UI-only in Task-016b and must continue to consume `useSubscriptionStatus` rather than directly reading DEBUG flags or StoreKit state.
+
+## Task-020b Compatibility Follow-up
+
+- `Shared/Models/EquipmentProfile.swift` now owns the mode / power compatibility rule used by the Ride start equipment picker.
+- `iOS/Features/EquipmentManager/SessionEquipmentPickerView.swift` filters gear by exact session sport mode and power type while remaining an in-flow card with no navigation overlay.
+- `iOS/Features/SessionRecording/SessionStartView.swift` passes the selected power type into the picker and clears incompatible gear when mode or power changes.
+- `scripts/verify_equipment_mileage_tracking.py` verifies exact mode / power compatibility filtering for Task-020b.

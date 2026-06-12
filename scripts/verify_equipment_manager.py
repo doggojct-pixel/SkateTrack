@@ -106,6 +106,7 @@ def main() -> None:
         "lastMaintenanceDate",
         "photoLocalIdentifier",
         "inferredEquipmentType",
+        "func isCompatible(with sessionSportMode: SportMode, powerType sessionPowerType: PowerType) -> Bool",
         "figure.walk",
     ]:
         assert_contains(model_text, token, "EquipmentProfile.swift")
@@ -139,6 +140,7 @@ def main() -> None:
         "deleteEquipment",
         "resetWheelMileage",
         "resetBearingMileage",
+        "addMileage",
         "PersistedEquipment",
     ]:
         assert_contains(repository_text, token, "EquipmentRepository.swift")
