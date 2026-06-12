@@ -503,3 +503,12 @@
 "gear.session.locked.subtitle" = "裝備選擇與自動累加里程屬於 Pro 功能。";
 "gear.session.locked.cta" = "解鎖裝備追蹤";
 "gear.error.mileageTrackingFailed" = "Session 已保存，但裝備里程無法更新。";
+"gear.snapshot.untitled" = "未命名裝備";
+"history.gear.lineFormat" = "%@ · %@ · %@";
+"history.gear.unsynced" = "裝備資訊未同步";
+"summary.gear.title" = "本次使用裝備";
+"summary.gear.detailFormat" = "%@ · %@";
+"summary.gear.archived.badge" = "快照";
+"summary.gear.unsynced.title" = "裝備資訊未同步";
+"summary.gear.unsynced.subtitle" = "這筆較舊的 Session 只有裝備 ID，尚未保存當時的裝備快照。";
+"summary.gear.unsynced.badge" = "舊資料";

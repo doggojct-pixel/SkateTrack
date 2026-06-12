@@ -503,3 +503,12 @@
 "gear.session.locked.subtitle" = "Gear selection and automatic mileage tracking are Pro features.";
 "gear.session.locked.cta" = "Unlock gear tracking";
 "gear.error.mileageTrackingFailed" = "The session was saved, but gear mileage could not be updated.";
+"gear.snapshot.untitled" = "Untitled gear";
+"history.gear.lineFormat" = "%@ · %@ · %@";
+"history.gear.unsynced" = "Gear info not synced";
+"summary.gear.title" = "Used Equipment";
+"summary.gear.detailFormat" = "%@ · %@";
+"summary.gear.archived.badge" = "SNAPSHOT";
+"summary.gear.unsynced.title" = "Gear info not synced";
+"summary.gear.unsynced.subtitle" = "This older session has a gear ID but no archived gear snapshot.";
+"summary.gear.unsynced.badge" = "LEGACY";

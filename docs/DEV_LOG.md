@@ -872,3 +872,22 @@ This log is append-only. Do not delete or overwrite old entries.
 - Inline sessions now require matching inline mode and human-powered gear; electric power remains invalid for inline equipment.
 - Changing board mode, inline mode, power type, subscription access, or available gear clears an incompatible selected gear ID before a session starts.
 - Kept the picker as an in-flow Ride card to avoid root-tab, detail-navigation, or floating overlay overlap risk.
+
+## 2026-06-12 — Task-020c Equipment Attribution in History / Summary + Archived Reference
+
+### Completed
+- Added `EquipmentSessionSnapshot` so completed sessions can keep an archived equipment snapshot independent of the mutable Equipment Manager store.
+- Extended `SessionData`, `SessionRecordingCoordinator`, and `useSessionRecording` to carry the selected equipment snapshot from the Ride start screen into the completed session payload.
+- Persisted the snapshot as optional `equipmentSnapshotData` on `PersistedSession` and updated both the programmatic Core Data model and `.xcdatamodel` file for lightweight migration.
+- Updated `SessionEntityMapper` to encode / decode the archived equipment snapshot alongside `equipmentID`.
+- Added a compact equipment snapshot row to History cards without changing the History list hierarchy or adding overlay UI.
+- Added `SessionEquipmentAttributionView` to Session Summary as a standalone card after the identity card, using the same dark / neon card language as the existing UI plan.
+- Added `scripts/verify_equipment_attribution.py` and expanded History / Summary verification coverage for the archived equipment snapshot path.
+
+### Scope Boundary
+- Task-020c does not add gear photos, photo-library permission, Summary-to-Gear deep links, maintenance calendar scheduling, report export, cloud sync, production StoreKit, App Store Connect products, Watch, or macOS behavior.
+- No GPS, IMU, Sensor Fusion, Fall Detection algorithm, Launch Screen, AppIcon, bottom dock, WeatherKit, UserNotifications, or background task behavior was changed.
+
+### Validation Notes
+- Run `python3 scripts/verify_equipment_attribution.py` together with equipment mileage, equipment manager, session history, session summary, localization, feature flag, and subscription simulation verification scripts.
+- Manual validation should confirm a saved session with selected equipment shows the archived gear line in History and the Used Equipment card in Summary, and that those UI elements still render even if the original gear is later deleted.

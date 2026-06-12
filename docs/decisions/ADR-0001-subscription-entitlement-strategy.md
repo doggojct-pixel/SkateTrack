@@ -128,3 +128,11 @@ Task-020b does not implement production StoreKit, App Store Connect products, sa
 ## Task-020b compatibility follow-up
 
 Task-020b also requires mode / power compatibility for subscriber-gated equipment tracking. Skateboard equipment must match the current board mode and human / electric power type before it can be selected for a runtime session. Inline equipment must match the current inline mode and remain human-powered. This keeps automatic mileage accumulation from applying to the wrong gear while preserving the same `GatedFeature.equipmentManager`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation boundary.
+
+## Task-020c Confirmation
+
+Task-020c adds archived equipment attribution for History and Session Summary. It continues the Task-020 subscriber-gated equipment strategy without introducing new monetization behavior. Runtime equipment selection and mileage tracking remain gated through `GatedFeature.equipmentManager`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation.
+
+Completed sessions now store an optional `EquipmentSessionSnapshot` as `equipmentSnapshotData` on `PersistedSession`. This snapshot preserves the equipment name, type, sport mode, and power type used at ride time so History and Summary can render the original equipment attribution even if the mutable gear profile is later edited or deleted.
+
+Task-020c intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, gear photos, photo-library access, cloud sync, Summary-to-Gear deep links, maintenance calendar scheduling, or report export. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting equipment attribution, History, or Summary UI.

@@ -171,6 +171,10 @@
 		20A100000000000000000107 /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A100000000000000000007 /* EditEquipmentView.swift */; };
 		20B100000000000000000101 /* EquipmentMileageTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B100000000000000000001 /* EquipmentMileageTracker.swift */; };
 		20B100000000000000000102 /* SessionEquipmentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B100000000000000000002 /* SessionEquipmentPickerView.swift */; };
+		20C100000000000000000101 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
+		20C100000000000000000102 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
+		20C100000000000000000103 /* EquipmentSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000001 /* EquipmentSessionSnapshot.swift */; };
+		20C100000000000000000104 /* SessionEquipmentAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C100000000000000000002 /* SessionEquipmentAttributionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -318,6 +322,8 @@
 		20A100000000000000000007 /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
 		20B100000000000000000001 /* EquipmentMileageTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentMileageTracker.swift; sourceTree = "<group>"; };
 		20B100000000000000000002 /* SessionEquipmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEquipmentPickerView.swift; sourceTree = "<group>"; };
+		20C100000000000000000001 /* EquipmentSessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentSessionSnapshot.swift; sourceTree = "<group>"; };
+		20C100000000000000000002 /* SessionEquipmentAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEquipmentAttributionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,6 +412,7 @@
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
 				14B000000000000000000001 /* EmergencyContact.swift */,
 				12A300000000000000000007 /* EquipmentProfile.swift */,
+				20C100000000000000000001 /* EquipmentSessionSnapshot.swift */,
 				12A300000000000000000008 /* SpotProfile.swift */,
 				12AB05000000000000000001 /* SessionSummaryMetrics.swift */,
 			);
@@ -556,6 +563,7 @@
 				18A100000000000000000001 /* SessionSummaryView.swift */,
 				18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */,
 				18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */,
+				20C100000000000000000002 /* SessionEquipmentAttributionView.swift */,
 				18B100000000000000000001 /* SessionRouteMapView.swift */,
 				18B100000000000000000002 /* SessionSummarySafetyStatusView.swift */,
 				18B100000000000000000003 /* SessionSummaryShareStubView.swift */,
@@ -973,6 +981,7 @@
 				20A100000000000000000107 /* EditEquipmentView.swift in Sources */,
 				20B100000000000000000101 /* EquipmentMileageTracker.swift in Sources */,
 				20B100000000000000000102 /* SessionEquipmentPickerView.swift in Sources */,
+				20C100000000000000000104 /* SessionEquipmentAttributionView.swift in Sources */,
 				BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */,
 				12A400000000000000000101 /* FeatureFlags.swift in Sources */,
 				12A400000000000000000104 /* FeatureFlagEngine.swift in Sources */,
@@ -1020,6 +1029,7 @@
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
 				14B000000000000000000101 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000113 /* EquipmentProfile.swift in Sources */,
+				20C100000000000000000101 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000116 /* SpotProfile.swift in Sources */,
 				12A300000000000000000119 /* SensorProvider.swift in Sources */,
 				12A30000000000000000011C /* SyncProvider.swift in Sources */,
@@ -1044,6 +1054,7 @@
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
 				14B000000000000000000103 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000115 /* EquipmentProfile.swift in Sources */,
+				20C100000000000000000103 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000118 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011B /* SensorProvider.swift in Sources */,
@@ -1069,6 +1080,7 @@
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,
 				14B000000000000000000102 /* EmergencyContact.swift in Sources */,
 				12A300000000000000000114 /* EquipmentProfile.swift in Sources */,
+				20C100000000000000000102 /* EquipmentSessionSnapshot.swift in Sources */,
 				12A300000000000000000117 /* SpotProfile.swift in Sources */,
 				12AB05000000000000000102 /* SessionSummaryMetrics.swift in Sources */,
 				12A30000000000000000011A /* SensorProvider.swift in Sources */,

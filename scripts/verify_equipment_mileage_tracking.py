@@ -106,8 +106,11 @@ for token in [
     "equipmentMileageTracker: EquipmentMileageTracking = EquipmentMileageTracker.shared",
     "private var selectedEquipmentID: UUID?",
     "equipmentID: UUID? = nil",
+    "equipmentSnapshot: EquipmentSessionSnapshot? = nil",
     "selectedEquipmentID = equipmentID",
+    "selectedEquipmentSnapshot = equipmentSnapshot",
     "equipmentID: selectedEquipmentID",
+    "equipmentSnapshot: selectedEquipmentSnapshot",
     "sessionRepository.saveCompletedSession(sessionData)",
     "await applyEquipmentMileageIfNeeded(for: savedSession)",
     "private func applyEquipmentMileageIfNeeded(for session: SessionData) async",
@@ -126,8 +129,9 @@ if "applyEquipmentMileageIfNeeded" in discard_body:
 hook_text = read("iOS/Hooks/useSessionRecording.swift")
 for token in [
     "var selectedEquipmentID: UUID?",
-    "let startSession: (SportMode, PowerType, UUID?) async -> Void",
+    "let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?) async -> Void",
     "equipmentID: UUID?",
+    "equipmentSnapshot: EquipmentSessionSnapshot?",
     "try await coordinator.startSession(",
 ]:
     assert_contains(hook_text, token, "useSessionRecording.swift")
@@ -141,7 +145,7 @@ for token in [
     "selectedPowerType: selectedPowerType",
     "hasAccess: equipmentManager.hasManagementAccess",
     "selectedEquipmentID: $selectedEquipmentID",
-    "selectedEquipmentIDForSession",
+    "selectedEquipmentForSession",
     "clearIncompatibleSelectedEquipment",
     ".onChange(of: selectedPowerType)",
     "showPaywall(for: .equipmentManager)",

@@ -449,23 +449,26 @@ struct SessionStartView: View {
             showUpgradePrompt()
             return
         }
+        let equipment = selectedEquipmentForSession
         Task {
             await sessionRecording.actions.startSession(
-                selectedSportMode, selectedPowerType, selectedEquipmentIDForSession
+                selectedSportMode,
+                selectedPowerType,
+                equipment?.id,
+                equipment.map { EquipmentSessionSnapshot(equipment: $0) }
             )
         }
     }
 
-    private var selectedEquipmentIDForSession: UUID? {
+    private var selectedEquipmentForSession: EquipmentProfile? {
         guard equipmentManager.hasManagementAccess, let selectedEquipmentID else { return nil }
-        return equipmentManager.equipment.contains { equipment in
-            equipment.id == selectedEquipmentID
-                && equipment.isCompatible(with: selectedSportMode, powerType: selectedPowerType)
-        } ? selectedEquipmentID : nil
+        return equipmentManager.equipment.first {
+            $0.id == selectedEquipmentID && $0.isCompatible(with: selectedSportMode, powerType: selectedPowerType)
+        }
     }
 
     private func clearIncompatibleSelectedEquipment() {
-        guard selectedEquipmentIDForSession != selectedEquipmentID else { return }
+        guard selectedEquipmentForSession?.id != selectedEquipmentID else { return }
         selectedEquipmentID = nil
     }
 

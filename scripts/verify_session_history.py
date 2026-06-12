@@ -43,6 +43,8 @@ LOCALIZATION_KEYS = [
     "history.card.distance",
     "history.card.maxSpeed",
     "history.card.duration",
+    "history.gear.lineFormat",
+    "history.gear.unsynced",
     "history.card.locked",
     "history.summary.placeholder.title",
     "history.summary.placeholder.subtitle",
@@ -91,6 +93,13 @@ SOURCE_TOKENS = {
         "history.loadIfNeeded()",
     ],
 
+    "iOS/Features/SessionHistory/SessionHistoryCardView.swift": [
+        "SessionHistoryCardView",
+        "session.equipmentSnapshot",
+        "history.gear.lineFormat",
+        "history-card-equipment-snapshot",
+    ],
+
     "iOS/Features/SessionHistory/SessionSummaryHandoffView.swift": [
         "SessionSummaryHandoffView",
         "Task-018",
@@ -110,11 +119,13 @@ SOURCE_TOKENS = {
         "AppStoreSubscriptionProvider",
     ],
     "docs/DEV_LOG.md": [
+        "Task-020c",
         "Task-017a Session History Foundation + Free Limit",
         "Task-017b History Navigation + Summary Handoff",
         "free 5-session History limit",
     ],
     "docs/FILE_STRUCTURE.md": [
+        "Task-020c",
         "Task-017a Session History Foundation + Free Limit",
         "Task-017b History Navigation + Summary Handoff",
         "SessionHistory/",

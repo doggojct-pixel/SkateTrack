@@ -85,6 +85,9 @@ struct SessionSummaryView: View {
         VStack(alignment: .leading, spacing: 18) {
             header(content)
             identityCard(content)
+            if shouldShowEquipmentAttribution(for: content.session) {
+                SessionEquipmentAttributionView(session: content.session)
+            }
             SessionSummaryMetricsGridView(items: metricItems(for: content))
             summaryDetailStack(content)
             closeButton
@@ -208,6 +211,11 @@ struct SessionSummaryView: View {
 }
 
 private extension SessionSummaryView {
+
+    func shouldShowEquipmentAttribution(for session: SessionData) -> Bool {
+        session.equipmentSnapshot != nil || session.equipmentID != nil
+    }
+
     func metricItems(for content: SessionSummaryContent) -> [SessionSummaryMetricItem] {
         [
             .init(id: "distance", value: distanceText(content.metrics), labelKey: "summary.metric.distance", accent: SkateTrackSessionStartColors.teal),

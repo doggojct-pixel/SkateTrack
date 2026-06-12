@@ -40,7 +40,7 @@ struct SessionRecordingState: Equatable {
 }
 
 struct SessionRecordingActions {
-    let startSession: (SportMode, PowerType, UUID?) async -> Void
+    let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?) async -> Void
     let pauseSession: () async -> Void
     let resumeSession: () async -> Void
     let requestEndSession: () async -> Void
@@ -68,11 +68,12 @@ final class SessionRecordingViewModel: ObservableObject {
 
     var actions: SessionRecordingActions {
         SessionRecordingActions(
-            startSession: { [weak self] mode, powerType, equipmentID in
+            startSession: { [weak self] mode, powerType, equipmentID, equipmentSnapshot in
                 await self?.startSession(
                     mode: mode,
                     powerType: powerType,
-                    equipmentID: equipmentID
+                    equipmentID: equipmentID,
+                    equipmentSnapshot: equipmentSnapshot
                 )
             },
             pauseSession: { [weak self] in
@@ -150,7 +151,8 @@ final class SessionRecordingViewModel: ObservableObject {
     private func startSession(
         mode: SportMode,
         powerType: PowerType,
-        equipmentID: UUID?
+        equipmentID: UUID?,
+        equipmentSnapshot: EquipmentSessionSnapshot?
     ) async {
         updateState {
             $0.selectedSportMode = mode
@@ -164,7 +166,8 @@ final class SessionRecordingViewModel: ObservableObject {
             try await coordinator.startSession(
                 mode: mode,
                 powerType: powerType,
-                equipmentID: equipmentID
+                equipmentID: equipmentID,
+                equipmentSnapshot: equipmentSnapshot
             )
         } catch let error as SessionRecordingError {
             updateState { $0.errorMessageKey = error.localizationKey }

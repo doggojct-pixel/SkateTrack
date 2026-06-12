@@ -53,6 +53,7 @@ final class SessionRecordingCoordinator {
     var selectedSportMode: SportMode?
     private var selectedPowerType: PowerType = .humanPowered
     private var selectedEquipmentID: UUID?
+    private var selectedEquipmentSnapshot: EquipmentSessionSnapshot?
     private var sessionStartDate: Date?
     var activeFallEvent: FallEvent?
     private var completedSession: SessionData?
@@ -115,7 +116,8 @@ final class SessionRecordingCoordinator {
     func startSession(
         mode: SportMode,
         powerType: PowerType,
-        equipmentID: UUID? = nil
+        equipmentID: UUID? = nil,
+        equipmentSnapshot: EquipmentSessionSnapshot? = nil
     ) async throws {
         guard powerType.isValid(for: mode) else {
             publishError(SessionRecordingError.invalidPowerType.localizationKey)
@@ -127,6 +129,7 @@ final class SessionRecordingCoordinator {
         selectedSportMode = mode
         selectedPowerType = powerType
         selectedEquipmentID = equipmentID
+        selectedEquipmentSnapshot = equipmentSnapshot
         sessionStartDate = Date()
         activeFallEvent = nil
         fallEventSubject.send(nil)
@@ -349,6 +352,7 @@ final class SessionRecordingCoordinator {
             fallEvents: fallEvents,
             summaryMetrics: summaryMetrics,
             equipmentID: selectedEquipmentID,
+            equipmentSnapshot: selectedEquipmentSnapshot,
             spotID: session.spotID
         )
     }
@@ -428,6 +432,7 @@ final class SessionRecordingCoordinator {
         selectedSportMode = nil
         selectedPowerType = .humanPowered
         selectedEquipmentID = nil
+        selectedEquipmentSnapshot = nil
         sessionStartDate = nil
         activeFallEvent = nil
         metricsAccumulator.reset()

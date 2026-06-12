@@ -80,6 +80,7 @@ final class PersistenceController {
             doubleAttribute("elevationGainMeters"),
             doubleAttribute("movingRatio"),
             uuidAttribute("equipmentID", optional: true),
+            binaryAttribute("equipmentSnapshotData", optional: true),
             uuidAttribute("spotID", optional: true),
             stringAttribute("sampleFileName", optional: true),
             binaryAttribute("trickEventsData", optional: false),

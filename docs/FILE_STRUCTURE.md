@@ -370,3 +370,25 @@ Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-fea
 - `iOS/Features/EquipmentManager/SessionEquipmentPickerView.swift` filters gear by exact session sport mode and power type while remaining an in-flow card with no navigation overlay.
 - `iOS/Features/SessionRecording/SessionStartView.swift` passes the selected power type into the picker and clears incompatible gear when mode or power changes.
 - `scripts/verify_equipment_mileage_tracking.py` verifies exact mode / power compatibility filtering for Task-020b.
+
+## Task-020c Equipment Attribution in History / Summary + Archived Reference
+
+### Added
+- `Shared/Models/EquipmentSessionSnapshot.swift` — archived equipment snapshot saved with completed sessions.
+- `iOS/Features/SessionSummary/SessionEquipmentAttributionView.swift` — Summary card showing the gear used for a ride.
+- `scripts/verify_equipment_attribution.py` — verifies archived equipment snapshot persistence and History / Summary attribution UI.
+
+### Updated
+- `Shared/Models/SessionData.swift` — added optional `equipmentSnapshot` beside `equipmentID`.
+- `Shared/Persistence/PersistenceController.swift` — added optional `equipmentSnapshotData` to the programmatic `PersistedSession` entity.
+- `Shared/Persistence/SkateTrackDataModel.xcdatamodeld/SkateTrackDataModel.xcdatamodel/contents` — added optional binary `equipmentSnapshotData` for lightweight migration.
+- `Shared/Persistence/SessionEntityMapper.swift` — encodes / decodes `EquipmentSessionSnapshot` for completed sessions.
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` — carries selected equipment snapshot through session finalization.
+- `iOS/Hooks/useSessionRecording.swift` — exposes the equipment snapshot argument through the SwiftUI action boundary.
+- `iOS/Features/SessionRecording/SessionStartView.swift` — creates the archived snapshot from the selected compatible gear before starting a session.
+- `iOS/Features/SessionHistory/SessionHistoryCardView.swift` — renders a compact archived gear line in History cards.
+- `iOS/Features/SessionSummary/SessionSummaryView.swift` — inserts the Summary equipment attribution card after the identity card.
+- `Shared/Localization/en.lproj/Localizable.strings` and `Shared/Localization/zh-Hant.lproj/Localizable.strings` — added History / Summary equipment attribution strings.
+- `SkateTrack.xcodeproj/project.pbxproj` — added source membership for `EquipmentSessionSnapshot.swift` and `SessionEquipmentAttributionView.swift`.
+- `scripts/verify_session_history.py` and `scripts/verify_session_summary.py` — expanded verification tokens for equipment attribution.
+- `docs/DEV_LOG.md`, `docs/FILE_STRUCTURE.md`, and `docs/decisions/ADR-0001-subscription-entitlement-strategy.md` — synchronized Task-020c architecture and paid-feature boundaries.

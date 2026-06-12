@@ -15,6 +15,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
     let fallEvents: [FallEvent]
     let summaryMetrics: SessionSummaryMetrics?
     let equipmentID: UUID?
+    let equipmentSnapshot: EquipmentSessionSnapshot?
     let spotID: UUID?
 
     init(
@@ -28,6 +29,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         fallEvents: [FallEvent] = [],
         summaryMetrics: SessionSummaryMetrics? = nil,
         equipmentID: UUID? = nil,
+        equipmentSnapshot: EquipmentSessionSnapshot? = nil,
         spotID: UUID? = nil
     ) throws {
         guard powerType.isValid(for: sportMode) else {
@@ -44,6 +46,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         self.fallEvents = fallEvents
         self.summaryMetrics = summaryMetrics
         self.equipmentID = equipmentID
+        self.equipmentSnapshot = equipmentSnapshot
         self.spotID = spotID
     }
 
@@ -67,6 +70,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         case fallEvents
         case summaryMetrics
         case equipmentID
+        case equipmentSnapshot
         case spotID
     }
 
@@ -93,6 +97,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         fallEvents = try container.decode([FallEvent].self, forKey: .fallEvents)
         summaryMetrics = try container.decodeIfPresent(SessionSummaryMetrics.self, forKey: .summaryMetrics)
         equipmentID = try container.decodeIfPresent(UUID.self, forKey: .equipmentID)
+        equipmentSnapshot = try container.decodeIfPresent(EquipmentSessionSnapshot.self, forKey: .equipmentSnapshot)
         spotID = try container.decodeIfPresent(UUID.self, forKey: .spotID)
     }
 }

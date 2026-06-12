@@ -63,6 +63,10 @@ struct SessionHistoryCardView: View {
                     .clipShape(Capsule())
             }
 
+            if let gearLine {
+                gearSnapshotLine(gearLine)
+            }
+
             HStack(spacing: 9) {
                 metric(value: distanceText, labelKey: "history.card.distance")
                 metric(value: maxSpeedText, labelKey: "history.card.maxSpeed")
@@ -84,6 +88,26 @@ struct SessionHistoryCardView: View {
         .clipShape(Capsule())
     }
 
+
+    private func gearSnapshotLine(_ text: String) -> some View {
+        HStack(spacing: 7) {
+            Image(systemName: session.equipmentSnapshot?.equipmentType.iconName ?? "questionmark.circle")
+                .font(.system(size: 11, weight: .black))
+                .foregroundStyle(accentColor)
+
+            Text(text)
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.72)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(Color.white.opacity(0.045))
+        .clipShape(Capsule())
+        .accessibilityIdentifier("history-card-equipment-snapshot")
+    }
+
     private func metric(value: String, labelKey: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(value)
@@ -102,6 +126,17 @@ struct SessionHistoryCardView: View {
         .padding(9)
         .background(Color.white.opacity(0.045))
         .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+    }
+
+
+    private var gearLine: String? {
+        if let snapshot = session.equipmentSnapshot {
+            let mode = NSLocalizedString(snapshot.sportMode.modeLocalizationKey, comment: "")
+            let power = NSLocalizedString(snapshot.powerType.localizationKey, comment: "")
+            let format = NSLocalizedString("history.gear.lineFormat", comment: "")
+            return String(format: format, locale: .autoupdatingCurrent, snapshot.displayName, mode, power)
+        }
+        return session.equipmentID == nil ? nil : NSLocalizedString("history.gear.unsynced", comment: "")
     }
 
     private var dateLine: String {
