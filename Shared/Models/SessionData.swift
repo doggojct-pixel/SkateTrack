@@ -17,6 +17,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
     let equipmentID: UUID?
     let equipmentSnapshot: EquipmentSessionSnapshot?
     let spotID: UUID?
+    let spotSnapshot: SpotSessionSnapshot?
 
     init(
         id: UUID = UUID(),
@@ -30,7 +31,8 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         summaryMetrics: SessionSummaryMetrics? = nil,
         equipmentID: UUID? = nil,
         equipmentSnapshot: EquipmentSessionSnapshot? = nil,
-        spotID: UUID? = nil
+        spotID: UUID? = nil,
+        spotSnapshot: SpotSessionSnapshot? = nil
     ) throws {
         guard powerType.isValid(for: sportMode) else {
             throw PowerTypeValidationError.electricPowerRequiresSkateboardMode
@@ -48,6 +50,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         self.equipmentID = equipmentID
         self.equipmentSnapshot = equipmentSnapshot
         self.spotID = spotID
+        self.spotSnapshot = spotSnapshot
     }
 
     var durationSeconds: TimeInterval? {
@@ -72,6 +75,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         case equipmentID
         case equipmentSnapshot
         case spotID
+        case spotSnapshot
     }
 
     init(from decoder: Decoder) throws {
@@ -99,5 +103,6 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         equipmentID = try container.decodeIfPresent(UUID.self, forKey: .equipmentID)
         equipmentSnapshot = try container.decodeIfPresent(EquipmentSessionSnapshot.self, forKey: .equipmentSnapshot)
         spotID = try container.decodeIfPresent(UUID.self, forKey: .spotID)
+        spotSnapshot = try container.decodeIfPresent(SpotSessionSnapshot.self, forKey: .spotSnapshot)
     }
 }

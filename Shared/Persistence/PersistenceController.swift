@@ -59,7 +59,8 @@ final class PersistenceController {
             makePersistedSessionEntity(),
             makePersistedFallEventEntity(),
             makePersistedEquipmentEntity(),
-            makePersistedSpotEntity()
+            makePersistedSpotEntity(),
+            makePersistedSpotVisitEntity()
         ]
         return model
     }
@@ -82,6 +83,7 @@ final class PersistenceController {
             uuidAttribute("equipmentID", optional: true),
             binaryAttribute("equipmentSnapshotData", optional: true),
             uuidAttribute("spotID", optional: true),
+            binaryAttribute("spotSnapshotData", optional: true),
             stringAttribute("sampleFileName", optional: true),
             binaryAttribute("trickEventsData", optional: false),
             dateAttribute("createdAt", optional: false),
@@ -161,6 +163,22 @@ final class PersistenceController {
             binaryAttribute("preferredSportModesData", optional: false),
             dateAttribute("createdAt", optional: true),
             dateAttribute("updatedAt", optional: true)
+        ]
+        return entity
+    }
+
+
+    private static func makePersistedSpotVisitEntity() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "PersistedSpotVisit"
+        entity.managedObjectClassName = "NSManagedObject"
+        entity.properties = [
+            uuidAttribute("id", optional: false),
+            uuidAttribute("spotID", optional: false),
+            uuidAttribute("sessionID", optional: false),
+            dateAttribute("visitedAt", optional: false),
+            doubleAttribute("distanceKilometers"),
+            doubleAttribute("confidence")
         ]
         return entity
     }

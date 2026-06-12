@@ -10,6 +10,7 @@ struct SessionRecordingState: Equatable {
     var selectedSportMode: SportMode?
     var selectedPowerType: PowerType
     var selectedEquipmentID: UUID?
+    var selectedSpotID: UUID?
     var currentSpeedKilometersPerHour: Double
     var maxSpeedKilometersPerHour: Double
     var averageSpeedKilometersPerHour: Double
@@ -26,6 +27,7 @@ struct SessionRecordingState: Equatable {
         selectedSportMode: nil,
         selectedPowerType: .humanPowered,
         selectedEquipmentID: nil,
+        selectedSpotID: nil,
         currentSpeedKilometersPerHour: 0,
         maxSpeedKilometersPerHour: 0,
         averageSpeedKilometersPerHour: 0,
@@ -40,7 +42,7 @@ struct SessionRecordingState: Equatable {
 }
 
 struct SessionRecordingActions {
-    let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?) async -> Void
+    let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?, UUID?, SpotSessionSnapshot?) async -> Void
     let pauseSession: () async -> Void
     let resumeSession: () async -> Void
     let requestEndSession: () async -> Void
@@ -68,12 +70,14 @@ final class SessionRecordingViewModel: ObservableObject {
 
     var actions: SessionRecordingActions {
         SessionRecordingActions(
-            startSession: { [weak self] mode, powerType, equipmentID, equipmentSnapshot in
+            startSession: { [weak self] mode, powerType, equipmentID, equipmentSnapshot, spotID, spotSnapshot in
                 await self?.startSession(
                     mode: mode,
                     powerType: powerType,
                     equipmentID: equipmentID,
-                    equipmentSnapshot: equipmentSnapshot
+                    equipmentSnapshot: equipmentSnapshot,
+                    spotID: spotID,
+                    spotSnapshot: spotSnapshot
                 )
             },
             pauseSession: { [weak self] in
@@ -152,12 +156,15 @@ final class SessionRecordingViewModel: ObservableObject {
         mode: SportMode,
         powerType: PowerType,
         equipmentID: UUID?,
-        equipmentSnapshot: EquipmentSessionSnapshot?
+        equipmentSnapshot: EquipmentSessionSnapshot?,
+        spotID: UUID?,
+        spotSnapshot: SpotSessionSnapshot?
     ) async {
         updateState {
             $0.selectedSportMode = mode
             $0.selectedPowerType = powerType
             $0.selectedEquipmentID = equipmentID
+            $0.selectedSpotID = spotID
             $0.recentRouteCoordinates = []
             $0.errorMessageKey = nil
         }
@@ -167,7 +174,9 @@ final class SessionRecordingViewModel: ObservableObject {
                 mode: mode,
                 powerType: powerType,
                 equipmentID: equipmentID,
-                equipmentSnapshot: equipmentSnapshot
+                equipmentSnapshot: equipmentSnapshot,
+                spotID: spotID,
+                spotSnapshot: spotSnapshot
             )
         } catch let error as SessionRecordingError {
             updateState { $0.errorMessageKey = error.localizationKey }

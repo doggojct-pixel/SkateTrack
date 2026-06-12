@@ -86,9 +86,15 @@ final class SessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
                 throw RepositoryError.sessionNotFound
             }
             let sampleFileName = SessionEntityMapper.sampleFileName(from: object)
+            let spotID = object.value(forKey: "spotID") as? UUID
             let fallEvents = try SessionEntityMapper.fetchFallEventObjects(sessionID: id, in: context)
+            let spotVisits = try self.fetchSpotVisitObjects(sessionID: id, in: context)
             fallEvents.forEach(context.delete)
+            spotVisits.forEach(context.delete)
             context.delete(object)
+            if let spotID {
+                try self.refreshSpotVisitSummary(spotID: spotID, in: context)
+            }
             if context.hasChanges {
                 try context.save()
             }
@@ -115,6 +121,28 @@ final class SessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
         } catch {
             throw RepositoryError.exportFailed
         }
+    }
+
+
+    private func fetchSpotVisitObjects(sessionID: UUID, in context: NSManagedObjectContext) throws -> [NSManagedObject] {
+        let request = NSFetchRequest<NSManagedObject>(entityName: "PersistedSpotVisit")
+        request.predicate = NSPredicate(format: "sessionID == %@", sessionID as CVarArg)
+        return try context.fetch(request)
+    }
+
+    private func refreshSpotVisitSummary(spotID: UUID, in context: NSManagedObjectContext) throws {
+        let spotRequest = NSFetchRequest<NSManagedObject>(entityName: "PersistedSpot")
+        spotRequest.fetchLimit = 1
+        spotRequest.predicate = NSPredicate(format: "id == %@", spotID as CVarArg)
+        guard let spotObject = try context.fetch(spotRequest).first else { return }
+
+        let visitRequest = NSFetchRequest<NSManagedObject>(entityName: "PersistedSpotVisit")
+        visitRequest.predicate = NSPredicate(format: "spotID == %@", spotID as CVarArg)
+        visitRequest.sortDescriptors = [NSSortDescriptor(key: "visitedAt", ascending: false)]
+        let visits = try context.fetch(visitRequest).filter { !$0.isDeleted }
+        spotObject.setValue(visits.count, forKey: "visitCount")
+        spotObject.setValue(visits.first?.value(forKey: "visitedAt") as? Date, forKey: "lastVisitedAt")
+        spotObject.setValue(Date(), forKey: "updatedAt")
     }
 
     static func defaultExportDirectory() -> URL {

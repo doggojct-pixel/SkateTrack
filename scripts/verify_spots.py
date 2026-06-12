@@ -101,7 +101,10 @@ for ui_file in [
 
 map_text = read("iOS/Features/Spots/SpotMapView.swift")
 assert_contains(map_text, "import MapKit", "SpotMapView.swift")
-assert_contains(map_text, "Map(", "SpotMapView.swift")
+assert_contains(map_text, "Map(position:", "SpotMapView.swift")
+assert_contains(map_text, "Annotation(", "SpotMapView.swift")
+assert_not_contains(map_text, "MapAnnotation", "SpotMapView.swift")
+assert_not_contains(map_text, "coordinateRegion:", "SpotMapView.swift")
 assert_not_contains(map_text, "CLLocationManager", "SpotMapView.swift")
 
 root_text = read("iOS/App/RootNavigationView.swift")

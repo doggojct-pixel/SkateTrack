@@ -573,3 +573,37 @@
 "spots.form.notes" = "Notes";
 "spots.form.unset" = "Not set";
 "spots.form.error.invalid" = "Please enter a spot name and valid optional coordinate values.";
+
+/* Task-021b Session Spot Association */
+"spots.session.title" = "Session Spot";
+"spots.session.subtitle" = "Attach this ride to a saved local spot.";
+"spots.session.optional" = "OPTIONAL";
+"spots.session.empty.title" = "No saved spots yet";
+"spots.session.empty.subtitle" = "Create spots from the Spots screen, then attach them when starting a ride.";
+"spots.session.none" = "No Spot";
+"spots.session.none.subtitle" = "Do not attach this ride.";
+"spots.session.visitCountFormat" = "%d visits";
+"spots.lastVisited" = "Last visited";
+"spots.lastVisited.never" = "Never";
+"spots.error.visitTrackingFailed" = "The session was saved, but the spot visit could not be updated.";
+"history.spot.lineFormat" = "%@ · %@ spot";
+"history.spot.unsynced" = "Saved spot unavailable";
+"summary.spot.title" = "Spot";
+"summary.spot.unsynced" = "Saved spot unavailable";
+"summary.spot.legacy.description" = "This ride has a spot ID, but no archived spot snapshot.";
+"summary.spot.detailFormat" = "%@ · %d m radius";
+// Task-021b follow-up history bulk delete
+"general.ok" = "OK";
+"history.selection.start" = "Select";
+"history.selection.cancel" = "Cancel";
+"history.selection.mode.subtitle" = "Select saved sessions to delete. Locked older sessions can also be selected for cleanup.";
+"history.selection.subtitle" = "Delete old or unimportant local records in one action.";
+"history.selection.countFormat" = "%d selected";
+"history.selection.selectAll" = "Select all visible";
+"history.selection.clear" = "Clear";
+"history.selection.delete" = "Delete";
+"history.delete.confirm.title" = "Delete selected sessions?";
+"history.delete.confirm.buttonFormat" = "Delete %d sessions";
+"history.delete.confirm.messageFormat" = "This will permanently delete %d local session records and their motion samples from this device. This cannot be undone.";
+"history.delete.error.title" = "Delete failed";
+"history.delete.error.generic" = "Selected sessions could not be deleted.";

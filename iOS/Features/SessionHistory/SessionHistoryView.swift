@@ -9,6 +9,10 @@ struct SessionHistoryView: View {
     @StateObject private var history: SessionHistoryViewModel
     @State private var isPaywallPresented = false
     @State private var selectedSummarySession: SessionData?
+    @State private var isSelectionMode = false
+    @State private var selectedSessionIDs: Set<UUID> = []
+    @State private var isDeleteConfirmationPresented = false
+    @State private var deletionErrorKey: String?
 
     @MainActor
     init(
@@ -39,6 +43,9 @@ struct SessionHistoryView: View {
                             selectedFilter: $history.selectedFilter,
                             accentColor: SkateTrackSessionStartColors.teal
                         )
+                        .onChange(of: history.selectedFilter) { _, _ in
+                            selectedSessionIDs.removeAll()
+                        }
 
                         content
                             .padding(.horizontal, 20)
@@ -71,6 +78,27 @@ struct SessionHistoryView: View {
                 selectedSummarySession = nil
             }
         }
+        .confirmationDialog(
+            "history.delete.confirm.title",
+            isPresented: $isDeleteConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button(role: .destructive) {
+                Task { await deleteSelectedSessions() }
+            } label: {
+                Text(deleteConfirmationButtonText)
+            }
+            Button("general.cancel", role: .cancel) {}
+        } message: {
+            Text(deleteConfirmationMessageText)
+        }
+        .alert("history.delete.error.title", isPresented: deletionErrorBinding) {
+            Button("general.ok", role: .cancel) { deletionErrorKey = nil }
+        } message: {
+            if let deletionErrorKey {
+                Text(LocalizedStringKey(deletionErrorKey))
+            }
+        }
         .accessibilityIdentifier("session-history-view")
     }
 
@@ -97,11 +125,31 @@ struct SessionHistoryView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("history.title")
-                .font(.system(size: 34, weight: .black, design: .rounded))
-                .foregroundStyle(.white)
+            HStack(alignment: .firstTextBaseline) {
+                Text("history.title")
+                    .font(.system(size: 34, weight: .black, design: .rounded))
+                    .foregroundStyle(.white)
 
-            Text("history.subtitle")
+                Spacer()
+
+                if history.filteredSessionCount > 0 {
+                    Button {
+                        toggleSelectionMode()
+                    } label: {
+                        Text(LocalizedStringKey(isSelectionMode ? "history.selection.cancel" : "history.selection.start"))
+                            .font(.system(size: 12, weight: .black, design: .rounded))
+                            .foregroundStyle(isSelectionMode ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.white.opacity(0.06))
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("history-selection-toggle")
+                }
+            }
+
+            Text(LocalizedStringKey(isSelectionMode ? "history.selection.mode.subtitle" : "history.subtitle"))
                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -252,9 +300,23 @@ struct SessionHistoryView: View {
                     }
                 }
 
-                SessionHistoryListView(sections: sections) { entry in
-                    handleEntryTap(entry)
+                if isSelectionMode {
+                    SessionHistoryBulkActionBarView(
+                        selectedCount: selectedSessionIDs.count,
+                        visibleCount: visibleSessionIDs.count,
+                        onSelectAll: selectAllVisibleSessions,
+                        onClearSelection: { selectedSessionIDs.removeAll() },
+                        onDelete: { isDeleteConfirmationPresented = selectedSessionIDs.isEmpty == false }
+                    )
                 }
+
+                SessionHistoryListView(
+                    sections: sections,
+                    isSelectionMode: isSelectionMode,
+                    selectedSessionIDs: selectedSessionIDs,
+                    onEntryTap: handleEntryTap,
+                    onToggleSelection: toggleSessionSelection
+                )
             }
         }
     }
@@ -279,15 +341,65 @@ struct SessionHistoryView: View {
         UnitFormatter.distance(meters: history.weeklyDistanceKilometers * 1_000, maximumFractionDigits: 2)
     }
 
+    private var visibleSessionIDs: [UUID] {
+        history.visibleSessionIDs(isSubscriber: subscriptionStatus.isSubscriber)
+    }
+
+    private var deleteConfirmationButtonText: String {
+        let format = NSLocalizedString("history.delete.confirm.buttonFormat", comment: "")
+        return String(format: format, locale: .autoupdatingCurrent, selectedSessionIDs.count)
+    }
+
+    private var deleteConfirmationMessageText: String {
+        let format = NSLocalizedString("history.delete.confirm.messageFormat", comment: "")
+        return String(format: format, locale: .autoupdatingCurrent, selectedSessionIDs.count)
+    }
+
+    private var deletionErrorBinding: Binding<Bool> {
+        Binding(
+            get: { deletionErrorKey != nil },
+            set: { if $0 == false { deletionErrorKey = nil } }
+        )
+    }
+
     private func handleEntryTap(_ entry: SessionHistoryEntry) {
-        if entry.isLocked {
+        if isSelectionMode {
+            toggleSessionSelection(entry)
+        } else if entry.isLocked {
             isPaywallPresented = true
         } else {
             selectedSummarySession = entry.session
         }
     }
 
+    private func toggleSelectionMode() {
+        isSelectionMode.toggle()
+        selectedSessionIDs.removeAll()
+    }
 
+    private func toggleSessionSelection(_ entry: SessionHistoryEntry) {
+        if selectedSessionIDs.contains(entry.session.id) {
+            selectedSessionIDs.remove(entry.session.id)
+        } else {
+            selectedSessionIDs.insert(entry.session.id)
+        }
+    }
+
+    private func selectAllVisibleSessions() {
+        selectedSessionIDs = Set(visibleSessionIDs)
+    }
+
+    private func deleteSelectedSessions() async {
+        do {
+            try await history.deleteSessions(ids: selectedSessionIDs)
+            selectedSessionIDs.removeAll()
+            isSelectionMode = false
+        } catch let error as RepositoryError {
+            deletionErrorKey = error.localizationKey
+        } catch {
+            deletionErrorKey = "history.delete.error.generic"
+        }
+    }
 }
 
 #Preview("History") {

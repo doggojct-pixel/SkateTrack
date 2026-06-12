@@ -10,7 +10,7 @@ struct SpotMapView: View {
     let onSelectSpot: (SpotProfile) -> Void
     let onToggleFavorite: (SpotProfile) async -> Void
 
-    @State private var region: MKCoordinateRegion
+    @State private var cameraPosition: MapCameraPosition
 
     init(
         spots: [SpotProfile],
@@ -20,7 +20,7 @@ struct SpotMapView: View {
         self.spots = spots
         self.onSelectSpot = onSelectSpot
         self.onToggleFavorite = onToggleFavorite
-        _region = State(initialValue: Self.defaultRegion(for: spots))
+        _cameraPosition = State(initialValue: .region(Self.defaultRegion(for: spots)))
     }
 
     var body: some View {
@@ -28,24 +28,11 @@ struct SpotMapView: View {
             if mappableSpots.isEmpty {
                 emptyMapState
             } else {
-                Map(coordinateRegion: $region, annotationItems: mappableSpots) { spot in
-                    MapAnnotation(coordinate: spot.mapCoordinate) {
-                        Button { onSelectSpot(spot) } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: spot.isFavorite ? "star.circle.fill" : "mappin.circle.fill")
-                                    .font(.title2.weight(.black))
-                                    .foregroundStyle(spot.isFavorite ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
-                                    .shadow(radius: 4)
-                                Text(spot.name)
-                                    .font(.system(size: 9, weight: .bold, design: .rounded))
-                                    .foregroundStyle(.white)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 3)
-                                    .background(.black.opacity(0.58))
-                                    .clipShape(Capsule())
-                            }
+                Map(position: $cameraPosition) {
+                    ForEach(mappableSpots) { spot in
+                        Annotation(spot.name, coordinate: spot.mapCoordinate) {
+                            spotMarker(for: spot)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
                 .frame(height: 330)
@@ -57,12 +44,31 @@ struct SpotMapView: View {
             }
         }
         .onChange(of: spots) { _, newSpots in
-            region = Self.defaultRegion(for: newSpots)
+            cameraPosition = .region(Self.defaultRegion(for: newSpots))
         }
     }
 
     private var mappableSpots: [SpotProfile] {
         spots.filter(\.hasCoordinate)
+    }
+
+    private func spotMarker(for spot: SpotProfile) -> some View {
+        Button { onSelectSpot(spot) } label: {
+            VStack(spacing: 4) {
+                Image(systemName: spot.isFavorite ? "star.circle.fill" : "mappin.circle.fill")
+                    .font(.title2.weight(.black))
+                    .foregroundStyle(spot.isFavorite ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
+                    .shadow(radius: 4)
+                Text(spot.name)
+                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(.black.opacity(0.58))
+                    .clipShape(Capsule())
+            }
+        }
+        .buttonStyle(.plain)
     }
 
     private var emptyMapState: some View {

@@ -49,3 +49,10 @@ The Task-021a MapKit usage is limited to rendering user-entered local coordinate
 - No Google OAuth or Google Drive API integration.
 - No TestFlight upload or App Store Connect release workflow.
 - No signing, provisioning, entitlement, or capability changes.
+
+
+## Task-021b Confirmation
+
+Task-021b remains account-safe. It adds local Session Start Spot selection, archived `SpotSessionSnapshot` persistence, local `SpotVisit` tracking, and History / Summary Spot attribution without requiring WeatherKit, Google services, public places APIs, cloud sync, background location, signing, capabilities, entitlements, or external secrets.
+
+The `SessionSpotPickerView` only reads locally saved Spots from the app repository boundary. It does not request device location, query public places, import Google SDKs, or claim live rideability. Future Task-022 Weather Provider Upgrade and later cloud / Drive tasks must continue replacing providers behind explicit boundaries rather than changing this local Spot association path directly.

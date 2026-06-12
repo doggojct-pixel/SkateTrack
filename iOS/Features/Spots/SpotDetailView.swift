@@ -135,6 +135,7 @@ struct SpotDetailView: View {
             metricCard(value: spot.safetyRating.map { Text(verbatim: "\($0)/5") } ?? Text("spots.form.unset"), label: "spots.safety")
             metricCard(value: Text(verbatim: "\(Int(spot.radiusMeters)) m"), label: "spots.radius")
             metricCard(value: Text(verbatim: "\(spot.visitCount)"), label: "spots.visits")
+            metricCard(value: Text(verbatim: lastVisitedText), label: "spots.lastVisited")
             if let coordinate = spot.coordinate {
                 metricCard(value: Text(verbatim: String(format: "%.4f", coordinate.latitude)), label: "spots.form.latitude")
                 metricCard(value: Text(verbatim: String(format: "%.4f", coordinate.longitude)), label: "spots.form.longitude")
@@ -195,6 +196,18 @@ struct SpotDetailView: View {
             return Text(verbatim: notes)
         }
         return Text("spots.notes.empty")
+    }
+
+    private var lastVisitedText: String {
+        guard let lastVisitedAt = spot.lastVisitedAt else {
+            return NSLocalizedString("spots.lastVisited.never", comment: "")
+        }
+        let formatter = DateFormatter()
+        formatter.locale = .autoupdatingCurrent
+        formatter.calendar = .autoupdatingCurrent
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: lastVisitedAt)
     }
 
     private func metricCard(value: Text, label: String) -> some View {

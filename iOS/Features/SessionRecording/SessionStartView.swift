@@ -17,8 +17,10 @@ struct SessionStartView: View {
     @State private var paywallFeature: GatedFeature?
     @State private var isHealthReminderSettingsPresented = false
     @State private var selectedEquipmentID: UUID?
+    @State private var selectedSpotID: UUID?
     @StateObject private var weatherRisk: WeatherRiskViewModel
     @StateObject private var equipmentManager: EquipmentManagerViewModel
+    @StateObject private var spotsManager: SpotsViewModel
 
     init(
         subscriptionStatus: SubscriptionStatusViewModel,
@@ -33,6 +35,9 @@ struct SessionStartView: View {
         )
         _equipmentManager = StateObject(
             wrappedValue: useEquipmentManager(subscriptionStatus: subscriptionStatus)
+        )
+        _spotsManager = StateObject(
+            wrappedValue: useSpots(subscriptionStatus: subscriptionStatus)
         )
     }
 
@@ -67,6 +72,11 @@ struct SessionStartView: View {
                             hasAccess: equipmentManager.hasManagementAccess,
                             selectedEquipmentID: $selectedEquipmentID,
                             onUnlock: { showPaywall(for: .equipmentManager) }
+                        )
+
+                        SessionSpotPickerView(
+                            spots: spotsManager.spots,
+                            selectedSpotID: $selectedSpotID
                         )
 
                         previewMetricStrip
@@ -131,7 +141,9 @@ struct SessionStartView: View {
         }
         .task {
             await equipmentManager.refresh()
+            await spotsManager.refresh()
             clearIncompatibleSelectedEquipment()
+            clearUnavailableSelectedSpot()
         }
         .onChange(of: subscriptionStatus.isSubscriber) { _, isSubscriber in
             if isSubscriber {
@@ -142,13 +154,16 @@ struct SessionStartView: View {
             }
             Task {
                 await equipmentManager.refresh()
+                await spotsManager.refresh()
                 clearIncompatibleSelectedEquipment()
+                clearUnavailableSelectedSpot()
             }
         }
         .onChange(of: selectedBoardMode) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedInlineMode) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedPowerType) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: equipmentManager.equipment) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: spotsManager.spots) { _, _ in clearUnavailableSelectedSpot() }
     }
 
     private var fullScreenBackground: some View {
@@ -324,12 +339,15 @@ struct SessionStartView: View {
             return
         }
         let equipment = selectedEquipmentForSession
+        let spot = selectedSpotForSession
         Task {
             await sessionRecording.actions.startSession(
                 selectedSportMode,
                 selectedPowerType,
                 equipment?.id,
-                equipment.map { EquipmentSessionSnapshot(equipment: $0) }
+                equipment.map { EquipmentSessionSnapshot(equipment: $0) },
+                spot?.id,
+                spot.map { SpotSessionSnapshot(spot: $0) }
             )
         }
     }
@@ -344,6 +362,16 @@ struct SessionStartView: View {
     private func clearIncompatibleSelectedEquipment() {
         guard selectedEquipmentForSession?.id != selectedEquipmentID else { return }
         selectedEquipmentID = nil
+    }
+
+    private var selectedSpotForSession: SpotProfile? {
+        guard let selectedSpotID else { return nil }
+        return spotsManager.spots.first { $0.id == selectedSpotID }
+    }
+
+    private func clearUnavailableSelectedSpot() {
+        guard selectedSpotForSession?.id != selectedSpotID else { return }
+        selectedSpotID = nil
     }
 
     private func showUpgradePrompt() {

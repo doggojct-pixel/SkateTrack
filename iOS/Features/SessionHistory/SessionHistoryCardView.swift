@@ -6,7 +6,10 @@ import SwiftUI
 
 struct SessionHistoryCardView: View {
     let entry: SessionHistoryEntry
+    var isSelectionMode = false
+    var isSelected = false
     let onTap: () -> Void
+    var onToggleSelection: (() -> Void)?
 
     private var session: SessionData { entry.session }
     private var metrics: SessionSummaryMetrics { session.summaryMetrics ?? .zero }
@@ -20,23 +23,57 @@ struct SessionHistoryCardView: View {
     }
 
     var body: some View {
-        Button(action: onTap) {
+        Button(action: handleTap) {
             ZStack(alignment: .topTrailing) {
                 cardContent
-                    .blur(radius: entry.isLocked ? 1.4 : 0)
-                    .opacity(entry.isLocked ? 0.62 : 1)
+                    .blur(radius: entry.isLocked && !isSelectionMode ? 1.4 : 0)
+                    .opacity(entry.isLocked && !isSelectionMode ? 0.62 : 1)
 
-                if entry.isLocked {
+                if entry.isLocked && !isSelectionMode {
                     lockedOverlay
+                }
+
+                if isSelectionMode {
+                    selectionBadge
                 }
             }
             .padding(14)
-            .background(SkateTrackSessionStartColors.card.opacity(0.84))
+            .background(SkateTrackSessionStartColors.card.opacity(isSelected ? 0.94 : 0.84))
             .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 22).stroke(SkateTrackSessionStartColors.border, lineWidth: 1))
+            .overlay(cardBorder)
         }
         .buttonStyle(.plain)
-        .accessibilityIdentifier(entry.isLocked ? "history-session-card-locked" : "history-session-card-unlocked")
+        .accessibilityIdentifier(accessibilityIdentifier)
+    }
+
+    private var cardBorder: some View {
+        RoundedRectangle(cornerRadius: 22)
+            .stroke(isSelected ? SkateTrackSessionStartColors.teal.opacity(0.9) : SkateTrackSessionStartColors.border, lineWidth: isSelected ? 2 : 1)
+    }
+
+    private var selectionBadge: some View {
+        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+            .font(.system(size: 22, weight: .black))
+            .foregroundStyle(isSelected ? SkateTrackSessionStartColors.teal : SkateTrackSessionStartColors.textTertiary)
+            .padding(2)
+            .background(SkateTrackSessionStartColors.navy.opacity(0.72))
+            .clipShape(Circle())
+            .accessibilityIdentifier(isSelected ? "history-card-selected" : "history-card-not-selected")
+    }
+
+    private var accessibilityIdentifier: String {
+        if isSelectionMode {
+            return isSelected ? "history-session-card-selected" : "history-session-card-selectable"
+        }
+        return entry.isLocked ? "history-session-card-locked" : "history-session-card-unlocked"
+    }
+
+    private func handleTap() {
+        if isSelectionMode {
+            onToggleSelection?()
+        } else {
+            onTap()
+        }
     }
 
     private var cardContent: some View {
@@ -67,6 +104,10 @@ struct SessionHistoryCardView: View {
                 gearSnapshotLine(gearLine)
             }
 
+            if let spotLine {
+                spotSnapshotLine(spotLine)
+            }
+
             HStack(spacing: 9) {
                 metric(value: distanceText, labelKey: "history.card.distance")
                 metric(value: maxSpeedText, labelKey: "history.card.maxSpeed")
@@ -90,8 +131,24 @@ struct SessionHistoryCardView: View {
 
 
     private func gearSnapshotLine(_ text: String) -> some View {
+        attributionLine(
+            text,
+            iconName: session.equipmentSnapshot?.equipmentType.iconName ?? "questionmark.circle",
+            identifier: "history-card-equipment-snapshot"
+        )
+    }
+
+    private func spotSnapshotLine(_ text: String) -> some View {
+        attributionLine(
+            text,
+            iconName: "mappin.and.ellipse",
+            identifier: "history-card-spot-snapshot"
+        )
+    }
+
+    private func attributionLine(_ text: String, iconName: String, identifier: String) -> some View {
         HStack(spacing: 7) {
-            Image(systemName: session.equipmentSnapshot?.equipmentType.iconName ?? "questionmark.circle")
+            Image(systemName: iconName)
                 .font(.system(size: 11, weight: .black))
                 .foregroundStyle(accentColor)
 
@@ -105,7 +162,7 @@ struct SessionHistoryCardView: View {
         .padding(.vertical, 7)
         .background(Color.white.opacity(0.045))
         .clipShape(Capsule())
-        .accessibilityIdentifier("history-card-equipment-snapshot")
+        .accessibilityIdentifier(identifier)
     }
 
     private func metric(value: String, labelKey: String) -> some View {
@@ -137,6 +194,15 @@ struct SessionHistoryCardView: View {
             return String(format: format, locale: .autoupdatingCurrent, snapshot.displayName, mode, power)
         }
         return session.equipmentID == nil ? nil : NSLocalizedString("history.gear.unsynced", comment: "")
+    }
+
+    private var spotLine: String? {
+        if let snapshot = session.spotSnapshot {
+            let activity = NSLocalizedString(snapshot.activityFamily.localizationKey, comment: "")
+            let format = NSLocalizedString("history.spot.lineFormat", comment: "")
+            return String(format: format, locale: .autoupdatingCurrent, snapshot.displayName, activity)
+        }
+        return session.spotID == nil ? nil : NSLocalizedString("history.spot.unsynced", comment: "")
     }
 
     private var dateLine: String {

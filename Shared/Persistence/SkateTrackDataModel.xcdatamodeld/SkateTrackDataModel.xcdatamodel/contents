@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Task021a">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Task021b">
     <entity name="PersistedSession" representedClassName="NSManagedObject" syncable="YES">
         <attribute name="averageSpeedKilometersPerHour" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
@@ -15,6 +15,7 @@
         <attribute name="sampleFileName" optional="YES" attributeType="String"/>
         <attribute name="sportModeData" optional="NO" attributeType="Binary"/>
         <attribute name="spotID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="spotSnapshotData" optional="YES" attributeType="Binary"/>
         <attribute name="startDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="trickEventsData" optional="NO" attributeType="Binary"/>
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
@@ -72,5 +73,14 @@
         <attribute name="surfaceRatingRaw" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="visitCount" optional="NO" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+
+    <entity name="PersistedSpotVisit" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="confidence" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="distanceKilometers" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="sessionID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="spotID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="visitedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
 </model>

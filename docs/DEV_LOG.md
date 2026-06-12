@@ -914,3 +914,48 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_spots.py` to verify Task-021a files, Spot model fields, repository boundary, UI boundaries, localization keys, project membership, docs, and SessionStart split.
 - Continue running localization, feature-flag, subscription entitlement, Paywall, weather-risk, equipment, and session-recording verification scripts after applying this task.
+
+
+## 2026-06-12 — Task-021b Spot Association + Visit Tracking Foundation
+
+### Completed
+- Added `SpotSessionSnapshot` so completed sessions can preserve the selected local Spot name, activity family, coordinate, and radius at ride time.
+- Extended `SessionData`, `SessionEntityMapper`, the programmatic Core Data model, and the `.xcdatamodel` with optional `spotSnapshotData`.
+- Added a lightweight `PersistedSpotVisit` entity and expanded `SpotRepository` with visit fetch / idempotent record APIs.
+- Added `SpotVisitTracker` as the session-completion boundary that updates Spot visit count and last-visited date only after `SessionRepository.saveCompletedSession(_:)` succeeds.
+- Split post-save mileage / Spot visit side effects into `SessionRecordingCoordinator+CompletionEffects.swift` so the main coordinator stays under the 450-line warning threshold.
+- Extended `SessionRecordingCoordinator` and `useSessionRecording` so Session Start can carry `spotID` and `SpotSessionSnapshot` through final persistence.
+- Added `SessionSpotPickerView` as an in-flow local Spot picker on Session Start without location permission, public spot discovery, or WeatherKit integration.
+- Updated History cards and Session Summary with snapshot-based Spot attribution.
+- Updated Spot detail with last-visited display.
+- Added Task-021b localization keys, iOS unit-test coverage for selected Spot snapshot persistence, and `scripts/verify_spot_session_association.py`.
+
+### Scope Boundary
+- No route-to-spot auto detection, geofencing, nearby public spot database, WeatherKit rideability, Google services, cloud sync, background location, signing, capabilities, production StoreKit, watchOS UI, or macOS UI was added.
+- `SpotVisitTracker` updates visits after successful session persistence only; failed save and discarded sessions do not update Spot visit counts.
+- Session Summary uses archived `SpotSessionSnapshot` data rather than live mutable Spot lookup, matching the Task-020c equipment snapshot pattern.
+
+### Validation Notes
+- Run `python3 scripts/verify_spot_session_association.py` together with Task-021a Spot, Session Start, localization, equipment attribution, weather, and subscription verification scripts.
+- Run the iOS build / test target in Xcode to validate the new Session Start picker, session finalization, History spot line, Summary spot attribution, and Core Data lightweight migration on the simulator.
+
+## 2026-06-12 — Task-021b Follow-up: History Bulk Delete + MapKit Warning Cleanup
+
+### Completed
+- Added History multi-select cleanup mode so users can select and delete multiple local session records from the History page before committing Task-021b.
+- Added `SessionHistoryBulkActionBarView` for a compact dark / neon bulk-action toolbar, keeping selection and delete controls out of the main History list code.
+- Extended `SessionHistoryViewModel` with visible-session selection helpers and local batch deletion through `SessionRepositoryProtocol.deleteSession(id:)`.
+- Updated `SessionHistoryCardView` and `SessionHistoryListView` to support selection badges without changing the normal tap-to-summary / locked-card Paywall behavior.
+- Updated `SessionRepository.deleteSession(id:)` so deleting a saved session also deletes linked local Spot visit records and refreshes the mutable Spot visit summary.
+- Updated `SpotRepository.deleteSpot(id:)` to clean up local visit rows when a Spot is deleted.
+- Reworked `SpotMapView` to use iOS 17 `Map(position:)` and `Annotation` APIs, removing the deprecated `coordinateRegion` / `MapAnnotation` warnings from Task-021a/021b.
+- Added localization keys and verification coverage for History bulk delete and MapKit deprecation guards.
+
+### Scope Boundary
+- No cloud deletion, server sync, Google Drive, WeatherKit, route-to-spot auto detection, production StoreKit, signing, capabilities, watchOS UI, or macOS UI was added.
+- Deletion is local-device only and intentionally destructive after user confirmation.
+- Locked older free-tier History cards remain deletable in selection mode so users can clean up local data without upgrading.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_history.py`, `python3 scripts/verify_spots.py`, and `python3 scripts/verify_spot_session_association.py` after applying this follow-up.
+- Manual validation should confirm selection mode, select-all-visible, clear selection, destructive delete confirmation, locked-card deletion, History refresh, Spot visit summary refresh, and absence of SpotMapView deprecation warnings.

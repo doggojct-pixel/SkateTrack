@@ -88,6 +88,9 @@ struct SessionSummaryView: View {
             if shouldShowEquipmentAttribution(for: content.session) {
                 SessionEquipmentAttributionView(session: content.session)
             }
+            if shouldShowSpotAttribution(for: content.session) {
+                SessionSpotAttributionView(session: content.session)
+            }
             SessionSummaryMetricsGridView(items: metricItems(for: content))
             summaryDetailStack(content)
             closeButton
@@ -214,6 +217,10 @@ private extension SessionSummaryView {
 
     func shouldShowEquipmentAttribution(for session: SessionData) -> Bool {
         session.equipmentSnapshot != nil || session.equipmentID != nil
+    }
+
+    func shouldShowSpotAttribution(for session: SessionData) -> Bool {
+        session.spotSnapshot != nil || session.spotID != nil
     }
 
     func metricItems(for content: SessionSummaryContent) -> [SessionSummaryMetricItem] {

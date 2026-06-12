@@ -122,7 +122,7 @@ for token in [
 
 hook_text = read("iOS/Hooks/useSessionRecording.swift")
 for token in [
-    "let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?) async -> Void",
+    "let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?, UUID?, SpotSessionSnapshot?) async -> Void",
     "equipmentSnapshot: EquipmentSessionSnapshot?",
     "equipmentSnapshot: equipmentSnapshot",
 ]:

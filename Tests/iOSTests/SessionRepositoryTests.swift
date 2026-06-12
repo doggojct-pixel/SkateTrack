@@ -30,6 +30,8 @@ final class SessionRepositoryTests: XCTestCase {
         let fetchedSummaryMetrics = try XCTUnwrap(fetchedSession.summaryMetrics)
         XCTAssertEqual(fetchedSummaryMetrics.distanceKilometers, 0.42, accuracy: 0.001)
         XCTAssertEqual(fetchedSession.motionSamples.map(\.speedKmh), [8, 12])
+        XCTAssertEqual(fetchedSession.spotID, session.spotID)
+        XCTAssertEqual(fetchedSession.spotSnapshot, session.spotSnapshot)
 
         let samples = try await repository.loadMotionSamples(for: session.id)
         XCTAssertEqual(samples.count, 2)
@@ -75,6 +77,14 @@ final class SessionRepositoryTests: XCTestCase {
             sportMode: .skateboard(.streetPark),
             userConfirmed: false
         )
+        let spotID = UUID()
+        let spotSnapshot = SpotSessionSnapshot(
+            spotID: spotID,
+            name: "Test Skate Park",
+            activityFamily: .mixed,
+            coordinate: samples.last?.gpsCoordinate,
+            radiusMeters: 150
+        )
         return try SessionData(
             startDate: startDate,
             endDate: startDate.addingTimeInterval(60),
@@ -88,7 +98,9 @@ final class SessionRepositoryTests: XCTestCase {
                 averageSpeedKilometersPerHour: 10,
                 elevationGainMeters: 1,
                 movingRatio: 0.8
-            )
+            ),
+            spotID: spotID,
+            spotSnapshot: spotSnapshot
         )
     }
 }

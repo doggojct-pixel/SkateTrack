@@ -11,6 +11,7 @@ REQUIRED_FILES = [
     "iOS/Core/EquipmentManager/EquipmentMileageTracker.swift",
     "iOS/Core/EquipmentManager/EquipmentRepository.swift",
     "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift",
+    "iOS/Core/SessionRecording/SessionRecordingCoordinator+CompletionEffects.swift",
     "iOS/Hooks/useSessionRecording.swift",
     "iOS/Features/SessionRecording/SessionStartView.swift",
     "iOS/Features/EquipmentManager/SessionEquipmentPickerView.swift",
@@ -101,6 +102,7 @@ for token in [
     assert_contains(repository_text, token, "EquipmentRepository.swift")
 
 coordinator_text = read("iOS/Core/SessionRecording/SessionRecordingCoordinator.swift")
+completion_effects_text = read("iOS/Core/SessionRecording/SessionRecordingCoordinator+CompletionEffects.swift")
 for token in [
     "let equipmentMileageTracker: EquipmentMileageTracking",
     "equipmentMileageTracker: EquipmentMileageTracking = EquipmentMileageTracker.shared",
@@ -113,9 +115,9 @@ for token in [
     "equipmentSnapshot: selectedEquipmentSnapshot",
     "sessionRepository.saveCompletedSession(sessionData)",
     "await applyEquipmentMileageIfNeeded(for: savedSession)",
-    "private func applyEquipmentMileageIfNeeded(for session: SessionData) async",
+    "func applyEquipmentMileageIfNeeded(for session: SessionData) async",
 ]:
-    assert_contains(coordinator_text, token, "SessionRecordingCoordinator.swift")
+    assert_contains(coordinator_text + "\n" + completion_effects_text, token, "SessionRecordingCoordinator completion path")
 
 save_index = coordinator_text.find("sessionRepository.saveCompletedSession(sessionData)")
 apply_index = coordinator_text.find("await applyEquipmentMileageIfNeeded(for: savedSession)")
@@ -129,7 +131,7 @@ if "applyEquipmentMileageIfNeeded" in discard_body:
 hook_text = read("iOS/Hooks/useSessionRecording.swift")
 for token in [
     "var selectedEquipmentID: UUID?",
-    "let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?) async -> Void",
+    "let startSession: (SportMode, PowerType, UUID?, EquipmentSessionSnapshot?, UUID?, SpotSessionSnapshot?) async -> Void",
     "equipmentID: UUID?",
     "equipmentSnapshot: EquipmentSessionSnapshot?",
     "try await coordinator.startSession(",

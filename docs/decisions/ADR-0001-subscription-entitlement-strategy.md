@@ -142,3 +142,12 @@ Task-020c intentionally does not implement production StoreKit, App Store Connec
 Task-021a introduces local-first Spot Management and keeps paid-access behavior behind the existing project-wide entitlement strategy. Basic local spot CRUD is available for the foundation workflow, while the free favorite limit is enforced through `GatedFeature.spotManagement`, `useSubscriptionStatus`, and the existing `FeatureFlagEngine` / DEBUG-local entitlement simulation path.
 
 Free users can favorite up to three local spots. Attempting to favorite a fourth spot routes to the existing Paywall through `SubscriptionPaywallView` and the `spotManagement` gated feature. DEBUG/local entitlement simulation can unlock unlimited favorites during development. Task-021a does not introduce production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, WeatherKit, Google services, cloud sync, or signing/capability changes.
+
+
+## Task-021b Confirmation
+
+Task-021b extends local Spot Management into Session Start selection, completed-session Spot snapshots, History attribution, Summary attribution, and local visit tracking. It does not introduce a new production monetization path or bypass the existing project-wide paid-feature rule.
+
+Spot favorite limits remain governed by Task-021a through `GatedFeature.spotManagement`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation. Task-021b only associates a selected local Spot with a completed session and records a local `SpotVisit` after `SessionRepository.saveCompletedSession(_:)` succeeds. Discarded sessions and failed saves must not update Spot visit counts.
+
+Task-021b intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, WeatherKit, Google services, cloud sync, public Spot discovery, route-to-Spot auto detection, signing, or capability changes. Future production monetization should still replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting Session Start, History, Summary, or Spot visit tracking UI.

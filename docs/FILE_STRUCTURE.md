@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-021a Spot Management Foundation
-**Current Development Gate:** Task-021a is complete as local-first Spot Management with local CRUD, MapKit marker foundation, free favorite limit, and SessionStartView split. Route-to-spot association, WeatherKit / rideability integration, cloud sync, public spot discovery, production StoreKit, and developer-account-dependent services remain deferred.
+**Current Baseline:** Source-controlled repository after Task-021b Spot Association + Visit Tracking Foundation with History bulk-delete follow-up
+**Current Development Gate:** Task-021b is complete as local-first Session Start Spot selection, archived Spot snapshot persistence, local Spot visit tracking, History / Summary Spot attribution, and local multi-select History deletion. Route-to-spot auto detection, WeatherKit / rideability integration, cloud sync, public spot discovery, production StoreKit, and developer-account-dependent services remain deferred.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -40,6 +40,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-019b Health Reminder Scheduler + In-App Reminder Banner | Complete | Live HUD now surfaces subscriber-gated in-app hydration, rest, and cooldown-stretch reminder banners from active Session time; system notification scheduling remains deferred. |
 | Task-019c Weather Risk Provider + Weather Suitability Card | Complete | Mock weather provider, weather suitability report, heat / UV / rain risk evaluation, Ride-page weather suitability card, free basic summary, Pro detailed guidance, localization, docs, and verification script are implemented. Real WeatherKit remains deferred. |
 | Task-021a Spot Management Foundation | Complete | Local Spot model extension, SpotVisit future model, Core Data spot schema extension, SpotRepository, useSpots, Spot list / map / detail / editor, free 3-favorite limit, root Spots entry, ADR-0002, docs, and verify script are implemented. |
+| Task-021b Spot Association + Visit Tracking Foundation | Complete | Session Start can select a local Spot; completed sessions persist `SpotSessionSnapshot`; successful saves update local Spot visits; History and Summary display archived Spot attribution. Follow-up adds multi-select local History deletion and cleans Spot MapKit deprecation warnings. No route auto-detection, WeatherKit, public database, or cloud sync. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -51,7 +52,7 @@ This document records the current SkateTrack repository structure and developmen
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable; future work may expose speed-source status. | `GPSProvider.swift`, `SensorFusionEngine.swift`, future HUD speed-source UI. |
 | Real share-card export, HealthKit / watchOS heart-rate data, and deeper analysis are not built yet. | Task-018c provides subscriber-gated speed and elevation charts only. Heart-rate zones remain a no-fake-data placeholder, and share-card generation/export remains future work. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers, future share-card export. |
 | UserNotifications scheduling and real weather data are not built yet. | Task-019c surfaces mock weather suitability and detailed Pro risk guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
-| Equipment auto-mileage, spot linkage, and cloud sync remain future tasks. | Task-020b now adds SessionStart equipment selection plus save-success automatic mileage accumulation; History / Summary gear display, archived references, spot linkage, and cloud sync remain future work. | `iOS/Core/EquipmentManager`, `iOS/Features/EquipmentManager`, future equipment display, spot, Google Drive / CloudKit tasks. |
+| Route-to-spot auto detection, WeatherKit rideability, and cloud sync remain future tasks. | Task-021b supports manual local Spot selection and local visit tracking, but it does not infer Spots from GPS routes or fetch live weather / public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, future Task-022 weather provider integration, future sync tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
 
 
@@ -168,9 +169,13 @@ SkateTrack/
 │   │   │   ├── EquipmentRepository.swift           # [自主區] Local PersistedEquipment CRUD, delete, wheel / bearing reset, and mileage accumulation actions.
 │   │   │   ├── EquipmentMileageTracker.swift       # [自主區] Applies completed-session distance to selected gear only after successful SessionRepository save.
 │   │   │   └── WearReminderEngine.swift            # [自主區] Central OK / CHECK / REPLACE wear status rules for wheels and bearings.
+│   │   ├── Spots/                                  # [自主區] Local Spot CRUD, visit persistence, and session-association boundaries.
+│   │   │   ├── SpotRepository.swift                # [自主區] Local Spot CRUD, favorite toggling, nearby distance query, and visit record APIs.
+│   │   │   └── SpotVisitTracker.swift              # [自主區] Applies completed-session visits to selected Spots only after session save succeeds.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
+│   │   │   ├── SessionRecordingCoordinator+CompletionEffects.swift # [自主區] Post-save equipment mileage and Spot visit side effects.
 │   │   │   ├── SessionRecordingCoordinator+DebugMock.swift # [自主區] DEBUG-only demo speed sample feed.
 │   │   │   └── SessionStateMachine.swift           # [自主區] Strict session-state transition rules.
 │   │   └── Subscription/
@@ -208,7 +213,9 @@ SkateTrack/
 │   │   │   ├── MiniRouteMapView.swift              # [協作區] Lightweight route preview from recent coordinates.
 │   │   │   ├── ModeSelectionCardView.swift         # [協作區] Reusable sport/mode card; contains current custom icon work.
 │   │   │   ├── PowerTypeToggleView.swift           # [協作區] Human/electric skateboard power-type toggle.
-│   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow; currently under visual-alignment review.
+│   │   │   ├── SessionSpotPickerView.swift         # [協作區] In-flow local Spot selector for Session Start; no location permission or public discovery.
+│   │   │   ├── SessionStartSupportTypes.swift      # [協作區] Session Start colors, category enum, and inline glyph split out from SessionStartView.
+│   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment and local Spot selection.
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
 │   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
@@ -219,10 +226,11 @@ SkateTrack/
 │   │   │   ├── RestorePurchaseButton.swift         # [協作區] Restore UI that refreshes local entitlement until real StoreKit restore is added.
 │   │   │   └── LockedFeatureOverlayView.swift      # [協作區] Locked-feature prompt used by Session Start before opening Paywall.
 │   │   ├── SessionHistory/                         # [協作區] Task-017a local History UI plus Task-017b selected-session handoff routing.
-│   │   │   ├── SessionHistoryView.swift            # [協作區] Main History screen with summary, filters, repository state, and Paywall routing.
-│   │   │   ├── SessionHistoryListView.swift        # [協作區] Month-grouped saved-session list.
-│   │   │   ├── SessionHistoryCardView.swift        # [協作區] Saved-session card with locked old-session state.
+│   │   │   ├── SessionHistoryView.swift            # [協作區] Main History screen with summary, filters, repository state, Paywall routing, and local bulk delete coordination.
+│   │   │   ├── SessionHistoryListView.swift        # [協作區] Month-grouped saved-session list with optional selection-mode routing.
+│   │   │   ├── SessionHistoryCardView.swift        # [協作區] Saved-session card with locked old-session and selection-badge states.
 │   │   │   ├── SessionHistoryFilterBar.swift       # [協作區] All / Skate / Inline / Electric filter bar.
+│   │   │   ├── SessionHistoryBulkActionBarView.swift # [協作區] Multi-select local deletion toolbar for History cleanup.
 │   │   │   ├── SessionSummaryHandoffView.swift     # [協作區] Legacy Task-017b handoff placeholder retained for reference; Task-018a now opens `SessionSummaryView`.
 │   │   │   └── HistoryLimitPaywallBanner.swift     # [協作區] Free 5-session limit upgrade banner.
 │   │   ├── SessionSummary/                         # [協作區] Task-018a/018b/018c Summary foundation, route map, safety recap, share stub, and subscriber-gated advanced charts.
@@ -230,6 +238,7 @@ SkateTrack/
 │   │   │   ├── SessionSummaryMetricsGridView.swift # [協作區] Core metrics grid for distance, speed, duration, elevation, falls, and tricks.
 │   │   │   ├── SessionSummaryPlaceholderSectionView.swift # [協作區] Legacy reusable placeholder card retained for future Summary sections.
 │   │   │   ├── SessionRouteMapView.swift           # [協作區] MapKit route preview, start / finish markers, and no-route empty state.
+│   │   │   ├── SessionSpotAttributionView.swift    # [協作區] Archived Spot snapshot attribution card for Summary.
 │   │   │   ├── SessionSummarySafetyStatusView.swift # [協作區] Local fall-event and safety recap for Summary.
 │   │   │   ├── SessionSummaryShareStubView.swift   # [協作區] Deferred share-card entry point; no real export yet.
 │   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
@@ -238,7 +247,13 @@ SkateTrack/
 │   │   │   ├── AdvancedChartsLockedView.swift      # [協作區] Free-user Pro preview and Paywall entry for advanced charts.
 │   │   │   └── HeartRateZonePlaceholderView.swift  # [協作區] No-fake-data heart-rate zone placeholder for future wearable / HealthKit work.
 │   │   ├── Social/                                 # [佔位] Future sharing and community features.
-│   │   ├── SpotManagement/                         # [佔位] Future spot database and user spot management.
+│   │   ├── Spots/                                  # [協作區] Local Spot list, map, detail, editor, and favorite-limit UI.
+│   │   │   ├── SpotListView.swift                  # [協作區] Local Spot list / map mode shell and CRUD routing.
+│   │   │   ├── SpotCardView.swift                  # [協作區] Low-density dark Spot summary card.
+│   │   │   ├── SpotMapView.swift                   # [協作區] iOS 17 MapKit marker foundation for manually saved coordinates only.
+│   │   │   ├── SpotDetailView.swift                # [協作區] Local Spot detail, visit stats, edit, delete, and favorite UI.
+│   │   │   ├── SpotEditorView.swift                # [協作區] Add / edit form with optional manual coordinates; no location permission.
+│   │   │   └── SpotFavoriteLimitBanner.swift       # [協作區] Free favorite limit / local privacy banner.
 │   │   ├── TrickRecognition/                       # [佔位] Future trick UI and ML results.
 │   │   └── Tutorials/                              # [佔位] Future tutorials and onboarding.
 │   └── Hooks/                                      # [協作區 — 邊界適配層] SwiftUI-facing adapters.
@@ -247,6 +262,7 @@ SkateTrack/
 │       ├── useHealthReminders.swift               # [協作區 — 邊界適配層] Observable health reminder settings and Pro access boundary.
 │       ├── useWeatherRisk.swift                   # [協作區 — 邊界適配層] Observable mock weather suitability report and detailed Pro risk access.
 │       ├── useEquipmentManager.swift              # [協作區 — 邊界適配層] Observable equipment CRUD state, demo gear, and `.equipmentManager` Pro access boundary.
+│       ├── useSpots.swift                         # [協作區 — 邊界適配層] Observable local Spot CRUD state and `.spotManagement` favorite-limit Paywall boundary.
 │       └── useSubscriptionStatus.swift            # [協作區 — 邊界適配層] Observable subscription/debug override state.
 ├── watchOS/                                        # watchOS app source tree.
 │   ├── App/
@@ -294,7 +310,7 @@ SkateTrack/
 │   ├── verify_session_persistence_integration.py   # [工程設定] Task-015b recording-to-repository integration verification.
 │   ├── verify_subscription_entitlement_simulation.py # [工程設定] Task-016a subscription entitlement provider architecture verification.
 │   ├── verify_subscription_paywall.py              # [工程設定] Task-016b Paywall / locked feature flow verification.
-│   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit plus Task-017b/018a handoff verification.
+│   ├── verify_session_history.py                   # [工程設定] Task-017a Session History / free-limit, handoff, and local bulk-delete verification.
 │   ├── verify_session_summary.py                   # [工程設定] Task-018a/018b/018c Session Summary, route map, safety, share-stub, and advanced-chart gating verification.
 │   ├── verify_session_start_flow.py               # [工程設定] Task-012 source-pattern verification; not a visual-layout test.
 │   └── verify_shared_models.py                    # [工程設定] Task-003 verification.
@@ -401,7 +417,7 @@ Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-fea
 
 ```text
 Shared/Models/SpotProfile.swift                  # [協作區] Extended local Spot profile with radius, activity family, safety, crowd, favorite, and timestamps.
-Shared/Models/SpotVisit.swift                    # [協作區] Future Spot ↔ Session association model for Task-021b.
+Shared/Models/SpotVisit.swift                    # [協作區] Local Spot ↔ Session visit record model used by Task-021b.
 iOS/Core/Spots/SpotRepository.swift              # [自主區] Local Spot CRUD, favorite toggling, and nearby distance query boundary.
 iOS/Hooks/useSpots.swift                         # [協作區 — 邊界適配層] SwiftUI Spot state boundary and favorite-limit Paywall intent.
 iOS/Features/Spots/SpotListView.swift            # [協作區] Local Spot list / map mode shell and CRUD routing.
@@ -417,7 +433,40 @@ docs/decisions/ADR-0002-developer-account-dependent-services.md # [原則 E] Pro
 
 ### Deferred After Task-021a
 
-- SessionStart spot selection remains deferred because `SessionStartView.swift` was only split, not behaviorally changed.
-- Route-to-spot detection, SpotVisit persistence updates, and Summary spot linking remain Task-021b.
+- SessionStart spot selection, SpotVisit persistence updates, and Summary spot linking were completed in Task-021b.
+- Route-to-spot auto detection remains deferred to a future dedicated task.
 - Spot rideability and weather risk chips remain Task-022 and must use the existing weather provider boundary.
 - Public spot discovery, Google / cloud sync, WeatherKit, production StoreKit, signing, capabilities, watchOS, and macOS UI are not part of Task-021a.
+
+
+## Task-021b Spot Association + Visit Tracking Addendum
+
+### New / Updated Source Areas
+
+```text
+Shared/Models/SpotSessionSnapshot.swift           # [協作區] Archived selected-Spot metadata stored with completed sessions.
+Shared/Models/SessionData.swift                   # [協作區] Adds optional `spotSnapshot` beside existing `spotID`.
+Shared/Persistence/SessionEntityMapper.swift      # [自主區] Encodes / decodes `SpotSessionSnapshot` into `spotSnapshotData`.
+Shared/Persistence/PersistenceController.swift    # [自主區] Adds `spotSnapshotData` and `PersistedSpotVisit` to the programmatic Core Data model.
+iOS/Core/Spots/SpotRepository.swift               # [自主區] Adds idempotent local Spot visit recording and visit fetch API.
+iOS/Core/SessionRecording/SessionRecordingCoordinator+CompletionEffects.swift # [自主區] Keeps post-save side effects out of the main coordinator file.
+iOS/Core/Spots/SpotVisitTracker.swift             # [自主區] Applies Spot visit count / last-visited updates only after successful session save.
+iOS/Features/SessionRecording/SessionSpotPickerView.swift # [協作區] Session Start local Spot picker with no location permission or external discovery.
+iOS/Features/SessionHistory/SessionHistoryCardView.swift # [協作區] Shows archived Spot attribution and selection badges on History cards.
+iOS/Features/SessionHistory/SessionHistoryBulkActionBarView.swift # [協作區] Multi-select local deletion toolbar for History cleanup.
+iOS/Features/SessionSummary/SessionSpotAttributionView.swift # [協作區] Shows archived Spot attribution in Summary.
+scripts/verify_spot_session_association.py        # [工程設定] Task-021b verification script.
+```
+
+### Deferred After Task-021b
+
+- Route-to-Spot auto detection remains deferred; Task-021b only uses manual local Spot selection.
+- Weather rideability remains Task-022 and must use the existing Weather provider boundary.
+- Public Spot discovery, Google / cloud sync, WeatherKit, production StoreKit, signing, capabilities, watchOS, and macOS UI remain out of scope.
+
+### Task-021b Follow-up Notes
+
+- History now supports local multi-select deletion from the History page, including locked older free-tier sessions, after a destructive confirmation dialog.
+- Deleting sessions remains local-only and removes linked motion samples through `SessionRepository.deleteSession(id:)`.
+- Linked `PersistedSpotVisit` rows are also removed and Spot visit summary fields are refreshed, so deleted sessions do not leave stale visit counts.
+- `SpotMapView` now uses iOS 17 `Map(position:)` and `Annotation` to avoid deprecated MapKit APIs.

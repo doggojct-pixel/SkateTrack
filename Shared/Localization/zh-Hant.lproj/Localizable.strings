@@ -573,3 +573,37 @@
 "spots.form.notes" = "備註";
 "spots.form.unset" = "未設定";
 "spots.form.error.invalid" = "請輸入場地名稱，並確認選填座標格式正確。";
+
+/* Task-021b Session Spot Association */
+"spots.session.title" = "本次場地";
+"spots.session.subtitle" = "將這次滑行歸屬到已保存的本機場地。";
+"spots.session.optional" = "選填";
+"spots.session.empty.title" = "尚未建立場地";
+"spots.session.empty.subtitle" = "先到「場地」建立本機場地，之後開始滑行時就能選擇。";
+"spots.session.none" = "不指定場地";
+"spots.session.none.subtitle" = "這次滑行不綁定場地。";
+"spots.session.visitCountFormat" = "%d 次造訪";
+"spots.lastVisited" = "最近造訪";
+"spots.lastVisited.never" = "尚未造訪";
+"spots.error.visitTrackingFailed" = "Session 已保存，但場地造訪統計更新失敗。";
+"history.spot.lineFormat" = "%@ · %@場地";
+"history.spot.unsynced" = "已保存場地無法讀取";
+"summary.spot.title" = "場地";
+"summary.spot.unsynced" = "已保存場地無法讀取";
+"summary.spot.legacy.description" = "這筆紀錄有場地 ID，但沒有當時的場地快照。";
+"summary.spot.detailFormat" = "%@ · 半徑 %d 公尺";
+// Task-021b follow-up history bulk delete
+"general.ok" = "確定";
+"history.selection.start" = "選取";
+"history.selection.cancel" = "取消";
+"history.selection.mode.subtitle" = "選取要刪除的滑行紀錄。已鎖定的舊紀錄也可以一起清理。";
+"history.selection.subtitle" = "一次刪除過舊或不重要的本機紀錄。";
+"history.selection.countFormat" = "已選取 %d 筆";
+"history.selection.selectAll" = "全選目前列表";
+"history.selection.clear" = "清除選取";
+"history.selection.delete" = "刪除";
+"history.delete.confirm.title" = "要刪除已選取的紀錄嗎？";
+"history.delete.confirm.buttonFormat" = "刪除 %d 筆紀錄";
+"history.delete.confirm.messageFormat" = "這會從此裝置永久刪除 %d 筆本機滑行紀錄與動作樣本，刪除後無法復原。";
+"history.delete.error.title" = "刪除失敗";
+"history.delete.error.generic" = "無法刪除已選取的滑行紀錄。";

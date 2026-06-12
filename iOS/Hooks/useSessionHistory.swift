@@ -166,6 +166,19 @@ final class SessionHistoryViewModel: ObservableObject {
         !isSubscriber && sessions.count > Self.freeAccessibleSessionCount
     }
 
+    func visibleSessionIDs(isSubscriber: Bool) -> [UUID] {
+        filteredEntries(isSubscriber: isSubscriber).map(\.session.id)
+    }
+
+    func deleteSessions(ids: Set<UUID>) async throws {
+        guard !ids.isEmpty else { return }
+        for id in ids {
+            try await repository.deleteSession(id: id)
+        }
+        sessions.removeAll { ids.contains($0.id) }
+        viewState = sessions.isEmpty ? .empty : .content
+    }
+
     private var filteredSessions: [SessionData] {
         sessions.filter { selectedFilter.matches($0) }
     }

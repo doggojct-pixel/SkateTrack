@@ -107,6 +107,38 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertTrue(sensorEngine.stopCalled)
     }
 
+
+    func testRequestEndSessionPersistsSelectedSpotSnapshot() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let spotID = UUID()
+        let spotSnapshot = SpotSessionSnapshot(
+            spotID: spotID,
+            name: "Riverside Park",
+            activityFamily: .mixed,
+            coordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            radiusMeters: 140
+        )
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository,
+            spotVisitTracker: MockSpotVisitTracker()
+        )
+
+        try await coordinator.startSession(
+            mode: .skateboard(.streetPark),
+            powerType: .humanPowered,
+            spotID: spotID,
+            spotSnapshot: spotSnapshot
+        )
+        let sessionData = try await coordinator.requestEndSession()
+
+        XCTAssertEqual(sessionData.spotID, spotID)
+        XCTAssertEqual(sessionData.spotSnapshot, spotSnapshot)
+        XCTAssertEqual(repository.savedSessions.first?.spotSnapshot, spotSnapshot)
+    }
+
     func testRequestEndSessionPublishesOnlyAfterPersistenceSucceeds() async throws {
         let sensorEngine = MockSessionSensorEngine()
         let repository = MockSessionRepository()
@@ -239,6 +271,14 @@ private final class MockFallDetectionEngine: SessionFallDetecting {
     func stopMonitoring() {}
 
     func cancelFallAlert() {}
+}
+
+private actor MockSpotVisitTracker: SpotVisitTracking {
+    @discardableResult
+    func applyVisitIfNeeded(to session: SessionData) async throws -> SpotVisitTrackingResult {
+        guard let spotID = session.spotID else { return .skippedNoSpot }
+        return .applied(spotID: spotID, sessionID: session.id)
+    }
 }
 
 private final class MockSessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
