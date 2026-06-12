@@ -734,3 +734,22 @@ Task-027a adopted the pre-ADP safe path described in this document:
 - `packageType = export` is separate from Task-026 backup packages (`packageType = backup`).
 - macOS Import Stub / package preview is explicitly deferred to Task-027b / Task-028.
 - Task-026c production Google Drive provider remains blocked and is tracked in `docs/KNOWN_LIMITATIONS_PRE_ADP.md`.
+
+---
+
+## Task-027b implementation alignment note
+
+Task-027b applies the Task-027 / Task-028 risk controls without enabling custom document capabilities:
+
+- macOS import uses `NSOpenPanel`, not `UIDocumentPickerViewController`.
+- The panel accepts `UTType.data` and the ViewModel validates the `.skatetrack` extension; the project still does not declare `UTExportedTypeDeclarations` or `CFBundleDocumentTypes`.
+- `Shared/Export/SkateTrackPackageReader.swift` remains platform-neutral and does not choose sandbox paths.
+- `MacRootView` uses a macOS-native `NavigationSplitView` and does not reuse iOS navigation.
+- `MacLockedFeatureCardView` standardizes coming-soon states for Task-028 / Task-029 accessibility review.
+- The import preview is read-only: no restore, merge, local database import, Google Drive sync, CloudKit, or production StoreKit behavior is introduced.
+
+### Task-027b UI stability follow-up
+
+After manual macOS testing, Task-027b keeps `NavigationSplitView` but uses a custom fixed sidebar instead of `List(selection:)` to avoid sidebar jump / collapse behavior when selecting locked placeholder destinations. This still satisfies the Task-027 / Task-028 risk control that macOS navigation must be independent from iOS `RootNavigationView`, while keeping document association, custom UTType, import persistence, and cloud sync deferred.
+
+Task-027b verification token: stable custom sidebar.

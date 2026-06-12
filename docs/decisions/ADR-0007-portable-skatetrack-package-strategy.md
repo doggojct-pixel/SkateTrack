@@ -58,3 +58,32 @@ Task-027a does not unblock or replace Task-026c. A `.skatetrack` export is a use
 - Batch session export, raw motion sample inclusion controls, package privacy trimming UI, paid batch-export gating, import / restore into the local database, package merge, and cross-device transfer remain later work.
 - Google Drive upload / download, OAuth scope authorization, external-service secrets, production token lifecycle, and server verification remain blocked by Task-026c.
 - The package does not include achievements or weekly challenge completion records; future achievement summaries should be separately reviewed.
+
+## Task-027b update — macOS read-only import preview
+
+Task-027b implements the first macOS consumer for the portable export package while preserving the Task-027a safety boundaries.
+
+- `macOS/App/MacRootView.swift` introduces an independent macOS `NavigationSplitView` shell. It does not import or reuse iOS `RootNavigationView`.
+- `macOS/Features/Import/MacImportView.swift` uses `NSOpenPanel` and `UTType.data` to select a user-chosen file. The app still does not declare custom `.skatetrack` UTType metadata, document association, or Finder open-with behavior.
+- `MacPackageImportViewModel` validates the `.skatetrack` extension, uses security-scoped access for the selected URL, and delegates decoding to `Shared/Export/SkateTrackPackageReader.swift`.
+- `MacPackagePreviewView` displays manifest and session-preview information for `packageType = export` / `schemaVersion = 1` packages only. It does not import records into a local database, restore backups, merge sessions, or sync with cloud services.
+- Locked cards are used for session browser, analytics, video overlay, and cloud sync so the macOS app can communicate the PRD direction without implying those features are complete.
+
+### Deferred from Task-027b
+
+- Full macOS viewer, route maps, advanced charts, session browser, Focus Mode, report export, drag-and-drop import, persistent security-scoped bookmarks, local storage import, package merge, custom UTType registration, document association, and Finder open-with behavior remain future tasks.
+- Google Drive sync remains blocked by Task-026c. A `.skatetrack` package preview is a local user-initiated file workflow, not cloud sync.
+- Task-028 may build on this read-only preview but must continue avoiding production signing, entitlement, iCloud, Google, and StoreKit assumptions until those tasks explicitly unlock them.
+
+## Task-027b UI stability update — custom sidebar inside NavigationSplitView
+
+Manual macOS testing found that the initial `List(selection:)` sidebar could jump to a selected locked destination, hide sibling rows, or make the sidebar feel non-scrollable after moving away from the import screen. The fix keeps the Task-027b architectural decision to use a macOS-native `NavigationSplitView`, but replaces the sidebar list with a small custom `ScrollView` / button sidebar.
+
+Rationale:
+
+- The sidebar destination set is intentionally small and static for Task-027b, so a custom sidebar is simpler and more stable than relying on `List(selection:)` behavior during early macOS shell work.
+- The selected destination is now non-optional, preventing transient nil selection states from collapsing the detail view or changing the sidebar layout unexpectedly.
+- Explicit top spacing keeps the sidebar content visually below macOS traffic-light window controls while preserving the standard macOS titlebar.
+- The detail pane still uses user-initiated `NSOpenPanel` selection and `SkateTrackPackageReader`; no import, merge, restore, document association, or custom UTType behavior is added.
+
+This update does not change package schema, iOS export behavior, signing, capabilities, entitlements, App Groups, iCloud, Google Drive, CloudKit, or StoreKit production boundaries.

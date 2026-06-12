@@ -753,3 +753,30 @@ Task-026c is recorded as blocked, not skipped. The current production state rema
 - `iOS/Features/SessionRecording/SessionStartView.swift` includes a real-device recording notice.
 - `scripts/verify_gps_background_recording.py` statically verifies background mode, Core Location flags, location-driven samples, diagnostic counters, localization copy, and ADR-0008.
 - `docs/decisions/ADR-0008-real-device-background-gps-recording.md` records the strategy and deferred follow-ups.
+
+## Task-027b macOS Import Stub + Package Preview
+
+```text
+macOS/App/MacRootView.swift                                  # [協作區] Independent macOS NavigationSplitView shell; does not reuse iOS RootNavigationView.
+macOS/Features/Import/MacImportView.swift                    # [協作區] NSOpenPanel-based .skatetrack file chooser and read-only preview host.
+macOS/Features/Import/MacPackageImportViewModel.swift        # [協作區] macOS package import preview state, security-scoped read, extension validation, and package error mapping.
+macOS/Features/Import/MacPackagePreviewView.swift            # [協作區] Manifest + session summary preview for packageType = export packages.
+macOS/Features/Shared/MacLockedFeatureCardView.swift         # [協作區] Shared macOS locked / coming-soon card for Task-028+ incomplete features.
+scripts/verify_macos_package_preview.py                      # Verifies Task-027b macOS import stub, package reader reuse, localization, docs, and no custom UTType / capability drift.
+```
+
+### Task-027b deferred items
+
+- Full macOS session viewer, route maps, charts, session browser, Focus Mode, report export, drag-and-drop import, persistent security-scoped bookmarks, local database import, package merge, document association, custom UTType, Google Drive sync, and AI / video analysis remain later tasks.
+- Task-027b only validates and previews `.skatetrack` packages produced by Task-027a. It does not mutate local storage and does not claim cross-device cloud sync is complete.
+
+### Task-027b Mac UI stability hotfix
+
+```text
+macOS/App/MacRootView.swift                                  # [協作區] Stabilized custom sidebar inside NavigationSplitView; keeps selection non-optional and titlebar-safe.
+macOS/Features/Import/MacImportView.swift                    # [協作區] Import detail content gains titlebar-safe top spacing while remaining read-only.
+scripts/verify_macos_package_preview.py                      # Adds stability checks for custom sidebar, non-optional selection, and titlebar-safe layout.
+```
+
+- This hotfix does not add new files, custom UTType declarations, document association, signing changes, or persistent import behavior.
+- `.skatetrack` preview values continue to reflect the metrics stored inside the selected export package. Older simulator exports made before the GPS distance accumulator fix may validly show route samples but `0.00 km` distance.

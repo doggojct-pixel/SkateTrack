@@ -1334,3 +1334,46 @@ This log is append-only. Do not delete or overwrite old entries.
 - App Store privacy review copy for production release readiness remains deferred.
 - Recovery after force quit or system termination remains deferred.
 - Indoor / GPS-denied odometry, IMU-only route drawing, ARKit route tracking, UWB venue tracking, fake route generation, and fake speed generation remain explicitly out of scope.
+
+## 2026-06-12 — Task-027b macOS Import Stub + Package Preview
+
+### Completed
+- Replaced the Task-002 macOS placeholder with `MacRootView`, an independent `NavigationSplitView` shell that does not reuse iOS `RootNavigationView` or bottom-dock navigation.
+- Added `MacImportView` using macOS `NSOpenPanel` to let the user choose a `.skatetrack` file for read-only preview.
+- Reused `Shared/Export/SkateTrackPackageReader.swift` and the Task-027a portable package schema so macOS validates `schemaVersion = 1` and `packageType = export` instead of inventing a second reader.
+- Added `MacPackageImportViewModel` with security-scoped file access, extension validation, package error mapping, and no database writes.
+- Added `MacPackagePreviewView` to display manifest details, session count, motion sample count, route sample count, duration, distance, speeds, moving ratio, export time, and privacy notes.
+- Added `MacLockedFeatureCardView` so incomplete macOS features use one consistent locked / coming-soon pattern before the Task-029 accessibility pass.
+- Added localized English and Traditional Chinese copy for macOS import, preview, locked cards, and validation errors.
+- Added `scripts/verify_macos_package_preview.py` to verify macOS shell independence, NSOpenPanel usage, package-reader reuse, localization, docs, project membership, and no custom UTType / document association / production cloud-service changes.
+- Updated `docs/FILE_STRUCTURE.md` and ADR-0007 to distinguish Task-027b read-only package preview from Task-028 full macOS viewer work.
+
+### Scope Boundary
+- Task-027b does not import package data into local storage, restore backups, merge sessions, persist imported files, create a session database, generate charts, draw maps, export PDF / CSV reports, or implement drag-and-drop import.
+- Task-027b does not declare `UTExportedTypeDeclarations`, `CFBundleDocumentTypes`, custom `.skatetrack` UTType metadata, incoming document association, open-in-place handling, iCloud documents, CloudKit, Google Drive sync, OAuth, Google SDKs, production StoreKit, or paid unlock logic.
+- Task-027b does not change signing, provisioning, Bundle ID, entitlements, App Groups, iCloud containers, Launch Screen, AppIcon, bottom dock, iOS runtime, watchOS runtime, GPSProvider, IMUProvider, SensorFusionEngine, or FallDetectionEngine.
+- The macOS import flow is intentionally user-initiated and read-only. It must be described as a package preview stub, not as completed cross-device sync or completed macOS analytics.
+
+### Deferred from Task-027b
+- Task-028 should build the full macOS shell / Phase 1a viewer on top of this import preview, including a more complete session viewer, route / chart placeholders or initial views, session browser structure, and Focus Mode direction from the PRD.
+- Drag-and-drop import, persistent security-scoped bookmarks, document association, custom UTType registration, Finder open-with behavior, batch import, package merge, local database import, report export, and AI / video analysis remain later macOS work.
+- Google Drive upload / download and cloud sync remain blocked under Task-026c until OAuth credentials, minimum Drive scopes, privacy copy, token lifecycle, and signing review are ready.
+- iPhone 13 Pro outdoor locked-screen GPS validation remains a Task-030 release-readiness gate, even though simulator GPS package-export data is now usable for Task-027b development.
+
+### Validation Notes
+- Run `python3 scripts/verify_macos_package_preview.py` after applying this task.
+- Also run `python3 scripts/verify_skatetrack_package.py`, `python3 scripts/verify_localization_keys.py`, and existing macOS AppIcon verification.
+- Xcode validation should include a macOS build and a manual check that selecting an iOS-exported `.skatetrack` file shows manifest and session preview without adding document associations or changing signing / capabilities.
+
+## 2026-06-12 — Task-027b Mac UI Stability Hotfix
+
+### Completed
+- Stabilized the macOS Task-027b shell after manual testing showed the `NavigationSplitView` sidebar could jump, hide other destinations, or become difficult to scroll after selecting locked / coming-soon destinations.
+- Replaced the sidebar `List(selection:)` implementation with a fixed custom sidebar inside the existing `NavigationSplitView`, keeping the macOS navigation architecture while avoiding selection-driven sidebar scroll collapse.
+- Made the sidebar selection non-optional and kept `NavigationSplitViewVisibility = .all` so selecting `Session Browser`, `Analytics`, `Video Overlay`, or `Cloud Sync` only changes the detail pane and does not rebuild or collapse the sidebar.
+- Added explicit titlebar-safe top spacing to the sidebar and import detail content so macOS traffic-light window controls remain visually above the content area.
+- Kept Task-027b read-only: no package import into storage, no document association, no custom UTType, no Google Drive / CloudKit / StoreKit production behavior, and no signing / capability changes.
+
+### Validation Notes
+- Re-run `python3 scripts/verify_macos_package_preview.py` after applying this hotfix.
+- Manual validation should click every sidebar destination repeatedly, confirm all sidebar rows remain visible and scrollable, confirm the macOS traffic-light controls are not visually covered, and then re-open a `.skatetrack` package preview.

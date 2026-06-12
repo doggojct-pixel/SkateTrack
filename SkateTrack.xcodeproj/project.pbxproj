@@ -264,7 +264,6 @@
 		26B100000000000000000103 /* BackupRestorePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B100000000000000000001 /* BackupRestorePreview.swift */; };
 		26B200000000000000000101 /* BackupPackageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B200000000000000000001 /* BackupPackageDecoder.swift */; };
 		26B400000000000000000101 /* BackupRestorePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B400000000000000000001 /* BackupRestorePreviewView.swift */; };
-
 		27A100000000000000000101 /* SkateTrackPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A100000000000000000001 /* SkateTrackPackageManifest.swift */; };
 		27A100000000000000000102 /* SkateTrackPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A100000000000000000001 /* SkateTrackPackageManifest.swift */; };
 		27A100000000000000000103 /* SkateTrackPackageManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A100000000000000000001 /* SkateTrackPackageManifest.swift */; };
@@ -280,6 +279,11 @@
 		27A300000000000000000101 /* SkateTrackPackageExportProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */; };
 		27A400000000000000000101 /* useSkateTrackPackageExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A400000000000000000001 /* useSkateTrackPackageExport.swift */; };
 		27A500000000000000000101 /* SessionPackageExportActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A500000000000000000001 /* SessionPackageExportActionView.swift */; };
+		27B100000000000000000101 /* MacRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B100000000000000000001 /* MacRootView.swift */; };
+		27B200000000000000000101 /* MacImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000001 /* MacImportView.swift */; };
+		27B200000000000000000102 /* MacPackagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000002 /* MacPackagePreviewView.swift */; };
+		27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000003 /* MacPackageImportViewModel.swift */; };
+		27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B300000000000000000001 /* MacLockedFeatureCardView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -502,9 +506,6 @@
 		26B100000000000000000001 /* BackupRestorePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestorePreview.swift; sourceTree = "<group>"; };
 		26B200000000000000000001 /* BackupPackageDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPackageDecoder.swift; sourceTree = "<group>"; };
 		26B400000000000000000001 /* BackupRestorePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestorePreviewView.swift; sourceTree = "<group>"; };
-		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
-		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
-
 		27A100000000000000000001 /* SkateTrackPackageManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageManifest.swift; sourceTree = "<group>"; };
 		27A100000000000000000002 /* SkateTrackPackagePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackagePayload.swift; sourceTree = "<group>"; };
 		27A200000000000000000001 /* SkateTrackPackageWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageWriter.swift; sourceTree = "<group>"; };
@@ -512,6 +513,13 @@
 		27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageExportProvider.swift; sourceTree = "<group>"; };
 		27A400000000000000000001 /* useSkateTrackPackageExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageExport.swift; sourceTree = "<group>"; };
 		27A500000000000000000001 /* SessionPackageExportActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPackageExportActionView.swift; sourceTree = "<group>"; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
+		27B100000000000000000001 /* MacRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRootView.swift; sourceTree = "<group>"; };
+		27B200000000000000000001 /* MacImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacImportView.swift; sourceTree = "<group>"; };
+		27B200000000000000000002 /* MacPackagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackagePreviewView.swift; sourceTree = "<group>"; };
+		27B200000000000000000003 /* MacPackageImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageImportViewModel.swift; sourceTree = "<group>"; };
+		27B300000000000000000001 /* MacLockedFeatureCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacLockedFeatureCardView.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -606,16 +614,6 @@
 				25A100000000000000000001 /* AuthSession.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-
-		27A200000000000000000000 /* Export */ = {
-			isa = PBXGroup;
-			children = (
-				27A200000000000000000001 /* SkateTrackPackageWriter.swift */,
-				27A200000000000000000002 /* SkateTrackPackageReader.swift */,
-			);
-			path = Export;
 			sourceTree = "<group>";
 		};
 		12A30000000000000000000C /* Protocols */ = {
@@ -912,15 +910,6 @@
 			path = iOS/Core/SessionSharing;
 			sourceTree = SOURCE_ROOT;
 		};
-
-		27A300000000000000000000 /* iOS/Core/Export */ = {
-			isa = PBXGroup;
-			children = (
-				27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */,
-			);
-			path = iOS/Core/Export;
-			sourceTree = SOURCE_ROOT;
-		};
 		24A200000000000000000000 /* iOS/Core/Achievements */ = {
 			isa = PBXGroup;
 			children = (
@@ -979,6 +968,23 @@
 			path = iOS/Core/Sync;
 			sourceTree = SOURCE_ROOT;
 		};
+		27A200000000000000000000 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				27A200000000000000000001 /* SkateTrackPackageWriter.swift */,
+				27A200000000000000000002 /* SkateTrackPackageReader.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
+		27A300000000000000000000 /* iOS/Core/Export */ = {
+			isa = PBXGroup;
+			children = (
+				27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */,
+			);
+			path = iOS/Core/Export;
+			sourceTree = SOURCE_ROOT;
+		};
 		3963F8F31F93F511E309A0BF /* scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1026,6 +1032,7 @@
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
+				27B000000000000000000000 /* macOS/Features */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
 				DA3F5B38A0177725491BBD32 /* docs */,
 				3963F8F31F93F511E309A0BF /* scripts */,
@@ -1033,10 +1040,38 @@
 			);
 			sourceTree = "<group>";
 		};
+		27B000000000000000000000 /* macOS/Features */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000000 /* Import */,
+				27B300000000000000000000 /* Shared */,
+			);
+			path = macOS/Features;
+			sourceTree = SOURCE_ROOT;
+		};
+		27B200000000000000000000 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000001 /* MacImportView.swift */,
+				27B200000000000000000002 /* MacPackagePreviewView.swift */,
+				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		27B300000000000000000000 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				27B300000000000000000001 /* MacLockedFeatureCardView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		BB66BE6E71B096E496503051 /* macOS/App */ = {
 			isa = PBXGroup;
 			children = (
 				6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */,
+				27B100000000000000000001 /* MacRootView.swift */,
 				13AF03000000000000000001 /* Assets.xcassets */,
 				13AF04000000000000000001 /* SkateTrack.icns */,
 			);
@@ -1476,6 +1511,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				261DE15AD20A8E84D69AE21D /* SkateTrackMacApp.swift in Sources */,
+				27B100000000000000000101 /* MacRootView.swift in Sources */,
+				27B200000000000000000101 /* MacImportView.swift in Sources */,
+				27B200000000000000000102 /* MacPackagePreviewView.swift in Sources */,
+				27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */,
+				27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,
