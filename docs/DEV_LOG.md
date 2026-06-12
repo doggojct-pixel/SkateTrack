@@ -1203,3 +1203,24 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_account_provider.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_shared_models.py`, and `python3 scripts/verify_subscription_entitlement_simulation.py` after applying this task.
 - Manual validation should confirm the `帳號` navigation entry opens the Account screen, DEBUG local simulation sign-in / sign-out works without external login, Google shows a disabled / unconfigured state, no OAuth or Safari flow appears, and no signing / capabilities changes are introduced.
+
+## 2026-06-12 — Task-025c Root Navigation Sticky Polish + Debug Entry Placement
+
+### Completed
+- Reworked the Ride-page root navigation so the visible `滑行` / `歷史紀錄` / `我的裝備` / `場地` / `成就` / `帳號` pill row follows the original in-page position and then pins below the Dynamic Island / safe area, instead of appearing as a separate threshold-only overlay.
+- Kept the in-page root navigation row as an invisible layout / measurement anchor so the title-first layout spacing stays stable while only one visible navigation row is presented to the user.
+- Added a subtle sticky background fade as the navigation row approaches its pinned position, preserving legibility when content scrolls underneath the pinned controls.
+- Moved the DEBUG-only `DEV`開發者工具入口 from the upper-right overlay to a bottom-right floating position, with extra Ride-page bottom clearance to reduce overlap with the start-session dock.
+- Added `scripts/verify_root_navigation_polish.py` to guard the continuous sticky-navigation implementation, bottom-right DEBUG placement, documentation notes, and production Google Sign-In boundaries.
+
+### Scope Boundary
+- Task-025c does not change Account provider behavior, Google Sign-In production, Google SDK dependencies, OAuth client IDs, reversed client ID URL schemes, `GoogleService-Info.plist`, Google Drive sync, StoreKit production, signing, capabilities, entitlements, provisioning, Bundle ID, Launch Screen, AppIcon, bottom dock implementation, watchOS UI, macOS UI, GPSProvider, IMUProvider, SensorFusionEngine, or FallDetectionEngine.
+- Task-025c does not refactor the independent scroll layouts of `歷史紀錄`, `我的裝備`, `場地`, `成就`, or `帳號`.
+
+### Deferred from Task-025c
+- Applying the same natural title-under-navigation-to-sticky transition to non-Ride root screens remains Task-025d or later, after each screen's ScrollView structure is reviewed independently.
+- A shared frosted-glass / material root navigation system for all root screens remains future UI polish work and should not be mixed with this same-stage fix.
+
+### Validation Notes
+- Run `python3 scripts/verify_root_navigation_polish.py` plus existing Task-025 verification scripts after applying this task.
+- Manual validation should confirm the Ride-page pill row appears to be the same row naturally sliding into a pinned position, the `DEV`開發者工具入口 sits at the lower-right, and no top navigation pill is blocked.

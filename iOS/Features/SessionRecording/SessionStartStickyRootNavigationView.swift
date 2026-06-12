@@ -10,6 +10,7 @@ enum SessionStartScrollMetrics {
     static let stickyNavigationActivationPadding: CGFloat = 8
     static let minimumStickyNavigationTopInset: CGFloat = 58
     static let stickyNavigationContentTopSpacing: CGFloat = 10
+    static let stickyNavigationBackgroundFadeDistance: CGFloat = 22
 }
 
 struct SessionStartScrollOffsetPreferenceKey: PreferenceKey {
@@ -31,26 +32,46 @@ struct SessionStartNavigationPositionPreferenceKey: PreferenceKey {
 struct SessionStartStickyRootNavigationView: View {
     let rootNavigationAccessory: AnyView
     let topInset: CGFloat
-    let isVisible: Bool
+    let navigationRowMinY: CGFloat
+    let isMeasured: Bool
+    let isPinned: Bool
 
     var body: some View {
         VStack(spacing: 0) {
             rootNavigationAccessory
                 .padding(.horizontal, 20)
-                .padding(.top, topInset + SessionStartScrollMetrics.stickyNavigationContentTopSpacing)
+                .padding(.top, displayedTopPosition)
                 .padding(.bottom, 12)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(stickyBackground)
-                .opacity(isVisible ? 1 : 0)
-                .offset(y: isVisible ? 0 : -16)
-                .allowsHitTesting(isVisible)
+                .background(stickyBackground.opacity(stickyBackgroundOpacity))
+                .opacity(isMeasured ? 1 : 0)
+                .allowsHitTesting(isMeasured)
 
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .animation(.easeInOut(duration: 0.18), value: isVisible)
-        .accessibilityHidden(!isVisible)
+        .animation(.interactiveSpring(response: 0.20, dampingFraction: 0.88), value: displayedTopPosition)
+        .animation(.easeInOut(duration: 0.16), value: stickyBackgroundOpacity)
+        .accessibilityHidden(!isMeasured)
         .accessibilityIdentifier("session-start-sticky-root-navigation")
+    }
+
+    private var pinnedTopPosition: CGFloat {
+        topInset + SessionStartScrollMetrics.stickyNavigationContentTopSpacing
+    }
+
+    private var displayedTopPosition: CGFloat {
+        guard isMeasured else { return pinnedTopPosition }
+        return max(navigationRowMinY, pinnedTopPosition)
+    }
+
+    private var stickyBackgroundOpacity: Double {
+        guard isMeasured else { return 0 }
+        guard !isPinned else { return 1 }
+        let distanceFromPinnedTop = navigationRowMinY - pinnedTopPosition
+        let fadeDistance = SessionStartScrollMetrics.stickyNavigationBackgroundFadeDistance
+        let progress = 1 - min(max(distanceFromPinnedTop / fadeDistance, 0), 1)
+        return Double(progress)
     }
 
     private var stickyBackground: some View {

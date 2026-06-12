@@ -256,9 +256,9 @@ SkateTrack/
 │   │   │   ├── PowerTypeToggleView.swift           # [協作區] Human/electric skateboard power-type toggle.
 │   │   │   ├── SessionSpotPickerView.swift         # [協作區] In-flow local Spot selector for Session Start; no location permission or public discovery.
 │   │   │   ├── SessionStartSupportTypes.swift      # [協作區] Session Start colors, category enum, and inline glyph split out from SessionStartView.
-│   │   │   ├── SessionStartStickyRootNavigationView.swift # [協作區] Sticky floating root navigation for the Ride page when scrolled.
-│   │   │   ├── SessionStartHeaderMetricsView.swift # [協作區] Split Session Start title/header and preview metric strip, keeping SessionStartView under the file-size guardrail.
-│   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment and local Spot selection.
+│   │   │   ├── SessionStartStickyRootNavigationView.swift # [協作區] Continuous Ride-page root navigation overlay that follows the in-page anchor and pins below the Dynamic Island / safe area.
+│   │   │   ├── SessionStartHeaderMetricsView.swift # [協作區] Split Session Start title/header, hidden root navigation anchor, and preview metric strip, keeping SessionStartView under the file-size guardrail.
+│   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment, local Spot selection, and measured sticky root-navigation positioning.
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
 │   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
@@ -418,6 +418,7 @@ python3 scripts/verify_health_reminders.py
 python3 scripts/verify_weather_risk.py
 python3 scripts/verify_weather_rideability.py
 python3 scripts/verify_account_provider.py
+python3 scripts/verify_root_navigation_polish.py
 python3 scripts/verify_equipment_manager.py
 python3 scripts/verify_equipment_mileage_tracking.py
 python3 scripts/verify_app_icons.py
@@ -605,6 +606,7 @@ scripts/verify_session_share_export.py                         # [工程設定] 
 scripts/verify_session_share_photos.py                         # [工程設定] Task-023c Photos save boundary and permission verification script.
 scripts/verify_achievements.py                                  # [工程設定] Task-024b local achievement / weekly challenge verification script.
 scripts/verify_session_summary.py                              # [工程設定] Updated Summary verification for share-card export foundation.
+scripts/verify_root_navigation_polish.py                       # [工程設定] Task-025c sticky root navigation and DEBUG entry placement verification script.
 ```
 
 ### Task-023b Quick Export Addendum
@@ -670,3 +672,12 @@ Task-025b adds the visible Account settings foundation on top of the Task-025a p
 
 Deferred from Task-025b: real Google OAuth sign-in, Google SDK package dependency, OAuth client ID, reversed client ID URL scheme, `GoogleService-Info.plist`, production profile loading, token refresh / revocation, production token persistence / Keychain policy, server verification, Drive scope authorization, Google Drive sync, cloud backup, signing changes, capabilities, entitlements, production StoreKit, watchOS UI, and macOS UI. Google Drive work remains Task-026 or later and must use a separate backup / sync provider boundary.
 
+### Task-025c Root Navigation Sticky Polish + Debug Entry Placement Addendum
+
+Task-025c refines the Ride-page root navigation so the visible pill row behaves like one continuous control: the in-page row is now a hidden layout / measurement anchor, while the visible row follows that measured position and naturally pins below the Dynamic Island / safe area. This replaces the previous threshold-only overlay appearance that could feel like a second row popping in after scrolling.
+
+Task-025c also moves the DEBUG-only `DEV`開發者工具入口 from the upper-right overlay position to a bottom-right safe-area floating position, so it no longer competes with the top root navigation pills (`滑行`, `歷史紀錄`, `我的裝備`, `場地`, `成就`, `帳號`). The Ride page uses additional bottom padding to reduce overlap with the bottom start-session dock.
+
+`verify_root_navigation_polish.py` verifies the continuous sticky-navigation anchor / overlay relationship, bottom-right DEBUG entry placement, documentation notes, and the absence of production Google Sign-In configuration in the changed Swift sources.
+
+Deferred from Task-025c: applying the same title-under-navigation-to-sticky transition to `歷史紀錄`, `我的裝備`, `場地`, `成就`, and `帳號` remains Task-025d or later, because those screens have separate scrolling structures and should not be refactored inside this Ride-page polish fix. A full frosted-glass material system for all root navigation states is also deferred until the shared root-screen layout is intentionally standardized.

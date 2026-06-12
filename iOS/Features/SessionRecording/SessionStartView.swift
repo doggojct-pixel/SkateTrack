@@ -161,7 +161,9 @@ struct SessionStartView: View {
                     SessionStartStickyRootNavigationView(
                         rootNavigationAccessory: rootNavigationAccessory,
                         topInset: stickyTopInset,
-                        isVisible: shouldShowStickyRootNavigation(topInset: stickyTopInset)
+                        navigationRowMinY: navigationRowMinY,
+                        isMeasured: navigationRowMinY < .greatestFiniteMagnitude,
+                        isPinned: shouldShowStickyRootNavigation(topInset: stickyTopInset)
                     )
                     .zIndex(8)
                 }

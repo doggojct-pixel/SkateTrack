@@ -21,7 +21,10 @@ struct SessionStartHeaderView: View {
                     .padding(.top, 2)
                     .padding(.bottom, 2)
                     .background(navigationPositionReader)
-                    .accessibilityIdentifier("session-start-root-navigation-accessory")
+                    .opacity(0)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                    .accessibilityIdentifier("session-start-root-navigation-anchor")
             }
 
             Text("home.greeting.morning")

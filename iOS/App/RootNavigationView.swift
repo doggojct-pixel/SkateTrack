@@ -220,6 +220,7 @@ struct RootNavigationView: View {
     #if DEBUG
     private var debugToolsButton: some View {
         VStack {
+            Spacer()
             HStack {
                 Spacer()
                 Button {
@@ -238,16 +239,16 @@ struct RootNavigationView: View {
                 .accessibilityLabel("Debug Tools")
                 .accessibilityIdentifier(DebugToolAction.openPanel.accessibilityIdentifier)
             }
-            .padding(.top, debugToolsTopPadding)
             .padding(.trailing, 16)
-            Spacer()
+            .padding(.bottom, debugToolsBottomPadding)
         }
         .allowsHitTesting(true)
+        .accessibilityIdentifier("debug-tools-bottom-entry")
     }
     #endif
 
-    private var debugToolsTopPadding: CGFloat {
-        (!shouldShowLiveHUD && selectedPrimaryScreen != .ride) ? rootPrimarySwitchTopPadding : 58
+    private var debugToolsBottomPadding: CGFloat {
+        selectedPrimaryScreen == .ride ? 118 : 28
     }
 
     private func handleSessionStatusChange(from oldStatus: SessionRecordingStatus, to newStatus: SessionRecordingStatus) {
