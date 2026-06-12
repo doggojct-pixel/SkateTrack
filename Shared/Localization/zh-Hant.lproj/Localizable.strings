@@ -775,3 +775,24 @@
 "account.privacy.local_first" = "在您明確啟用未來的備份或同步 provider 前，SkateTrack 資料會優先保留在此裝置本機。";
 "account.debug.sign_in_local" = "DEBUG：使用本機帳號登入";
 "account.debug.sign_out_local" = "DEBUG：登出本機帳號";
+
+/* Task-025b Account Settings UI Foundation */
+"root.nav.account" = "帳號";
+"account.eyebrow" = "本機優先身分";
+"account.subtitle" = "在 Google 登入安全延後的狀態下，管理 SkateTrack 帳號狀態。";
+"account.status.card.title" = "目前帳號";
+"account.status.provider" = "來源";
+"account.status.state" = "狀態";
+"account.status.profile" = "個人資料";
+"account.status.email" = "Email";
+"account.status.placeholder_profile" = "尚未載入個人資料";
+"account.status.no_email" = "沒有可用 Email";
+"account.status.refresh" = "重新整理帳號狀態";
+"account.google.provider" = "Google 來源";
+"account.google.state" = "Google 狀態";
+"account.google.drive_deferred" = "Google Drive 備份與同步已刻意保留到 Task-026 或後續任務。本頁不會要求 Drive scope 或雲端存取。";
+"account.google.action_unavailable" = "檢查 Google 設定狀態";
+"account.debug.card.title" = "DEBUG 本機模擬";
+"account.debug.card.subtitle" = "使用只存在本機的 mock 帳號測試未來帳號相關 UI，不需要正式 OAuth credentials。";
+"account.privacy.title" = "本機優先隱私";
+"account.provider_boundary.note" = "帳號 UI 只透過 provider boundary 溝通，不 import Google SDK、不保存真實 token，也不修改 signing 與 capabilities。";

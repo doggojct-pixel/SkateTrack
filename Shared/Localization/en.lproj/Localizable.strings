@@ -775,3 +775,24 @@
 "account.privacy.local_first" = "Your SkateTrack data stays local on this device until you explicitly enable a future backup or sync provider.";
 "account.debug.sign_in_local" = "DEBUG: Sign in locally";
 "account.debug.sign_out_local" = "DEBUG: Sign out local account";
+
+/* Task-025b Account Settings UI Foundation */
+"root.nav.account" = "Account";
+"account.eyebrow" = "Local-first identity";
+"account.subtitle" = "Manage SkateTrack account status while Google Sign-In remains safely deferred.";
+"account.status.card.title" = "Current account";
+"account.status.provider" = "Provider";
+"account.status.state" = "State";
+"account.status.profile" = "Profile";
+"account.status.email" = "Email";
+"account.status.placeholder_profile" = "No profile loaded";
+"account.status.no_email" = "No email available";
+"account.status.refresh" = "Refresh account status";
+"account.google.provider" = "Google provider";
+"account.google.state" = "Google state";
+"account.google.drive_deferred" = "Google Drive backup and sync are intentionally left for Task-026 or later. This screen does not request Drive scopes or cloud access.";
+"account.google.action_unavailable" = "Check Google setup status";
+"account.debug.card.title" = "DEBUG local simulation";
+"account.debug.card.subtitle" = "Use a local-only mock account to test future account-dependent UI without production OAuth credentials.";
+"account.privacy.title" = "Local-first privacy";
+"account.provider_boundary.note" = "Account UI talks only to the provider boundary. It does not import Google SDKs, persist real tokens, or change signing and capabilities.";

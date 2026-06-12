@@ -1178,3 +1178,28 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_account_provider.py` after applying this task.
 - Run existing localization and shared-model verification scripts to ensure account strings and shared models remain aligned.
 - Xcode validation should confirm the iOS target compiles with the new account provider files and that no Google OAuth prompt, URL-scheme setup, signing change, or capability change appears.
+
+## 2026-06-12 — Task-025b Account Settings UI Foundation
+
+### Completed
+- Added a visible Account settings screen under `iOS/Features/Settings/AccountSettingsView.swift` using the Task-025a `useAccount` boundary rather than direct Google SDK, token storage, or Drive APIs.
+- Added a localized `帳號` / Account root navigation entry in `RootNavigationView` without changing the bottom dock, Launch Screen, AppIcon, watchOS UI, or macOS UI.
+- The Account screen now shows local-first account status, provider state, profile placeholder / local simulation profile details, Google unavailable state, and a clear Drive-sync deferred note.
+- DEBUG builds can use local-only account simulation sign-in / sign-out from the Account screen; Release builds do not expose local fake sign-in controls.
+- The Google status action only reports the disabled / unconfigured state through `DisabledGoogleAuthProvider`; it does not start OAuth, open Safari, request credentials, or load any Google SDK.
+- Added Task-025b localization keys and extended `scripts/verify_account_provider.py` to verify the Account UI, root navigation membership, disabled-provider guardrails, localization, docs, and project membership.
+- Updated `docs/FILE_STRUCTURE.md` and ADR-0002 so the visible UI is documented separately from production Google Sign-In and Google Drive sync.
+
+### Scope Boundary
+- Task-025b does not add real Google OAuth sign-in, Google SDK package dependency, OAuth client ID, reversed client ID URL scheme, `GoogleService-Info.plist`, production profile loading, token refresh, token revocation, server verification, Drive scope authorization, Google Drive sync, cloud backup, production token persistence, or Keychain policy finalization.
+- Task-025b does not change signing, capabilities, provisioning, Bundle ID, entitlements, production StoreKit, WeatherKit, CloudKit, watchOS UI, macOS UI, Launch Screen, AppIcon, bottom dock, GPSProvider, IMUProvider, SensorFusionEngine, or FallDetectionEngine.
+- The UI is intentionally local-first and honest about unavailable Google functionality. It must not be described as production Google Sign-In readiness.
+
+### Deferred from Task-025b
+- Real `GoogleSignInProvider`, Google OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real profile loading, token refresh / revocation, server verification, and production token persistence / Keychain policy remain future blocked work after credentials and privacy copy are ready.
+- Google Drive scope authorization and Google Drive sync remain Task-026 or later work and must use a separate backup / sync provider boundary.
+- Cloud backup, portable account migration, production account deletion, and cross-device account recovery remain future account / sync tasks.
+
+### Validation Notes
+- Run `python3 scripts/verify_account_provider.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_shared_models.py`, and `python3 scripts/verify_subscription_entitlement_simulation.py` after applying this task.
+- Manual validation should confirm the `帳號` navigation entry opens the Account screen, DEBUG local simulation sign-in / sign-out works without external login, Google shows a disabled / unconfigured state, no OAuth or Safari flow appears, and no signing / capabilities changes are introduced.

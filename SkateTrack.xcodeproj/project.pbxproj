@@ -255,6 +255,7 @@
 		25A200000000000000000103 /* DisabledGoogleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */; };
 		25A200000000000000000104 /* AuthTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A200000000000000000004 /* AuthTokenStore.swift */; };
 		25A300000000000000000101 /* useAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A300000000000000000001 /* useAccount.swift */; };
+		25B100000000000000000101 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B100000000000000000001 /* AccountSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -469,6 +470,7 @@
 		25A200000000000000000003 /* DisabledGoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledGoogleAuthProvider.swift; sourceTree = "<group>"; };
 		25A200000000000000000004 /* AuthTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTokenStore.swift; sourceTree = "<group>"; };
 		25A300000000000000000001 /* useAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useAccount.swift; sourceTree = "<group>"; };
+		25B100000000000000000001 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -847,6 +849,14 @@
 			path = iOS/Features/Spots;
 			sourceTree = SOURCE_ROOT;
 		};
+		25B100000000000000000000 /* iOS/Features/Settings */ = {
+			isa = PBXGroup;
+			children = (
+				25B100000000000000000001 /* AccountSettingsView.swift */,
+			);
+			path = iOS/Features/Settings;
+			sourceTree = SOURCE_ROOT;
+		};
 		14D000000000000000000000 /* iOS/Features/Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -926,6 +936,7 @@
 				20A200000000000000000000 /* iOS/Features/EquipmentManager */,
 				21A210000000000000000000 /* iOS/Features/Spots */,
 				24A400000000000000000000 /* iOS/Features/Achievements */,
+				25B100000000000000000000 /* iOS/Features/Settings */,
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
@@ -1304,6 +1315,7 @@
 				25A200000000000000000104 /* AuthTokenStore.swift in Sources */,
 				12A400000000000000000105 /* useSubscriptionStatus.swift in Sources */,
 				25A300000000000000000101 /* useAccount.swift in Sources */,
+				25B100000000000000000101 /* AccountSettingsView.swift in Sources */,
 				12A600000000000000000101 /* GPSProvider.swift in Sources */,
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
 				12A700000000000000000101 /* IMUProvider.swift in Sources */,

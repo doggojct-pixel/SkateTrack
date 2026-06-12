@@ -76,3 +76,15 @@ This implementation does not import Google SDKs, configure OAuth client IDs, add
 - Real `GoogleSignInProvider`, Google OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real profile loading, token refresh, token revocation, and server verification remain future blocked work.
 - Google Drive scope authorization and Google Drive sync remain Task-026 or later work and must use a separate backup / sync provider boundary.
 - Production token persistence / Keychain policy must not be completed until the real provider, credentials, minimum OAuth scopes, logout / revocation behavior, and privacy copy are finalized.
+
+## Task-025b Account Settings UI Confirmation
+
+Task-025b applies this ADR to the visible account settings surface. The app now exposes a localized `帳號` / Account root navigation entry and `AccountSettingsView`, but the screen is intentionally backed only by `useAccount`, `LocalAccountProvider`, and `DisabledGoogleAuthProvider`.
+
+The Account screen may show DEBUG-only local simulation sign-in / sign-out controls and a disabled Google provider state. It does not import Google SDKs, start OAuth, open Safari sign-in, add OAuth client IDs, add a reversed client ID URL scheme, add `GoogleService-Info.plist`, request Drive scopes, save production tokens, perform server verification, or change signing, capabilities, provisioning, Bundle ID, entitlements, StoreKit, WeatherKit, CloudKit, watchOS, or macOS targets.
+
+### Deferred from Task-025b
+
+- Real `GoogleSignInProvider`, Google OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real profile loading, token refresh, token revocation, server verification, and production token persistence / Keychain policy remain future blocked work.
+- Google Drive scope authorization and Google Drive sync remain Task-026 or later work and must use a separate backup / sync provider boundary rather than being hidden inside Task-025b UI.
+- Production account deletion, cross-device account recovery, portable account migration, and cloud backup remain future account / sync design tasks.

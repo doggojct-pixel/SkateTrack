@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-025a account provider foundation stays mock / disabled only."""
+"""Verify Task-025 account provider + settings UI stays mock / disabled only."""
 
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ REQUIRED_FILES = [
     "iOS/Core/Account/DisabledGoogleAuthProvider.swift",
     "iOS/Core/Account/AuthTokenStore.swift",
     "iOS/Hooks/useAccount.swift",
+    "iOS/Features/Settings/AccountSettingsView.swift",
     "Shared/Localization/en.lproj/Localizable.strings",
     "Shared/Localization/zh-Hant.lproj/Localizable.strings",
     "docs/DEV_LOG.md",
@@ -31,6 +32,8 @@ PROJECT_TOKENS = [
     "DisabledGoogleAuthProvider.swift in Sources",
     "AuthTokenStore.swift in Sources",
     "useAccount.swift in Sources",
+    "iOS/Features/Settings",
+    "AccountSettingsView.swift in Sources",
 ]
 
 LOCALIZATION_KEYS = [
@@ -51,6 +54,25 @@ LOCALIZATION_KEYS = [
     "account.privacy.local_first",
     "account.debug.sign_in_local",
     "account.debug.sign_out_local",
+    "root.nav.account",
+    "account.eyebrow",
+    "account.subtitle",
+    "account.status.card.title",
+    "account.status.provider",
+    "account.status.state",
+    "account.status.profile",
+    "account.status.email",
+    "account.status.placeholder_profile",
+    "account.status.no_email",
+    "account.status.refresh",
+    "account.google.provider",
+    "account.google.state",
+    "account.google.drive_deferred",
+    "account.google.action_unavailable",
+    "account.debug.card.title",
+    "account.debug.card.subtitle",
+    "account.privacy.title",
+    "account.provider_boundary.note",
 ]
 
 SOURCE_TOKENS = {
@@ -93,6 +115,20 @@ SOURCE_TOKENS = {
         "DisabledGoogleAuthProvider.shared",
         "signInWithLocalSimulation",
         "requestGoogleSignIn",
+    ],
+    "iOS/Features/Settings/AccountSettingsView.swift": [
+        "struct AccountSettingsView",
+        "@StateObject private var viewModel: AccountViewModel",
+        "viewModel.requestGoogleSignIn",
+        "viewModel.signInWithLocalSimulation",
+        "account.google.drive_deferred",
+        "account.provider_boundary.note",
+    ],
+    "iOS/App/RootNavigationView.swift": [
+        "case account",
+        "root.nav.account",
+        "AccountSettingsView()",
+        r"root-nav-\(screen.rawValue)",
     ],
 }
 
@@ -197,6 +233,8 @@ def verify_docs() -> None:
         "Google Sign-In production",
         "Deferred from Task-025a",
         "Task-025b",
+        "Account Settings UI Foundation",
+        "Deferred from Task-025b",
         "Task-026",
     ]:
         if token not in docs:
@@ -209,7 +247,7 @@ def main() -> None:
     verify_localization()
     verify_sources()
     verify_docs()
-    print("✅ Task-025a account provider verification passed.")
+    print("✅ Task-025 account provider and settings UI verification passed.")
 
 
 if __name__ == "__main__":
