@@ -743,3 +743,13 @@ Task-026c is recorded as blocked, not skipped. The current production state rema
 - macOS Import Stub / package preview UI is deferred to Task-027b or Task-028.
 - Custom UTType declaration, document association, and inbound file handling are deferred until signing impact is reviewed.
 - Batch export, import / restore into local storage, package merge, Drive upload / download, OAuth / Drive scope work, and cloud sync remain future tasks.
+
+
+## Task-027-preflight Real-device GPS Background Recording Notes
+
+- `iOS/Core/SensorEngine/GPSProvider.swift` now enables background location updates only when `UIBackgroundModes = location` is declared, disables automatic pausing during active ride recording, requests an Always authorization upgrade when appropriate, derives GPS speed from consecutive fixes when Core Location speed is unavailable, and uses a 35 m accepted accuracy threshold for real outdoor pocket tests.
+- `iOS/Core/SensorEngine/SensorFusionEngine.swift` now emits location-driven motion samples from GPS callbacks so route data can be preserved when normal timers are throttled during locked-screen recording.
+- `Shared/Models/SessionSummaryMetrics.swift`, `iOS/Core/SessionRecording/SessionMetricsAccumulator.swift`, and `iOS/Hooks/useSessionRecording.swift` expose motion / GPS sample counts for diagnostics.
+- `iOS/Features/SessionRecording/SessionStartView.swift` includes a real-device recording notice.
+- `scripts/verify_gps_background_recording.py` statically verifies background mode, Core Location flags, location-driven samples, diagnostic counters, localization copy, and ADR-0008.
+- `docs/decisions/ADR-0008-real-device-background-gps-recording.md` records the strategy and deferred follow-ups.

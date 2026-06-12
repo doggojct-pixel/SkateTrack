@@ -18,6 +18,8 @@ struct SessionRecordingState: Equatable {
     var elapsedTime: TimeInterval
     var currentTiltDegrees: Double
     var latestMotionSample: MotionSample?
+    var motionSampleCount: Int
+    var gpsSampleCount: Int
     var recentRouteCoordinates: [GeoCoordinate]
     var activeFallEvent: FallEvent?
     var errorMessageKey: String?
@@ -35,6 +37,8 @@ struct SessionRecordingState: Equatable {
         elapsedTime: 0,
         currentTiltDegrees: 0,
         latestMotionSample: nil,
+        motionSampleCount: 0,
+        gpsSampleCount: 0,
         recentRouteCoordinates: [],
         activeFallEvent: nil,
         errorMessageKey: nil
@@ -120,6 +124,8 @@ final class SessionRecordingViewModel: ObservableObject {
                     $0.elapsedTime = metrics.elapsedTime
                     $0.currentTiltDegrees = metrics.currentTiltDegrees
                     $0.latestMotionSample = metrics.latestMotionSample
+                    $0.motionSampleCount = metrics.motionSampleCount
+                    $0.gpsSampleCount = metrics.gpsSampleCount
                     if let coordinate = metrics.latestMotionSample?.gpsCoordinate {
                         $0.recentRouteCoordinates.append(coordinate)
                         if $0.recentRouteCoordinates.count > 80 {
@@ -252,6 +258,8 @@ struct SessionRecordingPreviewPanel: View {
             Text("\(sessionRecording.state.distanceKilometers, format: .number.precision(.fractionLength(2)))")
                 .font(.caption2)
             Text("\(sessionRecording.state.elapsedTime, format: .number.precision(.fractionLength(0)))")
+                .font(.caption2)
+            Text("samples \(sessionRecording.state.motionSampleCount) / gps \(sessionRecording.state.gpsSampleCount)")
                 .font(.caption2)
 
             if let errorKey = sessionRecording.state.errorMessageKey {

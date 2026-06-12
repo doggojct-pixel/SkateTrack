@@ -28,6 +28,8 @@ struct LiveSessionMetrics: Equatable, Sendable {
     let elapsedTime: TimeInterval
     let currentTiltDegrees: Double
     let latestMotionSample: MotionSample?
+    let motionSampleCount: Int
+    let gpsSampleCount: Int
 
     static let zero = LiveSessionMetrics(
         currentSpeedKilometersPerHour: 0,
@@ -36,6 +38,8 @@ struct LiveSessionMetrics: Equatable, Sendable {
         distanceKilometers: 0,
         elapsedTime: 0,
         currentTiltDegrees: 0,
-        latestMotionSample: nil
+        latestMotionSample: nil,
+        motionSampleCount: 0,
+        gpsSampleCount: 0
     )
 }

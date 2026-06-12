@@ -1312,3 +1312,25 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_skatetrack_package.py` after applying this task.
 - Also run localization, shared-model, backup, account, and subscription entitlement verification scripts to ensure Task-027a does not regress earlier provider boundaries.
 - Manual validation should confirm the Session Summary share section shows a `SkateTrack 檔案` export action for unlocked share-card access, opens the iOS system share sheet, and produces a `.skatetrack` file without Google, OAuth, or signing prompts.
+
+
+## Task-027-preflight — Real-device GPS background recording diagnostics
+
+- Paused Task-027b macOS import work after iPhone 13 Pro real-device testing showed a session could preserve an initial map point but lose route / speed after the screen was turned off.
+- Confirmed the likely root cause was incomplete locked-screen / background location support rather than Google Drive, backup, export, or mock-speed work.
+- Added generated Info.plist `UIBackgroundModes = location` for the iOS app target so Core Location can deliver active ride updates while the screen is off.
+- Updated `GPSProvider` to enable `allowsBackgroundLocationUpdates` and the background location indicator only when the bundle declares the location background mode.
+- Updated `GPSProvider` to disable automatic location pausing during active ride recording, request an Always authorization upgrade after When In Use permission is available, accept outdoor fixes up to 35 m accuracy, and derive speed from consecutive GPS fixes when `CLLocation.speed` is unavailable.
+- Updated `SensorFusionEngine` to emit location-driven motion samples from GPS callbacks so background location delivery can still preserve route data if the normal 10 Hz timer is throttled.
+- Added live sample counters to `LiveSessionMetrics`, `SessionMetricsAccumulator`, and `useSessionRecording` so debugging can distinguish zero speed from missing GPS-backed samples.
+- Added a real-device recording notice to the Session Start screen explaining that locked-screen recording now depends on Always / Precise Location permission and that the app should not be force-quit during a session.
+- Added `scripts/verify_gps_background_recording.py`.
+- Added ADR-0008 to document the real-device background GPS strategy.
+
+### Deferred from Task-027-preflight
+
+- Full battery profiling and power policy tuning remain deferred.
+- A dedicated runtime diagnostics screen for precise location, accepted / rejected GPS fix counts, last GPS sample age, and route confidence remains deferred.
+- App Store privacy review copy for production release readiness remains deferred.
+- Recovery after force quit or system termination remains deferred.
+- Indoor / GPS-denied odometry, IMU-only route drawing, ARKit route tracking, UWB venue tracking, fake route generation, and fake speed generation remain explicitly out of scope.

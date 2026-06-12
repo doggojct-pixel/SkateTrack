@@ -894,3 +894,7 @@
 "skatetrack.package.error.write" = "無法寫入 SkateTrack 檔案。";
 "skatetrack.package.error.read" = "無法讀取 SkateTrack 檔案。";
 "skatetrack.package.error.generic" = "無法準備 SkateTrack 檔案。";
+
+/* Task-027 preflight 真機 GPS 紀錄 */
+"session.start.backgroundRecording.title" = "真機路線紀錄";
+"session.start.backgroundRecording.detail" = "戶外實測時，SkateTrack 現在會在螢幕關閉後維持定位更新。若 iOS 詢問，請允許「永遠」與「精確位置」，並避免在 Session 中強制關閉 App。";

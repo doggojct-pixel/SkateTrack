@@ -12,6 +12,7 @@ protocol GPSAuthorizationHandling: AnyObject {
     func requestAlwaysAuthorization()
     func canStartLocationUpdates() -> Bool
     func shouldRequestAuthorization() -> Bool
+    func canRequestAlwaysAuthorizationUpgrade() -> Bool
 }
 
 final class GPSAuthorizationHandler: GPSAuthorizationHandling {
@@ -50,5 +51,10 @@ final class GPSAuthorizationHandler: GPSAuthorizationHandling {
 
     func shouldRequestAuthorization() -> Bool {
         currentStatus == .notDetermined
+    }
+
+    func canRequestAlwaysAuthorizationUpgrade() -> Bool {
+        guard CLLocationManager.locationServicesEnabled() else { return false }
+        return currentStatus == .authorizedWhenInUse
     }
 }

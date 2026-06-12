@@ -34,6 +34,7 @@ final class SensorFusionEngine: SensorProvider {
     private var latestAcceleration = ThreeAxisValue.zero
     private var latestGyroscope = ThreeAxisValue.zero
     private var latestAltitudeMeters: Double?
+    private var lastLocationDrivenSampleDate: Date?
 
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
         motionSampleSubject.eraseToAnyPublisher()
@@ -105,6 +106,7 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            lastLocationDrivenSampleDate = nil
             calibrationEngine.reset()
         }
     }
@@ -230,6 +232,25 @@ final class SensorFusionEngine: SensorProvider {
                 longitude: location.coordinate.longitude
             )
         }
+        publishLocationDrivenMotionSampleIfNeeded()
+    }
+
+    private func publishLocationDrivenMotionSampleIfNeeded() {
+        let now = Date()
+        let shouldPublish = stateLock.withLock { () -> Bool in
+            guard sessionStartDate != nil else { return false }
+            guard lastLocationDrivenSampleDate.map({ now.timeIntervalSince($0) >= 0.75 }) ?? true else {
+                return false
+            }
+            lastLocationDrivenSampleDate = now
+            return true
+        }
+
+        guard shouldPublish else { return }
+
+        sampleQueue.async { [weak self] in
+            self?.publishCurrentMotionSample()
+        }
     }
 
     private func updateSpeed(_ speedKmh: Double) {
@@ -275,6 +296,7 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            lastLocationDrivenSampleDate = nil
         }
     }
 }

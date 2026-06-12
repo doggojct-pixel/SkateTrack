@@ -7,7 +7,8 @@ import Foundation
 struct SessionMetricsAccumulator: Equatable, Sendable {
     private static let movingSpeedThresholdKmh = 1.0
     private static let maximumSegmentSpeedKmh = 150.0
-    private static let maximumSegmentDistanceKilometers = 0.05
+    private static let minimumSegmentDistanceKilometers = 0.003
+    private static let maximumSegmentDistanceKilometers = 2.0
     private static let earthRadiusKilometers = 6_371.0
 
     private(set) var currentSpeedKilometersPerHour: Double = 0
@@ -18,12 +19,14 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
     private(set) var elapsedTime: TimeInterval = 0
     private(set) var currentTiltDegrees: Double = 0
     private(set) var latestMotionSample: MotionSample?
+    private(set) var motionSampleCount: Int = 0
+    private(set) var gpsSampleCount: Int = 0
 
     private var sessionStartDate: Date?
     private var lastProcessedTimestamp: Date?
     private var lastCoordinate: GeoCoordinate?
+    private var lastCoordinateTimestamp: Date?
     private var lastAltitudeMeters: Double?
-    private var previousSampleTimestamp: Date?
     private var speedSampleCount: Int = 0
     private var speedSampleSum: Double = 0
     private var movingElapsedTime: TimeInterval = 0
@@ -43,6 +46,10 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         guard !isPaused else { return }
 
         latestMotionSample = sample
+        motionSampleCount += 1
+        if sample.gpsCoordinate != nil {
+            gpsSampleCount += 1
+        }
         currentSpeedKilometersPerHour = max(sample.speedKmh, 0)
         maxSpeedKilometersPerHour = max(maxSpeedKilometersPerHour, currentSpeedKilometersPerHour)
 
@@ -54,7 +61,6 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         accumulateElapsedTime(until: sample.timestamp)
         accumulateDistance(from: sample)
         accumulateElevation(from: sample)
-        previousSampleTimestamp = sample.timestamp
     }
 
     mutating func reset() {
@@ -66,11 +72,13 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         elapsedTime = 0
         currentTiltDegrees = 0
         latestMotionSample = nil
+        motionSampleCount = 0
+        gpsSampleCount = 0
         sessionStartDate = nil
         lastProcessedTimestamp = nil
         lastCoordinate = nil
         lastAltitudeMeters = nil
-        previousSampleTimestamp = nil
+        lastCoordinateTimestamp = nil
         speedSampleCount = 0
         speedSampleSum = 0
         movingElapsedTime = 0
@@ -96,7 +104,9 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
             distanceKilometers: distanceKilometers,
             elapsedTime: elapsedTime,
             currentTiltDegrees: currentTiltDegrees,
-            latestMotionSample: latestMotionSample
+            latestMotionSample: latestMotionSample,
+            motionSampleCount: motionSampleCount,
+            gpsSampleCount: gpsSampleCount
         )
     }
 
@@ -122,21 +132,32 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
     private mutating func accumulateDistance(from sample: MotionSample) {
         guard let coordinate = sample.gpsCoordinate else { return }
 
-        defer { lastCoordinate = coordinate }
+        let coordinateTimestamp = sample.timestamp
 
-        guard let previousCoordinate = lastCoordinate else { return }
+        guard let previousCoordinate = lastCoordinate else {
+            lastCoordinate = coordinate
+            lastCoordinateTimestamp = coordinateTimestamp
+            return
+        }
 
         let segmentDistance = Self.haversineDistanceKilometers(from: previousCoordinate, to: coordinate)
-        guard segmentDistance > 0 else { return }
+        guard segmentDistance >= Self.minimumSegmentDistanceKilometers else {
+            // Keep the previous GPS anchor when high-frequency samples repeat the same coordinate.
+            // Updating the timestamp for duplicate coordinates makes the next real GPS move look
+            // impossibly fast and causes valid distance segments to be filtered out.
+            return
+        }
         guard segmentDistance <= Self.maximumSegmentDistanceKilometers else { return }
 
-        if let previousSampleTimestamp {
-            let deltaSeconds = max(sample.timestamp.timeIntervalSince(previousSampleTimestamp), 0.001)
+        if let previousCoordinateTimestamp = lastCoordinateTimestamp {
+            let deltaSeconds = max(coordinateTimestamp.timeIntervalSince(previousCoordinateTimestamp), 0.001)
             let impliedSpeedKmh = (segmentDistance / deltaSeconds) * 3_600
             guard impliedSpeedKmh <= Self.maximumSegmentSpeedKmh else { return }
         }
 
         distanceKilometers += segmentDistance
+        lastCoordinate = coordinate
+        lastCoordinateTimestamp = coordinateTimestamp
     }
 
     private mutating func accumulateElevation(from sample: MotionSample) {

@@ -118,6 +118,8 @@ struct SessionStartView: View {
                             onOpen: { isHealthReminderSettingsPresented = true }
                         )
 
+                        realDeviceRecordingNotice
+
                         modeSelector
 
                         if selectedCategory == .skateboard {
@@ -259,6 +261,32 @@ struct SessionStartView: View {
                 endRadius: 520
             )
         }
+    }
+
+
+    private var realDeviceRecordingNotice: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                Image(systemName: "location.north.line.fill")
+                    .font(.system(size: 15, weight: .heavy))
+                    .foregroundStyle(SkateTrackSessionStartColors.teal)
+
+                Text("session.start.backgroundRecording.title")
+                    .font(.system(size: 14, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white)
+            }
+
+            Text("session.start.backgroundRecording.detail")
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(SkateTrackSessionStartColors.card.opacity(0.88))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .overlay(RoundedRectangle(cornerRadius: 20).stroke(SkateTrackSessionStartColors.teal.opacity(0.28), lineWidth: 1))
+        .accessibilityIdentifier("session-start-background-recording-notice")
     }
 
     private func bottomDock(bottomPadding: CGFloat, horizontalPadding: CGFloat) -> some View {

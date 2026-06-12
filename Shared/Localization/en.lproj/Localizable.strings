@@ -894,3 +894,7 @@
 "skatetrack.package.error.write" = "The SkateTrack file could not be written.";
 "skatetrack.package.error.read" = "The SkateTrack file could not be read.";
 "skatetrack.package.error.generic" = "The SkateTrack file could not be prepared.";
+
+/* Task-027 preflight real-device GPS recording */
+"session.start.backgroundRecording.title" = "Real-device route recording";
+"session.start.backgroundRecording.detail" = "For outdoor tests, SkateTrack now keeps location updates active when the screen is off. Allow Always and Precise Location when iOS asks, and avoid force-quitting the app during a session.";
