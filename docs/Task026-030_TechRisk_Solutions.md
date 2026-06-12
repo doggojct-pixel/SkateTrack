@@ -721,3 +721,16 @@ Task-028 開始前必須先跑一次 macOS build，把 UIKit leak 集中修完�
 ---
 
 *此文件應在 Task-026 開始前 commit 至 `docs/` 或 `tasks/` 目錄，作為 026-030 執行階段的風險防護參考。*
+
+---
+
+## Task-027a adoption note（2026-06-12）
+
+Task-027a adopted the pre-ADP safe path described in this document:
+
+- No custom UTType declaration or document association was added.
+- `.skatetrack` files are shared as normal file URLs through the iOS system share sheet.
+- `Shared/Export/SkateTrackPackageWriter.swift` and `Shared/Export/SkateTrackPackageReader.swift` accept caller-provided URLs and do not hardcode iOS or macOS paths.
+- `packageType = export` is separate from Task-026 backup packages (`packageType = backup`).
+- macOS Import Stub / package preview is explicitly deferred to Task-027b / Task-028.
+- Task-026c production Google Drive provider remains blocked and is tracked in `docs/KNOWN_LIMITATIONS_PRE_ADP.md`.

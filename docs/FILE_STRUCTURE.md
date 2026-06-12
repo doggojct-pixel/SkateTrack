@@ -718,3 +718,28 @@ scripts/verify_backup_restore_preview.py              # Verifies Task-026b resto
 - No restore writer or local overwrite service was added.
 - No Core Data / UserDefaults mutation is performed from restore preview.
 - `remoteWins`, `mergeByDate`, Google Drive download / restore, AirDrop package import, and macOS viewer work remain deferred to later tasks.
+
+## Task-026c-blocked + Task-027a Portable `.skatetrack` Export Package Foundation
+
+```text
+Shared/Models/SkateTrackPackageManifest.swift       # [協作區] Portable export manifest, schemaVersion = 1, packageType = export.
+Shared/Models/SkateTrackPackagePayload.swift        # [協作區] Single-session portable package payload; excludes account, token, achievements, and weekly challenge state.
+Shared/Export/SkateTrackPackageWriter.swift         # [自主區] Writes caller-provided .skatetrack URL; does not choose iOS/macOS paths.
+Shared/Export/SkateTrackPackageReader.swift         # [自主區] Reads and validates portable export packages without importing into local storage.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift # [協作區 — 邊界適配層] iOS temp-file package export provider for Session Summary.
+iOS/Hooks/useSkateTrackPackageExport.swift          # [協作區 — 邊界適配層] SwiftUI-facing .skatetrack export ViewModel / hook.
+iOS/Features/SessionSummary/SessionPackageExportActionView.swift # [協作區] Session Summary action for sharing a .skatetrack file.
+scripts/verify_skatetrack_package.py                # Verifies package schema, provider boundaries, docs, localization, and no custom UTType / signing changes.
+docs/KNOWN_LIMITATIONS_PRE_ADP.md                   # Tracks StoreKit, Google Sign-In, Task-026c Drive sync, UTType, WeatherKit, and TestFlight blocked items.
+docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md # Portable package strategy decision.
+```
+
+### Task-026c-blocked status
+
+Task-026c is recorded as blocked, not skipped. The current production state remains `DisabledDriveProvider`, local backup export, and non-destructive restore preview. Real Google Drive integration requires Google OAuth credentials, Drive scope authorization, token lifecycle, privacy copy, and signing / URL-scheme review.
+
+### Deferred from Task-027a
+
+- macOS Import Stub / package preview UI is deferred to Task-027b or Task-028.
+- Custom UTType declaration, document association, and inbound file handling are deferred until signing impact is reviewed.
+- Batch export, import / restore into local storage, package merge, Drive upload / download, OAuth / Drive scope work, and cloud sync remain future tasks.

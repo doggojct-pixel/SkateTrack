@@ -876,3 +876,21 @@
 "backup.restore.error.invalid_package" = "The backup file format could not be recognized.";
 "backup.restore.error.preview_failed" = "Restore preview could not be created.";
 "backup.restore.error.file_import" = "The selected backup file could not be read.";
+
+/* Task-027a Portable .skatetrack Export Package Foundation */
+"skatetrack.package.export.title" = "SkateTrack file";
+"skatetrack.package.export.subtitle" = "Export this session as a portable .skatetrack file for Files, AirDrop, or a future macOS viewer. This does not include account data or achievements.";
+"skatetrack.package.export.button" = "Share SkateTrack file";
+"skatetrack.package.export.preparing" = "Preparing SkateTrack file…";
+"skatetrack.package.export.ready" = "SkateTrack file is ready to share.";
+"skatetrack.package.error.title" = "SkateTrack file unavailable";
+"skatetrack.package.error.unsupported_schema" = "This SkateTrack file uses an unsupported schema version.";
+"skatetrack.package.error.unsupported_type" = "This file is not a portable SkateTrack export package.";
+"skatetrack.package.error.account_data" = "Portable SkateTrack files cannot include account or token data.";
+"skatetrack.package.error.achievements" = "Portable SkateTrack files cannot include achievements or weekly challenge records.";
+"skatetrack.package.error.empty" = "There is no session data to export.";
+"skatetrack.package.error.encoding" = "The SkateTrack file could not be encoded.";
+"skatetrack.package.error.decoding" = "The SkateTrack file could not be decoded.";
+"skatetrack.package.error.write" = "The SkateTrack file could not be written.";
+"skatetrack.package.error.read" = "The SkateTrack file could not be read.";
+"skatetrack.package.error.generic" = "The SkateTrack file could not be prepared.";

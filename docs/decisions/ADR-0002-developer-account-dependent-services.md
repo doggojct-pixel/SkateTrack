@@ -100,3 +100,11 @@ The Task-026a UI may create a user-initiated local backup package and present th
 - Real Google Drive provider integration remains blocked until Google OAuth credentials, Drive scopes, privacy copy, token lifecycle, revocation behavior, and server verification are ready.
 - Restore preview and conflict policy simulation remain Task-026b and must require explicit user confirmation before any local overwrite path exists.
 - Portable AirDrop / `.skatetrack` package work remains Task-027 and must not be conflated with the complete local backup package.
+
+## Task-026c-blocked and Task-027a local export note
+
+Task-026c is formally blocked until Google OAuth credentials, Drive scope authorization, production token lifecycle, logout / revocation behavior, privacy copy, and signing / URL-scheme review are ready. The current implementation remains `DisabledDriveProvider` plus local backup export and non-destructive restore preview.
+
+Task-027a adds a local `.skatetrack` portable session export package. This is a user-initiated local file share and does not integrate Google Drive, Google OAuth, external service secrets, cloud upload / download, background sync, or server verification.
+
+Future production Google Drive work must replace only the provider behind `CloudBackupProvider`; Views must continue to use hooks and must not call Google SDKs, provider internals, token storage, or remote APIs directly.

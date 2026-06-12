@@ -70,3 +70,16 @@ The preview is intentionally not a restore engine. It does not write to `Session
 - Backup-to-local-data merge rules, duplicate detection, and cross-device reconciliation.
 - Google Drive download / restore, OAuth / Drive scopes, background sync, and server verification.
 - AirDrop `.skatetrack` package import and macOS import viewer.
+
+## Task-026c-blocked + Task-027a alignment addendum
+
+Task-026c is intentionally recorded as blocked rather than skipped. Production Google Drive sync requires Google OAuth credentials, minimum Drive scope decisions, token lifecycle, logout / revocation behavior, privacy copy, and signing / URL-scheme review. The current state remains `DisabledDriveProvider` plus local backup export and non-destructive restore preview.
+
+Task-027a does not unblock Task-026c. The portable `.skatetrack` file is a local user-initiated export package with `packageType = export`; it is not backup restore, remote upload, Drive download, background sync, or cross-device merge.
+
+The separation is:
+
+- `packageType = backup`: complete local backup for future restore preview / restore execution.
+- `packageType = export`: portable single-session package for Files, system share sheet, AirDrop as a share destination, and future macOS viewing.
+
+Deferred from Task-026c remains: real Google provider implementation, Drive remote upload / download, server verification, production token refresh / revocation, remote conflict resolution, and any signing / capability changes.

@@ -1281,3 +1281,34 @@ This log is append-only. Do not delete or overwrite old entries.
 - `mergeByDate` implementation and cross-device conflict resolution.
 - Google Drive download / restore, background sync, Drive provider integration, OAuth / Drive scopes, and server verification.
 - AirDrop `.skatetrack` package import / export and macOS package viewer remain Task-027 / Task-028.
+
+## 2026-06-12 — Task-026c-blocked + Task-027a Portable `.skatetrack` Export Package Foundation
+
+### Completed
+
+- Documented Task-026c as intentionally blocked rather than skipped. Google Drive production integration remains gated by Google OAuth credentials, Drive scope decisions, token lifecycle, privacy copy, and signing / URL-scheme review.
+- Added `docs/KNOWN_LIMITATIONS_PRE_ADP.md` to track pre-Apple-Developer-Program and external-credential limitations through Task-030 readiness.
+- Added `SkateTrackPackageManifest` and `SkateTrackPackagePayload` to define a portable `packageType = export` package separate from Task-026 backup packages.
+- Added platform-neutral `Shared/Export/SkateTrackPackageWriter.swift` and `Shared/Export/SkateTrackPackageReader.swift`. These helpers accept caller-provided URLs and do not hardcode iOS temporary paths, macOS sandbox paths, or platform import UI.
+- Added `SkateTrackPackageExportProvider` and `SkateTrackPackageExportViewModel` so iOS Session Summary can create a single-session `.skatetrack` file through a hook/provider boundary.
+- Added `SessionPackageExportActionView` to the unlocked Session Summary share section, using the existing iOS system share sheet bridge to share the `.skatetrack` file.
+- Added `scripts/verify_skatetrack_package.py` and ADR-0007 to guard package schema, provider boundaries, localization, docs, no account/achievement data leakage, and no custom UTType / signing changes.
+
+### Scope Boundary
+
+- Task-027a exports a single session package only. It does not implement batch export, raw-motion-sample toggles, privacy trimming UI, import / restore, merge behavior, incoming file handling, or macOS viewer UI.
+- Task-027a does not declare a custom UTType, add document association, edit Info.plist exported type declarations, or change signing, capabilities, entitlements, provisioning, or Bundle ID.
+- Task-027a does not add Google Drive upload / download, Google OAuth / Drive scopes, Google SDK dependencies, external-service secrets, CloudKit / iCloud sync, production StoreKit, watchOS UI, Launch Screen, AppIcon, bottom dock, GPSProvider, IMUProvider, SensorFusionEngine, or FallDetectionEngine changes.
+
+### Deferred from Task-027a
+
+- macOS Import Stub, package preview UI, `NSOpenPanel`, drag-and-drop import, and full macOS viewer move to Task-027b / Task-028.
+- Custom UTType declaration and document association remain deferred until signing impact and incoming-file UX are reviewed.
+- Batch Session export, package privacy options, import into local data stores, package merge, and cross-device transfer remain future tasks.
+- Task-026c production Google Drive provider remains blocked and must be implemented behind `CloudBackupProvider` only after credentials, scopes, privacy copy, token lifecycle, and signing review are ready.
+
+### Validation Notes
+
+- Run `python3 scripts/verify_skatetrack_package.py` after applying this task.
+- Also run localization, shared-model, backup, account, and subscription entitlement verification scripts to ensure Task-027a does not regress earlier provider boundaries.
+- Manual validation should confirm the Session Summary share section shows a `SkateTrack 檔案` export action for unlocked share-card access, opens the iOS system share sheet, and produces a `.skatetrack` file without Google, OAuth, or signing prompts.

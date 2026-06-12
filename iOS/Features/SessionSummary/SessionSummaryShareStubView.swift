@@ -20,6 +20,7 @@ struct SessionSummaryShareStubView: View {
             if subscriptionStatus.hasAccess(to: .sessionShareCard) {
                 SessionShareCardPreviewView(card: shareCard.card)
                 SessionShareCardActionView(card: shareCard.card)
+                SessionPackageExportActionView(content: content)
             } else {
                 SessionShareCardLockedView(card: shareCard.card, onUnlock: onUnlock)
             }

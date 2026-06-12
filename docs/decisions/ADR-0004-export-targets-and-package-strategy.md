@@ -92,3 +92,13 @@ Task-028 should consume that format for a macOS shell / import viewer without fo
 Task-026a introduces a complete local backup package for user-initiated backup, not a portable share / AirDrop package. The backup package uses `packageType = backup` and may contain local account-adjacent data such as achievements and weekly challenge completion records so a future restore preview can validate complete local state.
 
 Task-027 remains responsible for the portable `.skatetrack` export package. That future export package should choose its own `packageType = export`, privacy redaction rules, file extension / UTType strategy, and macOS viewer compatibility. Task-026a local backup output must not be treated as the final AirDrop or macOS import format.
+
+## Task-027a Portable `.skatetrack` Export Addendum
+
+Task-027a establishes the first portable SkateTrack package format for a single Session Summary export. This is separate from Task-023 quick share-card files and separate from Task-026 local backup packages.
+
+The Task-027a package uses `packageType = export`, `schemaVersion = 1`, and the `.skatetrack` filename extension. It is shared as a normal file URL through the iOS system share sheet. Task-027a does not declare a custom UTType, does not add document association, and does not modify signing / capabilities / entitlements / provisioning / Bundle ID.
+
+The package intentionally excludes account session data, tokens, Google provider state, Drive provider state, achievements, and weekly challenge completion records. Those remain backup / account-adjacent data and must not be accidentally included in a portable session share file.
+
+Deferred from Task-027a: macOS Import Stub, inbound package handling, custom UTType declaration, batch export, raw motion sample inclusion controls, privacy trimming UI, import / restore into local storage, package merge, and cloud upload / download remain future tasks.

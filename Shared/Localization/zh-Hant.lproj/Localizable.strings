@@ -876,3 +876,21 @@
 "backup.restore.error.invalid_package" = "備份檔格式無法辨識。";
 "backup.restore.error.preview_failed" = "無法建立還原預覽。";
 "backup.restore.error.file_import" = "無法讀取選擇的備份檔。";
+
+/* Task-027a Portable .skatetrack Export Package Foundation */
+"skatetrack.package.export.title" = "SkateTrack 檔案";
+"skatetrack.package.export.subtitle" = "將這次滑行匯出成可攜式 .skatetrack 檔，可用於檔案、AirDrop 或未來 macOS 檢視器。此檔案不包含帳號資料或成就資料。";
+"skatetrack.package.export.button" = "分享 SkateTrack 檔案";
+"skatetrack.package.export.preparing" = "正在準備 SkateTrack 檔案…";
+"skatetrack.package.export.ready" = "SkateTrack 檔案已準備好分享。";
+"skatetrack.package.error.title" = "SkateTrack 檔案無法使用";
+"skatetrack.package.error.unsupported_schema" = "這個 SkateTrack 檔案使用尚未支援的 schema 版本。";
+"skatetrack.package.error.unsupported_type" = "這不是可攜式 SkateTrack 匯出檔。";
+"skatetrack.package.error.account_data" = "可攜式 SkateTrack 檔案不能包含帳號或 token 資料。";
+"skatetrack.package.error.achievements" = "可攜式 SkateTrack 檔案不能包含成就或每週挑戰紀錄。";
+"skatetrack.package.error.empty" = "沒有可匯出的滑行資料。";
+"skatetrack.package.error.encoding" = "無法編碼 SkateTrack 檔案。";
+"skatetrack.package.error.decoding" = "無法解碼 SkateTrack 檔案。";
+"skatetrack.package.error.write" = "無法寫入 SkateTrack 檔案。";
+"skatetrack.package.error.read" = "無法讀取 SkateTrack 檔案。";
+"skatetrack.package.error.generic" = "無法準備 SkateTrack 檔案。";
