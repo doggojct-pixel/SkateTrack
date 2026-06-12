@@ -681,3 +681,25 @@ Task-025c also moves the DEBUG-only `DEV`開發者工具入口 from the upper-ri
 `verify_root_navigation_polish.py` verifies the continuous sticky-navigation anchor / overlay relationship, bottom-right DEBUG entry placement, documentation notes, and the absence of production Google Sign-In configuration in the changed Swift sources.
 
 Deferred from Task-025c: applying the same title-under-navigation-to-sticky transition to `歷史紀錄`, `我的裝備`, `場地`, `成就`, and `帳號` remains Task-025d or later, because those screens have separate scrolling structures and should not be refactored inside this Ride-page polish fix. A full frosted-glass material system for all root navigation states is also deferred until the shared root-screen layout is intentionally standardized.
+
+## Task-026a Backup Package Export Foundation + Disabled Drive Status
+
+```text
+Shared/Models/BackupPackageManifest.swift          # [協作區] Backup manifest, schemaVersion = 1, packageType = backup, store counts and issues.
+Shared/Models/BackupPackagePayload.swift           # [協作區] Backup payload envelope with independently encoded JSON sections.
+iOS/Core/Sync/CloudBackupProvider.swift            # [協作區] Backup / Drive provider boundary and conflict policy enum.
+iOS/Core/Sync/BackupPackageEncoder.swift           # [自主區] Encodes domain-model stores independently; no Core Data / NSManagedObject access.
+iOS/Core/Sync/LocalBackupProvider.swift            # [自主區] User-initiated local `.skatetrack-backup.json` package writer.
+iOS/Core/Sync/DisabledDriveProvider.swift          # [協作區] Honest disabled Google Drive provider until OAuth / Drive scopes are ready.
+iOS/Hooks/useBackupSync.swift                      # [協作區 — 邊界適配層] SwiftUI-facing backup sync ViewModel / hook.
+iOS/Features/Settings/BackupSyncSettingsView.swift # [協作區] Account screen backup UI with local export and Drive disabled state.
+scripts/verify_backup_sync.py                      # Verifies Task-026a files, boundary rules, localization, docs, and no production Google config.
+docs/Task026-030_TechRisk_Solutions.md             # Technical-risk reference for Task-026 through Task-030.
+docs/decisions/ADR-0006-backup-provider-and-package-strategy.md # Backup provider / package architecture decision.
+```
+
+### Deferred from Task-026a
+
+- Restore preview, validation, conflict resolution, and local overwrite behavior are Task-026b.
+- Production Google Drive provider, OAuth credentials, Drive scopes, remote upload / download, background sync, cross-device merge, and server verification remain blocked.
+- AirDrop `.skatetrack` package and macOS import viewer remain Task-027 / Task-028.

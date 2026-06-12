@@ -1224,3 +1224,34 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_root_navigation_polish.py` plus existing Task-025 verification scripts after applying this task.
 - Manual validation should confirm the Ride-page pill row appears to be the same row naturally sliding into a pinned position, the `DEV`開發者工具入口 sits at the lower-right, and no top navigation pill is blocked.
+
+## 2026-06-12 — Task-026a Backup Package Export Foundation + Disabled Drive Status
+
+### Completed
+- Added shared backup package models with `BackupPackageManifest.schemaVersion` fixed as `Int = 1` and `packageType = backup` so future restore / export readers can distinguish local backups from portable sharing packages.
+- Added `BackupPackagePayload` sections for sessions, equipment, spots, achievements, and weekly challenge completions.
+- Added `CloudBackupProvider`, `LocalBackupProvider`, and `DisabledDriveProvider` so backup / sync work follows the same provider-boundary pattern as Weather and Account tasks.
+- Added `BackupPackageEncoder` to independently encode each domain-model store and record store-specific fetch / encoding issues without importing Core Data or encoding `NSManagedObject` directly.
+- Added `useBackupSync` as the SwiftUI-facing hook. Views use this hook rather than direct provider, Core Data, Google SDK, Drive API, or token APIs.
+- Added `BackupSyncSettingsView` to the Account screen. It supports user-initiated local backup package creation and system share sheet export, while clearly showing Google Drive as not configured.
+- Added localized English and Traditional Chinese strings for 「備份與同步」 local backup, Drive disabled state, restore-deferred state, errors, and conflict-policy labels.
+- Added `scripts/verify_backup_sync.py` to verify provider boundaries, localization keys, docs, project membership, and the absence of production Google Drive / OAuth configuration.
+- Added `docs/Task026-030_TechRisk_Solutions.md` as the Task-026～030 technical-risk reference and added ADR-0006 for backup provider / package strategy.
+- Updated `docs/FILE_STRUCTURE.md`, ADR-0002, and ADR-0004 for Task-026a scope and deferred work.
+
+### Scope Boundary
+- Task-026a does not implement production Google Drive API, OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, Drive scope authorization, remote upload, remote download, background sync, cross-device merge, server verification, production token refresh / revocation, or production Keychain token policy.
+- Task-026a does not implement restore preview, destructive restore, automatic overwrite, `remoteWins`, `mergeByDate`, CloudKit, iCloud sync, AirDrop `.skatetrack` package, macOS import viewer, StoreKit production, signing, capabilities, entitlements, provisioning, Bundle ID, Launch Screen, AppIcon, bottom dock, watchOS UI, macOS UI, GPSProvider, IMUProvider, SensorFusionEngine, or FallDetectionEngine changes.
+- Local backup export is user-initiated and uses a temporary local JSON package plus the iOS system share sheet. It must not be described as cloud sync.
+
+### Deferred from Task-026a
+- Task-026b should implement local restore preview, validation, and explicit conflict-policy confirmation before any local data can be overwritten.
+- Real Google Drive provider integration remains blocked until Google Sign-In production, OAuth credentials, Drive API scopes, privacy copy, token lifecycle, logout / revocation behavior, and server verification strategy are ready.
+- Task-027 should define the portable `.skatetrack` export / AirDrop package separately from the Task-026a backup package.
+- Task-028 should consume the future export package from a macOS viewer without reusing iOS navigation or hardcoding sandbox paths.
+- Task-029 and Task-030 should consult `docs/Task026-030_TechRisk_Solutions.md` for localization, accessibility, privacy, mock-provider, and release-readiness checks.
+
+### Validation Notes
+- Run `python3 scripts/verify_backup_sync.py` after applying this task.
+- Also run localization, shared-model, account-provider, and subscription entitlement simulation verification scripts.
+- Xcode validation should confirm the iOS target compiles, the Account screen shows 「備份與同步」, the local backup share sheet opens, and no Google OAuth / Drive permission / signing prompt appears.

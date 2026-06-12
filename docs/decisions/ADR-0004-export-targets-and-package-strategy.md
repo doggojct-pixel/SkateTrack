@@ -86,3 +86,9 @@ Task-027 should explicitly decide the portable export package format and determi
 - Privacy redaction or location trimming options.
 
 Task-028 should consume that format for a macOS shell / import viewer without forcing Task-023 quick-export files to become the canonical archive format.
+
+## Task-026a Backup Package Clarification
+
+Task-026a introduces a complete local backup package for user-initiated backup, not a portable share / AirDrop package. The backup package uses `packageType = backup` and may contain local account-adjacent data such as achievements and weekly challenge completion records so a future restore preview can validate complete local state.
+
+Task-027 remains responsible for the portable `.skatetrack` export package. That future export package should choose its own `packageType = export`, privacy redaction rules, file extension / UTType strategy, and macOS viewer compatibility. Task-026a local backup output must not be treated as the final AirDrop or macOS import format.

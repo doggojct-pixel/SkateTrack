@@ -23,6 +23,7 @@ struct AccountSettingsView: View {
                             .padding(.top, proxy.safeAreaInsets.top + 24)
                         statusCard
                         googleDeferredCard
+                        BackupSyncSettingsView()
                         #if DEBUG
                         debugSimulationCard
                         #endif

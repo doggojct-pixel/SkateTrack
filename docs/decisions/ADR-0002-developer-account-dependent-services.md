@@ -88,3 +88,15 @@ The Account screen may show DEBUG-only local simulation sign-in / sign-out contr
 - Real `GoogleSignInProvider`, Google OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, real profile loading, token refresh, token revocation, server verification, and production token persistence / Keychain policy remain future blocked work.
 - Google Drive scope authorization and Google Drive sync remain Task-026 or later work and must use a separate backup / sync provider boundary rather than being hidden inside Task-025b UI.
 - Production account deletion, cross-device account recovery, portable account migration, and cloud backup remain future account / sync design tasks.
+
+## Task-026a Backup / Google Drive Confirmation
+
+Task-026a applies this ADR to backup and Google Drive dependent services. The app now has a backup provider boundary, `LocalBackupProvider`, `DisabledDriveProvider`, and `useBackupSync`, but Google Drive production remains developer-account / external-service dependent and unavailable.
+
+The Task-026a UI may create a user-initiated local backup package and present the iOS system share sheet. It does not import Google SDKs, configure OAuth client IDs, add a reversed client ID URL scheme, add `GoogleService-Info.plist`, request Drive scopes, upload to Google Drive, download from Google Drive, perform background sync, merge cross-device data, save production Drive tokens, perform server verification, or change signing, capabilities, provisioning, Bundle ID, entitlements, StoreKit, WeatherKit, CloudKit, watchOS, or macOS targets.
+
+### Deferred from Task-026a
+
+- Real Google Drive provider integration remains blocked until Google OAuth credentials, Drive scopes, privacy copy, token lifecycle, revocation behavior, and server verification are ready.
+- Restore preview and conflict policy simulation remain Task-026b and must require explicit user confirmation before any local overwrite path exists.
+- Portable AirDrop / `.skatetrack` package work remains Task-027 and must not be conflated with the complete local backup package.
