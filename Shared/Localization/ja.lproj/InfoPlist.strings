@@ -1,0 +1,5 @@
+/* 位置情報とセンサー権限 */
+NSLocationWhenInUseUsageDescription = "SkateTrack は滑行ルートを記録するために位置情報へのアクセスが必要です。";
+NSLocationAlwaysAndWhenInUseUsageDescription = "バックグラウンド位置情報アクセスにより、画面がオフの間も SkateTrack がルート記録を継続できます。";
+NSMotionUsageDescription = "SkateTrack はモーションセンサーを使用して滑行の動きを推定し、転倒の可能性を検知します。";
+NSPhotoLibraryAddUsageDescription = "SkateTrack はセッション共有カード画像を写真に保存するための許可が必要です。";

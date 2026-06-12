@@ -311,6 +311,7 @@
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A200000000000000000004 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		12A2F000000000000000001 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A300000000000000000001 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		12A300000000000000000002 /* SportMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportMode.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
@@ -328,6 +329,7 @@
 		12A600000000000000000002 /* GPSAuthorizationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSAuthorizationHandler.swift; sourceTree = "<group>"; };
 		12A600000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		12A600000000000000000004 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		12A6F000000000000000001 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		12A700000000000000000001 /* IMUProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMUProvider.swift; sourceTree = "<group>"; };
 		12A800000000000000000001 /* BarometerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometerProvider.swift; sourceTree = "<group>"; };
 		12A900000000000000000001 /* SensorFusionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorFusionEngine.swift; sourceTree = "<group>"; };
@@ -1263,6 +1265,7 @@
 				en,
 				Base,
 				"zh-Hant",
+				ja,
 			);
 			mainGroup = AA3E9A5944CB760F04640508;
 			packageReferences = (
@@ -1635,6 +1638,7 @@
 			children = (
 				12A200000000000000000003 /* en */,
 				12A200000000000000000004 /* zh-Hant */,
+				12A2F000000000000000001 /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1644,6 +1648,7 @@
 			children = (
 				12A600000000000000000003 /* en */,
 				12A600000000000000000004 /* zh-Hant */,
+				12A6F000000000000000001 /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

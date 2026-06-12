@@ -797,3 +797,15 @@ Task-028b continues the safe macOS path established in Task-028a:
 - The package remains read-only. No data is imported, merged, restored, rewritten, uploaded, or synced.
 
 Task-028b verification token: lightweight SwiftUI Path route preview.
+
+## Task-029a Localization Expansion Note
+
+Task-029a adds Japanese localization while keeping the Task-026 to Task-030 risk controls intact:
+
+- Localization resource files are not split to satisfy the Swift 500-line guideline. Splitting `Localizable.strings` into multiple tables would require broader table-name changes across SwiftUI call sites and is deferred.
+- `ja.lproj/Localizable.strings` and `ja.lproj/InfoPlist.strings` are added as full resource variants for the existing `Localizable.strings` and `InfoPlist.strings` variant groups.
+- `verify_localization_keys.py` now checks `en`, `zh-Hant`, and `ja` key parity and placeholder parity.
+- `verify_task029_localization_privacy.py` protects critical privacy / deferred-service copy so Japanese localization does not imply Google Drive, StoreKit production, CloudKit, document association, or custom UTType support is complete.
+- `pt-BR` Brazilian Portuguese and `es` Spanish are recorded in the deferred localization roadmap instead of being added in Task-029a.
+
+Task-029a verification token: Japanese localization with privacy-copy gate.

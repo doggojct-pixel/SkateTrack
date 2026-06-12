@@ -1455,3 +1455,23 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_macos_route_chart_viewer.py` after applying this task.
 - Also re-run `python3 scripts/verify_macos_session_viewer.py`, `python3 scripts/verify_macos_package_preview.py`, `python3 scripts/verify_skatetrack_package.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_shared_models.py`, and `python3 scripts/verify_macos_appiconset.py`.
 - Manual validation should open both an older low-data package and a successful simulator package with non-zero distance. The low-data package should show a useful empty / unavailable route state, while the successful package should show a route shape and speed chart without compressing dashboard text.
+
+## 2026-06-12 — Task-029a Japanese Localization + Privacy Copy Gate
+
+### Completed
+- Added Japanese as the third active localization language with `Shared/Localization/ja.lproj/Localizable.strings` and `Shared/Localization/ja.lproj/InfoPlist.strings`.
+- Added Japanese permission copy for When In Use location, Always / background location, motion sensors, and add-only Photos saving.
+- Updated the Xcode project localization variant groups so `ja` is included in `knownRegions` and both `Localizable.strings` / `InfoPlist.strings` have Japanese variants.
+- Expanded `scripts/verify_localization_keys.py` to verify English, Traditional Chinese, and Japanese key parity, placeholder parity, `.strings` syntax, InfoPlist key parity, and project membership.
+- Added `scripts/verify_task029_localization_privacy.py` as the Task-029a quality gate for Japanese localization, critical privacy / deferred-service copy, InfoPlist permission copy, docs alignment, and no document / cloud capability drift.
+- Added ADR-0009 to document the localization and privacy-copy strategy.
+- Documented that localization resource files are not governed by the Swift 500-line guideline; they are governed by key parity, placeholder parity, syntax validity, and privacy-copy correctness instead.
+- Added the deferred localization roadmap: `pt-BR` Brazilian Portuguese and `es` Spanish remain deferred until after Japanese QA and native-review workflow are stable.
+
+### Scope Boundary
+- Task-029a does not add new product features, account providers, Google OAuth, Google Drive sync, CloudKit / iCloud, StoreKit production, Finder document association, custom UTType, report export, MapKit, Charts, iOS runtime changes, GPS changes, FallDetection changes, watchOS changes, signing changes, provisioning changes, or new entitlements.
+- Japanese localization is an initial product pass and still requires native review before App Store release.
+
+### Validation Notes
+- Run `python3 scripts/verify_localization_keys.py` and `python3 scripts/verify_task029_localization_privacy.py` after applying this task.
+- Also run the existing platform verification scripts and at least one iOS + macOS build because localization membership touches the Xcode project file.

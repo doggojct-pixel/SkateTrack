@@ -829,3 +829,23 @@ scripts/verify_macos_session_viewer.py                       # Updated to includ
 
 - System map rendering, road matching, heat maps, route overlays, route editing, full chart framework adoption, multi-session comparison, report export, persistent imports, drag-and-drop import, custom UTType, document association, Finder open-with behavior, Google Drive / iCloud / CloudKit sync, and StoreKit production behavior remain future tasks.
 - Task-028b remains read-only and package-backed. It does not mutate package contents, write Core Data, merge sessions, or restore backups.
+
+## Task-029a Japanese Localization + Privacy Copy Gate
+
+```text
+Shared/Localization/ja.lproj/Localizable.strings              # Japanese first-pass app localization; key set must match en / zh-Hant.
+Shared/Localization/ja.lproj/InfoPlist.strings                # Japanese system permission copy for location, background location, motion, and Photos.
+scripts/verify_localization_keys.py                           # Updated to validate en / zh-Hant / ja key parity, placeholder parity, syntax, InfoPlist parity, and project membership.
+scripts/verify_task029_localization_privacy.py                 # Task-029a gate for Japanese localization, critical privacy copy, deferred localization roadmap, and no capability/document drift.
+docs/decisions/ADR-0009-localization-and-privacy-copy-strategy.md # Records the localization strategy, 500-line exception for resource files, and deferred pt-BR / es roadmap.
+```
+
+### Task-029a localization file-size note
+
+`Localizable.strings` and `InfoPlist.strings` are resource files, not Swift implementation files. They are intentionally allowed to exceed the usual Swift 500-line readability guideline. Localization quality is enforced through key parity, placeholder parity, syntax checks, and privacy-copy checks rather than line count.
+
+### Task-029a deferred localization roadmap
+
+- `pt-BR` Brazilian Portuguese — deferred localization roadmap item.
+- `es` Spanish — deferred localization roadmap item.
+- Native Japanese review before public release remains a Task-030 release-readiness checkpoint.
