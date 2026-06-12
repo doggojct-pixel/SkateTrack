@@ -173,3 +173,11 @@ Task-023b turns the Task-023a Session Share Card preview into a local quick-expo
 Pro / DEBUG-local subscriber simulation can render the share-card preview to a PNG, generate a lightweight summary text file and JSON file in temporary storage, and open the iOS system share sheet. Free users remain on the locked preview and Paywall route, and no export files are generated for them.
 
 Task-023b intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, Photos write, Photo Library permission, AirDrop-specific export packages, Google Drive, cloud sync, signing, capabilities, watchOS UI, or macOS UI. Future production monetization should replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting share-card export, Summary, or Paywall routing.
+
+## Task-023c Confirmation
+
+Task-023c extends the Task-023 share-card export flow with Save to Photos while preserving the project-wide paid-feature rule. Saving the generated share-card PNG to Photos remains gated through `GatedFeature.sessionShareCard`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation.
+
+Pro / DEBUG-local subscriber simulation can render the share-card preview to PNG and save that image to Photos through add-only Photo Library authorization. Free users remain on the locked preview and Paywall route, and no Photos save attempt is started for them.
+
+Task-023c intentionally does not implement production StoreKit, App Store Connect products, sandbox tester flows, `AppStore.sync()`, transaction validation, full Photo Library read access, `NSPhotoLibraryUsageDescription`, AirDrop-specific export packages, portable archives, Google Drive, cloud sync, signing, capabilities, watchOS UI, or macOS UI. Future production monetization should replace the entitlement provider behind `FeatureFlagEngine` rather than rewriting share-card export, Photos save, Summary, or Paywall routing.

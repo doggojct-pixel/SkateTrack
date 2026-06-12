@@ -670,3 +670,8 @@
 "summary.share.export.error.dismiss" = "好";
 "summary.share.export.text.title" = "SkateTrack Session 分享";
 "summary.share.export.text.footer" = "由 SkateTrack 在本機匯出。天氣、路線與安全資料僅供參考。";
+"summary.share.photos.button" = "儲存到照片";
+"summary.share.photos.saving" = "正在儲存到照片…";
+"summary.share.photos.success" = "分享卡已儲存到照片。";
+"summary.share.photos.error.permission" = "SkateTrack 無法在沒有照片新增權限時儲存分享卡。您可以到 iOS 設定允許照片存取。";
+"summary.share.photos.error.save" = "無法將分享卡儲存到照片。";

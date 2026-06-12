@@ -1040,3 +1040,22 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_session_share_export.py`, `python3 scripts/verify_session_share_card.py`, `python3 scripts/verify_session_summary.py`, and `python3 scripts/verify_localization_keys.py` after applying this task.
 - Manual validation should confirm free users cannot export, Pro / DEBUG-local subscriber simulation can open the share sheet with PNG / TXT / JSON items, cancelling the sheet does not crash, and no Photos permission prompt appears.
+
+## 2026-06-12 — Task-023c Save Share Card to Photos + Export Scope ADR
+
+### Completed
+- Added `SessionSharePhotoLibrarySaver` as the only Photos framework bridge for saving generated share-card PNG data to the user's photo library through add-only authorization.
+- Added `SessionSharePhotoSaveState` and updated `SessionShareExportViewModel` so Photos save state, permission denial, success, and failure messages stay out of the Summary view tree.
+- Updated `SessionShareCardActionView` with a separate "Save to Photos" action while preserving the existing Task-023b quick-export share-sheet flow.
+- Added `NSPhotoLibraryAddUsageDescription` to the iOS generated Info.plist build settings and localized InfoPlist copy in English and Traditional Chinese.
+- Added ADR-0004 to document the export-target strategy: Task-023c saves share-card images to Photos, while AirDrop-specific packages and full portable archives remain Task-027 / Task-028 work.
+- Added `scripts/verify_session_share_photos.py` and updated share export / share card verification for the Photos boundary.
+
+### Scope Boundary
+- Task-023c does not request full Photo Library read access, read the user's photo library, use `UIImageWriteToSavedPhotosAlbum`, create an AirDrop-specific package, define the final portable archive format, integrate Google Drive / iCloud / CloudKit, modify Core Data, or change signing / capabilities / entitlements.
+- Save-to-Photos remains gated behind the same `GatedFeature.sessionShareCard`, `useSubscriptionStatus`, `FeatureFlagEngine`, and DEBUG/local entitlement simulation path as Task-023a / Task-023b.
+- Task-027 remains responsible for AirDrop / Export Package / portable archive format design.
+
+### Validation Notes
+- Run `python3 scripts/verify_session_share_photos.py` together with the existing Task-023b share export, share card, Summary, and localization verification scripts.
+- Manual validation should confirm Pro / DEBUG-local subscriber simulation can save the generated share-card PNG to Photos, denied Photos add permission shows a clear localized message, free users remain on the locked preview / Paywall route, and no full photo-library read permission is requested.

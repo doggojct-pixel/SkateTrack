@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-06-12
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-023b Session Share Card Quick Export + Share Sheet Integration.
-**Current Development Gate:** Task-023b adds local share-card PNG / TXT / JSON quick export through the iOS system share sheet. Photos write, AirDrop-specific packages, Google Drive, cloud sync, production StoreKit, real WeatherKit, developer-account-dependent live services, and indoor odometry remain deferred. ADR-0003 continues to prohibit fake indoor route / speed data in Task-023 through Task-030.
+**Current Baseline:** Source-controlled repository after Task-023c Save Share Card to Photos + Export Scope ADR.
+**Current Development Gate:** Task-023c adds add-only Photos save support for generated share-card PNG images and ADR-0004 records that AirDrop-specific packages / portable archives remain deferred to Task-027 / Task-028. Google Drive, cloud sync, production StoreKit, real WeatherKit, developer-account-dependent live services, and indoor odometry remain deferred. ADR-0003 continues to prohibit fake indoor route / speed data in Task-023 through Task-030.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -45,6 +45,7 @@ This document records the current SkateTrack repository structure and developmen
 | Task-022d GPS-Denied Indoor Recording Strategy | Documentation prepared / pending Task-023-stage commit | ADR-0003 records that Task-023 through Task-030 must not add production indoor speed, IMU-only route drawing, ARKit normal ride recording, UWB venue tracking, or fake route / speed data. Earliest safe work is a post-Task-030 Recording Data Quality + Indoor Fallback Foundation task. |
 | Task-023a Session Share Card Preview Foundation | Complete | Summary has a real local share-card preview foundation, shared data model, SwiftUI hook, Pro locked preview, Paywall route, localization, docs, and verification. |
 | Task-023b Session Share Card Quick Export + Share Sheet | Complete | Pro / DEBUG subscriber simulation can render a share-card PNG, lightweight text, and JSON to temporary storage, open the iOS system share sheet, and clean up exported temp files. No Photos write, AirDrop-specific package, Google Drive, cloud sync, or signing / capabilities changes. |
+| Task-023c Save Share Card to Photos + Export Scope ADR | Complete | Pro / DEBUG subscriber simulation can save the generated share-card PNG to Photos through add-only permission; ADR-0004 defers AirDrop-specific packages and portable archives to Task-027 / Task-028. No full photo-library read access, Google Drive, cloud sync, or signing / capabilities changes. |
 | App Icon Integration | Assets present, runtime verification unresolved | iOS/watchOS/macOS AppIcon asset folders and macOS `.icns` exist, but runtime app icon display has not yet matched the intended result on the user's machine. |
 
 ## Current Known Issues / Follow-up
@@ -54,7 +55,7 @@ This document records the current SkateTrack repository structure and developmen
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
 | Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable. ADR-0003 now requires honest low-confidence / unavailable states before any future indoor odometry work. | `GPSProvider.swift`, `SensorFusionEngine.swift`, `docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md`, future Recording Data Quality task. |
-| HealthKit / watchOS heart-rate data and deeper analysis are not built yet. | Task-023b adds local share-card quick export, but heart-rate zones remain a no-fake-data placeholder. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers. |
+| HealthKit / watchOS heart-rate data and deeper analysis are not built yet. | Task-023c adds local share-card quick export and Save to Photos, but heart-rate zones remain a no-fake-data placeholder. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers. |
 | UserNotifications scheduling and real weather data are not built yet. | Task-022 now provides mock / disabled provider boundaries and local rideability guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
 | Route-to-spot auto detection, real WeatherKit, and cloud sync remain future tasks. | Task-022 supports local mock rideability for manually saved Spots, but it does not infer Spots from GPS routes, fetch live weather, or query public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, `iOS/Core/HealthReminders`, future live-weather / sync tasks. |
 | Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
@@ -177,9 +178,10 @@ SkateTrack/
 │   │   ├── Spots/                                  # [自主區] Local Spot CRUD, visit persistence, and session-association boundaries.
 │   │   │   ├── SpotRepository.swift                # [自主區] Local Spot CRUD, favorite toggling, nearby distance query, and visit record APIs.
 │   │   │   └── SpotVisitTracker.swift              # [自主區] Applies completed-session visits to selected Spots only after session save succeeds.
-│   │   ├── SessionSharing/                         # [自主區] Task-023b local share export boundary.
+│   │   ├── SessionSharing/                         # [自主區] Task-023b / 023c local share export and Photos save boundary.
 │   │   │   ├── SessionShareExportPayload.swift     # [協作區] Describes generated PNG / TXT / JSON temporary export files.
-│   │   │   └── SessionShareExportService.swift     # [自主區] Writes share-card export files to temporary storage and cleans them up.
+│   │   │   ├── SessionShareExportService.swift     # [自主區] Writes share-card export files to temporary storage and cleans them up.
+│   │   │   └── SessionSharePhotoLibrarySaver.swift # [自主區] Add-only Photo Library authorization and PNG save bridge.
 │   │   ├── SessionRecording/                       # [自主區] Recording lifecycle and metrics accumulation.
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
@@ -254,9 +256,10 @@ SkateTrack/
 │   │   │   ├── SessionShareCardPreviewView.swift   # [協作區] Dark neon local share-card preview reused by Task-023b PNG renderer.
 │   │   │   ├── SessionShareCardMetricView.swift    # [協作區] Reusable metric tile inside the share-card preview.
 │   │   │   ├── SessionShareCardLockedView.swift    # [協作區] Free-user locked share-card preview routed through existing Paywall.
-│   │   │   ├── SessionShareCardActionView.swift    # [協作區] Pro quick-export action that opens the Task-023b system share flow.
+│   │   │   ├── SessionShareCardActionView.swift    # [協作區] Pro quick-export and Save to Photos actions.
 │   │   │   ├── SessionShareCardRenderer.swift      # [協作區 — 邊界適配層] Renders the SwiftUI share card preview to PNG through ImageRenderer.
-│   │   │   ├── SessionShareExportViewModel.swift   # [協作區 — 邊界適配層] Coordinates render, export payload, share state, errors, and cleanup.
+│   │   │   ├── SessionShareExportViewModel.swift   # [協作區 — 邊界適配層] Coordinates render, export payload, Photos save state, errors, and cleanup.
+│   │   │   ├── SessionSharePhotoSaveState.swift    # [協作區] Local save-to-Photos UI state and localized message mapping.
 │   │   │   ├── SessionShareSheetView.swift         # [協作區 — 系統橋接層] UIActivityViewController wrapper for local export URLs.
 │   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
 │   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline for Pro / DEBUG subscriber state.
@@ -392,7 +395,7 @@ Important: the UI-related scripts currently verify file existence, localization 
 
 ## Recommended Next Step
 
-1. Continue with Task-023 Session Share Card + Quick Export as a local-only export task.
+1. Continue with Task-024 Achievements + Weekly Challenges after Task-023c is verified and committed.
 2. Keep future paid features on the Task-016 entitlement-provider strategy and defer production App Store monetization until `AppStoreSubscriptionProvider` is intentionally implemented.
 3. Future live WeatherKit / external-weather work should replace `MockWeatherProvider` or `DisabledWeatherProvider` behind `WeatherProviding` only after developer-account / privacy / capability review.
 4. Future HealthKit / watchOS heart-rate work should replace the Task-018c no-fake-data placeholder with real wearable data only.
@@ -557,13 +560,16 @@ iOS/Features/SessionSummary/SessionShareCardMetricView.swift   # [協作區] Sha
 iOS/Features/SessionSummary/SessionShareCardLockedView.swift   # [協作區] Locked Pro preview and Paywall routing.
 iOS/Features/SessionSummary/SessionShareCardActionView.swift   # [協作區] Pro quick-export action.
 iOS/Features/SessionSummary/SessionShareCardRenderer.swift     # [協作區 — 邊界適配層] SwiftUI preview to PNG renderer.
-iOS/Features/SessionSummary/SessionShareExportViewModel.swift  # [協作區 — 邊界適配層] Export state and cleanup coordinator.
+iOS/Features/SessionSummary/SessionShareExportViewModel.swift  # [協作區 — 邊界適配層] Export state, Photos save state, and cleanup coordinator.
+iOS/Features/SessionSummary/SessionSharePhotoSaveState.swift   # [協作區] Save-to-Photos UI state and localized message mapping.
 iOS/Features/SessionSummary/SessionShareSheetView.swift        # [協作區 — 系統橋接層] System share sheet wrapper.
 iOS/Core/SessionSharing/SessionShareExportPayload.swift        # [協作區] Temporary export file payload.
 iOS/Core/SessionSharing/SessionShareExportService.swift        # [自主區] Local temp-file export and cleanup service.
+iOS/Core/SessionSharing/SessionSharePhotoLibrarySaver.swift    # [自主區] Add-only Photo Library authorization and PNG save bridge.
 iOS/Features/SessionSummary/SessionSummaryShareStubView.swift  # [協作區] Reworked as share-card section wrapper.
 scripts/verify_session_share_card.py                           # [工程設定] Task-023b-compatible share-card verification script.
-scripts/verify_session_share_export.py                         # [工程設定] Task-023b export / share-sheet boundary verification script.
+scripts/verify_session_share_export.py                         # [工程設定] Task-023c-compatible export / share-sheet boundary verification script.
+scripts/verify_session_share_photos.py                         # [工程設定] Task-023c Photos save boundary and permission verification script.
 scripts/verify_session_summary.py                              # [工程設定] Updated Summary verification for share-card export foundation.
 ```
 
@@ -574,3 +580,9 @@ Task-023b renders the local share-card preview to PNG, writes PNG / TXT / JSON f
 ```
 
 Task-023b remains local-first and account-safe. It introduces no Photos permission, Google Drive, iCloud / CloudKit, AirDrop-specific package, production StoreKit, signing, capabilities, or external services. Full portable export packages remain deferred to Task-027.
+
+### Task-023c Photos Save Addendum
+
+Task-023c adds a separate Save to Photos action for the generated share-card PNG. It uses add-only Photo Library permission, localized InfoPlist copy, and a dedicated Photos bridge so Summary Views do not directly access `PHPhotoLibrary`.
+
+Task-023c intentionally does not request full photo-library read access, use `UIImageWriteToSavedPhotosAlbum`, create an AirDrop-specific package, define the portable archive format, integrate cloud sync, or change signing / capabilities. ADR-0004 records that AirDrop-specific packages and portable archives remain Task-027 / Task-028 work.

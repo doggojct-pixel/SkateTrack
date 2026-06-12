@@ -670,3 +670,8 @@
 "summary.share.export.error.dismiss" = "OK";
 "summary.share.export.text.title" = "SkateTrack Session Share";
 "summary.share.export.text.footer" = "Exported locally from SkateTrack. Weather, route, and safety data are informational only.";
+"summary.share.photos.button" = "Save to Photos";
+"summary.share.photos.saving" = "Saving to Photos…";
+"summary.share.photos.success" = "Share card saved to Photos.";
+"summary.share.photos.error.permission" = "SkateTrack cannot save to Photos without add-only photo permission. You can allow photo access in iOS Settings.";
+"summary.share.photos.error.save" = "The share card could not be saved to Photos.";

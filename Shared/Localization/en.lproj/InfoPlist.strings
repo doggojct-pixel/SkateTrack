@@ -2,3 +2,4 @@
 NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 NSMotionUsageDescription = "SkateTrack uses motion sensors to estimate ride movement and detect possible falls.";
+NSPhotoLibraryAddUsageDescription = "SkateTrack needs permission to save your session share card image to Photos.";

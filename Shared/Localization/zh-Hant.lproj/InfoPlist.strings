@@ -2,3 +2,4 @@
 NSLocationWhenInUseUsageDescription = "SkateTrack 需要存取位置來記錄您的滑行路線。";
 NSLocationAlwaysAndWhenInUseUsageDescription = "背景位置存取讓 SkateTrack 在螢幕關閉時繼續記錄路線。";
 NSMotionUsageDescription = "SkateTrack 會使用動作感測器來估算滑行動態並偵測可能的跌倒事件。";
+NSPhotoLibraryAddUsageDescription = "SkateTrack 需要權限將您的滑行分享卡圖片儲存到照片。";

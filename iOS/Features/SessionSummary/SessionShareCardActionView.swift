@@ -1,6 +1,6 @@
 // [協作區] SessionShareCardActionView.swift
-// 用途：呈現 Task-023b 分享卡快速匯出入口，並開啟本機系統分享表。
-// 委派至：SessionShareExportViewModel 管理 PNG / TXT / JSON 匯出與暫存檔清理。
+// 用途：呈現 Task-023b 快速匯出與 Task-023c 儲存到照片入口。
+// 委派至：SessionShareExportViewModel 管理分享表、Photos 儲存與暫存檔清理。
 
 import SwiftUI
 
@@ -32,26 +32,42 @@ struct SessionShareCardActionView: View {
                 Spacer(minLength: 0)
             }
 
-            Button {
-                Task { await exportViewModel.prepareShare(card: card) }
-            } label: {
-                HStack(spacing: 8) {
-                    if exportViewModel.isExporting {
-                        ProgressView()
-                            .controlSize(.small)
-                            .tint(.white)
-                    }
-                    Text(exportViewModel.isExporting ? "summary.share.export.preparing" : "summary.share.action.button")
+            VStack(spacing: 8) {
+                Button {
+                    Task { await exportViewModel.prepareShare(card: card) }
+                } label: {
+                    actionLabel(
+                        title: exportViewModel.isExporting ? "summary.share.export.preparing" : "summary.share.action.button",
+                        systemImage: "square.and.arrow.up",
+                        isLoading: exportViewModel.isExporting,
+                        tint: SkateTrackSessionStartColors.purple
+                    )
                 }
-                .font(.system(size: 13, weight: .black, design: .rounded))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(SkateTrackSessionStartColors.purple.opacity(exportViewModel.isExporting ? 0.48 : 0.72))
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .buttonStyle(.plain)
+                .disabled(exportViewModel.isExporting || exportViewModel.photoSaveState.isSaving)
+
+                Button {
+                    Task { await exportViewModel.saveCardToPhotos(card: card) }
+                } label: {
+                    actionLabel(
+                        title: exportViewModel.photoSaveState.isSaving ?
+                            "summary.share.photos.saving" : "summary.share.photos.button",
+                        systemImage: "photo.badge.plus",
+                        isLoading: exportViewModel.photoSaveState.isSaving,
+                        tint: SkateTrackSessionStartColors.accent
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(exportViewModel.isExporting || exportViewModel.photoSaveState.isSaving)
             }
-            .buttonStyle(.plain)
-            .disabled(exportViewModel.isExporting)
+
+            if let messageKey = exportViewModel.photoSaveState.messageKey {
+                Text(LocalizedStringKey(messageKey))
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(photoSaveMessageColor)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("session-share-photo-save-status")
+            }
         }
         .padding(14)
         .background(Color.white.opacity(0.045))
@@ -71,6 +87,42 @@ struct SessionShareCardActionView: View {
             Text(LocalizedStringKey(exportViewModel.errorKey ?? "summary.share.export.error.generic"))
         }
         .accessibilityIdentifier("session-share-card-action-view")
+    }
+
+    private func actionLabel(
+        title: LocalizedStringKey,
+        systemImage: String,
+        isLoading: Bool,
+        tint: Color
+    ) -> some View {
+        HStack(spacing: 8) {
+            if isLoading {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(.white)
+            } else {
+                Image(systemName: systemImage)
+                    .font(.system(size: 12, weight: .black))
+            }
+            Text(title)
+        }
+        .font(.system(size: 13, weight: .black, design: .rounded))
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(tint.opacity(isLoading ? 0.48 : 0.72))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    private var photoSaveMessageColor: Color {
+        switch exportViewModel.photoSaveState {
+        case .saved:
+            return SkateTrackSessionStartColors.accent
+        case .failed:
+            return .orange
+        case .idle, .saving:
+            return SkateTrackSessionStartColors.textSecondary
+        }
     }
 
     private var errorAlertBinding: Binding<Bool> {

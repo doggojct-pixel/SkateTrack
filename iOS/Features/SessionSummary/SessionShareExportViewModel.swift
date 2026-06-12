@@ -10,13 +10,16 @@ final class SessionShareExportViewModel: ObservableObject {
     @Published private(set) var isExporting = false
     @Published var activePayload: SessionShareExportPayload?
     @Published var errorKey: String?
+    @Published var photoSaveState: SessionSharePhotoSaveState = .idle
 
     private let renderer: SessionShareCardRenderer
     private let exportService: SessionShareExportService
+    private let photoLibrarySaver: SessionSharePhotoLibrarySaver
 
     init() {
         self.renderer = SessionShareCardRenderer()
         self.exportService = SessionShareExportService()
+        self.photoLibrarySaver = SessionSharePhotoLibrarySaver()
     }
 
     func prepareShare(card: SessionShareCardData) async {
@@ -36,10 +39,31 @@ final class SessionShareExportViewModel: ObservableObject {
         isExporting = false
     }
 
+    func saveCardToPhotos(card: SessionShareCardData) async {
+        guard !isExporting, !photoSaveState.isSaving else { return }
+        photoSaveState = .saving
+
+        do {
+            let pngData = try renderer.renderPNG(card: card)
+            try await photoLibrarySaver.savePNGData(pngData)
+            photoSaveState = .saved
+        } catch let error as SessionShareExportError {
+            photoSaveState = .failed(error.localizationKey)
+        } catch let error as SessionSharePhotoLibraryError {
+            photoSaveState = .failed(error.localizationKey)
+        } catch {
+            photoSaveState = .failed("summary.share.photos.error.save")
+        }
+    }
+
     func cleanupActivePayload() {
         guard let payload = activePayload else { return }
         exportService.cleanup(payload)
         activePayload = nil
+    }
+
+    func resetPhotoSaveState() {
+        photoSaveState = .idle
     }
 
     func dismissError() {

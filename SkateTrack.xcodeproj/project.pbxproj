@@ -89,6 +89,8 @@
 		23B200000000000000000101 /* SessionShareCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000001 /* SessionShareCardRenderer.swift */; };
 		23B200000000000000000102 /* SessionShareExportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000002 /* SessionShareExportViewModel.swift */; };
 		23B200000000000000000103 /* SessionShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B200000000000000000003 /* SessionShareSheetView.swift */; };
+		23C100000000000000000101 /* SessionSharePhotoLibrarySaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */; };
+		23C200000000000000000101 /* SessionSharePhotoSaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C200000000000000000001 /* SessionSharePhotoSaveState.swift */; };
 		18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000001 /* SessionAdvancedChartsView.swift */; };
 		18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000002 /* SpeedTimelineChartView.swift */; };
 		18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C100000000000000000003 /* ElevationProfileChartView.swift */; };
@@ -352,6 +354,8 @@
 		23B200000000000000000001 /* SessionShareCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareCardRenderer.swift; sourceTree = "<group>"; };
 		23B200000000000000000002 /* SessionShareExportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareExportViewModel.swift; sourceTree = "<group>"; };
 		23B200000000000000000003 /* SessionShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionShareSheetView.swift; sourceTree = "<group>"; };
+		23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoLibrarySaver.swift; sourceTree = "<group>"; };
+		23C200000000000000000001 /* SessionSharePhotoSaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSharePhotoSaveState.swift; sourceTree = "<group>"; };
 		18C100000000000000000001 /* SessionAdvancedChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAdvancedChartsView.swift; sourceTree = "<group>"; };
 		18C100000000000000000002 /* SpeedTimelineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedTimelineChartView.swift; sourceTree = "<group>"; };
 		18C100000000000000000003 /* ElevationProfileChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationProfileChartView.swift; sourceTree = "<group>"; };
@@ -665,6 +669,7 @@
 				23A300000000000000000004 /* SessionShareCardActionView.swift */,
 				23B200000000000000000001 /* SessionShareCardRenderer.swift */,
 				23B200000000000000000002 /* SessionShareExportViewModel.swift */,
+				23C200000000000000000001 /* SessionSharePhotoSaveState.swift */,
 				23B200000000000000000003 /* SessionShareSheetView.swift */,
 				18C100000000000000000001 /* SessionAdvancedChartsView.swift */,
 				18C100000000000000000002 /* SpeedTimelineChartView.swift */,
@@ -742,6 +747,7 @@
 			children = (
 				23B100000000000000000001 /* SessionShareExportPayload.swift */,
 				23B100000000000000000002 /* SessionShareExportService.swift */,
+				23C100000000000000000001 /* SessionSharePhotoLibrarySaver.swift */,
 			);
 			path = iOS/Core/SessionSharing;
 			sourceTree = SOURCE_ROOT;
@@ -1106,6 +1112,8 @@
 				23B200000000000000000101 /* SessionShareCardRenderer.swift in Sources */,
 				23B200000000000000000102 /* SessionShareExportViewModel.swift in Sources */,
 				23B200000000000000000103 /* SessionShareSheetView.swift in Sources */,
+				23C100000000000000000101 /* SessionSharePhotoLibrarySaver.swift in Sources */,
+				23C200000000000000000101 /* SessionSharePhotoSaveState.swift in Sources */,
 				18C100000000000000000101 /* SessionAdvancedChartsView.swift in Sources */,
 				18C100000000000000000102 /* SpeedTimelineChartView.swift in Sources */,
 				18C100000000000000000103 /* ElevationProfileChartView.swift in Sources */,
@@ -1501,6 +1509,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "SkateTrack uses motion sensors to estimate ride movement and detect possible falls.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "SkateTrack needs permission to save your session share card image to Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1593,6 +1602,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "SkateTrack uses motion sensors to estimate ride movement and detect possible falls.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "SkateTrack needs permission to save your session share card image to Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
