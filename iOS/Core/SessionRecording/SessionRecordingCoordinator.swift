@@ -361,6 +361,7 @@ final class SessionRecordingCoordinator {
             trickEvents: session.trickEvents,
             fallEvents: fallEvents,
             summaryMetrics: summaryMetrics,
+            routeQualitySummary: RouteQualitySummary.make(from: session.motionSamples),
             equipmentID: selectedEquipmentID,
             equipmentSnapshot: selectedEquipmentSnapshot,
             spotID: selectedSpotID ?? session.spotID,
@@ -381,7 +382,8 @@ final class SessionRecordingCoordinator {
             powerType: selectedPowerType,
             motionSamples: [],
             fallEvents: fallEvents,
-            summaryMetrics: summaryMetrics
+            summaryMetrics: summaryMetrics,
+            routeQualitySummary: RouteQualitySummary.make(from: [])
         )
     }
 
@@ -399,7 +401,8 @@ final class SessionRecordingCoordinator {
             powerType: selectedPowerType,
             motionSamples: samples,
             fallEvents: fallEvents,
-            summaryMetrics: summaryMetrics
+            summaryMetrics: summaryMetrics,
+            routeQualitySummary: RouteQualitySummary.make(from: samples)
         )
     }
 

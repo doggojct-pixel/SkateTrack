@@ -58,7 +58,11 @@ struct SkateTrackPackageExportProvider {
             sessionCount: 1,
             includesMotionSamples: !effectiveSamples.isEmpty,
             includesAccountData: false,
-            includesAchievements: false
+            includesAchievements: false,
+            formatCapabilities: [
+                "location-diagnostics-v1",
+                "route-quality-summary-v1"
+            ]
         )
         let payload = try SkateTrackPackagePayload(manifest: manifest, sessions: [sessionItem])
         let directoryURL = packageDirectoryURL(sessionID: content.session.id)

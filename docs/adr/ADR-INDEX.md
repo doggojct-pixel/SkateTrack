@@ -50,3 +50,13 @@ If a new ADR is added later, update this index with:
 - Future reopen condition.
 
 Task-030b verification token: ADR index consolidated.
+
+## Task-030c decision note — Core Location Diagnostics Package Strategy
+
+| Decision | Summary | Status | Owning active docs |
+|---|---|---|---|
+| Task-030c-a Core Location diagnostics package extension | Keep `.skatetrack` `schemaVersion = 1`, add optional diagnostics fields and optional package `formatCapabilities` (`location-diagnostics-v1`, `route-quality-summary-v1`), and treat Core Location fixes as accuracy / freshness / confidence-bearing data instead of assuming every coordinate is GPS-grade. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+| Real-device evidence handling | `20260613-110119` is the real-device route / speed fidelity baseline. `20260612-180037` is a simulator / compatibility reference and must not support real-device GPS claims. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md` |
+| Deferred route inference | Road snapping, map matching, route replay, smoothing, and Snow Mode route semantics are deferred until raw location diagnostics and high-accuracy recording policy are validated. | Deferred | `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+
+Task-030c-a verification token: Core Location diagnostics, route-quality-summary-v1, no road snapping.

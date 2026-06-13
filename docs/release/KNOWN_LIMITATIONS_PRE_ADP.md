@@ -106,3 +106,14 @@ This file replaces scattered pre-ADP limitation notes from older ADRs. Each item
 - **Do not claim:** Do not claim Brazilian Portuguese or Spanish support in the current build.
 
 Task-030b verification token: consolidated pre-ADP limitations.
+
+## L-012 Route Replay / Track Post-Processing Engine
+
+- **Current status:** Deferred. Task-030c-a adds Core Location diagnostics and route-quality summary metadata only; it does not implement replay, smoothing, map matching, or skiing-specific analysis.
+- **Blocked by:** Real-device high-accuracy outdoor recording validation, enough raw location diagnostics, route confidence rendering, and a separate post-processing design for smoothing / interpolation.
+- **Current substitute:** `.skatetrack` packages can carry optional `locationDiagnostics`, millisecond timestamps, and `routeQualitySummary` with `location-diagnostics-v1` and `route-quality-summary-v1` capabilities.
+- **Unlock condition:** Task-030c-b/c/d validate high-accuracy recording, speed freshness, and low-confidence route rendering on real devices.
+- **Future task:** Route Replay & Track Post-Processing Engine after raw Core Location quality is stable; future Snow Mode / Skiing Mode must reuse generic route confidence logic rather than skateboard-only assumptions.
+- **Do not claim:** Do not claim road snapping, map matching, navigation-grade route accuracy, precise real-road replay, or ski-app-grade replay before the post-processing engine exists and has real-device validation.
+
+Task-030c-a verification token: simulator / compatibility reference, route-quality-summary-v1, road snapping deferred.

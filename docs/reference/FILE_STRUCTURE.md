@@ -939,3 +939,22 @@ scripts/verify_session_share_photos.py
 ```
 
 The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active historical decision index.
+
+## Task-030c-a Core Location Diagnostics Package Extension
+
+```text
+Shared/Models/MotionSample.swift                         # [協作區] Adds optional Core Location diagnostics, speed source, freshness state, route segment confidence, millisecond timestamps, and RouteQualitySummary.
+Shared/Models/SessionData.swift                          # [協作區] Adds optional routeQualitySummary while preserving old .skatetrack decode compatibility.
+Shared/Models/SkateTrackPackageManifest.swift            # [協作區] Adds optional formatCapabilities for diagnostics-capable package exports without changing schemaVersion = 1.
+Shared/Models/SkateTrackPackagePayload.swift             # [協作區] Adds optional per-package-session routeQualitySummary generated from exported motion samples.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # [自主區] Attaches accepted Core Location diagnostics to 10Hz MotionSample exports without changing high-accuracy policy yet.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # [自主區] Enriches completed sessions with RouteQualitySummary.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift    # [協作區 — 邊界適配層] Marks exported .skatetrack packages with location-diagnostics-v1 and route-quality-summary-v1 capabilities.
+scripts/verify_task030c_gps_diagnostics_package.py       # Verifies Task-030c-a diagnostics schema, package capabilities, docs alignment, and no road snapping / production-service / signing drift.
+```
+
+### Task-030c-a data interpretation rule
+
+- `SkateTrack-Session-20260613-110119.skatetrack` is the real-device baseline for Task-030c route / speed fidelity work.
+- `SkateTrack-Session-20260612-180037.skatetrack` is a simulator / compatibility reference only and must not be used as real-device GPS evidence.
+- Task-030c-a records Core Location diagnostics; Task-030c-b remains responsible for high-accuracy outdoor recording policy changes.

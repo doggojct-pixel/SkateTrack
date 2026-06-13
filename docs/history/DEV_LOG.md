@@ -1582,3 +1582,25 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_task030_release_readiness.py` first.
 - Then run the standard localization, privacy, macOS viewer, package, backup, account, GPS, and shared-model verify scripts.
 - `docs/history/DEV_LOG.md` may contain historical mentions of old paths, but active docs and scripts must not depend on retired paths.
+
+## 2026-06-13 — Task-030c-a Core Location Diagnostics Package Extension
+
+### Completed
+- Added optional `LocationFixDiagnostics` metadata to `MotionSample` so future `.skatetrack` exports can carry Core Location accuracy, raw location timestamp, millisecond timestamp, update interval, segment distance, coordinate-derived speed, speed source, freshness state, and route segment confidence.
+- Added optional `RouteQualitySummary` support for completed sessions and portable package sessions, including `uniqueCoordinateCount`, `lowConfidenceSegmentCount`, stale-location sample count, average / max GPS update interval, and total GPS-derived distance.
+- Kept `.skatetrack` `schemaVersion = 1` and added optional `formatCapabilities` values `location-diagnostics-v1` and `route-quality-summary-v1`; old packages without the new fields should remain decode-compatible.
+- Bridged accepted Core Location updates through `SensorFusionEngine` diagnostics without changing `GPSProvider` high-accuracy policy yet.
+- Added `scripts/verify_task030c_gps_diagnostics_package.py` to guard the diagnostics schema, package capabilities, route-quality summary, documentation alignment, and Task-030c-a scope boundaries.
+
+### Evidence Handling
+- `SkateTrack-Session-20260613-110119.skatetrack` is the real-device evidence for the route / speed fidelity mismatch: many motion samples, very few unique coordinates, and route reconstruction from sparse location fixes.
+- `SkateTrack-Session-20260612-180037.skatetrack` is treated as a simulator / compatibility reference only. It must not be cited as real-device GPS evidence.
+
+### Scope Boundary
+- Task-030c-a is diagnostics and package compatibility only. It does not change `GPSProvider` desired accuracy, distance filter, background behavior, signing, capabilities, entitlements, road snapping, map matching, route replay, Snow Mode, Watch Phase 1b, StoreKit production, Google production services, CloudKit / iCloud, or WeatherKit production.
+- Low-confidence route segments are recorded as data, but route rendering changes are deferred to Task-030c-d.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_gps_diagnostics_package.py` after applying this task.
+- Also run `python3 scripts/verify_shared_models.py`, `python3 scripts/verify_sensor_fusion_engine.py`, `python3 scripts/verify_skatetrack_package.py`, and platform builds because this task changes shared models and iOS runtime sample creation.
+- Next real-device package export should be inspected for `locationDiagnostics`, `timestampMillisecondsSince1970`, `routeQualitySummary`, `location-diagnostics-v1`, and `route-quality-summary-v1`.

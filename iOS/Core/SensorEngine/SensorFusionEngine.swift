@@ -34,6 +34,8 @@ final class SensorFusionEngine: SensorProvider {
     private var latestAcceleration = ThreeAxisValue.zero
     private var latestGyroscope = ThreeAxisValue.zero
     private var latestAltitudeMeters: Double?
+    private var latestLocationDiagnostics: LocationFixDiagnostics?
+    private var latestRawLocation: CLLocation?
     private var lastLocationDrivenSampleDate: Date?
 
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
@@ -106,6 +108,8 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            latestLocationDiagnostics = nil
+            latestRawLocation = nil
             lastLocationDrivenSampleDate = nil
             calibrationEngine.reset()
         }
@@ -192,6 +196,7 @@ final class SensorFusionEngine: SensorProvider {
             acceleration: ThreeAxisValue,
             gyroscope: ThreeAxisValue,
             altitude: Double?,
+            locationDiagnostics: LocationFixDiagnostics?,
             calibratedAcceleration: ThreeAxisValue,
             calibratedGyroscope: ThreeAxisValue
         ) in
@@ -200,6 +205,7 @@ final class SensorFusionEngine: SensorProvider {
             let acceleration = latestAcceleration
             let gyroscope = latestGyroscope
             let altitude = latestAltitudeMeters
+            let locationDiagnostics = latestLocationDiagnostics
             calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
             let calibratedAcceleration = calibrationEngine.calibratedAcceleration(from: acceleration)
             let calibratedGyroscope = calibrationEngine.calibratedGyroscope(from: gyroscope)
@@ -210,6 +216,7 @@ final class SensorFusionEngine: SensorProvider {
                 acceleration,
                 gyroscope,
                 altitude,
+                locationDiagnostics,
                 calibratedAcceleration,
                 calibratedGyroscope
             )
@@ -221,16 +228,33 @@ final class SensorFusionEngine: SensorProvider {
             speedKmh: snapshot.speedKmh,
             accelerometerG: snapshot.calibratedAcceleration,
             gyroscopeRadPS: snapshot.calibratedGyroscope,
-            altitudeMeters: snapshot.altitude
+            altitudeMeters: snapshot.altitude,
+            locationDiagnostics: snapshot.locationDiagnostics
         )
     }
 
     private func updateLocation(_ location: CLLocation) {
+        let receivedAt = Date()
+        let previousLocation = stateLock.withLock { latestRawLocation }
+        let diagnostics = makeLocationDiagnostics(
+            for: location,
+            previousLocation: previousLocation,
+            receivedAt: receivedAt
+        )
+
         stateLock.withLock {
             latestCoordinate = GeoCoordinate(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             )
+            latestLocationDiagnostics = diagnostics
+            latestRawLocation = location
+
+            if let coordinateDerivedSpeedKmh = diagnostics.coordinateDerivedSpeedKmh {
+                latestSpeedKmh = coordinateDerivedSpeedKmh
+            } else if location.speed >= 0 {
+                latestSpeedKmh = GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+            }
         }
         publishLocationDrivenMotionSampleIfNeeded()
     }
@@ -251,6 +275,115 @@ final class SensorFusionEngine: SensorProvider {
         sampleQueue.async { [weak self] in
             self?.publishCurrentMotionSample()
         }
+    }
+
+
+    private func makeLocationDiagnostics(
+        for location: CLLocation,
+        previousLocation: CLLocation?,
+        receivedAt: Date
+    ) -> LocationFixDiagnostics {
+        let updateInterval = previousLocation.flatMap { previous -> TimeInterval? in
+            let interval = location.timestamp.timeIntervalSince(previous.timestamp)
+            return interval > 0 ? interval : nil
+        }
+        let segmentDistance = previousLocation.map { location.distance(from: $0) }
+        let coordinateDerivedSpeedKmh = makeCoordinateDerivedSpeedKmh(
+            segmentDistanceMeters: segmentDistance,
+            updateIntervalSeconds: updateInterval
+        )
+        let freshnessState = locationFreshnessState(for: location, receivedAt: receivedAt)
+        let speedSource = locationSpeedSource(
+            location: location,
+            freshnessState: freshnessState,
+            coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh
+        )
+        let horizontalAccuracy = normalizedAccuracy(location.horizontalAccuracy)
+
+        return LocationFixDiagnostics(
+            horizontalAccuracyMeters: horizontalAccuracy,
+            verticalAccuracyMeters: normalizedAccuracy(location.verticalAccuracy),
+            speedAccuracyMetersPerSecond: normalizedAccuracy(location.speedAccuracy),
+            courseAccuracyDegrees: courseAccuracyDegrees(for: location),
+            rawLocationTimestamp: location.timestamp,
+            rawLocationTimestampMillisecondsSince1970: location.timestamp.millisecondsSince1970,
+            gpsUpdateIntervalSeconds: updateInterval,
+            gpsSegmentDistanceMeters: segmentDistance,
+            coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+            speedSource: speedSource,
+            freshnessState: freshnessState,
+            routeSegmentConfidence: routeSegmentConfidence(
+                horizontalAccuracyMeters: horizontalAccuracy,
+                freshnessState: freshnessState,
+                updateIntervalSeconds: updateInterval,
+                segmentDistanceMeters: segmentDistance
+            )
+        )
+    }
+
+    private func makeCoordinateDerivedSpeedKmh(
+        segmentDistanceMeters: Double?,
+        updateIntervalSeconds: TimeInterval?
+    ) -> Double? {
+        guard let segmentDistanceMeters, segmentDistanceMeters >= 1 else { return nil }
+        guard let updateIntervalSeconds, updateIntervalSeconds >= 0.5 else { return nil }
+        let speedKmh = (segmentDistanceMeters / updateIntervalSeconds) * 3.6
+        return min(max(speedKmh, 0), 150)
+    }
+
+    private func locationFreshnessState(for location: CLLocation, receivedAt: Date) -> LocationFreshnessState {
+        let age = max(receivedAt.timeIntervalSince(location.timestamp), 0)
+        if age <= 2 { return .fresh }
+        if age <= 5 { return .recent }
+        return .stale
+    }
+
+    private func locationSpeedSource(
+        location: CLLocation,
+        freshnessState: LocationFreshnessState,
+        coordinateDerivedSpeedKmh: Double?
+    ) -> LocationSpeedSource {
+        if freshnessState == .stale { return .stale }
+        if location.speed >= 0 { return .coreLocation }
+        if coordinateDerivedSpeedKmh != nil { return .coordinateDerived }
+        return .unavailable
+    }
+
+    private func routeSegmentConfidence(
+        horizontalAccuracyMeters: Double?,
+        freshnessState: LocationFreshnessState,
+        updateIntervalSeconds: TimeInterval?,
+        segmentDistanceMeters: Double?
+    ) -> RouteSegmentConfidence {
+        guard freshnessState != .unavailable else { return .unavailable }
+        guard freshnessState != .stale else { return .low }
+        guard let horizontalAccuracyMeters else { return .low }
+
+        if let updateIntervalSeconds, updateIntervalSeconds > 10 {
+            return .low
+        }
+
+        if let updateIntervalSeconds,
+           let segmentDistanceMeters,
+           updateIntervalSeconds > 5,
+           segmentDistanceMeters > 75 {
+            return .low
+        }
+
+        if horizontalAccuracyMeters <= 10 { return .high }
+        if horizontalAccuracyMeters <= 25 { return .medium }
+        return .low
+    }
+
+    private func normalizedAccuracy(_ accuracy: CLLocationAccuracy) -> Double? {
+        accuracy >= 0 ? accuracy : nil
+    }
+
+    private func courseAccuracyDegrees(for location: CLLocation) -> Double? {
+        if #available(iOS 13.4, *) {
+            return normalizedAccuracy(location.courseAccuracy)
+        }
+        return nil
     }
 
     private func updateSpeed(_ speedKmh: Double) {
@@ -296,7 +429,16 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            latestLocationDiagnostics = nil
+            latestRawLocation = nil
             lastLocationDrivenSampleDate = nil
         }
+    }
+}
+
+
+private extension Date {
+    var millisecondsSince1970: Int64 {
+        Int64((timeIntervalSince1970 * 1_000).rounded())
     }
 }

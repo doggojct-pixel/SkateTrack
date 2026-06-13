@@ -14,6 +14,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
     let trickEvents: [TrickEvent]
     let fallEvents: [FallEvent]
     let summaryMetrics: SessionSummaryMetrics?
+    let routeQualitySummary: RouteQualitySummary?
     let equipmentID: UUID?
     let equipmentSnapshot: EquipmentSessionSnapshot?
     let spotID: UUID?
@@ -29,6 +30,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         trickEvents: [TrickEvent] = [],
         fallEvents: [FallEvent] = [],
         summaryMetrics: SessionSummaryMetrics? = nil,
+        routeQualitySummary: RouteQualitySummary? = nil,
         equipmentID: UUID? = nil,
         equipmentSnapshot: EquipmentSessionSnapshot? = nil,
         spotID: UUID? = nil,
@@ -47,6 +49,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         self.trickEvents = trickEvents
         self.fallEvents = fallEvents
         self.summaryMetrics = summaryMetrics
+        self.routeQualitySummary = routeQualitySummary
         self.equipmentID = equipmentID
         self.equipmentSnapshot = equipmentSnapshot
         self.spotID = spotID
@@ -72,6 +75,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         case trickEvents
         case fallEvents
         case summaryMetrics
+        case routeQualitySummary
         case equipmentID
         case equipmentSnapshot
         case spotID
@@ -100,6 +104,7 @@ struct SessionData: Identifiable, Codable, Sendable, Equatable {
         trickEvents = try container.decode([TrickEvent].self, forKey: .trickEvents)
         fallEvents = try container.decode([FallEvent].self, forKey: .fallEvents)
         summaryMetrics = try container.decodeIfPresent(SessionSummaryMetrics.self, forKey: .summaryMetrics)
+        routeQualitySummary = try container.decodeIfPresent(RouteQualitySummary.self, forKey: .routeQualitySummary)
         equipmentID = try container.decodeIfPresent(UUID.self, forKey: .equipmentID)
         equipmentSnapshot = try container.decodeIfPresent(EquipmentSessionSnapshot.self, forKey: .equipmentSnapshot)
         spotID = try container.decodeIfPresent(UUID.self, forKey: .spotID)
