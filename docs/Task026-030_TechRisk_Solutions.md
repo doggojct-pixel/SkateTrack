@@ -822,3 +822,24 @@ Task-029b keeps the Task-026 to Task-030 safety posture while improving commerci
 - Deferred localization roadmap remains `pt-BR` Brazilian Portuguese and `es` Spanish after Japanese QA and native review are stable.
 
 Task-029b verification token: accessibility privacy UX quality gate.
+
+
+## Task-030a Pre-ADP Release Readiness Gate
+
+Task-030a is the release-readiness and risk-alignment checkpoint for Task-026 through Task-030. It should not add production services or large product features. Its role is to make the current local-first state verifiable, honest, and handoff-ready before Apple Developer Program enrollment.
+
+### Added risk controls
+
+- `scripts/verify_task030_release_readiness.py` checks the presence and alignment of release-readiness docs, known limitations, manual QA matrix, ADR-0011, critical verify scripts, scheme hygiene, and absence of project-setting drift.
+- `docs/RELEASE_READINESS_PRE_ADP.md` defines the current release posture and explicitly distinguishes Pre-ADP local development readiness from TestFlight / App Store readiness.
+- `docs/MANUAL_QA_MATRIX_PRE_ADP.md` lists the manual QA matrix for iOS, macOS, localization, accessibility, privacy, GPS, backup, package export, and service-boundary checks.
+- `docs/KNOWN_LIMITATIONS_PRE_ADP.md` now includes real-device background GPS validation, Fall Detection diagnostics / safe testing, CloudKit / iCloud, native Japanese review, and the deferred `pt-BR` / `es` localization roadmap.
+
+### Guardrails
+
+- Do not commit Xcode scheme changes caused by local App Language, App Region, or Location Scenario tests.
+- Do not add `UTExportedTypeDeclarations`, `CFBundleDocumentTypes`, custom `.skatetrack` UTType metadata, Finder open-with behavior, cloud entitlements, production StoreKit, Google OAuth, Google Drive, CloudKit, WeatherKit, or TestFlight configuration in Task-030a.
+- Preserve the macOS viewer layout principle: left sidebar is function navigation only; the right side is the work area with compact package summary and dashboard.
+- Keep `.skatetrack` package viewing read-only until a later task explicitly defines persistent import / merge / restore semantics.
+
+Task-030a verification token: pre-ADP release readiness gate.

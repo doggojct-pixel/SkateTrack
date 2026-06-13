@@ -1,9 +1,9 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-12
+**Last Updated:** 2026-06-13
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-025b Account Settings UI Foundation.
-**Current Development Gate:** Task-025b adds the visible Account settings screen, root `帳號` navigation entry, Google-unavailable placeholder state, DEBUG local account simulation controls, localized UI copy, verification updates, and ADR-0002 deferred-scope documentation. Production Google Sign-In, OAuth credentials, URL schemes, Google SDK, Drive scopes, token refresh / revocation, server verification, production token persistence / Keychain policy, cloud sync, signing, capabilities, and entitlements remain deferred.
+**Current Baseline:** Source-controlled repository after Task-030a Pre-ADP Release Readiness Audit + Verify Gate.
+**Current Development Gate:** Task-030a adds the Pre-ADP release-readiness report, manual QA matrix, release-readiness verification script, ADR-0011, and known-limitations finalization. It adds no new runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -868,3 +868,19 @@ docs/decisions/ADR-0010-accessibility-privacy-quality-gate.md # Records Task-029
 
 - This task does not change project membership, signing, capabilities, document association, custom UTType, Google Drive, CloudKit, StoreKit production, MapKit, Charts, or package persistence behavior.
 - Localization resource files remain governed by key parity, placeholder parity, syntax validity, and privacy-copy correctness rather than the Swift 500-line guideline.
+
+
+## Task-030a Pre-ADP Release Readiness Audit + Verify Gate
+
+Task-030a adds the release-readiness documentation and verification layer used before Task-030b handoff:
+
+```
+docs/RELEASE_READINESS_PRE_ADP.md              # Pre-ADP release posture, build commands, source-control gate, service-boundary gate, GPS / safety gate, macOS viewer gate.
+docs/MANUAL_QA_MATRIX_PRE_ADP.md               # Manual QA matrix for iOS, macOS, localization, accessibility, privacy, GPS, and service-boundary checks.
+docs/decisions/ADR-0011-pre-adp-release-readiness-strategy.md  # Release-readiness strategy before Apple Developer Program enrollment.
+scripts/verify_task030_release_readiness.py     # Task-030a quality gate for docs, scheme hygiene, service boundaries, known limitations, and project-setting drift.
+```
+
+Task-030a intentionally does not add runtime features. StoreKit production, Google OAuth / Drive, CloudKit / iCloud, WeatherKit, TestFlight, custom `.skatetrack` UTType, document association, Finder open-with, MapKit route rendering, Swift Charts, package library, persistent import, and production signing / capability work remain deferred until the relevant unlock prerequisites are met.
+
+Task-030a verification token: pre-ADP release readiness gate.

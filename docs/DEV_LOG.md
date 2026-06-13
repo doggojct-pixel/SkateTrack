@@ -1502,3 +1502,26 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_task029b_accessibility_privacy_gate.py` after applying this task.
 - Also run `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_task029_localization_privacy.py`, `python3 scripts/verify_macos_session_viewer.py`, `python3 scripts/verify_macos_route_chart_viewer.py`, `python3 scripts/verify_skatetrack_package.py`, and platform builds.
 - Manual validation should use English, Traditional Chinese, and Japanese app language settings and confirm that long Japanese labels do not overlap, truncate critical meaning, or cover macOS window controls.
+
+
+## 2026-06-13 — Task-030a Pre-ADP Release Readiness Audit + Verify Gate
+
+### Completed
+- Added `docs/RELEASE_READINESS_PRE_ADP.md` as the Task-030a source of truth for Pre-ADP release posture, verify scripts, build commands, source-control hygiene, service boundaries, GPS / safety gates, and macOS viewer gates.
+- Added `docs/MANUAL_QA_MATRIX_PRE_ADP.md` to consolidate iOS, macOS, localization, accessibility, privacy, background GPS, Fall Detection, and service-boundary manual QA.
+- Added `scripts/verify_task030_release_readiness.py` to guard release-readiness documentation, known limitations, local Xcode scheme hygiene, service-boundary terms, and absence of custom UTType / document association / entitlement drift.
+- Added ADR-0011 to define the Pre-ADP release-readiness strategy and keep Task-030 focused on quality gates rather than feature expansion.
+- Expanded `docs/KNOWN_LIMITATIONS_PRE_ADP.md` with CloudKit / iCloud, real-device background GPS validation, Fall Detection diagnostics / safe test mode, native Japanese review, and deferred `pt-BR` / `es` localization roadmap items.
+
+### Scope Boundary
+- Task-030a is documentation and verification only. It does not add runtime UI, product features, provider integrations, production credentials, signing changes, provisioning changes, entitlements, custom `.skatetrack` UTType, Finder open-with behavior, document association, CloudKit, StoreKit production, Google OAuth / Drive, WeatherKit production, TestFlight upload, GPS algorithm changes, FallDetection algorithm changes, Launch Screen changes, AppIcon changes, bottom dock changes, watchOS changes, or macOS viewer feature expansion.
+
+### Release-blocking Notes
+- iPhone 13 Pro or equivalent outdoor real-device background GPS test remains required before public release claims. Simulator success is not enough for background-location release validation.
+- Fall Detection must not be validated by unsafe human hard-fall testing; future diagnostics / safe controlled protocol is required before stronger safety claims.
+- Japanese localization remains first-pass and needs native review before public App Store release.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030_release_readiness.py` after applying this task.
+- Also run the existing Task-029 localization / privacy / accessibility gates, macOS viewer gates, package gates, backup gates, account provider gate, GPS gate, shared model gate, and iOS / macOS platform builds.
+- Confirm `.xcscheme` files do not include local App Language, App Region, or Location Scenario state before commit.

@@ -42,3 +42,38 @@ This document tracks features that are intentionally blocked until Apple Develop
 - **Blocked by:** Apple Developer Program, Bundle ID confirmation, App Store Connect app record, signing setup, and release checklist.
 - **Current state:** Local simulator / development builds only.
 - **Unlock task:** Task-030b or later release pipeline setup.
+
+## B-007 CloudKit / iCloud Sync
+
+- **Blocked by:** Apple Developer Program, iCloud / CloudKit capability review, data model sync policy, conflict strategy, privacy copy, and device-to-device QA.
+- **Current state:** No CloudKit container, iCloud documents, or cloud entitlement is enabled.
+- **Unlock task:** Add a replaceable cloud sync provider after local backup / package semantics are stable and capabilities are available.
+- **Files likely to change:** Future cloud provider module, sync hooks, account / backup UI, ADR updates, verify scripts, project settings.
+
+## B-008 Real-device Background GPS Release Validation
+
+- **Blocked by:** Outdoor real-device QA with screen off and phone in pocket.
+- **Current state:** Background GPS support and simulator moving-route validation are implemented, but simulator behavior does not replace real-device power / lock-screen / location scheduling behavior.
+- **Unlock task:** Run iPhone 13 Pro or equivalent outdoor validation: start in foreground, lock screen, pocket carry, move 150–300 m for 3–5 minutes, then confirm non-zero distance, route samples, speed metrics, and route preview.
+- **Files likely to change:** Usually none if validation passes; `iOS/Core/SensorEngine` / session metrics only if a blocking real-device bug is found.
+
+## B-009 Fall Detection Diagnostics / Safe Test Mode
+
+- **Blocked by:** Safe controlled test plan, diagnostics UI, and hardware / fixture validation strategy.
+- **Current state:** Fall Detection engine and UI foundation exist, but public claims should not imply fully validated real-world crash detection. Human hard-fall testing is unsafe and not required for Task-030a.
+- **Unlock task:** Add DEBUG diagnostics / safe test mode showing recent G-force, gyro, candidate impact, stationary confirmation, and alert state. Validate with controlled non-human tests.
+- **Files likely to change:** `iOS/Core/SensorEngine`, `iOS/Features/Debug`, Fall Alert UI, verification scripts, ADR updates.
+
+## B-010 Native Japanese Review
+
+- **Blocked by:** Native Japanese copy review and App Store metadata review.
+- **Current state:** `ja` is implemented as first-pass product localization with key and placeholder parity.
+- **Unlock task:** Native review of product copy, privacy copy, accessibility copy, and App Store metadata before public Japanese-market release.
+- **Files likely to change:** `Shared/Localization/ja.lproj/*`, App Store metadata docs.
+
+## B-011 Deferred Localization Roadmap
+
+- **Blocked by:** Localization QA capacity and product-market prioritization.
+- **Current state:** English, Traditional Chinese, and Japanese are active. Additional languages are not included in Task-030a.
+- **Unlock task:** Add `pt-BR` Brazilian Portuguese first, then `es` Spanish, with key parity, placeholder parity, privacy-copy review, and native review.
+- **Files likely to change:** `Shared/Localization`, localization verify scripts, ADR-0009 / ADR-0011 updates.
