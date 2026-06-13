@@ -13,24 +13,27 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-DECISIONS = DOCS / "decisions"
+PROCESS = DOCS / "process"
+RELEASE = DOCS / "release"
+ADR = DOCS / "adr"
+REFERENCE = DOCS / "reference"
+HISTORY = DOCS / "history"
 PROJECT = ROOT / "SkateTrack.xcodeproj"
 PROJECT_FILE = PROJECT / "project.pbxproj"
 SCHEME_ROOT = PROJECT / "xcshareddata" / "xcschemes"
 
 REQUIRED_FILES = [
     DOCS / "DOCUMENTATION_INDEX.md",
-    DOCS / "DEVELOPMENT_RULES.md",
-    DOCS / "KNOWN_LIMITATIONS_PRE_ADP.md",
-    DOCS / "RELEASE_READINESS_PRE_ADP.md",
-    DOCS / "MANUAL_QA_MATRIX_PRE_ADP.md",
-    DOCS / "DEV_LOG.md",
-    DOCS / "FILE_STRUCTURE.md",
-    DECISIONS / "ADR-INDEX.md",
+    PROCESS / "DEVELOPMENT_RULES.md",
+    RELEASE / "KNOWN_LIMITATIONS_PRE_ADP.md",
+    RELEASE / "RELEASE_READINESS_PRE_ADP.md",
+    RELEASE / "MANUAL_QA_MATRIX_PRE_ADP.md",
+    HISTORY / "DEV_LOG.md",
+    REFERENCE / "FILE_STRUCTURE.md",
+    ADR / "ADR-INDEX.md",
 ]
-
 RETIRED_FILES = [
-    *(DECISIONS / f"ADR-{number:04d}-{slug}.md" for number, slug in [
+    *(DOCS / "decisions" / f"ADR-{number:04d}-{slug}.md" for number, slug in [
         (1, "subscription-entitlement-strategy"),
         (2, "developer-account-dependent-services"),
         (3, "gps-denied-indoor-recording-strategy"),
@@ -43,6 +46,13 @@ RETIRED_FILES = [
         (10, "accessibility-privacy-quality-gate"),
         (11, "pre-adp-release-readiness-strategy"),
     ]),
+    DOCS / "decisions" / "ADR-INDEX.md",
+    DOCS / "DEVELOPMENT_RULES.md",
+    DOCS / "KNOWN_LIMITATIONS_PRE_ADP.md",
+    DOCS / "RELEASE_READINESS_PRE_ADP.md",
+    DOCS / "MANUAL_QA_MATRIX_PRE_ADP.md",
+    DOCS / "DEV_LOG.md",
+    DOCS / "FILE_STRUCTURE.md",
     DOCS / "Task026-030_TechRisk_Solutions.md",
 ]
 
@@ -67,7 +77,7 @@ DOCUMENTATION_INDEX_TERMS = [
     "DEVELOPMENT_RULES.md",
     "KNOWN_LIMITATIONS_PRE_ADP.md",
     "ADR-INDEX.md",
-    "Consolidated / removed documents",
+    "Consolidated / retired documents",
     "Task-030b verification token: documentation index consolidated.",
 ]
 
@@ -111,9 +121,9 @@ ADR_INDEX_TERMS = [
 
 RELEASE_TERMS = [
     "Documentation source-of-truth gate",
-    "docs/DEVELOPMENT_RULES.md",
-    "docs/KNOWN_LIMITATIONS_PRE_ADP.md",
-    "docs/decisions/ADR-INDEX.md",
+    "docs/process/DEVELOPMENT_RULES.md",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "docs/adr/ADR-INDEX.md",
     "Pre-ADP local-first development build",
     "Do not claim production subscriptions",
     "Do not claim real Google login",
@@ -140,9 +150,9 @@ MANUAL_QA_TERMS = [
 FILE_STRUCTURE_TERMS = [
     "Task-030b Documentation Consolidation + Deferred Feature Handoff Package",
     "docs/DOCUMENTATION_INDEX.md",
-    "docs/DEVELOPMENT_RULES.md",
-    "docs/decisions/ADR-INDEX.md",
-    "Task-030b removes the old per-topic ADR files",
+    "docs/process/DEVELOPMENT_RULES.md",
+    "docs/adr/ADR-INDEX.md",
+    "Task-030b removes the old per-topic ADR single files",
 ]
 
 FORBIDDEN_PROJECT_TOKENS = [
@@ -226,12 +236,12 @@ def check_terms(path: Path, terms: list[str], label: str) -> bool:
 def check_docs() -> bool:
     return all([
         check_terms(DOCS / "DOCUMENTATION_INDEX.md", DOCUMENTATION_INDEX_TERMS, "DOCUMENTATION_INDEX.md"),
-        check_terms(DOCS / "DEVELOPMENT_RULES.md", DEVELOPMENT_RULES_TERMS, "DEVELOPMENT_RULES.md"),
-        check_terms(DOCS / "KNOWN_LIMITATIONS_PRE_ADP.md", KNOWN_LIMITATION_TERMS, "KNOWN_LIMITATIONS_PRE_ADP.md"),
-        check_terms(DECISIONS / "ADR-INDEX.md", ADR_INDEX_TERMS, "ADR-INDEX.md"),
-        check_terms(DOCS / "RELEASE_READINESS_PRE_ADP.md", RELEASE_TERMS, "RELEASE_READINESS_PRE_ADP.md"),
-        check_terms(DOCS / "MANUAL_QA_MATRIX_PRE_ADP.md", MANUAL_QA_TERMS, "MANUAL_QA_MATRIX_PRE_ADP.md"),
-        check_terms(DOCS / "FILE_STRUCTURE.md", FILE_STRUCTURE_TERMS, "FILE_STRUCTURE.md"),
+        check_terms(PROCESS / "DEVELOPMENT_RULES.md", DEVELOPMENT_RULES_TERMS, "DEVELOPMENT_RULES.md"),
+        check_terms(RELEASE / "KNOWN_LIMITATIONS_PRE_ADP.md", KNOWN_LIMITATION_TERMS, "KNOWN_LIMITATIONS_PRE_ADP.md"),
+        check_terms(ADR / "ADR-INDEX.md", ADR_INDEX_TERMS, "ADR-INDEX.md"),
+        check_terms(RELEASE / "RELEASE_READINESS_PRE_ADP.md", RELEASE_TERMS, "RELEASE_READINESS_PRE_ADP.md"),
+        check_terms(RELEASE / "MANUAL_QA_MATRIX_PRE_ADP.md", MANUAL_QA_TERMS, "MANUAL_QA_MATRIX_PRE_ADP.md"),
+        check_terms(REFERENCE / "FILE_STRUCTURE.md", FILE_STRUCTURE_TERMS, "FILE_STRUCTURE.md"),
     ])
 
 
@@ -284,6 +294,34 @@ def check_production_unlock_patterns() -> bool:
     return not failed
 
 
+
+def check_verify_scripts_use_consolidated_docs() -> bool:
+    retired_reference_patterns = [
+        "docs/Task026-030_TechRisk_Solutions.md",
+        "docs/decisions/ADR-000",
+        "docs/decisions/ADR-0010",
+        "docs/decisions/ADR-0011",
+        "docs/decisions/ADR-INDEX.md",
+        "docs/DEVELOPMENT_RULES.md",
+        "docs/KNOWN_LIMITATIONS_PRE_ADP.md",
+        "docs/RELEASE_READINESS_PRE_ADP.md",
+        "docs/MANUAL_QA_MATRIX_PRE_ADP.md",
+        "docs/FILE_STRUCTURE.md",
+        "docs/DEV_LOG.md",
+    ]
+    failed = False
+    for script in sorted((ROOT / "scripts").glob("verify_*.py")):
+        if script.name == "verify_task030_release_readiness.py":
+            continue
+        text = read(script)
+        found = [pattern for pattern in retired_reference_patterns if pattern in text]
+        if found:
+            print(f"Verify script still references retired documentation in {rel(script)}:")
+            for pattern in found:
+                print(f"- {pattern}")
+            failed = True
+    return not failed
+
 def check_docs_no_overclaim() -> bool:
     docs_text = "\n".join(read(path) for path in REQUIRED_FILES if path.exists())
     required_negations = [
@@ -312,6 +350,7 @@ def main() -> int:
         check_project_settings(),
         check_scheme_hygiene(),
         check_production_unlock_patterns(),
+        check_verify_scripts_use_consolidated_docs(),
         check_docs_no_overclaim(),
     ]
     if not all(checks):

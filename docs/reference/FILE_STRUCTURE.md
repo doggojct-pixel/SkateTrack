@@ -3,7 +3,7 @@
 **Last Updated:** 2026-06-13
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
 **Current Baseline:** Source-controlled repository after Task-030b Documentation Consolidation + Deferred Feature Handoff Package.
-**Current Development Gate:** Task-030b consolidates fragmented docs and ADRs into `DOCUMENTATION_INDEX.md`, `DEVELOPMENT_RULES.md`, `KNOWN_LIMITATIONS_PRE_ADP.md`, `RELEASE_READINESS_PRE_ADP.md`, `MANUAL_QA_MATRIX_PRE_ADP.md`, and `decisions/ADR-INDEX.md`. It adds no runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
+**Current Development Gate:** Task-030b consolidates fragmented docs and ADRs into `docs/DOCUMENTATION_INDEX.md`, `docs/process/DEVELOPMENT_RULES.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`, `docs/release/RELEASE_READINESS_PRE_ADP.md`, `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`, and `docs/adr/ADR-INDEX.md`. It adds no runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
 
@@ -13,15 +13,15 @@ This document records the current SkateTrack repository structure and developmen
 | File | Status | Purpose |
 |---|---|---|
 | `docs/DOCUMENTATION_INDEX.md` | Active | Documentation entry point and reading order. |
-| `docs/DEVELOPMENT_RULES.md` | Active | Consolidated development workflow, hotfix, commit, localization, macOS layout, and scope-control rules. |
-| `docs/KNOWN_LIMITATIONS_PRE_ADP.md` | Active | Consolidated blocked / deferred Pre-ADP feature list with unlock conditions and no-overclaim rules. |
-| `docs/RELEASE_READINESS_PRE_ADP.md` | Active | Pre-ADP release-readiness gate. |
-| `docs/MANUAL_QA_MATRIX_PRE_ADP.md` | Active | Manual QA matrix for iOS, macOS, languages, accessibility, privacy, GPS, and safety. |
-| `docs/decisions/ADR-INDEX.md` | Active | Historical ADR summary and mapping after consolidation. |
-| `docs/DEV_LOG.md` | Historical / active log | Chronological history; not the primary rules source. |
-| `docs/FILE_STRUCTURE.md` | Active | Repository structure and progress snapshot. |
+| `docs/process/DEVELOPMENT_RULES.md` | Active | Consolidated development workflow, hotfix, commit, localization, macOS layout, and scope-control rules. |
+| `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` | Active | Consolidated blocked / deferred Pre-ADP feature list with unlock conditions and no-overclaim rules. |
+| `docs/release/RELEASE_READINESS_PRE_ADP.md` | Active | Pre-ADP release-readiness gate. |
+| `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` | Active | Manual QA matrix for iOS, macOS, languages, accessibility, privacy, GPS, and safety. |
+| `docs/adr/ADR-INDEX.md` | Active | Historical ADR summary and mapping after consolidation. |
+| `docs/history/DEV_LOG.md` | Historical / active log | Chronological history; not the primary rules source. |
+| `docs/reference/FILE_STRUCTURE.md` | Active | Repository structure and progress snapshot. |
 
-Task-030b removes the old per-topic ADR files (`docs/decisions/ADR-0001...ADR-0011`) and the stage-specific `docs/Task026-030_TechRisk_Solutions.md` from active source control after their content is consolidated.
+Task-030b removes the old per-topic ADR single files and the previous Task 026–030 technical-risk notes from active source control after their content is consolidated into the organized docs subdirectories.
 
 ## Current Progress Snapshot
 
@@ -31,7 +31,7 @@ Task-030b removes the old per-topic ADR files (`docs/decisions/ADR-0001...ADR-00
 | Task-002 Localization Infrastructure | Complete | English and Traditional Chinese localization resources plus shared formatting utilities. |
 | Task-003 Shared Data Models | Complete | Cross-platform models for sport modes, sessions, motion samples, falls, tricks, equipment, and spots. |
 | Task-004 Feature Flags | Complete | Subscription-gated feature definitions and DEBUG subscription override engine. |
-| Task-005 Living Documentation | Complete / Active | `docs/FILE_STRUCTURE.md` and `docs/DEV_LOG.md` remain living documents. |
+| Task-005 Living Documentation | Complete / Active | `docs/reference/FILE_STRUCTURE.md` and `docs/history/DEV_LOG.md` remain living documents. |
 | Task-006 GPS Provider | Complete | iOS-only GPS provider and authorization wrapper. |
 | Task-007 IMU Provider | Complete | iOS-only accelerometer and gyroscope provider. |
 | Task-008 Barometer Provider | Complete | iOS-only altitude / pressure provider. |
@@ -74,12 +74,12 @@ Task-030b removes the old per-topic ADR files (`docs/decisions/ADR-0001...ADR-00
 |---|---|---|
 | Runtime app icon display still needs final manual confirmation on the user's machine. | Asset catalogs and scripts may pass while simulator / device cache behavior still needs visual verification. | Asset catalog membership, generated Info.plist icon keys, Xcode / simulator cache. |
 | Live HUD tilt is intentionally conservative and uncalibrated in Phase 1a. | The app should not claim precise skateboard lean until a real calibration flow and fixed phone placement assumptions exist. | `TiltIndicatorView.swift`, future calibration UX, future sensor interpretation layer. |
-| Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable. ADR-0003 now requires honest low-confidence / unavailable states before any future indoor odometry work. | `GPSProvider.swift`, `SensorFusionEngine.swift`, `docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md`, future Recording Data Quality task. |
+| Indoor / no-GPS speed may remain `0.0 km/h`. | This is expected when real-speed runtime is active and GPS speed is unavailable. ADR-0003 now requires honest low-confidence / unavailable states before any future indoor odometry work. | `GPSProvider.swift`, `SensorFusionEngine.swift`, `docs/adr/ADR-INDEX.md`, future Recording Data Quality task. |
 | HealthKit / watchOS heart-rate data and deeper analysis are not built yet. | Task-023c adds local share-card quick export and Save to Photos, but heart-rate zones remain a no-fake-data placeholder. | `iOS/Features/SessionSummary`, future HealthKit / watchOS data providers. |
 | UserNotifications scheduling and real weather data are not built yet. | Task-022 now provides mock / disabled provider boundaries and local rideability guidance, but notification permission flow, background/system notifications, real WeatherKit / live weather providers, and background weather updates remain deferred. | `iOS/Core/HealthReminders`, `iOS/Features/HealthReminders`, future WeatherKit / notification tasks. |
 | Route-to-spot auto detection, real WeatherKit, and cloud sync remain future tasks. | Task-022 supports local mock rideability for manually saved Spots, but it does not infer Spots from GPS routes, fetch live weather, or query public places. | `iOS/Core/Spots`, `iOS/Features/Spots`, `iOS/Core/HealthReminders`, future live-weather / sync tasks. |
-| Production Google Sign-In and Google Drive sync are deferred. | Task-025b shows an honest local-first Account screen and Google-unavailable state only. It must not be treated as production Google login readiness. | `iOS/Core/Account`, `iOS/Features/Settings/AccountSettingsView.swift`, `docs/decisions/ADR-0002-developer-account-dependent-services.md`, future Task-026 or later provider integration. |
-| Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/decisions/ADR-0001-subscription-entitlement-strategy.md`. |
+| Production Google Sign-In and Google Drive sync are deferred. | Task-025b shows an honest local-first Account screen and Google-unavailable state only. It must not be treated as production Google login readiness. | `iOS/Core/Account`, `iOS/Features/Settings/AccountSettingsView.swift`, `docs/adr/ADR-INDEX.md`, future Task-026 or later provider integration. |
+| Real StoreKit monetization is deferred. | The app should not claim production subscription readiness until Apple Developer Program, App Store Connect products, sandbox testing, and production StoreKit provider are completed. | `iOS/Core/Subscription`, `iOS/Hooks/useSubscriptionStatus.swift`, future `AppStoreSubscriptionProvider`, `docs/adr/ADR-INDEX.md`. |
 
 
 ## Zone Legend
@@ -104,7 +104,7 @@ Task-030b removes the old per-topic ADR files (`docs/decisions/ADR-0001...ADR-00
 | Task prompt packs | Task-002 through Task-013 task documentation folders | 11 task folders |
 | App-icon images | Generated iOS/watchOS/macOS PNG icon assets plus macOS `.icns` | 103 image/icon files in current baseline |
 | Tests | iOS session recording coordinator and session repository tests | 2 active iOS test files |
-| Living docs | `docs/FILE_STRUCTURE.md`, `docs/DEV_LOG.md`, and ADR decisions under `docs/decisions/` | Active |
+| Living docs | `docs/reference/FILE_STRUCTURE.md`, `docs/history/DEV_LOG.md`, `docs/adr/ADR-INDEX.md`, and release / process docs under subdirectories | Active |
 
 ## Annotated Repository Tree
 
@@ -482,7 +482,7 @@ Task-016b adds the `iOS/Features/Subscription` module for Paywall and locked-fea
 - `Shared/Localization/en.lproj/Localizable.strings` and `Shared/Localization/zh-Hant.lproj/Localizable.strings` — added History / Summary equipment attribution strings.
 - `SkateTrack.xcodeproj/project.pbxproj` — added source membership for `EquipmentSessionSnapshot.swift` and `SessionEquipmentAttributionView.swift`.
 - `scripts/verify_session_history.py` and `scripts/verify_session_summary.py` — expanded verification tokens for equipment attribution.
-- `docs/DEV_LOG.md`, `docs/FILE_STRUCTURE.md`, and `docs/decisions/ADR-0001-subscription-entitlement-strategy.md` — synchronized Task-020c architecture and paid-feature boundaries.
+- `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, and `docs/adr/ADR-INDEX.md` — synchronized Task-020c architecture and paid-feature boundaries.
 
 
 ## Task-021a Spot Management Foundation Addendum
@@ -502,7 +502,7 @@ iOS/Features/Spots/SpotEditorView.swift          # [協作區] Add / edit form w
 iOS/Features/Spots/SpotFavoriteLimitBanner.swift # [協作區] Free favorite limit / local privacy banner.
 iOS/Features/SessionRecording/SessionStartSupportTypes.swift # [協作區] Session Start colors, category enum, and inline glyph split out from SessionStartView.
 scripts/verify_spots.py                          # [工程設定] Task-021a verification script.
-docs/decisions/ADR-0002-developer-account-dependent-services.md # [原則 E] Provider-boundary policy for Apple / Google / external services.
+docs/adr/ADR-INDEX.md # [原則 E] Provider-boundary policy for Apple / Google / external services.
 ```
 
 ### Deferred After Task-021a
@@ -580,9 +580,9 @@ scripts/verify_weather_rideability.py                     # [工程設定] Task-
 ### New / Updated Documentation Areas
 
 ```text
-docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md # [原則 E] GPS-denied indoor recording strategy, deferred roadmap, and production guardrails.
-docs/DEV_LOG.md                                                 # [原則 E] Appends Task-022d documentation-only alignment notes.
-docs/FILE_STRUCTURE.md                                          # [原則 E] Records ADR-0003 and the Task-023–030 no-indoor-odometry guardrail.
+docs/adr/ADR-INDEX.md # [原則 E] GPS-denied indoor recording strategy, deferred roadmap, and production guardrails.
+docs/history/DEV_LOG.md                                                 # [原則 E] Appends Task-022d documentation-only alignment notes.
+docs/reference/FILE_STRUCTURE.md                                          # [原則 E] Records ADR-0003 and the Task-023–030 no-indoor-odometry guardrail.
 ```
 
 ### Deferred After Task-022d
@@ -710,8 +710,8 @@ iOS/Core/Sync/DisabledDriveProvider.swift          # [協作區] Honest disabled
 iOS/Hooks/useBackupSync.swift                      # [協作區 — 邊界適配層] SwiftUI-facing backup sync ViewModel / hook.
 iOS/Features/Settings/BackupSyncSettingsView.swift # [協作區] Account screen backup UI with local export and Drive disabled state.
 scripts/verify_backup_sync.py                      # Verifies Task-026a files, boundary rules, localization, docs, and no production Google config.
-docs/Task026-030_TechRisk_Solutions.md             # Technical-risk reference for Task-026 through Task-030.
-docs/decisions/ADR-0006-backup-provider-and-package-strategy.md # Backup provider / package architecture decision.
+docs/process/DEVELOPMENT_RULES.md             # Technical-risk reference for Task-026 through Task-030.
+docs/adr/ADR-INDEX.md # Backup provider / package architecture decision.
 ```
 
 ### Deferred from Task-026a
@@ -746,8 +746,8 @@ iOS/Core/Export/SkateTrackPackageExportProvider.swift # [協作區 — 邊界適
 iOS/Hooks/useSkateTrackPackageExport.swift          # [協作區 — 邊界適配層] SwiftUI-facing .skatetrack export ViewModel / hook.
 iOS/Features/SessionSummary/SessionPackageExportActionView.swift # [協作區] Session Summary action for sharing a .skatetrack file.
 scripts/verify_skatetrack_package.py                # Verifies package schema, provider boundaries, docs, localization, and no custom UTType / signing changes.
-docs/KNOWN_LIMITATIONS_PRE_ADP.md                   # Tracks StoreKit, Google Sign-In, Task-026c Drive sync, UTType, WeatherKit, and TestFlight blocked items.
-docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md # Portable package strategy decision.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                   # Tracks StoreKit, Google Sign-In, Task-026c Drive sync, UTType, WeatherKit, and TestFlight blocked items.
+docs/adr/ADR-INDEX.md # Portable package strategy decision.
 ```
 
 ### Task-026c-blocked status
@@ -768,7 +768,7 @@ Task-026c is recorded as blocked, not skipped. The current production state rema
 - `Shared/Models/SessionSummaryMetrics.swift`, `iOS/Core/SessionRecording/SessionMetricsAccumulator.swift`, and `iOS/Hooks/useSessionRecording.swift` expose motion / GPS sample counts for diagnostics.
 - `iOS/Features/SessionRecording/SessionStartView.swift` includes a real-device recording notice.
 - `scripts/verify_gps_background_recording.py` statically verifies background mode, Core Location flags, location-driven samples, diagnostic counters, localization copy, and ADR-0008.
-- `docs/decisions/ADR-0008-real-device-background-gps-recording.md` records the strategy and deferred follow-ups.
+- `docs/adr/ADR-INDEX.md` records the strategy and deferred follow-ups.
 
 ## Task-027b macOS Import Stub + Package Preview
 
@@ -853,7 +853,7 @@ Shared/Localization/ja.lproj/Localizable.strings              # Japanese first-p
 Shared/Localization/ja.lproj/InfoPlist.strings                # Japanese system permission copy for location, background location, motion, and Photos.
 scripts/verify_localization_keys.py                           # Updated to validate en / zh-Hant / ja key parity, placeholder parity, syntax, InfoPlist parity, and project membership.
 scripts/verify_task029_localization_privacy.py                 # Task-029a gate for Japanese localization, critical privacy copy, deferred localization roadmap, and no capability/document drift.
-docs/decisions/ADR-0009-localization-and-privacy-copy-strategy.md # Records the localization strategy, 500-line exception for resource files, and deferred pt-BR / es roadmap.
+docs/adr/ADR-INDEX.md # Records the localization strategy, 500-line exception for resource files, and deferred pt-BR / es roadmap.
 ```
 
 ### Task-029a localization file-size note
@@ -879,7 +879,7 @@ Shared/Localization/en.lproj/Localizable.strings              # Adds Task-029b a
 Shared/Localization/zh-Hant.lproj/Localizable.strings         # Adds Task-029b accessibility / quality-gate keys.
 Shared/Localization/ja.lproj/Localizable.strings              # Adds Task-029b accessibility / quality-gate keys.
 scripts/verify_task029b_accessibility_privacy_gate.py         # Task-029b quality gate for accessibility, privacy copy, macOS layout, and no capability drift.
-docs/decisions/ADR-0010-accessibility-privacy-quality-gate.md # Records Task-029b accessibility / privacy / UX guardrails.
+docs/adr/ADR-INDEX.md # Records Task-029b accessibility / privacy / UX guardrails.
 ```
 
 - This task does not change project membership, signing, capabilities, document association, custom UTType, Google Drive, CloudKit, StoreKit production, MapKit, Charts, or package persistence behavior.
@@ -891,9 +891,9 @@ docs/decisions/ADR-0010-accessibility-privacy-quality-gate.md # Records Task-029
 Task-030a adds the release-readiness documentation and verification layer used before Task-030b handoff:
 
 ```
-docs/RELEASE_READINESS_PRE_ADP.md              # Pre-ADP release posture, build commands, source-control gate, service-boundary gate, GPS / safety gate, macOS viewer gate.
-docs/MANUAL_QA_MATRIX_PRE_ADP.md               # Manual QA matrix for iOS, macOS, localization, accessibility, privacy, GPS, and service-boundary checks.
-docs/decisions/ADR-0011-pre-adp-release-readiness-strategy.md  # Release-readiness strategy before Apple Developer Program enrollment.
+docs/release/RELEASE_READINESS_PRE_ADP.md              # Pre-ADP release posture, build commands, source-control gate, service-boundary gate, GPS / safety gate, macOS viewer gate.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md               # Manual QA matrix for iOS, macOS, localization, accessibility, privacy, GPS, and service-boundary checks.
+docs/adr/ADR-INDEX.md  # Release-readiness strategy before Apple Developer Program enrollment.
 scripts/verify_task030_release_readiness.py     # Task-030a quality gate for docs, scheme hygiene, service boundaries, known limitations, and project-setting drift.
 ```
 
@@ -905,3 +905,37 @@ Task-030a verification token: pre-ADP release readiness gate.
 ## Task-030b Documentation Consolidation
 
 Task-030b consolidates fragmented ADR and stage-specific documentation into active source-of-truth docs.
+
+## Task-030b Verify Script Consolidation Fix
+
+Task-030b documentation consolidation removed old per-topic ADR files and the stage-specific `docs/process/DEVELOPMENT_RULES.md` file. The following verify scripts were updated to reference consolidated documentation instead of retired document paths:
+
+```text
+scripts/verify_task030_release_readiness.py
+scripts/verify_task029_localization_privacy.py
+scripts/verify_task029b_accessibility_privacy_gate.py
+scripts/verify_macos_session_viewer.py
+scripts/verify_macos_route_chart_viewer.py
+scripts/verify_macos_package_preview.py
+scripts/verify_skatetrack_package.py
+scripts/verify_backup_sync.py
+scripts/verify_backup_restore_preview.py
+scripts/verify_account_provider.py
+scripts/verify_gps_background_recording.py
+scripts/verify_spot_session_association.py
+scripts/verify_achievements.py
+scripts/verify_session_history.py
+scripts/verify_health_reminders.py
+scripts/verify_weather_rideability.py
+scripts/verify_session_share_export.py
+scripts/verify_equipment_attribution.py
+scripts/verify_weather_risk.py
+scripts/verify_subscription_entitlement_simulation.py
+scripts/verify_equipment_mileage_tracking.py
+scripts/verify_equipment_manager.py
+scripts/verify_session_share_card.py
+scripts/verify_spots.py
+scripts/verify_session_share_photos.py
+```
+
+The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active historical decision index.

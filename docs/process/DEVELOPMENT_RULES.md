@@ -48,11 +48,11 @@ git --no-pager diff -- SkateTrack.xcodeproj/project.pbxproj | grep -n "UTExporte
 
 Every completed task or stage should update:
 
-- `docs/DEV_LOG.md` for chronological history.
-- `docs/FILE_STRUCTURE.md` when files are added, removed, or consolidated.
-- `docs/KNOWN_LIMITATIONS_PRE_ADP.md` when a feature is blocked / deferred.
-- `docs/DEVELOPMENT_RULES.md` only when a recurring rule changes.
-- `docs/decisions/ADR-INDEX.md` when a decision changes status or a future ADR is added.
+- `docs/history/DEV_LOG.md` for chronological history.
+- `docs/reference/FILE_STRUCTURE.md` when files are added, removed, or consolidated.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` when a feature is blocked / deferred.
+- `docs/process/DEVELOPMENT_RULES.md` only when a recurring rule changes.
+- `docs/adr/ADR-INDEX.md` when a decision changes status or a future ADR is added.
 
 If a task excludes functionality that a reader might reasonably expect, document the deferred items with:
 
@@ -127,7 +127,7 @@ Before Apple Developer Program and production credentials are available:
 - TestFlight / App Store submission must not be claimed.
 - Custom `.skatetrack` UTType / Finder open-with / document association must not be added.
 
-Use `docs/KNOWN_LIMITATIONS_PRE_ADP.md` as the source of truth for unlock conditions.
+Use `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` as the source of truth for unlock conditions.
 
 ## 9. Package / backup rules
 

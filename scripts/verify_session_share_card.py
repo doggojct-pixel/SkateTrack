@@ -111,17 +111,17 @@ SOURCE_TOKENS = {
         "SessionSummaryShareStubView(",
         "isShareCardPaywallPresented",
     ],
-    "docs/DEV_LOG.md": [
+    "docs/history/DEV_LOG.md": [
         "Task-023b",
         "Quick Export",
     ],
-    "docs/FILE_STRUCTURE.md": [
+    "docs/reference/FILE_STRUCTURE.md": [
         "Task-023b",
         "SessionShareCardPreviewView.swift",
         "SessionShareExportService.swift",
         "verify_session_share_export.py",
     ],
-    "docs/decisions/ADR-0001-subscription-entitlement-strategy.md": [
+    "docs/adr/ADR-INDEX.md": [
         "Task-023b Confirmation",
         "GatedFeature.sessionShareCard",
     ],

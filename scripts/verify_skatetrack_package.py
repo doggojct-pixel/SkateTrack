@@ -18,8 +18,8 @@ REQUIRED_FILES = [
     "iOS/Hooks/useSkateTrackPackageExport.swift",
     "iOS/Features/SessionSummary/SessionPackageExportActionView.swift",
     "scripts/verify_skatetrack_package.py",
-    "docs/KNOWN_LIMITATIONS_PRE_ADP.md",
-    "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 FORBIDDEN_TOKENS = [
@@ -134,8 +134,8 @@ def ensure_ios_boundary() -> None:
 def ensure_no_forbidden_services() -> None:
     checked_paths = PACKAGE_SOURCES + [
         "SkateTrack.xcodeproj/project.pbxproj",
-        "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
-        "docs/KNOWN_LIMITATIONS_PRE_ADP.md",
+        "docs/adr/ADR-INDEX.md",
+        "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
     ]
     for path in checked_paths:
         text = read(path)
@@ -170,12 +170,12 @@ def ensure_docs() -> None:
     doc_text = "\n".join(
         read(path)
         for path in [
-            "docs/DEV_LOG.md",
-            "docs/FILE_STRUCTURE.md",
-            "docs/decisions/ADR-0004-export-targets-and-package-strategy.md",
-            "docs/decisions/ADR-0006-backup-provider-and-package-strategy.md",
-            "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
-            "docs/KNOWN_LIMITATIONS_PRE_ADP.md",
+            "docs/history/DEV_LOG.md",
+            "docs/reference/FILE_STRUCTURE.md",
+            "docs/adr/ADR-INDEX.md",
+            "docs/adr/ADR-INDEX.md",
+            "docs/adr/ADR-INDEX.md",
+            "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
         ]
     )
     for token in [

@@ -70,10 +70,15 @@ REQUIRED = {
         "session.start.backgroundRecording.title",
         "session.start.backgroundRecording.detail",
     ],
-    "docs/decisions/ADR-0008-real-device-background-gps-recording.md": [
-        "UIBackgroundModes",
-        "allowsBackgroundLocationUpdates",
-        "Deferred",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
+        "Real-device Background GPS Release Validation",
+        "background GPS",
+        "Do not claim",
+    ],
+    "docs/release/RELEASE_READINESS_PRE_ADP.md": [
+        "GPS and safety gate",
+        "real-device background GPS validation",
+        "Fall Detection",
     ],
 }
 

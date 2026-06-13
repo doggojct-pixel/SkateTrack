@@ -135,18 +135,18 @@ SOURCE_TOKENS = {
         "rootPrimarySwitch",
         "history.title",
     ],
-    "docs/decisions/ADR-0001-subscription-entitlement-strategy.md": [
+    "docs/adr/ADR-INDEX.md": [
         "Project-wide paid feature rule after Task-017a",
         "Task-017a therefore implements the free 5-session History limit",
         "AppStoreSubscriptionProvider",
     ],
-    "docs/DEV_LOG.md": [
+    "docs/history/DEV_LOG.md": [
         "Task-020c",
         "Task-017a Session History Foundation + Free Limit",
         "Task-017b History Navigation + Summary Handoff",
         "free 5-session History limit",
     ],
-    "docs/FILE_STRUCTURE.md": [
+    "docs/reference/FILE_STRUCTURE.md": [
         "Task-020c",
         "Task-017a Session History Foundation + Free Limit",
         "Task-017b History Navigation + Summary Handoff",

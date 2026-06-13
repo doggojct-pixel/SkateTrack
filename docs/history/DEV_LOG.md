@@ -48,7 +48,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Updated the Xcode project so localization resources and shared utility files are included in all three targets.
 - Added `scripts/verify_localization_keys.py` for local localization key parity checks.
 - Added the Task-002 prompt pack under `tasks/Task-002-Localization/`.
-- Updated `docs/FILE_STRUCTURE.md` for the new localization, utilities, script, and task files.
+- Updated `docs/reference/FILE_STRUCTURE.md` for the new localization, utilities, script, and task files.
 
 ### Reason / Context
 - Build Plan v1.0 defines Task-002 as the localization infrastructure task.
@@ -77,7 +77,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Updated `SkateTrack.xcodeproj/project.pbxproj` so the new shared files are included in iOS, watchOS, and macOS targets.
 - Added `scripts/verify_shared_models.py` for required-file, zone-header, line-count, and UI-import checks.
 - Added the Task-003 prompt pack under `tasks/Task-003-SharedDataModels/`.
-- Updated `docs/FILE_STRUCTURE.md` for the new model, protocol, script, and task files.
+- Updated `docs/reference/FILE_STRUCTURE.md` for the new model, protocol, script, and task files.
 
 ### Reason / Context
 - Build Plan v1.0 defines Task-003 as the shared data model foundation for later GPS, IMU, fall detection, sync, equipment, spot, and analytics tasks.
@@ -130,7 +130,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Shared data model foundation for sessions, sport modes, power types, motion samples, trick events, fall events, equipment, and spots.
 - Shared provider protocols for future sensor and sync implementations.
 - Feature flag system for the 10 Phase 1a gated features, including DEBUG subscription override support.
-- Living documentation initialized with a full annotated `docs/FILE_STRUCTURE.md` and this Phase 0 completion entry.
+- Living documentation initialized with a full annotated `docs/reference/FILE_STRUCTURE.md` and this Phase 0 completion entry.
 
 ### Decisions Made
 - Subscription model remains free download + $2.99/month subscription through StoreKit 2 in a later task.
@@ -350,7 +350,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - AppIcon asset folders exist for iOS, watchOS, and macOS, but runtime app icon display is still unresolved on the user's machine.
 
 ### Documentation Change
-- Rewrote `docs/FILE_STRUCTURE.md` to reflect the current repository structure, current progress, and unresolved Task-013 blockers honestly.
+- Rewrote `docs/reference/FILE_STRUCTURE.md` to reflect the current repository structure, current progress, and unresolved Task-013 blockers honestly.
 - Reclassified Task-013 as functionally implemented but visually not accepted yet.
 - Added an explicit gate: Task-014 should not begin until Task-013 visual layout, inline icon, and runtime AppIcon issues are resolved.
 
@@ -997,7 +997,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - This documentation alignment is intentionally left uncommitted until the first Task-023 stage is ready, so it can be committed together with that stage as requested.
 
 ### Validation Notes
-- Review `docs/decisions/ADR-0003-gps-denied-indoor-recording-strategy.md` before starting any task that mentions indoor mode, no-GPS speed, IMU-only odometry, ARKit tracking, or UWB venue analytics.
+- Review `docs/adr/ADR-INDEX.md` before starting any task that mentions indoor mode, no-GPS speed, IMU-only odometry, ARKit tracking, or UWB venue analytics.
 - Future implementation tasks should treat ADR-0003 as a guardrail against introducing misleading indoor speed or route data.
 
 ## 2026-06-12 — Task-023a Session Share Card Preview Foundation
@@ -1160,7 +1160,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Added `useAccount` / `AccountViewModel` as the SwiftUI-facing account state adapter for future Account settings UI.
 - Added localized account / Google-deferred / DEBUG simulation strings in English and Traditional Chinese.
 - Added `scripts/verify_account_provider.py` to verify required files, project membership, localization keys, provider-boundary tokens, documentation, and the absence of production Google configuration.
-- Updated `docs/FILE_STRUCTURE.md` and ADR-0002 for the Task-025a account-provider boundary.
+- Updated `docs/reference/FILE_STRUCTURE.md` and ADR-0002 for the Task-025a account-provider boundary.
 
 ### Scope Boundary
 - Task-025a does not add `AccountSettingsView`, root navigation entry, or visible Settings UI. That UI foundation remains Task-025b so provider architecture and navigation polish do not land in one oversized change.
@@ -1188,7 +1188,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - DEBUG builds can use local-only account simulation sign-in / sign-out from the Account screen; Release builds do not expose local fake sign-in controls.
 - The Google status action only reports the disabled / unconfigured state through `DisabledGoogleAuthProvider`; it does not start OAuth, open Safari, request credentials, or load any Google SDK.
 - Added Task-025b localization keys and extended `scripts/verify_account_provider.py` to verify the Account UI, root navigation membership, disabled-provider guardrails, localization, docs, and project membership.
-- Updated `docs/FILE_STRUCTURE.md` and ADR-0002 so the visible UI is documented separately from production Google Sign-In and Google Drive sync.
+- Updated `docs/reference/FILE_STRUCTURE.md` and ADR-0002 so the visible UI is documented separately from production Google Sign-In and Google Drive sync.
 
 ### Scope Boundary
 - Task-025b does not add real Google OAuth sign-in, Google SDK package dependency, OAuth client ID, reversed client ID URL scheme, `GoogleService-Info.plist`, production profile loading, token refresh, token revocation, server verification, Drive scope authorization, Google Drive sync, cloud backup, production token persistence, or Keychain policy finalization.
@@ -1236,8 +1236,8 @@ This log is append-only. Do not delete or overwrite old entries.
 - Added `BackupSyncSettingsView` to the Account screen. It supports user-initiated local backup package creation and system share sheet export, while clearly showing Google Drive as not configured.
 - Added localized English and Traditional Chinese strings for 「備份與同步」 local backup, Drive disabled state, restore-deferred state, errors, and conflict-policy labels.
 - Added `scripts/verify_backup_sync.py` to verify provider boundaries, localization keys, docs, project membership, and the absence of production Google Drive / OAuth configuration.
-- Added `docs/Task026-030_TechRisk_Solutions.md` as the Task-026～030 technical-risk reference and added ADR-0006 for backup provider / package strategy.
-- Updated `docs/FILE_STRUCTURE.md`, ADR-0002, and ADR-0004 for Task-026a scope and deferred work.
+- Added `docs/process/DEVELOPMENT_RULES.md` as the Task-026～030 technical-risk reference and added ADR-0006 for backup provider / package strategy.
+- Updated `docs/reference/FILE_STRUCTURE.md`, ADR-0002, and ADR-0004 for Task-026a scope and deferred work.
 
 ### Scope Boundary
 - Task-026a does not implement production Google Drive API, OAuth client ID, reversed client ID URL scheme, Google SDK dependency, `GoogleService-Info.plist`, Drive scope authorization, remote upload, remote download, background sync, cross-device merge, server verification, production token refresh / revocation, or production Keychain token policy.
@@ -1249,7 +1249,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Real Google Drive provider integration remains blocked until Google Sign-In production, OAuth credentials, Drive API scopes, privacy copy, token lifecycle, logout / revocation behavior, and server verification strategy are ready.
 - Task-027 should define the portable `.skatetrack` export / AirDrop package separately from the Task-026a backup package.
 - Task-028 should consume the future export package from a macOS viewer without reusing iOS navigation or hardcoding sandbox paths.
-- Task-029 and Task-030 should consult `docs/Task026-030_TechRisk_Solutions.md` for localization, accessibility, privacy, mock-provider, and release-readiness checks.
+- Task-029 and Task-030 should consult `docs/process/DEVELOPMENT_RULES.md` for localization, accessibility, privacy, mock-provider, and release-readiness checks.
 
 ### Validation Notes
 - Run `python3 scripts/verify_backup_sync.py` after applying this task.
@@ -1287,7 +1287,7 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Completed
 
 - Documented Task-026c as intentionally blocked rather than skipped. Google Drive production integration remains gated by Google OAuth credentials, Drive scope decisions, token lifecycle, privacy copy, and signing / URL-scheme review.
-- Added `docs/KNOWN_LIMITATIONS_PRE_ADP.md` to track pre-Apple-Developer-Program and external-credential limitations through Task-030 readiness.
+- Added `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` to track pre-Apple-Developer-Program and external-credential limitations through Task-030 readiness.
 - Added `SkateTrackPackageManifest` and `SkateTrackPackagePayload` to define a portable `packageType = export` package separate from Task-026 backup packages.
 - Added platform-neutral `Shared/Export/SkateTrackPackageWriter.swift` and `Shared/Export/SkateTrackPackageReader.swift`. These helpers accept caller-provided URLs and do not hardcode iOS temporary paths, macOS sandbox paths, or platform import UI.
 - Added `SkateTrackPackageExportProvider` and `SkateTrackPackageExportViewModel` so iOS Session Summary can create a single-session `.skatetrack` file through a hook/provider boundary.
@@ -1346,7 +1346,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Added `MacLockedFeatureCardView` so incomplete macOS features use one consistent locked / coming-soon pattern before the Task-029 accessibility pass.
 - Added localized English and Traditional Chinese copy for macOS import, preview, locked cards, and validation errors.
 - Added `scripts/verify_macos_package_preview.py` to verify macOS shell independence, NSOpenPanel usage, package-reader reuse, localization, docs, project membership, and no custom UTType / document association / production cloud-service changes.
-- Updated `docs/FILE_STRUCTURE.md` and ADR-0007 to distinguish Task-027b read-only package preview from Task-028 full macOS viewer work.
+- Updated `docs/reference/FILE_STRUCTURE.md` and ADR-0007 to distinguish Task-027b read-only package preview from Task-028 full macOS viewer work.
 
 ### Scope Boundary
 - Task-027b does not import package data into local storage, restore backups, merge sessions, persist imported files, create a session database, generate charts, draw maps, export PDF / CSV reports, or implement drag-and-drop import.
@@ -1390,7 +1390,7 @@ This log is append-only. Do not delete or overwrite old entries.
 - Updated `MacPackagePreviewView` so package preview can also use viewer-derived metrics and now points users to the sidebar Session Browser instead of saying the viewer is fully locked.
 - Added localized English and Traditional Chinese copy for the macOS Session Browser, derived-metric notice, route summary, speed preview, empty states, and read-only privacy boundary.
 - Added `scripts/verify_macos_session_viewer.py` and updated `scripts/verify_macos_package_preview.py` for the shared preview state and Task-028a viewer boundary.
-- Updated ADR-0007, `docs/FILE_STRUCTURE.md`, and `docs/Task026-030_TechRisk_Solutions.md` to record the Task-028a split from future Task-028b visualization work.
+- Updated ADR-0007, `docs/reference/FILE_STRUCTURE.md`, and `docs/process/DEVELOPMENT_RULES.md` to record the Task-028a split from future Task-028b visualization work.
 
 ### Scope Boundary
 - Task-028a remains a read-only package viewer. It does not import package data into Core Data, merge sessions, restore backups, persist security-scoped bookmarks, sync cloud state, or modify the selected `.skatetrack` package.
@@ -1507,11 +1507,11 @@ This log is append-only. Do not delete or overwrite old entries.
 ## 2026-06-13 — Task-030a Pre-ADP Release Readiness Audit + Verify Gate
 
 ### Completed
-- Added `docs/RELEASE_READINESS_PRE_ADP.md` as the Task-030a source of truth for Pre-ADP release posture, verify scripts, build commands, source-control hygiene, service boundaries, GPS / safety gates, and macOS viewer gates.
-- Added `docs/MANUAL_QA_MATRIX_PRE_ADP.md` to consolidate iOS, macOS, localization, accessibility, privacy, background GPS, Fall Detection, and service-boundary manual QA.
+- Added `docs/release/RELEASE_READINESS_PRE_ADP.md` as the Task-030a source of truth for Pre-ADP release posture, verify scripts, build commands, source-control hygiene, service boundaries, GPS / safety gates, and macOS viewer gates.
+- Added `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` to consolidate iOS, macOS, localization, accessibility, privacy, background GPS, Fall Detection, and service-boundary manual QA.
 - Added `scripts/verify_task030_release_readiness.py` to guard release-readiness documentation, known limitations, local Xcode scheme hygiene, service-boundary terms, and absence of custom UTType / document association / entitlement drift.
 - Added ADR-0011 to define the Pre-ADP release-readiness strategy and keep Task-030 focused on quality gates rather than feature expansion.
-- Expanded `docs/KNOWN_LIMITATIONS_PRE_ADP.md` with CloudKit / iCloud, real-device background GPS validation, Fall Detection diagnostics / safe test mode, native Japanese review, and deferred `pt-BR` / `es` localization roadmap items.
+- Expanded `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` with CloudKit / iCloud, real-device background GPS validation, Fall Detection diagnostics / safe test mode, native Japanese review, and deferred `pt-BR` / `es` localization roadmap items.
 
 ### Scope Boundary
 - Task-030a is documentation and verification only. It does not add runtime UI, product features, provider integrations, production credentials, signing changes, provisioning changes, entitlements, custom `.skatetrack` UTType, Finder open-with behavior, document association, CloudKit, StoreKit production, Google OAuth / Drive, WeatherKit production, TestFlight upload, GPS algorithm changes, FallDetection algorithm changes, Launch Screen changes, AppIcon changes, bottom dock changes, watchOS changes, or macOS viewer feature expansion.
@@ -1530,20 +1530,55 @@ This log is append-only. Do not delete or overwrite old entries.
 
 ### Completed
 - Added `docs/DOCUMENTATION_INDEX.md` as the documentation entry point and reading order for future human / ChatGPT / Cursor handoffs.
-- Added `docs/DEVELOPMENT_RULES.md` to consolidate recurring development workflow, hotfix, commit, localization, macOS layout, documentation, and scope-control rules.
-- Rewrote `docs/KNOWN_LIMITATIONS_PRE_ADP.md` as the consolidated Pre-ADP deferred-feature and unlock-condition source of truth.
-- Added `docs/decisions/ADR-INDEX.md` to preserve historical ADR decisions after removing the old per-topic ADR files from active docs.
-- Updated `docs/RELEASE_READINESS_PRE_ADP.md`, `docs/MANUAL_QA_MATRIX_PRE_ADP.md`, `docs/FILE_STRUCTURE.md`, and `scripts/verify_task030_release_readiness.py` for the consolidated documentation structure.
-- Consolidated and retired `docs/Task026-030_TechRisk_Solutions.md` as an active root document.
+- Added `docs/process/DEVELOPMENT_RULES.md` to consolidate recurring development workflow, hotfix, commit, localization, macOS layout, documentation, and scope-control rules.
+- Rewrote `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` as the consolidated Pre-ADP deferred-feature and unlock-condition source of truth.
+- Added `docs/adr/ADR-INDEX.md` to preserve historical ADR decisions after removing the old per-topic ADR files from active docs.
+- Updated `docs/release/RELEASE_READINESS_PRE_ADP.md`, `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`, `docs/reference/FILE_STRUCTURE.md`, and `scripts/verify_task030_release_readiness.py` for the consolidated documentation structure.
+- Consolidated and retired the former root-level `docs/DEVELOPMENT_RULES.md` as an active root document after moving it to `docs/process/DEVELOPMENT_RULES.md`.
 
 ### Scope Boundary
 - Task-030b is documentation and verification only. It does not modify iOS runtime, macOS runtime, Swift source, localization resources, project signing, capabilities, entitlements, custom UTType, document association, StoreKit production, Google OAuth / Drive, CloudKit / iCloud, WeatherKit production, GPS algorithms, FallDetection algorithms, Launch Screen, AppIcon, bottom dock, or watchOS.
 
 ### Removal / Consolidation Notes
-- Old ADR files `ADR-0001` through `ADR-0011` are consolidated into `docs/decisions/ADR-INDEX.md`, `docs/DEVELOPMENT_RULES.md`, and `docs/KNOWN_LIMITATIONS_PRE_ADP.md`.
-- `docs/Task026-030_TechRisk_Solutions.md` is consolidated into the active development rules, known limitations, release readiness, and manual QA documents.
-- `docs/DEV_LOG.md` remains the chronological history source, not the primary rules source.
+- Old ADR files `ADR-0001` through `ADR-0011` are consolidated into `docs/adr/ADR-INDEX.md`, `docs/process/DEVELOPMENT_RULES.md`, and `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`.
+- The previous Task 026–030 technical-risk notes are consolidated into the active development rules, known limitations, release readiness, and manual QA documents.
+- `docs/history/DEV_LOG.md` remains the chronological history source, not the primary rules source.
 
 ### Validation Notes
 - Run `python3 scripts/verify_task030_release_readiness.py` after applying this task and deleting the consolidated old ADR / technical-risk files.
 - Confirm `git status --short` does not contain unzipped hotfix folders, `.xcscheme` local QA state, simulator exports, or sample `.skatetrack` files.
+
+## 2026-06-13 — Task-030b Verify Script Consolidation Fix
+
+### Completed
+- Updated legacy verify scripts that still referenced retired per-topic ADR files and previous Task 026–030 technical-risk notes after Task-030b documentation consolidation.
+- Redirected active verification checks to consolidated documentation sources: `docs/process/DEVELOPMENT_RULES.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`, `docs/release/RELEASE_READINESS_PRE_ADP.md`, `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`, and `docs/adr/ADR-INDEX.md`.
+- Strengthened `scripts/verify_task030_release_readiness.py` so future documentation consolidation regressions fail when verify scripts still reference retired documentation paths.
+
+### Reason / Context
+- Task-030b intentionally removed the old ADR single files and the stage-specific technical-risk note.
+- Several older verify scripts still expected those retired files, causing the consolidated documentation check to pass while feature-specific verification scripts failed.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030_release_readiness.py` first.
+- Then run the standard localization, privacy, macOS viewer, package, backup, account, GPS, and shared-model verify scripts.
+
+### Known Issues / Follow-up
+- This fix does not restore retired ADR files; it keeps the consolidated documentation model active.
+- Very old feature-specific scripts may still check historical feature tokens, but they must not require retired documentation paths.
+
+## 2026-06-13 — Task-030b Documentation Directory Cleanup + Retired Path Fix
+
+### Completed
+- Organized active docs into human-readable subdirectories: `docs/process`, `docs/release`, `docs/adr`, `docs/reference`, and `docs/history`.
+- Kept `docs/DOCUMENTATION_INDEX.md` as the root entry point while moving process, release, ADR, reference, and history files out of the crowded docs root.
+- Updated verify scripts to read the new subdirectory paths instead of root-level docs or retired `docs/decisions` paths.
+- Updated the release-readiness gate so old root-level docs, old per-topic ADR files, and previous Task 026–030 technical-risk notes cannot reappear as active source-of-truth files.
+
+### Scope Boundary
+- This cleanup is documentation and verification only. It does not modify iOS runtime, macOS runtime, Swift source, localization resources, project signing, capabilities, entitlements, custom UTType, document association, StoreKit production, Google OAuth / Drive, CloudKit / iCloud, WeatherKit production, GPS algorithms, FallDetection algorithms, Launch Screen, AppIcon, bottom dock, or watchOS.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030_release_readiness.py` first.
+- Then run the standard localization, privacy, macOS viewer, package, backup, account, GPS, and shared-model verify scripts.
+- `docs/history/DEV_LOG.md` may contain historical mentions of old paths, but active docs and scripts must not depend on retired paths.

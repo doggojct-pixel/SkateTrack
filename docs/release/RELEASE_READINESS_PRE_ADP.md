@@ -11,13 +11,13 @@ This report is the Task-030b consolidated release-readiness source of truth. It 
 Before opening a new task, read the consolidated documentation in this order:
 
 1. `docs/DOCUMENTATION_INDEX.md`
-2. `docs/DEVELOPMENT_RULES.md`
-3. `docs/KNOWN_LIMITATIONS_PRE_ADP.md`
-4. `docs/RELEASE_READINESS_PRE_ADP.md`
-5. `docs/MANUAL_QA_MATRIX_PRE_ADP.md`
-6. `docs/decisions/ADR-INDEX.md`
+2. `docs/process/DEVELOPMENT_RULES.md`
+3. `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`
+4. `docs/release/RELEASE_READINESS_PRE_ADP.md`
+5. `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`
+6. `docs/adr/ADR-INDEX.md`
 
-The old per-topic ADR files and `docs/Task026-030_TechRisk_Solutions.md` were consolidated during Task-030b and must not reappear as active source-of-truth files. `docs/DEV_LOG.md` remains historical, not the daily rules source.
+The old per-topic ADR single files and the previous Task 026–030 technical-risk notes were consolidated during Task-030b and must not reappear as active source-of-truth files. `docs/history/DEV_LOG.md` remains historical, not the daily rules source.
 
 ## 1. Release posture
 
@@ -44,7 +44,7 @@ The current build is not suitable for public claims that require production serv
 
 ## 2. Required verification scripts
 
-Run these before treating Task-030a as passing:
+Run these before treating Task-030b as passing:
 
 ```bash
 python3 scripts/verify_task030_release_readiness.py

@@ -12,7 +12,7 @@ REQUIRED_FILES = [
     "iOS/Features/SessionSummary/SessionSharePhotoSaveState.swift",
     "iOS/Features/SessionSummary/SessionShareExportViewModel.swift",
     "iOS/Features/SessionSummary/SessionShareCardActionView.swift",
-    "docs/decisions/ADR-0004-export-targets-and-package-strategy.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 PROJECT_TOKENS = [
@@ -58,24 +58,24 @@ SOURCE_TOKENS = {
         "saveCardToPhotos(card: card)",
         "session-share-photo-save-status",
     ],
-    "docs/decisions/ADR-0004-export-targets-and-package-strategy.md": [
+    "docs/adr/ADR-INDEX.md": [
         "Task-023c",
         "Task-027",
         "AirDrop-specific package",
         "portable archive",
         "NSPhotoLibraryAddUsageDescription",
     ],
-    "docs/DEV_LOG.md": [
+    "docs/history/DEV_LOG.md": [
         "Task-023c",
         "Save Share Card to Photos",
         "ADR-0004",
     ],
-    "docs/FILE_STRUCTURE.md": [
+    "docs/reference/FILE_STRUCTURE.md": [
         "Task-023c",
         "SessionSharePhotoLibrarySaver.swift",
         "ADR-0004",
     ],
-    "docs/decisions/ADR-0001-subscription-entitlement-strategy.md": [
+    "docs/adr/ADR-INDEX.md": [
         "Task-023c Confirmation",
         "GatedFeature.sessionShareCard",
     ],

@@ -15,10 +15,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOCALIZATION_ROOT = ROOT / "Shared" / "Localization"
 PROJECT_FILE = ROOT / "SkateTrack.xcodeproj" / "project.pbxproj"
-DEV_LOG = ROOT / "docs" / "DEV_LOG.md"
-FILE_STRUCTURE = ROOT / "docs" / "FILE_STRUCTURE.md"
-TECH_RISK = ROOT / "docs" / "Task026-030_TechRisk_Solutions.md"
-ADR = ROOT / "docs" / "decisions" / "ADR-0009-localization-and-privacy-copy-strategy.md"
+DEV_LOG = ROOT / "docs" / "history" / "DEV_LOG.md"
+FILE_STRUCTURE = ROOT / "docs" / "reference" / "FILE_STRUCTURE.md"
+DEVELOPMENT_RULES = ROOT / "docs" / "process" / "DEVELOPMENT_RULES.md"
+KNOWN_LIMITATIONS = ROOT / "docs" / "release" / "KNOWN_LIMITATIONS_PRE_ADP.md"
+RELEASE_READINESS = ROOT / "docs" / "release" / "RELEASE_READINESS_PRE_ADP.md"
+ADR_INDEX = ROOT / "docs" / "adr" / "ADR-INDEX.md"
 LANGUAGES = ("en", "zh-Hant", "ja")
 STRING_ENTRY = re.compile(r'^\s*(?:"(?P<qkey>[^"]+)"|(?P<bkey>[A-Za-z0-9_]+))\s*=\s*"(?P<value>(?:\\.|[^"])*)"\s*;\s*$')
 
@@ -95,10 +97,10 @@ def check_japanese_files() -> bool:
 
 
 def check_docs() -> bool:
-    docs = [DEV_LOG, FILE_STRUCTURE, TECH_RISK, ADR]
+    docs = [DEV_LOG, FILE_STRUCTURE, DEVELOPMENT_RULES, KNOWN_LIMITATIONS, RELEASE_READINESS, ADR_INDEX]
     missing = [str(path.relative_to(ROOT)) for path in docs if not path.exists()]
     if missing:
-        print("Missing localization documentation:")
+        print("Missing consolidated localization documentation:")
         for path in missing:
             print(f"- {path}")
         return False

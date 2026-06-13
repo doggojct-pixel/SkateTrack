@@ -22,7 +22,7 @@ REQUIRED_FILES = [
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_session_viewer.py",
-    "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 PROJECT_MEMBERSHIP = [
@@ -237,10 +237,10 @@ def ensure_docs() -> None:
     docs = "\n".join(
         read(path)
         for path in [
-            "docs/DEV_LOG.md",
-            "docs/FILE_STRUCTURE.md",
-            "docs/Task026-030_TechRisk_Solutions.md",
-            "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+            "docs/history/DEV_LOG.md",
+            "docs/reference/FILE_STRUCTURE.md",
+            "docs/process/DEVELOPMENT_RULES.md",
+            "docs/adr/ADR-INDEX.md",
         ]
     )
     for token in [

@@ -194,7 +194,7 @@ def main() -> None:
         if re.search(pattern, scanned_sources, flags=re.IGNORECASE):
             fail(f"Task-022 must not introduce forbidden source pattern: {pattern}")
 
-    docs = read("docs/DEV_LOG.md") + "\n" + read("docs/FILE_STRUCTURE.md") + "\n" + read("docs/decisions/ADR-0002-developer-account-dependent-services.md")
+    docs = read("docs/history/DEV_LOG.md") + "\n" + read("docs/reference/FILE_STRUCTURE.md") + "\n" + read("docs/adr/ADR-INDEX.md")
     for token in [
         "Task-022",
         "Weather Provider Upgrade + Local Rideability Integration",

@@ -150,10 +150,10 @@ def assert_project_membership() -> None:
 
 def assert_docs() -> None:
     required_tokens = [
-        ("docs/DEV_LOG.md", "Task-026b — Local Restore Preview"),
-        ("docs/FILE_STRUCTURE.md", "Task-026b Local Restore Preview"),
-        ("docs/decisions/ADR-0006-backup-provider-and-package-strategy.md", "Task-026b addendum"),
-        ("docs/Task026-030_TechRisk_Solutions.md", "Conflict Policy"),
+        ("docs/history/DEV_LOG.md", "Task-026b — Local Restore Preview"),
+        ("docs/reference/FILE_STRUCTURE.md", "Task-026b Local Restore Preview"),
+        ("docs/adr/ADR-INDEX.md", "Backup Provider and Package Strategy"),
+        ("docs/reference/FILE_STRUCTURE.md", "Conflict Policy"),
     ]
     for path, token in required_tokens:
         if token not in read(path):

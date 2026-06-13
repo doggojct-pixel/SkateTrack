@@ -16,7 +16,7 @@ REQUIRED_FILES = [
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     "scripts/verify_macos_route_chart_viewer.py",
-    "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 LOCALIZATION_KEYS = [
@@ -159,17 +159,17 @@ def ensure_docs() -> None:
     docs = "\n".join(
         read(path)
         for path in [
-            "docs/DEV_LOG.md",
-            "docs/FILE_STRUCTURE.md",
-            "docs/Task026-030_TechRisk_Solutions.md",
-            "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+            "docs/history/DEV_LOG.md",
+            "docs/reference/FILE_STRUCTURE.md",
+            "docs/process/DEVELOPMENT_RULES.md",
+            "docs/adr/ADR-INDEX.md",
         ]
     )
     for token in [
         "Task-028b",
         "Route / Chart Visualization Foundation",
         "MacRoutePreviewView",
-        "normalized route preview",
+        "Lightweight SwiftUI Path route",
         "lightweight SwiftUI Path",
         "read-only",
         "MapKit",

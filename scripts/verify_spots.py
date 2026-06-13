@@ -159,13 +159,13 @@ for swift_file in required_files:
     if line_count > 500:
         fail(f"{swift_file} exceeds 500 lines: {line_count}")
 
-adr_0001 = read("docs/decisions/ADR-0001-subscription-entitlement-strategy.md")
+adr_0001 = read("docs/adr/ADR-INDEX.md")
 assert_contains(adr_0001, "Task-021a", "ADR-0001")
-adr_0002 = read("docs/decisions/ADR-0002-developer-account-dependent-services.md")
+adr_0002 = read("docs/adr/ADR-INDEX.md")
 assert_contains(adr_0002, "Provider Boundary", "ADR-0002")
 assert_contains(adr_0002, "Task-021a", "ADR-0002")
 
-for docs_path in ["docs/DEV_LOG.md", "docs/FILE_STRUCTURE.md"]:
+for docs_path in ["docs/history/DEV_LOG.md", "docs/reference/FILE_STRUCTURE.md"]:
     assert_contains(read(docs_path), "Task-021a", docs_path)
 
 print("Task-021a Spot Management verification passed.")

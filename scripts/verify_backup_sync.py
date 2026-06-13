@@ -19,8 +19,8 @@ REQUIRED_FILES = [
     "iOS/Core/Sync/DisabledDriveProvider.swift",
     "iOS/Hooks/useBackupSync.swift",
     "iOS/Features/Settings/BackupSyncSettingsView.swift",
-    "docs/Task026-030_TechRisk_Solutions.md",
-    "docs/decisions/ADR-0006-backup-provider-and-package-strategy.md",
+    "docs/process/DEVELOPMENT_RULES.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 REQUIRED_LOCALIZATION_KEYS = [
@@ -130,12 +130,12 @@ def assert_localization() -> None:
 
 def assert_docs() -> None:
     required_tokens = [
-        ("docs/DEV_LOG.md", "Task-026a Backup Package Export Foundation"),
-        ("docs/FILE_STRUCTURE.md", "BackupSyncSettingsView.swift"),
-        ("docs/decisions/ADR-0002-developer-account-dependent-services.md", "Task-026a Backup / Google Drive Confirmation"),
-        ("docs/decisions/ADR-0004-export-targets-and-package-strategy.md", "Task-026a Backup Package Clarification"),
-        ("docs/decisions/ADR-0006-backup-provider-and-package-strategy.md", "packageType = backup"),
-        ("docs/Task026-030_TechRisk_Solutions.md", "Task-030a"),
+        ("docs/history/DEV_LOG.md", "Task-026a Backup Package Export Foundation"),
+        ("docs/reference/FILE_STRUCTURE.md", "BackupSyncSettingsView.swift"),
+        ("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md", "Google Drive Sync / Task-026c-blocked"),
+        ("docs/adr/ADR-INDEX.md", "Backup Provider and Package Strategy"),
+        ("docs/history/DEV_LOG.md", "packageType = backup"),
+        ("docs/release/RELEASE_READINESS_PRE_ADP.md", "Task-030a"),
     ]
     for path, token in required_tokens:
         if token not in read(path):

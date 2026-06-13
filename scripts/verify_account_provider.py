@@ -19,9 +19,9 @@ REQUIRED_FILES = [
     "iOS/Features/Settings/AccountSettingsView.swift",
     "Shared/Localization/en.lproj/Localizable.strings",
     "Shared/Localization/zh-Hant.lproj/Localizable.strings",
-    "docs/DEV_LOG.md",
-    "docs/FILE_STRUCTURE.md",
-    "docs/decisions/ADR-0002-developer-account-dependent-services.md",
+    "docs/history/DEV_LOG.md",
+    "docs/reference/FILE_STRUCTURE.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 PROJECT_TOKENS = [
@@ -220,9 +220,9 @@ def verify_sources() -> None:
 
 
 def verify_docs() -> None:
-    dev_log = read("docs/DEV_LOG.md")
-    file_structure = read("docs/FILE_STRUCTURE.md")
-    adr = read("docs/decisions/ADR-0002-developer-account-dependent-services.md")
+    dev_log = read("docs/history/DEV_LOG.md")
+    file_structure = read("docs/reference/FILE_STRUCTURE.md")
+    adr = read("docs/adr/ADR-INDEX.md")
     docs = "\n".join([dev_log, file_structure, adr])
     for token in [
         "Task-025a",

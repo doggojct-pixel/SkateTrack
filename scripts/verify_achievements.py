@@ -23,7 +23,7 @@ required_files = [
     "iOS/Features/Achievements/AchievementRelatedStatsLinksView.swift",
     "iOS/Features/Achievements/WeeklyChallengePeriodBadgeView.swift",
     "iOS/Features/SessionRecording/SessionStartAchievementDashboardCardView.swift",
-    "docs/decisions/ADR-0005-achievements-and-challenges-scope-strategy.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 for relative in required_files:
@@ -212,17 +212,17 @@ for lang in ["en.lproj", "zh-Hant.lproj"]:
             sys.exit(1)
 
 for doc in [
-    "docs/DEV_LOG.md",
-    "docs/FILE_STRUCTURE.md",
-    "docs/decisions/ADR-0001-subscription-entitlement-strategy.md",
-    "docs/decisions/ADR-0005-achievements-and-challenges-scope-strategy.md",
+    "docs/history/DEV_LOG.md",
+    "docs/reference/FILE_STRUCTURE.md",
+    "docs/adr/ADR-INDEX.md",
+    "docs/adr/ADR-INDEX.md",
 ]:
     text = (ROOT / doc).read_text()
     if "Task-024b" not in text:
         print(f"❌ {doc} missing Task-024b documentation")
         sys.exit(1)
 
-adr5 = (ROOT / "docs/decisions/ADR-0005-achievements-and-challenges-scope-strategy.md").read_text()
+adr5 = (ROOT / "docs/adr/ADR-INDEX.md").read_text()
 adr5_lower = adr5.lower()
 for token in ["deferred scope", "game center", "global leaderboards", "remote challenge", "push notifications"]:
     if token not in adr5_lower:

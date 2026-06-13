@@ -21,7 +21,7 @@ REQUIRED_FILES = [
     "Shared/Models/SkateTrackPackageManifest.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_package_preview.py",
-    "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 PROJECT_MEMBERSHIP = [
@@ -186,10 +186,10 @@ def ensure_docs() -> None:
     docs = "\n".join(
         read(path)
         for path in [
-            "docs/DEV_LOG.md",
-            "docs/FILE_STRUCTURE.md",
-            "docs/decisions/ADR-0007-portable-skatetrack-package-strategy.md",
-            "docs/Task026-030_TechRisk_Solutions.md",
+            "docs/history/DEV_LOG.md",
+            "docs/reference/FILE_STRUCTURE.md",
+            "docs/adr/ADR-INDEX.md",
+            "docs/process/DEVELOPMENT_RULES.md",
         ]
     )
     for token in [
@@ -197,7 +197,7 @@ def ensure_docs() -> None:
         "macOS Import Stub",
         "NSOpenPanel",
         "NavigationSplitView",
-        "stable custom sidebar",
+        "fixed custom sidebar",
         "titlebar",
         "packageType = export",
         "custom UTType",

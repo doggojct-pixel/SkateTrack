@@ -71,7 +71,7 @@ This file replaces scattered pre-ADP limitation notes from older ADRs. Each item
 
 ## L-008 Real-device Background GPS Release Validation
 
-- **Current status:** Background GPS code and simulator moving-route validation exist; release-grade real-device validation remains open.
+- **Current status:** Background GPS code and simulator moving-route validation exist; background GPS release confidence still depends on real-device validation; release-grade real-device validation remains open.
 - **Blocked by:** Outdoor iPhone validation with screen off, phone in pocket, real device power management, and location scheduling behavior.
 - **Current substitute:** Simulator route testing and manual real-device checklist.
 - **Unlock condition:** Run iPhone 13 Pro or equivalent outdoor validation: start in foreground, lock screen, pocket carry, move 150–300 m for 3–5 minutes, then confirm non-zero distance, route samples, speed metrics, and summary / package export consistency.

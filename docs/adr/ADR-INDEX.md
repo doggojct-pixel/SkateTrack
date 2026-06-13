@@ -10,10 +10,10 @@ Task-030b removes the old ADR single files from the active docs tree to reduce f
 
 | Active file | Owns |
 |---|---|
-| `docs/DEVELOPMENT_RULES.md` | Recurring development workflow, scope-control, localization, macOS layout, hotfix, commit, and verification rules. |
-| `docs/KNOWN_LIMITATIONS_PRE_ADP.md` | Blocked features, external-service constraints, unlock conditions, and no-overclaim rules. |
-| `docs/RELEASE_READINESS_PRE_ADP.md` | Pre-ADP release-readiness gate. |
-| `docs/MANUAL_QA_MATRIX_PRE_ADP.md` | Manual QA matrix and release-blocking checks. |
+| `docs/process/DEVELOPMENT_RULES.md` | Recurring development workflow, scope-control, localization, macOS layout, hotfix, commit, and verification rules. |
+| `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` | Blocked features, external-service constraints, unlock conditions, and no-overclaim rules. |
+| `docs/release/RELEASE_READINESS_PRE_ADP.md` | Pre-ADP release-readiness gate. |
+| `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` | Manual QA matrix and release-blocking checks. |
 | `docs/DOCUMENTATION_INDEX.md` | Reading order and documentation source-of-truth map. |
 
 ## Historical ADR mapping

@@ -183,7 +183,7 @@ for forbidden in FORBIDDEN_TOKENS:
     if forbidden in scanned_sources:
         fail(f"Task-020b must not introduce `{forbidden}`")
 
-docs = read("docs/DEV_LOG.md") + "\n" + read("docs/FILE_STRUCTURE.md") + "\n" + read("docs/decisions/ADR-0001-subscription-entitlement-strategy.md")
+docs = read("docs/history/DEV_LOG.md") + "\n" + read("docs/reference/FILE_STRUCTURE.md") + "\n" + read("docs/adr/ADR-INDEX.md")
 for token in [
     "Task-020b",
     "Session Equipment Selection + Auto Mileage Tracking",

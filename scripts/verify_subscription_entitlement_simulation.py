@@ -20,9 +20,9 @@ REQUIRED_FILES = [
     "iOS/Hooks/useSubscriptionStatus.swift",
     "Shared/Localization/en.lproj/Localizable.strings",
     "Shared/Localization/zh-Hant.lproj/Localizable.strings",
-    "docs/decisions/ADR-0001-subscription-entitlement-strategy.md",
-    "docs/DEV_LOG.md",
-    "docs/FILE_STRUCTURE.md",
+    "docs/adr/ADR-INDEX.md",
+    "docs/history/DEV_LOG.md",
+    "docs/reference/FILE_STRUCTURE.md",
 ]
 
 PROJECT_FILE = ROOT / "SkateTrack.xcodeproj" / "project.pbxproj"
@@ -182,7 +182,7 @@ def main() -> int:
                 + "\n".join(f"- {key}" for key in missing_keys)
             )
 
-    adr_text = (ROOT / "docs/decisions/ADR-0001-subscription-entitlement-strategy.md").read_text(encoding="utf-8")
+    adr_text = (ROOT / "docs/adr/ADR-INDEX.md").read_text(encoding="utf-8")
     for token in [
         "Apple Developer Program",
         "SubscriptionEntitlementProviding",
@@ -193,7 +193,7 @@ def main() -> int:
         if token not in adr_text:
             return fail(f"ADR-0001 missing decision token: {token}")
 
-    file_structure_text = (ROOT / "docs/FILE_STRUCTURE.md").read_text(encoding="utf-8")
+    file_structure_text = (ROOT / "docs/reference/FILE_STRUCTURE.md").read_text(encoding="utf-8")
     for token in [
         "Task-016a Subscription Entitlement Simulation Architecture",
         "Real StoreKit monetization is deferred",
@@ -202,7 +202,7 @@ def main() -> int:
         if token not in file_structure_text:
             return fail(f"FILE_STRUCTURE.md missing Task-016a token: {token}")
 
-    dev_log_text = (ROOT / "docs/DEV_LOG.md").read_text(encoding="utf-8")
+    dev_log_text = (ROOT / "docs/history/DEV_LOG.md").read_text(encoding="utf-8")
     if "Task-016a Subscription Entitlement Simulation Architecture" not in dev_log_text:
         return fail("DEV_LOG.md missing Task-016a entry")
 
