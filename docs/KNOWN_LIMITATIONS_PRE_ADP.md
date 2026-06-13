@@ -1,79 +1,108 @@
 # Known Limitations Before Apple Developer Program / External Credentials
 
-This document tracks features that are intentionally blocked until Apple Developer Program access, App Store Connect setup, Google Cloud credentials, or other external-service prerequisites are available. It complements ADR-0002 and should be checked again before Task-030 release readiness.
+**Status:** Active source of truth — Task-030b consolidation  
+**Last Updated:** 2026-06-13  
+**Scope:** Features intentionally blocked until Apple Developer Program enrollment, App Store Connect setup, Google Cloud credentials, production provider configuration, or additional release validation is available.
 
-## B-001 StoreKit Production Subscription
+This file replaces scattered pre-ADP limitation notes from older ADRs. Each item states current status, why it is blocked, the current safe substitute, the unlock condition, the suggested future task, and what must not be claimed.
 
-- **Blocked by:** Apple Developer Program, App Store Connect subscription products, production receipt / transaction testing.
-- **Current state:** `LocalSubscriptionEntitlementProvider` defaults to free access; DEBUG can use local entitlement simulation through the existing Task-016 provider boundary.
-- **Unlock task:** Add a production StoreKit provider behind the existing entitlement provider boundary.
-- **Files likely to change:** `iOS/Core/Subscription/*`, subscription verify scripts, StoreKit configuration / App Store Connect documentation.
+## L-001 StoreKit Production Subscription
 
-## B-002 Google Sign-In Production
+- **Current status:** Local / DEBUG entitlement simulation only.
+- **Blocked by:** Apple Developer Program, App Store Connect subscription products, production transaction testing, receipt / transaction validation policy, and App Store metadata.
+- **Current substitute:** Replaceable entitlement-provider boundary and local simulation established in Task-016.
+- **Unlock condition:** Apple Developer Program is active, App Store Connect products exist, and a production StoreKit provider can be added behind the existing entitlement boundary.
+- **Future task:** Production StoreKit provider + App Store subscription QA.
+- **Do not claim:** Do not claim production subscriptions, real App Store purchases, production restore purchases, or App Store receipt validation.
 
-- **Blocked by:** Google Cloud project, OAuth client ID, reversed client ID URL scheme, privacy copy, logout / revocation policy, and production token-storage review.
-- **Current state:** `DisabledGoogleAuthProvider` plus DEBUG-only `LocalAccountProvider` simulation.
-- **Unlock task:** Implement a real Google provider behind `AuthProvider` / `GoogleSignInProviding`.
-- **Files likely to change:** `iOS/Core/Account/*`, `iOS/Hooks/useAccount.swift`, Account UI, localization, verify scripts, privacy documentation.
+## L-002 Google Sign-In Production
 
-## B-003 Google Drive Sync / Task-026c-blocked
+- **Current status:** Disabled Google provider plus DEBUG-only local account simulation.
+- **Blocked by:** Google Cloud project, OAuth client ID, reversed client ID URL scheme, token lifecycle, logout / revocation behavior, and privacy copy review.
+- **Current substitute:** `AuthProvider` / `GoogleSignInProviding` boundary, `DisabledGoogleAuthProvider`, DEBUG `LocalAccountProvider`.
+- **Unlock condition:** Production OAuth credentials and URL scheme are available and reviewed.
+- **Future task:** Production Google auth provider behind the existing account-provider boundary.
+- **Do not claim:** Do not claim real Google login, Google identity verification, or production token storage.
 
-- **Blocked by:** B-002, Drive API scope authorization, production token lifecycle, minimum-scope privacy copy, remote conflict policy, and signing / URL-scheme review.
-- **Current state:** `DisabledDriveProvider`, local backup export, and non-destructive restore preview only.
-- **Unlock task:** Add a real Google Drive provider behind `CloudBackupProvider` after credentials and scopes are ready.
-- **Files likely to change:** `iOS/Core/Sync/*`, `iOS/Hooks/useBackupSync.swift`, Account backup UI, ADR-0006, verify scripts.
-- **Not unlocked by Task-027a:** Portable `.skatetrack` export is local file sharing, not Drive sync.
+## L-003 Google Drive Sync / Task-026c-blocked
 
-## B-004 Custom `.skatetrack` Document Association
+- **Current status:** Blocked; local backup export and non-destructive restore preview only.
+- **Blocked by:** Google Sign-In production, Drive API scopes, production token lifecycle, remote conflict policy, and minimum-scope privacy copy.
+- **Current substitute:** `DisabledDriveProvider`, local backup package export, restore preview without overwrite.
+- **Unlock condition:** Google OAuth and Drive scopes are ready, token storage is reviewed, and conflict policy is designed.
+- **Future task:** Real Drive provider behind `CloudBackupProvider`.
+- **Do not claim:** Do not claim cloud sync, Google Drive backup, automatic restore, remote merge, or multi-device sync.
 
-- **Blocked by:** Apple Developer Program / signing review, product decision on inbound file handling, and macOS import behavior.
-- **Current state:** Task-027a shares `.skatetrack` as a normal file URL without custom UTType declaration.
-- **Unlock task:** Add custom UTType / document association only after incoming-file UX and signing impact are reviewed.
-- **Files likely to change:** Info.plist / project settings, package verify script, iOS/macOS import UI.
+## L-004 CloudKit / iCloud Sync
 
-## B-005 WeatherKit Live Data
+- **Current status:** Not implemented.
+- **Blocked by:** Apple Developer Program, CloudKit / iCloud capabilities, CloudKit container, data model sync policy, conflict strategy, and device-to-device QA.
+- **Current substitute:** Local data, local backup package, portable `.skatetrack` export.
+- **Unlock condition:** Apple Developer Program is active and a CloudKit provider plan is approved.
+- **Future task:** Cloud sync provider boundary and CloudKit implementation after local package semantics are stable.
+- **Do not claim:** Do not claim Apple cloud sync, iCloud backup, or cross-device automatic sync.
 
-- **Blocked by:** Apple Developer Program, WeatherKit capability, privacy copy, and live provider QA.
-- **Current state:** Weather work remains mock / disabled / local rideability only.
-- **Unlock task:** Add a WeatherKit provider behind the existing weather provider boundary.
+## L-005 WeatherKit Live Data
 
-## B-006 TestFlight Upload
+- **Current status:** Weather work remains mock / disabled / local rideability only.
+- **Blocked by:** Apple Developer Program, WeatherKit capability, live provider QA, privacy copy, and fallback behavior.
+- **Current substitute:** Mock / local rideability guidance.
+- **Unlock condition:** WeatherKit entitlement and live provider design are available.
+- **Future task:** WeatherKit provider behind the existing weather boundary.
+- **Do not claim:** Do not claim live weather, live UV, live rain, or production WeatherKit forecasts.
 
-- **Blocked by:** Apple Developer Program, Bundle ID confirmation, App Store Connect app record, signing setup, and release checklist.
-- **Current state:** Local simulator / development builds only.
-- **Unlock task:** Task-030b or later release pipeline setup.
+## L-006 TestFlight / App Store Submission
 
-## B-007 CloudKit / iCloud Sync
+- **Current status:** Local simulator / development-device build only.
+- **Blocked by:** Apple Developer Program, App Store Connect app record, signing setup, provisioning, TestFlight metadata, privacy labels, screenshots, and review copy.
+- **Current substitute:** Pre-ADP local release-readiness gate.
+- **Unlock condition:** Apple Developer Program is active and release assets / metadata are prepared.
+- **Future task:** TestFlight pipeline and App Store Connect readiness.
+- **Do not claim:** Do not claim upload readiness, TestFlight availability, App Store readiness, or review readiness.
 
-- **Blocked by:** Apple Developer Program, iCloud / CloudKit capability review, data model sync policy, conflict strategy, privacy copy, and device-to-device QA.
-- **Current state:** No CloudKit container, iCloud documents, or cloud entitlement is enabled.
-- **Unlock task:** Add a replaceable cloud sync provider after local backup / package semantics are stable and capabilities are available.
-- **Files likely to change:** Future cloud provider module, sync hooks, account / backup UI, ADR updates, verify scripts, project settings.
+## L-007 Custom `.skatetrack` UTType / Finder Open-With / Document Association
 
-## B-008 Real-device Background GPS Release Validation
+- **Current status:** Not implemented; `.skatetrack` is shared / opened as a normal file URL.
+- **Blocked by:** Apple Developer Program, signing review, product decision on inbound file handling, Finder open-with behavior, and document association QA.
+- **Current substitute:** iOS export share sheet and macOS NSOpenPanel read-only package viewer.
+- **Unlock condition:** Incoming-file UX and signing / capability impact are reviewed.
+- **Future task:** Custom UTType + document association after package viewer and import semantics are mature.
+- **Do not claim:** Do not claim Finder open-with, custom UTType registration, automatic file opening, or document association.
 
-- **Blocked by:** Outdoor real-device QA with screen off and phone in pocket.
-- **Current state:** Background GPS support and simulator moving-route validation are implemented, but simulator behavior does not replace real-device power / lock-screen / location scheduling behavior.
-- **Unlock task:** Run iPhone 13 Pro or equivalent outdoor validation: start in foreground, lock screen, pocket carry, move 150–300 m for 3–5 minutes, then confirm non-zero distance, route samples, speed metrics, and route preview.
-- **Files likely to change:** Usually none if validation passes; `iOS/Core/SensorEngine` / session metrics only if a blocking real-device bug is found.
+## L-008 Real-device Background GPS Release Validation
 
-## B-009 Fall Detection Diagnostics / Safe Test Mode
+- **Current status:** Background GPS code and simulator moving-route validation exist; release-grade real-device validation remains open.
+- **Blocked by:** Outdoor iPhone validation with screen off, phone in pocket, real device power management, and location scheduling behavior.
+- **Current substitute:** Simulator route testing and manual real-device checklist.
+- **Unlock condition:** Run iPhone 13 Pro or equivalent outdoor validation: start in foreground, lock screen, pocket carry, move 150–300 m for 3–5 minutes, then confirm non-zero distance, route samples, speed metrics, and summary / package export consistency.
+- **Future task:** Real-device GPS release validation or targeted GPS bugfix if validation fails.
+- **Do not claim:** Do not claim fully validated lock-screen background tracking until real-device validation is complete.
 
-- **Blocked by:** Safe controlled test plan, diagnostics UI, and hardware / fixture validation strategy.
-- **Current state:** Fall Detection engine and UI foundation exist, but public claims should not imply fully validated real-world crash detection. Human hard-fall testing is unsafe and not required for Task-030a.
-- **Unlock task:** Add DEBUG diagnostics / safe test mode showing recent G-force, gyro, candidate impact, stationary confirmation, and alert state. Validate with controlled non-human tests.
-- **Files likely to change:** `iOS/Core/SensorEngine`, `iOS/Features/Debug`, Fall Alert UI, verification scripts, ADR updates.
+## L-009 Fall Detection Diagnostics / Safe Test Mode
 
-## B-010 Native Japanese Review
+- **Current status:** Fall Detection engine and UI foundation exist; real-world safety validation is not complete.
+- **Blocked by:** Safe controlled test plan, diagnostics UI, non-human hardware / fixture validation, and safety-copy review.
+- **Current substitute:** Existing engine thresholds and fall alert UI foundation.
+- **Unlock condition:** Add DEBUG diagnostics / safe test mode showing recent G-force, gyro, candidate impact, stationary confirmation, and alert state; validate with safe controlled tests.
+- **Future task:** Fall Detection diagnostics and safe validation protocol.
+- **Do not claim:** Do not claim fully validated real-world crash detection; do not ask the user to test by hard-falling with their body.
 
-- **Blocked by:** Native Japanese copy review and App Store metadata review.
-- **Current state:** `ja` is implemented as first-pass product localization with key and placeholder parity.
-- **Unlock task:** Native review of product copy, privacy copy, accessibility copy, and App Store metadata before public Japanese-market release.
-- **Files likely to change:** `Shared/Localization/ja.lproj/*`, App Store metadata docs.
+## L-010 Native Japanese Review
 
-## B-011 Deferred Localization Roadmap
+- **Current status:** Japanese is implemented as first-pass product localization.
+- **Blocked by:** Native Japanese product-copy, privacy-copy, accessibility-copy, and App Store metadata review.
+- **Current substitute:** `ja` key parity, placeholder parity, and first-pass copy QA.
+- **Unlock condition:** Native Japanese review is complete and issues are fixed.
+- **Future task:** Japanese localization review pass.
+- **Do not claim:** Do not claim final Japanese-market copy readiness before native review.
 
-- **Blocked by:** Localization QA capacity and product-market prioritization.
-- **Current state:** English, Traditional Chinese, and Japanese are active. Additional languages are not included in Task-030a.
-- **Unlock task:** Add `pt-BR` Brazilian Portuguese first, then `es` Spanish, with key parity, placeholder parity, privacy-copy review, and native review.
-- **Files likely to change:** `Shared/Localization`, localization verify scripts, ADR-0009 / ADR-0011 updates.
+## L-011 Deferred Localization Roadmap
+
+- **Current status:** Active languages are `en`, `zh-Hant`, and `ja`.
+- **Blocked by:** Localization QA capacity, native review, and product-market prioritization.
+- **Current substitute:** Three-language support.
+- **Unlock condition:** Task scope explicitly approves another language and native / QA review is planned.
+- **Future task:** Add `pt-BR` Brazilian Portuguese first, then `es` Spanish.
+- **Do not claim:** Do not claim Brazilian Portuguese or Spanish support in the current build.
+
+Task-030b verification token: consolidated pre-ADP limitations.

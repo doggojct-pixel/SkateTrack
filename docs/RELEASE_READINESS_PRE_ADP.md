@@ -1,10 +1,23 @@
 # SkateTrack Pre-ADP Release Readiness Report
 
-**Status:** Task-030a release-readiness gate  
+**Status:** Task-030b consolidated release-readiness gate  
 **Last Updated:** 2026-06-13  
 **Scope:** iOS, macOS, shared models, localization, local backup / package export, pre-Apple-Developer-Program service boundaries
 
-This report is the Task-030a release-readiness source of truth. It does not claim App Store readiness, TestFlight readiness, production subscription readiness, Google Drive readiness, or production cloud readiness. It records what can be verified before Apple Developer Program enrollment and external production credentials are available.
+This report is the Task-030b consolidated release-readiness source of truth. It does not claim App Store readiness, TestFlight readiness, production subscription readiness, Google Drive readiness, or production cloud readiness. It records what can be verified before Apple Developer Program enrollment and external production credentials are available.
+
+## 0. Documentation source-of-truth gate
+
+Before opening a new task, read the consolidated documentation in this order:
+
+1. `docs/DOCUMENTATION_INDEX.md`
+2. `docs/DEVELOPMENT_RULES.md`
+3. `docs/KNOWN_LIMITATIONS_PRE_ADP.md`
+4. `docs/RELEASE_READINESS_PRE_ADP.md`
+5. `docs/MANUAL_QA_MATRIX_PRE_ADP.md`
+6. `docs/decisions/ADR-INDEX.md`
+
+The old per-topic ADR files and `docs/Task026-030_TechRisk_Solutions.md` were consolidated during Task-030b and must not reappear as active source-of-truth files. `docs/DEV_LOG.md` remains historical, not the daily rules source.
 
 ## 1. Release posture
 
@@ -194,4 +207,5 @@ Task-030a passes only when:
 - `KNOWN_LIMITATIONS_PRE_ADP.md`, `MANUAL_QA_MATRIX_PRE_ADP.md`, ADR-0011, and this document are aligned.
 - No signing, custom UTType, document association, cloud entitlement, production credential, or local scheme-test-state drift is introduced.
 
-Task-030a verification token: pre-ADP release readiness gate.
+Task-030a verification token: pre-ADP release readiness gate
+Task-030b verification token: consolidated release readiness documentation..

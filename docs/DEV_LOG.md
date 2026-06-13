@@ -1525,3 +1525,25 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_task030_release_readiness.py` after applying this task.
 - Also run the existing Task-029 localization / privacy / accessibility gates, macOS viewer gates, package gates, backup gates, account provider gate, GPS gate, shared model gate, and iOS / macOS platform builds.
 - Confirm `.xcscheme` files do not include local App Language, App Region, or Location Scenario state before commit.
+
+## 2026-06-13 — Task-030b Documentation Consolidation + Deferred Feature Handoff Package
+
+### Completed
+- Added `docs/DOCUMENTATION_INDEX.md` as the documentation entry point and reading order for future human / ChatGPT / Cursor handoffs.
+- Added `docs/DEVELOPMENT_RULES.md` to consolidate recurring development workflow, hotfix, commit, localization, macOS layout, documentation, and scope-control rules.
+- Rewrote `docs/KNOWN_LIMITATIONS_PRE_ADP.md` as the consolidated Pre-ADP deferred-feature and unlock-condition source of truth.
+- Added `docs/decisions/ADR-INDEX.md` to preserve historical ADR decisions after removing the old per-topic ADR files from active docs.
+- Updated `docs/RELEASE_READINESS_PRE_ADP.md`, `docs/MANUAL_QA_MATRIX_PRE_ADP.md`, `docs/FILE_STRUCTURE.md`, and `scripts/verify_task030_release_readiness.py` for the consolidated documentation structure.
+- Consolidated and retired `docs/Task026-030_TechRisk_Solutions.md` as an active root document.
+
+### Scope Boundary
+- Task-030b is documentation and verification only. It does not modify iOS runtime, macOS runtime, Swift source, localization resources, project signing, capabilities, entitlements, custom UTType, document association, StoreKit production, Google OAuth / Drive, CloudKit / iCloud, WeatherKit production, GPS algorithms, FallDetection algorithms, Launch Screen, AppIcon, bottom dock, or watchOS.
+
+### Removal / Consolidation Notes
+- Old ADR files `ADR-0001` through `ADR-0011` are consolidated into `docs/decisions/ADR-INDEX.md`, `docs/DEVELOPMENT_RULES.md`, and `docs/KNOWN_LIMITATIONS_PRE_ADP.md`.
+- `docs/Task026-030_TechRisk_Solutions.md` is consolidated into the active development rules, known limitations, release readiness, and manual QA documents.
+- `docs/DEV_LOG.md` remains the chronological history source, not the primary rules source.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030_release_readiness.py` after applying this task and deleting the consolidated old ADR / technical-risk files.
+- Confirm `git status --short` does not contain unzipped hotfix folders, `.xcscheme` local QA state, simulator exports, or sample `.skatetrack` files.

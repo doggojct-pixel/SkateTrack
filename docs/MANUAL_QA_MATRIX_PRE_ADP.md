@@ -1,6 +1,6 @@
 # SkateTrack Manual QA Matrix — Pre-ADP
 
-**Status:** Task-030a QA matrix  
+**Status:** Task-030b consolidated QA matrix  
 **Last Updated:** 2026-06-13  
 **Scope:** Local development builds before Apple Developer Program enrollment and production external-service setup
 
@@ -80,7 +80,7 @@ Checks:
 
 ## 7. Build and scheme hygiene
 
-Before committing Task-030a or Task-030b:
+Before committing Task-030b or any later task:
 
 - Run iOS simulator build.
 - Run macOS build.
@@ -99,3 +99,4 @@ The following block public release claims until completed or explicitly scoped o
 - Apple Developer Program enrollment before TestFlight / StoreKit / capabilities work.
 
 Task-030a verification token: manual QA matrix pre-ADP.
+Task-030b verification token: consolidated manual QA matrix.

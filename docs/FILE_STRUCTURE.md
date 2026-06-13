@@ -2,10 +2,26 @@
 
 **Last Updated:** 2026-06-13
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
-**Current Baseline:** Source-controlled repository after Task-030a Pre-ADP Release Readiness Audit + Verify Gate.
-**Current Development Gate:** Task-030a adds the Pre-ADP release-readiness report, manual QA matrix, release-readiness verification script, ADR-0011, and known-limitations finalization. It adds no new runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
+**Current Baseline:** Source-controlled repository after Task-030b Documentation Consolidation + Deferred Feature Handoff Package.
+**Current Development Gate:** Task-030b consolidates fragmented docs and ADRs into `DOCUMENTATION_INDEX.md`, `DEVELOPMENT_RULES.md`, `KNOWN_LIMITATIONS_PRE_ADP.md`, `RELEASE_READINESS_PRE_ADP.md`, `MANUAL_QA_MATRIX_PRE_ADP.md`, and `decisions/ADR-INDEX.md`. It adds no runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
 
 This document records the current SkateTrack repository structure and development status. It focuses on source-controlled files and intentionally excludes `.git/`, `xcuserdata/`, `DerivedData/`, `.build/`, simulator output, and other generated local artifacts.
+
+
+## Active Documentation Structure After Task-030b
+
+| File | Status | Purpose |
+|---|---|---|
+| `docs/DOCUMENTATION_INDEX.md` | Active | Documentation entry point and reading order. |
+| `docs/DEVELOPMENT_RULES.md` | Active | Consolidated development workflow, hotfix, commit, localization, macOS layout, and scope-control rules. |
+| `docs/KNOWN_LIMITATIONS_PRE_ADP.md` | Active | Consolidated blocked / deferred Pre-ADP feature list with unlock conditions and no-overclaim rules. |
+| `docs/RELEASE_READINESS_PRE_ADP.md` | Active | Pre-ADP release-readiness gate. |
+| `docs/MANUAL_QA_MATRIX_PRE_ADP.md` | Active | Manual QA matrix for iOS, macOS, languages, accessibility, privacy, GPS, and safety. |
+| `docs/decisions/ADR-INDEX.md` | Active | Historical ADR summary and mapping after consolidation. |
+| `docs/DEV_LOG.md` | Historical / active log | Chronological history; not the primary rules source. |
+| `docs/FILE_STRUCTURE.md` | Active | Repository structure and progress snapshot. |
+
+Task-030b removes the old per-topic ADR files (`docs/decisions/ADR-0001...ADR-0011`) and the stage-specific `docs/Task026-030_TechRisk_Solutions.md` from active source control after their content is consolidated.
 
 ## Current Progress Snapshot
 
@@ -884,3 +900,8 @@ scripts/verify_task030_release_readiness.py     # Task-030a quality gate for doc
 Task-030a intentionally does not add runtime features. StoreKit production, Google OAuth / Drive, CloudKit / iCloud, WeatherKit, TestFlight, custom `.skatetrack` UTType, document association, Finder open-with, MapKit route rendering, Swift Charts, package library, persistent import, and production signing / capability work remain deferred until the relevant unlock prerequisites are met.
 
 Task-030a verification token: pre-ADP release readiness gate.
+
+
+## Task-030b Documentation Consolidation
+
+Task-030b consolidates fragmented ADR and stage-specific documentation into active source-of-truth docs.
