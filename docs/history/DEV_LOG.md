@@ -1615,3 +1615,22 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
 - Snow-Task-001a verification token: snow mode public entry debug-gated.
 Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
+
+
+## 2026-06-14 — Snow-Task-002 Snow Session Data Layer
+
+### Completed
+- Added production Snow Mode value types: `SnowSegmentType`, `SnowSegment`, `SnowRun`, `SnowDistanceBreakdown`, `SnowVerticalMetrics`, and `SnowSessionState`.
+- Added additive Core Data entities `PersistedSnowRun` and `PersistedSnowSegment` through the existing programmatic model in `PersistenceController.makeManagedObjectModel()`.
+- Updated the `.xcdatamodeld` schema reference and model version identifier to `Phase1cSnowTask002` while preserving automatic lightweight migration options.
+- Added `SnowSessionRepository` and `SnowSessionEntityMapper` for repository-backed CRUD and aggregate Snow session state.
+- Added `useSnowSession.swift` as the iOS data boundary for later Snow-Task-005 UI integration.
+- Added `SnowSessionRepositoryTests.swift` and `scripts/verify_snow_schema.py` to verify repository persistence and schema registration.
+
+### Scope Boundary
+- Snow-Task-002 does not add `SnowSegmentClassifier`, `RunBoundaryDetector`, Snow UI, `.skatetrack` snow package compatibility, fixture generation, HealthKit export, WatchBridge wiring, signing, entitlements, or production service integrations.
+- Snow Mode continues to avoid `SnowPrototype*` namespaces and `Shared/WatchBridge/*` changes.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_snow_task_001b_debug_toggle.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Snow-Task-002 verification token: production snow schema and repository boundary integrated.

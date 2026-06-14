@@ -10,6 +10,12 @@ REQUIRED_FILES = [
     ROOT / "Shared/Models/SessionData.swift",
     ROOT / "Shared/Models/SportMode.swift",
     ROOT / "Shared/Models/SnowDiscipline.swift",
+    ROOT / "Shared/Models/SnowSegmentType.swift",
+    ROOT / "Shared/Models/SnowSegment.swift",
+    ROOT / "Shared/Models/SnowRun.swift",
+    ROOT / "Shared/Models/SnowDistanceBreakdown.swift",
+    ROOT / "Shared/Models/SnowVerticalMetrics.swift",
+    ROOT / "Shared/Models/SnowSessionState.swift",
     ROOT / "Shared/Models/PowerType.swift",
     ROOT / "Shared/Models/MotionSample.swift",
     ROOT / "Shared/Models/TrickEvent.swift",
@@ -47,7 +53,7 @@ def main() -> None:
             fail(f"UI framework import found: {file_path.relative_to(ROOT)}")
 
     model_text = "\n".join(path.read_text(encoding="utf-8") for path in REQUIRED_FILES)
-    for token in ["Codable", "Sendable", "Identifiable", "UUID", "SnowDiscipline", "isValid(for sportMode: SportMode)"]:
+    for token in ["Codable", "Sendable", "Identifiable", "UUID", "SnowDiscipline", "SnowSegmentType", "SnowRun", "SnowDistanceBreakdown", "isValid(for sportMode: SportMode)"]:
         if token not in model_text:
             fail(f"expected token not found: {token}")
 

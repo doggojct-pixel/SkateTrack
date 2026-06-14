@@ -63,3 +63,6 @@ Task-030b verification token: documentation index consolidated.
 - Snow-Task-001a verification token: snow mode public entry debug-gated. Release builds must not expose the Snow Session Start entry until the later production snow tasks are complete.
 
 - `scripts/verify_snow_task_001b_debug_toggle.py` — Verifies DEBUG toggle gating for the Snow Mode Ride start entry.
+
+- Snow-Task-002 verification token: production snow schema and repository boundary integrated. The runtime Core Data model remains programmatic, with `.xcdatamodeld` maintained as a schema reference.
+- `scripts/verify_snow_schema.py` — Verifies Snow production value types, Core Data entities, repository, `useSnowSession`, localization, project registration, and no prototype / WatchBridge / `.skatetrack` contamination.

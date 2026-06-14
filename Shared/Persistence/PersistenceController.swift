@@ -55,12 +55,15 @@ final class PersistenceController {
 
     static func makeManagedObjectModel() -> NSManagedObjectModel {
         let model = NSManagedObjectModel()
+        model.versionIdentifiers = ["Phase1cSnowTask002"]
         model.entities = [
             makePersistedSessionEntity(),
             makePersistedFallEventEntity(),
             makePersistedEquipmentEntity(),
             makePersistedSpotEntity(),
-            makePersistedSpotVisitEntity()
+            makePersistedSpotVisitEntity(),
+            makePersistedSnowRunEntity(),
+            makePersistedSnowSegmentEntity()
         ]
         return model
     }
@@ -179,6 +182,55 @@ final class PersistenceController {
             dateAttribute("visitedAt", optional: false),
             doubleAttribute("distanceKilometers"),
             doubleAttribute("confidence")
+        ]
+        return entity
+    }
+
+    private static func makePersistedSnowRunEntity() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "PersistedSnowRun"
+        entity.managedObjectClassName = "NSManagedObject"
+        entity.properties = [
+            uuidAttribute("id", optional: false),
+            uuidAttribute("sessionID", optional: false),
+            intAttribute("runNumber"),
+            dateAttribute("startDate", optional: false),
+            dateAttribute("endDate", optional: true),
+            doubleAttribute("skiDistanceMeters"),
+            doubleAttribute("verticalDropMeters"),
+            doubleAttribute("topSpeedMetersPerSecond"),
+            doubleAttribute("averageSpeedMetersPerSecond", optional: true),
+            binaryAttribute("segmentIDsData", optional: false),
+            boolAttribute("isManualEnd"),
+            dateAttribute("createdAt", optional: false),
+            dateAttribute("updatedAt", optional: false)
+        ]
+        return entity
+    }
+
+    private static func makePersistedSnowSegmentEntity() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "PersistedSnowSegment"
+        entity.managedObjectClassName = "NSManagedObject"
+        entity.properties = [
+            uuidAttribute("id", optional: false),
+            uuidAttribute("sessionID", optional: false),
+            uuidAttribute("runID", optional: true),
+            stringAttribute("typeRaw", optional: false),
+            dateAttribute("startDate", optional: false),
+            dateAttribute("endDate", optional: true),
+            doubleAttribute("distanceMeters"),
+            doubleAttribute("verticalDeltaMeters", optional: true),
+            doubleAttribute("startAltitudeMeters", optional: true),
+            doubleAttribute("endAltitudeMeters", optional: true),
+            doubleAttribute("averageSpeedMetersPerSecond", optional: true),
+            doubleAttribute("maxSpeedMetersPerSecond", optional: true),
+            doubleAttribute("confidence"),
+            boolAttribute("countsTowardSkiDistance"),
+            boolAttribute("manualOverride", optional: true),
+            binaryAttribute("sourceSampleIDsData", optional: true),
+            dateAttribute("createdAt", optional: false),
+            dateAttribute("updatedAt", optional: false)
         ]
         return entity
     }

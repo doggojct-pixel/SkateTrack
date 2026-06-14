@@ -117,3 +117,11 @@ Snow-Task-001a verification token: snow mode public entry debug-gated and contro
 ### Snow-Task-001b Debug Entry Toggle
 - Snow Mode remains production enum code, but the Ride start card is hidden unless the DEBUG Snow Mode entry toggle is enabled.
 - Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
+
+
+## Phase 1c Snow Mode Production Status
+
+- Snow-Task-001 / 001a / 001b: production `SportMode.snow(SnowDiscipline)` exists and the public Session Start entry remains gated behind a DEBUG toggle.
+- Snow-Task-002: production Snow value types, additive Core Data schema, repository, and `useSnowSession` data boundary exist.
+- Still deferred: `SnowSegmentClassifier`, `RunBoundaryDetector`, Snow-specific production UI wiring, `.skatetrack` snow package compatibility, QA fixture generation, HealthKit snow export, and real WatchBridge snow wiring.
+- Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040.

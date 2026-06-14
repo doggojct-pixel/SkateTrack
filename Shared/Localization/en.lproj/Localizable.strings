@@ -1035,3 +1035,16 @@
 "mac.accessibility.route_preview.value.format" = "%d route samples, %d changing route points, %@ derived distance";
 "mac.accessibility.speed_chart.label" = "Speed chart";
 "mac.accessibility.speed_chart.hint" = "Shows a lightweight speed trend from the selected package session samples.";
+
+// Snow-Task-002 Snow session data layer
+"snow.segment.downhillRun" = "Downhill run";
+"snow.segment.liftAscent" = "Lift ascent";
+"snow.segment.gondolaAscent" = "Gondola ascent";
+"snow.segment.surfaceLiftAscent" = "Surface lift ascent";
+"snow.segment.flatTraverse" = "Flat traverse";
+"snow.segment.walking" = "Walking";
+"snow.segment.stopped" = "Stopped";
+"snow.segment.unknown" = "Unknown";
+"snow.session.error.generic" = "Unable to load snow session data.";
+"repository.error.snowRunNotFound" = "Snow run not found.";
+"repository.error.snowSegmentNotFound" = "Snow segment not found.";

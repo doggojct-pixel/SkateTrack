@@ -1035,3 +1035,16 @@
 "mac.accessibility.route_preview.value.format" = "ルートサンプル %d 件、変化のあるルートポイント %d 件、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度チャート";
 "mac.accessibility.speed_chart.hint" = "選択したパッケージセッションのサンプルから軽量の速度推移を表示します。";
+
+// Snow-Task-002 Snow session data layer
+"snow.segment.downhillRun" = "滑走区間";
+"snow.segment.liftAscent" = "リフト移動";
+"snow.segment.gondolaAscent" = "ゴンドラ移動";
+"snow.segment.surfaceLiftAscent" = "牽引リフト移動";
+"snow.segment.flatTraverse" = "平坦移動";
+"snow.segment.walking" = "徒歩";
+"snow.segment.stopped" = "停止";
+"snow.segment.unknown" = "不明";
+"snow.session.error.generic" = "スノーセッションデータを読み込めません。";
+"repository.error.snowRunNotFound" = "滑走記録が見つかりません。";
+"repository.error.snowSegmentNotFound" = "滑走区間が見つかりません。";

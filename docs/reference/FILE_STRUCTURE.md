@@ -958,3 +958,26 @@ The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active h
 | `scripts/verify_snow_sport_enum.py` and `scripts/verify_snow_task_001a_debug_gate.py` | Snow sport enum / switch audit gate. |
 
 - `scripts/verify_snow_task_001b_debug_toggle.py` — Verifies DEBUG toggle gating for the Snow Mode Ride start entry.
+
+
+## Phase 1c Snow-Task-002 Production Data Layer
+
+Added production Snow session data-layer files:
+
+```text
+Shared/Models/SnowSegmentType.swift
+Shared/Models/SnowSegment.swift
+Shared/Models/SnowRun.swift
+Shared/Models/SnowDistanceBreakdown.swift
+Shared/Models/SnowVerticalMetrics.swift
+Shared/Models/SnowSessionState.swift
+Shared/Persistence/SnowSessionRepository.swift
+Shared/Persistence/SnowSessionEntityMapper.swift
+iOS/Hooks/useSnowSession.swift
+Tests/iOSTests/SnowSessionRepositoryTests.swift
+scripts/verify_snow_schema.py
+```
+
+`PersistenceController.makeManagedObjectModel()` remains the runtime Core Data source of truth. `Shared/Persistence/SkateTrackDataModel.xcdatamodeld` is updated as the schema reference with additive `PersistedSnowRun` and `PersistedSnowSegment` entities.
+
+Snow-Task-002 verification token: production snow schema and repository boundary integrated.

@@ -3,7 +3,7 @@
 **Status:** Active for `feature/snow-mode` production implementation
 **Branch:** `feature/snow-mode`
 **Baseline:** `develop` at Task-030b documentation consolidation
-**Current Task:** Snow-Task-001a — Debug-gated Snow Mode entry after Sport Mode integration
+**Current Task:** Snow-Task-002 — Snow session value types, Core Data schema, repository, and useSnowSession boundary
 
 ## Source of Truth
 
@@ -71,3 +71,22 @@ Snow-Task-001 verification token: production snow sport enum integrated.
 
 Snow-Task-001a verification token: snow mode public entry debug-gated.
 Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
+
+
+## Snow-Task-002 Production Data Layer
+
+Snow-Task-002 adds the first production Snow Mode data layer. It intentionally follows the existing SkateTrack persistence architecture: programmatic Core Data model generation in `PersistenceController.makeManagedObjectModel()` is the runtime source of truth, while `Shared/Persistence/SkateTrackDataModel.xcdatamodeld` is kept as the schema reference.
+
+Completed Snow-Task-002 scope:
+
+- Production value types under `Shared/Models`: `SnowSegmentType`, `SnowSegment`, `SnowRun`, `SnowDistanceBreakdown`, `SnowVerticalMetrics`, and `SnowSessionState`.
+- Additive Core Data entities: `PersistedSnowRun` and `PersistedSnowSegment`.
+- Model version identifier updated to `Phase1cSnowTask002`.
+- Migration options remain enabled through `shouldMigrateStoreAutomatically` and `shouldInferMappingModelAutomatically`.
+- `SnowSessionRepository` and `SnowSessionEntityMapper` provide Core Data CRUD and aggregate session state.
+- `useSnowSession.swift` exposes a repository-backed boundary for later Snow-Task-005 UI work.
+- `scripts/verify_snow_schema.py` verifies production schema, repository, localization, project registration, no `.skatetrack`, no `SnowPrototype*`, and no `Shared/WatchBridge/*` contamination.
+
+Snow-Task-002 intentionally does not implement `SnowSegmentClassifier`, `RunBoundaryDetector`, UI, package compatibility, fixtures, HealthKit export, or WatchBridge wiring.
+
+Snow-Task-002 verification token: production snow schema and repository boundary integrated.

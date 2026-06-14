@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Task021b">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="Phase1cSnowTask002">
     <entity name="PersistedSession" representedClassName="NSManagedObject" syncable="YES">
         <attribute name="averageSpeedKilometersPerHour" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
@@ -82,5 +82,42 @@
         <attribute name="sessionID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="spotID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="visitedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+
+    <entity name="PersistedSnowRun" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="averageSpeedMetersPerSecond" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isManualEnd" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="runNumber" optional="NO" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="segmentIDsData" optional="NO" attributeType="Binary"/>
+        <attribute name="sessionID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="skiDistanceMeters" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="startDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="topSpeedMetersPerSecond" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="verticalDropMeters" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+
+    <entity name="PersistedSnowSegment" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="averageSpeedMetersPerSecond" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="confidence" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="countsTowardSkiDistance" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="distanceMeters" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="endAltitudeMeters" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="manualOverride" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="maxSpeedMetersPerSecond" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="runID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="sessionID" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="sourceSampleIDsData" optional="YES" attributeType="Binary"/>
+        <attribute name="startAltitudeMeters" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="startDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="typeRaw" optional="NO" attributeType="String"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="verticalDeltaMeters" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
     </entity>
 </model>

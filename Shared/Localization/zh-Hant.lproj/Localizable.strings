@@ -1035,3 +1035,16 @@
 "mac.accessibility.route_preview.value.format" = "%d 筆路線樣本、%d 個有效路線點、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度圖表";
 "mac.accessibility.speed_chart.hint" = "根據選取 package session 的樣本顯示輕量速度趨勢。";
+
+// Snow-Task-002 Snow session data layer
+"snow.segment.downhillRun" = "滑降區段";
+"snow.segment.liftAscent" = "纜車上行";
+"snow.segment.gondolaAscent" = "吊艙上行";
+"snow.segment.surfaceLiftAscent" = "拖牽上行";
+"snow.segment.flatTraverse" = "平地橫移";
+"snow.segment.walking" = "步行";
+"snow.segment.stopped" = "停止";
+"snow.segment.unknown" = "未知";
+"snow.session.error.generic" = "無法載入滑雪工作階段資料。";
+"repository.error.snowRunNotFound" = "找不到滑雪趟次。";
+"repository.error.snowSegmentNotFound" = "找不到滑雪區段。";
