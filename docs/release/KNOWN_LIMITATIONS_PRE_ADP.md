@@ -106,3 +106,8 @@ This file replaces scattered pre-ADP limitation notes from older ADRs. Each item
 - **Do not claim:** Do not claim Brazilian Portuguese or Spanish support in the current build.
 
 Task-030b verification token: consolidated pre-ADP limitations.
+## Phase 1c Snow Mode Follow-up Boundary
+
+Snow-Task-001 only integrates the production sport enum and preflight state. Snow data schema, classifier logic, RunBoundaryDetector, package compatibility, HealthKit export, and real WatchBridge wiring remain deferred to later Snow tasks. This boundary prevents overclaiming Snow Mode support before Snow-Task-002 through Snow-Task-009 are complete.
+
+Snow-Task-001 verification token: production snow sport enum integrated.

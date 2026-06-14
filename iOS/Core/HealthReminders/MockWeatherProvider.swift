@@ -37,7 +37,10 @@ final class MockWeatherProvider: WeatherProviding {
             adjusted.uvIndex += 0.4
         case .inline(.fitnessSpeed)?:
             adjusted.temperatureCelsius += 0.8
-        default:
+        case .snow(_)?:
+            adjusted.temperatureCelsius -= 3.0
+            adjusted.precipitationProbability += 0.02
+        case .skateboard?, .inline?, nil:
             break
         }
 

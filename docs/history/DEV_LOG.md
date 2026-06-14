@@ -1582,3 +1582,18 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_task030_release_readiness.py` first.
 - Then run the standard localization, privacy, macOS viewer, package, backup, account, GPS, and shared-model verify scripts.
 - `docs/history/DEV_LOG.md` may contain historical mentions of old paths, but active docs and scripts must not depend on retired paths.
+## 2026-06-14 — Snow-Task-001 Sport Mode Integration Foundation + Preflight
+
+### Completed
+- Added production `SnowDiscipline` and integrated `SportMode.snow(SnowDiscipline)` into the existing sport-mode model instead of creating a `SnowPrototype*` namespace.
+- Added explicit `.snow` handling to sport-related switches in session start, live HUD, session history, session summary, sensor calibration priority planning, equipment compatibility boundaries, weather mock context, and equipment wear thresholds.
+- Added minimal production Session Start snow discipline selection and localized `en` / `zh-Hant` / `ja` strings for Snow Sports, Snowboard, Skiing, mode descriptions, tags, and history filtering.
+- Added `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` as the Phase 1c production agent state record and `scripts/verify_snow_sport_enum.py` as the Snow sport integration gate.
+
+### Scope Boundary
+- Snow-Task-001 does not add SnowSegment / SnowRun persistence, Core Data migration, SnowSegmentClassifier, RunBoundaryDetector, Snow Live HUD, package compatibility, HealthKit export, WatchBridge wiring, signing changes, entitlements, or production service integrations.
+- Existing skateboard and inline behavior remains additive-only; electric power remains skateboard-only.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py` after applying this task.
+- Snow-Task-001 verification token: production snow sport enum integrated.

@@ -11,6 +11,9 @@
 /* Sport modes */
 "sport.skateboard" = "スケートボード";
 "sport.inline" = "インラインスケート";
+"snow.sport.title" = "スノースポーツ";
+"snow.discipline.snowboard" = "スノーボード";
+"snow.discipline.skiing" = "スキー";
 "sport.mode.streetpark" = "ストリート / パーク";
 "sport.mode.longboard" = "ロングボード";
 "sport.mode.surfskate" = "サーフスケート";
@@ -82,6 +85,7 @@
 "session.start.selectSport" = "スポーツを選択";
 "session.start.skateboard.subtitle" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
 "session.start.inline.subtitle" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
+"session.start.snow.subtitle" = "スノーボード / スキー";
 "session.start.cta" = "実行";
 "session.start.unlockToStart" = "このモードを開始するにはアップグレード";
 "mode.tag.speed" = "スピード";
@@ -99,6 +103,10 @@
 "mode.description.inline.fitness" = "フィットネス、スピードインターバル、持久系スケーティング。";
 "mode.description.inline.aggressive" = "パーク、ストリート、グラインド、アグレッシブインラインのセッション。";
 "mode.description.inline.slalom" = "コーンライン、リズム、エッジコントロール、精密ドリル。";
+"mode.description.snow.snowboard" = "滑走区間を中心に、リフト移動距離を除外しながら標高差を記録するスノーボードモード。";
+"mode.description.snow.skiing" = "滑走区間を中心に、リフト移動距離を除外しながら標高差を記録するスキーモード。";
+"mode.tag.snowboard" = "スノーボード";
+"mode.tag.skiing" = "スキー";
 "power.human" = "人力";
 "power.electric" = "電動";
 "power.type.title" = "動力タイプ";
@@ -235,6 +243,7 @@
 "history.filter.all" = "すべて";
 "history.filter.skate" = "スケート";
 "history.filter.inline" = "インライン";
+"history.filter.snow" = "スノー";
 "history.filter.electric" = "電動";
 "history.empty.title" = "まだセッションがありません";
 "history.empty.subtitle" = "この項目は現在のビルドで安全に確認できるよう準備されています。";

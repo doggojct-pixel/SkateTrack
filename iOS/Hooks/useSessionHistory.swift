@@ -9,6 +9,7 @@ enum SessionHistoryFilter: String, CaseIterable, Identifiable, Sendable {
     case all
     case skate
     case inline
+    case snow
     case electric
 
     var id: String { rawValue }
@@ -21,6 +22,8 @@ enum SessionHistoryFilter: String, CaseIterable, Identifiable, Sendable {
             return "history.filter.skate"
         case .inline:
             return "history.filter.inline"
+        case .snow:
+            return "history.filter.snow"
         case .electric:
             return "history.filter.electric"
         }
@@ -35,6 +38,9 @@ enum SessionHistoryFilter: String, CaseIterable, Identifiable, Sendable {
             return false
         case .inline:
             if case .inline = session.sportMode { return true }
+            return false
+        case .snow:
+            if case .snow = session.sportMode { return true }
             return false
         case .electric:
             return session.powerType == .electric

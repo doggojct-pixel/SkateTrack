@@ -11,6 +11,9 @@
 /* 運動模式 */
 "sport.skateboard" = "滑板";
 "sport.inline" = "直排輪";
+"snow.sport.title" = "雪地運動";
+"snow.discipline.snowboard" = "單板滑雪";
+"snow.discipline.skiing" = "雙板滑雪";
 "sport.mode.streetpark" = "街式 / 公園";
 "sport.mode.longboard" = "長板";
 "sport.mode.surfskate" = "衝浪滑板";
@@ -82,6 +85,7 @@
 "session.start.selectSport" = "選擇運動";
 "session.start.skateboard.subtitle" = "4 種模式";
 "session.start.inline.subtitle" = "4 種模式";
+"session.start.snow.subtitle" = "單板 / 雙板";
 "session.start.cta" = "開始 Session";
 "session.start.unlockToStart" = "升級後即可開始此模式";
 "mode.tag.speed" = "速度";
@@ -99,6 +103,10 @@
 "mode.description.inline.fitness" = "體能、速度間歇與耐力型直排輪訓練。";
 "mode.description.inline.aggressive" = "公園、街式、磨桿與極限直排輪紀錄。";
 "mode.description.inline.slalom" = "樁線、節奏、刃感控制與精準訓練。";
+"mode.description.snow.snowboard" = "以滑雪道滑行段為核心，排除纜車距離並追蹤落差的單板滑雪紀錄。";
+"mode.description.snow.skiing" = "以滑雪道滑行段為核心，排除纜車距離並追蹤落差的雙板滑雪紀錄。";
+"mode.tag.snowboard" = "單板";
+"mode.tag.skiing" = "雙板";
 "power.human" = "人力";
 "power.electric" = "電動";
 "power.type.title" = "動力類型";
@@ -235,6 +243,7 @@
 "history.filter.all" = "全部";
 "history.filter.skate" = "滑板";
 "history.filter.inline" = "直排輪";
+"history.filter.snow" = "雪地";
 "history.filter.electric" = "電動";
 "history.empty.title" = "還沒有 Session";
 "history.empty.subtitle" = "開始第一場滑行後，紀錄會出現在這裡。";

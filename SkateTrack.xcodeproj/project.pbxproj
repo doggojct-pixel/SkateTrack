@@ -22,6 +22,9 @@
 		12A300000000000000000104 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
 		12A300000000000000000105 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
 		12A300000000000000000106 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
+		29C100000000000000000101 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
+		29C100000000000000000102 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
+		29C100000000000000000103 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
 		12A300000000000000000107 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000108 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000109 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
@@ -72,6 +75,7 @@
 		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
 		12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD04000000000000000001 /* BoardModeSelectorView.swift */; };
 		12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD05000000000000000001 /* InlineModeSelectorView.swift */; };
+		29C110000000000000000101 /* SnowDisciplineSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C110000000000000000001 /* SnowDisciplineSelectorView.swift */; };
 		12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD06000000000000000001 /* PowerTypeToggleView.swift */; };
 		12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD07000000000000000001 /* ModeSelectionCardView.swift */; };
 		12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD08000000000000000001 /* StartSessionCTAView.swift */; };
@@ -314,6 +318,7 @@
 		12A2F000000000000000001 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A300000000000000000001 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		12A300000000000000000002 /* SportMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportMode.swift; sourceTree = "<group>"; };
+		29C100000000000000000001 /* SnowDiscipline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDiscipline.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -347,6 +352,7 @@
 		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
 		12AD04000000000000000001 /* BoardModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModeSelectorView.swift; sourceTree = "<group>"; };
 		12AD05000000000000000001 /* InlineModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineModeSelectorView.swift; sourceTree = "<group>"; };
+		29C110000000000000000001 /* SnowDisciplineSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDisciplineSelectorView.swift; sourceTree = "<group>"; };
 		12AD06000000000000000001 /* PowerTypeToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerTypeToggleView.swift; sourceTree = "<group>"; };
 		12AD07000000000000000001 /* ModeSelectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelectionCardView.swift; sourceTree = "<group>"; };
 		12AD08000000000000000001 /* StartSessionCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionCTAView.swift; sourceTree = "<group>"; };
@@ -602,6 +608,7 @@
 			children = (
 				12A300000000000000000001 /* SessionData.swift */,
 				12A300000000000000000002 /* SportMode.swift */,
+				29C100000000000000000001 /* SnowDiscipline.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
@@ -721,6 +728,7 @@
 				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
 				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
 				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
+				29C110000000000000000001 /* SnowDisciplineSelectorView.swift */,
 				12AD06000000000000000001 /* PowerTypeToggleView.swift */,
 				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
 				12AD08000000000000000001 /* StartSessionCTAView.swift */,
@@ -1336,6 +1344,7 @@
 				12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */,
 				12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */,
 				12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */,
+				29C110000000000000000101 /* SnowDisciplineSelectorView.swift in Sources */,
 				12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */,
 				12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */,
 				12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */,
@@ -1516,6 +1525,7 @@
 				15A100000000000000000106 /* FallEventRepository.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,
 				12A300000000000000000104 /* SportMode.swift in Sources */,
+				29C100000000000000000101 /* SnowDiscipline.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
@@ -1553,6 +1563,7 @@
 				12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000103 /* SessionData.swift in Sources */,
 				12A300000000000000000106 /* SportMode.swift in Sources */,
+				29C100000000000000000103 /* SnowDiscipline.swift in Sources */,
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
@@ -1593,6 +1604,7 @@
 				12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000102 /* SessionData.swift in Sources */,
 				12A300000000000000000105 /* SportMode.swift in Sources */,
+				29C100000000000000000102 /* SnowDiscipline.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,

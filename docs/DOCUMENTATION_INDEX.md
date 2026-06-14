@@ -56,3 +56,7 @@ Historical facts remain available in `docs/history/DEV_LOG.md`, but `DEV_LOG.md`
 - If a future architectural decision is large enough to require its own ADR, add it under `docs/adr/` and update `docs/adr/ADR-INDEX.md`.
 
 Task-030b verification token: documentation index consolidated.
+## Phase 1c Snow Mode Production Notes
+
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the active `feature/snow-mode` production implementation boundary. It is separate from the earlier Snow prototype branch and must be read before Snow-Task-002+.
+- Snow-Task-001 verification token: production snow sport enum integrated.

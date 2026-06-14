@@ -13,6 +13,7 @@ struct SessionStartView: View {
     @State private var selectedCategory: SessionStartSportCategory = .skateboard
     @State private var selectedBoardMode: BoardMode = .streetPark
     @State private var selectedInlineMode: InlineMode = .urbanFreestyle
+    @State private var selectedSnowDiscipline: SnowDiscipline = .snowboard
     @State private var selectedPowerType: PowerType = .humanPowered
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
@@ -79,7 +80,7 @@ struct SessionStartView: View {
 
                         SportCategoryPickerView(selectedCategory: $selectedCategory)
                             .onChange(of: selectedCategory) { _, newCategory in
-                                if newCategory == .inline {
+                                if newCategory == .inline || newCategory == .snow {
                                     selectedPowerType = .humanPowered
                                 }
                                 clearIncompatibleSelectedEquipment()
@@ -212,6 +213,7 @@ struct SessionStartView: View {
         }
         .onChange(of: selectedBoardMode) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedInlineMode) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: selectedSnowDiscipline) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedPowerType) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: equipmentManager.equipment) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: spotsManager.spots) { _, _ in clearUnavailableSelectedSpot() }
@@ -341,6 +343,11 @@ struct SessionStartView: View {
                     showPaywall(for: feature)
                 }
             )
+        case .snow:
+            SnowDisciplineSelectorView(
+                selectedDiscipline: $selectedSnowDiscipline,
+                accentColor: selectedCategory.accentColor
+            )
         }
     }
 
@@ -350,6 +357,8 @@ struct SessionStartView: View {
             return .skateboard(selectedBoardMode)
         case .inline:
             return .inline(selectedInlineMode)
+        case .snow:
+            return .snow(selectedSnowDiscipline)
         }
     }
 

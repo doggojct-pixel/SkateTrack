@@ -378,9 +378,13 @@ struct LiveHUDView: View {
 
     @ViewBuilder
     private var liveModeIcon: some View {
-        if isInlineMode {
+        switch sessionRecording.state.selectedSportMode {
+        case .inline(_)?:
             InlineSkateGlyphView(color: accentColor, size: 24)
-        } else {
+        case .snow(_)?:
+            Image(systemName: "snowflake")
+                .foregroundStyle(accentColor)
+        case .skateboard(_)?, nil:
             Image(systemName: "figure.skateboarding")
                 .foregroundStyle(accentColor)
         }
@@ -432,6 +436,8 @@ struct LiveHUDView: View {
             return SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 

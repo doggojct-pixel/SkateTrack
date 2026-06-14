@@ -7,6 +7,7 @@ import SwiftUI
 enum SessionStartSportCategory: String, CaseIterable, Identifiable {
     case skateboard
     case inline
+    case snow
 
     var id: String { rawValue }
 
@@ -16,6 +17,8 @@ enum SessionStartSportCategory: String, CaseIterable, Identifiable {
             return "sport.skateboard"
         case .inline:
             return "sport.inline"
+        case .snow:
+            return "snow.sport.title"
         }
     }
 
@@ -25,6 +28,8 @@ enum SessionStartSportCategory: String, CaseIterable, Identifiable {
             return "session.start.skateboard.subtitle"
         case .inline:
             return "session.start.inline.subtitle"
+        case .snow:
+            return "session.start.snow.subtitle"
         }
     }
 
@@ -34,6 +39,8 @@ enum SessionStartSportCategory: String, CaseIterable, Identifiable {
             return "figure.skateboarding"
         case .inline:
             return "skateTrack.inlineGlyph"
+        case .snow:
+            return "snowflake"
         }
     }
 
@@ -43,6 +50,8 @@ enum SessionStartSportCategory: String, CaseIterable, Identifiable {
             return SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 }
@@ -59,6 +68,8 @@ enum SkateTrackSessionStartColors {
     static let amber = Color(red: 0.961, green: 0.651, blue: 0.137)
     static let purple = Color(red: 0.608, green: 0.361, blue: 0.965)
     static let blueCold = Color(red: 0.231, green: 0.510, blue: 0.965)
+    static let ice = Color(red: 0.455, green: 0.910, blue: 1.000)
+    static let mint = Color(red: 0.431, green: 0.906, blue: 0.718)
     static let green = Color(red: 0.063, green: 0.725, blue: 0.506)
     static let textSecondary = Color(red: 0.659, green: 0.698, blue: 0.800)
     static let textTertiary = Color(red: 0.420, green: 0.478, blue: 0.600)

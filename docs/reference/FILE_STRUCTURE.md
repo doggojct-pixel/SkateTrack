@@ -939,3 +939,20 @@ scripts/verify_session_share_photos.py
 ```
 
 The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active historical decision index.
+## Phase 1c Snow Mode Production Branch
+
+| Item | Status | Notes |
+|---|---|---|
+| `feature/snow-mode` | Active sidequest branch | Created from `develop` after Task-030b while Task-030c GPS work remains isolated in a separate worktree. |
+| Snow-Task-001 | Complete in this branch | Adds production `SnowDiscipline`, `SportMode.snow(SnowDiscipline)`, localized Session Start selection, explicit `.snow` switch handling, `docs/process/PHASE_1C_SNOW_AGENT_STATE.md`, and `scripts/verify_snow_sport_enum.py`. |
+| Snow-Task-002+ | Pending | Core Data schema, migration, SnowSegment / SnowRun models, classifier, RunBoundaryDetector, UI real hooks, package compatibility, and fixtures are not part of Snow-Task-001. |
+
+### Snow-Task-001 Source Files
+
+| File | Purpose |
+|---|---|
+| `Shared/Models/SnowDiscipline.swift` | Production Snow Mode sub-discipline enum. |
+| `Shared/Models/SportMode.swift` | Existing sport enum extended with `SportMode.snow(SnowDiscipline)`. |
+| `iOS/Features/SessionRecording/SnowDisciplineSelectorView.swift` | Minimal Session Start selector for snowboard / skiing. |
+| `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` | Production Phase 1c agent state record. |
+| `scripts/verify_snow_sport_enum.py` | Snow sport enum / switch audit gate. |

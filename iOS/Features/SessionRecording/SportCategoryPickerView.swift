@@ -38,6 +38,10 @@ struct SportCategoryPickerView: View {
                 .foregroundStyle(category.accentColor)
         case .inline:
             InlineSkateGlyphView(color: category.accentColor, size: 34)
+        case .snow:
+            Image(systemName: category.iconName)
+                .font(.system(size: 25, weight: .black))
+                .foregroundStyle(category.accentColor)
         }
     }
 

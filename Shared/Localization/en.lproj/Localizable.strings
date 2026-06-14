@@ -11,6 +11,9 @@
 /* Sport modes */
 "sport.skateboard" = "Skateboard";
 "sport.inline" = "Inline Skating";
+"snow.sport.title" = "Snow Sports";
+"snow.discipline.snowboard" = "Snowboard";
+"snow.discipline.skiing" = "Skiing";
 "sport.mode.streetpark" = "Street / Park";
 "sport.mode.longboard" = "Longboard";
 "sport.mode.surfskate" = "Surfskate";
@@ -82,6 +85,7 @@
 "session.start.selectSport" = "Select Sport";
 "session.start.skateboard.subtitle" = "4 modes";
 "session.start.inline.subtitle" = "4 modes";
+"session.start.snow.subtitle" = "Snowboard / skiing";
 "session.start.cta" = "Start Session";
 "session.start.unlockToStart" = "Upgrade to start this mode";
 "mode.tag.speed" = "Speed";
@@ -99,6 +103,10 @@
 "mode.description.inline.fitness" = "Fitness, speed intervals, and endurance skating.";
 "mode.description.inline.aggressive" = "Park, street, grinds, and aggressive inline sessions.";
 "mode.description.inline.slalom" = "Cone lines, rhythm, edge control, and precision drills.";
+"mode.description.snow.snowboard" = "Run-based Snow Mode for snowboard sessions, lift exclusions, and vertical tracking.";
+"mode.description.snow.skiing" = "Run-based Snow Mode for skiing sessions, lift exclusions, and vertical tracking.";
+"mode.tag.snowboard" = "Snowboard";
+"mode.tag.skiing" = "Skiing";
 "power.human" = "Human";
 "power.electric" = "Electric";
 "power.type.title" = "Power Type";
@@ -235,6 +243,7 @@
 "history.filter.all" = "All";
 "history.filter.skate" = "Skate";
 "history.filter.inline" = "Inline";
+"history.filter.snow" = "Snow";
 "history.filter.electric" = "Electric";
 "history.empty.title" = "No sessions yet";
 "history.empty.subtitle" = "Start your first ride and it will appear here.";

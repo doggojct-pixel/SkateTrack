@@ -140,7 +140,11 @@ struct EquipmentProfile: Identifiable, Codable, Sendable, Equatable {
             return equipmentMode == sessionMode && powerType == sessionPowerType
         case let (.inline(equipmentMode), .inline(sessionMode)):
             return equipmentMode == sessionMode && powerType == .humanPowered && sessionPowerType == .humanPowered
-        case (.skateboard, .inline), (.inline, .skateboard):
+        case (.snow, .snow):
+            return false
+        case (.skateboard, .inline), (.skateboard, .snow),
+             (.inline, .skateboard), (.inline, .snow),
+             (.snow, .skateboard), (.snow, .inline):
             return false
         }
     }
@@ -151,6 +155,10 @@ struct EquipmentProfile: Identifiable, Codable, Sendable, Equatable {
             return .skateboard
         case .inline:
             return .inlineSkates
+        case .snow:
+            // Snow gear is intentionally not modeled in Snow-Task-001.
+            // Snow sessions can start without equipment attribution until a later gear task adds a dedicated type.
+            return .skateboard
         }
     }
 
@@ -236,7 +244,8 @@ extension EquipmentType {
         switch (self, sportMode) {
         case (.skateboard, .skateboard), (.inlineSkates, .inline):
             return true
-        case (.skateboard, .inline), (.inlineSkates, .skateboard):
+        case (.skateboard, .inline), (.skateboard, .snow),
+             (.inlineSkates, .skateboard), (.inlineSkates, .snow):
             return false
         }
     }
