@@ -11,6 +11,21 @@ enum SessionStartSportCategory: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Snow Mode is a production enum case, but its normal user-facing entry is controlled
+    /// by a DEBUG-only runtime toggle until Snow-Task-002 through Snow-Task-009 finish
+    /// the production data path. Release builds always hide the Snow entry.
+    static func userFacingCases(isSnowEntryEnabled: Bool) -> [SessionStartSportCategory] {
+        #if DEBUG
+        return isSnowEntryEnabled ? allCases : allCases.filter { $0 != .snow }
+        #else
+        return allCases.filter { $0 != .snow }
+        #endif
+    }
+
+    static var releaseSafeCases: [SessionStartSportCategory] {
+        allCases.filter { $0 != .snow }
+    }
+
     var titleKey: String {
         switch self {
         case .skateboard:

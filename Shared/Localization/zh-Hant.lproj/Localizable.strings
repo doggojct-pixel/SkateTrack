@@ -182,6 +182,12 @@
 "debug.tools.demoSpeed.toggle" = "下一次 Session 使用 Demo 速度";
 "debug.tools.demoSpeed.idleHint" = "一般 Debug 執行現在會使用真實 GPS / 感測器資料，只有展示 UI 時才開啟。";
 "debug.tools.demoSpeed.activeHint" = "請先結束目前 Session，再切換 Demo 速度模式。";
+"debug.tools.snowMode.title" = "Snow Mode Debug 入口";
+"debug.tools.snowMode.description" = "控制 Snow Mode 運動卡片是否出現在 DEBUG build 的滑行開始畫面。Release build 會先隱藏此入口，直到正式雪地資料路徑完成。";
+"debug.tools.snowMode.entryHint" = "在 Snow-Task-002 到 Snow-Task-009 尚未完成前，用這個開關控制滑行開始畫面是否顯示 Snow Mode 卡片。";
+"debug.tools.snowMode.entryDisabledHint" = "滑雪模式目前會從滑行開始畫面隱藏；只有要測試雪地入口時才打開。";
+"debug.tools.snowMode.entryEnabledHint" = "這個 DEBUG build 的滑行開始畫面會顯示滑雪模式；底層仍使用正式 SportMode.snow。";
+"debug.tools.snowMode.toggle" = "在滑行頁面顯示滑雪模式";
 "debug.tools.subscription.description" = "在 Debug 版本中覆寫訂閱者權限，用來測試付費牆與鎖定模式。";
 "debug.tools.resetContacts.title" = "緊急聯絡人";
 "debug.tools.resetContacts.description" = "清除本機緊急聯絡人測試資料，不影響正式儲存架構。";

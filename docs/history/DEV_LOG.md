@@ -1597,3 +1597,21 @@ This log is append-only. Do not delete or overwrite old entries.
 ### Validation Notes
 - Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py` after applying this task.
 - Snow-Task-001 verification token: production snow sport enum integrated.
+
+
+## 2026-06-14 — Snow-Task-001a Debug-gated Snow Mode Entry
+
+### Completed
+- Kept production `SportMode.snow(SnowDiscipline)` and `SnowDiscipline` available for Snow-Task-002+ while hiding the normal user-facing Snow category from Release builds.
+- Added `SessionStartSportCategory.userFacingCases` so DEBUG builds can still exercise Snow / Snowboard / Skiing from Session Start, while Release builds show only the currently supported public sport categories.
+- Added a Debug Tools note clarifying that the Snow entry is DEBUG-only until Snow-Task-002 through Snow-Task-009 complete the production data path.
+- Added `scripts/verify_snow_task_001a_debug_gate.py` to guard against accidentally exposing the Snow entry publicly before the production schema, classifier, detector, package, and fixture tasks are complete.
+
+### Scope Boundary
+- Snow-Task-001a does not remove or wrap `SportMode.snow` in `#if DEBUG`; the production enum remains available for follow-up data-model work.
+- No `SnowPrototype*` namespace, WatchBridge wiring, Core Data migration, package compatibility, classifier, or RunBoundaryDetector work was added in this gate.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Snow-Task-001a verification token: snow mode public entry debug-gated.
+Snow-Task-001b verification token: snow mode entry controlled by debug toggle.

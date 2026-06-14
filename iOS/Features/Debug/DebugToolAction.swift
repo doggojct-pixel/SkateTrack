@@ -10,6 +10,7 @@ enum DebugToolAction: String, Identifiable, Sendable {
     case simulateFallAlert
     case enableDemoSpeedSession
     case disableDemoSpeedSession
+    case toggleSnowModeEntry
     case resetEmergencyContacts
 
     var id: String { rawValue }
@@ -22,6 +23,8 @@ enum DebugToolAction: String, Identifiable, Sendable {
             return "debug-tools-simulate-fall-button"
         case .enableDemoSpeedSession, .disableDemoSpeedSession:
             return "debug-tools-demo-speed-toggle"
+        case .toggleSnowModeEntry:
+            return "debug-tools-snow-mode-entry-toggle"
         case .resetEmergencyContacts:
             return "debug-tools-reset-emergency-contacts-button"
         }

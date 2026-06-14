@@ -90,6 +90,7 @@ for token in [
     "fallDetection.actions.simulateFallAlert",
     "SubscriptionDebugPanel(subscriptionStatus:",
     "emergencyContactStore.clearContacts()",
+    "DebugToolAction.toggleSnowModeEntry.accessibilityIdentifier",
     "debug-tools-panel",
 ]:
     if token not in panel_text:

@@ -1,6 +1,6 @@
 // [協作區] SnowDisciplineSelectorView.swift
-// 用途：在正式 Session Start 流程中選擇 Snow Mode 的 snowboard / skiing 子類型。
-// 委派至：SessionStartView 產生 SportMode.snow；後續 Snow-Task-005 會接上正式 Snow HUD。
+// 用途：在 DEBUG-only Session Start Snow 入口中選擇 snowboard / skiing 子類型。
+// 委派至：SessionStartView 產生 production SportMode.snow；一般使用者入口待後續 Snow tasks 完成後再開放。
 
 import SwiftUI
 

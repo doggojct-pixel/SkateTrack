@@ -60,3 +60,6 @@ Task-030b verification token: documentation index consolidated.
 
 - `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the active `feature/snow-mode` production implementation boundary. It is separate from the earlier Snow prototype branch and must be read before Snow-Task-002+.
 - Snow-Task-001 verification token: production snow sport enum integrated.
+- Snow-Task-001a verification token: snow mode public entry debug-gated. Release builds must not expose the Snow Session Start entry until the later production snow tasks are complete.
+
+- `scripts/verify_snow_task_001b_debug_toggle.py` — Verifies DEBUG toggle gating for the Snow Mode Ride start entry.

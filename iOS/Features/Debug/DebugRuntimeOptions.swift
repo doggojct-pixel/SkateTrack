@@ -10,8 +10,17 @@ import Foundation
 final class DebugRuntimeOptions: ObservableObject {
     static let shared = DebugRuntimeOptions()
 
-    @Published var isDebugToolsPresented = false
+    static let snowModeEntryUserDefaultsKey = "skateTrack.debug.snowModeEntryEnabled"
 
-    private init() {}
+    @Published var isDebugToolsPresented = false
+    @Published var isSnowModeEntryEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(isSnowModeEntryEnabled, forKey: Self.snowModeEntryUserDefaultsKey)
+        }
+    }
+
+    private init() {
+        isSnowModeEntryEnabled = UserDefaults.standard.bool(forKey: Self.snowModeEntryUserDefaultsKey)
+    }
 }
 #endif

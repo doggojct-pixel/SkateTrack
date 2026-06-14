@@ -182,6 +182,12 @@
 "debug.tools.demoSpeed.toggle" = "Enable demo speed for next session";
 "debug.tools.demoSpeed.idleHint" = "Normal Debug runs now use real GPS / sensor data. Turn this on only for UI demos.";
 "debug.tools.demoSpeed.activeHint" = "End the current session before changing demo speed mode.";
+"debug.tools.snowMode.title" = "Snow Mode Debug Entry";
+"debug.tools.snowMode.description" = "Controls whether the Snow Mode sport card appears on the Ride start screen in DEBUG builds. Release builds keep this entry hidden until the production snow data path is complete.";
+"debug.tools.snowMode.entryHint" = "Use this switch to expose or hide the Snow Mode card on the Ride start screen while Snow-Task-002 through Snow-Task-009 are still in progress.";
+"debug.tools.snowMode.entryDisabledHint" = "Snow Mode is hidden from the Ride start screen. Turn this on only when you want to test the snow entry.";
+"debug.tools.snowMode.entryEnabledHint" = "Snow Mode is visible on the Ride start screen in this DEBUG build. It still uses the production SportMode.snow foundation.";
+"debug.tools.snowMode.toggle" = "Show Snow Mode on Ride start screen";
 "debug.tools.subscription.description" = "Override subscriber access in Debug builds for paywall and gated-mode testing.";
 "debug.tools.resetContacts.title" = "Emergency Contacts";
 "debug.tools.resetContacts.description" = "Clear local emergency contact test data without affecting production storage architecture.";

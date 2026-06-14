@@ -276,7 +276,7 @@ SkateTrack/
 │   │   │   ├── SessionStartHeaderMetricsView.swift # [協作區] Split Session Start title/header, hidden root navigation anchor, and preview metric strip, keeping SessionStartView under the file-size guardrail.
 │   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment, local Spot selection, and measured sticky root-navigation positioning.
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
-│   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
+│   │   │   ├── SportCategoryPickerView.swift       # [協作區] Public sport category picker using `userFacingCases`; Snow remains DEBUG-only until later Phase 1c tasks complete.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
 │   │   │   └── TiltIndicatorView.swift             # [協作區] Conservative phone-posture card; does not claim calibrated board tilt in Phase 1a.
 │   │   ├── Subscription/                           # [協作區] Task-016b Paywall and locked feature UI.
@@ -944,7 +944,7 @@ The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active h
 | Item | Status | Notes |
 |---|---|---|
 | `feature/snow-mode` | Active sidequest branch | Created from `develop` after Task-030b while Task-030c GPS work remains isolated in a separate worktree. |
-| Snow-Task-001 | Complete in this branch | Adds production `SnowDiscipline`, `SportMode.snow(SnowDiscipline)`, localized Session Start selection, explicit `.snow` switch handling, `docs/process/PHASE_1C_SNOW_AGENT_STATE.md`, and `scripts/verify_snow_sport_enum.py`. |
+| Snow-Task-001 | Complete in this branch | Adds production `SnowDiscipline`, `SportMode.snow(SnowDiscipline)`, localized Session Start selection, explicit `.snow` switch handling, `docs/process/PHASE_1C_SNOW_AGENT_STATE.md`, and `scripts/verify_snow_sport_enum.py` and `scripts/verify_snow_task_001a_debug_gate.py`. |
 | Snow-Task-002+ | Pending | Core Data schema, migration, SnowSegment / SnowRun models, classifier, RunBoundaryDetector, UI real hooks, package compatibility, and fixtures are not part of Snow-Task-001. |
 
 ### Snow-Task-001 Source Files
@@ -955,4 +955,6 @@ The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active h
 | `Shared/Models/SportMode.swift` | Existing sport enum extended with `SportMode.snow(SnowDiscipline)`. |
 | `iOS/Features/SessionRecording/SnowDisciplineSelectorView.swift` | Minimal Session Start selector for snowboard / skiing. |
 | `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` | Production Phase 1c agent state record. |
-| `scripts/verify_snow_sport_enum.py` | Snow sport enum / switch audit gate. |
+| `scripts/verify_snow_sport_enum.py` and `scripts/verify_snow_task_001a_debug_gate.py` | Snow sport enum / switch audit gate. |
+
+- `scripts/verify_snow_task_001b_debug_toggle.py` — Verifies DEBUG toggle gating for the Snow Mode Ride start entry.

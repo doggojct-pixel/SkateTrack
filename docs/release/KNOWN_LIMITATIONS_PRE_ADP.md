@@ -108,6 +108,12 @@ This file replaces scattered pre-ADP limitation notes from older ADRs. Each item
 Task-030b verification token: consolidated pre-ADP limitations.
 ## Phase 1c Snow Mode Follow-up Boundary
 
-Snow-Task-001 only integrates the production sport enum and preflight state. Snow data schema, classifier logic, RunBoundaryDetector, package compatibility, HealthKit export, and real WatchBridge wiring remain deferred to later Snow tasks. This boundary prevents overclaiming Snow Mode support before Snow-Task-002 through Snow-Task-009 are complete.
+Snow-Task-001 integrates the production sport enum and preflight state. Snow-Task-001a keeps the normal user-facing Snow entry DEBUG-only while the production snow data path is incomplete. Snow data schema, classifier logic, RunBoundaryDetector, package compatibility, HealthKit export, and real WatchBridge wiring remain deferred to later Snow tasks. This boundary prevents overclaiming Snow Mode support before Snow-Task-002 through Snow-Task-009 are complete.
 
 Snow-Task-001 verification token: production snow sport enum integrated.
+Snow-Task-001a verification token: snow mode public entry debug-gated and controlled by Debug Tools toggle.
+
+
+### Snow-Task-001b Debug Entry Toggle
+- Snow Mode remains production enum code, but the Ride start card is hidden unless the DEBUG Snow Mode entry toggle is enabled.
+- Snow-Task-001b verification token: snow mode entry controlled by debug toggle.

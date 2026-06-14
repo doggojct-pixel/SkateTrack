@@ -182,6 +182,12 @@
 "debug.tools.demoSpeed.toggle" = "次のセッションでデモ速度を有効化";
 "debug.tools.demoSpeed.idleHint" = "通常の Debug 実行では実際の GPS / センサーデータを使用します。UI デモ時のみオンにしてください。";
 "debug.tools.demoSpeed.activeHint" = "デモ速度モードを変更する前に現在のセッションを終了してください。";
+"debug.tools.snowMode.title" = "Snow Mode デバッグ入口";
+"debug.tools.snowMode.description" = "DEBUG ビルドの Ride 開始画面に Snow Mode のスポーツカードを表示するかどうかを制御します。正式な雪上データ経路が完成するまで、Release ビルドでは非表示のままです。";
+"debug.tools.snowMode.entryHint" = "Snow-Task-002 から Snow-Task-009 が進行中の間、このスイッチで Ride 開始画面の Snow Mode カード表示を切り替えます。";
+"debug.tools.snowMode.entryDisabledHint" = "Snow Mode は Ride 開始画面から非表示です。雪上入口をテストするときだけオンにしてください。";
+"debug.tools.snowMode.entryEnabledHint" = "この DEBUG ビルドでは Ride 開始画面に Snow Mode が表示されます。内部では正式な SportMode.snow 基盤を使用します。";
+"debug.tools.snowMode.toggle" = "Ride 開始画面に Snow Mode を表示";
 "debug.tools.subscription.description" = "この機能は SkateTrack Pro 向けに準備されています。現在はローカルまたは DEBUG シミュレーションで検証します。";
 "debug.tools.resetContacts.title" = "緊急連絡先";
 "debug.tools.resetContacts.description" = "この情報はローカルで処理され、現在のビルドでは外部サービスへ同期されません。";
