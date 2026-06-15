@@ -981,3 +981,11 @@ scripts/verify_snow_schema.py
 `PersistenceController.makeManagedObjectModel()` remains the runtime Core Data source of truth. `Shared/Persistence/SkateTrackDataModel.xcdatamodeld` is updated as the schema reference with additive `PersistedSnowRun` and `PersistedSnowSegment` entities.
 
 Snow-Task-002 verification token: production snow schema and repository boundary integrated.
+
+## Phase 1c Snow Classifier Files
+
+- `Shared/Models/SnowClassifierConfig.swift` — centralized Snow-Task-003 v0 classifier thresholds.
+- `Shared/Models/SnowSegmentClassification.swift` — classifier result value type for a `MotionSample` window.
+- `Shared/Models/SnowSegmentClassifier.swift` — production v0 rule-based classifier; no `SnowPrototype*` dependency.
+- `Tests/iOSTests/SnowSegmentClassifierTests.swift` — fixture tests and fixture-result logging for Snow-Task-003.
+- `scripts/verify_snow_classifier.py` — Snow-Task-003 verification gate.

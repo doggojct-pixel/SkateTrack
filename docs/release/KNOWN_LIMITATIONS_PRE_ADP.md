@@ -125,3 +125,15 @@ Snow-Task-001a verification token: snow mode public entry debug-gated and contro
 - Snow-Task-002: production Snow value types, additive Core Data schema, repository, and `useSnowSession` data boundary exist.
 - Still deferred: `SnowSegmentClassifier`, `RunBoundaryDetector`, Snow-specific production UI wiring, `.skatetrack` snow package compatibility, QA fixture generation, HealthKit snow export, and real WatchBridge snow wiring.
 - Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040.
+
+### Snow-Task-003 v0 classifier input limitations
+
+Snow-Task-003 v0 classifier intentionally uses the existing `MotionSample` shape without schema changes. `MotionSample` does not yet persist horizontalAccuracy, verticalAccuracy, heading/course, GPS altitude, or barometer source metadata. Because of that:
+
+- Accuracy-aware classification cannot yet reject samples directly by per-sample horizontal / vertical accuracy.
+- GPS altitude vs barometer cross-validation is not available in v0.
+- Altitude smoothing uses the existing barometer-relative `altitudeMeters` stream.
+- Heading is not stored on `MotionSample`; bearing is derived from consecutive GPS coordinates when coordinates are available.
+- Gondola-like downhill movement with stable derived bearing and low IMU motion energy is classified as `unknown` instead of `downhillRun` to avoid inflating ski distance.
+
+This limitation is intentional for Snow-Task-003. Future classifier calibration may add backward-compatible optional sensor metadata only after a separate design review.

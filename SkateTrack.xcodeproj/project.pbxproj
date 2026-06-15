@@ -47,6 +47,16 @@
 		31C210000000000000000102 /* SnowSessionEntityMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C210000000000000000002 /* SnowSessionEntityMapper.swift */; };
 		31C220000000000000000101 /* useSnowSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C220000000000000000001 /* useSnowSession.swift */; };
 		31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C230000000000000000001 /* SnowSessionRepositoryTests.swift */; };
+		32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C310000000000000000001 /* SnowSegmentClassifierTests.swift */; };
 		12A300000000000000000107 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000108 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000109 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
@@ -351,6 +361,10 @@
 		31C210000000000000000002 /* SnowSessionEntityMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionEntityMapper.swift; sourceTree = "<group>"; };
 		31C220000000000000000001 /* useSnowSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowSession.swift; sourceTree = "<group>"; };
 		31C230000000000000000001 /* SnowSessionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionRepositoryTests.swift; sourceTree = "<group>"; };
+		32C300000000000000000001 /* SnowClassifierConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowClassifierConfig.swift; sourceTree = "<group>"; };
+		32C300000000000000000002 /* SnowSegmentClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassification.swift; sourceTree = "<group>"; };
+		32C300000000000000000003 /* SnowSegmentClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifier.swift; sourceTree = "<group>"; };
+		32C310000000000000000001 /* SnowSegmentClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifierTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -647,6 +661,9 @@
 				31C200000000000000000004 /* SnowDistanceBreakdown.swift */,
 				31C200000000000000000005 /* SnowVerticalMetrics.swift */,
 				31C200000000000000000006 /* SnowSessionState.swift */,
+				32C300000000000000000001 /* SnowClassifierConfig.swift */,
+				32C300000000000000000002 /* SnowSegmentClassification.swift */,
+				32C300000000000000000003 /* SnowSegmentClassifier.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
@@ -751,6 +768,7 @@
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 				31C230000000000000000001 /* SnowSessionRepositoryTests.swift */,
+				32C310000000000000000001 /* SnowSegmentClassifierTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1373,6 +1391,7 @@
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 				31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */,
+				32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1578,6 +1597,9 @@
 				31C20000000000000000010A /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010D /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000110 /* SnowSessionState.swift in Sources */,
+				32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
@@ -1622,6 +1644,9 @@
 				31C20000000000000000010C /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010F /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000112 /* SnowSessionState.swift in Sources */,
+				32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */,
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
@@ -1669,6 +1694,9 @@
 				31C20000000000000000010B /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010E /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000111 /* SnowSessionState.swift in Sources */,
+				32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,

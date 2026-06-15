@@ -1634,3 +1634,20 @@ Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
 ### Validation Notes
 - Run `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_snow_task_001b_debug_toggle.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
 - Snow-Task-002 verification token: production snow schema and repository boundary integrated.
+
+## 2026-06-15 — Snow-Task-003 Snow Segment Classifier Foundation
+
+### Completed
+- Added `SnowClassifierConfig.productionV0` with centralized v0 thresholds for altitude smoothing, trend windows, hysteresis, downhill, ascent, stopped, walking, gondola, motion-energy, and derived-heading checks.
+- Added `SnowSegmentClassification` and `SnowSegmentClassifier` as a rule-based classifier over existing `MotionSample` windows.
+- Added fixture-driven tests covering clean downhill, lift ascent, gondola ascent, surface lift ascent, stopped, walking, noisy downhill altitude, ambiguous gondola-like descent, and missing-altitude movement.
+- Added `scripts/verify_snow_classifier.py` to verify classifier registration, fixture coverage, no `SnowPrototype*`, no `Shared/WatchBridge/*`, no `.skatetrack` samples, and no `MotionSample` schema expansion.
+
+### Scope Boundary
+- Snow-Task-003 does not implement the run-boundary state machine, Snow UI, package compatibility, WatchBridge wiring, or `.skatetrack` fixtures.
+- Snow-Task-003 does not modify `MotionSample` or Snow-Task-002 value types.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Run `xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-iOSTests -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test` to capture fixture result lines beginning with `SnowClassifierFixtureResult`.
+- Snow-Task-003 verification token: production snow segment classifier foundation integrated.

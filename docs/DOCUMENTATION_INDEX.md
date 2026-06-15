@@ -66,3 +66,9 @@ Task-030b verification token: documentation index consolidated.
 
 - Snow-Task-002 verification token: production snow schema and repository boundary integrated. The runtime Core Data model remains programmatic, with `.xcdatamodeld` maintained as a schema reference.
 - `scripts/verify_snow_schema.py` — Verifies Snow production value types, Core Data entities, repository, `useSnowSession`, localization, project registration, and no prototype / WatchBridge / `.skatetrack` contamination.
+
+### Phase 1c Snow classifier foundation
+
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the active Snow-Task-003 classifier boundary and v0 input limitations.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` records the v0 classifier limitations caused by the current `MotionSample` shape.
+- `scripts/verify_snow_classifier.py` verifies the Snow-Task-003 production classifier foundation.

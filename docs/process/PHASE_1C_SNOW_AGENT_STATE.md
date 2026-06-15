@@ -3,7 +3,7 @@
 **Status:** Active for `feature/snow-mode` production implementation
 **Branch:** `feature/snow-mode`
 **Baseline:** `develop` at Task-030b documentation consolidation
-**Current Task:** Snow-Task-002 — Snow session value types, Core Data schema, repository, and useSnowSession boundary
+**Current Task:** Snow-Task-003 — Snow segment classifier foundation
 
 ## Source of Truth
 
@@ -90,3 +90,27 @@ Completed Snow-Task-002 scope:
 Snow-Task-002 intentionally does not implement `SnowSegmentClassifier`, `RunBoundaryDetector`, UI, package compatibility, fixtures, HealthKit export, or WatchBridge wiring.
 
 Snow-Task-002 verification token: production snow schema and repository boundary integrated.
+
+
+## Snow-Task-003 Production Classifier Foundation
+
+Snow-Task-003 adds a v0 rule-based classifier over existing `MotionSample` windows without modifying `MotionSample` or the Snow-Task-002 value types.
+
+Completed Snow-Task-003 scope:
+
+- `SnowClassifierConfig.productionV0` centralizes all agreed threshold values.
+- `SnowSegmentClassification` captures classifier output, confidence, trend metrics, derived heading standard deviation, motion energy, route distance, and reason codes.
+- `SnowSegmentClassifier` classifies downhill, lift ascent, gondola ascent, surface lift ascent, flat traverse, walking, stopped, and unknown from existing `MotionSample` fields.
+- Fixture tests cover clean downhill, lift ascent, gondola ascent, surface lift ascent, stopped, walking, noisy downhill altitude, ambiguous gondola-like descent, and missing-altitude movement.
+- `scripts/verify_snow_classifier.py` verifies classifier registration, config thresholds, fixture coverage, known limitations, no `SnowPrototype*`, no `Shared/WatchBridge/*`, no `.skatetrack`, and no `MotionSample` schema expansion.
+
+Known v0 classifier limitations:
+
+- `MotionSample` does not yet persist horizontalAccuracy, verticalAccuracy, heading/course, GPS altitude, or barometer source metadata.
+- GPS altitude vs barometer cross-validation is not available in v0.
+- Heading standard deviation is derived from consecutive GPS coordinates when possible.
+- Stable-heading / low-motion downhill-like movement is classified as `unknown` to avoid over-counting gondola-like movement as ski distance.
+
+Snow-Task-003 intentionally does not implement the run-boundary state machine, UI, package compatibility, WatchBridge wiring, or fixture `.skatetrack` packages.
+
+Snow-Task-003 verification token: production snow segment classifier foundation integrated.
