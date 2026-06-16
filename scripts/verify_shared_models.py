@@ -19,6 +19,11 @@ REQUIRED_FILES = [
     ROOT / "Shared/Models/SnowClassifierConfig.swift",
     ROOT / "Shared/Models/SnowSegmentClassification.swift",
     ROOT / "Shared/Models/SnowSegmentClassifier.swift",
+    ROOT / "Shared/Models/RunBoundaryState.swift",
+    ROOT / "Shared/Models/RunBoundaryConfig.swift",
+    ROOT / "Shared/Models/RunBoundarySnapshot.swift",
+    ROOT / "Shared/Models/RunBoundaryEvent.swift",
+    ROOT / "Shared/Models/RunBoundaryDetector.swift",
     ROOT / "Shared/Models/PowerType.swift",
     ROOT / "Shared/Models/MotionSample.swift",
     ROOT / "Shared/Models/TrickEvent.swift",
@@ -56,7 +61,7 @@ def main() -> None:
             fail(f"UI framework import found: {file_path.relative_to(ROOT)}")
 
     model_text = "\n".join(path.read_text(encoding="utf-8") for path in REQUIRED_FILES)
-    for token in ["Codable", "Sendable", "Identifiable", "UUID", "SnowDiscipline", "SnowSegmentType", "SnowRun", "SnowDistanceBreakdown", "SnowClassifierConfig", "SnowSegmentClassifier", "isValid(for sportMode: SportMode)"]:
+    for token in ["Codable", "Sendable", "Identifiable", "UUID", "SnowDiscipline", "SnowSegmentType", "SnowRun", "SnowDistanceBreakdown", "SnowClassifierConfig", "SnowSegmentClassifier", "RunBoundaryDetector", "RunBoundaryState", "isValid(for sportMode: SportMode)"]:
         if token not in model_text:
             fail(f"expected token not found: {token}")
 

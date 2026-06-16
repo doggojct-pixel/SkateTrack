@@ -137,3 +137,13 @@ Snow-Task-003 v0 classifier intentionally uses the existing `MotionSample` shape
 - Gondola-like downhill movement with stable derived bearing and low IMU motion energy is classified as `unknown` instead of `downhillRun` to avoid inflating ski distance.
 
 This limitation is intentional for Snow-Task-003. Future classifier calibration may add backward-compatible optional sensor metadata only after a separate design review.
+
+### Snow-Task-004 v0 RunBoundaryDetector altitude endpoint limitation
+
+Snow-Task-004 v0 intentionally leaves `SnowSegment.startAltitudeMeters` and `SnowSegment.endAltitudeMeters` as `nil` when converting `SnowSegmentClassification` windows into production `SnowSegment` values. `SnowSegmentClassification` currently stores `altitudeDeltaMeters` for the classified window, but it does not preserve raw absolute altitude at the start and end of the window.
+
+As a result, the future Snow-Task-007 macOS elevation profile should treat Snow v0 elevation as an `altitudeDeltaMeters` accumulated estimate, not a true absolute-altitude profile. Absolute altitude start/end storage requires a later sensor-data design pass and should not be inferred in RunBoundaryDetector.
+
+Snow-Task-004 verification token: run boundary detector v0 uses delta-only altitude segments.
+
+Snow-Task-004 v0 explicit verification note: SnowSegment.startAltitudeMeters / endAltitudeMeters are nil in v0 RunBoundaryDetector output; Snow-Task-007 must use altitudeDeltaMeters accumulated estimate for Snow elevation preview until absolute altitude endpoints are added by a later approved task.

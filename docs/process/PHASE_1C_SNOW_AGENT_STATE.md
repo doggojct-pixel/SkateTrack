@@ -114,3 +114,15 @@ Known v0 classifier limitations:
 Snow-Task-003 intentionally does not implement the run-boundary state machine, UI, package compatibility, WatchBridge wiring, or fixture `.skatetrack` packages.
 
 Snow-Task-003 verification token: production snow segment classifier foundation integrated.
+
+## Snow-Task-004 RunBoundaryDetector State
+
+Snow-Task-004 adds the production run-boundary state machine on top of Snow-Task-003 classifier output. `RunBoundaryDetector` consumes streaming `SnowSegmentClassification` values and emits `RunBoundaryEvent` plus `RunBoundarySnapshot` data for future `useSnowSession` / Snow UI wiring.
+
+Boundaries:
+- `RunBoundaryDetector` is pure model-layer logic and does not call `SnowSessionRepository` directly.
+- `SnowSegmentClassifier`, `MotionSample`, and Snow-Task-002 value types remain unchanged.
+- `SnowSegment.startAltitudeMeters` / `endAltitudeMeters` remain nil in v0 because classifier output only provides `altitudeDeltaMeters`.
+- `hardTransportConfirmationSeconds` provides a fast-path run end for high-confidence lift / gondola / surface-lift segments.
+
+Snow-Task-004 verification token: pure RunBoundaryDetector state machine complete.

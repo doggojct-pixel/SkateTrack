@@ -57,6 +57,22 @@
 		32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
 		32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
 		32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C310000000000000000001 /* SnowSegmentClassifierTests.swift */; };
+		33C400000000000000000101 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000102 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000103 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000104 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000105 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000106 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C400000000000000000108 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C400000000000000000109 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010B /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010C /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C40000000000000000010F /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C410000000000000000001 /* RunBoundaryDetectorTests.swift */; };
 		12A300000000000000000107 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000108 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000109 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
@@ -365,6 +381,12 @@
 		32C300000000000000000002 /* SnowSegmentClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassification.swift; sourceTree = "<group>"; };
 		32C300000000000000000003 /* SnowSegmentClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifier.swift; sourceTree = "<group>"; };
 		32C310000000000000000001 /* SnowSegmentClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifierTests.swift; sourceTree = "<group>"; };
+		33C400000000000000000001 /* RunBoundaryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryState.swift; sourceTree = "<group>"; };
+		33C400000000000000000002 /* RunBoundaryConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryConfig.swift; sourceTree = "<group>"; };
+		33C400000000000000000003 /* RunBoundarySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundarySnapshot.swift; sourceTree = "<group>"; };
+		33C400000000000000000004 /* RunBoundaryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryEvent.swift; sourceTree = "<group>"; };
+		33C400000000000000000005 /* RunBoundaryDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetector.swift; sourceTree = "<group>"; };
+		33C410000000000000000001 /* RunBoundaryDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetectorTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -664,6 +686,11 @@
 				32C300000000000000000001 /* SnowClassifierConfig.swift */,
 				32C300000000000000000002 /* SnowSegmentClassification.swift */,
 				32C300000000000000000003 /* SnowSegmentClassifier.swift */,
+				33C400000000000000000001 /* RunBoundaryState.swift */,
+				33C400000000000000000002 /* RunBoundaryConfig.swift */,
+				33C400000000000000000003 /* RunBoundarySnapshot.swift */,
+				33C400000000000000000004 /* RunBoundaryEvent.swift */,
+				33C400000000000000000005 /* RunBoundaryDetector.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
@@ -769,6 +796,7 @@
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 				31C230000000000000000001 /* SnowSessionRepositoryTests.swift */,
 				32C310000000000000000001 /* SnowSegmentClassifierTests.swift */,
+				33C410000000000000000001 /* RunBoundaryDetectorTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1392,6 +1420,7 @@
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 				31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */,
 				32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */,
+				33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1600,6 +1629,11 @@
 				32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000101 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000104 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
@@ -1647,6 +1681,11 @@
 				32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000103 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000106 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000109 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010C /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010F /* RunBoundaryDetector.swift in Sources */,
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
@@ -1697,6 +1736,11 @@
 				32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000102 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000105 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000108 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010B /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,

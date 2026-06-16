@@ -72,3 +72,9 @@ Task-030b verification token: documentation index consolidated.
 - `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the active Snow-Task-003 classifier boundary and v0 input limitations.
 - `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` records the v0 classifier limitations caused by the current `MotionSample` shape.
 - `scripts/verify_snow_classifier.py` verifies the Snow-Task-003 production classifier foundation.
+
+### Snow-Task-004 Run Boundary Detector
+
+- `Shared/Models/RunBoundaryDetector.swift` and related `RunBoundary*` files implement the production Snow run-boundary state machine.
+- `scripts/verify_snow_run_boundary.py` validates the Snow-Task-004 boundaries and fast-path transport run ending.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` documents the v0 altitude endpoint limitation.

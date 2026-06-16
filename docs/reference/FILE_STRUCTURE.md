@@ -989,3 +989,13 @@ Snow-Task-002 verification token: production snow schema and repository boundary
 - `Shared/Models/SnowSegmentClassifier.swift` — production v0 rule-based classifier; no `SnowPrototype*` dependency.
 - `Tests/iOSTests/SnowSegmentClassifierTests.swift` — fixture tests and fixture-result logging for Snow-Task-003.
 - `scripts/verify_snow_classifier.py` — Snow-Task-003 verification gate.
+
+## Snow-Task-004 Run Boundary Files
+
+- `Shared/Models/RunBoundaryState.swift` — Snow run-boundary state enum (`idle`, `active`, `pendingEnd`, `between`).
+- `Shared/Models/RunBoundaryConfig.swift` — centralized v0 run-boundary timing and confidence thresholds.
+- `Shared/Models/RunBoundarySnapshot.swift` — live snapshot boundary for future Snow UI / `useSnowSession` integration.
+- `Shared/Models/RunBoundaryEvent.swift` — run started / run ended / state transition events.
+- `Shared/Models/RunBoundaryDetector.swift` — pure streaming state machine that consumes `SnowSegmentClassification` values.
+- `Tests/iOSTests/RunBoundaryDetectorTests.swift` — fixture coverage for state transitions and fast-path transport run endings.
+- `scripts/verify_snow_run_boundary.py` — Snow-Task-004 verification gate.

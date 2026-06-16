@@ -1651,3 +1651,14 @@ Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
 - Run `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
 - Run `xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-iOSTests -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test` to capture fixture result lines beginning with `SnowClassifierFixtureResult`.
 - Snow-Task-003 verification token: production snow segment classifier foundation integrated.
+
+## Snow-Task-004 — RunBoundaryDetector foundation
+
+- Added the production `RunBoundaryDetector` streaming state machine for Snow run boundaries.
+- Added `RunBoundaryState`, `RunBoundaryConfig`, `RunBoundarySnapshot`, and `RunBoundaryEvent` as production model-layer boundaries.
+- Added high-confidence lift/gondola/surface-lift fast-path run ending using `hardTransportEndConfidenceThreshold` and `hardTransportConfirmationSeconds`.
+- Added fixture tests for run start confirmation, short-stop resume, long-stop run end, high-confidence lift fast-path, pending-end cancellation, low-confidence unknown, and v0 altitude-endpoint limitations.
+- Kept `RunBoundaryDetector` pure and persistence-free; it does not call `SnowSessionRepository` directly.
+- Deferred Snow Live HUD, UI wiring, real WatchBridge wiring, and `.skatetrack` package compatibility to later Snow tasks.
+
+Snow-Task-004 verification token: RunBoundaryDetector state machine added without classifier/schema/WatchBridge scope creep.
