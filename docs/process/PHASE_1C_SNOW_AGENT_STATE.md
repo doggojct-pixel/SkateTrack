@@ -3,7 +3,7 @@
 **Status:** Active for `feature/snow-mode` production implementation
 **Branch:** `feature/snow-mode`
 **Baseline:** `develop` at Task-030b documentation consolidation
-**Current Task:** Snow-Task-003 — Snow segment classifier foundation
+**Current Task:** Snow-Task-005 complete — next planned task is Snow-Task-006a / Watch Snow UI boundary review
 
 ## Source of Truth
 
@@ -126,3 +126,35 @@ Boundaries:
 - `hardTransportConfirmationSeconds` provides a fast-path run end for high-confidence lift / gondola / surface-lift segments.
 
 Snow-Task-004 verification token: pure RunBoundaryDetector state machine complete.
+
+## Snow-Task-005 iPhone Snow UI State
+
+Snow-Task-005 adds the production iPhone Snow UI boundary on top of the Snow-Task-002 repository, Snow-Task-003 classifier, and Snow-Task-004 run-boundary detector.
+
+Completed scope:
+
+- `SnowLiveSessionConfig` defines the iPhone Snow live UI policy, including `lowConfidenceThreshold`.
+- `SnowLiveSessionConfig.productionV0.lowConfidenceThreshold` references `SnowClassifierConfig.productionV0.mediumConfidenceThreshold`; Snow HUD views and mappers must not hardcode confidence literals.
+- `SnowLiveSessionCoordinator` drives the verified classifier and detector from MotionSample windows without starting sensors itself.
+- `SessionRecordingCoordinator` remains the recording lifecycle owner and only forwards samples to Snow live processing for `.snow(...)` sessions.
+- `useSessionRecording` exposes `snowLiveState` and `snowLiveHUDState` for live iPhone UI rendering.
+- `useSnowSession` remains repository-backed for persisted Snow history.
+- `SnowHUDView` renders the four iPhone live states: downhill, lift / gondola, waiting, and low confidence.
+- `SnowDaySummaryView`, `SnowSegmentTimelineView`, and `SnowDistanceInspectorView` render repository-backed Snow summary surfaces.
+- `scripts/verify_snow_iphone_ui.py` verifies Snow-Task-005 files, config-driven lowConfidence policy, UI wiring, and scope guardrails.
+
+Snow-Task-005 boundaries:
+
+- Do not modify `RunBoundaryDetector`, `SnowSegmentClassifier`, `SnowClassifierConfig`, `MotionSample`, or Snow-Task-002 value types as part of Snow-Task-005.
+- Do not touch `Shared/WatchBridge/*` in Snow-Task-005.
+- Do not create `SnowPrototype*` production namespace.
+- Do not add `.skatetrack` sample files.
+
+Deferred from Snow-Task-005:
+
+- Manual correction persistence for `SnowSegment.manualOverride`.
+- WatchBridge real-data wiring and Watch low-confidence payload mapping until Snow-Task-006b after mainline Task-040.
+- True altitude confidence scoring until a later approved `MotionSample` metadata extension.
+- Live provisional segment timeline before `runEnded` because v0 detector finalizes segments at run-boundary events.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.

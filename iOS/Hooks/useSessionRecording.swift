@@ -22,6 +22,8 @@ struct SessionRecordingState: Equatable {
     var gpsSampleCount: Int
     var recentRouteCoordinates: [GeoCoordinate]
     var activeFallEvent: FallEvent?
+    var snowLiveState: SnowLiveSessionState
+    var snowLiveHUDState: SnowLiveHUDState
     var errorMessageKey: String?
 
     static let initial = SessionRecordingState(
@@ -41,6 +43,17 @@ struct SessionRecordingState: Equatable {
         gpsSampleCount: 0,
         recentRouteCoordinates: [],
         activeFallEvent: nil,
+        snowLiveState: .empty,
+        snowLiveHUDState: .waiting(
+            SnowWaitingHUDModel(
+                titleLocalizationKey: "snow.hud.waiting.title",
+                currentSegmentType: .unknown,
+                pendingEndElapsedSeconds: nil,
+                lastRunVerticalDropMeters: nil,
+                lastRunTopSpeedKmh: nil,
+                lastRunDurationSeconds: nil
+            )
+        ),
         errorMessageKey: nil
     )
 }
@@ -147,6 +160,21 @@ final class SessionRecordingViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] fallEvent in
                 self?.updateState { $0.activeFallEvent = fallEvent }
+            }
+            .store(in: &cancellables)
+
+        coordinator.snowLiveStatePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] snowState in
+                guard let self else { return }
+                self.updateState {
+                    $0.snowLiveState = snowState
+                    $0.snowLiveHUDState = SnowLiveHUDStateMapper.map(
+                        snowState: snowState,
+                        recordingState: $0,
+                        config: .productionV0
+                    )
+                }
             }
             .store(in: &cancellables)
 

@@ -59,12 +59,20 @@ struct LiveHUDView: View {
                                 .transition(.move(edge: .top).combined(with: .opacity))
                             }
 
-                            speedHero
-                            metricGrid
-                            lowerMetrics
+                            if isSnowMode {
+                                SnowHUDView(
+                                    hudState: sessionRecording.state.snowLiveHUDState,
+                                    recordingState: sessionRecording.state,
+                                    accentColor: accentColor
+                                )
+                            } else {
+                                speedHero
+                                metricGrid
+                                lowerMetrics
 
-                            if isInlineMode {
-                                InlineLiveMetricsView(accentColor: accentColor)
+                                if isInlineMode {
+                                    InlineLiveMetricsView(accentColor: accentColor)
+                                }
                             }
                         }
                         .padding(.horizontal, horizontalPadding)
@@ -443,6 +451,11 @@ struct LiveHUDView: View {
 
     private var isInlineMode: Bool {
         if case .inline = sessionRecording.state.selectedSportMode { return true }
+        return false
+    }
+
+    private var isSnowMode: Bool {
+        if case .snow = sessionRecording.state.selectedSportMode { return true }
         return false
     }
 

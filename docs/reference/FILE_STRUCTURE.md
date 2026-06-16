@@ -945,7 +945,7 @@ The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active h
 |---|---|---|
 | `feature/snow-mode` | Active sidequest branch | Created from `develop` after Task-030b while Task-030c GPS work remains isolated in a separate worktree. |
 | Snow-Task-001 | Complete in this branch | Adds production `SnowDiscipline`, `SportMode.snow(SnowDiscipline)`, localized Session Start selection, explicit `.snow` switch handling, `docs/process/PHASE_1C_SNOW_AGENT_STATE.md`, and `scripts/verify_snow_sport_enum.py` and `scripts/verify_snow_task_001a_debug_gate.py`. |
-| Snow-Task-002+ | Pending | Core Data schema, migration, SnowSegment / SnowRun models, classifier, RunBoundaryDetector, UI real hooks, package compatibility, and fixtures are not part of Snow-Task-001. |
+| Snow-Task-002 through Snow-Task-005 | Complete in this branch | Adds production Snow data schema, repository, classifier, RunBoundaryDetector, iPhone live HUD wiring, Snow summary, segment timeline, distance inspector, and verification gates. Package compatibility, fixtures, macOS viewer, and real WatchBridge wiring remain later tasks. |
 
 ### Snow-Task-001 Source Files
 
@@ -999,3 +999,43 @@ Snow-Task-002 verification token: production snow schema and repository boundary
 - `Shared/Models/RunBoundaryDetector.swift` — pure streaming state machine that consumes `SnowSegmentClassification` values.
 - `Tests/iOSTests/RunBoundaryDetectorTests.swift` — fixture coverage for state transitions and fast-path transport run endings.
 - `scripts/verify_snow_run_boundary.py` — Snow-Task-004 verification gate.
+
+## Snow-Task-005 iPhone Snow UI Files
+
+### Live data boundary
+
+- `iOS/Core/SnowEngine/SnowLiveSessionConfig.swift` — iPhone Snow live UI policy, including config-sourced low-confidence threshold.
+- `iOS/Core/SnowEngine/SnowClassificationWindowBuffer.swift` — rolling `MotionSample` buffer used by the live Snow coordinator.
+- `iOS/Core/SnowEngine/SnowLiveSessionState.swift` — live Snow state contract for iPhone UI.
+- `iOS/Core/SnowEngine/SnowLiveSessionCoordinator.swift` — production driver that feeds `SnowSegmentClassifier` and `RunBoundaryDetector` from the existing session sample stream.
+- `iOS/Core/SnowEngine/SnowLiveHUDState.swift` — iPhone Snow HUD four-state view model enum.
+- `iOS/Core/SnowEngine/SnowLiveHUDStateMapper.swift` — config-driven mapping from live Snow state to iPhone HUD state.
+- `iOS/Hooks/useSnowLiveSession.swift` — SwiftUI-facing wrapper for live Snow state.
+- `iOS/Hooks/useSessionRecording.swift` — exposes `snowLiveState` and `snowLiveHUDState` for active recording.
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` — starts / pauses / resumes / finishes Snow live processing while remaining the single recording lifecycle owner.
+
+### iPhone live HUD
+
+- `iOS/Features/SessionRecording/SnowHUDView.swift` — parent iPhone Snow live HUD view.
+- `iOS/Features/SessionRecording/SnowHUDDownhillView.swift` — downhill run HUD state.
+- `iOS/Features/SessionRecording/SnowHUDLiftView.swift` — lift / gondola / surface-lift HUD state.
+- `iOS/Features/SessionRecording/SnowHUDWaitingView.swift` — waiting / between-runs HUD state.
+- `iOS/Features/SessionRecording/SnowHUDLowConfidenceView.swift` — low-confidence HUD state.
+- `iOS/Features/SessionRecording/LiveHUDView.swift` — routes `.snow(...)` sessions to `SnowHUDView` and preserves existing skate / inline HUD behavior.
+
+### Snow summary surfaces
+
+- `iOS/Features/SessionSummary/SnowDaySummaryView.swift` — repository-backed Snow day summary.
+- `iOS/Features/SessionSummary/SnowSegmentTimelineView.swift` — repository-backed Snow segment timeline.
+- `iOS/Features/SessionSummary/SnowDistanceInspectorView.swift` — repository-backed ski / lift / route distance inspector.
+- `iOS/Features/SessionSummary/SessionSummaryView.swift` — shows Snow summary stack only for `.snow(...)` sessions.
+
+### Tests and verification
+
+- `Tests/iOSTests/SnowLiveSessionConfigTests.swift` — verifies config-driven low-confidence policy.
+- `Tests/iOSTests/SnowLiveHUDStateMapperTests.swift` — verifies downhill / lift / waiting / low-confidence mapping.
+- `Tests/iOSTests/SessionRecordingCoordinatorTests.swift` — includes Snow live lifecycle and non-Snow isolation coverage.
+- `scripts/verify_snow_iphone_ui.py` — Snow-Task-005 verification gate.
+- `scripts/create_snow_task005_review_pack.sh` — generates the Snow-Task-005 Claude review pack after local verification.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.

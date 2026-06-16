@@ -123,7 +123,7 @@ Snow-Task-001a verification token: snow mode public entry debug-gated and contro
 
 - Snow-Task-001 / 001a / 001b: production `SportMode.snow(SnowDiscipline)` exists and the public Session Start entry remains gated behind a DEBUG toggle.
 - Snow-Task-002: production Snow value types, additive Core Data schema, repository, and `useSnowSession` data boundary exist.
-- Still deferred: `SnowSegmentClassifier`, `RunBoundaryDetector`, Snow-specific production UI wiring, `.skatetrack` snow package compatibility, QA fixture generation, HealthKit snow export, and real WatchBridge snow wiring.
+- Completed through Snow-Task-005: production Snow schema / repository, classifier, RunBoundaryDetector, iPhone Snow live HUD, Snow summary, segment timeline, and distance inspector. Still deferred: `.skatetrack` snow package compatibility, Snow QA fixture packages, macOS Snow viewer, HealthKit snow export, watchOS production wiring, and real WatchBridge snow wiring.
 - Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040.
 
 ### Snow-Task-003 v0 classifier input limitations
@@ -147,3 +147,15 @@ As a result, the future Snow-Task-007 macOS elevation profile should treat Snow 
 Snow-Task-004 verification token: run boundary detector v0 uses delta-only altitude segments.
 
 Snow-Task-004 v0 explicit verification note: SnowSegment.startAltitudeMeters / endAltitudeMeters are nil in v0 RunBoundaryDetector output; Snow-Task-007 must use altitudeDeltaMeters accumulated estimate for Snow elevation preview until absolute altitude endpoints are added by a later approved task.
+
+### Snow-Task-005 iPhone Snow UI v0 limitations and deferred items
+
+Snow-Task-005 intentionally completes iPhone Snow UI wiring without expanding classifier, detector, sensor schema, package compatibility, or WatchBridge scope.
+
+- Manual correction persistence is not implemented in Snow-Task-005. The live HUD may expose placeholder controls, but editing `SnowSegment.manualOverride` requires a separate UX and persistence task.
+- WatchBridge real-data wiring is not implemented in Snow-Task-005. Any Watch low-confidence payload mapping remains deferred to Snow-Task-006b after mainline Task-040.
+- True altitude confidence scoring is not implemented in Snow-Task-005 because `MotionSample` v0 still lacks vertical accuracy, GPS altitude, and altitude source metadata.
+- Live provisional segment timeline before `RunBoundaryEvent.runEnded` is not implemented. v0 summary / timeline / inspector surfaces use repository-backed finalized Snow segments.
+- Simulator-only Snow HUD testing cannot validate real downhill / lift classifier transitions. Real-world snow or controlled fixture replay remains a later QA task.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.

@@ -78,3 +78,10 @@ Task-030b verification token: documentation index consolidated.
 - `Shared/Models/RunBoundaryDetector.swift` and related `RunBoundary*` files implement the production Snow run-boundary state machine.
 - `scripts/verify_snow_run_boundary.py` validates the Snow-Task-004 boundaries and fast-path transport run ending.
 - `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` documents the v0 altitude endpoint limitation.
+
+### Snow-Task-005 iPhone Snow UI production wiring
+
+- Snow-Task-005 is implemented on `feature/snow-mode` after verified baseline `c0aeec8` from Snow-Task-004.
+- `scripts/verify_snow_iphone_ui.py` is the Snow-Task-005 verification gate.
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the live data-boundary decision: `SessionRecordingCoordinator` owns lifecycle, `SnowLiveSessionCoordinator` drives classifier / detector, `useSnowSession` stays repository-backed, and `useSessionRecording` exposes live HUD state.
+- Snow-Task-005 does not touch `Shared/WatchBridge/*`; real WatchBridge wiring remains Snow-Task-006b after mainline Task-040.

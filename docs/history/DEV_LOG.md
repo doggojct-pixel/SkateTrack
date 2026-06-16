@@ -1662,3 +1662,36 @@ Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
 - Deferred Snow Live HUD, UI wiring, real WatchBridge wiring, and `.skatetrack` package compatibility to later Snow tasks.
 
 Snow-Task-004 verification token: RunBoundaryDetector state machine added without classifier/schema/WatchBridge scope creep.
+
+## 2026-06-16 — Snow-Task-005 iPhone Snow UI Production Wiring
+
+### Completed
+- Added the production iPhone Snow live data boundary for Snow Mode recording without creating a `SnowPrototype*` namespace.
+- Added `SnowLiveSessionConfig`, `SnowLiveSessionState`, `SnowClassificationWindowBuffer`, `SnowLiveSessionCoordinator`, `SnowLiveHUDState`, and `SnowLiveHUDStateMapper`.
+- Defined the iPhone `lowConfidence` HUD policy through `SnowLiveSessionConfig.productionV0.lowConfidenceThreshold`, sourced from `SnowClassifierConfig.productionV0.mediumConfidenceThreshold`, so Snow UI code does not hardcode confidence literals.
+- Wired `SessionRecordingCoordinator` to start, pause, resume, finish, reset, and feed MotionSample windows into the Snow live coordinator only for `.snow(...)` sessions.
+- Exposed live Snow state through `useSessionRecording` / `useSnowLiveSession` while keeping `useSnowSession` repository-backed for persisted history.
+- Added four-state iPhone `SnowHUDView` UI: downhill, lift / gondola, waiting, and low confidence.
+- Added repository-backed Snow summary surfaces: `SnowDaySummaryView`, `SnowSegmentTimelineView`, and `SnowDistanceInspectorView`.
+- Added localized Snow HUD / summary / timeline / inspector keys for `en`, `zh-Hant`, and `ja`.
+- Added `scripts/verify_snow_iphone_ui.py` as the Snow-Task-005 verification gate.
+- Added `scripts/create_snow_task005_review_pack.sh` to generate the Snow-Task-005 Claude review pack after final local verification.
+
+### Scope Boundary
+- Snow-Task-005 does not modify `RunBoundaryDetector`, `SnowSegmentClassifier`, `SnowClassifierConfig`, `MotionSample`, or Snow-Task-002 value types.
+- Snow-Task-005 does not touch `Shared/WatchBridge/*`, does not implement watchOS UI, does not implement WatchBridge real-data wiring, and does not add `.skatetrack` sample files.
+- Snow-Task-005 uses `/Users/doggo/Documents/App軟體區/SkateTrack-SnowPrototype` only as read-only visual / copy reference; no production `SnowPrototype*` namespace is introduced.
+
+### Deferred Items
+- Manual correction persistence is deferred because editing `SnowSegment.manualOverride` requires a separate UX and persistence task.
+- Real WatchBridge snow data wiring and any Watch low-confidence payload are deferred to Snow-Task-006b after mainline Task-040.
+- True altitude confidence scoring is deferred because `MotionSample` v0 still lacks vertical accuracy, GPS altitude, and altitude source metadata.
+- Live provisional timeline before `runEnded` is deferred because `RunBoundaryDetector` v0 finalizes segments at run-boundary events.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_iphone_ui.py`, `python3 scripts/verify_snow_run_boundary.py`, `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, and `python3 scripts/verify_snow_sport_enum.py`.
+- Run targeted iOS XCTest for `SnowLiveSessionConfigTests`, `SnowLiveHUDStateMapperTests`, and `SessionRecordingCoordinatorTests`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-iOS -destination 'platform=iOS Simulator,name=iPhone 17 Pro'`.
+- Manual smoke testing confirmed Snow toggle, Snow session HUD routing, Snow summary empty / zero state, and non-Snow HUD preservation.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.

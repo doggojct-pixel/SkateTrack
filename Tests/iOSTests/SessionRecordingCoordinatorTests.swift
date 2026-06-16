@@ -200,6 +200,78 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         cancellable.cancel()
     }
 
+
+    func testSnowSessionStartsLiveCoordinatorAndForwardsSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let snowLiveCoordinator = MockSnowLiveSessionCoordinator()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            snowLiveCoordinator: snowLiveCoordinator
+        )
+
+        try await coordinator.startSession(mode: .snow(.skiing), powerType: .humanPowered)
+
+        XCTAssertEqual(snowLiveCoordinator.startedSessionIDs.count, 1)
+        XCTAssertTrue(snowLiveCoordinator.currentState.isActive)
+        XCTAssertEqual(snowLiveCoordinator.currentState.sessionID, snowLiveCoordinator.startedSessionIDs.first)
+
+        let sample = MotionSample(
+            timestamp: Date(timeIntervalSince1970: 10),
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 18,
+            accelerometerG: ThreeAxisValue(x: 0.05, y: 0.12, z: 0.98),
+            gyroscopeRadPS: ThreeAxisValue(x: 0.01, y: 0.02, z: 0.03),
+            altitudeMeters: 120
+        )
+        sensorEngine.emit(sample)
+
+        XCTAssertEqual(snowLiveCoordinator.ingestedSamples, [sample])
+
+        try await coordinator.pauseSession()
+        XCTAssertEqual(snowLiveCoordinator.pauseCount, 1)
+        XCTAssertTrue(snowLiveCoordinator.currentState.isPaused)
+
+        try await coordinator.resumeSession()
+        XCTAssertEqual(snowLiveCoordinator.resumeCount, 1)
+        XCTAssertFalse(snowLiveCoordinator.currentState.isPaused)
+
+        let sessionData = try await coordinator.requestEndSession()
+        XCTAssertEqual(sessionData.sportMode, .snow(.skiing))
+        XCTAssertEqual(sessionData.id, snowLiveCoordinator.startedSessionIDs.first)
+        XCTAssertEqual(snowLiveCoordinator.finishCount, 1)
+    }
+
+    func testNonSnowSessionDoesNotForwardSamplesToSnowLiveCoordinator() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let snowLiveCoordinator = MockSnowLiveSessionCoordinator()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            snowLiveCoordinator: snowLiveCoordinator
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+
+        let sample = MotionSample(
+            timestamp: Date(timeIntervalSince1970: 10),
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 18,
+            accelerometerG: ThreeAxisValue(x: 0.05, y: 0.12, z: 0.98),
+            gyroscopeRadPS: ThreeAxisValue(x: 0.01, y: 0.02, z: 0.03),
+            altitudeMeters: 120
+        )
+        sensorEngine.emit(sample)
+
+        XCTAssertTrue(snowLiveCoordinator.startedSessionIDs.isEmpty)
+        XCTAssertTrue(snowLiveCoordinator.ingestedSamples.isEmpty)
+        XCTAssertEqual(snowLiveCoordinator.pauseCount, 0)
+        XCTAssertEqual(snowLiveCoordinator.resumeCount, 0)
+
+        _ = try await coordinator.requestEndSession()
+        XCTAssertEqual(snowLiveCoordinator.finishCount, 0)
+    }
+
     func testCoreSessionRecordingFilesDoNotImportUIFrameworks() throws {
         let coreDirectory = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
@@ -226,19 +298,22 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
 private final class MockSessionSensorEngine: SessionSensorProviding {
     let motionSampleSubject = PassthroughSubject<MotionSample, Never>()
     private(set) var stopCalled = false
+    private var currentMode: SportMode = .skateboard(.streetPark)
 
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
         motionSampleSubject.eraseToAnyPublisher()
     }
 
-    func startRecording(mode: SportMode) async throws {}
+    func startRecording(mode: SportMode) async throws {
+        currentMode = mode
+    }
 
     func stopRecording() async -> SessionData {
         stopCalled = true
         return try! SessionData(
             startDate: Date(),
             endDate: Date(),
-            sportMode: .skateboard(.streetPark),
+            sportMode: currentMode,
             powerType: .humanPowered
         )
     }
@@ -271,6 +346,69 @@ private final class MockFallDetectionEngine: SessionFallDetecting {
     func stopMonitoring() {}
 
     func cancelFallAlert() {}
+}
+
+
+private final class MockSnowLiveSessionCoordinator: SnowLiveSessionCoordinating {
+    private let subject = CurrentValueSubject<SnowLiveSessionState, Never>(.empty)
+    private(set) var startedSessionIDs: [UUID] = []
+    private(set) var ingestedSamples: [MotionSample] = []
+    private(set) var pauseCount = 0
+    private(set) var resumeCount = 0
+    private(set) var finishCount = 0
+    private(set) var resetCount = 0
+
+    var statePublisher: AnyPublisher<SnowLiveSessionState, Never> {
+        subject.eraseToAnyPublisher()
+    }
+
+    var currentState: SnowLiveSessionState {
+        subject.value
+    }
+
+    func start(sessionID: UUID) {
+        startedSessionIDs.append(sessionID)
+        var state = SnowLiveSessionState.empty
+        state.sessionID = sessionID
+        state.isActive = true
+        subject.send(state)
+    }
+
+    func ingest(_ sample: MotionSample) {
+        ingestedSamples.append(sample)
+        var state = subject.value
+        state.currentSpeedKmh = sample.speedKmh
+        subject.send(state)
+    }
+
+    func pause() {
+        pauseCount += 1
+        var state = subject.value
+        state.isPaused = true
+        subject.send(state)
+    }
+
+    func resume() {
+        resumeCount += 1
+        var state = subject.value
+        state.isPaused = false
+        subject.send(state)
+    }
+
+    func manuallyEndCurrentRun() async {}
+
+    func finishSession() async {
+        finishCount += 1
+        var state = subject.value
+        state.isActive = false
+        state.isPaused = false
+        subject.send(state)
+    }
+
+    func reset() {
+        resetCount += 1
+        subject.send(.empty)
+    }
 }
 
 private actor MockSpotVisitTracker: SpotVisitTracking {

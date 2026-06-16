@@ -100,3 +100,18 @@ The following block public release claims until completed or explicitly scoped o
 
 Task-030a verification token: manual QA matrix pre-ADP.
 Task-030b verification token: consolidated manual QA matrix.
+
+## 9. Phase 1c Snow Mode iPhone UI smoke test
+
+Snow Mode remains DEBUG-gated until the Phase 1c production path is complete. For local development builds on `feature/snow-mode`, verify:
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| Snow entry gate | Open Debug Tools and toggle the Snow Mode entry | Snow entry is hidden when the toggle is off and visible when the toggle is on. |
+| Start Snow session | Select Snow / Skiing or Snowboarding from Session Start | Session starts without crash and routes to the Snow live HUD. |
+| Snow live HUD | Start a simulator Snow session | Snow-specific HUD appears. In simulator-only testing, waiting / low-confidence or zero-data states are acceptable. |
+| Existing HUD preservation | Start Skateboard or Inline session | Existing Live HUD appears unchanged and pause / resume / end controls still work. |
+| Snow summary empty state | End a simulator Snow session without real snow movement | Snow summary / timeline / distance inspector appear without crash and may show zero / empty values. |
+| Scope boundary | Inspect behavior after Snow UI test | No Watch UI / WatchBridge behavior should change. |
+
+Task-005 manual QA token: Snow iPhone UI smoke test complete.

@@ -12,6 +12,7 @@ struct SessionSummaryView: View {
     @ObservedObject private var subscriptionStatus: SubscriptionStatusViewModel
     @State private var isAdvancedChartsPaywallPresented = false
     @State private var isShareCardPaywallPresented = false
+    @StateObject private var snowSession: SnowSessionViewModel
 
     @MainActor
     init(
@@ -25,6 +26,9 @@ struct SessionSummaryView: View {
         self.subscriptionStatus = subscriptionStatus
         _summary = StateObject(
             wrappedValue: useSessionSummary(sessionID: sessionID, initialSession: initialSession)
+        )
+        _snowSession = StateObject(
+            wrappedValue: SnowSessionViewModel(sessionID: sessionID)
         )
     }
 
@@ -99,9 +103,35 @@ struct SessionSummaryView: View {
                 SessionSpotAttributionView(session: content.session)
             }
             SessionSummaryMetricsGridView(items: metricItems(for: content))
+            if isSnowSession(content.session) {
+                snowSummaryStack
+            }
             summaryDetailStack(content)
             closeButton
         }
+        .task(id: content.session.id) {
+            await loadSnowSummaryIfNeeded(for: content.session)
+        }
+    }
+
+    private var snowSummaryStack: some View {
+        VStack(spacing: 10) {
+            SnowDaySummaryView(state: snowSession.state)
+            SnowDistanceInspectorView(breakdown: snowSession.state.distanceBreakdown)
+            SnowSegmentTimelineView(segments: snowSession.state.segments)
+        }
+        .accessibilityIdentifier("snow-summary-stack")
+    }
+
+    @MainActor
+    private func loadSnowSummaryIfNeeded(for session: SessionData) async {
+        guard isSnowSession(session) else { return }
+        await snowSession.load(sessionID: session.id)
+    }
+
+    private func isSnowSession(_ session: SessionData) -> Bool {
+        if case .snow = session.sportMode { return true }
+        return false
     }
 
     private func header(_ content: SessionSummaryContent) -> some View {

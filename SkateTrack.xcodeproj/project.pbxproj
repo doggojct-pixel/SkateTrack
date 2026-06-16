@@ -73,6 +73,15 @@
 		33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
 		33C40000000000000000010F /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
 		33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C410000000000000000001 /* RunBoundaryDetectorTests.swift */; };
+		34C500000000000000000101 /* SnowLiveSessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000001 /* SnowLiveSessionConfig.swift */; };
+		34C500000000000000000102 /* SnowClassificationWindowBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */; };
+		34C500000000000000000103 /* SnowLiveSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000003 /* SnowLiveSessionState.swift */; };
+		34C500000000000000000104 /* SnowLiveHUDState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000004 /* SnowLiveHUDState.swift */; };
+		34C500000000000000000105 /* SnowLiveHUDStateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */; };
+		34C500000000000000000106 /* SnowLiveSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */; };
+		34C500000000000000000107 /* useSnowLiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000007 /* useSnowLiveSession.swift */; };
+		34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */; };
+		34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */; };
 		12A300000000000000000107 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000108 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000109 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
@@ -128,6 +137,14 @@
 		12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD07000000000000000001 /* ModeSelectionCardView.swift */; };
 		12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD08000000000000000001 /* StartSessionCTAView.swift */; };
 		12AE01000000000000000101 /* LiveHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE01000000000000000001 /* LiveHUDView.swift */; };
+		34C520000000000000000101 /* SnowHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000001 /* SnowHUDView.swift */; };
+		34C520000000000000000102 /* SnowHUDDownhillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000002 /* SnowHUDDownhillView.swift */; };
+		34C520000000000000000103 /* SnowHUDLiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000003 /* SnowHUDLiftView.swift */; };
+		34C520000000000000000104 /* SnowHUDWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000004 /* SnowHUDWaitingView.swift */; };
+		34C520000000000000000105 /* SnowHUDLowConfidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */; };
+		34C530000000000000000101 /* SnowDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000001 /* SnowDaySummaryView.swift */; };
+		34C530000000000000000102 /* SnowSegmentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000002 /* SnowSegmentTimelineView.swift */; };
+		34C530000000000000000103 /* SnowDistanceInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000003 /* SnowDistanceInspectorView.swift */; };
 		12AE02000000000000000101 /* LiveHUDMetricCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE02000000000000000001 /* LiveHUDMetricCardView.swift */; };
 		12AE03000000000000000101 /* LiveSpeedDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE03000000000000000001 /* LiveSpeedDisplayView.swift */; };
 		12AE04000000000000000101 /* TiltIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE04000000000000000001 /* TiltIndicatorView.swift */; };
@@ -387,6 +404,15 @@
 		33C400000000000000000004 /* RunBoundaryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryEvent.swift; sourceTree = "<group>"; };
 		33C400000000000000000005 /* RunBoundaryDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetector.swift; sourceTree = "<group>"; };
 		33C410000000000000000001 /* RunBoundaryDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetectorTests.swift; sourceTree = "<group>"; };
+		34C500000000000000000001 /* SnowLiveSessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfig.swift; sourceTree = "<group>"; };
+		34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowClassificationWindowBuffer.swift; sourceTree = "<group>"; };
+		34C500000000000000000003 /* SnowLiveSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionState.swift; sourceTree = "<group>"; };
+		34C500000000000000000004 /* SnowLiveHUDState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDState.swift; sourceTree = "<group>"; };
+		34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapper.swift; sourceTree = "<group>"; };
+		34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionCoordinator.swift; sourceTree = "<group>"; };
+		34C500000000000000000007 /* useSnowLiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowLiveSession.swift; sourceTree = "<group>"; };
+		34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfigTests.swift; sourceTree = "<group>"; };
+		34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapperTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -425,6 +451,14 @@
 		12AD07000000000000000001 /* ModeSelectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelectionCardView.swift; sourceTree = "<group>"; };
 		12AD08000000000000000001 /* StartSessionCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionCTAView.swift; sourceTree = "<group>"; };
 		12AE01000000000000000001 /* LiveHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHUDView.swift; sourceTree = "<group>"; };
+		34C520000000000000000001 /* SnowHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDView.swift; sourceTree = "<group>"; };
+		34C520000000000000000002 /* SnowHUDDownhillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDDownhillView.swift; sourceTree = "<group>"; };
+		34C520000000000000000003 /* SnowHUDLiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDLiftView.swift; sourceTree = "<group>"; };
+		34C520000000000000000004 /* SnowHUDWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDWaitingView.swift; sourceTree = "<group>"; };
+		34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDLowConfidenceView.swift; sourceTree = "<group>"; };
+		34C530000000000000000001 /* SnowDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDaySummaryView.swift; sourceTree = "<group>"; };
+		34C530000000000000000002 /* SnowSegmentTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentTimelineView.swift; sourceTree = "<group>"; };
+		34C530000000000000000003 /* SnowDistanceInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDistanceInspectorView.swift; sourceTree = "<group>"; };
 		12AE02000000000000000001 /* LiveHUDMetricCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHUDMetricCardView.swift; sourceTree = "<group>"; };
 		12AE03000000000000000001 /* LiveSpeedDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeedDisplayView.swift; sourceTree = "<group>"; };
 		12AE04000000000000000001 /* TiltIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TiltIndicatorView.swift; sourceTree = "<group>"; };
@@ -750,6 +784,7 @@
 				14A200000000000000000001 /* useFallDetection.swift */,
 				17A100000000000000000006 /* useSessionHistory.swift */,
 				31C220000000000000000001 /* useSnowSession.swift */,
+				34C500000000000000000007 /* useSnowLiveSession.swift */,
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				23A200000000000000000001 /* useSessionShareCard.swift */,
 				27A400000000000000000001 /* useSkateTrackPackageExport.swift */,
@@ -789,6 +824,19 @@
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
 		};
+		34C500000000000000000000 /* iOS/Core/SnowEngine */ = {
+			isa = PBXGroup;
+			children = (
+				34C500000000000000000001 /* SnowLiveSessionConfig.swift */,
+				34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */,
+				34C500000000000000000003 /* SnowLiveSessionState.swift */,
+				34C500000000000000000004 /* SnowLiveHUDState.swift */,
+				34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */,
+				34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */,
+			);
+			path = iOS/Core/SnowEngine;
+			sourceTree = SOURCE_ROOT;
+		};
 		12AC02000000000000000001 /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -797,6 +845,8 @@
 				31C230000000000000000001 /* SnowSessionRepositoryTests.swift */,
 				32C310000000000000000001 /* SnowSegmentClassifierTests.swift */,
 				33C410000000000000000001 /* RunBoundaryDetectorTests.swift */,
+				34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */,
+				34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -819,6 +869,11 @@
 				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
 				12AD08000000000000000001 /* StartSessionCTAView.swift */,
 				12AE01000000000000000001 /* LiveHUDView.swift */,
+				34C520000000000000000001 /* SnowHUDView.swift */,
+				34C520000000000000000002 /* SnowHUDDownhillView.swift */,
+				34C520000000000000000003 /* SnowHUDLiftView.swift */,
+				34C520000000000000000004 /* SnowHUDWaitingView.swift */,
+				34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */,
 				12AE02000000000000000001 /* LiveHUDMetricCardView.swift */,
 				12AE03000000000000000001 /* LiveSpeedDisplayView.swift */,
 				14A400000000000000000001 /* LiveSpeedTraceView.swift */,
@@ -909,6 +964,9 @@
 				18A100000000000000000001 /* SessionSummaryView.swift */,
 				18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */,
 				18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */,
+				34C530000000000000000001 /* SnowDaySummaryView.swift */,
+				34C530000000000000000002 /* SnowSegmentTimelineView.swift */,
+				34C530000000000000000003 /* SnowDistanceInspectorView.swift */,
 				20C100000000000000000002 /* SessionEquipmentAttributionView.swift */,
 				21B400000000000000000001 /* SessionSpotAttributionView.swift */,
 				18B100000000000000000001 /* SessionRouteMapView.swift */,
@@ -1119,6 +1177,7 @@
 				26A200000000000000000000 /* iOS/Core/Sync */,
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
+				34C500000000000000000000 /* iOS/Core/SnowEngine */,
 				14A100000000000000000000 /* iOS/Core/Safety */,
 				19A100000000000000000000 /* iOS/Core/HealthReminders */,
 				20A100000000000000000000 /* iOS/Core/EquipmentManager */,
@@ -1421,6 +1480,8 @@
 				31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */,
 				32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */,
 				33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */,
+				34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */,
+				34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1501,11 @@
 				12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */,
 				12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */,
 				12AE01000000000000000101 /* LiveHUDView.swift in Sources */,
+				34C520000000000000000101 /* SnowHUDView.swift in Sources */,
+				34C520000000000000000102 /* SnowHUDDownhillView.swift in Sources */,
+				34C520000000000000000103 /* SnowHUDLiftView.swift in Sources */,
+				34C520000000000000000104 /* SnowHUDWaitingView.swift in Sources */,
+				34C520000000000000000105 /* SnowHUDLowConfidenceView.swift in Sources */,
 				12AE02000000000000000101 /* LiveHUDMetricCardView.swift in Sources */,
 				12AE03000000000000000101 /* LiveSpeedDisplayView.swift in Sources */,
 				14A400000000000000000101 /* LiveSpeedTraceView.swift in Sources */,
@@ -1463,11 +1529,15 @@
 				17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */,
 				17A100000000000000000106 /* useSessionHistory.swift in Sources */,
 				31C220000000000000000101 /* useSnowSession.swift in Sources */,
+				34C500000000000000000107 /* useSnowLiveSession.swift in Sources */,
 				17A100000000000000000107 /* SessionHistoryBulkActionBarView.swift in Sources */,
 				17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */,
 				18A100000000000000000101 /* SessionSummaryView.swift in Sources */,
 				18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */,
 				18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */,
+				34C530000000000000000101 /* SnowDaySummaryView.swift in Sources */,
+				34C530000000000000000102 /* SnowSegmentTimelineView.swift in Sources */,
+				34C530000000000000000103 /* SnowDistanceInspectorView.swift in Sources */,
 				18A100000000000000000104 /* useSessionSummary.swift in Sources */,
 				18B100000000000000000101 /* SessionRouteMapView.swift in Sources */,
 				18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */,
@@ -1634,6 +1704,12 @@
 				33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */,
 				33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */,
 				33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */,
+				34C500000000000000000101 /* SnowLiveSessionConfig.swift in Sources */,
+				34C500000000000000000102 /* SnowClassificationWindowBuffer.swift in Sources */,
+				34C500000000000000000103 /* SnowLiveSessionState.swift in Sources */,
+				34C500000000000000000104 /* SnowLiveHUDState.swift in Sources */,
+				34C500000000000000000105 /* SnowLiveHUDStateMapper.swift in Sources */,
+				34C500000000000000000106 /* SnowLiveSessionCoordinator.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
