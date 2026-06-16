@@ -1,6 +1,3 @@
-// [協作區] SessionAdvancedChartsView.swift
-// 用途：整合 Task-018c 進階圖表區塊，依訂閱權限顯示鎖定預覽或完整圖表。
-// 委派至：useSubscriptionStatus / FeatureFlagEngine 處理付費門禁；SpeedTimelineChartView 與 ElevationProfileChartView 呈現圖表。
 
 import SwiftUI
 
@@ -8,6 +5,12 @@ struct SessionSummaryChartPoint: Identifiable, Equatable {
     let id: Int
     let elapsedSeconds: Double
     let value: Double
+    let segmentID: Int
+}
+
+struct SessionSummaryChartSegment: Identifiable, Equatable {
+    let id: Int
+    let points: [SessionSummaryChartPoint]
 }
 
 struct SessionAdvancedChartsView: View {
@@ -15,17 +18,20 @@ struct SessionAdvancedChartsView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     let onUnlock: () -> Void
 
+    private var fidelityPolicy: ActivityFidelityPolicy {
+        ActivityFidelityPolicy(
+            profile: content.session.fidelityProfile
+                ?? ActivityFidelityProfile.defaultProfile(for: content.session.sportMode, powerType: content.session.powerType)
+        )
+    }
+
     private var speedPoints: [SessionSummaryChartPoint] {
-        chartPoints(from: content.motionSamples) { sample in
-            sample.speedKmh.isFinite && sample.speedKmh >= 0 ? sample.speedKmh : nil
-        }
+        smoothedSpeedPoints(chartPoints(from: content.motionSamples) { trustedDisplaySpeedKilometersPerHour(for: $0) })
     }
 
     private var elevationPoints: [SessionSummaryChartPoint] {
-        chartPoints(from: content.motionSamples) { sample in
-            guard let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
-            return altitude
-        }
+        let source = preferredElevationDisplaySource(for: content.motionSamples)
+        return normalizedElevationPoints(chartPoints(from: content.motionSamples) { trustedDisplayElevationMeters(for: $0, source: source) })
     }
 
     var body: some View {
@@ -35,11 +41,7 @@ struct SessionAdvancedChartsView: View {
             if subscriptionStatus.hasAccess(to: .advancedCharts) {
                 unlockedCharts
             } else {
-                AdvancedChartsLockedView(
-                    speedPoints: speedPoints,
-                    elevationPoints: elevationPoints,
-                    onUnlock: onUnlock
-                )
+                AdvancedChartsLockedView(speedPoints: speedPoints, elevationPoints: elevationPoints, onUnlock: onUnlock)
             }
 
             HeartRateZonePlaceholderView()
@@ -81,11 +83,85 @@ struct SessionAdvancedChartsView: View {
     }
 
     private var unlockedCharts: some View {
-        VStack(spacing: 12) {
-            SpeedTimelineChartView(points: speedPoints)
-            ElevationProfileChartView(points: elevationPoints)
+        VStack(spacing: 12) { SpeedTimelineChartView(points: speedPoints); ElevationProfileChartView(points: elevationPoints) }
+            .accessibilityIdentifier("session-advanced-charts-unlocked")
+    }
+
+    private func trustedDisplaySpeedKilometersPerHour(for sample: MotionSample) -> Double? {
+        guard sample.speedKmh.isFinite, sample.speedKmh >= 0 else { return nil }
+        if sample.sampleSource == .debugSimulated {
+            return fidelityPolicy.acceptsSpeed(sample.speedKmh) ? sample.speedKmh : nil
         }
-        .accessibilityIdentifier("session-advanced-charts-unlocked")
+
+        guard let diagnostics = sample.locationDiagnostics else {
+            return fidelityPolicy.acceptsSpeed(sample.speedKmh) ? sample.speedKmh : nil
+        }
+        guard diagnostics.routeSegmentConfidence != .low,
+              diagnostics.routeSegmentConfidence != .unavailable else { return nil }
+        guard diagnostics.freshnessState == .fresh || diagnostics.freshnessState == .recent else { return nil }
+        guard fidelityPolicy.acceptsLowSpeedMetricSample(
+            speedKmh: sample.speedKmh,
+            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
+            speedAccuracyMetersPerSecond: diagnostics.speedAccuracyMetersPerSecond,
+            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh,
+            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters
+        ) else { return nil }
+        guard fidelityPolicy.trustsRouteSegment(
+            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
+            freshnessState: diagnostics.freshnessState,
+            updateIntervalSeconds: diagnostics.gpsUpdateIntervalSeconds,
+            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters,
+            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh
+        ) else { return nil }
+
+        // Task-030c-b10-r5: summary charts should not present one-off Core Location
+        // instantaneous speed pulses as the rider's displayed timeline. Keep raw speed in
+        // diagnostics; require either a precise fix or corroborated coordinate-derived speed.
+        if sample.speedKmh >= 5.5 {
+            let horizontalAccuracy = diagnostics.horizontalAccuracyMeters ?? .infinity
+            let speedAccuracy = diagnostics.speedAccuracyMetersPerSecond ?? .infinity
+            let coordinateSpeed = diagnostics.coordinateDerivedSpeedKmh ?? sample.speedKmh
+            let isPreciseFix = horizontalAccuracy <= max(5.0, fidelityPolicy.preferredHorizontalAccuracyMeters)
+            let isSpeedAccurate = speedAccuracy <= 1.1
+            let isCoordinateCorroborated = abs(coordinateSpeed - sample.speedKmh) <= max(2.0, sample.speedKmh * 0.35)
+            if !(isPreciseFix && (isSpeedAccurate || isCoordinateCorroborated)) {
+                return nil
+            }
+        }
+
+        return sample.speedKmh
+    }
+
+    private enum ElevationDisplaySource {
+        case barometerRelative
+        case coreLocationAbsolute
+        case debugSimulated
+    }
+
+    private func preferredElevationDisplaySource(for samples: [MotionSample]) -> ElevationDisplaySource {
+        if samples.contains(where: { $0.altitudeSource == .barometerRelative && ($0.altitudeMeters?.isFinite ?? false) }) {
+            return .barometerRelative
+        }
+        if samples.contains(where: { $0.altitudeSource == .debugSimulated && ($0.altitudeMeters?.isFinite ?? false) }) {
+            return .debugSimulated
+        }
+        return .coreLocationAbsolute
+    }
+
+    private func trustedDisplayElevationMeters(for sample: MotionSample, source: ElevationDisplaySource) -> Double? {
+        guard let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
+        switch source {
+        case .barometerRelative:
+            return sample.altitudeSource == .barometerRelative ? altitude : nil
+        case .debugSimulated:
+            return sample.altitudeSource == .debugSimulated ? altitude : nil
+        case .coreLocationAbsolute:
+            guard sample.altitudeSource == .coreLocationAbsolute else { return nil }
+            guard let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters,
+                  verticalAccuracy <= min(fidelityPolicy.maximumVerticalAccuracyMeters, 5) else { return nil }
+            guard sample.locationDiagnostics?.freshnessState != .stale else { return nil }
+            return altitude
+        }
     }
 
     private func chartPoints(
@@ -95,16 +171,72 @@ struct SessionAdvancedChartsView: View {
         let sortedSamples = samples.sorted { $0.timestamp < $1.timestamp }
         guard let firstTimestamp = sortedSamples.first?.timestamp else { return [] }
 
-        let rawPoints = sortedSamples.enumerated().compactMap { index, sample -> SessionSummaryChartPoint? in
-            guard let value = value(sample), value.isFinite else { return nil }
-            return SessionSummaryChartPoint(
-                id: index,
-                elapsedSeconds: max(0, sample.timestamp.timeIntervalSince(firstTimestamp)),
-                value: value
-            )
+        var segmentID = 0
+        var previousIncludedTimestamp: Date?
+        var points: [SessionSummaryChartPoint] = []
+
+        for (index, sample) in sortedSamples.enumerated() {
+            guard let value = value(sample), value.isFinite else { continue }
+
+            if shouldStartNewChartSegment(after: previousIncludedTimestamp, current: sample) {
+                segmentID += 1
+            }
+
+            points.append(SessionSummaryChartPoint(id: index, elapsedSeconds: max(0, sample.timestamp.timeIntervalSince(firstTimestamp)), value: value, segmentID: segmentID))
+            previousIncludedTimestamp = sample.timestamp
         }
 
-        return downsample(rawPoints, maxCount: 120)
+        return downsample(points, maxCount: 120)
+    }
+
+    private func smoothedSpeedPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
+        smooth(points, windowRadius: 2, maximumStepKmh: 2.2)
+    }
+
+    private func normalizedElevationPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
+        let grouped = Dictionary(grouping: points, by: \.segmentID)
+        return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
+            let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+            guard let baseline = sorted.first?.value else { return sorted }
+            return sorted.map { point in
+                SessionSummaryChartPoint(id: point.id, elapsedSeconds: point.elapsedSeconds, value: point.value - baseline, segmentID: point.segmentID)
+            }
+        }
+        .sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+    }
+
+    private func smooth(
+        _ points: [SessionSummaryChartPoint],
+        windowRadius: Int,
+        maximumStepKmh: Double
+    ) -> [SessionSummaryChartPoint] {
+        let grouped = Dictionary(grouping: points, by: \.segmentID)
+        return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
+            let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+            guard sorted.count >= 3 else { return sorted }
+            return sorted.enumerated().map { offset, point in
+                let lowerBound = max(0, offset - windowRadius)
+                let upperBound = min(sorted.count - 1, offset + windowRadius)
+                let windowValues = sorted[lowerBound...upperBound].map(\.value).sorted()
+                let median = windowValues[windowValues.count / 2]
+                let previousValue = offset > 0 ? sorted[offset - 1].value : median
+                let limitedValue = min(max(median, previousValue - maximumStepKmh), previousValue + maximumStepKmh)
+                return SessionSummaryChartPoint(id: point.id, elapsedSeconds: point.elapsedSeconds, value: limitedValue, segmentID: point.segmentID)
+            }
+        }
+        .sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+    }
+
+    private func shouldStartNewChartSegment(after previousTimestamp: Date?, current sample: MotionSample) -> Bool {
+        if let previousTimestamp, sample.timestamp.timeIntervalSince(previousTimestamp) > 12 {
+            return true
+        }
+
+        guard let diagnostics = sample.locationDiagnostics else { return false }
+        if diagnostics.freshnessState == .stale { return true }
+        if diagnostics.routeSegmentConfidence == .low { return true }
+        if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > 12 }) == true { return true }
+        return false
     }
 
     private func downsample(_ points: [SessionSummaryChartPoint], maxCount: Int) -> [SessionSummaryChartPoint] {
@@ -120,26 +252,4 @@ struct SessionAdvancedChartsView: View {
 
         return sampled
     }
-}
-
-#Preview("Advanced Charts") {
-    let previewSession = try! SessionData(
-        startDate: Date().addingTimeInterval(-900),
-        endDate: Date(),
-        sportMode: .skateboard(.streetPark),
-        motionSamples: [],
-        summaryMetrics: .zero
-    )
-
-    return SessionAdvancedChartsView(
-        content: SessionSummaryContent(
-            session: previewSession,
-            motionSamples: previewSession.motionSamples
-        ),
-        subscriptionStatus: useSubscriptionStatus(),
-        onUnlock: {}
-    )
-    .padding()
-    .background(SkateTrackSessionStartColors.navy)
-    .preferredColorScheme(.dark)
 }

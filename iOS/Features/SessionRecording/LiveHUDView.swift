@@ -105,6 +105,10 @@ struct LiveHUDView: View {
         .sheet(isPresented: $isShowingEmergencyContactsSettings) {
             EmergencyContactsSettingsView(store: emergencyContactStore)
         }
+        .onAppear {
+            appendSpeedTraceSampleIfNeeded(force: true)
+            healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
         .onReceive(speedTraceTimer) { _ in
             appendSpeedTraceSampleIfNeeded()
             healthReminders.updateSessionReminderState(sessionRecording.state)
@@ -113,12 +117,16 @@ struct LiveHUDView: View {
             if status == .idle || status == .failed {
                 speedTraceSamples.removeAll(keepingCapacity: true)
             } else if status == .recording {
-                appendSpeedTraceSampleIfNeeded()
+                appendSpeedTraceSampleIfNeeded(force: true)
             }
             healthReminders.updateSessionReminderState(sessionRecording.state)
         }
         .onChange(of: sessionRecording.state.elapsedTime) { _, _ in
+            appendSpeedTraceSampleIfNeeded()
             healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
+        .onChange(of: sessionRecording.state.currentSpeedKilometersPerHour) { _, _ in
+            appendSpeedTraceSampleIfNeeded()
         }
         .onChange(of: subscriptionStatus.isSubscriber) { _, _ in
             healthReminders.syncAccess()
@@ -459,14 +467,20 @@ struct LiveHUDView: View {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
-    private func appendSpeedTraceSampleIfNeeded() {
+    private func appendSpeedTraceSampleIfNeeded(force: Bool = false) {
         guard sessionRecording.state.status == .recording else { return }
 
         let elapsedTime = max(0, sessionRecording.state.elapsedTime)
-        let speed = max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+        let speed = smoothedDisplaySpeedKilometersPerHour(
+            rawSpeedKilometersPerHour: max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+        )
 
-        if let last = speedTraceSamples.last, elapsedTime <= last.elapsedTime + 0.25 {
-            return
+        if let last = speedTraceSamples.last {
+            let isDuplicateSample = abs(elapsedTime - last.elapsedTime) < 0.001
+                && abs(speed - last.speedKilometersPerHour) < 0.01
+            if isDuplicateSample || (!force && elapsedTime <= last.elapsedTime + 0.25) {
+                return
+            }
         }
 
         speedTraceSamples.append(
@@ -479,6 +493,19 @@ struct LiveHUDView: View {
         if speedTraceSamples.count > 90 {
             speedTraceSamples.removeFirst(speedTraceSamples.count - 90)
         }
+    }
+
+
+    private func smoothedDisplaySpeedKilometersPerHour(rawSpeedKilometersPerHour: Double) -> Double {
+        guard rawSpeedKilometersPerHour.isFinite else { return 0 }
+        let previousSpeeds = speedTraceSamples.suffix(3).map(\.speedKilometersPerHour)
+        guard !previousSpeeds.isEmpty else { return rawSpeedKilometersPerHour }
+
+        let medianWindow = (previousSpeeds + [rawSpeedKilometersPerHour]).sorted()
+        let median = medianWindow[medianWindow.count / 2]
+        let lastSpeed = previousSpeeds.last ?? median
+        let maximumDisplayStepKmh = 2.2
+        return min(max(median, lastSpeed - maximumDisplayStepKmh), lastSpeed + maximumDisplayStepKmh)
     }
 
     private func pauseOrResume() {

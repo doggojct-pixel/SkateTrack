@@ -50,6 +50,9 @@ struct SessionSummaryView: View {
             }
             .background(background.ignoresSafeArea())
             .refreshable { await summary.reload() }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                floatingCloseButton
+            }
         }
         .preferredColorScheme(.dark)
         .task { await summary.loadIfNeeded() }
@@ -100,7 +103,6 @@ struct SessionSummaryView: View {
             }
             SessionSummaryMetricsGridView(items: metricItems(for: content))
             summaryDetailStack(content)
-            closeButton
         }
     }
 
@@ -201,7 +203,6 @@ struct SessionSummaryView: View {
             }
             .buttonStyle(.plain)
 
-            closeButton
         }
         .padding(18)
         .background(SkateTrackSessionStartColors.card.opacity(0.84))
@@ -209,18 +210,35 @@ struct SessionSummaryView: View {
         .accessibilityIdentifier("session-summary-error")
     }
 
-    private var closeButton: some View {
-        Button(action: onClose) {
-            Text("summary.close")
-                .font(.system(size: 15, weight: .black, design: .rounded))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(SkateTrackSessionStartColors.teal.opacity(0.82))
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    private var floatingCloseButton: some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [
+                    SkateTrackSessionStartColors.navy.opacity(0),
+                    SkateTrackSessionStartColors.navy.opacity(0.88),
+                    SkateTrackSessionStartColors.navy
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 18)
+
+            Button(action: onClose) {
+                Text("summary.close")
+                    .font(.system(size: 15, weight: .black, design: .rounded))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(SkateTrackSessionStartColors.teal.opacity(0.92))
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .shadow(color: SkateTrackSessionStartColors.teal.opacity(0.32), radius: 16, x: 0, y: 0)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 22)
+            .padding(.bottom, 12)
+            .background(SkateTrackSessionStartColors.navy.opacity(0.96))
         }
-        .buttonStyle(.plain)
-        .accessibilityIdentifier("session-summary-close")
+        .accessibilityIdentifier("session-summary-floating-close")
     }
 }
 

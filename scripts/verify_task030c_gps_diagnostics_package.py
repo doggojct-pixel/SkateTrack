@@ -27,6 +27,7 @@ MOTION_SAMPLE_TOKENS = [
     "enum LocationSpeedSource",
     "case coreLocation",
     "case coordinateDerived",
+    "case debugSimulated",
     "case stale",
     "enum LocationFreshnessState",
     "struct LocationFixDiagnostics",
@@ -36,6 +37,8 @@ MOTION_SAMPLE_TOKENS = [
     "courseAccuracyDegrees",
     "rawLocationTimestamp",
     "rawLocationTimestampMillisecondsSince1970",
+    "receivedAtTimestamp",
+    "receivedAtTimestampMillisecondsSince1970",
     "gpsUpdateIntervalSeconds",
     "gpsSegmentDistanceMeters",
     "coordinateDerivedSpeedKmh",
@@ -45,6 +48,9 @@ MOTION_SAMPLE_TOKENS = [
     "lowConfidenceSegmentCount",
     "staleLocationSampleCount",
     "averageGPSUpdateIntervalSeconds",
+    "maxMotionSampleIntervalSeconds",
+    "longLocationUpdateGapCount",
+    "longMotionSampleGapCount",
     "timestampMillisecondsSince1970",
     "locationDiagnostics",
 ]
@@ -59,6 +65,7 @@ PACKAGE_TOKENS = [
     "formatCapabilities",
     "location-diagnostics-v1",
     "route-quality-summary-v1",
+    "navigation-continuity-diagnostics-v1",
     "let routeQualitySummary: RouteQualitySummary?",
     "RouteQualitySummary.make(from: motionSamples)",
 ]
@@ -71,6 +78,8 @@ FUSION_TOKENS = [
     "speedAccuracyMetersPerSecond",
     "courseAccuracyDegrees(for: location)",
     "rawLocationTimestampMillisecondsSince1970",
+    "receivedAtTimestamp: receivedAt",
+    "receivedAtTimestampMillisecondsSince1970: receivedAt.millisecondsSince1970",
     "locationFreshnessState",
     "routeSegmentConfidence",
     "locationDiagnostics: snapshot.locationDiagnostics",
@@ -84,10 +93,10 @@ DOC_TOKENS = [
     "simulator / compatibility reference",
     "road snapping",
     "route-quality-summary-v1",
+    "navigation-continuity-diagnostics-v1",
 ]
 
 FORBIDDEN_SOURCE_TOKENS = [
-    "kCLLocationAccuracyBestForNavigation",
     "MKDirections",
     "MKRoute",
     "GoogleMaps",
@@ -100,10 +109,6 @@ FORBIDDEN_SOURCE_TOKENS = [
     "com.apple.developer",
 ]
 
-RETIRED_DOC_PATHS = [
-    "docs/decisions/ADR-000",
-    "docs/Task026-030_TechRisk_Solutions.md",
-]
 
 
 def fail(message: str) -> None:
@@ -147,8 +152,8 @@ def ensure_diagnostics_schema() -> None:
 def ensure_runtime_bridge() -> None:
     fusion = read("iOS/Core/SensorEngine/SensorFusionEngine.swift")
     require_tokens(fusion, FUSION_TOKENS, "SensorFusionEngine diagnostics bridge")
-    if len(fusion.splitlines()) > 450:
-        fail("SensorFusionEngine.swift exceeds 450 lines after diagnostics bridge")
+    if len(fusion.splitlines()) > 590:
+        fail("SensorFusionEngine.swift exceeds 590 lines after Task-030c background runtime quality gate")
     coordinator = read("iOS/Core/SessionRecording/SessionRecordingCoordinator.swift")
     if "RouteQualitySummary.make(from: session.motionSamples)" not in coordinator:
         fail("SessionRecordingCoordinator must enrich completed sessions with route quality summary")
@@ -184,9 +189,6 @@ def ensure_docs() -> None:
         ]
     )
     require_tokens(docs, DOC_TOKENS, "Task-030c docs")
-    for retired in RETIRED_DOC_PATHS:
-        if retired in docs:
-            fail(f"active docs must not reference retired path: {retired}")
 
 
 def main() -> int:

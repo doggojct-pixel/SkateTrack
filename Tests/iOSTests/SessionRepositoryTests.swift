@@ -32,6 +32,11 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertEqual(fetchedSession.motionSamples.map(\.speedKmh), [8, 12])
         XCTAssertEqual(fetchedSession.spotID, session.spotID)
         XCTAssertEqual(fetchedSession.spotSnapshot, session.spotSnapshot)
+        XCTAssertEqual(
+            fetchedSession.debugRecordingDiagnostics?.buildIdentity.debugBuildTaskID,
+            "Task-030c-b10-r5"
+        )
+        XCTAssertEqual(fetchedSession.debugRecordingDiagnostics?.diagnosticsStatus, "enabled")
 
         let samples = try await repository.loadMotionSamples(for: session.id)
         XCTAssertEqual(samples.count, 2)
@@ -85,6 +90,31 @@ final class SessionRepositoryTests: XCTestCase {
             coordinate: samples.last?.gpsCoordinate,
             radiusMeters: 150
         )
+        let debugDiagnostics = RecordingDebugDiagnostics(
+            buildIdentity: RecordingDebugBuildIdentity(debugBuildTaskID: "Task-030c-b10-r5"),
+            testContext: RecordingDebugTestContext(label: .handheldScreenOn),
+            diagnosticsStartedAt: startDate,
+            diagnosticsEndedAt: startDate.addingTimeInterval(60),
+            diagnosticsStatus: "enabled",
+            appLifecycleEvents: [
+                RecordingDebugLifecycleEvent(
+                    timestamp: startDate,
+                    eventType: "testSessionStarted"
+                )
+            ],
+            recordingHeartbeats: [],
+            authorizationSnapshots: [],
+            locationManagerSnapshots: [],
+            locationCallbackEvents: [],
+            gapEvents: [],
+            recoveryEvents: [],
+            filterDecisionSummary: RecordingDebugFilterDecisionSummary(acceptedLocationFixCount: 2),
+            altitudeDiagnostics: RecordingDebugAltitudeDiagnostics(
+                altitudeSourceCounts: ["coreLocationAbsolute": 2],
+                coreLocationAltitudeAcceptedCount: 2
+            )
+        )
+
         return try SessionData(
             startDate: startDate,
             endDate: startDate.addingTimeInterval(60),
@@ -99,6 +129,7 @@ final class SessionRepositoryTests: XCTestCase {
                 elevationGainMeters: 1,
                 movingRatio: 0.8
             ),
+            debugRecordingDiagnostics: debugDiagnostics,
             spotID: spotID,
             spotSnapshot: spotSnapshot
         )

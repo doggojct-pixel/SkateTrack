@@ -5,7 +5,7 @@
 import Combine
 import Foundation
 
-struct SessionSummaryContent: Equatable {
+struct SessionSummaryContent: Equatable, Sendable {
     let session: SessionData
     let motionSamples: [MotionSample]
 

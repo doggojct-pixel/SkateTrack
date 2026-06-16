@@ -1,38 +1,35 @@
 // [協作區] SessionRouteMapView.swift
 // 用途：呈現 Task-018b Session Summary 的 MapKit 路線預覽、起點與終點標記。
-// 委派至：SessionSummaryView 提供 motion samples；後續 Task-018c 接手進階圖表與付費 gating。
+// 委派至：SessionSummaryView 提供 motion samples；後續 Task-030c-d 接手 route confidence rendering。
 
 import MapKit
 import SwiftUI
 
+private struct RouteMapSegment: Identifiable {
+    let id: Int
+    let coordinates: [CLLocationCoordinate2D]
+}
+
 struct SessionRouteMapView: View {
     let samples: [MotionSample]
 
-    private var routeCoordinates: [CLLocationCoordinate2D] {
-        samples.compactMap { sample in
-            guard let coordinate = sample.gpsCoordinate,
-                  coordinate.latitude.isFinite,
-                  coordinate.longitude.isFinite,
-                  (-90.0...90.0).contains(coordinate.latitude),
-                  (-180.0...180.0).contains(coordinate.longitude) else {
-                return nil
-            }
+    private var routeSegments: [RouteMapSegment] {
+        makeRouteSegments(from: samples)
+    }
 
-            return CLLocationCoordinate2D(
-                latitude: coordinate.latitude,
-                longitude: coordinate.longitude
-            )
-        }
+    private var routeCoordinates: [CLLocationCoordinate2D] {
+        samples.compactMap(validCoordinate)
     }
 
     var body: some View {
         let coordinates = routeCoordinates
+        let segments = routeSegments
 
         VStack(alignment: .leading, spacing: 12) {
             header(coordinateCount: coordinates.count)
 
             if coordinates.count >= 2 {
-                routeMap(coordinates)
+                routeMap(coordinates: coordinates, segments: segments)
             } else {
                 emptyRouteState
             }
@@ -73,19 +70,23 @@ struct SessionRouteMapView: View {
         }
     }
 
-    private func routeMap(_ coordinates: [CLLocationCoordinate2D]) -> some View {
+    private func routeMap(coordinates: [CLLocationCoordinate2D], segments: [RouteMapSegment]) -> some View {
         Map(initialPosition: .region(region(for: coordinates))) {
-            MapPolyline(coordinates: coordinates)
-                .stroke(SkateTrackSessionStartColors.teal, lineWidth: 4)
+            ForEach(segments) { segment in
+                if segment.coordinates.count >= 2 {
+                    MapPolyline(coordinates: segment.coordinates)
+                        .stroke(SkateTrackSessionStartColors.teal, lineWidth: 4)
+                }
+            }
 
             if let start = coordinates.first {
-                Annotation("summary.route.start", coordinate: start, anchor: .center) {
+                Annotation(NSLocalizedString("summary.route.start", comment: ""), coordinate: start, anchor: .center) {
                     routePin(systemImage: "play.fill", color: SkateTrackSessionStartColors.teal)
                 }
             }
 
             if let finish = coordinates.last {
-                Annotation("summary.route.finish", coordinate: finish, anchor: .center) {
+                Annotation(NSLocalizedString("summary.route.finish", comment: ""), coordinate: finish, anchor: .center) {
                     routePin(systemImage: "flag.checkered", color: SkateTrackSessionStartColors.amber)
                 }
             }
@@ -132,6 +133,62 @@ struct SessionRouteMapView: View {
             .background(color)
             .clipShape(Circle())
             .shadow(color: color.opacity(0.45), radius: 10, x: 0, y: 0)
+    }
+
+    private func makeRouteSegments(from samples: [MotionSample]) -> [RouteMapSegment] {
+        var segments: [RouteMapSegment] = []
+        var currentCoordinates: [CLLocationCoordinate2D] = []
+        var segmentID = 0
+        var previousTimestamp: Date?
+
+        for sample in samples.sorted(by: { $0.timestamp < $1.timestamp }) {
+            guard let coordinate = validCoordinate(from: sample) else { continue }
+
+            if shouldStartNewRouteSegment(after: previousTimestamp, current: sample) {
+                appendSegmentIfNeeded(currentCoordinates, id: segmentID, to: &segments)
+                currentCoordinates = []
+                segmentID += 1
+            }
+
+            currentCoordinates.append(coordinate)
+            previousTimestamp = sample.timestamp
+        }
+
+        appendSegmentIfNeeded(currentCoordinates, id: segmentID, to: &segments)
+        return segments
+    }
+
+    private func validCoordinate(from sample: MotionSample) -> CLLocationCoordinate2D? {
+        guard let coordinate = sample.gpsCoordinate,
+              coordinate.latitude.isFinite,
+              coordinate.longitude.isFinite,
+              (-90.0...90.0).contains(coordinate.latitude),
+              (-180.0...180.0).contains(coordinate.longitude) else {
+            return nil
+        }
+
+        return CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+
+    private func shouldStartNewRouteSegment(after previousTimestamp: Date?, current sample: MotionSample) -> Bool {
+        if let previousTimestamp, sample.timestamp.timeIntervalSince(previousTimestamp) > 12 {
+            return true
+        }
+
+        guard let diagnostics = sample.locationDiagnostics else { return false }
+        if diagnostics.freshnessState == .stale { return true }
+        if diagnostics.routeSegmentConfidence == .low { return true }
+        if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > 12 }) == true { return true }
+        return false
+    }
+
+    private func appendSegmentIfNeeded(
+        _ coordinates: [CLLocationCoordinate2D],
+        id: Int,
+        to segments: inout [RouteMapSegment]
+    ) {
+        guard coordinates.count >= 2 else { return }
+        segments.append(RouteMapSegment(id: id, coordinates: coordinates))
     }
 
     private func region(for coordinates: [CLLocationCoordinate2D]) -> MKCoordinateRegion {

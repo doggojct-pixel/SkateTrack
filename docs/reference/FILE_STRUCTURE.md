@@ -184,7 +184,7 @@ SkateTrack/
 │   │   │   ├── BarometerProvider.swift             # [自主區] CMAltimeter relative altitude / pressure provider.
 │   │   │   ├── FallDetectionEngine.swift           # [自主區] Impact detection, stationary confirmation, countdown, and SOS event publishing.
 │   │   │   ├── GPSAuthorizationHandler.swift       # [自主區] CLLocation authorization wrapper.
-│   │   │   ├── GPSProvider.swift                   # [自主區] Filtered CLLocation and km/h speed provider.
+│   │   │   ├── GPSProvider.swift                   # [自主區] CLLocation and km/h speed provider; Task-030c-b2 active ride uses BestForNavigation / 1 m / fitness / no auto pause plus background-location continuity and significant-change backup.
 │   │   │   ├── IMUProvider.swift                   # [自主區] 50Hz accelerometer and gyro provider.
 │   │   │   ├── SensorCalibrationEngine.swift       # [自主區] Startup bias calibration and mode sensor priority planning.
 │   │   │   └── SensorFusionEngine.swift            # [自主區] 10Hz fused `MotionSample` engine.
@@ -222,7 +222,7 @@ SkateTrack/
 │   │   │   ├── SessionMetricsAccumulator.swift     # [自主區] Distance, speed, elevation, tilt, and moving ratio accumulator.
 │   │   │   ├── SessionRecordingCoordinator.swift   # [自主區] Sole session lifecycle coordinator.
 │   │   │   ├── SessionRecordingCoordinator+CompletionEffects.swift # [自主區] Post-save equipment mileage and Spot visit side effects.
-│   │   │   ├── SessionRecordingCoordinator+DebugMock.swift # [自主區] DEBUG-only demo speed sample feed.
+│   │   │   ├── SessionRecordingCoordinator+DebugMock.swift # [自主區] DEBUG-only simulated outdoor route sample feed.
 │   │   │   └── SessionStateMachine.swift           # [自主區] Strict session-state transition rules.
 │   │   └── Subscription/
 │   │       └── FeatureFlagEngine.swift             # [自主區] Feature access and DEBUG subscription override logic.
@@ -943,14 +943,29 @@ The old ADR single files remain retired. `docs/adr/ADR-INDEX.md` is the active h
 ## Task-030c-a Core Location Diagnostics Package Extension
 
 ```text
-Shared/Models/MotionSample.swift                         # [協作區] Adds optional Core Location diagnostics, speed source, freshness state, route segment confidence, millisecond timestamps, and RouteQualitySummary.
+Shared/Models/MotionSample.swift                         # [協作區] Adds optional Core Location diagnostics, received-at timestamps, speed source, freshness state, route segment confidence, millisecond timestamps, continuity gap counters, and RouteQualitySummary.
 Shared/Models/SessionData.swift                          # [協作區] Adds optional routeQualitySummary while preserving old .skatetrack decode compatibility.
 Shared/Models/SkateTrackPackageManifest.swift            # [協作區] Adds optional formatCapabilities for diagnostics-capable package exports without changing schemaVersion = 1.
 Shared/Models/SkateTrackPackagePayload.swift             # [協作區] Adds optional per-package-session routeQualitySummary generated from exported motion samples.
 iOS/Core/SensorEngine/SensorFusionEngine.swift           # [自主區] Attaches accepted Core Location diagnostics to 10Hz MotionSample exports without changing high-accuracy policy yet.
 iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # [自主區] Enriches completed sessions with RouteQualitySummary.
-iOS/Core/Export/SkateTrackPackageExportProvider.swift    # [協作區 — 邊界適配層] Marks exported .skatetrack packages with location-diagnostics-v1 and route-quality-summary-v1 capabilities.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift    # [協作區 — 邊界適配層] Marks exported .skatetrack packages with location-diagnostics-v1, route-quality-summary-v1, navigation-continuity-diagnostics-v1, and DEBUG-only debug-simulated-route-v1 capabilities when applicable.
 scripts/verify_task030c_gps_diagnostics_package.py       # Verifies Task-030c-a diagnostics schema, package capabilities, docs alignment, and no road snapping / production-service / signing drift.
+```
+
+## Task-030c-b High-Accuracy Outdoor Recording + DEBUG Simulated Route
+
+```text
+Shared/Models/MotionSample.swift                         # [協作區] Adds LocationSpeedSource.debugSimulated for explicitly marked simulator route diagnostics.
+iOS/Core/SensorEngine/GPSProvider.swift                  # [自主區] Active ride recording requests kCLLocationAccuracyBestForNavigation, 1 m distance filtering, .fitness activity type, and no automatic pausing.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # [自主區] Uses active ride GPS policy whenever primary, secondary, or supplemental route-tracking channels include GPS.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # [自主區] Stores DEBUG simulated route samples in completed mock sessions and fixes duplicate motionSamples argument risk.
+iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift # [自主區] Generates DEBUG-only skating-like simulated route, speed, altitude, accuracy, and low-confidence samples.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift    # [協作區 — 邊界適配層] Adds debug-simulated-route-v1 capability only for DEBUG simulated route packages.
+Shared/Localization/en.lproj/Localizable.strings         # [協作區] DEBUG simulated route copy.
+Shared/Localization/zh-Hant.lproj/Localizable.strings    # [協作區] DEBUG simulated route copy.
+Shared/Localization/ja.lproj/Localizable.strings         # [協作區] DEBUG simulated route copy.
+scripts/verify_task030c_high_accuracy_debug_route.py     # Verifies Task-030c-b high-accuracy policy, DEBUG simulated route, localization, docs, and scope boundaries.
 ```
 
 ### Task-030c-a data interpretation rule
@@ -958,3 +973,199 @@ scripts/verify_task030c_gps_diagnostics_package.py       # Verifies Task-030c-a 
 - `SkateTrack-Session-20260613-110119.skatetrack` is the real-device baseline for Task-030c route / speed fidelity work.
 - `SkateTrack-Session-20260612-180037.skatetrack` is a simulator / compatibility reference only and must not be used as real-device GPS evidence.
 - Task-030c-a records Core Location diagnostics; Task-030c-b remains responsible for high-accuracy outdoor recording policy changes.
+
+### Task-030c-b Live HUD Speed Trace Visibility Fix
+
+```text
+iOS/Features/SessionRecording/LiveHUDView.swift          # [協作區] Appends Live HUD speed trace samples from timer, elapsed-time, speed-change, and recording-start paths.
+iOS/Features/SessionRecording/LiveSpeedTraceView.swift   # [協作區] Keeps the Live HUD background speed trace visible with a waiting baseline before two samples accumulate.
+scripts/verify_live_hud.py                               # Verifies current Live HUD speed trace wiring, fallback baseline, current full-screen layout, and source membership.
+```
+
+Task-030c-b speed trace fix does not change GPS policy, DEBUG route generation, road snapping, map matching, signing, capabilities, entitlements, Launch Screen, AppIcon, bottom dock, watchOS, or production services.
+
+
+## Task-030c-b2 Navigation-grade Location Continuity
+
+```text
+SkateTrack.xcodeproj/project.pbxproj                    # [工程設定] Enables generated iOS Info.plist background location mode for screen-off active ride recording.
+Shared/Models/MotionSample.swift                         # [協作區] Adds receivedAtTimestamp diagnostics plus motion/location long-gap counters in RouteQualitySummary.
+iOS/Core/SensorEngine/GPSProvider.swift                  # [自主區] Keeps active ride background location updates enabled, requests Always upgrade when possible, uses significant-change backup, and accepts lower-confidence-but-valid pocket fixes for diagnostics instead of dropping them at 35 m.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # [自主區] Records received-at timestamps and publishes location-driven samples when Core Location wakes the app while timers may be throttled.
+iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift # [自主區] Keeps DEBUG simulated route diagnostics aligned with received-at timestamps.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift    # [協作區 — 邊界適配層] Adds navigation-continuity-diagnostics-v1 package capability.
+scripts/verify_task030c_navigation_continuity.py         # Verifies Task-030c-b2 background-location Info.plist settings, navigation continuity safeguards, diagnostics, docs, and no road snapping / production-service drift.
+```
+
+Task-030c-b2 intentionally touches iOS generated Info.plist background location settings for the iOS target only. It still does not add road snapping, map matching, route replay, Snow Mode, watchOS, StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, Launch Screen, AppIcon, bottom dock, or Apple Developer Program production integrations. Real-device screen-off pocket validation remains required before claiming navigation-grade route reliability.
+
+## Task-030c-b3 Route Recording Recovery Additions
+
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` — reconciles saved summary distance with route quality distance, scopes fall events to the active session window, and guards fall alerts during implausibly high-speed validation runs.
+- `iOS/Core/SensorEngine/FallDetectionEngine.swift` — resets detected fall events at the start of each monitoring session so stale fall events do not leak into later sessions.
+- `iOS/Core/SensorEngine/SensorFusionEngine.swift` — prefers Core Location speed when available and rejects implausible coordinate-derived speed outliers for current pre-Snow-mode route recovery.
+- `iOS/Core/SensorEngine/GPSProvider.swift` — applies the same coordinate-derived speed outlier guard before publishing fallback speed.
+- `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` — assigns chart segment identifiers when long gaps, stale fixes, or low-confidence fixes appear.
+- `iOS/Features/SessionSummary/SpeedTimelineChartView.swift` — renders speed as segmented lines without area fills so missing data does not appear as pale filled blocks.
+- `iOS/Features/SessionSummary/ElevationProfileChartView.swift` — renders elevation as segmented lines without area fills so missing data does not appear as pale filled blocks.
+- `iOS/Features/SessionSummary/SessionRouteMapView.swift` — splits route map polylines across long gaps or low-confidence location diagnostics instead of drawing one continuous precise route.
+- `iOS/Features/SessionSummary/SessionSummaryView.swift` — uses a persistent floating bottom return CTA via `safeAreaInset(edge: .bottom)`.
+- `scripts/verify_task030c_route_recording_recovery.py` — verifies Task-030c-b3 route recovery, chart gap-awareness, floating return, fall reset, and scope boundaries.
+
+Task-030c-b3 verification token: Navigation-grade Route Recording Recovery, route-recording-recovery-v1, gap-aware charts, floating bottom return, road snapping deferred.
+
+## Task-030c-b4 Raw CLLocation Stream Persistence
+
+```text
+Shared/Models/MotionSample.swift                         # Adds MotionSampleSource and raw location-fix deduplication helpers for route-quality summaries.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Persists every accepted CLLocation as a dedicated .locationFix MotionSample using raw CLLocation timestamps.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Reconciles summary distance with trusted raw route segments instead of blindly counting long-gap jumps.
+iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift # Marks DEBUG simulated route samples as .debugSimulated.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift    # Adds raw-location-stream-v1 export capability.
+iOS/Features/SessionSummary/SessionRouteMapView.swift    # Localizes start / finish map annotations.
+scripts/verify_task030c_raw_location_stream.py           # Verifies raw CLLocation stream persistence boundaries.
+```
+
+### Task-030c-b5 Activity-Aware Location, Speed & Altitude Fidelity
+
+- `Shared/Models/MotionSample.swift` — Adds `ActivityFidelityProfile`, `ActivityFidelityPolicy`, and `AltitudeSampleSource` so route, speed, altitude, and fall policies no longer rely on one skateboard-only speed range.
+- `Shared/Models/SessionData.swift` — Carries an optional `fidelityProfile` in session packages while keeping old `.skatetrack` decode compatible.
+- `iOS/Core/SensorEngine/SensorFusionEngine.swift` — Tags location-fix altitude as Core Location absolute altitude, timer-fusion altitude as barometer relative altitude, and applies activity-aware route-confidence thresholds.
+- `iOS/Core/SensorEngine/GPSProvider.swift` — Keeps high-speed coordinate-derived speed support within a broad global plausibility ceiling instead of the former skateboard-only cap.
+- `iOS/Core/SessionRecording/SessionMetricsAccumulator.swift` — Prevents mixed absolute / relative altitude from inflating elevation gain.
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` — Reconciles summary distance, speed, fall alert gating, and elevation gain through activity-aware policy.
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift` — Marks DEBUG simulated altitude with `AltitudeSampleSource.debugSimulated`.
+- `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` — Filters speed / elevation charts through activity-aware speed and altitude-source policies.
+- `scripts/verify_task030c_activity_aware_fidelity.py` — Guards against regression to fixed 45 / 90 km/h assumptions and mixed altitude-source rendering.
+
+Task-030c-b5 verification token: Activity-Aware Location, Speed & Altitude Fidelity, activity-aware-fidelity-v1, altitude-source-stabilization-v1, Core ML optional, road snapping deferred.
+
+
+## Task-030c-b6 Debug Tools Status Panel Polish
+
+- `iOS/Hooks/useSessionRecording.swift` — Polishes the DEBUG-only `SessionRecordingPreviewPanel` into a labeled diagnostics card with state, speed, distance, elapsed time, GPS count, sample count, latest accuracy, freshness, and sample-source chip.
+- `iOS/Features/Debug/DebugToolsPanelView.swift` — Adds the polished `Task-030c-b6` build-signature card at the bottom of Debug Tools so real-device testers can confirm the installed build.
+- `Shared/Localization/en.lproj/Localizable.strings` — Adds English Debug status panel and build-signature strings.
+- `Shared/Localization/zh-Hant.lproj/Localizable.strings` — Adds Traditional Chinese Debug status panel and build-signature strings.
+- `Shared/Localization/ja.lproj/Localizable.strings` — Adds Japanese Debug status panel and build-signature strings.
+- `scripts/verify_task030c_debug_panel_polish.py` — Guards the b6 diagnostics card, build-signature card, and localization keys.
+- `scripts/verify_debug_tools.py` — Extends the existing debug tools gate with b6 debug panel polish tokens.
+
+Task-030c-b6 verification token: Debug Tools Status Panel Polish, Task-030c-b6, debug-build-signature-card, session-recording-preview-panel.
+
+### Task-030c-b7 Background Recording Gap Diagnostics
+
+```text
+Shared/Models/SessionData.swift                         # [協作區] Adds optional DEBUG-only `debugRecordingDiagnostics` payload models for event-based background / lock-screen gap analysis.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # [自主區] Starts / finishes DEBUG recording diagnostics, records app lifecycle / protected data events, and attaches diagnostics to saved sessions.
+iOS/Core/SensorEngine/GPSProvider.swift                 # [自主區] Records Core Location callback, authorization, location manager config, filter decision, pause / resume, and significant-change backup diagnostics.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift   # [協作區] Adds debug package capabilities when an exported session includes recording diagnostics.
+iOS/Hooks/useSessionRecording.swift                     # [邊界適配層] Exposes DEBUG recording test context selection to Debug Tools before a session starts.
+iOS/Features/Debug/DebugFeatureFlag.swift               # [協作區] Adds Debug Tools card metadata for recording test context tagging.
+iOS/Features/Debug/DebugToolsPanelView.swift            # [協作區] Adds a polished DEBUG-only recording test context picker and updates the build signature to Task-030c-b7.
+scripts/verify_task030c_background_gap_diagnostics.py   # Verifies DEBUG-only background recording gap diagnostics scope and docs.
+```
+
+Task-030c-b7 verification token: Background Recording Gap Diagnostics, debug-recording-diagnostics-v1, background-gap-diagnostics-v1, DEBUG-only, protected data.
+
+
+### Task-030c-b8 debug recording context labels
+
+- `Shared/Models/SessionData.swift` — adds DEBUG recording context cases for electric longboard locked-pocket and scooter locked-pocket validation.
+- `iOS/Features/Debug/DebugToolsPanelView.swift` — shows concise selected-context descriptions and updates the debug build signature to `Task-030c-b8`.
+- `Shared/Localization/*/Localizable.strings` — localizes the refined debug recording context labels and descriptions.
+- `scripts/verify_task030c_debug_recording_context_labels.py` — verifies the b8 label polish without touching GPS runtime behavior.
+
+### Task-030c-b9 diagnostics export guard
+
+```text
+Shared/Models/SessionData.swift                         # Adds Task-030c-b9 diagnostics build identity and diagnosticsStatus for export verification.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Ensures DEBUG diagnostics exports are non-nil and adds a non-DEBUG disabled-by-build-configuration placeholder.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift   # Emits debug-build-identity-v1 and diagnostics-export-status-v1 when diagnostics metadata is present.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows Task-030c-b9 as the tester-visible Debug Tools build signature.
+scripts/verify_task030c_diagnostics_export.py           # Verifies the b9 diagnostics export contract.
+```
+
+Task-030c-b9 verification token: Ensure Background Diagnostics Export, Task-030c-b9, diagnostics export, debug-build-identity-v1, diagnostics-export-status-v1.
+
+### Task-030c-b9-r1 diagnostics persistence guard
+
+```text
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b9-r1.
+Shared/Persistence/PersistenceController.swift          # Adds optional local `debugRecordingDiagnosticsData` Core Data attribute for persisted sessions.
+Shared/Persistence/SessionEntityMapper.swift            # Encodes / decodes `debugRecordingDiagnosticsData` during SessionData save / fetch round trips.
+Shared/Persistence/SkateTrackDataModel.xcdatamodeld/SkateTrackDataModel.xcdatamodel/contents # Mirrors optional `debugRecordingDiagnosticsData` in the model file.
+iOS/Core/Export/SkateTrackPackageExportProvider.swift   # Applies a `missingFromPersistedSession` diagnostics fallback before package capabilities are computed.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows Task-030c-b9-r1 as the tester-visible Debug Tools build signature.
+Tests/iOSTests/SessionRepositoryTests.swift             # Asserts Core Data save / fetch preserves diagnostics build identity and status.
+scripts/verify_task030c_diagnostics_persistence.py      # Verifies the b9-r1 diagnostics persistence and export fallback guard.
+```
+
+Task-030c-b9-r1 verification token: Persist Diagnostics Through Session Export, Task-030c-b9-r1, debugRecordingDiagnosticsData, missingFromPersistedSession, diagnostics export.
+
+### Task-030c-b10 background runtime and quality gate guard
+
+```text
+iOS/App/Info.plist                                      # Explicit iOS app plist with UIBackgroundModes/location as an array for effective runtime bundle declaration.
+SkateTrack.xcodeproj/project.pbxproj                   # Wires only SkateTrack-iOS Debug / Release to iOS/App/Info.plist while preserving existing background-mode build-setting token.
+Shared/Models/SessionData.swift                        # Updates diagnostics build identity to Task-030c-b10 and adds RecordingDebugBundleInfoSnapshot.
+Shared/Models/MotionSample.swift                       # Adds trusted route segment policy helpers and prevents low-quality diagnostic segments from inflating trusted GPS distance.
+iOS/Core/SensorEngine/GPSProvider.swift                # Resolves runtime UIBackgroundModes from the built bundle and records bundle info in location manager diagnostics.
+iOS/Core/SensorEngine/SensorFusionEngine.swift         # Keeps raw location diagnostics while preventing stale / low-confidence fixes from replacing trusted live route anchors.
+iOS/Core/SessionRecording/SessionMetricsAccumulator.swift # Prevents stale / low-confidence gap-recovery samples from updating trusted summary speed and distance.
+iOS/Features/Debug/DebugToolsPanelView.swift           # Shows Task-030c-b10 as the tester-visible Debug Tools build signature.
+scripts/verify_task030c_background_runtime_quality_gate.py # Verifies b10 background runtime wiring and gap-recovery quality gate tokens.
+```
+
+Task-030c-b10 verification token: Effective Background Location Runtime + Gap Recovery Quality Gate, Task-030c-b10, iOS/App/Info.plist, background runtime, gap recovery.
+
+### Task-030c-b10-r2 startup guard
+
+```text
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b10-r2.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Suppresses startup coordinate-derived speed spikes from trusted live route state.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Suppresses startup handling fall events from alert/countdown and persisted fallEvents.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows Task-030c-b10-r2 in Debug Tools.
+scripts/verify_task030c_startup_guard.py                # Verifies startup speed and fall handling guard tokens.
+```
+
+Task-030c-b10-r2 verification token: Startup Speed Spike + Fall Handling Guard, Task-030c-b10-r2, startup guard, coordinate-derived speed, fall handling.
+
+### Task-030c-b10-r3 low-speed metrics and UI responsiveness guard
+
+```text
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b10-r3.
+Shared/Models/MotionSample.swift                        # Adds ActivityFidelityPolicy.acceptsLowSpeedMetricSample for conservative trusted metric filtering.
+iOS/Core/SensorEngine/SensorFusionEngine.swift          # Marks startup / low-speed local GPS jumps as low-confidence before live speed propagation.
+iOS/Core/SessionRecording/SessionMetricsAccumulator.swift # Excludes low-confidence low-speed samples from live metrics and uses source-separated altitude gates.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Reconciles saved metrics using trusted speed / distance / elevation helpers and yields before heavy startup work.
+iOS/Hooks/useSkateTrackPackageExport.swift              # Creates package exports off the main actor with a user-initiated detached task.
+iOS/Hooks/useSessionSummary.swift                       # Marks SessionSummaryContent as Sendable for export task handoff.
+scripts/verify_task030c_low_speed_metrics_ui.py         # Verifies b10-r3 low-speed metric and UI responsiveness guardrails.
+```
+
+Task-030c-b10-r3 verification token: Low-Speed Metrics Gate + UI Responsiveness, Task-030c-b10-r3, verify_task030c_low_speed_metrics_ui.py, low-speed metrics, UI responsiveness.
+
+
+### Task-030c-b10-r4 strict low-speed metrics and altitude source isolation
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b10-r4.
+Shared/Models/MotionSample.swift                        # Tightens low-speed metric acceptance thresholds for small-area / low-speed GPS artifacts.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Applies stricter live-route speed trust and standard skateboard low-speed policy.
+iOS/Core/SessionRecording/SessionMetricsAccumulator.swift # Isolates barometer-relative elevation from Core Location absolute altitude drift.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Reconciles final summary metrics using strict low-speed and altitude-source gates.
+scripts/verify_task030c_strict_low_speed_altitude.py     # Verifies b10-r4 strict low-speed metrics and altitude source isolation.
+
+Task-030c-b10-r4 verification token: Strict Low-Speed Metrics + Altitude Source Isolation, Task-030c-b10-r4, verify_task030c_strict_low_speed_altitude.py, strict low-speed metrics, altitude source isolation.
+Task-030c-b10-r4 compatibility token: Background Location Runtime + Gap Recovery Quality Gate, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard, verify_task030c_low_speed_metrics_ui.py, verify_task030c_startup_guard.py.
+
+### Task-030c-b10-r5 trusted chart metrics and display source alignment
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b10-r5.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows the Task-030c-b10-r5 Debug build signature.
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift # Builds trusted / smoothed speed and elevation chart point series.
+iOS/Features/SessionRecording/LiveHUDView.swift         # Smooths the Live HUD trace display without changing raw samples.
+scripts/verify_task030c_trusted_chart_metrics.py        # Verifies trusted chart metrics and display source alignment.
+
+Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, verify_task030c_trusted_chart_metrics.py, trusted chart metrics, display source alignment.
+Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard.

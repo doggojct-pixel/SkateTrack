@@ -24,10 +24,13 @@ struct LiveSpeedTraceView: View {
                 guidePath.move(to: CGPoint(x: rect.minX, y: y))
                 guidePath.addLine(to: CGPoint(x: rect.maxX, y: y))
             }
-            context.stroke(guidePath, with: .color(Color.white.opacity(0.045)), style: StrokeStyle(lineWidth: 1, dash: [4, 12]))
+            context.stroke(guidePath, with: .color(Color.white.opacity(0.07)), style: StrokeStyle(lineWidth: 1, dash: [4, 12]))
 
             let traceSamples = Array(samples.filter { $0.elapsedTime.isFinite && $0.speedKilometersPerHour.isFinite }.suffix(90))
-            guard traceSamples.count >= 2, let firstSample = traceSamples.first, let lastSample = traceSamples.last else { return }
+            guard traceSamples.count >= 2, let firstSample = traceSamples.first, let lastSample = traceSamples.last else {
+                drawWaitingTrace(in: rect, context: context)
+                return
+            }
 
             let timeSpan = max(lastSample.elapsedTime - firstSample.elapsedTime, 1)
             let visibleMaxSpeed = max(8, maxSpeedKilometersPerHour, traceSamples.map(\.speedKilometersPerHour).max() ?? 0)
@@ -47,11 +50,35 @@ struct LiveSpeedTraceView: View {
             fillPath.addLine(to: CGPoint(x: lastPoint.x, y: rect.maxY))
             fillPath.addLine(to: CGPoint(x: firstPoint.x, y: rect.maxY))
             fillPath.closeSubpath()
-            context.fill(fillPath, with: .color(accentColor.opacity(0.10)))
-            context.addFilter(.shadow(color: accentColor.opacity(0.30), radius: 8))
-            context.stroke(linePath, with: .color(accentColor.opacity(0.68)), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+            context.fill(fillPath, with: .color(accentColor.opacity(0.14)))
+            context.addFilter(.shadow(color: accentColor.opacity(0.36), radius: 9))
+            context.stroke(linePath, with: .color(accentColor.opacity(0.82)), style: StrokeStyle(lineWidth: 3.4, lineCap: .round, lineJoin: .round))
         }
-        .opacity(0.92)
+        .opacity(0.96)
         .accessibilityIdentifier("live-hud-speed-trace")
+    }
+
+    private func drawWaitingTrace(in rect: CGRect, context: GraphicsContext) {
+        let y = rect.maxY - rect.height * 0.18
+        var baseline = Path()
+        baseline.move(to: CGPoint(x: rect.minX, y: y))
+        baseline.addLine(to: CGPoint(x: rect.maxX, y: y))
+
+        var drawingContext = context
+        drawingContext.addFilter(
+            .shadow(
+                color: accentColor.opacity(0.24),
+                radius: 7
+            )
+        )
+        drawingContext.stroke(
+            baseline,
+            with: .color(accentColor.opacity(0.34)),
+            style: StrokeStyle(
+                lineWidth: 2,
+                lineCap: .round,
+                dash: [8, 10]
+            )
+        )
     }
 }

@@ -169,11 +169,11 @@
 "debug.tools.simulateFall.title" = "Fall Alert";
 "debug.tools.simulateFall.description" = "Trigger the Fall Alert overlay and 15-second SOS countdown without physically dropping the device.";
 "debug.tools.simulateFall.button" = "Simulate Fall Alert";
-"debug.tools.demoSpeed.title" = "Demo Speed Session";
-"debug.tools.demoSpeed.description" = "Use mock motion samples only when this toggle is explicitly enabled before starting a session.";
-"debug.tools.demoSpeed.toggle" = "Enable demo speed for next session";
-"debug.tools.demoSpeed.idleHint" = "Normal Debug runs now use real GPS / sensor data. Turn this on only for UI demos.";
-"debug.tools.demoSpeed.activeHint" = "End the current session before changing demo speed mode.";
+"debug.tools.demoSpeed.title" = "Debug Simulated Route";
+"debug.tools.demoSpeed.description" = "Generate DEBUG-only skating-like route, speed, altitude, and accuracy samples for simulator testing.";
+"debug.tools.demoSpeed.toggle" = "Enable simulated route for next session";
+"debug.tools.demoSpeed.idleHint" = "Normal Debug runs use real GPS / sensor data. Turn this on only for simulator route diagnostics.";
+"debug.tools.demoSpeed.activeHint" = "End the current session before changing simulated route mode.";
 "debug.tools.subscription.description" = "Override subscriber access in Debug builds for paywall and gated-mode testing.";
 "debug.tools.resetContacts.title" = "Emergency Contacts";
 "debug.tools.resetContacts.description" = "Clear local emergency contact test data without affecting production storage architecture.";
@@ -1020,3 +1020,46 @@
 "mac.accessibility.route_preview.value.format" = "%d route samples, %d changing route points, %@ derived distance";
 "mac.accessibility.speed_chart.label" = "Speed chart";
 "mac.accessibility.speed_chart.hint" = "Shows a lightweight speed trend from the selected package session samples.";
+
+/* Task-030c-b6 Debug status panel polish */
+"debug.status.title" = "Live Diagnostics";
+"debug.status.speed" = "Speed";
+"debug.status.distance" = "Distance";
+"debug.status.elapsed" = "Elapsed";
+"debug.status.gps" = "GPS";
+"debug.status.samples" = "Total samples";
+"debug.status.latestAccuracy" = "Latest accuracy";
+"debug.status.latestFreshness" = "Freshness";
+"debug.status.source.locationFix" = "Location fix";
+"debug.status.source.timerFusion" = "Timer fusion";
+"debug.status.source.debugSimulated" = "Simulated";
+"debug.status.source.none" = "No sample";
+"debug.status.freshness.fresh" = "Fresh";
+"debug.status.freshness.recent" = "Recent";
+"debug.status.freshness.stale" = "Stale";
+"debug.status.freshness.unavailable" = "Unavailable";
+"debug.status.freshness.none" = "No fix";
+"debug.build.title" = "Test build signature";
+"debug.build.subtitle" = "Use this badge to confirm the installed app includes the latest GPS fidelity test build.";
+
+/* Task-030c-b7 Background recording gap diagnostics */
+"debug.tools.recordingContext.title" = "Recording test context";
+"debug.tools.recordingContext.description" = "Tag the next DEBUG recording so exported .skatetrack diagnostics can identify how the device was held, locked, and carried.";
+"debug.tools.recordingContext.picker" = "Recording test context";
+"debug.tools.recordingContext.hint" = "This is saved only in DEBUG diagnostics and is not shown in normal session UI.";
+"debug.recordingContext.unspecified" = "Unspecified";
+"debug.recordingContext.unspecified.description" = "No test context selected.";
+"debug.recordingContext.handheldScreenOn" = "Handheld · screen on";
+"debug.recordingContext.handheldScreenOn.description" = "Start and keep the phone in hand with the screen on.";
+"debug.recordingContext.handheldAutoLock" = "Handheld · auto-lock";
+"debug.recordingContext.handheldAutoLock.description" = "Start with the screen on, hold the phone, and let iPhone auto-lock.";
+"debug.recordingContext.lockedPocketWalk" = "Walk · locked pocket";
+"debug.recordingContext.lockedPocketWalk.description" = "Start recording, lock the screen within a few seconds, then walk with the phone in a pocket.";
+"debug.recordingContext.windshieldDrive" = "Drive · windshield auto-lock";
+"debug.recordingContext.windshieldDrive.description" = "Place the phone under the windshield, start with the screen on, and let iPhone auto-lock.";
+"debug.recordingContext.vehicleScreenOff" = "Vehicle · manual lock";
+"debug.recordingContext.vehicleScreenOff.description" = "Start recording, manually lock the screen, then place the phone anywhere inside the vehicle.";
+"debug.recordingContext.electricLongboardLockedPocket" = "E-longboard · locked pocket";
+"debug.recordingContext.electricLongboardLockedPocket.description" = "Real riding test: start recording, lock the screen, and ride an electric longboard with the phone in a pocket.";
+"debug.recordingContext.scooterLockedPocket" = "Scooter · locked pocket";
+"debug.recordingContext.scooterLockedPocket.description" = "Validation ride: start recording, lock the screen, and ride a scooter with the phone in a pocket.";

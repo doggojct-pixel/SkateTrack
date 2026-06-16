@@ -58,5 +58,63 @@ Task-030b verification token: ADR index consolidated.
 | Task-030c-a Core Location diagnostics package extension | Keep `.skatetrack` `schemaVersion = 1`, add optional diagnostics fields and optional package `formatCapabilities` (`location-diagnostics-v1`, `route-quality-summary-v1`), and treat Core Location fixes as accuracy / freshness / confidence-bearing data instead of assuming every coordinate is GPS-grade. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
 | Real-device evidence handling | `20260613-110119` is the real-device route / speed fidelity baseline. `20260612-180037` is a simulator / compatibility reference and must not support real-device GPS claims. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md` |
 | Deferred route inference | Road snapping, map matching, route replay, smoothing, and Snow Mode route semantics are deferred until raw location diagnostics and high-accuracy recording policy are validated. | Deferred | `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+| Task-030c-b High-accuracy outdoor recording policy | Active ride recording should request `kCLLocationAccuracyBestForNavigation`, 1-meter distance filtering, `.fitness` activity type, no automatic pausing, and active GPS policy whenever the mode priority plan includes GPS in primary, secondary, or supplemental channels. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+| Task-030c-b DEBUG simulated route | Simulator route diagnostics may generate DEBUG-only skating-like location, speed, altitude, and accuracy samples, but they must be marked with `debugSimulated` / `debug-simulated-route-v1` and must never be treated as real-device evidence or production fallback. | Active | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/process/DEVELOPMENT_RULES.md` |
+| Task-030c-b2 Navigation-grade Location Continuity | Screen-off pocket recording requires iOS background location mode, `allowsBackgroundLocationUpdates`, Always-location upgrade when available, significant-change backup, and lower-confidence fix retention with diagnostics instead of silently dropping every fix above 35 m. | Active / real-device validation required | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
 
-Task-030c-a verification token: Core Location diagnostics, route-quality-summary-v1, no road snapping.
+Task-030c-b verification token: Core Location diagnostics, route-quality-summary-v1, High-accuracy outdoor recording policy, DEBUG simulated route, debug-simulated-route-v1, road snapping deferred.
+
+Task-030c-b2 verification token: Navigation-grade Location Continuity, screen-off pocket, background location mode, navigation-continuity-diagnostics-v1, road snapping deferred.
+
+| Task-030c-b3 Route recording recovery | Route distance, charts, fall events, and summary navigation must be recovered from real-device validation failures before Task-030c-b can be committed. Summary distance may reconcile against route-quality distance, charts must be gap-aware, fall events must be scoped to the active session, and route previews must split long / low-confidence gaps instead of rendering them as precise continuous lines. | Active / real-device validation required | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+
+Task-030c-b3 verification token: Navigation-grade Route Recording Recovery, route-recording-recovery-v1, gap-aware charts, floating bottom return, road snapping deferred.
+
+| Task-030c-b4 Raw CLLocation stream persistence | Navigation-style recording must persist every accepted Core Location fix as its own raw location-fix sample rather than relying only on timer-fusion samples that may repeat the last coordinate or be throttled in background conditions. Timer-fusion samples remain for IMU continuity; route aggregation deduplicates raw fixes and rejects long-gap / low-confidence segments for trusted summary distance. | Active / real-device validation required | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+
+Task-030c-b4 verification token: Raw CLLocation Stream Persistence, raw-location-stream-v1, raw location fix stream, road snapping deferred.
+
+| ADR-0016 | Activity-Aware Location, Speed & Altitude Fidelity | Accepted | Task-030c-b5 replaces single skateboard-only speed / altitude assumptions with deterministic activity profiles: technical skateboard, standard skateboard, electric skateboard, inline recreation, inline speed, snow-reserved future use, and vehicle validation. Core ML / Apple on-device AI may later plug into the confidence boundary, but current recording must work without Apple Intelligence. |
+
+Task-030c-b5 verification token: Activity-Aware Location, Speed & Altitude Fidelity, activity-aware-fidelity-v1, altitude-source-stabilization-v1, Core ML optional, road snapping deferred.
+
+
+| Task-030c-b6 Debug Tools Status Panel Polish | Debug Tools must provide tester-readable diagnostics and a visible task-build signature without changing GPS / fidelity runtime behavior. The build signature uses `Task-030c-b6` only as a DEBUG test marker, not as production versioning. | Active / UI polish | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md` |
+
+Task-030c-b6 verification token: Debug Tools Status Panel Polish, Task-030c-b6, debug-build-signature-card, session-recording-preview-panel.
+
+| Task-030c-b7 Background Recording Gap Diagnostics | While GPS fidelity remains blocked by real-device screen-off / pocket testing, SkateTrack will temporarily write DEBUG-only event-based diagnostics into exported `.skatetrack` packages. These diagnostics must help distinguish app lifecycle / protected data transitions, Core Location callback gaps, recording heartbeat gaps, authorization changes, location manager configuration, filter decisions, and altitude confidence without changing production package schema or exposing a normal user UI. | Active / temporary diagnostics | `docs/history/DEV_LOG.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+
+Task-030c-b7 verification token: Background Recording Gap Diagnostics, debug-recording-diagnostics-v1, background-gap-diagnostics-v1, DEBUG-only, protected data.
+
+
+- Task-030c-b8: DEBUG recording context labels remain DEBUG-only diagnostics metadata. They may describe real-world test scenarios, but they must not alter Core Location configuration, production recording behavior, package schema semantics, or SnowPrototype isolation.
+
+- Task-030c-b9: GPS branch diagnostics export must prove whether a real-device `.skatetrack` file was created by the current diagnostics build. Exported debug diagnostics may report `enabled`, `enabledButNoEventsRecorded`, or `disabledByBuildConfiguration`, and package capabilities include `debug-build-identity-v1` plus `diagnostics-export-status-v1` when the optional diagnostics block is present. This remains a temporary Pre-ADP diagnostics mechanism and must not be treated as production telemetry.
+
+- Task-030c-b9-r1: Background diagnostics export must survive the local Core Data save / fetch round trip before `.skatetrack` export. Persisted sessions now carry optional `debugRecordingDiagnosticsData`; exports fall back to `missingFromPersistedSession` for older records that lack runtime diagnostics. This is a temporary Pre-ADP diagnostics mechanism, not production telemetry or a GPS algorithm change.
+
+Task-030c-b9-r1 verification token: Persist Diagnostics Through Session Export, Task-030c-b9-r1, Core Data, debugRecordingDiagnosticsData, missingFromPersistedSession.
+
+- Task-030c-b10: The GPS branch must distinguish effective iOS app-bundle background-location runtime enablement from project-file intent. SkateTrack-iOS now uses an explicit `iOS/App/Info.plist` with `UIBackgroundModes/location`, records bundle-info diagnostics in exported packages, and applies conservative gap-recovery quality gates so stale / low-accuracy fixes are preserved as diagnostics but not counted as trusted movement.
+
+Task-030c-b10 verification token: Effective Background Location Runtime + Gap Recovery Quality Gate, Task-030c-b10, UIBackgroundModes, gap-recovery, trusted metrics.
+
+- Task-030c-b10-r2: GPS fidelity startup stabilization must suppress coordinate-derived speed spikes and lock-screen / pocket handling fall false alerts during the first seconds of recording without deleting raw GPS or raw IMU samples. Startup guard fixes must not perform route smoothing, road snapping, map matching, or fabricate geometry.
+
+Task-030c-b10-r2 verification token: Startup Speed Spike + Fall Handling Guard, Task-030c-b10-r2, startup guard, coordinate-derived speed, fall handling.
+
+- Task-030c-b10-r3: GPS fidelity metric reliability must separate raw sensor retention from trusted summary metrics. Low-speed residential / small-area GPS jumps, poor-accuracy Core Location speeds, and startup altitude drift are kept in raw diagnostics but excluded from max speed, trusted distance, and elevation gain. Export and startup paths should avoid visible UI stalls before later route geometry stabilization work begins.
+
+Task-030c-b10-r3 verification token: Low-Speed Metrics Gate + UI Responsiveness, Task-030c-b10-r3, low-speed metrics gate, barometer-relative elevation, export responsiveness.
+
+
+- Task-030c-b10-r4: Trusted metrics must not treat Core Location speed or absolute altitude as authoritative during low-speed residential tests. Strict low-speed metrics reject small-area GPS artifacts when accuracy / segment shape is not reliable, and altitude source isolation prefers barometer-relative gain whenever available before falling back to Core Location altitude.
+
+Task-030c-b10-r4 verification token: Strict Low-Speed Metrics + Altitude Source Isolation, Task-030c-b10-r4, strict low-speed metrics, altitude source isolation, barometer-relative elevation.
+Task-030c-b10-r4 compatibility token: Background Location Runtime + Gap Recovery Quality Gate, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard, low-speed metrics gate, startup guard.
+
+- Task-030c-b10-r5: Summary charts must align with trusted metric sources instead of drawing raw Core Location instantaneous speed or raw Core Location absolute altitude directly. Raw values remain preserved in diagnostics and export payloads, but user-facing speed and elevation charts use trusted display series, smoothing, and barometer-relative altitude where available.
+
+Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, trusted chart metrics, display source alignment.
+Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard.

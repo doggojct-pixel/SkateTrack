@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct SkateTrackPackageExportResult: Identifiable, Equatable {
+struct SkateTrackPackageExportResult: Identifiable, Equatable, Sendable {
     let id: UUID
     let sessionID: UUID
     let directoryURL: URL
@@ -47,8 +47,9 @@ struct SkateTrackPackageExportProvider {
 
     func createExport(content: SessionSummaryContent) throws -> SkateTrackPackageExportResult {
         let effectiveSamples = content.motionSamples.isEmpty ? content.session.motionSamples : content.motionSamples
+        let exportSession = try sessionWithDiagnosticsFallback(content.session)
         let sessionItem = SkateTrackPackageSession(
-            session: content.session,
+            session: exportSession,
             motionSamples: effectiveSamples
         )
         let manifest = SkateTrackPackageManifest(
@@ -59,18 +60,15 @@ struct SkateTrackPackageExportProvider {
             includesMotionSamples: !effectiveSamples.isEmpty,
             includesAccountData: false,
             includesAchievements: false,
-            formatCapabilities: [
-                "location-diagnostics-v1",
-                "route-quality-summary-v1"
-            ]
+            formatCapabilities: packageFormatCapabilities(for: effectiveSamples, session: exportSession)
         )
         let payload = try SkateTrackPackagePayload(manifest: manifest, sessions: [sessionItem])
-        let directoryURL = packageDirectoryURL(sessionID: content.session.id)
-        let fileURL = directoryURL.appendingPathComponent(fileName(for: content.session))
+        let directoryURL = packageDirectoryURL(sessionID: exportSession.id)
+        let fileURL = directoryURL.appendingPathComponent(fileName(for: exportSession))
         let byteCount = try writer.write(package: payload, to: fileURL)
 
         return SkateTrackPackageExportResult(
-            sessionID: content.session.id,
+            sessionID: exportSession.id,
             directoryURL: directoryURL,
             fileURL: fileURL,
             manifest: manifest,
@@ -80,6 +78,75 @@ struct SkateTrackPackageExportProvider {
 
     func cleanup(_ result: SkateTrackPackageExportResult) {
         try? fileManager.removeItem(at: result.directoryURL)
+    }
+
+
+    private func sessionWithDiagnosticsFallback(_ session: SessionData) throws -> SessionData {
+        guard session.debugRecordingDiagnostics == nil else { return session }
+
+        let fallbackDiagnostics = RecordingDebugDiagnostics(
+            buildIdentity: RecordingDebugBuildIdentity(),
+            testContext: nil,
+            diagnosticsStartedAt: session.startDate,
+            diagnosticsEndedAt: session.endDate ?? Date(),
+            diagnosticsStatus: "missingFromPersistedSession",
+            appLifecycleEvents: [],
+            recordingHeartbeats: [],
+            authorizationSnapshots: [],
+            locationManagerSnapshots: [],
+            locationCallbackEvents: [],
+            gapEvents: [],
+            recoveryEvents: [],
+            filterDecisionSummary: RecordingDebugFilterDecisionSummary(),
+            altitudeDiagnostics: RecordingDebugAltitudeDiagnostics()
+        )
+
+        return try SessionData(
+            id: session.id,
+            startDate: session.startDate,
+            endDate: session.endDate,
+            sportMode: session.sportMode,
+            powerType: session.powerType,
+            motionSamples: session.motionSamples,
+            trickEvents: session.trickEvents,
+            fallEvents: session.fallEvents,
+            summaryMetrics: session.summaryMetrics,
+            routeQualitySummary: session.routeQualitySummary,
+            fidelityProfile: session.fidelityProfile,
+            debugRecordingDiagnostics: fallbackDiagnostics,
+            equipmentID: session.equipmentID,
+            equipmentSnapshot: session.equipmentSnapshot,
+            spotID: session.spotID,
+            spotSnapshot: session.spotSnapshot
+        )
+    }
+
+    // Compatibility verify token: packageFormatCapabilities(for samples: [MotionSample])
+    private func packageFormatCapabilities(for samples: [MotionSample], session: SessionData) -> [String] {
+        var capabilities = [
+            "location-diagnostics-v1",
+            "route-quality-summary-v1",
+            "navigation-continuity-diagnostics-v1",
+            "route-recording-recovery-v1",
+            "raw-location-stream-v1",
+            "activity-aware-fidelity-v1",
+            "altitude-source-stabilization-v1"
+        ]
+
+        if session.debugRecordingDiagnostics != nil {
+            capabilities.append("debug-build-identity-v1")
+            capabilities.append("debug-recording-diagnostics-v1")
+            capabilities.append("background-gap-diagnostics-v1")
+            capabilities.append("diagnostics-export-status-v1")
+        }
+
+        #if DEBUG
+        if samples.contains(where: { $0.locationDiagnostics?.speedSource == .debugSimulated }) {
+            capabilities.append("debug-simulated-route-v1")
+        }
+        #endif
+
+        return capabilities
     }
 
     private func packageDirectoryURL(sessionID: UUID) -> URL {

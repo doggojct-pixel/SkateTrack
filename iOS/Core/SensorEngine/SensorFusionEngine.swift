@@ -13,14 +13,16 @@ enum SensorFusionEngineError: Error, Sendable {
 final class SensorFusionEngine: SensorProvider {
     static let sampleFrequencyHz: Double = 10
     static let sampleIntervalSeconds: TimeInterval = 1 / sampleFrequencyHz
-
+    private static let startupStabilizationSeconds: TimeInterval = 8
+    private static let startupCoordinateDerivedSpeedSpikeKmh: Double = 18
+    private static let lowSpeedLocalJumpKmh: Double = 18
+    private static let lowSpeedSuspiciousCoreLocationSpeedKmh: Double = 6
     private let gpsProvider: GPSProvider
     private let imuProvider: IMUProvider
     private let barometerProvider: BarometerProvider
     private let calibrationEngine: SensorCalibrationEngine
     private let sampleQueue = DispatchQueue(label: "com.jjf.skateTrack.sensorFusionEngine")
     private let stateLock = NSLock()
-
     private let motionSampleSubject = PassthroughSubject<MotionSample, Never>()
     private var cancellables = Set<AnyCancellable>()
     private var sampleTimer: DispatchSourceTimer?
@@ -36,12 +38,9 @@ final class SensorFusionEngine: SensorProvider {
     private var latestAltitudeMeters: Double?
     private var latestLocationDiagnostics: LocationFixDiagnostics?
     private var latestRawLocation: CLLocation?
-    private var lastLocationDrivenSampleDate: Date?
-
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
         motionSampleSubject.eraseToAnyPublisher()
     }
-
     init(
         gpsProvider: GPSProvider = GPSProvider(),
         imuProvider: IMUProvider = IMUProvider(),
@@ -64,12 +63,28 @@ final class SensorFusionEngine: SensorProvider {
         }
 
         resetSessionState(mode: mode)
+        #if DEBUG
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: "sensorFusionStartSession",
+                reason: "startSession"
+            )
+        )
+        #endif
         bindProviderStreams()
         startProviderUpdates(for: mode)
         startSampleTimer()
     }
 
     func stopSession() async -> SessionData {
+        #if DEBUG
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: "sensorFusionStopSession",
+                reason: "stopSession"
+            )
+        )
+        #endif
         stopSampleTimer()
         stopProviderUpdates()
         cancellables.removeAll()
@@ -96,7 +111,6 @@ final class SensorFusionEngine: SensorProvider {
     func priorityPlan(for mode: SportMode) -> SensorFusionPriorityPlan {
         calibrationEngine.priorityPlan(for: mode)
     }
-
     private func resetSessionState(mode: SportMode) {
         stateLock.withLock {
             currentMode = mode
@@ -110,11 +124,9 @@ final class SensorFusionEngine: SensorProvider {
             latestAltitudeMeters = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
-            lastLocationDrivenSampleDate = nil
             calibrationEngine.reset()
         }
     }
-
     private func bindProviderStreams() {
         cancellables.removeAll()
 
@@ -148,22 +160,20 @@ final class SensorFusionEngine: SensorProvider {
             }
             .store(in: &cancellables)
     }
-
     private func startProviderUpdates(for mode: SportMode) {
         let plan = calibrationEngine.priorityPlan(for: mode)
-        let gpsMode: GPSAccuracyMode = plan.primary.contains(.gps) ? .activeRide : .stationaryPowerSaving
+        let routeTrackingChannels = plan.primary + plan.secondary + plan.supplemental
+        let gpsMode: GPSAccuracyMode = routeTrackingChannels.contains(.gps) ? .activeRide : .stationaryPowerSaving
 
         gpsProvider.startUpdatingLocation(accuracyMode: gpsMode)
         imuProvider.startUpdates()
         barometerProvider.startUpdates()
     }
-
     private func stopProviderUpdates() {
         gpsProvider.stopUpdatingLocation()
         imuProvider.stopUpdates()
         barometerProvider.stopUpdates()
     }
-
     private func startSampleTimer() {
         let timer = DispatchSource.makeTimerSource(queue: sampleQueue)
         timer.schedule(deadline: .now(), repeating: Self.sampleIntervalSeconds)
@@ -171,14 +181,28 @@ final class SensorFusionEngine: SensorProvider {
             self?.publishCurrentMotionSample()
         }
         sampleTimer = timer
+        #if DEBUG
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: "recordingSampleTimerStarted",
+                reason: "startSampleTimer"
+            )
+        )
+        #endif
         timer.resume()
     }
-
     private func stopSampleTimer() {
         sampleTimer?.cancel()
+        #if DEBUG
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: "recordingSampleTimerStopped",
+                reason: "stopSampleTimer"
+            )
+        )
+        #endif
         sampleTimer = nil
     }
-
     private func publishCurrentMotionSample() {
         let sample = makeMotionSample()
 
@@ -188,7 +212,6 @@ final class SensorFusionEngine: SensorProvider {
 
         motionSampleSubject.send(sample)
     }
-
     private func makeMotionSample() -> MotionSample {
         let snapshot = stateLock.withLock { () -> (
             coordinate: GeoCoordinate?,
@@ -229,58 +252,78 @@ final class SensorFusionEngine: SensorProvider {
             accelerometerG: snapshot.calibratedAcceleration,
             gyroscopeRadPS: snapshot.calibratedGyroscope,
             altitudeMeters: snapshot.altitude,
-            locationDiagnostics: snapshot.locationDiagnostics
+            altitudeSource: snapshot.altitude == nil ? nil : .barometerRelative,
+            locationDiagnostics: snapshot.locationDiagnostics,
+            sampleSource: .timerFusion
         )
     }
-
     private func updateLocation(_ location: CLLocation) {
         let receivedAt = Date()
-        let previousLocation = stateLock.withLock { latestRawLocation }
+        let stateSnapshot = stateLock.withLock { (
+            previousLocation: latestRawLocation,
+            sessionStartDate: sessionStartDate
+        ) }
         let diagnostics = makeLocationDiagnostics(
             for: location,
-            previousLocation: previousLocation,
+            previousLocation: stateSnapshot.previousLocation,
+            sessionStartDate: stateSnapshot.sessionStartDate,
             receivedAt: receivedAt
         )
 
         stateLock.withLock {
-            latestCoordinate = GeoCoordinate(
-                latitude: location.coordinate.latitude,
-                longitude: location.coordinate.longitude
-            )
-            latestLocationDiagnostics = diagnostics
             latestRawLocation = location
+            latestLocationDiagnostics = diagnostics
 
-            if let coordinateDerivedSpeedKmh = diagnostics.coordinateDerivedSpeedKmh {
-                latestSpeedKmh = coordinateDerivedSpeedKmh
-            } else if location.speed >= 0 {
-                latestSpeedKmh = GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+            if Self.trustsLocationForLiveRoute(diagnostics) {
+                latestCoordinate = GeoCoordinate(
+                    latitude: location.coordinate.latitude,
+                    longitude: location.coordinate.longitude
+                )
+
+                if location.speed >= 0 {
+                    latestSpeedKmh = GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+                } else if let coordinateDerivedSpeedKmh = diagnostics.coordinateDerivedSpeedKmh {
+                    latestSpeedKmh = coordinateDerivedSpeedKmh
+                }
+            } else {
+                latestSpeedKmh = 0
             }
         }
-        publishLocationDrivenMotionSampleIfNeeded()
+        publishRawLocationFixMotionSample(for: location, diagnostics: diagnostics)
     }
-
-    private func publishLocationDrivenMotionSampleIfNeeded() {
-        let now = Date()
-        let shouldPublish = stateLock.withLock { () -> Bool in
-            guard sessionStartDate != nil else { return false }
-            guard lastLocationDrivenSampleDate.map({ now.timeIntervalSince($0) >= 0.75 }) ?? true else {
-                return false
-            }
-            lastLocationDrivenSampleDate = now
-            return true
+    private func publishRawLocationFixMotionSample(for location: CLLocation, diagnostics: LocationFixDiagnostics) {
+        let sample = stateLock.withLock { () -> MotionSample? in
+            guard sessionStartDate != nil else { return nil }
+            let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let trustedForLiveRoute = Self.trustsLocationForLiveRoute(diagnostics)
+            let speedKmh = trustedForLiveRoute
+                ? (location.speed >= 0
+                    ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+                    : (diagnostics.coordinateDerivedSpeedKmh ?? latestSpeedKmh))
+                : 0
+            let sample = MotionSample(
+                timestamp: location.timestamp,
+                timestampMillisecondsSince1970: location.timestamp.millisecondsSince1970,
+                gpsCoordinate: coordinate,
+                speedKmh: max(speedKmh, 0),
+                accelerometerG: calibrationEngine.calibratedAcceleration(from: latestAcceleration),
+                gyroscopeRadPS: calibrationEngine.calibratedGyroscope(from: latestGyroscope),
+                altitudeMeters: normalizedAltitude(from: location),
+                altitudeSource: normalizedAltitude(from: location) == nil ? nil : .coreLocationAbsolute,
+                locationDiagnostics: diagnostics,
+                sampleSource: .locationFix
+            )
+            sessionSamples.append(sample)
+            return sample
         }
-
-        guard shouldPublish else { return }
-
-        sampleQueue.async { [weak self] in
-            self?.publishCurrentMotionSample()
+        if let sample {
+            motionSampleSubject.send(sample)
         }
     }
-
-
     private func makeLocationDiagnostics(
         for location: CLLocation,
         previousLocation: CLLocation?,
+        sessionStartDate: Date?,
         receivedAt: Date
     ) -> LocationFixDiagnostics {
         let updateInterval = previousLocation.flatMap { previous -> TimeInterval? in
@@ -288,17 +331,43 @@ final class SensorFusionEngine: SensorProvider {
             return interval > 0 ? interval : nil
         }
         let segmentDistance = previousLocation.map { location.distance(from: $0) }
-        let coordinateDerivedSpeedKmh = makeCoordinateDerivedSpeedKmh(
+        let rawCoordinateDerivedSpeedKmh = makeCoordinateDerivedSpeedKmh(
             segmentDistanceMeters: segmentDistance,
             updateIntervalSeconds: updateInterval
         )
         let freshnessState = locationFreshnessState(for: location, receivedAt: receivedAt)
+        let horizontalAccuracy = normalizedAccuracy(location.horizontalAccuracy)
+        let coreLocationSpeedKmh = location.speed >= 0
+            ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+            : nil
+        let isStartupSpeedSpike = isStartupCoordinateDerivedSpeedSpike(
+            coordinateDerivedSpeedKmh: rawCoordinateDerivedSpeedKmh,
+            sessionStartDate: sessionStartDate,
+            receivedAt: receivedAt
+        )
+        let isLowSpeedLocalJump = isLowSpeedLocalMetricOutlier(
+            coreLocationSpeedKmh: coreLocationSpeedKmh,
+            coordinateDerivedSpeedKmh: rawCoordinateDerivedSpeedKmh,
+            horizontalAccuracyMeters: horizontalAccuracy,
+            speedAccuracyMetersPerSecond: normalizedAccuracy(location.speedAccuracy),
+            segmentDistanceMeters: segmentDistance
+        )
+        let coordinateDerivedSpeedKmh = (isStartupSpeedSpike || isLowSpeedLocalJump) ? nil : rawCoordinateDerivedSpeedKmh
         let speedSource = locationSpeedSource(
             location: location,
             freshnessState: freshnessState,
             coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh
         )
-        let horizontalAccuracy = normalizedAccuracy(location.horizontalAccuracy)
+        let confidence = (isStartupSpeedSpike || isLowSpeedLocalJump)
+            ? RouteSegmentConfidence.low
+            : routeSegmentConfidence(
+                horizontalAccuracyMeters: horizontalAccuracy,
+                freshnessState: freshnessState,
+                updateIntervalSeconds: updateInterval,
+                segmentDistanceMeters: segmentDistance,
+                coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+                profile: currentActivityFidelityProfile()
+            )
 
         return LocationFixDiagnostics(
             horizontalAccuracyMeters: horizontalAccuracy,
@@ -307,20 +376,31 @@ final class SensorFusionEngine: SensorProvider {
             courseAccuracyDegrees: courseAccuracyDegrees(for: location),
             rawLocationTimestamp: location.timestamp,
             rawLocationTimestampMillisecondsSince1970: location.timestamp.millisecondsSince1970,
+            receivedAtTimestamp: receivedAt,
+            receivedAtTimestampMillisecondsSince1970: receivedAt.millisecondsSince1970,
             gpsUpdateIntervalSeconds: updateInterval,
             gpsSegmentDistanceMeters: segmentDistance,
             coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
             speedSource: speedSource,
             freshnessState: freshnessState,
-            routeSegmentConfidence: routeSegmentConfidence(
-                horizontalAccuracyMeters: horizontalAccuracy,
-                freshnessState: freshnessState,
-                updateIntervalSeconds: updateInterval,
-                segmentDistanceMeters: segmentDistance
-            )
+            routeSegmentConfidence: confidence
         )
     }
-
+    private static func trustsLocationForLiveRoute(_ diagnostics: LocationFixDiagnostics) -> Bool {
+        guard diagnostics.routeSegmentConfidence != .low,
+              diagnostics.routeSegmentConfidence != .unavailable else { return false }
+        let policy = ActivityFidelityPolicy(profile: .standardSkateboard)
+        return policy.trustsRouteSegment(
+            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
+            freshnessState: diagnostics.freshnessState,
+            updateIntervalSeconds: diagnostics.gpsUpdateIntervalSeconds,
+            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters,
+            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh
+        )
+    }
+    private func normalizedAltitude(from location: CLLocation) -> Double? {
+        location.verticalAccuracy >= 0 && location.altitude.isFinite ? location.altitude : nil
+    }
     private func makeCoordinateDerivedSpeedKmh(
         segmentDistanceMeters: Double?,
         updateIntervalSeconds: TimeInterval?
@@ -328,16 +408,56 @@ final class SensorFusionEngine: SensorProvider {
         guard let segmentDistanceMeters, segmentDistanceMeters >= 1 else { return nil }
         guard let updateIntervalSeconds, updateIntervalSeconds >= 0.5 else { return nil }
         let speedKmh = (segmentDistanceMeters / updateIntervalSeconds) * 3.6
-        return min(max(speedKmh, 0), 150)
+        guard speedKmh <= ActivityFidelityPolicy.maximumGlobalPlausibleSpeedKmh else { return nil }
+        return max(speedKmh, 0)
     }
-
+    private func isStartupCoordinateDerivedSpeedSpike(
+        coordinateDerivedSpeedKmh: Double?,
+        sessionStartDate: Date?,
+        receivedAt: Date
+    ) -> Bool {
+        guard let coordinateDerivedSpeedKmh,
+              coordinateDerivedSpeedKmh >= Self.startupCoordinateDerivedSpeedSpikeKmh,
+              let sessionStartDate else { return false }
+        let elapsed = receivedAt.timeIntervalSince(sessionStartDate)
+        return elapsed >= 0 && elapsed <= Self.startupStabilizationSeconds
+    }
+    private func isLowSpeedLocalMetricOutlier(
+        coreLocationSpeedKmh: Double?,
+        coordinateDerivedSpeedKmh: Double?,
+        horizontalAccuracyMeters: Double?,
+        speedAccuracyMetersPerSecond: Double?,
+        segmentDistanceMeters: Double?
+    ) -> Bool {
+        let policy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
+        let speedKmh = coreLocationSpeedKmh ?? coordinateDerivedSpeedKmh ?? 0
+        guard speedKmh > 0 else { return false }
+        if speedKmh >= Self.lowSpeedSuspiciousCoreLocationSpeedKmh {
+            return !policy.acceptsLowSpeedMetricSample(
+                speedKmh: speedKmh,
+                horizontalAccuracyMeters: horizontalAccuracyMeters,
+                speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
+                coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+                segmentDistanceMeters: segmentDistanceMeters
+            )
+        }
+        if let coordinateDerivedSpeedKmh, coordinateDerivedSpeedKmh >= Self.lowSpeedLocalJumpKmh {
+            return !policy.acceptsLowSpeedMetricSample(
+                speedKmh: speedKmh,
+                horizontalAccuracyMeters: horizontalAccuracyMeters,
+                speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
+                coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+                segmentDistanceMeters: segmentDistanceMeters
+            )
+        }
+        return false
+    }
     private func locationFreshnessState(for location: CLLocation, receivedAt: Date) -> LocationFreshnessState {
         let age = max(receivedAt.timeIntervalSince(location.timestamp), 0)
         if age <= 2 { return .fresh }
         if age <= 5 { return .recent }
         return .stale
     }
-
     private func locationSpeedSource(
         location: CLLocation,
         freshnessState: LocationFreshnessState,
@@ -348,68 +468,73 @@ final class SensorFusionEngine: SensorProvider {
         if coordinateDerivedSpeedKmh != nil { return .coordinateDerived }
         return .unavailable
     }
-
     private func routeSegmentConfidence(
         horizontalAccuracyMeters: Double?,
         freshnessState: LocationFreshnessState,
         updateIntervalSeconds: TimeInterval?,
-        segmentDistanceMeters: Double?
+        segmentDistanceMeters: Double?,
+        coordinateDerivedSpeedKmh: Double?,
+        profile: ActivityFidelityProfile
     ) -> RouteSegmentConfidence {
         guard freshnessState != .unavailable else { return .unavailable }
-        guard freshnessState != .stale else { return .low }
-        guard let horizontalAccuracyMeters else { return .low }
-
-        if let updateIntervalSeconds, updateIntervalSeconds > 10 {
-            return .low
-        }
-
-        if let updateIntervalSeconds,
-           let segmentDistanceMeters,
-           updateIntervalSeconds > 5,
-           segmentDistanceMeters > 75 {
-            return .low
-        }
-
-        if horizontalAccuracyMeters <= 10 { return .high }
-        if horizontalAccuracyMeters <= 25 { return .medium }
+        guard freshnessState != .stale, let horizontalAccuracyMeters else { return .low }
+        let policy = ActivityFidelityPolicy(profile: profile)
+        // Compatibility verify token: policy.maximumTrustedSegmentDistanceMeters
+        guard policy.trustsRouteSegment(
+            horizontalAccuracyMeters: horizontalAccuracyMeters,
+            freshnessState: freshnessState,
+            updateIntervalSeconds: updateIntervalSeconds,
+            segmentDistanceMeters: segmentDistanceMeters,
+            coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh
+        ) else { return .low }
+        if horizontalAccuracyMeters <= policy.preferredHorizontalAccuracyMeters { return .high }
+        if horizontalAccuracyMeters <= policy.maximumUsableHorizontalAccuracyMeters { return .medium }
         return .low
     }
-
+    private func currentActivityFidelityProfile() -> ActivityFidelityProfile {
+        stateLock.withLock {
+            switch currentMode ?? .skateboard(.streetPark) {
+            case .skateboard(.surfskate): return .technicalSkateboard
+            case .skateboard: return .standardSkateboard
+            case .inline(.fitnessSpeed): return .inlineSpeed
+            case .inline: return .inlineRecreation
+            }
+        }
+    }
     private func normalizedAccuracy(_ accuracy: CLLocationAccuracy) -> Double? {
         accuracy >= 0 ? accuracy : nil
     }
-
     private func courseAccuracyDegrees(for location: CLLocation) -> Double? {
         if #available(iOS 13.4, *) {
             return normalizedAccuracy(location.courseAccuracy)
         }
         return nil
     }
-
     private func updateSpeed(_ speedKmh: Double) {
         stateLock.withLock {
-            latestSpeedKmh = speedKmh
+            if latestLocationDiagnostics?.routeSegmentConfidence == .low ||
+                latestLocationDiagnostics?.routeSegmentConfidence == .unavailable {
+                latestSpeedKmh = 0
+            } else {
+                latestSpeedKmh = speedKmh
+            }
         }
     }
-
     private func updateAcceleration(_ acceleration: ThreeAxisValue) {
         stateLock.withLock {
             latestAcceleration = acceleration
         }
     }
-
     private func updateGyroscope(_ gyroscope: ThreeAxisValue) {
         stateLock.withLock {
             latestGyroscope = gyroscope
         }
     }
-
     private func updateAltitude(_ altitude: Double?) {
         stateLock.withLock {
             latestAltitudeMeters = altitude
         }
     }
-
     private func sessionSnapshot() -> (startDate: Date, mode: SportMode, samples: [MotionSample]) {
         stateLock.withLock {
             let startDate = sessionStartDate ?? Date()
@@ -418,7 +543,6 @@ final class SensorFusionEngine: SensorProvider {
             return (startDate, mode, samples)
         }
     }
-
     private func resetTransientState() {
         stateLock.withLock {
             currentMode = nil
@@ -431,11 +555,9 @@ final class SensorFusionEngine: SensorProvider {
             latestAltitudeMeters = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
-            lastLocationDrivenSampleDate = nil
         }
     }
 }
-
 
 private extension Date {
     var millisecondsSince1970: Int64 {

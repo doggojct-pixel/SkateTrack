@@ -169,11 +169,11 @@
 "debug.tools.simulateFall.title" = "跌倒警示";
 "debug.tools.simulateFall.description" = "不需要真的摔手機，就能叫出 Fall Alert 與 15 秒 SOS 倒數。";
 "debug.tools.simulateFall.button" = "模擬跌倒警示";
-"debug.tools.demoSpeed.title" = "Demo 速度 Session";
-"debug.tools.demoSpeed.description" = "只有在開始 Session 前明確開啟時，才使用 mock motion samples。";
-"debug.tools.demoSpeed.toggle" = "下一次 Session 使用 Demo 速度";
-"debug.tools.demoSpeed.idleHint" = "一般 Debug 執行現在會使用真實 GPS / 感測器資料，只有展示 UI 時才開啟。";
-"debug.tools.demoSpeed.activeHint" = "請先結束目前 Session，再切換 Demo 速度模式。";
+"debug.tools.demoSpeed.title" = "Debug 模擬路線";
+"debug.tools.demoSpeed.description" = "產生僅限 DEBUG 使用、接近滑板滑動的路線、速度、高度與精度樣本，方便模擬器測試。";
+"debug.tools.demoSpeed.toggle" = "下一次 Session 使用模擬路線";
+"debug.tools.demoSpeed.idleHint" = "一般 Debug 執行會使用真實 GPS / 感測器資料；只有模擬器路線診斷時才開啟。";
+"debug.tools.demoSpeed.activeHint" = "請先結束目前 Session，再切換模擬路線模式。";
 "debug.tools.subscription.description" = "在 Debug 版本中覆寫訂閱者權限，用來測試付費牆與鎖定模式。";
 "debug.tools.resetContacts.title" = "緊急聯絡人";
 "debug.tools.resetContacts.description" = "清除本機緊急聯絡人測試資料，不影響正式儲存架構。";
@@ -1020,3 +1020,46 @@
 "mac.accessibility.route_preview.value.format" = "%d 筆路線樣本、%d 個有效路線點、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度圖表";
 "mac.accessibility.speed_chart.hint" = "根據選取 package session 的樣本顯示輕量速度趨勢。";
+
+/* Task-030c-b6 Debug status panel polish */
+"debug.status.title" = "即時診斷";
+"debug.status.speed" = "速度";
+"debug.status.distance" = "距離";
+"debug.status.elapsed" = "時間";
+"debug.status.gps" = "GPS";
+"debug.status.samples" = "總樣本";
+"debug.status.latestAccuracy" = "最新精度";
+"debug.status.latestFreshness" = "新鮮度";
+"debug.status.source.locationFix" = "定位更新";
+"debug.status.source.timerFusion" = "計時融合";
+"debug.status.source.debugSimulated" = "模擬";
+"debug.status.source.none" = "無樣本";
+"debug.status.freshness.fresh" = "即時";
+"debug.status.freshness.recent" = "近期";
+"debug.status.freshness.stale" = "過期";
+"debug.status.freshness.unavailable" = "不可用";
+"debug.status.freshness.none" = "無定位";
+"debug.build.title" = "測試版本標籤";
+"debug.build.subtitle" = "用這個標籤確認手機內已安裝最新 GPS fidelity 測試版本。";
+
+/* Task-030c-b7 Background recording gap diagnostics */
+"debug.tools.recordingContext.title" = "錄製測試情境";
+"debug.tools.recordingContext.description" = "替下一次 DEBUG 錄製加上情境標籤，讓 .skatetrack 診斷資料能辨識手機拿法、鎖定方式與放置位置。";
+"debug.tools.recordingContext.picker" = "錄製測試情境";
+"debug.tools.recordingContext.hint" = "此標籤只會寫入 DEBUG 診斷資料，不會顯示在一般 Session 畫面。";
+"debug.recordingContext.unspecified" = "未指定";
+"debug.recordingContext.unspecified.description" = "未選擇測試情境。";
+"debug.recordingContext.handheldScreenOn" = "手持・螢幕亮";
+"debug.recordingContext.handheldScreenOn.description" = "開始後持續手持，螢幕保持開啟。";
+"debug.recordingContext.handheldAutoLock" = "手持・自動鎖定";
+"debug.recordingContext.handheldAutoLock.description" = "開始時螢幕亮，手持移動，讓 iPhone 到時間自動鎖定。";
+"debug.recordingContext.lockedPocketWalk" = "步行・鎖螢幕口袋";
+"debug.recordingContext.lockedPocketWalk.description" = "開始後數秒內手動鎖螢幕，放口袋步行。";
+"debug.recordingContext.windshieldDrive" = "開車・擋風玻璃自動鎖";
+"debug.recordingContext.windshieldDrive.description" = "手機放擋風玻璃下方，開始時螢幕亮，讓 iPhone 自動鎖定。";
+"debug.recordingContext.vehicleScreenOff" = "車內・手動鎖螢幕";
+"debug.recordingContext.vehicleScreenOff.description" = "開始後手動鎖螢幕，手機放車內任一位置。";
+"debug.recordingContext.electricLongboardLockedPocket" = "電動長版・鎖螢幕口袋";
+"debug.recordingContext.electricLongboardLockedPocket.description" = "真實使用測試：開始後鎖螢幕，手機放口袋滑電動長版。";
+"debug.recordingContext.scooterLockedPocket" = "機車・鎖螢幕口袋";
+"debug.recordingContext.scooterLockedPocket.description" = "驗證測試：開始後鎖螢幕，手機放口袋騎機車。";

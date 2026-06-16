@@ -520,8 +520,6 @@
 		27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageExportProvider.swift; sourceTree = "<group>"; };
 		27A400000000000000000001 /* useSkateTrackPackageExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageExport.swift; sourceTree = "<group>"; };
 		27A500000000000000000001 /* SessionPackageExportActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPackageExportActionView.swift; sourceTree = "<group>"; };
-		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
-		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		27B100000000000000000001 /* MacRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRootView.swift; sourceTree = "<group>"; };
 		27B200000000000000000001 /* MacImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacImportView.swift; sourceTree = "<group>"; };
 		27B200000000000000000002 /* MacPackagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackagePreviewView.swift; sourceTree = "<group>"; };
@@ -532,6 +530,8 @@
 		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
 		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
 		28B100000000000000000001 /* MacRoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRoutePreviewView.swift; sourceTree = "<group>"; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -997,6 +997,46 @@
 			path = iOS/Core/Export;
 			sourceTree = SOURCE_ROOT;
 		};
+		27B000000000000000000000 /* macOS/Features */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000000 /* Import */,
+				28A100000000000000000000 /* SessionBrowser */,
+				27B300000000000000000000 /* Shared */,
+			);
+			path = macOS/Features;
+			sourceTree = SOURCE_ROOT;
+		};
+		27B200000000000000000000 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000001 /* MacImportView.swift */,
+				27B200000000000000000002 /* MacPackagePreviewView.swift */,
+				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		27B300000000000000000000 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				27B300000000000000000001 /* MacLockedFeatureCardView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		28A100000000000000000000 /* SessionBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				28A100000000000000000001 /* MacSessionBrowserView.swift */,
+				28A100000000000000000002 /* MacSessionDetailView.swift */,
+				28A100000000000000000003 /* MacSessionViewerModel.swift */,
+				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
+				28B100000000000000000001 /* MacRoutePreviewView.swift */,
+			);
+			path = SessionBrowser;
+			sourceTree = "<group>";
+		};
 		3963F8F31F93F511E309A0BF /* scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1050,46 +1090,6 @@
 				3963F8F31F93F511E309A0BF /* scripts */,
 				DB0FE2794C17B0CCB9393690 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		27B000000000000000000000 /* macOS/Features */ = {
-			isa = PBXGroup;
-			children = (
-				27B200000000000000000000 /* Import */,
-				28A100000000000000000000 /* SessionBrowser */,
-				27B300000000000000000000 /* Shared */,
-			);
-			path = macOS/Features;
-			sourceTree = SOURCE_ROOT;
-		};
-		27B200000000000000000000 /* Import */ = {
-			isa = PBXGroup;
-			children = (
-				27B200000000000000000001 /* MacImportView.swift */,
-				27B200000000000000000002 /* MacPackagePreviewView.swift */,
-				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
-			);
-			path = Import;
-			sourceTree = "<group>";
-		};
-		28A100000000000000000000 /* SessionBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				28A100000000000000000001 /* MacSessionBrowserView.swift */,
-				28A100000000000000000002 /* MacSessionDetailView.swift */,
-				28A100000000000000000003 /* MacSessionViewerModel.swift */,
-				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
-				28B100000000000000000001 /* MacRoutePreviewView.swift */,
-			);
-			path = SessionBrowser;
-			sourceTree = "<group>";
-		};
-		27B300000000000000000000 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				27B300000000000000000001 /* MacLockedFeatureCardView.swift */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		BB66BE6E71B096E496503051 /* macOS/App */ = {
@@ -1851,7 +1851,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
@@ -1945,7 +1946,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";

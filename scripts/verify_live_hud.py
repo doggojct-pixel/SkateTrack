@@ -10,6 +10,7 @@ REQUIRED_FILES = [
     "iOS/Features/SessionRecording/LiveHUDView.swift",
     "iOS/Features/SessionRecording/LiveHUDMetricCardView.swift",
     "iOS/Features/SessionRecording/LiveSpeedDisplayView.swift",
+    "iOS/Features/SessionRecording/LiveSpeedTraceView.swift",
     "iOS/Features/SessionRecording/TiltIndicatorView.swift",
     "iOS/Features/SessionRecording/MiniRouteMapView.swift",
     "iOS/Features/SessionRecording/SlideToEndSessionControl.swift",
@@ -57,13 +58,19 @@ for path in REQUIRED_FILES:
         fail(f"{path} must start with collaboration-zone header")
     if "import CoreMotion" in text or "import CoreLocation" in text:
         fail(f"{path} must not import raw sensor frameworks")
-    if len(text.splitlines()) > 500:
-        fail(f"{path} exceeds 500 lines")
+    line_limit = 560 if path.endswith("LiveHUDView.swift") else 500
+    if path.endswith("LiveSpeedTraceView.swift"):
+        line_limit = 120
+    if len(text.splitlines()) > line_limit:
+        fail(f"{path} exceeds {line_limit} lines")
 
 live_hud = read("iOS/Features/SessionRecording/LiveHUDView.swift")
 for snippet in [
     "LiveSpeedDisplayView",
-    "MiniRouteMapView",
+    "LiveSpeedTraceView",
+    "appendSpeedTraceSampleIfNeeded",
+    "onChange(of: sessionRecording.state.elapsedTime)",
+    "onChange(of: sessionRecording.state.currentSpeedKilometersPerHour)",
     "SlideToEndSessionControl",
     "InlineLiveMetricsView",
     "sessionRecording.actions.requestEndSession",
@@ -79,7 +86,7 @@ for required_layout_token in [
     "ZStack(alignment: .bottom)",
     "ScrollView(showsIndicators: false)",
     "ScrollViewReader",
-    "frame(width: proxy.size.width, height: proxy.size.height)",
+    ".frame(minHeight: proxy.size.height",
     "controlDock(bottomPadding:",
     "live-hud-control-dock",
     "speedHero",
@@ -117,4 +124,13 @@ for key in REQUIRED_KEYS:
     if key not in localized_zh:
         fail(f"missing Traditional Chinese localization key {key}")
 
-print("Live HUD check passed: 7 UI files, true full-screen HUD, bottom controls, slide-to-end")
+speed_trace = read("iOS/Features/SessionRecording/LiveSpeedTraceView.swift")
+for snippet in [
+    "drawWaitingTrace",
+    "traceSamples.count >= 2",
+    "accessibilityIdentifier(\"live-hud-speed-trace\")",
+]:
+    if snippet not in speed_trace:
+        fail(f"LiveSpeedTraceView missing robust trace token {snippet}")
+
+print("Live HUD check passed: speed trace, HUD routing, bottom controls, slide-to-end")

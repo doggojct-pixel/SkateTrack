@@ -84,6 +84,7 @@ final class PersistenceController {
             binaryAttribute("equipmentSnapshotData", optional: true),
             uuidAttribute("spotID", optional: true),
             binaryAttribute("spotSnapshotData", optional: true),
+            binaryAttribute("debugRecordingDiagnosticsData", optional: true),
             stringAttribute("sampleFileName", optional: true),
             binaryAttribute("trickEventsData", optional: false),
             dateAttribute("createdAt", optional: false),

@@ -185,6 +185,8 @@ SOURCE_TOKENS = {
         "SubscriptionPaywallView",
         "lockedFeature: .advancedCharts",
         "refreshable",
+        "safeAreaInset(edge: .bottom",
+        "session-summary-floating-close",
     ],
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift": [
         "SessionSummaryMetricItem",
@@ -204,6 +206,8 @@ SOURCE_TOKENS = {
         "import MapKit",
         "MapPolyline",
         "Annotation",
+        "makeRouteSegments",
+        "shouldStartNewRouteSegment",
         "session-route-map-view",
         "session-route-map-empty",
     ],
@@ -258,16 +262,16 @@ SOURCE_TOKENS = {
     ],
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": [
         "import Charts",
-        "Chart(points)",
+        "SessionSummaryChartSegment",
         "LineMark",
-        "AreaMark",
+        "series: .value",
         "summary-speed-timeline-chart",
     ],
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift": [
         "import Charts",
-        "Chart(points)",
+        "SessionSummaryChartSegment",
         "LineMark",
-        "AreaMark",
+        "series: .value",
         "summary-elevation-profile-chart",
     ],
     "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": [
@@ -286,13 +290,13 @@ SOURCE_TOKENS = {
         "SessionSummaryView(",
         "selectedSummarySession",
     ],
-    "docs/DEV_LOG.md": [
+    "docs/history/DEV_LOG.md": [
         "Task-020c",
         "Task-018c Advanced Charts + Subscription Gating",
         "SpeedTimelineChartView",
         "GatedFeature.advancedCharts",
     ],
-    "docs/FILE_STRUCTURE.md": [
+    "docs/reference/FILE_STRUCTURE.md": [
         "Task-020c",
         "Task-018c Advanced Charts + Subscription Gating",
         "SessionAdvancedChartsView.swift",
@@ -405,6 +409,16 @@ def verify_source_contracts() -> None:
     summary_view = read("iOS/Features/SessionSummary/SessionSummaryView.swift")
     if "No fake health metrics are shown" in summary_view:
         fail("User-facing copy must stay in Localizable.strings, not raw Swift strings")
+
+    chart_sources = "\n".join(
+        read(path)
+        for path in [
+            "iOS/Features/SessionSummary/SpeedTimelineChartView.swift",
+            "iOS/Features/SessionSummary/ElevationProfileChartView.swift",
+        ]
+    )
+    if "AreaMark" in chart_sources:
+        fail("Task-030c-b3 charts must not use area fills across long GPS gaps")
 
 
 def main() -> None:

@@ -33,6 +33,10 @@ enum SessionEntityMapper {
         object.setValue(try session.equipmentSnapshot.map { try encode($0) }, forKey: "equipmentSnapshotData")
         object.setValue(session.spotID, forKey: "spotID")
         object.setValue(try session.spotSnapshot.map { try encode($0) }, forKey: "spotSnapshotData")
+        object.setValue(
+            try session.debugRecordingDiagnostics.map { try encode($0) },
+            forKey: "debugRecordingDiagnosticsData"
+        )
         object.setValue(sampleFileName, forKey: "sampleFileName")
         object.setValue(try encode(session.trickEvents), forKey: "trickEventsData")
         object.setValue(object.value(forKey: "createdAt") as? Date ?? now, forKey: "createdAt")
@@ -75,6 +79,9 @@ enum SessionEntityMapper {
             trickEvents: decode([TrickEvent].self, from: trickEventsData),
             fallEvents: fallEvents,
             summaryMetrics: summary,
+            debugRecordingDiagnostics: try (object.value(forKey: "debugRecordingDiagnosticsData") as? Data).map {
+                try decode(RecordingDebugDiagnostics.self, from: $0)
+            },
             equipmentID: object.value(forKey: "equipmentID") as? UUID,
             equipmentSnapshot: try (object.value(forKey: "equipmentSnapshotData") as? Data).map {
                 try decode(EquipmentSessionSnapshot.self, from: $0)
