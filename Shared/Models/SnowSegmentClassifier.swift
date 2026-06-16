@@ -50,14 +50,15 @@ struct SnowSegmentClassifier: Sendable {
             return classifyDescent(metrics: metrics, verticalRate: verticalRate)
         }
 
+        if metrics.altitudeDeltaMeters == nil,
+           metrics.averageSpeedKmh >= config.flatTraverseMinSpeedKmh {
+            return makeClassification(type: .unknown, confidence: 0.32, metrics: metrics, reasonCodes: ["missingAltitude", "moving"])
+        }
+
         if abs(metrics.verticalRateMetersPerSecond ?? 0) <= config.flatVerticalRateAbsThresholdMetersPerSecond,
            metrics.averageSpeedKmh >= config.flatTraverseMinSpeedKmh,
            metrics.motionEnergyG > config.lowMotionEnergyThresholdG {
             return makeClassification(type: .flatTraverse, confidence: 0.70, metrics: metrics, reasonCodes: ["flatAltitudeTrend", "moving"])
-        }
-
-        if metrics.altitudeDeltaMeters == nil, metrics.averageSpeedKmh >= config.downhillMinSpeedKmh {
-            return makeClassification(type: .unknown, confidence: 0.32, metrics: metrics, reasonCodes: ["missingAltitude", "moving"])
         }
 
         return makeClassification(type: .unknown, confidence: 0.28, metrics: metrics, reasonCodes: ["noRuleMatched"])

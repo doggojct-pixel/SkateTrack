@@ -152,6 +152,16 @@ def verify_existing_value_types_not_expanded() -> None:
                 fail(f"003b must not extend {rel_path}; found token: {token}")
 
 
+def verify_missing_altitude_priority() -> None:
+    text = read("Shared/Models/SnowSegmentClassifier.swift")
+    missing_altitude_index = text.find("metrics.altitudeDeltaMeters == nil")
+    flat_traverse_index = text.find("type: .flatTraverse")
+    if missing_altitude_index == -1 or flat_traverse_index == -1:
+        fail("unable to verify missing-altitude classifier priority")
+    if missing_altitude_index > flat_traverse_index:
+        fail("missing-altitude moving samples must be classified before flatTraverse fallback")
+
+
 def verify_known_limitations() -> None:
     text = read("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md")
     required = [
@@ -169,6 +179,7 @@ def main() -> None:
     verify_files_and_snippets()
     verify_no_scope_creep()
     verify_existing_value_types_not_expanded()
+    verify_missing_altitude_priority()
     verify_known_limitations()
     print("[snow-task-003] PASS: v0 SnowSegmentClassifier, config, fixture tests, and known limitations are present without MotionSample/schema/WatchBridge scope creep.")
 

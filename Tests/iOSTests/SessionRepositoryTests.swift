@@ -83,7 +83,8 @@ final class SessionRepositoryTests: XCTestCase {
             name: "Test Skate Park",
             activityFamily: .mixed,
             coordinate: samples.last?.gpsCoordinate,
-            radiusMeters: 150
+            radiusMeters: 150,
+            archivedAt: startDate
         )
         return try SessionData(
             startDate: startDate,
