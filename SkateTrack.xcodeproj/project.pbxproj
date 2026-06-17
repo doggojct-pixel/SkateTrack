@@ -358,6 +358,24 @@
 		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
 		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
 		28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B100000000000000000001 /* MacRoutePreviewView.swift */; };
+		36D700000000000000000101 /* MacSnowAnalysisAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */; };
+		36D700000000000000000102 /* MacSnowSessionAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000002 /* MacSnowSessionAnalysis.swift */; };
+		36D700000000000000000103 /* MacSnowAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */; };
+		36D700000000000000000104 /* MacSnowSessionAnalysisMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */; };
+		36D700000000000000000105 /* MacSnowRouteFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000005 /* MacSnowRouteFilter.swift */; };
+		36D700000000000000000106 /* MacSnowMockAnalysisProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */; };
+		36D800000000000000000101 /* MacSnowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000001 /* MacSnowStyle.swift */; };
+		36D800000000000000000102 /* MacSnowComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000002 /* MacSnowComponents.swift */; };
+		36D800000000000000000103 /* MacSnowFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000003 /* MacSnowFormatters.swift */; };
+		36D800000000000000000104 /* MacSnowRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000004 /* MacSnowRootView.swift */; };
+		36D800000000000000000105 /* MacSnowSessionBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000005 /* MacSnowSessionBrowserView.swift */; };
+		36D800000000000000000106 /* MacSnowDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000006 /* MacSnowDashboardView.swift */; };
+		36D800000000000000000107 /* MacSnowRouteElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000007 /* MacSnowRouteElevationView.swift */; };
+		36D800000000000000000108 /* MacSnowSegmentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */; };
+		36D800000000000000000109 /* MacSnowSegmentInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */; };
+		36D80000000000000000010A /* MacSnowDistanceInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */; };
+		36D80000000000000000010B /* MacSnowVerticalDropChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */; };
+		36D80000000000000000010C /* MacSnowUnavailableDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000C /* MacSnowUnavailableDataView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -690,6 +708,24 @@
 		35C620000000000000000012 /* WatchSnowControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowControlView.swift; sourceTree = "<group>"; };
 		35C620000000000000000013 /* WatchSnowFallAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowFallAlertView.swift; sourceTree = "<group>"; };
 		35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLowConfidenceView.swift; sourceTree = "<group>"; };
+		36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowAnalysisAvailability.swift; sourceTree = "<group>"; };
+		36D700000000000000000002 /* MacSnowSessionAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionAnalysis.swift; sourceTree = "<group>"; };
+		36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowAnalysisViewModel.swift; sourceTree = "<group>"; };
+		36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionAnalysisMapper.swift; sourceTree = "<group>"; };
+		36D700000000000000000005 /* MacSnowRouteFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRouteFilter.swift; sourceTree = "<group>"; };
+		36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowMockAnalysisProvider.swift; sourceTree = "<group>"; };
+		36D800000000000000000001 /* MacSnowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowStyle.swift; sourceTree = "<group>"; };
+		36D800000000000000000002 /* MacSnowComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowComponents.swift; sourceTree = "<group>"; };
+		36D800000000000000000003 /* MacSnowFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowFormatters.swift; sourceTree = "<group>"; };
+		36D800000000000000000004 /* MacSnowRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRootView.swift; sourceTree = "<group>"; };
+		36D800000000000000000005 /* MacSnowSessionBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionBrowserView.swift; sourceTree = "<group>"; };
+		36D800000000000000000006 /* MacSnowDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowDashboardView.swift; sourceTree = "<group>"; };
+		36D800000000000000000007 /* MacSnowRouteElevationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRouteElevationView.swift; sourceTree = "<group>"; };
+		36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSegmentTimelineView.swift; sourceTree = "<group>"; };
+		36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSegmentInspectorView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowDistanceInspectorView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowVerticalDropChartView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000C /* MacSnowUnavailableDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowUnavailableDataView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1282,6 +1318,7 @@
 				35C610000000000000000000 /* watchOS/Core/Snow */,
 				35C620000000000000000000 /* watchOS/Features/Snow */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
+				36D700000000000000000000 /* macOS/Core */,
 				27B000000000000000000000 /* macOS/Features */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
 				DA3F5B38A0177725491BBD32 /* docs */,
@@ -1290,11 +1327,33 @@
 			);
 			sourceTree = "<group>";
 		};
+		36D700000000000000000000 /* macOS/Core */ = {
+			isa = PBXGroup;
+			children = (
+				36D70000000000000000000A /* Snow */,
+			);
+			path = macOS/Core;
+			sourceTree = SOURCE_ROOT;
+		};
+		36D70000000000000000000A /* Snow */ = {
+			isa = PBXGroup;
+			children = (
+						36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */,
+						36D700000000000000000002 /* MacSnowSessionAnalysis.swift */,
+						36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */,
+						36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */,
+						36D700000000000000000005 /* MacSnowRouteFilter.swift */,
+						36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */,
+			);
+			path = Snow;
+			sourceTree = "<group>";
+		};
 		27B000000000000000000000 /* macOS/Features */ = {
 			isa = PBXGroup;
 			children = (
 				27B200000000000000000000 /* Import */,
 				28A100000000000000000000 /* SessionBrowser */,
+				36D800000000000000000000 /* Snow */,
 				27B300000000000000000000 /* Shared */,
 			);
 			path = macOS/Features;
@@ -1320,6 +1379,25 @@
 				28B100000000000000000001 /* MacRoutePreviewView.swift */,
 			);
 			path = SessionBrowser;
+			sourceTree = "<group>";
+		};
+		36D800000000000000000000 /* Snow */ = {
+			isa = PBXGroup;
+			children = (
+				36D800000000000000000001 /* MacSnowStyle.swift */,
+				36D800000000000000000002 /* MacSnowComponents.swift */,
+				36D800000000000000000003 /* MacSnowFormatters.swift */,
+				36D800000000000000000004 /* MacSnowRootView.swift */,
+				36D800000000000000000005 /* MacSnowSessionBrowserView.swift */,
+				36D800000000000000000006 /* MacSnowDashboardView.swift */,
+				36D800000000000000000007 /* MacSnowRouteElevationView.swift */,
+				36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */,
+				36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */,
+				36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */,
+				36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */,
+				36D80000000000000000000C /* MacSnowUnavailableDataView.swift */,
+			);
+			path = Snow;
 			sourceTree = "<group>";
 		};
 		27B300000000000000000000 /* Shared */ = {
@@ -1825,6 +1903,24 @@
 				28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */,
 				28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */,
 				28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */,
+				36D700000000000000000101 /* MacSnowAnalysisAvailability.swift in Sources */,
+				36D700000000000000000102 /* MacSnowSessionAnalysis.swift in Sources */,
+				36D700000000000000000103 /* MacSnowAnalysisViewModel.swift in Sources */,
+				36D700000000000000000104 /* MacSnowSessionAnalysisMapper.swift in Sources */,
+				36D700000000000000000105 /* MacSnowRouteFilter.swift in Sources */,
+				36D700000000000000000106 /* MacSnowMockAnalysisProvider.swift in Sources */,
+				36D800000000000000000101 /* MacSnowStyle.swift in Sources */,
+				36D800000000000000000102 /* MacSnowComponents.swift in Sources */,
+				36D800000000000000000103 /* MacSnowFormatters.swift in Sources */,
+				36D800000000000000000104 /* MacSnowRootView.swift in Sources */,
+				36D800000000000000000105 /* MacSnowSessionBrowserView.swift in Sources */,
+				36D800000000000000000106 /* MacSnowDashboardView.swift in Sources */,
+				36D800000000000000000107 /* MacSnowRouteElevationView.swift in Sources */,
+				36D800000000000000000108 /* MacSnowSegmentTimelineView.swift in Sources */,
+				36D800000000000000000109 /* MacSnowSegmentInspectorView.swift in Sources */,
+				36D80000000000000000010A /* MacSnowDistanceInspectorView.swift in Sources */,
+				36D80000000000000000010B /* MacSnowVerticalDropChartView.swift in Sources */,
+				36D80000000000000000010C /* MacSnowUnavailableDataView.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,

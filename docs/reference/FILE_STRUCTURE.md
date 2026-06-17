@@ -1088,3 +1088,47 @@ scripts/create_snow_task006_review_pack.sh       # [工程設定] Snow-Task-006a
 ```
 
 Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+## Snow-Task-007 macOS Snow Viewer Files
+
+Snow-Task-007 adds a read-only macOS Snow viewer and presentation boundary. The viewer is available through a DEBUG-only MacRootView preview entry and is structured so Snow-Task-008 can later wire official package payload data without rewriting the UI.
+
+macOS Snow analysis boundary:
+
+```text
+macOS/Core/Snow/MacSnowAnalysisAvailability.swift     # [協作區] Availability and source enums for mock / repository / imported package states.
+macOS/Core/Snow/MacSnowSessionAnalysis.swift          # [協作區] Struct-based macOS Snow presentation model.
+macOS/Core/Snow/MacSnowAnalysisViewModel.swift        # [協作區] Observable macOS Snow viewer state holder.
+macOS/Core/Snow/MacSnowSessionAnalysisMapper.swift    # [協作區] Maps repository / pending package states into macOS analysis availability.
+macOS/Core/Snow/MacSnowRouteFilter.swift              # [協作區] Time-window route / elevation filtering helper.
+macOS/Core/Snow/MacSnowMockAnalysisProvider.swift     # [協作區] DEBUG-only mock provider for macOS Snow viewer QA.
+```
+
+macOS Snow viewer UI:
+
+```text
+macOS/Features/Snow/MacSnowRootView.swift             # [協作區] Read-only Snow viewer layout.
+macOS/Features/Snow/MacSnowSessionBrowserView.swift   # [協作區] Snow session list / browser surface.
+macOS/Features/Snow/MacSnowDashboardView.swift        # [協作區] Runs, ski distance, lift distance, route distance, vertical, speed, and time metrics.
+macOS/Features/Snow/MacSnowRouteElevationView.swift   # [協作區] Lightweight route + elevation overview with limited-data state.
+macOS/Features/Snow/MacSnowVerticalDropChartView.swift # [協作區] v0 vertical drop chart using available elevation / delta estimates.
+macOS/Features/Snow/MacSnowSegmentTimelineView.swift  # [協作區] Downhill / transport / unknown segment timeline.
+macOS/Features/Snow/MacSnowSegmentInspectorView.swift # [協作區] Read-only segment detail inspector.
+macOS/Features/Snow/MacSnowDistanceInspectorView.swift # [協作區] Ski / lift / route distance explanation and breakdown.
+macOS/Features/Snow/MacSnowUnavailableDataView.swift  # [協作區] Package schema pending / unavailable states.
+macOS/Features/Snow/MacSnowComponents.swift           # [協作區] Snow viewer reusable section / metric / status components.
+macOS/Features/Snow/MacSnowStyle.swift                # [協作區] SnowMode visual palette and gradients.
+macOS/Features/Snow/MacSnowFormatters.swift           # [協作區] macOS Snow display formatting helpers.
+```
+
+Integration / verification:
+
+```text
+macOS/App/MacRootView.swift                           # [協作區] DEBUG-only Snow Analysis Preview entry; main shell redesign remains deferred.
+scripts/verify_snow_macos_viewer.py                   # [協作區] Snow-Task-007 guardrail verification.
+scripts/create_snow_task007_review_pack.sh            # [協作區] Snow-Task-007 Claude review pack generator.
+```
+
+Snow-Task-007 intentionally does not add or modify package schema, package reader / writer, backup / restore flow, iOS source, watchOS source, WatchBridge, or Snow value types.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.

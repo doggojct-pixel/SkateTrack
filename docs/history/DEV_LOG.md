@@ -1726,3 +1726,39 @@ Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow b
 - Manual watchOS smoke testing confirmed the DEBUG Snow mock gallery, downhill, lift / gondola, waiting, low confidence, fall alert, summary, controls, and haptic intent text flows.
 
 Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+## 2026-06-17 Phase 1c — Snow-Task-007 macOS Snow Viewer Completed
+
+### Completed
+
+- Added a production-safe macOS Snow analysis boundary for read-only post-session review.
+- Added `MacSnowSessionAnalysis` as a pure struct presentation model and kept live / repository / mock concerns outside the value type.
+- Added `MacSnowAnalysisViewModel`, `MacSnowAnalysisAvailability`, `MacSnowAnalysisSource`, `MacSnowSessionAnalysisMapper`, and `MacSnowRouteFilter` for macOS Snow viewer data flow.
+- Added a DEBUG-only `MacSnowMockAnalysisProvider` for local macOS Snow viewer QA before Snow-Task-008 package payload support.
+- Added macOS Snow viewer surfaces: session browser, dashboard, route + elevation overview, segment timeline, segment inspector, distance inspector, vertical drop chart, and package-pending / unavailable states.
+- Added DEBUG-only MacRootView integration for Snow Analysis Preview so the UI can be exercised without modifying production package schema.
+- Aligned the Snow viewer body toward `SkateTrack_SnowMode_UI_v1.1.1_Pack` visual direction: deep snow-night panels, ice cyan route/downhill emphasis, amber lift/transport emphasis, and explicit low-confidence indicators.
+- Added `scripts/verify_snow_macos_viewer.py` and `scripts/create_snow_task007_review_pack.sh`.
+
+### Reason / Context
+
+Snow-Task-007 implements the macOS Snow viewer surface required by the Phase 1c BuildPlan while preserving the task boundary with Snow-Task-008. Official `.skatetrack` Snow package manifest / payload / reader / writer compatibility remains deferred to Snow-Task-008.
+
+Claude's Snow-Task-007 guidance confirmed that Release builds should distinguish between repository-backed Snow sessions and imported packages without official Snow fields: repository-backed Snow sessions may show the full viewer, while imported `.skatetrack` packages missing Snow payload must show `packageSchemaPending` instead of inferred or fabricated analysis.
+
+### Validation Notes
+
+- Run `python3 scripts/verify_snow_macos_viewer.py` to verify macOS Snow viewer files, struct-based analysis model, DEBUG mock gating, localization, project membership, and package-schema guardrails.
+- Run cumulative Snow verify scripts before commit.
+- Build macOS, iOS, and watchOS targets because the task touches the Xcode project and shared localization.
+- Manual QA should open the DEBUG Snow Analysis Preview from the macOS sidebar and confirm the SnowMode visual direction, route/elevation readability, segment timeline, inspector, and distance inspector.
+
+### Known Issues / Follow-up
+
+- Snow-Task-007 does not add official `.skatetrack` Snow package payload support; this remains Snow-Task-008.
+- Snow-Task-007 does not persist manual segment corrections.
+- Snow-Task-007 uses lightweight SwiftUI route/elevation visualization; full MapKit fitting remains later work.
+- v0 elevation is limited because `SnowSegment.startAltitudeMeters` and `endAltitudeMeters` may be nil.
+- Future macOS main-shell integration may require outer layout adjustments when the app moves toward `SkateTrack_macOS_UI_v2`.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.

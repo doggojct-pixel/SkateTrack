@@ -195,3 +195,50 @@ Snow-Task-006b precondition:
 - Any future naming drift between WatchBridge payloads and `WatchSnowSessionSnapshot` must be reconciled in the 006b adapter, not by rewriting the Watch Snow views.
 
 Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+## Snow-Task-007 macOS Snow Viewer State
+
+Snow-Task-007 adds the macOS Snow viewer as a read-only analysis surface. It is intentionally separated from Snow-Task-008 package compatibility work.
+
+Completed scope:
+
+- `MacSnowSessionAnalysis` is a struct presentation boundary, not a class and not a live subscription owner.
+- `MacSnowAnalysisViewModel` is the observable macOS UI state holder.
+- `MacSnowAnalysisSource` distinguishes DEBUG mock, Core Data repository-backed, and imported package data sources.
+- `MacSnowAnalysisAvailability.packageSchemaPending` represents imported `.skatetrack` packages that do not yet contain official Snow payload fields.
+- `MacSnowMockAnalysisProvider` is DEBUG-only and exists for UI QA only.
+- `MacSnowRouteFilter` performs timestamp-window route / elevation filtering without adding references to `SnowSegment` or changing `MotionSample`.
+- macOS Snow viewer screens render the six required viewer areas: session browser, dashboard, route + elevation, segment timeline, segment inspector, and distance inspector.
+- `MacRootView` exposes a DEBUG-only Snow Analysis Preview entry for local validation.
+- The viewer body follows the SnowMode visual direction from `SkateTrack_SnowMode_UI_v1.1.1_Pack` rather than the temporary macOS shell visual style.
+
+Data-source hierarchy:
+
+```text
+MacSnowAnalysisViewModel
+  ├── DEBUG: MacSnowMockAnalysisProvider → MacSnowSessionAnalysis
+  ├── Release / Core Data repository-backed Snow session → MacSnowSessionAnalysis
+  └── Release / imported .skatetrack without official Snow fields
+        → MacSnowAnalysisAvailability.packageSchemaPending
+```
+
+Snow-Task-007 boundaries:
+
+- Do not modify package manifest / payload / reader / writer files.
+- Do not modify backup / restore / import / export flows.
+- Do not modify `Shared/WatchBridge/*` or add WatchConnectivity wiring.
+- Do not modify iOS or watchOS source as part of Snow-Task-007.
+- Do not modify `MotionSample`, `SnowSegment`, `SnowRun`, `SnowDistanceBreakdown`, `SnowVerticalMetrics`, or `SnowSessionState`.
+- Do not add `.skatetrack` fixture files.
+- Do not persist manual corrections.
+- Do not claim HealthKit, WeatherKit, CloudKit, or official package compatibility.
+
+Deferred from Snow-Task-007:
+
+- Official `.skatetrack` Snow package payload compatibility and package reader / writer support: Snow-Task-008.
+- Full package-backed Snow analysis in macOS viewer: Snow-Task-008 after payload fields exist.
+- Full MapKit segment-region fitting and true absolute-altitude profile: later GPS / altitude data task.
+- Outer macOS shell redesign toward `SkateTrack_macOS_UI_v2`: later main macOS UI integration task.
+- Manual correction persistence for Snow segments: later UX / persistence task.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.

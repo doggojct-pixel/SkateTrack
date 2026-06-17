@@ -96,3 +96,15 @@ Task-030b verification token: documentation index consolidated.
 - Snow-Task-006a does not touch `Shared/WatchBridge/*`; real WatchBridge / WatchConnectivity wiring remains Snow-Task-006b after mainline Task-040.
 
 Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+### Snow-Task-007 macOS Snow viewer
+
+- Snow-Task-007 is implemented on `feature/snow-mode` after verified baseline `1e68805 Add mock-backed Watch Snow UI`.
+- `scripts/verify_snow_macos_viewer.py` is the Snow-Task-007 verification gate.
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the macOS Snow viewer data-source hierarchy: DEBUG mock, repository-backed Snow sessions, and imported package `packageSchemaPending` before 008.
+- `docs/reference/FILE_STRUCTURE.md` lists the macOS Snow analysis boundary and UI files.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` records that official `.skatetrack` Snow package payload compatibility remains Snow-Task-008.
+- `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` records the macOS Snow viewer smoke test.
+- Snow-Task-007 does not modify package manifest / payload / reader / writer files, backup / restore flows, iOS source, watchOS source, WatchBridge, or Snow value types.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.

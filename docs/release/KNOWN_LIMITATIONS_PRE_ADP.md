@@ -173,3 +173,18 @@ Snow-Task-006a intentionally builds watchOS Snow UI before real WatchBridge tran
 - Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040 is complete and the Snow branch is rebased or merged onto post-Task-040 `develop`.
 
 Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+### Snow-Task-007 macOS Snow Viewer v0 limitations and deferred items
+
+Snow-Task-007 intentionally adds the macOS Snow viewer before official `.skatetrack` Snow package payload compatibility.
+
+- The DEBUG Snow Analysis Preview uses `MacSnowMockAnalysisProvider`; this mock data is for UI QA only.
+- Official imported `.skatetrack` packages without Snow payload fields must show `packageSchemaPending`; the viewer must not infer official Snow runs or segments from base package `motionSamples` in 007.
+- Repository-backed Snow sessions may be shown through the viewer, but official package-backed Snow analysis remains Snow-Task-008.
+- Package manifest / payload / reader / writer files are not modified in Snow-Task-007.
+- Manual segment correction persistence is not implemented.
+- Route + Elevation is lightweight SwiftUI visualization, not full MapKit fitting.
+- Elevation is limited because v0 `SnowSegment.startAltitudeMeters` and `endAltitudeMeters` may be nil; the UI must show a limited altitude data indicator rather than a misleading full profile.
+- The outer macOS shell remains temporary; future integration with `SkateTrack_macOS_UI_v2` may require layout adjustments around the Snow viewer.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.

@@ -134,3 +134,22 @@ Snow-Task-006a provides a DEBUG-only mock-backed Watch Snow UI. It is not real W
 | Scope boundary | Inspect source / behavior after Watch QA | No `Shared/WatchBridge/*`, WatchConnectivity, real sensors, HealthKit, or emergency-contact behavior is involved. |
 
 Snow-Task-006a manual QA token: Watch Snow mock gallery smoke test complete.
+
+## 11. Phase 1c Snow Mode macOS viewer smoke test
+
+Snow-Task-007 provides a read-only macOS Snow viewer. The DEBUG preview exists for local UI validation before Snow-Task-008 package payload support.
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| DEBUG Snow preview entry | Run `SkateTrack-macOS` in DEBUG | Sidebar shows the Snow Analysis Preview entry. |
+| Open Snow viewer | Select Snow Analysis Preview | Snow viewer opens with mock resort-day data and does not crash. |
+| SnowMode visual direction | Inspect the viewer body | Viewer uses SnowMode visual language: deep snow-night panels, ice cyan downhill / route emphasis, amber lift emphasis, and low-confidence indicators. |
+| Dashboard | Review the dashboard cards | Runs, ski distance, lift distance, route distance, vertical drop, top speed, duration, and average run duration are visible. |
+| Route + Elevation | Inspect route and elevation panels | Lightweight route / elevation visualization is readable and limited altitude data is clearly indicated when needed. |
+| Segment timeline | Select downhill, lift, and unknown rows | Timeline selection updates inspector content; downhill is counted and lift / unknown are excluded as appropriate. |
+| Segment inspector | Inspect selected segment details | Segment type, distance, duration, confidence, altitude delta, and manual-correction placeholder display read-only information. |
+| Distance inspector | Review the distance breakdown | Ski distance, lift distance, route distance, and unknown / excluded distance remain distinct. |
+| Package pending state | Use package-pending mock state or future imported package without Snow payload | UI shows package schema pending instead of fabricated official Snow analysis. |
+| Scope boundary | Inspect behavior and source after QA | No package schema / reader / writer, iOS, watchOS, WatchBridge, HealthKit, WeatherKit, CloudKit, or persistence changes are introduced. |
+
+Snow-Task-007 manual QA token: macOS Snow viewer smoke test complete.
