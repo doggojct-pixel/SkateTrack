@@ -85,3 +85,14 @@ Task-030b verification token: documentation index consolidated.
 - `scripts/verify_snow_iphone_ui.py` is the Snow-Task-005 verification gate.
 - `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the live data-boundary decision: `SessionRecordingCoordinator` owns lifecycle, `SnowLiveSessionCoordinator` drives classifier / detector, `useSnowSession` stays repository-backed, and `useSessionRecording` exposes live HUD state.
 - Snow-Task-005 does not touch `Shared/WatchBridge/*`; real WatchBridge wiring remains Snow-Task-006b after mainline Task-040.
+
+### Snow-Task-006a mock-backed Watch Snow UI
+
+- Snow-Task-006a is implemented on `feature/snow-mode` after verified baseline `4ab2489 Add iPhone Snow live HUD`.
+- `scripts/verify_snow_watch_ui.py` is the Snow-Task-006a verification gate.
+- `WatchSnowSessionSnapshot` is the production-safe equivalent of the Watch Addendum's prototype session field contract; production code must not introduce `SnowPrototype*` symbols.
+- `watchOS/Core/Snow/` owns the Watch Snow data-source boundary, DEBUG mock provider, haptic intent, and transition mapper.
+- `watchOS/Features/Snow/` owns the mock-backed Watch Snow UI surfaces and Release fallback.
+- Snow-Task-006a does not touch `Shared/WatchBridge/*`; real WatchBridge / WatchConnectivity wiring remains Snow-Task-006b after mainline Task-040.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.

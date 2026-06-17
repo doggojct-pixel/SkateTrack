@@ -363,6 +363,30 @@
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+
+		35C600000000000000000101 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C600000000000000000102 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C600000000000000000103 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C610000000000000000101 /* WatchSnowSessionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000001 /* WatchSnowSessionDataSource.swift */; };
+		35C610000000000000000102 /* WatchSnowMockScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000002 /* WatchSnowMockScenario.swift */; };
+		35C610000000000000000103 /* WatchSnowMockSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */; };
+		35C610000000000000000104 /* WatchSnowHapticIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000004 /* WatchSnowHapticIntent.swift */; };
+		35C610000000000000000105 /* WatchSnowHapticIntentObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */; };
+		35C610000000000000000106 /* WatchSnowHapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000006 /* WatchSnowHapticEngine.swift */; };
+		35C620000000000000000101 /* WatchSnowRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000001 /* WatchSnowRootView.swift */; };
+		35C620000000000000000102 /* WatchSnowMockGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000002 /* WatchSnowMockGalleryView.swift */; };
+		35C620000000000000000103 /* WatchSnowUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000003 /* WatchSnowUnavailableView.swift */; };
+		35C620000000000000000104 /* WatchSnowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000004 /* WatchSnowStyle.swift */; };
+		35C620000000000000000105 /* WatchSnowFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000005 /* WatchSnowFormatters.swift */; };
+		35C620000000000000000106 /* WatchSnowMetricChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000006 /* WatchSnowMetricChipView.swift */; };
+		35C620000000000000000107 /* WatchSnowLiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000007 /* WatchSnowLiveView.swift */; };
+		35C620000000000000000108 /* WatchSnowCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000008 /* WatchSnowCarouselView.swift */; };
+		35C620000000000000000109 /* WatchSnowLiftCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000009 /* WatchSnowLiftCardView.swift */; };
+		35C620000000000000000110 /* WatchSnowWaitingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000010 /* WatchSnowWaitingCardView.swift */; };
+		35C620000000000000000111 /* WatchSnowSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000011 /* WatchSnowSummaryView.swift */; };
+		35C620000000000000000112 /* WatchSnowControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000012 /* WatchSnowControlView.swift */; };
+		35C620000000000000000113 /* WatchSnowFallAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000013 /* WatchSnowFallAlertView.swift */; };
+		35C620000000000000000114 /* WatchSnowLowConfidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -644,6 +668,28 @@
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+
+		35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSessionSnapshot.swift; sourceTree = "<group>"; };
+		35C610000000000000000001 /* WatchSnowSessionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSessionDataSource.swift; sourceTree = "<group>"; };
+		35C610000000000000000002 /* WatchSnowMockScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockScenario.swift; sourceTree = "<group>"; };
+		35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockSessionProvider.swift; sourceTree = "<group>"; };
+		35C610000000000000000004 /* WatchSnowHapticIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticIntent.swift; sourceTree = "<group>"; };
+		35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticIntentObserver.swift; sourceTree = "<group>"; };
+		35C610000000000000000006 /* WatchSnowHapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticEngine.swift; sourceTree = "<group>"; };
+		35C620000000000000000001 /* WatchSnowRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowRootView.swift; sourceTree = "<group>"; };
+		35C620000000000000000002 /* WatchSnowMockGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockGalleryView.swift; sourceTree = "<group>"; };
+		35C620000000000000000003 /* WatchSnowUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowUnavailableView.swift; sourceTree = "<group>"; };
+		35C620000000000000000004 /* WatchSnowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowStyle.swift; sourceTree = "<group>"; };
+		35C620000000000000000005 /* WatchSnowFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowFormatters.swift; sourceTree = "<group>"; };
+		35C620000000000000000006 /* WatchSnowMetricChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMetricChipView.swift; sourceTree = "<group>"; };
+		35C620000000000000000007 /* WatchSnowLiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLiveView.swift; sourceTree = "<group>"; };
+		35C620000000000000000008 /* WatchSnowCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowCarouselView.swift; sourceTree = "<group>"; };
+		35C620000000000000000009 /* WatchSnowLiftCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLiftCardView.swift; sourceTree = "<group>"; };
+		35C620000000000000000010 /* WatchSnowWaitingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowWaitingCardView.swift; sourceTree = "<group>"; };
+		35C620000000000000000011 /* WatchSnowSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSummaryView.swift; sourceTree = "<group>"; };
+		35C620000000000000000012 /* WatchSnowControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowControlView.swift; sourceTree = "<group>"; };
+		35C620000000000000000013 /* WatchSnowFallAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowFallAlertView.swift; sourceTree = "<group>"; };
+		35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLowConfidenceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -725,6 +771,7 @@
 				33C400000000000000000003 /* RunBoundarySnapshot.swift */,
 				33C400000000000000000004 /* RunBoundaryEvent.swift */,
 				33C400000000000000000005 /* RunBoundaryDetector.swift */,
+				35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
@@ -1167,6 +1214,40 @@
 			path = watchOS/App;
 			sourceTree = SOURCE_ROOT;
 		};
+		35C610000000000000000000 /* watchOS/Core/Snow */ = {
+			isa = PBXGroup;
+			children = (
+				35C610000000000000000001 /* WatchSnowSessionDataSource.swift */,
+				35C610000000000000000002 /* WatchSnowMockScenario.swift */,
+				35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */,
+				35C610000000000000000004 /* WatchSnowHapticIntent.swift */,
+				35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */,
+				35C610000000000000000006 /* WatchSnowHapticEngine.swift */,
+			);
+			path = watchOS/Core/Snow;
+			sourceTree = SOURCE_ROOT;
+		};
+		35C620000000000000000000 /* watchOS/Features/Snow */ = {
+			isa = PBXGroup;
+			children = (
+				35C620000000000000000001 /* WatchSnowRootView.swift */,
+				35C620000000000000000002 /* WatchSnowMockGalleryView.swift */,
+				35C620000000000000000003 /* WatchSnowUnavailableView.swift */,
+				35C620000000000000000004 /* WatchSnowStyle.swift */,
+				35C620000000000000000005 /* WatchSnowFormatters.swift */,
+				35C620000000000000000006 /* WatchSnowMetricChipView.swift */,
+				35C620000000000000000007 /* WatchSnowLiveView.swift */,
+				35C620000000000000000008 /* WatchSnowCarouselView.swift */,
+				35C620000000000000000009 /* WatchSnowLiftCardView.swift */,
+				35C620000000000000000010 /* WatchSnowWaitingCardView.swift */,
+				35C620000000000000000011 /* WatchSnowSummaryView.swift */,
+				35C620000000000000000012 /* WatchSnowControlView.swift */,
+				35C620000000000000000013 /* WatchSnowFallAlertView.swift */,
+				35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */,
+			);
+			path = watchOS/Features/Snow;
+			sourceTree = SOURCE_ROOT;
+		};
 		AA3E9A5944CB760F04640508 = {
 			isa = PBXGroup;
 			children = (
@@ -1198,6 +1279,8 @@
 				25B100000000000000000000 /* iOS/Features/Settings */,
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
+				35C610000000000000000000 /* watchOS/Core/Snow */,
+				35C620000000000000000000 /* watchOS/Features/Snow */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
 				27B000000000000000000000 /* macOS/Features */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
@@ -1704,6 +1787,7 @@
 				33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */,
 				33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */,
 				33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */,
+				35C600000000000000000103 /* WatchSnowSessionSnapshot.swift in Sources */,
 				34C500000000000000000101 /* SnowLiveSessionConfig.swift in Sources */,
 				34C500000000000000000102 /* SnowClassificationWindowBuffer.swift in Sources */,
 				34C500000000000000000103 /* SnowLiveSessionState.swift in Sources */,
@@ -1817,6 +1901,27 @@
 				33C400000000000000000108 /* RunBoundarySnapshot.swift in Sources */,
 				33C40000000000000000010B /* RunBoundaryEvent.swift in Sources */,
 				33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */,
+				35C600000000000000000102 /* WatchSnowSessionSnapshot.swift in Sources */,
+				35C610000000000000000101 /* WatchSnowSessionDataSource.swift in Sources */,
+				35C610000000000000000102 /* WatchSnowMockScenario.swift in Sources */,
+				35C610000000000000000103 /* WatchSnowMockSessionProvider.swift in Sources */,
+				35C610000000000000000104 /* WatchSnowHapticIntent.swift in Sources */,
+				35C610000000000000000105 /* WatchSnowHapticIntentObserver.swift in Sources */,
+				35C610000000000000000106 /* WatchSnowHapticEngine.swift in Sources */,
+				35C620000000000000000101 /* WatchSnowRootView.swift in Sources */,
+				35C620000000000000000102 /* WatchSnowMockGalleryView.swift in Sources */,
+				35C620000000000000000103 /* WatchSnowUnavailableView.swift in Sources */,
+				35C620000000000000000104 /* WatchSnowStyle.swift in Sources */,
+				35C620000000000000000105 /* WatchSnowFormatters.swift in Sources */,
+				35C620000000000000000106 /* WatchSnowMetricChipView.swift in Sources */,
+				35C620000000000000000107 /* WatchSnowLiveView.swift in Sources */,
+				35C620000000000000000108 /* WatchSnowCarouselView.swift in Sources */,
+				35C620000000000000000109 /* WatchSnowLiftCardView.swift in Sources */,
+				35C620000000000000000110 /* WatchSnowWaitingCardView.swift in Sources */,
+				35C620000000000000000111 /* WatchSnowSummaryView.swift in Sources */,
+				35C620000000000000000112 /* WatchSnowControlView.swift in Sources */,
+				35C620000000000000000113 /* WatchSnowFallAlertView.swift in Sources */,
+				35C620000000000000000114 /* WatchSnowLowConfidenceView.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,

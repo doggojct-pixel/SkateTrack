@@ -159,3 +159,17 @@ Snow-Task-005 intentionally completes iPhone Snow UI wiring without expanding cl
 - Simulator-only Snow HUD testing cannot validate real downhill / lift classifier transitions. Real-world snow or controlled fixture replay remains a later QA task.
 
 Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+### Snow-Task-006a Watch Snow UI v0 limitations and deferred items
+
+Snow-Task-006a intentionally builds watchOS Snow UI before real WatchBridge transport is available.
+
+- Watch Snow UI is mock-backed in DEBUG builds. It does not receive real iPhone Snow session metrics yet.
+- Release builds use a neutral unavailable fallback instead of fake production Snow data.
+- `WatchSnowSessionSnapshot` is the production-safe equivalent of the Addendum's prototype session field contract; future real payload mapping belongs in Snow-Task-006b.
+- `Shared/WatchBridge/*`, WatchConnectivity, `WCSession`, and `WatchSessionCoordinator` are not modified or referenced by Snow-Task-006a.
+- Mock fall-alert UI is not real fall detection, HealthKit, SOS, emergency-contact, or safety-service integration.
+- Mock haptic intent text and local haptic boundaries are not a guarantee of final real-device haptic policy.
+- Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040 is complete and the Snow branch is rebased or merged onto post-Task-040 `develop`.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.

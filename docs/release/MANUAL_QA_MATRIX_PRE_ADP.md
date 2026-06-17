@@ -115,3 +115,22 @@ Snow Mode remains DEBUG-gated until the Phase 1c production path is complete. Fo
 | Scope boundary | Inspect behavior after Snow UI test | No Watch UI / WatchBridge behavior should change. |
 
 Task-005 manual QA token: Snow iPhone UI smoke test complete.
+
+## 10. Phase 1c Snow Mode Watch mock UI smoke test
+
+Snow-Task-006a provides a DEBUG-only mock-backed Watch Snow UI. It is not real WatchBridge data wiring.
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| DEBUG mock gallery entry | Run `SkateTrack-watchOS` on an Apple Watch simulator | Snow Watch mock gallery appears instead of the original plain welcome shell. |
+| Downhill scenario | Select Downhill | Large speed, run number, vertical drop, and counting status display correctly. |
+| Lift / gondola scenario | Select Lift / Gondola | Uphill transport is clearly shown and marked as not counted toward ski distance. |
+| Waiting scenario | Select Waiting | Waiting / queue state and last-run summary display correctly. |
+| Low confidence scenario | Select Low Confidence | Low-confidence warning and confidence / status information display correctly. |
+| Fall alert scenario | Select Fall Alert | Fall-alert card, impact value, SOS/status, and acknowledgement presentation display correctly. No real SOS flow is triggered. |
+| Summary scenario | Select Summary | Today's runs, total vertical, ski distance, lift distance, and top speed display correctly. |
+| Controls | Use Start / Pause / Resume / Mark / End / subscriber toggle | Controls do not crash and haptic intent text updates as expected. |
+| Release fallback | Build Release watchOS target if needed | Mock provider is not injected as fake production data; neutral fallback remains available before 006b. |
+| Scope boundary | Inspect source / behavior after Watch QA | No `Shared/WatchBridge/*`, WatchConnectivity, real sensors, HealthKit, or emergency-contact behavior is involved. |
+
+Snow-Task-006a manual QA token: Watch Snow mock gallery smoke test complete.

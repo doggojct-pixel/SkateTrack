@@ -3,7 +3,7 @@
 **Status:** Active for `feature/snow-mode` production implementation
 **Branch:** `feature/snow-mode`
 **Baseline:** `develop` at Task-030b documentation consolidation
-**Current Task:** Snow-Task-005 complete — next planned task is Snow-Task-006a / Watch Snow UI boundary review
+**Current Task:** Snow-Task-006a complete — mock-backed Watch Snow UI is implemented; Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040
 
 ## Source of Truth
 
@@ -158,3 +158,40 @@ Deferred from Snow-Task-005:
 - Live provisional segment timeline before `runEnded` because v0 detector finalizes segments at run-boundary events.
 
 Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+## Snow-Task-006a Mock-backed Watch Snow UI State
+
+Snow-Task-006a implements the watchOS Snow UI as a mock-backed, protocol-driven production surface. It intentionally follows the Watch Decoupling Addendum: Watch UI may be built now, while real WatchBridge wiring remains a later 006b task after mainline Task-040.
+
+Completed scope:
+
+- `WatchSnowSessionSnapshot` defines the production-safe Watch Snow snapshot contract. It mirrors the Addendum's prototype session field intent without using `SnowPrototype*` production names.
+- `WatchSnowSessionDataSource` defines the view-facing data boundary for Watch Snow screens.
+- `WatchSnowMockScenario` and DEBUG-only `WatchSnowMockSessionProvider` provide local downhill, lift / gondola, waiting, low-confidence, fall-alert, and summary scenarios for simulator QA.
+- `WatchSnowHapticIntentObserver` maps snapshot transitions to haptic intent without owning sensors, WatchConnectivity, or WatchBridge transport.
+- `WatchSnowRootView` routes DEBUG builds to `WatchSnowMockGalleryView` and Release builds to `WatchSnowUnavailableView`.
+- Watch Snow views render live speed, run carousel, lift / gondola, waiting, low confidence, fall alert, summary, controls, and metric chip surfaces from `WatchSnowSessionSnapshot`.
+- `scripts/verify_snow_watch_ui.py` verifies the data contract, DEBUG gating, localization, project membership, and 006b deferral guardrails.
+
+Snow-Task-006a boundaries:
+
+- Do not touch `Shared/WatchBridge/*`.
+- Do not import `WatchConnectivity`, reference `WCSession`, or add `WatchSessionCoordinator` wiring.
+- Do not modify `SessionRecordingCoordinator`, `useSessionRecording`, `useSnowLiveSession`, `SnowLiveSessionCoordinator`, `MotionSample`, `RunBoundaryDetector`, `SnowSegmentClassifier`, or Snow-Task-002 value types.
+- Do not create `SnowPrototype*` production symbols.
+- Do not add `.skatetrack` samples, HealthKit, emergency contacts, signing, entitlements, or production complication data.
+
+Deferred from Snow-Task-006a:
+
+- `WatchBridgeSnowSessionProvider` and real iPhone-to-Watch Snow metrics streaming.
+- Any `MetricUpdateMessage` snow-field extension until mainline Task-040 provides the final WatchBridge structure.
+- Real fall detection / SOS integration and health-data handling.
+- Release exposure of mock data as if it were production session data.
+
+Snow-Task-006b precondition:
+
+- Mainline `develop` must include the completed Phase 1b Task-040 Watch integration.
+- `feature/snow-mode` must be rebased or merged onto post-Task-040 `develop`.
+- Any future naming drift between WatchBridge payloads and `WatchSnowSessionSnapshot` must be reconciled in the 006b adapter, not by rewriting the Watch Snow views.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.

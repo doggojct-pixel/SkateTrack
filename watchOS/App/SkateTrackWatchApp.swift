@@ -1,6 +1,6 @@
-// [協作區] SkateTrackWatchApp.swift
-// 用途：定義 SkateTrack watchOS App 入口點，並用本地化鍵值顯示 Task-002 驗證用空殼畫面。
-// 委派至：後續 Task 的 watchOS/Features 與 watchOS/Core 模組。
+// [Collaboration Zone] SkateTrackWatchApp.swift
+// Purpose: Defines the SkateTrack watchOS app entry point.
+// Notes: Snow-Task-006a routes DEBUG builds to the mock-backed Watch Snow UI; Release keeps a neutral fallback until real WatchBridge wiring lands in 006b.
 
 import SwiftUI
 
@@ -8,14 +8,7 @@ import SwiftUI
 struct SkateTrackWatchApp: App {
     var body: some Scene {
         WindowGroup {
-            VStack(spacing: 4) {
-                Text("app.name")
-                    .font(.headline)
-                Text("app.tagline")
-                    .font(.caption)
-                    .multilineTextAlignment(.center)
-            }
-            .padding()
+            WatchSnowRootView()
         }
     }
 }

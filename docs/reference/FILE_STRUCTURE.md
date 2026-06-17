@@ -1039,3 +1039,52 @@ Snow-Task-002 verification token: production snow schema and repository boundary
 - `scripts/create_snow_task005_review_pack.sh` — generates the Snow-Task-005 Claude review pack after local verification.
 
 Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+## Snow-Task-006a Watch Snow UI Files
+
+Snow-Task-006a adds the first production watchOS Snow UI surface. It is mock-backed and DEBUG-gated; real WatchBridge transport remains deferred to Snow-Task-006b after mainline Task-040.
+
+Shared production contract:
+
+```text
+Shared/Models/WatchSnowSessionSnapshot.swift       # [協作區] Production-safe Watch Snow snapshot contract; equivalent field intent to the Addendum prototype session without SnowPrototype naming.
+```
+
+watchOS data boundary:
+
+```text
+watchOS/Core/Snow/WatchSnowSessionDataSource.swift       # [協作區] Protocol boundary for Watch Snow views.
+watchOS/Core/Snow/WatchSnowMockScenario.swift            # [協作區] DEBUG mock scenario enum for downhill / lift / waiting / low confidence / fall alert / summary.
+watchOS/Core/Snow/WatchSnowMockSessionProvider.swift     # [協作區] DEBUG-only mock data source; no WatchBridge / WatchConnectivity.
+watchOS/Core/Snow/WatchSnowHapticIntent.swift            # [協作區] Watch Snow haptic intent model.
+watchOS/Core/Snow/WatchSnowHapticIntentObserver.swift    # [協作區] Pure snapshot-transition-to-haptic-intent mapper.
+watchOS/Core/Snow/WatchSnowHapticEngine.swift            # [協作區] Local WatchKit haptic player boundary.
+```
+
+watchOS Snow UI:
+
+```text
+watchOS/Features/Snow/WatchSnowRootView.swift            # [協作區] DEBUG mock gallery / Release fallback router.
+watchOS/Features/Snow/WatchSnowMockGalleryView.swift     # [協作區] DEBUG scenario gallery for simulator QA.
+watchOS/Features/Snow/WatchSnowUnavailableView.swift     # [協作區] Release-safe neutral fallback before 006b.
+watchOS/Features/Snow/WatchSnowStyle.swift               # [協作區] Watch Snow visual helpers.
+watchOS/Features/Snow/WatchSnowFormatters.swift          # [協作區] Snapshot display formatting helpers.
+watchOS/Features/Snow/WatchSnowMetricChipView.swift      # [協作區] Compact metric chip component.
+watchOS/Features/Snow/WatchSnowLiveView.swift            # [協作區] Live speed / run status view.
+watchOS/Features/Snow/WatchSnowCarouselView.swift        # [協作區] Run / distance / vertical summary carousel.
+watchOS/Features/Snow/WatchSnowLiftCardView.swift        # [協作區] Lift / gondola / uphill transport card.
+watchOS/Features/Snow/WatchSnowWaitingCardView.swift     # [協作區] Waiting / queue state card.
+watchOS/Features/Snow/WatchSnowSummaryView.swift         # [協作區] Today's Snow summary card.
+watchOS/Features/Snow/WatchSnowControlView.swift         # [協作區] Mock control actions; no WatchBridge command path.
+watchOS/Features/Snow/WatchSnowFallAlertView.swift       # [協作區] Mock fall-alert presentation only.
+watchOS/Features/Snow/WatchSnowLowConfidenceView.swift   # [協作區] Low-confidence state presentation.
+```
+
+Verification / review:
+
+```text
+scripts/verify_snow_watch_ui.py                  # [工程設定] Snow-Task-006a verification gate.
+scripts/create_snow_task006_review_pack.sh       # [工程設定] Snow-Task-006a review pack generator.
+```
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.

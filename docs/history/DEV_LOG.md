@@ -1695,3 +1695,34 @@ Snow-Task-004 verification token: RunBoundaryDetector state machine added withou
 - Manual smoke testing confirmed Snow toggle, Snow session HUD routing, Snow summary empty / zero state, and non-Snow HUD preservation.
 
 Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+## 2026-06-17 — Snow-Task-006a Mock-backed Watch Snow UI
+
+### Completed
+- Added the production-safe Watch Snow data contract `WatchSnowSessionSnapshot` as the Watch UI equivalent of the Addendum's prototype session field contract, without introducing a `SnowPrototype*` production namespace.
+- Added the watchOS Snow data-source boundary: `WatchSnowSessionDataSource`, `WatchSnowMockScenario`, and the DEBUG-only `WatchSnowMockSessionProvider`.
+- Added `WatchSnowHapticIntent`, `WatchSnowHapticIntentObserver`, and `WatchSnowHapticEngine` so mock scenario transitions can expose haptic intent without WatchBridge / WatchConnectivity dependencies.
+- Added mock-backed Watch Snow UI surfaces: root, mock gallery, live speed, carousel, lift / gondola, waiting, low-confidence, fall-alert, summary, controls, metric chip, style, formatter, and Release-safe unavailable view.
+- Routed `SkateTrackWatchApp` to `WatchSnowRootView`; DEBUG builds show the mock gallery, while Release builds keep a neutral unavailable fallback until real Watch integration exists.
+- Added localized `snow.watch.*` keys for English, Traditional Chinese, and Japanese.
+- Added `scripts/verify_snow_watch_ui.py` as the Snow-Task-006a verification gate.
+- Added `scripts/create_snow_task006_review_pack.sh` to generate the Snow-Task-006a Claude review pack after final local verification.
+
+### Scope Boundary
+- Snow-Task-006a does not touch `Shared/WatchBridge/*`, does not import WatchConnectivity, does not reference `WCSession`, and does not implement `WatchSessionCoordinator` or real iPhone-to-Watch Snow metrics.
+- Snow-Task-006a does not modify `SessionRecordingCoordinator`, `useSessionRecording`, `useSnowLiveSession`, `SnowLiveSessionCoordinator`, `MotionSample`, `RunBoundaryDetector`, `SnowSegmentClassifier`, or Snow-Task-002 value types.
+- Snow-Task-006a uses SnowPrototype source only as read-only UI / scenario reference; production files use `WatchSnow*` names instead of `SnowPrototype*` names.
+- Snow-Task-006a does not add `.skatetrack` sample files, HealthKit integration, emergency contact integration, signing changes, entitlements, or production complication timeline data.
+
+### Deferred Items
+- Snow-Task-006b real WatchBridge / WatchConnectivity wiring remains deferred until mainline Task-040 is complete and `feature/snow-mode` is rebased or merged onto post-Task-040 `develop`.
+- The future 006b adapter should map real WatchBridge Snow payloads into `WatchSnowSessionSnapshot` while keeping Watch views unchanged.
+- Mock scenario switching, subscriber toggling, and fall-alert screens are DEBUG / preview QA surfaces only; they are not production sensor or safety integrations.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_watch_ui.py`, `python3 scripts/verify_snow_iphone_ui.py`, `python3 scripts/verify_snow_run_boundary.py`, `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, and `python3 scripts/verify_snow_sport_enum.py`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-watchOS -destination 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-iOS -destination 'platform=iOS Simulator,name=iPhone 17 Pro'`.
+- Manual watchOS smoke testing confirmed the DEBUG Snow mock gallery, downhill, lift / gondola, waiting, low confidence, fall alert, summary, controls, and haptic intent text flows.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
