@@ -227,6 +227,7 @@ final class SensorFusionEngine: SensorProvider {
         motionSampleSubject.send(sample)
     }
     private func makeMotionSample() -> MotionSample {
+        let now = Date()
         let snapshot = stateLock.withLock { () -> (
             coordinate: GeoCoordinate?,
             speedKmh: Double,
@@ -242,7 +243,9 @@ final class SensorFusionEngine: SensorProvider {
             let acceleration = latestAcceleration
             let gyroscope = latestGyroscope
             let altitude = latestAltitudeMeters
-            let locationDiagnostics = latestLocationDiagnostics
+            let locationDiagnostics = latestLocationDiagnostics.map { diagnostics in
+                timerFusionDiagnostics(from: diagnostics, latestRawLocation: latestRawLocation, now: now)
+            }
             calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
             let calibratedAcceleration = calibrationEngine.calibratedAcceleration(from: acceleration)
             let calibratedGyroscope = calibrationEngine.calibratedGyroscope(from: gyroscope)
@@ -260,7 +263,7 @@ final class SensorFusionEngine: SensorProvider {
         }
 
         return MotionSample(
-            timestamp: Date(),
+            timestamp: now,
             gpsCoordinate: snapshot.coordinate,
             speedKmh: snapshot.speedKmh,
             accelerometerG: snapshot.calibratedAcceleration,
@@ -407,7 +410,90 @@ final class SensorFusionEngine: SensorProvider {
             coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
             speedSource: speedSource,
             freshnessState: freshnessState,
-            routeSegmentConfidence: confidence
+            routeSegmentConfidence: confidence,
+            headingDiagnostics: headingDiagnostics(for: location, coreLocationSpeedKmh: coreLocationSpeedKmh),
+            gpsGapDiagnostics: gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false),
+            deadReckoningDiagnostics: deadReckoningDiagnostics(
+                gpsGapDiagnostics: gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false),
+                headingDiagnostics: headingDiagnostics(for: location, coreLocationSpeedKmh: coreLocationSpeedKmh),
+                anchorAvailable: confidence != .low && confidence != .unavailable
+            )
+        )
+    }
+    private func timerFusionDiagnostics(
+        from diagnostics: LocationFixDiagnostics,
+        latestRawLocation: CLLocation?,
+        now: Date
+    ) -> LocationFixDiagnostics {
+        let gapSeconds = latestRawLocation.map { max(now.timeIntervalSince($0.timestamp), 0) }
+        let gpsGap = gpsGapDiagnostics(gapSeconds: gapSeconds, isTimerFusionRepeat: true)
+        let deadReckoning = deadReckoningDiagnostics(
+            gpsGapDiagnostics: gpsGap,
+            headingDiagnostics: diagnostics.headingDiagnostics,
+            anchorAvailable: diagnostics.routeSegmentConfidence != .low && diagnostics.routeSegmentConfidence != .unavailable
+        )
+        return diagnostics.replacingR4Diagnostics(
+            gpsGapDiagnostics: gpsGap,
+            deadReckoningDiagnostics: deadReckoning
+        )
+    }
+    private func headingDiagnostics(for location: CLLocation, coreLocationSpeedKmh: Double?) -> HeadingDiagnostics {
+        let courseDegrees = location.course >= 0 && location.course.isFinite ? location.course : nil
+        let accuracyDegrees = courseAccuracyDegrees(for: location)
+        let speedKmh = coreLocationSpeedKmh ?? (location.speed >= 0
+            ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
+            : nil)
+        let reliable = courseDegrees != nil
+            && speedKmh.map { $0 >= 3 } == true
+            && accuracyDegrees.map { $0 <= 45 } != false
+        return HeadingDiagnostics(
+            source: courseDegrees == nil ? .unavailable : .coreLocationCourse,
+            headingAvailable: courseDegrees != nil,
+            courseOverGroundDegrees: courseDegrees,
+            courseAccuracyDegrees: accuracyDegrees,
+            coreLocationSpeedKmh: speedKmh,
+            courseReliableForRouteContinuity: reliable,
+            deviceHeadingDeferred: true
+        )
+    }
+    private func gpsGapDiagnostics(
+        gapSeconds: TimeInterval?,
+        isTimerFusionRepeat: Bool
+    ) -> GPSGapDiagnostics? {
+        guard let classification = GPSGapDiagnostics.classification(for: gapSeconds) else { return nil }
+        return GPSGapDiagnostics(
+            classification: classification,
+            gapSeconds: gapSeconds,
+            isTimerFusionRepeat: isTimerFusionRepeat,
+            rawLocationAvailable: true
+        )
+    }
+    private func deadReckoningDiagnostics(
+        gpsGapDiagnostics: GPSGapDiagnostics?,
+        headingDiagnostics: HeadingDiagnostics?,
+        anchorAvailable: Bool
+    ) -> DeadReckoningDiagnostics? {
+        guard let gpsGapDiagnostics else { return nil }
+        let hasGap = gpsGapDiagnostics.classification != .normalCadence
+        let headingAvailable = headingDiagnostics?.courseReliableForRouteContinuity ?? false
+        let eligible = hasGap && headingAvailable && anchorAvailable
+        let reason: DeadReckoningReadinessReason
+        if !hasGap {
+            reason = .normalCadence
+        } else if !anchorAvailable {
+            reason = .anchorUnavailable
+        } else if !headingAvailable {
+            reason = .headingUnavailable
+        } else {
+            reason = .r4RouteReconstructionDeferred
+        }
+        return DeadReckoningDiagnostics(
+            estimatedRouteActive: false,
+            eligibleForFutureEstimation: eligible,
+            anchorAvailable: anchorAvailable,
+            gapSeconds: gpsGapDiagnostics.gapSeconds,
+            headingAvailable: headingAvailable,
+            reason: reason
         )
     }
     private static func trustsLocationForLiveRoute(_ diagnostics: LocationFixDiagnostics, policy: ActivityFidelityPolicy) -> Bool {

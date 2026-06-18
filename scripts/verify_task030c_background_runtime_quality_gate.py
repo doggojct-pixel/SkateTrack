@@ -38,7 +38,7 @@ REQUIRED_TOKENS = {
         "INFOPLIST_KEY_UIBackgroundModes = location;",
     ],
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b11-r3-3\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b11-r4-1\"",
         "RecordingDebugBundleInfoSnapshot",
         "let bundleInfo: RecordingDebugBundleInfoSnapshot?",
         "resolvedUIBackgroundModes",

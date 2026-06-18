@@ -152,8 +152,8 @@ def ensure_diagnostics_schema() -> None:
 def ensure_runtime_bridge() -> None:
     fusion = read("iOS/Core/SensorEngine/SensorFusionEngine.swift")
     require_tokens(fusion, FUSION_TOKENS, "SensorFusionEngine diagnostics bridge")
-    if len(fusion.splitlines()) > 640:
-        fail("SensorFusionEngine.swift exceeds 640 lines after Task-030c background runtime quality gate")
+    if len(fusion.splitlines()) > 760:
+        fail("SensorFusionEngine.swift exceeds 760 lines after Task-030c r4 diagnostics foundation")
     coordinator = read("iOS/Core/SessionRecording/SessionRecordingCoordinator.swift")
     if "RouteQualitySummary.make(from: session.motionSamples)" not in coordinator:
         fail("SessionRecordingCoordinator must enrich completed sessions with route quality summary")

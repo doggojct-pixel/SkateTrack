@@ -1973,3 +1973,21 @@ Task-030c-b11-r2 compatibility token: Route Confidence Display Continuity, Small
 
 Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker / approximate start semantics, startup convergence warm-up, session-route-accuracy-disclosure, verify_task030c_startup_anchor_semantics.py.
 Task-030c-b11-r3-3 deferred package-size token: `.skatetrack` export compression / thinning remains deferred and must preserve legacy plaintext package compatibility.
+
+## Task-030c-b11-r4-1 — Heading Availability + GPS Gap Diagnostics + Dead Reckoning Readiness
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r4-1`.
+- Added optional `HeadingDiagnostics`, `GPSGapDiagnostics`, and `DeadReckoningDiagnostics` metadata under `LocationFixDiagnostics` so new sessions can describe route-continuity readiness without breaking legacy plaintext `.skatetrack` compatibility.
+- Classified GPS update continuity as `normalCadence`, `shortGap`, `backgroundLocationGap`, or `extendedSignalLoss` from raw Core Location timestamp spacing and timer-fusion repeats.
+- Recorded conservative course-over-ground heading availability from Core Location while explicitly deferring device magnetometer heading integration to a later task.
+- Added dead-reckoning readiness diagnostics that mark whether a gap has a trusted anchor and heading signal, while keeping `estimatedRouteActive` false in r4.
+- This task does not reconstruct route geometry, does not fabricate estimated route points, does not change distance / speed / altitude accumulators, and does not implement road snapping, map matching, Wi-Fi RTT, barometric GPS outlier rejection, or `.skatetrack` package-size optimization.
+
+Task-030c-b11-r4-1 verification token: Heading Availability + GPS Gap Diagnostics + Dead Reckoning Readiness, Task-030c-b11-r4-1, HeadingDiagnostics, GPSGapDiagnostics, DeadReckoningDiagnostics, verify_task030c_r4_diagnostics_foundation.py.
+Task-030c-b11-r4-1 compatibility token: legacy plaintext `.skatetrack` compatibility, diagnostics-only foundation, does not reconstruct route geometry.
+
+
+### Task-030c-b11-r4-1 XCTest regression stabilization
+- Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
+- It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
+

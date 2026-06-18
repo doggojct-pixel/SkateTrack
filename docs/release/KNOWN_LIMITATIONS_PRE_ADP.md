@@ -285,3 +285,18 @@ Task-030c-b11-r2 compatibility token: strict low-speed metrics, altitude source 
 - **Deferred:** `.skatetrack` package-size reduction, IMU / gyro / heading-aided dead reckoning, Wi-Fi RTT diagnostics, and barometric outlier rejection are not part of b11-r3.
 
 Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS warming up, GPS lock route anchor, approximate start marker, startup convergence warm-up, route accuracy disclosure.
+
+### Task-030c-b11-r4-1 — Heading availability and GPS gap diagnostics foundation
+
+- **Current status:** Task-030c-b11-r4-1 records optional heading availability, GPS gap classification, and dead-reckoning readiness metadata for future route-continuity work.
+- **Accuracy note:** This task does not make GPS 1m-accurate and does not correct absolute location drift. Locked-screen pocket sessions remain limited by normal iPhone GPS accuracy, sky visibility, multipath, and background delivery timing.
+- **Route note:** r4 keeps estimated route reconstruction disabled. IMU-aided route interpolation remains deferred, and any future estimated segment must be visibly disclosed as estimated rather than trusted raw GPS.
+- **Still deferred:** Device magnetometer heading provider, barometric GPS outlier rejection, Wi-Fi RTT diagnostics, IMU-aided route interpolation, road snapping / map matching, and `.skatetrack` package compression remain out of scope.
+
+Task-030c-b11-r4-1 verification token: Heading Availability + GPS Gap Diagnostics + Dead Reckoning Readiness, Task-030c-b11-r4-1, does not make GPS 1m-accurate, IMU-aided route interpolation remains deferred.
+
+
+### Task-030c-b11-r4-1 XCTest regression stabilization
+- Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
+- It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
+

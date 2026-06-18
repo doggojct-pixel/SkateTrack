@@ -150,3 +150,18 @@ Task-030c-b11-r2 compatibility token: altitude source isolation, Strict Low-Spee
 - Task-030c-b11-r3-3: Summary Map may disclose route accuracy limits for startup warm-up or small-area sessions; this is preferred over over-smoothing or fabricating 1m-level route geometry.
 
 Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker, startup convergence warm-up, GPS warming up, session-route-accuracy-disclosure.
+
+## Task-030c-b11-r4-1 — Diagnostics-only route continuity foundation
+
+- Task-030c-b11-r4-1 is a diagnostics-only foundation for future sensor-fusion route continuity. It may record heading availability, GPS gap diagnostics, and dead-reckoning readiness, but it must not generate estimated route geometry or mutate trusted distance / speed / altitude metrics.
+- GPS gap diagnostics should be based on raw Core Location timestamp spacing and timer-fusion repeat context, not on the 10Hz timer cadence alone.
+- Heading diagnostics in r4 use conservative Core Location course-over-ground availability only. Device magnetometer heading remains deferred until a separate heading-provider task.
+- Optional fields under `LocationFixDiagnostics` preserve legacy plaintext `.skatetrack` compatibility.
+
+Task-030c-b11-r4-1 verification token: diagnostics-only foundation, GPS gap diagnostics, HeadingDiagnostics, GPSGapDiagnostics, DeadReckoningDiagnostics, Task-030c-b11-r4-1.
+
+
+### Task-030c-b11-r4-1 XCTest regression stabilization
+- Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
+- It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
+

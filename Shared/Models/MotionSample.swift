@@ -48,6 +48,110 @@ enum RouteSegmentConfidence: String, Codable, Sendable, Equatable {
     case unavailable
 }
 
+enum HeadingDiagnosticsSource: String, Codable, Sendable, Equatable {
+    case coreLocationCourse
+    case unavailable
+}
+
+struct HeadingDiagnostics: Codable, Sendable, Equatable {
+    let source: HeadingDiagnosticsSource
+    let headingAvailable: Bool
+    let courseOverGroundDegrees: Double?
+    let courseAccuracyDegrees: Double?
+    let coreLocationSpeedKmh: Double?
+    let courseReliableForRouteContinuity: Bool
+    let deviceHeadingDeferred: Bool
+
+    init(
+        source: HeadingDiagnosticsSource = .unavailable,
+        headingAvailable: Bool = false,
+        courseOverGroundDegrees: Double? = nil,
+        courseAccuracyDegrees: Double? = nil,
+        coreLocationSpeedKmh: Double? = nil,
+        courseReliableForRouteContinuity: Bool = false,
+        deviceHeadingDeferred: Bool = true
+    ) {
+        self.source = source
+        self.headingAvailable = headingAvailable
+        self.courseOverGroundDegrees = courseOverGroundDegrees
+        self.courseAccuracyDegrees = courseAccuracyDegrees
+        self.coreLocationSpeedKmh = coreLocationSpeedKmh
+        self.courseReliableForRouteContinuity = courseReliableForRouteContinuity
+        self.deviceHeadingDeferred = deviceHeadingDeferred
+    }
+}
+
+enum GPSGapClassification: String, Codable, Sendable, Equatable {
+    case normalCadence
+    case shortGap
+    case backgroundLocationGap
+    case extendedSignalLoss
+}
+
+struct GPSGapDiagnostics: Codable, Sendable, Equatable {
+    static let shortGapThresholdSeconds: TimeInterval = 1.5
+    static let backgroundGapThresholdSeconds: TimeInterval = 5
+    static let extendedSignalLossThresholdSeconds: TimeInterval = 30
+
+    let classification: GPSGapClassification
+    let gapSeconds: TimeInterval?
+    let isTimerFusionRepeat: Bool
+    let rawLocationAvailable: Bool
+
+    init(
+        classification: GPSGapClassification,
+        gapSeconds: TimeInterval? = nil,
+        isTimerFusionRepeat: Bool = false,
+        rawLocationAvailable: Bool = true
+    ) {
+        self.classification = classification
+        self.gapSeconds = gapSeconds.map { max(0, $0) }
+        self.isTimerFusionRepeat = isTimerFusionRepeat
+        self.rawLocationAvailable = rawLocationAvailable
+    }
+
+    static func classification(for gapSeconds: TimeInterval?) -> GPSGapClassification? {
+        guard let gapSeconds else { return nil }
+        if gapSeconds <= shortGapThresholdSeconds { return .normalCadence }
+        if gapSeconds <= backgroundGapThresholdSeconds { return .shortGap }
+        if gapSeconds <= extendedSignalLossThresholdSeconds { return .backgroundLocationGap }
+        return .extendedSignalLoss
+    }
+}
+
+enum DeadReckoningReadinessReason: String, Codable, Sendable, Equatable {
+    case normalCadence
+    case headingUnavailable
+    case anchorUnavailable
+    case eligibleDiagnosticsOnly
+    case r4RouteReconstructionDeferred
+}
+
+struct DeadReckoningDiagnostics: Codable, Sendable, Equatable {
+    let estimatedRouteActive: Bool
+    let eligibleForFutureEstimation: Bool
+    let anchorAvailable: Bool
+    let gapSeconds: TimeInterval?
+    let headingAvailable: Bool
+    let reason: DeadReckoningReadinessReason
+
+    init(
+        estimatedRouteActive: Bool = false,
+        eligibleForFutureEstimation: Bool = false,
+        anchorAvailable: Bool = false,
+        gapSeconds: TimeInterval? = nil,
+        headingAvailable: Bool = false,
+        reason: DeadReckoningReadinessReason = .normalCadence
+    ) {
+        self.estimatedRouteActive = estimatedRouteActive
+        self.eligibleForFutureEstimation = eligibleForFutureEstimation
+        self.anchorAvailable = anchorAvailable
+        self.gapSeconds = gapSeconds.map { max(0, $0) }
+        self.headingAvailable = headingAvailable
+        self.reason = reason
+    }
+}
+
 enum MotionSampleSource: String, Codable, Sendable, Equatable {
     case timerFusion
     case locationFix
@@ -356,6 +460,9 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
     let speedSource: LocationSpeedSource
     let freshnessState: LocationFreshnessState
     let routeSegmentConfidence: RouteSegmentConfidence
+    let headingDiagnostics: HeadingDiagnostics?
+    let gpsGapDiagnostics: GPSGapDiagnostics?
+    let deadReckoningDiagnostics: DeadReckoningDiagnostics?
 
     init(
         horizontalAccuracyMeters: Double? = nil,
@@ -371,7 +478,10 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         coordinateDerivedSpeedKmh: Double? = nil,
         speedSource: LocationSpeedSource = .unavailable,
         freshnessState: LocationFreshnessState = .unavailable,
-        routeSegmentConfidence: RouteSegmentConfidence = .unavailable
+        routeSegmentConfidence: RouteSegmentConfidence = .unavailable,
+        headingDiagnostics: HeadingDiagnostics? = nil,
+        gpsGapDiagnostics: GPSGapDiagnostics? = nil,
+        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil
     ) {
         self.horizontalAccuracyMeters = horizontalAccuracyMeters
         self.verticalAccuracyMeters = verticalAccuracyMeters
@@ -387,6 +497,35 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         self.speedSource = speedSource
         self.freshnessState = freshnessState
         self.routeSegmentConfidence = routeSegmentConfidence
+        self.headingDiagnostics = headingDiagnostics
+        self.gpsGapDiagnostics = gpsGapDiagnostics
+        self.deadReckoningDiagnostics = deadReckoningDiagnostics
+    }
+
+    func replacingR4Diagnostics(
+        headingDiagnostics: HeadingDiagnostics? = nil,
+        gpsGapDiagnostics: GPSGapDiagnostics? = nil,
+        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil
+    ) -> LocationFixDiagnostics {
+        LocationFixDiagnostics(
+            horizontalAccuracyMeters: horizontalAccuracyMeters,
+            verticalAccuracyMeters: verticalAccuracyMeters,
+            speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
+            courseAccuracyDegrees: courseAccuracyDegrees,
+            rawLocationTimestamp: rawLocationTimestamp,
+            rawLocationTimestampMillisecondsSince1970: rawLocationTimestampMillisecondsSince1970,
+            receivedAtTimestamp: receivedAtTimestamp,
+            receivedAtTimestampMillisecondsSince1970: receivedAtTimestampMillisecondsSince1970,
+            gpsUpdateIntervalSeconds: gpsUpdateIntervalSeconds,
+            gpsSegmentDistanceMeters: gpsSegmentDistanceMeters,
+            coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+            speedSource: speedSource,
+            freshnessState: freshnessState,
+            routeSegmentConfidence: routeSegmentConfidence,
+            headingDiagnostics: headingDiagnostics ?? self.headingDiagnostics,
+            gpsGapDiagnostics: gpsGapDiagnostics ?? self.gpsGapDiagnostics,
+            deadReckoningDiagnostics: deadReckoningDiagnostics ?? self.deadReckoningDiagnostics
+        )
     }
 }
 

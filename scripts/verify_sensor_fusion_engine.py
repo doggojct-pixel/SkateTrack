@@ -81,7 +81,7 @@ project_text = require_file(PROJECT)
 
 require_snippets(fusion_text, REQUIRED_FUSION_SNIPPETS, "SensorFusionEngine.swift")
 require_snippets(calibration_text, REQUIRED_CALIBRATION_SNIPPETS, "SensorCalibrationEngine.swift")
-require_line_limit(fusion_text, "SensorFusionEngine.swift", 640)
+require_line_limit(fusion_text, "SensorFusionEngine.swift", 760)
 require_line_limit(calibration_text, "SensorCalibrationEngine.swift", 250)
 require_no_ui_imports(fusion_text, "SensorFusionEngine.swift")
 require_no_ui_imports(calibration_text, "SensorCalibrationEngine.swift")

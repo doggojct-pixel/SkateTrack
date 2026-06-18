@@ -3,9 +3,6 @@
 // 委派至：useSessionRecording Hook、Task-012 Session Start UI、Task-014 Fall Alert UI、Task-015 persistence。
 import Combine
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#endif
 enum SessionRecordingError: Error, Sendable, Equatable {
     case invalidPowerType
     case sensorUnavailable
@@ -1077,16 +1074,15 @@ final class SessionRecordingCoordinator {
     #if DEBUG
     private func startDebugLifecycleObservationIfNeeded() {
         guard debugLifecycleObservationTokens.isEmpty else { return }
-        #if canImport(UIKit)
         let center = NotificationCenter.default
         let events: [(Notification.Name, String)] = [
-            (UIApplication.willResignActiveNotification, "appWillResignActive"),
-            (UIApplication.didEnterBackgroundNotification, "appDidEnterBackground"),
-            (UIApplication.willEnterForegroundNotification, "appWillEnterForeground"),
-            (UIApplication.didBecomeActiveNotification, "appDidBecomeActive"),
-            (UIApplication.willTerminateNotification, "appWillTerminate"),
-            (UIApplication.protectedDataWillBecomeUnavailableNotification, "protectedDataWillBecomeUnavailable"),
-            (UIApplication.protectedDataDidBecomeAvailableNotification, "protectedDataDidBecomeAvailable")
+            (Notification.Name("UIApplicationWillResignActiveNotification"), "appWillResignActive"),
+            (Notification.Name("UIApplicationDidEnterBackgroundNotification"), "appDidEnterBackground"),
+            (Notification.Name("UIApplicationWillEnterForegroundNotification"), "appWillEnterForeground"),
+            (Notification.Name("UIApplicationDidBecomeActiveNotification"), "appDidBecomeActive"),
+            (Notification.Name("UIApplicationWillTerminateNotification"), "appWillTerminate"),
+            (Notification.Name("UIApplicationProtectedDataWillBecomeUnavailable"), "protectedDataWillBecomeUnavailable"),
+            (Notification.Name("UIApplicationProtectedDataDidBecomeAvailable"), "protectedDataDidBecomeAvailable")
         ]
         debugLifecycleObservationTokens = events.map { name, eventType in
             center.addObserver(
@@ -1101,33 +1097,16 @@ final class SessionRecordingCoordinator {
                 )
             }
         }
-        #endif
     }
 
     private func stopDebugLifecycleObservation() {
-        #if canImport(UIKit)
         debugLifecycleObservationTokens.forEach { NotificationCenter.default.removeObserver($0) }
-        #endif
         debugLifecycleObservationTokens.removeAll()
     }
 
     private func makeDebugRuntimeSnapshot(scenePhase: String?) -> RecordingDebugRuntimeSnapshot {
         let now = Date()
         let elapsed = sessionStartDate.map { now.timeIntervalSince($0) }
-        #if canImport(UIKit)
-        let application = UIApplication.shared
-        return RecordingDebugRuntimeSnapshot(
-            timestamp: now,
-            secondsSinceSessionStart: elapsed,
-            appState: Self.debugAppStateDescription(application.applicationState),
-            scenePhase: scenePhase,
-            isProtectedDataAvailable: application.isProtectedDataAvailable,
-            backgroundRefreshStatus: Self.debugBackgroundRefreshDescription(application.backgroundRefreshStatus),
-            isLowPowerModeEnabled: ProcessInfo.processInfo.isLowPowerModeEnabled,
-            thermalState: Self.debugThermalStateDescription(ProcessInfo.processInfo.thermalState),
-            isIdleTimerDisabled: application.isIdleTimerDisabled
-        )
-        #else
         return RecordingDebugRuntimeSnapshot(
             timestamp: now,
             secondsSinceSessionStart: elapsed,
@@ -1135,28 +1114,7 @@ final class SessionRecordingCoordinator {
             isLowPowerModeEnabled: ProcessInfo.processInfo.isLowPowerModeEnabled,
             thermalState: Self.debugThermalStateDescription(ProcessInfo.processInfo.thermalState)
         )
-        #endif
     }
-
-    #if canImport(UIKit)
-    private static func debugAppStateDescription(_ state: UIApplication.State) -> String {
-        switch state {
-        case .active: return "active"
-        case .inactive: return "inactive"
-        case .background: return "background"
-        @unknown default: return "unknown"
-        }
-    }
-
-    private static func debugBackgroundRefreshDescription(_ status: UIBackgroundRefreshStatus) -> String {
-        switch status {
-        case .available: return "available"
-        case .denied: return "denied"
-        case .restricted: return "restricted"
-        @unknown default: return "unknown"
-        }
-    }
-    #endif
 
     private static func debugThermalStateDescription(_ state: ProcessInfo.ThermalState) -> String {
         switch state {

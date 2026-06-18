@@ -1220,3 +1220,20 @@ scripts/verify_task030c_startup_gps_warmup.py           # Guards startup warm-up
 scripts/verify_task030c_startup_anchor_semantics.py     # Guards approximate start marker, GPS lock route anchor, and region anchoring semantics.
 
 Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker, startup convergence warm-up, session-route-accuracy-disclosure.
+
+### Task-030c-b11-r4-1 heading availability and GPS gap diagnostics foundation
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b11-r4-1.
+Shared/Models/MotionSample.swift                         # Adds optional HeadingDiagnostics, GPSGapDiagnostics, and DeadReckoningDiagnostics under LocationFixDiagnostics.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Populates raw-fix and timer-fusion GPS gap diagnostics without changing route geometry or accumulators.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b11-r4-1 Debug build signature.
+Tests/iOSTests/SessionRepositoryTests.swift              # Adds GPS gap threshold and legacy LocationFixDiagnostics plaintext decode coverage.
+scripts/verify_task030c_r4_diagnostics_foundation.py     # Guards r4 diagnostics-only foundation scope and forbidden estimated-route fields.
+
+Task-030c-b11-r4-1 verification token: HeadingDiagnostics, GPSGapDiagnostics, DeadReckoningDiagnostics, verify_task030c_r4_diagnostics_foundation.py, diagnostics-only foundation.
+
+
+### Task-030c-b11-r4-1 XCTest regression stabilization
+- Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
+- It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
+

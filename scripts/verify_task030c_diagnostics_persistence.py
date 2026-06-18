@@ -25,7 +25,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b11-r3-3\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b11-r4-1\"",
         "let diagnosticsStatus: String?",
     ],
     "Shared/Persistence/SessionEntityMapper.swift": [
