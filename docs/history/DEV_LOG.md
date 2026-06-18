@@ -1831,4 +1831,18 @@ Snow-Task-009 intentionally does not change runtime classifier behavior, run-bou
 - Build macOS, iOS, and watchOS targets.
 - Generate `SnowTask010_ReviewPack.zip` under `/Users/doggo/Documents/App軟體區/upload/`.
 
-Snow-Task-010 verification token: Phase 1c Snow Mode completion handoff is review-ready without runtime scope creep.
+Snow-Task-010 verification token: Phase 1c Snow Mode completion handoff is review-ready without runtime scope creep.## 2026-06-18 — Snow Pre-Task-040 Documentation Preparation
+
+### Completed
+- Added `docs/process/SNOW_TASK_006B_WIRING_PLAN.md` as the future WatchBridge / WatchConnectivity Snow wiring specification to be used after mainline Task-040 is merged into `feature/snow-mode`.
+- Added `docs/process/MOTION_SAMPLE_EXTENSION_DESIGN.md` as a future MotionSample v1 design proposal for GPS accuracy, course, and altitude-source metadata.
+- Added `docs/process/SNOW_CLASSIFIER_FIELD_TEST_PLAN.md` as the real-world field testing and threshold-tuning plan for SnowSegmentClassifier v0 / v1 validation.
+- Updated the documentation index to reference these preparation documents.
+
+### Scope Boundary
+- This is a documentation-only preparation task.
+- No Swift files, Xcode project files, Core Data model files, package / backup schema files, WatchBridge files, HealthKit code, or verify scripts are changed.
+- The Phase 1c completion commit `b975c43` remains the runtime closure baseline.
+- Item 4 from the Claude preparation note, iOS History Snow Filter UI, is intentionally excluded because it is runtime UI code and should be handled as a separate optional task.
+
+Snow Pre-Task-040 documentation token: preparation documents added without runtime scope creep.

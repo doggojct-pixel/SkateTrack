@@ -139,4 +139,10 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 - `docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md` is the final Phase 1c Snow Mode handoff record for Claude / human review.
 - `scripts/verify_snow_phase1c_completion.py` is the final completion verifier.
 - `scripts/create_snow_task010_review_pack.sh` creates the final review pack under `/Users/doggo/Documents/App軟體區/upload/`.
-- Snow-Task-010 is documentation / verification / handoff only; it must not add runtime Snow feature behavior.
+- Snow-Task-010 is documentation / verification / handoff only; it must not add runtime Snow feature behavior.### Snow Pre-Task-040 Preparation Documents
+
+- `docs/process/SNOW_TASK_006B_WIRING_PLAN.md` — Documentation-only implementation specification for the deferred Snow-Task-006b WatchBridge / WatchConnectivity wiring after mainline Task-040 is merged into `feature/snow-mode`.
+- `docs/process/MOTION_SAMPLE_EXTENSION_DESIGN.md` — Future MotionSample v1 design proposal for GPS accuracy, course, GPS altitude, and altitude-source metadata used by future Snow classifier improvements.
+- `docs/process/SNOW_CLASSIFIER_FIELD_TEST_PLAN.md` — Real-world snow field test and threshold-tuning plan for validating SnowSegmentClassifier and RunBoundaryDetector behavior with downhill, lift, gondola, queue, walking, and low-GPS scenarios.
+
+Snow Pre-Task-040 docs token: preparation docs are documentation-only and do not change runtime Snow behavior.
