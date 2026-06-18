@@ -2006,3 +2006,15 @@ Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuardConfi
 Task-030c-b12 limitation token: improves altitude robustness and elevation-gain honesty; does not guarantee survey-grade elevation precision; barometric pressure LPF and long-term atmospheric drift correction remain deferred.
 
 Task-030c-b12 package capability token: altitude-diagnostics-v1.
+
+## Task-030c-b12-B — Pressure smoothing diagnostics foundation
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b12-B`.
+- Added `AltitudePressureDiagnostics`, `AltitudePressureFilterConfig`, and `AltitudePressureFilter` as a diagnostics-only pressure smoothing layer for barometer-relative altitude samples.
+- Recorded raw pressure, smoothed pressure, previous smoothed pressure, pressure delta, filter alpha, and spike-suppression state inside optional per-sample `AltitudeDiagnostics.pressureDiagnostics`.
+- Wired `BarometerProvider.pressureKilopascalsPublisher` into `SensorFusionEngine` so timer-fusion barometer-relative samples can carry pressure smoothing diagnostics without changing altitude, speed, distance, or route geometry.
+- Preserved Task-030c-b12-A component-level altitude isolation and source-isolated altitude anchors. Pressure smoothing diagnostics are not used for atmospheric drift correction and do not blend CoreLocation absolute altitude with barometer-relative altitude.
+- Added XCTest coverage for pressure spike suppression and Codable round-trip persistence of pressure diagnostics.
+
+Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b12-B limitation token: Pressure LPF diagnostics are recorded, but long-term atmospheric drift correction, pressure-to-absolute-altitude conversion, full barometer fusion, IMU dead reckoning, Wi-Fi RTT, and indoor localization remain deferred.

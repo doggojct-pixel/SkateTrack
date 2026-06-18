@@ -226,6 +226,61 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertGreaterThan(accumulator.distanceKilometers, 0, "Altitude rejection must not fracture horizontal distance accumulation.")
     }
 
+    func testAltitudePressureFilterSuppressesPressureSpike() {
+        var filter = AltitudePressureFilter()
+        let config = AltitudePressureFilterConfig(
+            smoothingAlpha: 0.20,
+            maxRawPressureStepKilopascals: 0.10
+        )
+
+        let first = filter.evaluate(rawPressureKilopascals: 101.30, config: config)
+        let spike = filter.evaluate(rawPressureKilopascals: 102.30, config: config)
+
+        XCTAssertEqual(first?.rawPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(first?.smoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(first?.spikeSuppressed, false)
+        XCTAssertEqual(spike?.spikeSuppressed, true)
+        XCTAssertEqual(spike?.previousSmoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(spike?.pressureDeltaKilopascals ?? .nan, 1.0, accuracy: 0.0001)
+        XCTAssertEqual(spike?.smoothedPressureKilopascals ?? .nan, 101.32, accuracy: 0.0001)
+    }
+
+    func testAltitudeOutlierGuardCarriesPressureDiagnosticsWithoutChangingAltitude() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3,
+            maxBarometerVerticalSpeedMetersPerSecond: 40,
+            hardBarometerJumpRejectMeters: 30
+        )
+        let timestamp = Date(timeIntervalSince1970: 40_000)
+        let pressureDiagnostics = AltitudePressureDiagnostics(
+            rawPressureKilopascals: 101.30,
+            smoothedPressureKilopascals: 101.30,
+            filterAlpha: 0.20,
+            spikeSuppressed: false
+        )
+
+        let altitudeDiagnostics = guardEngine.evaluate(
+            altitudeMeters: 3.25,
+            source: .barometerRelative,
+            timestamp: timestamp,
+            verticalAccuracyMeters: nil,
+            locationDiagnostics: nil,
+            sessionStartDate: timestamp,
+            config: config,
+            pressureDiagnostics: pressureDiagnostics
+        )
+
+        XCTAssertEqual(altitudeDiagnostics.source, .barometerRelative)
+        XCTAssertEqual(altitudeDiagnostics.trustClassification, .trusted)
+        XCTAssertEqual(altitudeDiagnostics.reason, .barometerRelativeAccepted)
+        XCTAssertEqual(altitudeDiagnostics.rawAltitudeMeters!, 3.25, accuracy: 0.001)
+        XCTAssertEqual(altitudeDiagnostics.trustedAltitudeMeters!, 3.25, accuracy: 0.001)
+        XCTAssertEqual(altitudeDiagnostics.pressureDiagnostics?.rawPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(altitudeDiagnostics.pressureDiagnostics?.smoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+    }
+
     func testStartSessionRejectsElectricInlinePowerType() async {
         let coordinator = SessionRecordingCoordinator(
             sensorEngine: MockSessionSensorEngine(),

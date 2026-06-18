@@ -153,6 +153,35 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertNil(decoded.altitudeDiagnostics)
     }
 
+    func testAltitudeDiagnosticsPressureDiagnosticsCodableRoundTrip() throws {
+        let diagnostics = AltitudeDiagnostics(
+            source: .barometerRelative,
+            trustClassification: .trusted,
+            reason: .barometerRelativeAccepted,
+            rawAltitudeMeters: 2.5,
+            trustedAltitudeMeters: 2.5,
+            updatesTrustedAltitudeAnchor: true,
+            pressureDiagnostics: AltitudePressureDiagnostics(
+                rawPressureKilopascals: 101.30,
+                smoothedPressureKilopascals: 101.28,
+                previousSmoothedPressureKilopascals: 101.25,
+                pressureDeltaKilopascals: 0.05,
+                filterAlpha: 0.20,
+                spikeSuppressed: true
+            )
+        )
+
+        let encoded = try JSONEncoder().encode(diagnostics)
+        let json = String(data: encoded, encoding: .utf8) ?? ""
+        XCTAssertTrue(json.contains("pressureDiagnostics"))
+        XCTAssertTrue(json.contains("smoothedPressureKilopascals"))
+
+        let decoded = try JSONDecoder().decode(AltitudeDiagnostics.self, from: encoded)
+        XCTAssertEqual(decoded.pressureDiagnostics?.rawPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(decoded.pressureDiagnostics?.smoothedPressureKilopascals ?? .nan, 101.28, accuracy: 0.0001)
+        XCTAssertEqual(decoded.pressureDiagnostics?.spikeSuppressed, true)
+    }
+
     private func makeCompletedSession() throws -> SessionData {
         let startDate = Date(timeIntervalSince1970: 1_700_000_000)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b12-A altitude outlier guard and per-sample diagnostics scope."""
+"""Verify Task-030c-b12-B pressure smoothing diagnostics and altitude guard scope."""
 from pathlib import Path
 import sys
 
@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b12"',
+        'static let currentDebugBuildTaskID = "Task-030c-b12-B"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b12")',
+        'Text("Task-030c-b12-B")',
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [
@@ -29,14 +29,26 @@ REQUIRED = {
         "let altitudeDiagnostics: AltitudeDiagnostics?",
         "altitudeDiagnostics: AltitudeDiagnostics? = nil",
         "enum AltitudeSampleSource: String, Codable, Sendable, Equatable, Hashable",
+        "struct AltitudePressureDiagnostics",
+        "struct AltitudePressureFilterConfig",
+        "struct AltitudePressureFilter",
+        "let pressureDiagnostics: AltitudePressureDiagnostics?",
+        "spikeSuppressed: Bool",
+        "maxRawPressureStepKilopascals",
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "private var altitudeOutlierGuard = AltitudeOutlierGuard()",
+        "private var pressureFilter = AltitudePressureFilter()",
+        "private var latestPressureDiagnostics: AltitudePressureDiagnostics?",
+        "barometerProvider.pressureKilopascalsPublisher",
+        "private func updatePressure(_ pressureKilopascals: Double?)",
         "AltitudeOutlierGuardConfig(",
         "altitudeOutlierGuard.evaluate(",
+        "pressureDiagnostics: pressureDiagnostics",
         "altitudeDiagnostics: snapshot.altitudeDiagnostics",
         "altitudeDiagnostics: altitudeDiagnostics",
         "altitudeOutlierGuard.reset()",
+        "pressureFilter.reset()",
     ],
     "iOS/Core/SessionRecording/SessionMetricsAccumulator.swift": [
         "if let diagnostics = sample.altitudeDiagnostics",
@@ -64,28 +76,32 @@ REQUIRED = {
         "testMetricsAccumulatorIgnoresRejectedAltitudeOutlierButPreservesDistance",
         "hardAltitudeJump",
         "verticalAccuracyTooPoor",
+        "testAltitudePressureFilterSuppressesPressureSpike",
+        "testAltitudeOutlierGuardCarriesPressureDiagnosticsWithoutChangingAltitude",
     ],
     "Tests/iOSTests/SessionRepositoryTests.swift": [
         "testLegacyMotionSampleDecodesWithoutB12AltitudeDiagnostics",
         "altitudeDiagnostics.count",
         "Expected persisted samples to retain b12 altitude diagnostics",
         "exportedSamplesJSON.contains(\"altitudeDiagnostics\")",
+        "testAltitudeDiagnosticsPressureDiagnosticsCodableRoundTrip",
+        "smoothedPressureKilopascals",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b12-A — Altitude Outlier Guard + Per-Sample Diagnostics",
+        "Task-030c-b12-B — Pressure smoothing diagnostics foundation",
         "component-level altitude isolation",
         "source-isolated altitude anchors",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b12-A altitude outlier guard and per-sample diagnostics",
+        "Task-030c-b12-B pressure smoothing diagnostics and altitude guard",
         "verify_task030c_b12_altitude_outlier_guard.py",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b12-A — Altitude outlier guard and per-sample diagnostics",
+        "Task-030c-b12-B — Pressure smoothing diagnostics foundation",
         "horizontal coordinates, distance logic, and route rendering remain isolated",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b12-A — Altitude outlier guard and barometric diagnostics foundation",
+        "Task-030c-b12-B — Pressure smoothing diagnostics foundation",
         "does not guarantee survey-grade elevation precision",
         "Pressure LPF",
     ],
@@ -155,12 +171,12 @@ def main() -> int:
                 failures.append(f"{rel}: forbidden SnowPrototype reference {token!r}")
 
     if failures:
-        print("Task-030c-b12-A altitude outlier guard check failed:", file=sys.stderr)
+        print("Task-030c-b12-B pressure smoothing diagnostics check failed:", file=sys.stderr)
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         return 1
 
-    print("Task-030c-b12-A altitude outlier guard checks passed.")
+    print("Task-030c-b12-B pressure smoothing diagnostics checks passed.")
     return 0
 
 

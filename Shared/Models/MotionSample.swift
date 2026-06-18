@@ -193,6 +193,31 @@ enum AltitudeTrustReason: String, Codable, Sendable, Equatable {
     case fallbackLegacyPolicy
 }
 
+struct AltitudePressureDiagnostics: Codable, Sendable, Equatable {
+    let rawPressureKilopascals: Double
+    let smoothedPressureKilopascals: Double
+    let previousSmoothedPressureKilopascals: Double?
+    let pressureDeltaKilopascals: Double?
+    let filterAlpha: Double
+    let spikeSuppressed: Bool
+
+    init(
+        rawPressureKilopascals: Double,
+        smoothedPressureKilopascals: Double,
+        previousSmoothedPressureKilopascals: Double? = nil,
+        pressureDeltaKilopascals: Double? = nil,
+        filterAlpha: Double,
+        spikeSuppressed: Bool = false
+    ) {
+        self.rawPressureKilopascals = rawPressureKilopascals
+        self.smoothedPressureKilopascals = smoothedPressureKilopascals
+        self.previousSmoothedPressureKilopascals = previousSmoothedPressureKilopascals
+        self.pressureDeltaKilopascals = pressureDeltaKilopascals
+        self.filterAlpha = min(max(filterAlpha, 0.001), 1.0)
+        self.spikeSuppressed = spikeSuppressed
+    }
+}
+
 struct AltitudeDiagnostics: Codable, Sendable, Equatable {
     let source: AltitudeSampleSource
     let trustClassification: AltitudeTrustClassification
@@ -206,6 +231,7 @@ struct AltitudeDiagnostics: Codable, Sendable, Equatable {
     let verticalSpeedMetersPerSecond: Double?
     let rejectedByOutlierGuard: Bool
     let updatesTrustedAltitudeAnchor: Bool
+    let pressureDiagnostics: AltitudePressureDiagnostics?
 
     init(
         source: AltitudeSampleSource,
@@ -219,7 +245,8 @@ struct AltitudeDiagnostics: Codable, Sendable, Equatable {
         timeDeltaSeconds: TimeInterval? = nil,
         verticalSpeedMetersPerSecond: Double? = nil,
         rejectedByOutlierGuard: Bool = false,
-        updatesTrustedAltitudeAnchor: Bool = false
+        updatesTrustedAltitudeAnchor: Bool = false,
+        pressureDiagnostics: AltitudePressureDiagnostics? = nil
     ) {
         self.source = source
         self.trustClassification = trustClassification
@@ -233,6 +260,7 @@ struct AltitudeDiagnostics: Codable, Sendable, Equatable {
         self.verticalSpeedMetersPerSecond = verticalSpeedMetersPerSecond.map { max(0, $0) }
         self.rejectedByOutlierGuard = rejectedByOutlierGuard
         self.updatesTrustedAltitudeAnchor = updatesTrustedAltitudeAnchor
+        self.pressureDiagnostics = pressureDiagnostics
     }
 
     var isTrustedForElevationGain: Bool {
@@ -520,6 +548,72 @@ struct ActivityFidelityPolicy: Codable, Sendable, Equatable {
     }
 }
 
+
+struct AltitudePressureFilterConfig: Codable, Sendable, Equatable {
+    let smoothingAlpha: Double
+    let maxRawPressureStepKilopascals: Double
+
+    init(
+        smoothingAlpha: Double = 0.20,
+        maxRawPressureStepKilopascals: Double = 0.10
+    ) {
+        self.smoothingAlpha = min(max(smoothingAlpha, 0.001), 1.0)
+        self.maxRawPressureStepKilopascals = max(0.001, maxRawPressureStepKilopascals)
+    }
+
+    static let `default` = AltitudePressureFilterConfig()
+}
+
+struct AltitudePressureFilter: Sendable, Equatable {
+    private var smoothedPressureKilopascals: Double?
+
+    init() {}
+
+    mutating func reset() {
+        smoothedPressureKilopascals = nil
+    }
+
+    mutating func evaluate(
+        rawPressureKilopascals: Double?,
+        config: AltitudePressureFilterConfig = .default
+    ) -> AltitudePressureDiagnostics? {
+        guard let rawPressureKilopascals, rawPressureKilopascals.isFinite else { return nil }
+
+        guard let previousSmoothedPressure = smoothedPressureKilopascals else {
+            smoothedPressureKilopascals = rawPressureKilopascals
+            return AltitudePressureDiagnostics(
+                rawPressureKilopascals: rawPressureKilopascals,
+                smoothedPressureKilopascals: rawPressureKilopascals,
+                filterAlpha: config.smoothingAlpha,
+                spikeSuppressed: false
+            )
+        }
+
+        let rawDelta = rawPressureKilopascals - previousSmoothedPressure
+        let absoluteDelta = abs(rawDelta)
+        let spikeSuppressed = absoluteDelta > config.maxRawPressureStepKilopascals
+        let clampedPressure: Double
+        if spikeSuppressed {
+            clampedPressure = previousSmoothedPressure + (rawDelta.sign == .minus ? -config.maxRawPressureStepKilopascals : config.maxRawPressureStepKilopascals)
+        } else {
+            clampedPressure = rawPressureKilopascals
+        }
+
+        let smoothedPressure = (config.smoothingAlpha * clampedPressure)
+            + ((1 - config.smoothingAlpha) * previousSmoothedPressure)
+        smoothedPressureKilopascals = smoothedPressure
+
+        return AltitudePressureDiagnostics(
+            rawPressureKilopascals: rawPressureKilopascals,
+            smoothedPressureKilopascals: smoothedPressure,
+            previousSmoothedPressureKilopascals: previousSmoothedPressure,
+            pressureDeltaKilopascals: rawDelta,
+            filterAlpha: config.smoothingAlpha,
+            spikeSuppressed: spikeSuppressed
+        )
+    }
+}
+
 struct AltitudeOutlierGuardConfig: Codable, Sendable, Equatable {
     let maxCoreLocationVerticalAccuracyMeters: Double
     let maxCoreLocationVerticalSpeedMetersPerSecond: Double
@@ -597,7 +691,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
         verticalAccuracyMeters: Double?,
         locationDiagnostics: LocationFixDiagnostics?,
         sessionStartDate: Date?,
-        config: AltitudeOutlierGuardConfig
+        config: AltitudeOutlierGuardConfig,
+        pressureDiagnostics: AltitudePressureDiagnostics? = nil
     ) -> AltitudeDiagnostics {
         let resolvedSource = source ?? .unavailable
         guard resolvedSource != .unavailable else {
@@ -606,7 +701,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 trustClassification: .missing,
                 reason: .sourceUnavailable,
                 rawAltitudeMeters: altitudeMeters,
-                verticalAccuracyMeters: verticalAccuracyMeters
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -615,7 +711,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 source: resolvedSource,
                 trustClassification: .missing,
                 reason: .missingAltitude,
-                verticalAccuracyMeters: verticalAccuracyMeters
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -626,7 +723,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 reason: .nonFiniteAltitude,
                 rawAltitudeMeters: altitudeMeters,
                 verticalAccuracyMeters: verticalAccuracyMeters,
-                rejectedByOutlierGuard: true
+                rejectedByOutlierGuard: true,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -636,7 +734,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                     source: resolvedSource,
                     reason: .staleLocation,
                     rawAltitudeMeters: altitudeMeters,
-                    verticalAccuracyMeters: verticalAccuracyMeters
+                    verticalAccuracyMeters: verticalAccuracyMeters,
+                    pressureDiagnostics: pressureDiagnostics
                 )
             }
 
@@ -646,7 +745,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                     source: resolvedSource,
                     reason: isStartupWarmup ? .startupAltitudeWarmup : .lowRouteConfidence,
                     rawAltitudeMeters: altitudeMeters,
-                    verticalAccuracyMeters: verticalAccuracyMeters
+                    verticalAccuracyMeters: verticalAccuracyMeters,
+                    pressureDiagnostics: pressureDiagnostics
                 )
             }
 
@@ -655,7 +755,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                     source: resolvedSource,
                     reason: .verticalAccuracyUnavailable,
                     rawAltitudeMeters: altitudeMeters,
-                    verticalAccuracyMeters: nil
+                    verticalAccuracyMeters: nil,
+                    pressureDiagnostics: pressureDiagnostics
                 )
             }
 
@@ -664,7 +765,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                     source: resolvedSource,
                     reason: .verticalAccuracyTooPoor,
                     rawAltitudeMeters: altitudeMeters,
-                    verticalAccuracyMeters: verticalAccuracyMeters
+                    verticalAccuracyMeters: verticalAccuracyMeters,
+                    pressureDiagnostics: pressureDiagnostics
                 )
             }
         }
@@ -679,7 +781,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 rawAltitudeMeters: altitudeMeters,
                 trustedAltitudeMeters: altitudeMeters,
                 verticalAccuracyMeters: verticalAccuracyMeters,
-                updatesTrustedAltitudeAnchor: true
+                updatesTrustedAltitudeAnchor: true,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -699,7 +802,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 verticalAccuracyMeters: verticalAccuracyMeters,
                 altitudeDeltaMeters: delta,
                 timeDeltaSeconds: timeDelta,
-                verticalSpeedMetersPerSecond: verticalSpeed
+                verticalSpeedMetersPerSecond: verticalSpeed,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -712,7 +816,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
                 verticalAccuracyMeters: verticalAccuracyMeters,
                 altitudeDeltaMeters: delta,
                 timeDeltaSeconds: timeDelta,
-                verticalSpeedMetersPerSecond: verticalSpeed
+                verticalSpeedMetersPerSecond: verticalSpeed,
+                pressureDiagnostics: pressureDiagnostics
             )
         }
 
@@ -728,7 +833,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
             altitudeDeltaMeters: delta,
             timeDeltaSeconds: timeDelta,
             verticalSpeedMetersPerSecond: verticalSpeed,
-            updatesTrustedAltitudeAnchor: true
+            updatesTrustedAltitudeAnchor: true,
+            pressureDiagnostics: pressureDiagnostics
         )
     }
 
@@ -736,7 +842,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
         source: AltitudeSampleSource,
         reason: AltitudeTrustReason,
         rawAltitudeMeters: Double,
-        verticalAccuracyMeters: Double?
+        verticalAccuracyMeters: Double?,
+        pressureDiagnostics: AltitudePressureDiagnostics? = nil
     ) -> AltitudeDiagnostics {
         let previousAnchor = anchor(for: source)
         return AltitudeDiagnostics(
@@ -748,7 +855,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
             previousTrustedAltitudeMeters: previousAnchor?.altitudeMeters,
             verticalAccuracyMeters: verticalAccuracyMeters,
             rejectedByOutlierGuard: false,
-            updatesTrustedAltitudeAnchor: false
+            updatesTrustedAltitudeAnchor: false,
+            pressureDiagnostics: pressureDiagnostics
         )
     }
 
@@ -760,7 +868,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
         verticalAccuracyMeters: Double?,
         altitudeDeltaMeters: Double,
         timeDeltaSeconds: TimeInterval,
-        verticalSpeedMetersPerSecond: Double
+        verticalSpeedMetersPerSecond: Double,
+        pressureDiagnostics: AltitudePressureDiagnostics? = nil
     ) -> AltitudeDiagnostics {
         AltitudeDiagnostics(
             source: source,
@@ -774,7 +883,8 @@ struct AltitudeOutlierGuard: Sendable, Equatable {
             timeDeltaSeconds: timeDeltaSeconds,
             verticalSpeedMetersPerSecond: verticalSpeedMetersPerSecond,
             rejectedByOutlierGuard: true,
-            updatesTrustedAltitudeAnchor: false
+            updatesTrustedAltitudeAnchor: false,
+            pressureDiagnostics: pressureDiagnostics
         )
     }
 

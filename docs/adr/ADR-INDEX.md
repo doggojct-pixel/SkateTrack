@@ -176,3 +176,12 @@ Task-030c-b11-r4-1 verification token: diagnostics-only foundation, GPS gap diag
 Task-030c-b12 verification token: component-level altitude isolation, source-isolated altitude anchors, AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, no estimated route geometry.
 
 Task-030c-b12 package capability token: altitude-diagnostics-v1.
+
+## Task-030c-b12-B — Pressure smoothing diagnostics foundation
+
+- Task-030c-b12-B extends the b12-A altitude trust model with diagnostics-only pressure smoothing metadata for barometer-relative samples.
+- `AltitudePressureFilter` uses a deterministic low-pass filter and raw-step clamp to disclose pocket-pressure / Venturi-like spikes without mutating route geometry, trusted distance, trusted speed, or trusted altitude policy.
+- Pressure diagnostics are nested under optional `AltitudeDiagnostics.pressureDiagnostics`, preserving legacy `.skatetrack` compatibility and b12-A component-level altitude isolation.
+- CoreLocation absolute altitude and barometer-relative altitude remain source-isolated. b12-B does not perform atmospheric drift correction, pressure-to-absolute-altitude conversion, blended altitude, IMU dead reckoning, Wi-Fi RTT, or indoor localization.
+
+Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, diagnostics-only pressure smoothing, horizontal coordinates, distance logic, and route rendering remain isolated.

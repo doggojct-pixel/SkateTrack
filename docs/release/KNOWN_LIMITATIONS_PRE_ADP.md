@@ -311,3 +311,12 @@ Task-030c-b11-r4-1 verification token: Heading Availability + GPS Gap Diagnostic
 Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuard, does not make altitude survey-grade, pressure LPF deferred, atmospheric drift correction deferred.
 
 Task-030c-b12 package capability token: altitude-diagnostics-v1.
+
+### Task-030c-b12-B — Pressure smoothing diagnostics foundation
+
+- **Current status:** Task-030c-b12-B records optional pressure smoothing diagnostics for barometer-relative altitude samples. This helps explain raw pressure, smoothed pressure, and pressure spike suppression decisions during future analysis.
+- **Altitude precision limitation:** b12-B does not guarantee survey-grade elevation precision and does not convert pressure into absolute altitude.
+- **Deferred:** Pressure LPF is diagnostics-only in b12-B. Long-term atmospheric drift correction, full barometer-assisted fusion, pressure-to-altitude calibration, IMU dead reckoning, Wi-Fi RTT, indoor localization, and Snow-specific vertical dynamics remain deferred.
+- **Safety boundary:** Pressure smoothing diagnostics must not alter horizontal route geometry, trusted distance, trusted speed, or estimated route behavior.
+
+Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilter, Pressure LPF diagnostics, does not guarantee survey-grade elevation precision, no estimated route geometry.

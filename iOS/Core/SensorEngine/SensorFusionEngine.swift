@@ -39,6 +39,8 @@ final class SensorFusionEngine: SensorProvider {
     private var latestGyroscope = ThreeAxisValue.zero
     private var latestAltitudeMeters: Double?
     private var altitudeOutlierGuard = AltitudeOutlierGuard()
+    private var pressureFilter = AltitudePressureFilter()
+    private var latestPressureDiagnostics: AltitudePressureDiagnostics?
     private var latestLocationDiagnostics: LocationFixDiagnostics?
     private var latestRawLocation: CLLocation?
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
@@ -138,6 +140,8 @@ final class SensorFusionEngine: SensorProvider {
             latestGyroscope = .zero
             latestAltitudeMeters = nil
             altitudeOutlierGuard.reset()
+            pressureFilter.reset()
+            latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
             calibrationEngine.reset()
@@ -173,6 +177,12 @@ final class SensorFusionEngine: SensorProvider {
         barometerProvider.relativeAltitudeMetersPublisher
             .sink { [weak self] altitude in
                 self?.updateAltitude(altitude)
+            }
+            .store(in: &cancellables)
+
+        barometerProvider.pressureKilopascalsPublisher
+            .sink { [weak self] pressureKilopascals in
+                self?.updatePressure(pressureKilopascals)
             }
             .store(in: &cancellables)
     }
@@ -249,6 +259,7 @@ final class SensorFusionEngine: SensorProvider {
             let acceleration = latestAcceleration
             let gyroscope = latestGyroscope
             let altitude = latestAltitudeMeters
+            let pressureDiagnostics = latestPressureDiagnostics
             let altitudeSource: AltitudeSampleSource? = altitude == nil ? nil : .barometerRelative
             let locationDiagnostics = latestLocationDiagnostics.map { diagnostics in
                 timerFusionDiagnostics(from: diagnostics, latestRawLocation: latestRawLocation, now: now)
@@ -261,7 +272,8 @@ final class SensorFusionEngine: SensorProvider {
                     verticalAccuracyMeters: nil,
                     locationDiagnostics: locationDiagnostics,
                     sessionStartDate: sessionStartDate,
-                    config: altitudeGuardConfig
+                    config: altitudeGuardConfig,
+                    pressureDiagnostics: pressureDiagnostics
                 )
             }
             calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
@@ -700,6 +712,12 @@ final class SensorFusionEngine: SensorProvider {
             latestAltitudeMeters = altitude
         }
     }
+
+    private func updatePressure(_ pressureKilopascals: Double?) {
+        stateLock.withLock {
+            latestPressureDiagnostics = pressureFilter.evaluate(rawPressureKilopascals: pressureKilopascals)
+        }
+    }
     private func sessionSnapshot() -> (
         startDate: Date,
         mode: SportMode,
@@ -730,6 +748,8 @@ final class SensorFusionEngine: SensorProvider {
             latestGyroscope = .zero
             latestAltitudeMeters = nil
             altitudeOutlierGuard.reset()
+            pressureFilter.reset()
+            latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
         }

@@ -1254,3 +1254,15 @@ scripts/verify_task030c_b12_altitude_outlier_guard.py    # Guards b12 altitude-d
 Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, altitudeDiagnostics: AltitudeDiagnostics?, verify_task030c_b12_altitude_outlier_guard.py.
 
 Task-030c-b12 package capability token: altitude-diagnostics-v1.
+
+### Task-030c-b12-B pressure smoothing diagnostics and altitude guard
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b12-B.
+Shared/Models/MotionSample.swift                         # Adds AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, and optional AltitudeDiagnostics.pressureDiagnostics.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Wires pressureKilopascalsPublisher into diagnostics-only pressure smoothing for barometer-relative timer-fusion samples.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b12-B Debug build signature.
+Tests/iOSTests/SessionRecordingCoordinatorTests.swift     # Adds pressure spike suppression and pressure diagnostics altitude-guard coverage.
+Tests/iOSTests/SessionRepositoryTests.swift               # Adds Codable round-trip coverage for nested pressure diagnostics.
+scripts/verify_task030c_b12_altitude_outlier_guard.py     # Guards b12-B pressure smoothing diagnostics and b12-A altitude isolation boundaries.
+
+Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, verify_task030c_b12_altitude_outlier_guard.py.
