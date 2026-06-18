@@ -133,3 +133,10 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 - `docs/reference/FILE_STRUCTURE.md` lists the Snow QA fixture files, regression tests, generator, verify script, and review-pack script.
 - `scripts/verify_snow_regression.py` verifies deterministic fixtures, fixture tests, docs, review script, and runtime scope guardrails.
 - `scripts/create_snow_task009_review_pack.sh` creates the Snow-Task-009 review pack under `/Users/doggo/Documents/App軟體區/upload/`.
+
+### Snow-Task-010 Phase 1c Completion Handoff
+
+- `docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md` is the final Phase 1c Snow Mode handoff record for Claude / human review.
+- `scripts/verify_snow_phase1c_completion.py` is the final completion verifier.
+- `scripts/create_snow_task010_review_pack.sh` creates the final review pack under `/Users/doggo/Documents/App軟體區/upload/`.
+- Snow-Task-010 is documentation / verification / handoff only; it must not add runtime Snow feature behavior.

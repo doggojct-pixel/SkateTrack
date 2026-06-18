@@ -1807,3 +1807,28 @@ Implemented boundaries:
 - Added `scripts/create_snow_task009_review_pack.sh`, writing `SnowTask009_ReviewPack.zip` to `/Users/doggo/Documents/App軟體區/upload/`.
 
 Snow-Task-009 intentionally does not change runtime classifier behavior, run-boundary behavior, package schema version, backup schema version, WatchBridge / WatchConnectivity wiring, or real HealthKit export.
+
+## 2026-06-18 — Snow-Task-010 Final Closure and Handoff
+
+### Completed
+- Added `docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md` as the final Phase 1c Snow Mode handoff record.
+- Added `scripts/verify_snow_phase1c_completion.py` as the final completion verifier.
+- Added `scripts/create_snow_task010_review_pack.sh` to generate the Snow-Task-010 Claude / human review pack under `/Users/doggo/Documents/App軟體區/upload/`.
+- Updated the Snow agent state, file structure, known limitations, manual QA matrix, and documentation index with the final Phase 1c closure state.
+
+### Scope Boundary
+- Snow-Task-010 adds closure, documentation, verification, and review artifacts only.
+- No runtime Snow feature behavior is added.
+- No package or backup schema version is bumped.
+- No production HealthKit export is implemented.
+- No WatchBridge / WatchConnectivity production Snow wiring is implemented.
+- Snow-Task-006b remains deferred until mainline Task-040+ alignment.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_phase1c_completion.py`.
+- Run the cumulative Snow verify scripts from Snow-Task-001 through Snow-Task-009.
+- Run `SnowQAFixtureRegressionTests` and `SkateTrackPackageSnowCompatibilityTests` on the iPhone 17 Pro simulator.
+- Build macOS, iOS, and watchOS targets.
+- Generate `SnowTask010_ReviewPack.zip` under `/Users/doggo/Documents/App軟體區/upload/`.
+
+Snow-Task-010 verification token: Phase 1c Snow Mode completion handoff is review-ready without runtime scope creep.

@@ -215,3 +215,21 @@ Snow-Task-008b adds the Snow Health export provider boundary but intentionally k
 Snow-Task-009 adds regression fixtures and manual QA coverage, but it does not remove the Phase 1c limitations around production HealthKit export, WatchBridge production integration, real ski-resort map data, or advanced Snow classifier tuning.
 
 The JSON fixtures are deterministic test fixtures, not recorded `.skatetrack` packages. They validate package / backup / Snow payload boundaries and mapper-safe states, but they are not a replacement for future real-device ski resort testing.
+
+## Snow-Task-010 final deferred items
+
+Snow-Task-010 closes Phase 1c Snow Mode as a feature-branch review checkpoint, not as an App Store production launch gate.
+
+The following items remain deferred after Phase 1c:
+
+- WatchBridge / WatchConnectivity production Snow wiring remains deferred until future mainline Task-040+ alignment.
+- Real HealthKit export remains deferred until Apple Developer Program enrollment, HealthKit entitlements, privacy copy, and user-facing permission flow are ready.
+- Snow classifier remains v0 rule-based and is not a resort-grade production AI model.
+- Run boundary detector remains v0 deterministic state machine.
+- Manual correction persistence for Snow segment edits remains deferred.
+- Real ski-resort field testing remains pending.
+- Resort map / piste map / weather integration remains deferred.
+- App Store, subscription, and other ADP-dependent production services remain deferred.
+- Release exposure of Snow Mode entry remains gated until product/release readiness approval.
+
+Snow-Task-010 verification token: final deferred items are documented without adding runtime scope.

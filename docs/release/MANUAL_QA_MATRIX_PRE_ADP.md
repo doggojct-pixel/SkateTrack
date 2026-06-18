@@ -240,3 +240,40 @@ Snow-Task-009 adds deterministic QA fixtures, regression tests, and manual QA co
 - [ ] `SnowQAFixtureRegressionTests` 在 iPhone 17 Pro simulator 上 PASS。
 - [ ] macOS / iOS / watchOS builds PASS。
 - [ ] `SnowTask009_ReviewPack.zip` 產生在 `/Users/doggo/Documents/App軟體區/upload/`。
+
+## Snow-Task-010 Phase 1c Final Manual QA Gate
+
+本區是 Snow Mode Phase 1c 完成前的最終人工檢查清單。這不是新功能測試，而是確認 001～009 的成果可以交給 Claude / human reviewer 做 feature-branch review。
+
+### Final branch readiness
+
+- [ ] 確認目前分支是 `feature/snow-mode`。
+- [ ] 確認 Snow-Task-009 commit 已存在：`0d4f3a8 Add Snow QA fixtures and regression matrix`。
+- [ ] 確認 `python3 scripts/verify_snow_phase1c_completion.py` PASS。
+- [ ] 確認 Snow-Task-001～009 cumulative verify scripts 全部 PASS。
+- [ ] 確認 `SnowTask010_ReviewPack.zip` 產生於 `/Users/doggo/Documents/App軟體區/upload/`。
+
+### Runtime scope guardrails
+
+- [ ] 確認 010 沒有新增 runtime Snow feature behavior。
+- [ ] 確認 package schema 仍為 v2，且支援 schema 1 / 2 decode。
+- [ ] 確認 backup schema 仍為 v2，且支援 schema 1 / 2 decode。
+- [ ] 確認沒有新增 `.skatetrack` binary fixture。
+- [ ] 確認沒有 `SnowPrototype*` 或 `MacSnowPrototype*` production/test Swift symbol。
+
+### Deferred production integrations
+
+- [ ] 確認 WatchBridge / WatchConnectivity production Snow wiring 仍標記 deferred。
+- [ ] 確認 HealthKit production export 仍標記 deferred。
+- [ ] 確認 Snow-Task-006b 仍標記為 mainline Task-040+ 後再處理。
+- [ ] 確認 Snow Mode 尚未被宣告為 App Store production release-ready。
+
+### Build and test smoke
+
+- [ ] `SnowQAFixtureRegressionTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] `SkateTrackPackageSnowCompatibilityTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] macOS build PASS。
+- [ ] iOS build PASS。
+- [ ] watchOS build PASS。
+
+Snow-Task-010 verification token: final manual QA gate exists for Phase 1c handoff.

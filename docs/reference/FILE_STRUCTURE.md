@@ -1199,3 +1199,26 @@ scripts/create_snow_task009_review_pack.sh                         # [工程設�
 ```
 
 Task 009 fixtures are JSON/text only. Do not commit `.skatetrack` binary fixture packages to the repository.
+
+## Snow-Task-010 Completion / Handoff Files
+
+Snow-Task-010 adds the final Phase 1c Snow Mode closure and handoff layer:
+
+```text
+docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md
+scripts/verify_snow_phase1c_completion.py
+scripts/create_snow_task010_review_pack.sh
+```
+
+Related final-state documents:
+
+```text
+docs/process/PHASE_1C_SNOW_AGENT_STATE.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md
+docs/DOCUMENTATION_INDEX.md
+```
+
+Snow-Task-010 does not add Swift runtime files and does not change package / backup schema models.

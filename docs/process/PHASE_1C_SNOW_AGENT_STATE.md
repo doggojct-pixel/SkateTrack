@@ -309,3 +309,26 @@ Task 009 guardrails:
 - Do not introduce SnowPrototype / MacSnowPrototype references into production or test Swift code.
 
 Verification token: Snow-Task-009 QA fixtures, manual QA matrix, regression verify, and review pack complete without runtime scope creep.
+
+## Snow-Task-010 Final Closure Agent State
+
+Snow-Task-010 is the Phase 1c Snow Mode final closure / handoff / release-readiness gate. It starts after commit `0d4f3a8 Add Snow QA fixtures and regression matrix` and intentionally does not add runtime product behavior.
+
+Completed closure scope:
+
+- `docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md` records the complete Phase 1c Snow Mode handoff state.
+- `scripts/verify_snow_phase1c_completion.py` verifies the final Phase 1c Snow completion boundary.
+- `scripts/create_snow_task010_review_pack.sh` creates the final Snow-Task-010 review pack in `/Users/doggo/Documents/App軟體區/upload/`.
+- Documentation is aligned across dev log, agent state, file structure, known limitations, manual QA matrix, and documentation index.
+
+Task 010 guardrails:
+
+- Do not add runtime Snow feature behavior.
+- Do not bump package schema version or backup schema version.
+- Do not implement production HealthKit export.
+- Do not implement WatchBridge / WatchConnectivity production wiring.
+- Do not introduce `SnowPrototype*` or `MacSnowPrototype*` references.
+- Do not add binary `.skatetrack` fixtures.
+- Keep Snow-Task-006b deferred until mainline Task-040+ alignment.
+
+Snow-Task-010 verification token: Phase 1c Snow Mode completion handoff is review-ready without runtime scope creep.
