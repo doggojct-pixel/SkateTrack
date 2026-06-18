@@ -191,3 +191,52 @@ Manual QA checklist:
 - DEBUG mock Health exporter 僅測試 wiring，不寫入系統健康資料。
 - Shared 不含 `import HealthKit`。
 - watchOS / macOS / iOS build 均成功。
+
+## Snow-Task-009 QA / Regression Manual Test Matrix
+
+Snow-Task-009 adds deterministic QA fixtures, regression tests, and manual QA coverage for the Snow Mode work completed through Snow-Task-008b. This section is intentionally written as a manual checklist; it does not introduce new runtime behavior.
+
+### iPhone Snow Mode
+
+- [ ] 在 DEBUG 模式確認 Snow entry 仍由 debug toggle 控制，不應在非預期狀態自行出現。
+- [ ] 開啟 Snow entry 後，確認 Snow live HUD 的 idle / recording / low confidence / summary 狀態都能顯示，且不 crash。
+- [ ] 使用 fixture 概念檢查低信心資料情境：低 confidence session 應能安全顯示，不應讓 summary 或 timeline 中斷。
+- [ ] 確認 skiing / snowboarding 相關文案在繁中、英文、日文模式下沒有明顯錯譯或截斷。
+
+### watchOS Snow UI
+
+- [ ] 在 DEBUG / mock-backed 狀態確認 Watch Snow UI 可載入。
+- [ ] 確認 006b WatchBridge production integration 仍是 deferred，Task 009 不應要求 WatchConnectivity。
+- [ ] 確認 watchOS build 不需要 HealthKit、package schema 或 backup schema 額外變更。
+
+### macOS Snow viewer
+
+- [ ] 匯入含 Snow payload 的 schema v2 package 時，應直接進入 Snow viewer / `MacSnowRootView` 顯示 Snow 分析。
+- [ ] 匯入沒有 Snow payload 的 Snow session package 時，應顯示 pending / unavailable 狀態，不應 crash。
+- [ ] 匯入 legacy schema v1 package 時，應安全處理沒有 Snow payload 的情境。
+
+### Package export / import
+
+- [ ] 非 Snow session 不應輸出 Snow payload。
+- [ ] Snow session 若 repository 沒有 Snow state，不應輸出空 placeholder payload。
+- [ ] Snow session 若有 Snow state，package schema v2 應包含 Snow capabilities 與 `snow-payload-1.0`。
+- [ ] JSON fixtures 中的 package v2 with / without Snow payload 情境都應能 decode。
+
+### Backup compatibility
+
+- [ ] Backup schema v1 沒有 `snowSessions` 時仍可 decode。
+- [ ] Backup schema v2 的 `snowSessions: []` 應被視為合法 snow-aware empty state。
+- [ ] Backup schema v2 若有 `SnowBackupSession`，基本 round-trip / preview count 不應失敗。
+
+### Health boundary
+
+- [ ] Production default exporter 應回傳 unavailable，不應跳出 HealthKit 權限要求。
+- [ ] DEBUG mock exporter 只作為本機測試 boundary，不代表正式 HealthKit export 已完成。
+- [ ] Task 009 不應加入 `import HealthKit`、`HKWorkout`、`HKQuantitySample` 或 `HKHealthStore`。
+
+### Regression smoke check
+
+- [ ] `python3 scripts/verify_snow_regression.py` PASS。
+- [ ] `SnowQAFixtureRegressionTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] macOS / iOS / watchOS builds PASS。
+- [ ] `SnowTask009_ReviewPack.zip` 產生在 `/Users/doggo/Documents/App軟體區/upload/`。

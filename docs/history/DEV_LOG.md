@@ -1792,3 +1792,18 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 - Verified package compatibility, backup compatibility, cumulative Snow guardrails, iOS tests, and iOS / macOS / watchOS builds.
 
 Snow-Task-008b intentionally does not add production HealthKit export, WatchBridge wiring, classifier changes, run-boundary changes, or Snow value-model changes.
+
+### Snow-Task-009 QA fixtures and regression matrix
+
+Snow-Task-009 adds a QA / regression safety layer for Phase 1c Snow Mode after Snow-Task-008b.
+
+Implemented boundaries:
+
+- Added deterministic JSON-only Snow QA fixtures under `Tests/Fixtures/Snow/`.
+- Added `scripts/generate_snow_qa_fixtures.py` so committed fixtures can be regenerated deterministically.
+- Added `SnowQAFixtureRegressionTests` for package v2 Snow payload, package v2 without Snow payload, backup v1 legacy decode, backup v2 empty / populated Snow sessions, lift exclusion semantics, low-confidence safety, and Health boundary regression.
+- Added `scripts/verify_snow_regression.py` as the Task 009 verification gate.
+- Updated the manual QA matrix with Traditional Chinese checklist items covering iPhone, watchOS, macOS viewer, package import/export, backup compatibility, and Health boundary behavior.
+- Added `scripts/create_snow_task009_review_pack.sh`, writing `SnowTask009_ReviewPack.zip` to `/Users/doggo/Documents/App軟體區/upload/`.
+
+Snow-Task-009 intentionally does not change runtime classifier behavior, run-boundary behavior, package schema version, backup schema version, WatchBridge / WatchConnectivity wiring, or real HealthKit export.

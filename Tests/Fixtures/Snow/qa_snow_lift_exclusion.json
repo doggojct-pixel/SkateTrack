@@ -1,0 +1,75 @@
+{
+  "capabilities": [
+    "snow-distance-breakdown-v1",
+    "snow-lift-exclusion-v1",
+    "snow-segments-v1",
+    "snow-sports-v1"
+  ],
+  "distanceBreakdown": {
+    "liftDistanceMeters": 950.0,
+    "routeDistanceMeters": 2210.0,
+    "skiDistanceMeters": 1260.0,
+    "unknownDistanceMeters": 0.0
+  },
+  "generatedAt": "2026-01-15T12:00:00Z",
+  "payloadVersion": "snow-payload-1.0",
+  "runs": [
+    {
+      "averageSpeedMetersPerSecond": 7.9,
+      "endDate": "2026-01-15T10:07:45Z",
+      "id": "00000000-0000-0000-0000-000000002002",
+      "isManualEnd": false,
+      "runNumber": 1,
+      "segmentIDs": [
+        "00000000-0000-0000-0000-000000003002"
+      ],
+      "sessionID": "00000000-0000-0000-0000-000000001002",
+      "skiDistanceMeters": 1260.0,
+      "startDate": "2026-01-15T10:00:00Z",
+      "topSpeedMetersPerSecond": 17.6,
+      "verticalDropMeters": 240.0
+    }
+  ],
+  "segments": [
+    {
+      "averageSpeedMetersPerSecond": 7.9,
+      "confidence": 0.88,
+      "countsTowardSkiDistance": true,
+      "distanceMeters": 1260.0,
+      "endAltitudeMeters": 1570.0,
+      "endDate": "2026-01-15T10:07:45Z",
+      "id": "00000000-0000-0000-0000-000000003002",
+      "maxSpeedMetersPerSecond": 17.6,
+      "runID": "00000000-0000-0000-0000-000000002002",
+      "sessionID": "00000000-0000-0000-0000-000000001002",
+      "sourceSampleIDs": [],
+      "startAltitudeMeters": 1810.0,
+      "startDate": "2026-01-15T10:00:00Z",
+      "type": "downhillRun",
+      "verticalDeltaMeters": -240.0
+    },
+    {
+      "averageSpeedMetersPerSecond": 1.8,
+      "confidence": 0.83,
+      "countsTowardSkiDistance": false,
+      "distanceMeters": 950.0,
+      "endAltitudeMeters": 1790.0,
+      "endDate": "2026-01-15T10:21:00Z",
+      "id": "00000000-0000-0000-0000-000000003003",
+      "maxSpeedMetersPerSecond": 3.2,
+      "sessionID": "00000000-0000-0000-0000-000000001002",
+      "sourceSampleIDs": [],
+      "startAltitudeMeters": 1570.0,
+      "startDate": "2026-01-15T10:12:00Z",
+      "type": "liftAscent",
+      "verticalDeltaMeters": 220.0
+    }
+  ],
+  "sessionID": "00000000-0000-0000-0000-000000001002",
+  "verticalMetrics": {
+    "maxAltitudeMeters": 1810.0,
+    "minAltitudeMeters": 1570.0,
+    "totalVerticalDropMeters": 240.0,
+    "totalVerticalGainMeters": 220.0
+  }
+}

@@ -285,3 +285,27 @@ Snow-Task-008b boundaries:
 - Snow-Task-006b remains deferred until mainline Task-040.
 
 Snow-Task-008b verification token: backup schema compatibility and iOS Health provider boundary complete without HealthKit / WatchBridge scope creep.
+
+## Snow-Task-009 Agent State
+
+Snow-Task-009 is the Phase 1c Snow Mode QA / regression consolidation task. It starts after commit `1659722 Add Snow backup compatibility and health export boundary`.
+
+Current Task 009 outputs:
+
+- Deterministic JSON fixtures: `Tests/Fixtures/Snow/*.json`.
+- Fixture generator: `scripts/generate_snow_qa_fixtures.py`.
+- Focused regression tests: `Tests/iOSTests/SnowQAFixtureRegressionTests.swift`.
+- Regression verify gate: `scripts/verify_snow_regression.py`.
+- Manual QA matrix update: `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`.
+- Review pack generator: `scripts/create_snow_task009_review_pack.sh`.
+
+Task 009 guardrails:
+
+- Do not add `.skatetrack` binary fixtures.
+- Do not change package schema version or backup schema version.
+- Do not add real HealthKit export.
+- Do not touch WatchBridge / WatchConnectivity production wiring.
+- Do not modify Snow classifier or run boundary algorithms.
+- Do not introduce SnowPrototype / MacSnowPrototype references into production or test Swift code.
+
+Verification token: Snow-Task-009 QA fixtures, manual QA matrix, regression verify, and review pack complete without runtime scope creep.

@@ -1,0 +1,50 @@
+{
+  "manifest": {
+    "appVersion": "task009-fixture",
+    "buildNumber": "009",
+    "createdAt": "2026-01-15T12:00:00Z",
+    "encodingIssues": [],
+    "localeIdentifier": "en_US",
+    "packageType": "backup",
+    "schemaVersion": 1,
+    "storeCounts": {
+      "achievements": 0,
+      "equipment": 0,
+      "sessions": 0,
+      "spots": 0,
+      "weeklyChallengeCompletions": 0
+    }
+  },
+  "sections": [
+    {
+      "fileName": "sessions.json",
+      "itemCount": 0,
+      "jsonString": "[]",
+      "storeKey": "sessions"
+    },
+    {
+      "fileName": "equipment.json",
+      "itemCount": 0,
+      "jsonString": "[]",
+      "storeKey": "equipment"
+    },
+    {
+      "fileName": "spots.json",
+      "itemCount": 0,
+      "jsonString": "[]",
+      "storeKey": "spots"
+    },
+    {
+      "fileName": "achievements.json",
+      "itemCount": 0,
+      "jsonString": "[]",
+      "storeKey": "achievements"
+    },
+    {
+      "fileName": "weekly-challenge-completions.json",
+      "itemCount": 0,
+      "jsonString": "[]",
+      "storeKey": "weeklyChallengeCompletions"
+    }
+  ]
+}

@@ -1178,3 +1178,24 @@ scripts/create_snow_task008b_review_pack.sh      # [工程設定] Snow-Task-008b
 ```
 
 Snow-Task-008b must not add `import HealthKit` to `Shared/`, must not create HealthKit objects yet, and must not touch WatchBridge / WatchConnectivity wiring.
+
+## Snow-Task-009 QA / Regression Files
+
+Snow-Task-009 adds deterministic QA fixtures and regression verification for Phase 1c Snow Mode.
+
+```text
+Tests/Fixtures/Snow/qa_snow_basic_run.json                         # [測試資料] Basic downhill Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_lift_exclusion.json                    # [測試資料] Lift exclusion distance-breakdown fixture.
+Tests/Fixtures/Snow/qa_snow_low_confidence.json                    # [測試資料] Low-confidence Snow fixture.
+Tests/Fixtures/Snow/qa_snow_package_v2_with_payload.json           # [測試資料] Package schema v2 with Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_package_v2_without_payload.json        # [測試資料] Package schema v2 Snow session without Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v1_legacy.json                  # [測試資料] Legacy backup schema v1 fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v2_empty_snow_sessions.json     # [測試資料] Backup schema v2 with empty snowSessions fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v2_with_snow_sessions.json      # [測試資料] Backup schema v2 with populated snowSessions fixture.
+Tests/iOSTests/SnowQAFixtureRegressionTests.swift                  # [測試] Snow QA fixture regression tests.
+scripts/generate_snow_qa_fixtures.py                               # [工程設定] Deterministic Snow QA fixture generator.
+scripts/verify_snow_regression.py                                  # [工程設定] Snow-Task-009 verification gate.
+scripts/create_snow_task009_review_pack.sh                         # [工程設定] Snow-Task-009 review pack generator; writes to /Users/doggo/Documents/App軟體區/upload/.
+```
+
+Task 009 fixtures are JSON/text only. Do not commit `.skatetrack` binary fixture packages to the repository.

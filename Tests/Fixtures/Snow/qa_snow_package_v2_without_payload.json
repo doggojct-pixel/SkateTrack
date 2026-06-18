@@ -1,0 +1,39 @@
+{
+  "manifest": {
+    "appVersion": "task009-fixture",
+    "buildNumber": "009",
+    "createdAt": "2026-01-15T12:00:00Z",
+    "formatDescription": "portable-session-export",
+    "includesAccountData": false,
+    "includesAchievements": false,
+    "includesMotionSamples": false,
+    "localeIdentifier": "en_US",
+    "packageType": "export",
+    "schemaVersion": 2,
+    "sessionCount": 1
+  },
+  "sessions": [
+    {
+      "exportedAt": "2026-01-15T12:00:00Z",
+      "id": "00000000-0000-0000-0000-000000001004",
+      "motionSamples": [],
+      "privacyNotes": [
+        "Task 009 deterministic JSON fixture; no account data, achievements, or Drive state included."
+      ],
+      "session": {
+        "endDate": "2026-01-15T12:30:00Z",
+        "fallEvents": [],
+        "id": "00000000-0000-0000-0000-000000001004",
+        "motionSamples": [],
+        "powerType": "humanPowered",
+        "sportMode": {
+          "snow": {
+            "_0": "skiing"
+          }
+        },
+        "startDate": "2026-01-15T09:00:00Z",
+        "trickEvents": []
+      }
+    }
+  ]
+}

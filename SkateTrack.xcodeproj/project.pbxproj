@@ -412,6 +412,7 @@
 		37E800000000000000000102 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
 		37E800000000000000000103 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
 		37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */; };
+		37E809000000000000000101 /* SnowQAFixtureRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -467,6 +468,7 @@
 		34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfigTests.swift; sourceTree = "<group>"; };
 		34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapperTests.swift; sourceTree = "<group>"; };
 		37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowCompatibilityTests.swift; sourceTree = "<group>"; };
+		37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowQAFixtureRegressionTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -944,6 +946,7 @@
 				34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */,
 				34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */,
 				37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */,
+				37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1670,6 +1673,7 @@
 				34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */,
 				34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */,
 				37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */,
+				37E809000000000000000101 /* SnowQAFixtureRegressionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -209,3 +209,9 @@ Snow-Task-008b adds the Snow Health export provider boundary but intentionally k
 - No `import HealthKit` is allowed in `Shared/`.
 - No `HKHealthStore`, `HKWorkout`, or `HKQuantitySample` objects are created in 008b.
 - Real HealthKit export requires later ADP / entitlement decisions and explicit implementation approval.
+
+## Snow-Task-009 QA limitation
+
+Snow-Task-009 adds regression fixtures and manual QA coverage, but it does not remove the Phase 1c limitations around production HealthKit export, WatchBridge production integration, real ski-resort map data, or advanced Snow classifier tuning.
+
+The JSON fixtures are deterministic test fixtures, not recorded `.skatetrack` packages. They validate package / backup / Snow payload boundaries and mapper-safe states, but they are not a replacement for future real-device ski resort testing.

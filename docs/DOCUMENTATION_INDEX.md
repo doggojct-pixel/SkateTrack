@@ -125,3 +125,11 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 - `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` records the 008b backup / Health boundary QA path.
 - `scripts/verify_snow_backup_compatibility.py` is the 008b verification gate.
 - `scripts/create_snow_task008b_review_pack.sh` creates the Snow-Task-008b review pack under `/Users/doggo/Documents/App軟體區/upload/`.
+
+### Snow-Task-009 QA Fixtures and Regression Matrix
+
+- `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` contains the Traditional Chinese Snow-Task-009 manual QA checklist.
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the Task 009 QA / regression state and guardrails.
+- `docs/reference/FILE_STRUCTURE.md` lists the Snow QA fixture files, regression tests, generator, verify script, and review-pack script.
+- `scripts/verify_snow_regression.py` verifies deterministic fixtures, fixture tests, docs, review script, and runtime scope guardrails.
+- `scripts/create_snow_task009_review_pack.sh` creates the Snow-Task-009 review pack under `/Users/doggo/Documents/App軟體區/upload/`.
