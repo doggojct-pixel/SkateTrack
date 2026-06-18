@@ -76,23 +76,30 @@ struct BackupRestorePreview: Identifiable, Codable, Sendable, Equatable {
     let stores: [BackupRestoreStorePreview]
     let validationIssues: [BackupRestoreValidationIssue]
     let sourceFileName: String
+    let snowSessionCount: Int?
 
     init(
         id: UUID = UUID(),
         manifest: BackupPackageManifest,
         stores: [BackupRestoreStorePreview],
         validationIssues: [BackupRestoreValidationIssue] = [],
-        sourceFileName: String
+        sourceFileName: String,
+        snowSessionCount: Int? = nil
     ) {
         self.id = id
         self.manifest = manifest
         self.stores = stores
         self.validationIssues = validationIssues
         self.sourceFileName = sourceFileName
+        self.snowSessionCount = snowSessionCount.map { max(0, $0) }
     }
 
     var totalDecodedItems: Int {
-        stores.reduce(0) { $0 + $1.decodedItemCount }
+        stores.reduce(0) { $0 + $1.decodedItemCount } + (snowSessionCount ?? 0)
+    }
+
+    var isSnowAwareBackup: Bool {
+        snowSessionCount != nil
     }
 
     var hasValidationIssues: Bool {

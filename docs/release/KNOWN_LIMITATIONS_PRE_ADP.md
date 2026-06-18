@@ -199,3 +199,13 @@ Snow-Task-008a supports optional Snow package payloads for `.skatetrack` export/
 - Imported Snow packages without `snowPayload` still show `packageSchemaPending`; the app does not fabricate Snow analysis from raw motion samples.
 - Manual correction persistence, resort maps, WeatherKit, CloudKit, and WatchBridge real Snow wiring remain deferred.
 
+
+## Snow-Task-008b Health provider boundary limitation
+
+Snow-Task-008b adds the Snow Health export provider boundary but intentionally keeps production Health export disabled.
+
+- `DisabledSnowHealthExporter` is the production default and returns unavailable.
+- `MockSnowHealthExporter` is DEBUG-only.
+- No `import HealthKit` is allowed in `Shared/`.
+- No `HKHealthStore`, `HKWorkout`, or `HKQuantitySample` objects are created in 008b.
+- Real HealthKit export requires later ADP / entitlement decisions and explicit implementation approval.

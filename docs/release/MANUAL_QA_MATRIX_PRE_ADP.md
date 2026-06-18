@@ -165,3 +165,29 @@ Snow-Task-007 manual QA token: macOS Snow viewer smoke test complete.
 | macOS imported Snow package | Import a schema 2 Snow package with valid `snowPayload` | macOS shows Snow analysis through `MacSnowRootView` with source `.importedPackage`. |
 | macOS imported pending package | Import a Snow package without `snowPayload` | macOS shows the existing `packageSchemaPending` state. |
 
+
+## Snow-Task-008b Backup / Health Boundary QA
+
+Run after applying Snow-Task-008b:
+
+```bash
+python3 scripts/verify_snow_backup_compatibility.py
+python3 scripts/verify_snow_package_compatibility.py
+python3 scripts/verify_snow_macos_viewer.py
+python3 scripts/verify_snow_watch_ui.py
+python3 scripts/verify_snow_iphone_ui.py
+python3 scripts/verify_snow_run_boundary.py
+python3 scripts/verify_snow_classifier.py
+python3 scripts/verify_snow_schema.py
+python3 scripts/verify_snow_sport_enum.py
+```
+
+Manual QA checklist:
+
+- 備份 schema 1 舊檔可解碼，不因缺少 `snowSessions` 失敗。
+- 新備份 schema 2 會輸出 `snowSessions: []`，代表 Snow-aware backup 但目前 0 筆 Snow session。
+- 還原預覽可顯示 / 計入 Snow session count，不影響既有 session / gear / subscription counts。
+- Health provider boundary 保持 iOS-only，production default 為 unavailable。
+- DEBUG mock Health exporter 僅測試 wiring，不寫入系統健康資料。
+- Shared 不含 `import HealthKit`。
+- watchOS / macOS / iOS build 均成功。

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38F100000000000000000101 /* SnowHealthExporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000002 /* SnowHealthExporting.swift */; };
+		38F100000000000000000102 /* DisabledSnowHealthExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000003 /* DisabledSnowHealthExporter.swift */; };
+		38F100000000000000000103 /* MockSnowHealthExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000004 /* MockSnowHealthExporter.swift */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -422,6 +425,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38F100000000000000000002 /* SnowHealthExporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHealthExporting.swift; sourceTree = "<group>"; };
+		38F100000000000000000003 /* DisabledSnowHealthExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledSnowHealthExporter.swift; sourceTree = "<group>"; };
+		38F100000000000000000004 /* MockSnowHealthExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSnowHealthExporter.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1081,6 +1087,17 @@
 			path = iOS/Features/SessionSummary;
 			sourceTree = SOURCE_ROOT;
 		};
+		38F100000000000000000001 /* iOS/Core/Health */ = {
+			isa = PBXGroup;
+			children = (
+				38F100000000000000000002 /* SnowHealthExporting.swift */,
+				38F100000000000000000003 /* DisabledSnowHealthExporter.swift */,
+				38F100000000000000000004 /* MockSnowHealthExporter.swift */,
+			);
+			path = iOS/Core/Health;
+			sourceTree = SOURCE_ROOT;
+		};
+
 		19A100000000000000000000 /* iOS/Core/HealthReminders */ = {
 			isa = PBXGroup;
 			children = (
@@ -1304,6 +1321,7 @@
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
 				34C500000000000000000000 /* iOS/Core/SnowEngine */,
 				14A100000000000000000000 /* iOS/Core/Safety */,
+				38F100000000000000000001 /* iOS/Core/Health */,
 				19A100000000000000000000 /* iOS/Core/HealthReminders */,
 				20A100000000000000000000 /* iOS/Core/EquipmentManager */,
 				21A200000000000000000000 /* iOS/Core/Spots */,
@@ -1746,6 +1764,9 @@
 				19A100000000000000000101 /* HealthReminderRule.swift in Sources */,
 				19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */,
 				19A100000000000000000103 /* useHealthReminders.swift in Sources */,
+				38F100000000000000000101 /* SnowHealthExporting.swift in Sources */,
+				38F100000000000000000102 /* DisabledSnowHealthExporter.swift in Sources */,
+				38F100000000000000000103 /* MockSnowHealthExporter.swift in Sources */,
 				19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */,
 				19B100000000000000000101 /* HealthReminderEvent.swift in Sources */,
 				19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */,

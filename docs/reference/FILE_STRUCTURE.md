@@ -1147,3 +1147,34 @@ Snow-Task-008a adds the following package compatibility files / responsibilities
 - `scripts/verify_snow_package_compatibility.py` — Snow-Task-008a guardrail verification.
 - `scripts/create_snow_task008a_review_pack.sh` — writes 008a review artifacts to `/Users/doggo/Documents/App軟體區/upload/`.
 
+
+## Snow-Task-008b Backup / Health Boundary Files
+
+Snow-Task-008b adds backup schema compatibility and an iOS-only Snow Health export provider boundary.
+
+Backup compatibility:
+
+```text
+Shared/Models/BackupPackageManifest.swift        # [協作區] Backup schema version 2; supports schema versions 1 / 2 and optional snowSessions counts.
+Shared/Models/BackupPackagePayload.swift         # [協作區] Optional snowSessions section and SnowBackupSession backup DTO.
+Shared/Models/BackupRestorePreview.swift         # [協作區] Restore preview Snow session count and Snow-aware helper.
+iOS/Core/Sync/BackupPackageEncoder.swift         # [協作區] Encodes schema 2 backups with snowSessions: [] by default.
+iOS/Core/Sync/BackupPackageDecoder.swift         # [協作區] Decodes schema 1 / 2 and maps optional Snow sessions into preview counts.
+```
+
+Snow Health provider boundary:
+
+```text
+iOS/Core/Health/SnowHealthExporting.swift        # [協作區] iOS-only protocol, request, result, and status for future Snow Health export.
+iOS/Core/Health/DisabledSnowHealthExporter.swift # [協作區] Production default no-op / unavailable exporter; no HealthKit writes.
+iOS/Core/Health/MockSnowHealthExporter.swift     # [協作區] DEBUG-only mock provider for local wiring tests.
+```
+
+Verification / review:
+
+```text
+scripts/verify_snow_backup_compatibility.py      # [工程設定] Snow-Task-008b backup + Health boundary verification gate.
+scripts/create_snow_task008b_review_pack.sh      # [工程設定] Snow-Task-008b review pack generator; writes to /Users/doggo/Documents/App軟體區/upload/.
+```
+
+Snow-Task-008b must not add `import HealthKit` to `Shared/`, must not create HealthKit objects yet, and must not touch WatchBridge / WatchConnectivity wiring.

@@ -60,12 +60,84 @@ struct BackupPackageSection: Codable, Sendable, Equatable, Identifiable {
     }
 }
 
+struct SnowBackupSession: Codable, Sendable, Equatable, Identifiable {
+    static let currentSchemaVersion = "snow-backup-session-1.0"
+
+    let id: UUID
+    let schemaVersion: String
+    let sessionID: UUID
+    let runs: [SnowRun]
+    let segments: [SnowSegment]
+    let distanceBreakdown: SnowDistanceBreakdown
+    let verticalMetrics: SnowVerticalMetrics
+    let generatedAt: Date
+
+    init(
+        id: UUID = UUID(),
+        schemaVersion: String = SnowBackupSession.currentSchemaVersion,
+        sessionID: UUID,
+        runs: [SnowRun],
+        segments: [SnowSegment],
+        distanceBreakdown: SnowDistanceBreakdown? = nil,
+        verticalMetrics: SnowVerticalMetrics? = nil,
+        generatedAt: Date = Date()
+    ) {
+        self.id = id
+        self.schemaVersion = schemaVersion
+        self.sessionID = sessionID
+        self.runs = runs
+        self.segments = segments
+        self.distanceBreakdown = distanceBreakdown ?? SnowDistanceBreakdown.make(from: segments)
+        self.verticalMetrics = verticalMetrics ?? SnowVerticalMetrics.make(from: segments, runs: runs)
+        self.generatedAt = generatedAt
+    }
+
+    init?(snowState: SnowSessionState, generatedAt: Date = Date()) {
+        guard let sessionID = snowState.sessionID else { return nil }
+        guard snowState.runs.isEmpty == false || snowState.segments.isEmpty == false else { return nil }
+        self.init(
+            sessionID: sessionID,
+            runs: snowState.runs,
+            segments: snowState.segments,
+            distanceBreakdown: snowState.distanceBreakdown,
+            verticalMetrics: snowState.verticalMetrics,
+            generatedAt: generatedAt
+        )
+    }
+
+    func makeSnowSessionState() -> SnowSessionState {
+        SnowSessionState(
+            sessionID: sessionID,
+            loadState: .loaded,
+            runs: runs,
+            segments: segments,
+            distanceBreakdown: distanceBreakdown,
+            verticalMetrics: verticalMetrics
+        )
+    }
+}
+
 struct BackupPackagePayload: Codable, Sendable, Equatable {
     let manifest: BackupPackageManifest
     let sections: [BackupPackageSection]
+    let snowSessions: [SnowBackupSession]?
+
+    init(
+        manifest: BackupPackageManifest,
+        sections: [BackupPackageSection],
+        snowSessions: [SnowBackupSession]? = nil
+    ) {
+        self.manifest = manifest
+        self.sections = sections
+        self.snowSessions = snowSessions
+    }
 
     var hasEncodingIssues: Bool {
         !manifest.encodingIssues.isEmpty
+    }
+
+    var isSnowAwareBackup: Bool {
+        snowSessions != nil
     }
 }
 

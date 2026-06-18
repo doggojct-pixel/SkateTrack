@@ -1777,3 +1777,18 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 ### Deferred
 - Backup `snowSessions` compatibility and Snow Health export provider boundary remain deferred to Snow-Task-008b.
 
+
+### Snow-Task-008b backup compatibility and Health provider boundary
+
+- Added backup schema version 2 with schema 1 / 2 decode support.
+- Added optional `snowSessions: [SnowBackupSession]?` to backup payloads.
+- Preserved legacy backup semantics: missing `snowSessions` decodes successfully as a legacy backup.
+- Encodes new Snow-aware backups with an empty `snowSessions` array by default.
+- Added restore preview Snow session counts without changing restore execution behavior.
+- Added iOS-only Snow Health export provider boundary under `iOS/Core/Health/`.
+- `DisabledSnowHealthExporter` is the production default and returns unavailable without touching HealthKit.
+- `MockSnowHealthExporter` is DEBUG-only for local provider wiring tests.
+- Added `scripts/verify_snow_backup_compatibility.py` and `scripts/create_snow_task008b_review_pack.sh`.
+- Verified package compatibility, backup compatibility, cumulative Snow guardrails, iOS tests, and iOS / macOS / watchOS builds.
+
+Snow-Task-008b intentionally does not add production HealthKit export, WatchBridge wiring, classifier changes, run-boundary changes, or Snow value-model changes.

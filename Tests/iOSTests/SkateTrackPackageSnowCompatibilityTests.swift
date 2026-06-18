@@ -143,6 +143,151 @@ final class SkateTrackPackageSnowCompatibilityTests: XCTestCase {
         XCTAssertEqual(decodedSnowPayload.generatedAt, generatedAt)
     }
 
+
+    func testDecodeBackupSchemaVersion1WithoutSnowSessionsSucceeds() throws {
+        let payload = makeBackupPayload(schemaVersion: 1, snowSessions: nil)
+        let data = try encodeBackupPayload(payload)
+        let json = try XCTUnwrap(String(data: data, encoding: .utf8))
+
+        XCTAssertFalse(json.contains("snowSessions"))
+
+        let preview = try BackupPackageDecoder().preview(from: data)
+
+        XCTAssertEqual(preview.manifest.schemaVersion, 1)
+        XCTAssertNil(preview.manifest.storeCounts.snowSessions)
+        XCTAssertNil(preview.snowSessionCount)
+        XCTAssertFalse(preview.isSnowAwareBackup)
+        XCTAssertFalse(preview.hasValidationIssues)
+    }
+
+    func testEncodeBackupSchemaVersion2IncludesEmptySnowSessionsArray() throws {
+        let encoded = try BackupPackageEncoder(
+            appVersion: "test",
+            buildNumber: "1",
+            localeIdentifier: "en_US",
+            date: Date(timeIntervalSince1970: 1_700_002_000)
+        ).encode(BackupPackageEncodingInput())
+
+        XCTAssertEqual(encoded.payload.manifest.schemaVersion, 2)
+        XCTAssertEqual(encoded.payload.manifest.storeCounts.snowSessions, 0)
+        XCTAssertEqual(encoded.payload.snowSessions, [])
+
+        let decoded = try decodeBackupPayload(encoded.data)
+        XCTAssertEqual(decoded.manifest.schemaVersion, 2)
+        XCTAssertEqual(decoded.manifest.storeCounts.snowSessions, 0)
+        XCTAssertEqual(decoded.snowSessions, [])
+
+        let preview = try BackupPackageDecoder().preview(from: encoded.data)
+        XCTAssertEqual(preview.snowSessionCount, 0)
+        XCTAssertTrue(preview.isSnowAwareBackup)
+        XCTAssertFalse(preview.hasValidationIssues)
+    }
+
+    func testDecodeBackupSchemaVersion2WithSnowSessionsSucceeds() throws {
+        let snowPayload = makeSnowPayload()
+        let snowBackupSession = try XCTUnwrap(
+            SnowBackupSession(
+                snowState: snowPayload.makeSnowSessionState(),
+                generatedAt: snowPayload.generatedAt
+            )
+        )
+        let payload = makeBackupPayload(schemaVersion: 2, snowSessions: [snowBackupSession])
+        let data = try encodeBackupPayload(payload)
+        let decoded = try decodeBackupPayload(data)
+        let decodedSnowSession = try XCTUnwrap(decoded.snowSessions?.first)
+        let preview = try BackupPackageDecoder().preview(from: data)
+
+        XCTAssertEqual(decoded.manifest.schemaVersion, 2)
+        XCTAssertEqual(decoded.manifest.storeCounts.snowSessions, 1)
+        XCTAssertEqual(decodedSnowSession.sessionID, snowPayload.sessionID)
+        XCTAssertEqual(decodedSnowSession.runs, snowPayload.runs)
+        XCTAssertEqual(decodedSnowSession.segments, snowPayload.segments)
+        XCTAssertEqual(decodedSnowSession.distanceBreakdown, snowPayload.distanceBreakdown)
+        XCTAssertEqual(decodedSnowSession.verticalMetrics, snowPayload.verticalMetrics)
+        XCTAssertEqual(preview.snowSessionCount, 1)
+        XCTAssertTrue(preview.isSnowAwareBackup)
+        XCTAssertFalse(preview.hasValidationIssues)
+    }
+
+    func testDecodeBackupUnknownSchemaVersionFails() throws {
+        let payload = makeBackupPayload(schemaVersion: 99, snowSessions: [])
+        let data = try encodeBackupPayload(payload)
+
+        do {
+            _ = try BackupPackageDecoder().preview(from: data)
+            XCTFail("Expected backup schema 99 to be rejected")
+        } catch let error as BackupPackageError {
+            XCTAssertEqual(error, .unsupportedSchemaVersion(99))
+        }
+    }
+
+
+    func testDisabledSnowHealthExporterReturnsUnavailableWithoutHealthKit() async throws {
+        let exporter = DisabledSnowHealthExporter(reason: "Health entitlement not configured")
+        let request = makeSnowHealthExportRequest()
+
+        let result = try await exporter.exportSnowSession(request)
+
+        XCTAssertEqual(result.status, .unavailable)
+        XCTAssertEqual(result.sampleCount, 0)
+        XCTAssertEqual(result.message, "Health entitlement not configured")
+    }
+
+    func testMockSnowHealthExporterPreparesExportInDebug() async throws {
+        #if DEBUG
+        let exporter = MockSnowHealthExporter(status: .prepared, sampleCount: 3, message: "mock ready")
+        let request = makeSnowHealthExportRequest()
+
+        let result = try await exporter.exportSnowSession(request)
+
+        XCTAssertEqual(result.status, .prepared)
+        XCTAssertEqual(result.sampleCount, 3)
+        XCTAssertEqual(result.message, "mock ready")
+        #endif
+    }
+
+
+    private func makeBackupPayload(
+        schemaVersion: Int,
+        snowSessions: [SnowBackupSession]?
+    ) -> BackupPackagePayload {
+        let manifest = BackupPackageManifest(
+            schemaVersion: schemaVersion,
+            appVersion: "test",
+            buildNumber: "1",
+            createdAt: Date(timeIntervalSince1970: 1_700_002_000),
+            localeIdentifier: "en_US",
+            storeCounts: BackupPackageStoreCounts(
+                sessions: 0,
+                equipment: 0,
+                spots: 0,
+                achievements: 0,
+                weeklyChallengeCompletions: 0,
+                snowSessions: snowSessions?.count
+            )
+        )
+        return BackupPackagePayload(
+            manifest: manifest,
+            sections: BackupPackageStoreKey.allCases.map {
+                BackupPackageSection(storeKey: $0, jsonString: "[]", itemCount: 0)
+            },
+            snowSessions: snowSessions
+        )
+    }
+
+    private func encodeBackupPayload(_ payload: BackupPackagePayload) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        encoder.dateEncodingStrategy = .iso8601
+        return try encoder.encode(payload)
+    }
+
+    private func decodeBackupPayload(_ data: Data) throws -> BackupPackagePayload {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(BackupPackagePayload.self, from: data)
+    }
+
     private func makePackage(
         schemaVersion: Int,
         capabilities: [String]?,
@@ -220,6 +365,18 @@ final class SkateTrackPackageSnowCompatibilityTests: XCTestCase {
             generatedAt: startDate.addingTimeInterval(240)
         )
     }
+
+    private func makeSnowHealthExportRequest() -> SnowHealthExportRequest {
+        let snowPayload = makeSnowPayload()
+        return SnowHealthExportRequest(
+            sessionID: snowPayload.sessionID,
+            state: snowPayload.makeSnowSessionState(),
+            startedAt: snowPayload.runs.first?.startDate,
+            endedAt: snowPayload.runs.first?.endDate,
+            metadata: ["source": "unit-test"]
+        )
+    }
+
 
     private func makeSamples(startDate: Date) -> [MotionSample] {
         [

@@ -116,3 +116,12 @@ Snow-Task-007 verification token: read-only macOS Snow viewer complete without p
 - `scripts/create_snow_task008a_review_pack.sh` creates the Snow-Task-008a review pack in `/Users/doggo/Documents/App軟體區/upload/`.
 - Snow-Task-008b remains responsible for backup compatibility and Snow Health export provider boundary.
 
+
+### Snow-Task-008b Backup Compatibility and Health Boundary
+
+- `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` records the Snow-Task-008b boundary: backup schema compatibility plus iOS-only Health provider boundary.
+- `docs/reference/FILE_STRUCTURE.md` lists the backup schema files and `iOS/Core/Health/*` provider-boundary files.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` records that production HealthKit export remains disabled before ADP / entitlement work.
+- `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` records the 008b backup / Health boundary QA path.
+- `scripts/verify_snow_backup_compatibility.py` is the 008b verification gate.
+- `scripts/create_snow_task008b_review_pack.sh` creates the Snow-Task-008b review pack under `/Users/doggo/Documents/App軟體區/upload/`.

@@ -256,3 +256,32 @@ Rules established by Snow-Task-008a:
 - macOS imported packages use `MacSnowSessionAnalysisMapper.makeAvailabilityFromPackage(...)` and source `.importedPackage`.
 - Backup compatibility and Snow Health export provider boundary remain Snow-Task-008b scope.
 
+
+## Snow-Task-008b Backup Compatibility and Health Provider Boundary
+
+Snow-Task-008b completes the non-package compatibility half of Snow-Task-008 after Snow-Task-008a package export / import wiring.
+
+Completed scope:
+
+- Backup schema is now version 2 while the decoder supports schema versions 1 and 2.
+- `BackupPackagePayload.snowSessions: [SnowBackupSession]?` is optional:
+  - `nil` means a legacy backup that has no Snow section.
+  - `[]` means a Snow-aware backup with zero Snow sessions.
+- `SnowBackupSession` is the single backup Snow section and converts to / from `SnowSessionState` without changing the production Snow value models.
+- `BackupPackageEncoder` emits schema 2 backups with an empty `snowSessions` array by default.
+- `BackupPackageDecoder` maps optional Snow sessions into `BackupRestorePreview.snowSessionCount`.
+- `iOS/Core/Health/SnowHealthExporting.swift` defines the iOS-only Snow Health export protocol boundary.
+- `DisabledSnowHealthExporter` is the production default and returns `.unavailable`; it does not write Health data.
+- `MockSnowHealthExporter` is DEBUG-only and only verifies provider wiring.
+- `scripts/verify_snow_backup_compatibility.py` is the Snow-Task-008b verification gate.
+- `scripts/create_snow_task008b_review_pack.sh` writes the 008b review pack to `/Users/doggo/Documents/App軟體區/upload/`.
+
+Snow-Task-008b boundaries:
+
+- No `import HealthKit` is allowed in `Shared/`.
+- The 008b Health boundary must not instantiate `HKHealthStore`, `HKWorkout`, or `HKQuantitySample`.
+- Production HealthKit export remains disabled until ADP / entitlement work is explicitly approved later.
+- No `Shared/WatchBridge/*`, WatchConnectivity, watchOS Snow UI, iOS Snow live HUD, classifier, run-boundary detector, or core Snow value-type changes are part of 008b.
+- Snow-Task-006b remains deferred until mainline Task-040.
+
+Snow-Task-008b verification token: backup schema compatibility and iOS Health provider boundary complete without HealthKit / WatchBridge scope creep.

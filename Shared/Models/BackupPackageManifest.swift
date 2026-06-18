@@ -9,7 +9,8 @@ enum BackupPackageType: String, Codable, Sendable, Equatable {
 }
 
 struct BackupPackageManifest: Codable, Sendable, Equatable {
-    static let currentSchemaVersion = 1
+    static let currentSchemaVersion = 2
+    static let supportedSchemaVersions: Set<Int> = [1, 2]
 
     let packageType: BackupPackageType
     let schemaVersion: Int
@@ -49,10 +50,7 @@ struct BackupPackageManifest: Codable, Sendable, Equatable {
     }
 
     static func validate(_ manifest: BackupPackageManifest) throws {
-        switch manifest.schemaVersion {
-        case currentSchemaVersion:
-            break
-        default:
+        guard supportedSchemaVersions.contains(manifest.schemaVersion) else {
             throw BackupPackageError.unsupportedSchemaVersion(manifest.schemaVersion)
         }
 
@@ -68,19 +66,22 @@ struct BackupPackageStoreCounts: Codable, Sendable, Equatable {
     let spots: Int
     let achievements: Int
     let weeklyChallengeCompletions: Int
+    let snowSessions: Int?
 
     init(
         sessions: Int = 0,
         equipment: Int = 0,
         spots: Int = 0,
         achievements: Int = 0,
-        weeklyChallengeCompletions: Int = 0
+        weeklyChallengeCompletions: Int = 0,
+        snowSessions: Int? = nil
     ) {
         self.sessions = max(0, sessions)
         self.equipment = max(0, equipment)
         self.spots = max(0, spots)
         self.achievements = max(0, achievements)
         self.weeklyChallengeCompletions = max(0, weeklyChallengeCompletions)
+        self.snowSessions = snowSessions.map { max(0, $0) }
     }
 }
 

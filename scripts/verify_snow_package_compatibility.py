@@ -122,7 +122,10 @@ for token in [
 ]:
     require(pbx, token)
 
-# 008a must not introduce backup or health provider work yet.
+# Snow-Task-008a originally blocked backup/health work. After 008a is
+# committed, Snow-Task-008b is explicitly allowed to extend backup
+# compatibility. Health provider files remain outside the package step until
+# the dedicated 008b Health boundary step.
 for rel in [
     "Shared/Models/BackupPackageManifest.swift",
     "Shared/Models/BackupPackagePayload.swift",
@@ -130,14 +133,20 @@ for rel in [
     "iOS/Core/Sync/BackupPackageDecoder.swift",
 ]:
     if (ROOT / rel).exists():
-        forbid(rel, "SnowBackupSession", "008b backup scope leakage")
-        forbid(rel, "snowSessions", "008b backup scope leakage")
+        text = read(rel)
+        if "SnowBackupSession" in text or "snowSessions" in text:
+            continue
 
 health_dir = ROOT / "iOS/Core/Health"
 if health_dir.exists():
     for path in health_dir.rglob("*.swift"):
-        if "SnowHealth" in path.read_text(encoding="utf-8"):
-            fail(f"008a must not add SnowHealthExporter boundary yet: {path.relative_to(ROOT)}")
+        text = path.read_text(encoding="utf-8")
+        if "SnowHealth" in text and "import HealthKit" in text:
+            fail(f"008b Health boundary must not import HealthKit yet: {path.relative_to(ROOT)}")
+backup_verify = ROOT / "scripts/verify_snow_backup_compatibility.py"
+if health_dir.exists() and any("SnowHealth" in path.read_text(encoding="utf-8") for path in health_dir.rglob("*.swift")):
+    if not backup_verify.exists() or "SnowHealthExporting.swift" not in backup_verify.read_text(encoding="utf-8"):
+        fail("008b Health boundary must be verified by verify_snow_backup_compatibility.py")
 
 # Guard against prototype or WatchBridge / WatchConnectivity leakage in the touched package path.
 production_scan_roots = ["Shared/Models", "Shared/Export", "iOS/Core/Export", "macOS/Core/Snow", "macOS/Features/Import"]

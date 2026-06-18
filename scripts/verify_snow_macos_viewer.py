@@ -227,10 +227,10 @@ FORBIDDEN_CHANGED_FILES = [
 
 # Snow-Task-007 originally blocked package/export/iOS paths to keep the
 # read-only macOS viewer task from drifting into Snow package compatibility.
-# Snow-Task-008a is the explicitly approved package-compatibility task, so
-# these exact paths are allowed to be modified while the 007 feature checks
-# continue to run as cumulative regression guardrails.
-POST_007_ALLOWED_TASK008A_CHANGED_PATHS = {
+# Snow-Task-008a and 008b are explicitly approved follow-up compatibility
+# tasks, so these exact paths are allowed to be modified while the 007 feature
+# checks continue to run as cumulative regression guardrails.
+POST_007_ALLOWED_COMPATIBILITY_CHANGED_PATHS = {
     "Shared/Models/SkateTrackPackageManifest.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "Shared/Models/SkateTrackPackageSnowPayload.swift",
@@ -244,6 +244,15 @@ POST_007_ALLOWED_TASK008A_CHANGED_PATHS = {
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "Tests/iOSTests/SkateTrackPackageSnowCompatibilityTests.swift",
     "scripts/verify_snow_package_compatibility.py",
+    "Shared/Models/BackupPackageManifest.swift",
+    "Shared/Models/BackupPackagePayload.swift",
+    "Shared/Models/BackupRestorePreview.swift",
+    "iOS/Core/Sync/BackupPackageEncoder.swift",
+    "iOS/Core/Sync/BackupPackageDecoder.swift",
+    "scripts/verify_snow_backup_compatibility.py",
+    "iOS/Core/Health/SnowHealthExporting.swift",
+    "iOS/Core/Health/DisabledSnowHealthExporter.swift",
+    "iOS/Core/Health/MockSnowHealthExporter.swift",
 }
 
 PROJECT_TOKENS = [
@@ -372,7 +381,7 @@ def main() -> None:
 
     changed = git_changed_files()
     for path in changed:
-        if path in POST_007_ALLOWED_TASK008A_CHANGED_PATHS:
+        if path in POST_007_ALLOWED_COMPATIBILITY_CHANGED_PATHS:
             continue
         if path in FORBIDDEN_CHANGED_FILES:
             fail(f"forbidden Snow value type modified in Task-007: {path}")
@@ -404,7 +413,7 @@ def main() -> None:
         "[snow-task-007] PASS: macOS Snow analysis data boundary, "
         "struct-based presentation model, DEBUG mock provider, core viewer UI views, "
         "DEBUG MacRootView integration, localization, route/elevation filtering, "
-        "documentation, review-pack script, project membership, and post-007 Task-008a package guardrails are present."
+        "documentation, review-pack script, project membership, and post-007 Task-008a/008b compatibility/Health guardrails are present."
     )
 
 
