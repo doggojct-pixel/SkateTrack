@@ -207,6 +207,11 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
     }
 
     private mutating func accumulateElevation(from sample: MotionSample) {
+        if let diagnostics = sample.altitudeDiagnostics {
+            accumulateTrustedElevation(from: diagnostics)
+            return
+        }
+
         guard let altitude = sample.altitudeMeters, altitude.isFinite else { return }
         let policy = activePolicy
 
@@ -241,6 +246,38 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
                 elevationGainMeters += delta
             }
         case .unavailable, .none:
+            return
+        }
+    }
+
+    private mutating func accumulateTrustedElevation(from diagnostics: AltitudeDiagnostics) {
+        guard diagnostics.isTrustedForElevationGain,
+              let altitude = diagnostics.trustedAltitudeMeters,
+              altitude.isFinite else { return }
+        let policy = activePolicy
+
+        switch diagnostics.source {
+        case .barometerRelative:
+            defer { lastBarometerAltitudeMeters = altitude }
+            guard let previousAltitude = lastBarometerAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0.03, delta <= min(policy.maximumElevationStepMeters, 1.0) else { return }
+            elevationGainMeters += delta
+        case .coreLocationAbsolute:
+            guard lastBarometerAltitudeMeters == nil else { return }
+            defer { lastCoreLocationAltitudeMeters = altitude }
+            guard let previousAltitude = lastCoreLocationAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0, delta <= min(policy.maximumElevationStepMeters, 1.0) else { return }
+            elevationGainMeters += delta
+        case .debugSimulated:
+            defer { lastAltitudeMeters = altitude }
+            guard let previousAltitude = lastAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            if delta > 0, delta <= policy.maximumElevationStepMeters {
+                elevationGainMeters += delta
+            }
+        case .unavailable:
             return
         }
     }

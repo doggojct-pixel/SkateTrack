@@ -1991,3 +1991,18 @@ Task-030c-b11-r4-1 compatibility token: legacy plaintext `.skatetrack` compatibi
 - Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
 - It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
 
+
+## Task-030c-b12-A — Altitude Outlier Guard + Per-Sample Diagnostics
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b12`.
+- Added optional per-sample `AltitudeDiagnostics` metadata on `MotionSample` so new `.skatetrack` payloads can preserve raw altitude, trusted altitude, vertical accuracy, altitude delta, vertical speed, trust classification, and the reason for each altitude trust decision.
+- Added `AltitudeOutlierGuardConfig` and a deterministic `AltitudeOutlierGuard` that keeps CoreLocation absolute altitude, barometer-relative altitude, and DEBUG-simulated altitude anchors source-isolated.
+- Integrated altitude guard evaluation into `SensorFusionEngine` for raw location-fix samples and timer-fusion barometer-relative samples without generating fake barometer values or changing horizontal route geometry.
+- Updated live and final elevation-gain calculation to prefer trusted b12 altitude diagnostics when present; rejected altitude outliers do not update trusted altitude anchors and do not inflate `elevationGainMeters`.
+- Updated advanced elevation chart selection to prefer trusted altitude diagnostics, preserving raw altitude for diagnostics/export while avoiding obvious 100m-class spikes in trusted display paths.
+- Added XCTest coverage for legacy sample decoding, diagnostics persistence/export, 100m spike rejection, poor vertical accuracy classification, and component-level isolation where altitude rejection does not drop horizontal coordinates or distance accumulation.
+
+Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, per-sample altitude diagnostics, component-level altitude isolation, source-isolated altitude anchors, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b12 limitation token: improves altitude robustness and elevation-gain honesty; does not guarantee survey-grade elevation precision; barometric pressure LPF and long-term atmospheric drift correction remain deferred.
+
+Task-030c-b12 package capability token: altitude-diagnostics-v1.

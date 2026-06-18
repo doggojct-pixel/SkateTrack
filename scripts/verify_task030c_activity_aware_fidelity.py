@@ -49,7 +49,7 @@ SESSION_TOKENS = [
 SENSOR_TOKENS = [
     "ActivityFidelityPolicy.maximumGlobalPlausibleSpeedKmh",
     "altitudeSource: snapshot.altitude == nil ? nil : .barometerRelative",
-    "altitudeSource: normalizedAltitude(from: location) == nil ? nil : .coreLocationAbsolute",
+    "altitudeSource: altitudeSource",
     "currentActivityFidelityProfile()",
     "policy.maximumTrustedSegmentDistanceMeters",
 ]

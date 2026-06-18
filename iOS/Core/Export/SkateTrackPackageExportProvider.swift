@@ -133,6 +133,10 @@ struct SkateTrackPackageExportProvider {
             "altitude-source-stabilization-v1"
         ]
 
+        if samples.contains(where: { $0.altitudeDiagnostics != nil }) {
+            capabilities.append("altitude-diagnostics-v1")
+        }
+
         if session.debugRecordingDiagnostics != nil {
             capabilities.append("debug-build-identity-v1")
             capabilities.append("debug-recording-diagnostics-v1")

@@ -21,13 +21,13 @@ for path in [debug_panel, session_hook, *localizations]:
 panel_text = debug_panel.read_text(encoding="utf-8")
 for token in [
     "debugBuildSignatureCard",
-    "Task-030c-b7",
+    "Task-030c-b12",
     "debug-build-signature-card",
     "debug.build.title",
     "debug.build.subtitle",
 ]:
     if token not in panel_text:
-        sys.exit(f"DebugToolsPanelView.swift missing current b7 build signature token: {token}")
+        sys.exit(f"DebugToolsPanelView.swift missing current b12 build signature token: {token}")
 
 hook_text = session_hook.read_text(encoding="utf-8")
 for token in [
@@ -79,4 +79,4 @@ for loc in localizations:
         if f'"{key}"' not in text:
             sys.exit(f"{loc.relative_to(ROOT)} missing b6 localization key: {key}")
 
-print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b7 build signature are present.")
+print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b12 build signature are present.")

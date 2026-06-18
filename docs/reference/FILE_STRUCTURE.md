@@ -1237,3 +1237,20 @@ Task-030c-b11-r4-1 verification token: HeadingDiagnostics, GPSGapDiagnostics, De
 - Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
 - It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
 
+
+### Task-030c-b12-A altitude outlier guard and per-sample diagnostics
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b12.
+Shared/Models/MotionSample.swift                         # Adds AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, and optional MotionSample.altitudeDiagnostics.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Annotates CoreLocation absolute and barometer-relative samples with source-isolated altitude trust diagnostics.
+iOS/Core/SessionRecording/SessionMetricsAccumulator.swift # Uses trusted b12 altitude diagnostics for live elevation gain when available.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Uses trusted b12 altitude diagnostics for final elevation gain and aggregate debug altitude diagnostics.
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift # Prefers trusted b12 altitude diagnostics for elevation chart display values.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b12 Debug build signature.
+Tests/iOSTests/SessionRepositoryTests.swift              # Adds legacy decode and altitude diagnostics persistence/export coverage.
+Tests/iOSTests/SessionRecordingCoordinatorTests.swift     # Adds AltitudeOutlierGuard and elevation-gain component-isolation coverage.
+scripts/verify_task030c_b12_altitude_outlier_guard.py    # Guards b12 altitude-diagnostics scope, build token, tests, and forbidden route-reconstruction work.
+
+Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, altitudeDiagnostics: AltitudeDiagnostics?, verify_task030c_b12_altitude_outlier_guard.py.
+
+Task-030c-b12 package capability token: altitude-diagnostics-v1.

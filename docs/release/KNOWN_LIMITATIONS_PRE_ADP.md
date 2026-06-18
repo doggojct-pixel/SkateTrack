@@ -300,3 +300,14 @@ Task-030c-b11-r4-1 verification token: Heading Availability + GPS Gap Diagnostic
 - Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
 - It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
 
+
+### Task-030c-b12-A — Altitude outlier guard and barometric diagnostics foundation
+
+- **Current status:** Task-030c-b12-A records optional per-sample altitude trust diagnostics and protects trusted elevation gain from obvious CoreLocation altitude spikes.
+- **What improved:** A 100m-class altitude jump can be classified as a rejected altitude outlier; rejected altitude samples preserve raw altitude for diagnostics/export but do not update trusted altitude anchors or inflate `elevationGainMeters`.
+- **Scope boundary:** b12-A isolates altitude trust from horizontal route geometry. It does not reconstruct routes, estimate missing positions, perform dead reckoning, road snap, use DEM elevation lookup, or change SnowPrototype.
+- **Remaining limitation:** Altitude remains consumer-device telemetry. b12-A improves robustness and honesty but does not guarantee survey-grade elevation precision. Pressure LPF, pocket-wind pressure suppression, and long-term atmospheric drift correction remain deferred to later tasks.
+
+Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuard, does not make altitude survey-grade, pressure LPF deferred, atmospheric drift correction deferred.
+
+Task-030c-b12 package capability token: altitude-diagnostics-v1.

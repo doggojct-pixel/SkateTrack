@@ -69,11 +69,26 @@ final class SessionRepositoryTests: XCTestCase {
             "Expected persisted samples to retain inactive r4 dead-reckoning diagnostics."
         )
 
+        let altitudeDiagnostics = samples.compactMap(\.altitudeDiagnostics)
+        XCTAssertEqual(altitudeDiagnostics.count, 2)
+        XCTAssertTrue(
+            altitudeDiagnostics.contains { $0.reason == .firstTrustedAnchor },
+            "Expected persisted samples to retain b12 altitude diagnostics."
+        )
+        XCTAssertTrue(
+            altitudeDiagnostics.allSatisfy { $0.trustClassification == .trusted },
+            "Expected fixture samples to remain trusted after b12 persistence round-trip."
+        )
+
         XCTAssertEqual(fetchedSession.fallEvents.count, 1)
 
         let exportURL = try await repository.exportSessionBundle(id: session.id)
         XCTAssertTrue(FileManager.default.fileExists(atPath: exportURL.appendingPathComponent("session.json").path))
-        XCTAssertTrue(FileManager.default.fileExists(atPath: exportURL.appendingPathComponent("motionSamples.json").path))
+        let exportedSamplesURL = exportURL.appendingPathComponent("motionSamples.json")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: exportedSamplesURL.path))
+        let exportedSamplesJSON = try String(contentsOf: exportedSamplesURL)
+        XCTAssertTrue(exportedSamplesJSON.contains("altitudeDiagnostics"))
+        XCTAssertTrue(exportedSamplesJSON.contains("coreLocationAbsoluteAccepted"))
 
         try await repository.deleteSession(id: session.id)
         do {
@@ -113,6 +128,29 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertNil(decoded.headingDiagnostics)
         XCTAssertNil(decoded.gpsGapDiagnostics)
         XCTAssertNil(decoded.deadReckoningDiagnostics)
+    }
+
+    func testLegacyMotionSampleDecodesWithoutB12AltitudeDiagnostics() throws {
+        let legacyJSON = #"""
+        {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "timestamp": 700000000,
+          "timestampMillisecondsSince1970": 700000000000,
+          "gpsCoordinate": { "latitude": 25.033, "longitude": 121.565 },
+          "speedKmh": 8.0,
+          "accelerometerG": { "x": 0.0, "y": 0.0, "z": 1.0 },
+          "gyroscopeRadPS": { "x": 0.0, "y": 0.0, "z": 0.0 },
+          "altitudeMeters": 12.0,
+          "altitudeSource": "coreLocationAbsolute",
+          "sampleSource": "locationFix"
+        }
+        """#.data(using: .utf8)!
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        let decoded = try decoder.decode(MotionSample.self, from: legacyJSON)
+        XCTAssertEqual(decoded.altitudeSource, .coreLocationAbsolute)
+        XCTAssertNil(decoded.altitudeDiagnostics)
     }
 
     private func makeCompletedSession() throws -> SessionData {
@@ -179,6 +217,16 @@ final class SessionRepositoryTests: XCTestCase {
                 accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
                 gyroscopeRadPS: ThreeAxisValue(x: 0, y: 0, z: 0),
                 altitudeMeters: 12,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .firstTrustedAnchor,
+                    rawAltitudeMeters: 12,
+                    trustedAltitudeMeters: 12,
+                    verticalAccuracyMeters: 8,
+                    updatesTrustedAltitudeAnchor: true
+                ),
                 locationDiagnostics: makeLocationDiagnostics(
                     speedKmh: 8,
                     timestamp: firstSampleTimestamp,
@@ -192,6 +240,20 @@ final class SessionRepositoryTests: XCTestCase {
                 accelerometerG: ThreeAxisValue(x: 0.1, y: 0, z: 1),
                 gyroscopeRadPS: ThreeAxisValue(x: 0, y: 0.1, z: 0),
                 altitudeMeters: 13,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .coreLocationAbsoluteAccepted,
+                    rawAltitudeMeters: 13,
+                    trustedAltitudeMeters: 13,
+                    previousTrustedAltitudeMeters: 12,
+                    verticalAccuracyMeters: 8,
+                    altitudeDeltaMeters: 1,
+                    timeDeltaSeconds: 1,
+                    verticalSpeedMetersPerSecond: 1,
+                    updatesTrustedAltitudeAnchor: true
+                ),
                 locationDiagnostics: makeLocationDiagnostics(
                     speedKmh: 12,
                     timestamp: secondSampleTimestamp,

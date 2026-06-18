@@ -138,16 +138,15 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func preferredElevationDisplaySource(for samples: [MotionSample]) -> ElevationDisplaySource {
-        if samples.contains(where: { $0.altitudeSource == .barometerRelative && ($0.altitudeMeters?.isFinite ?? false) }) {
-            return .barometerRelative
-        }
-        if samples.contains(where: { $0.altitudeSource == .debugSimulated && ($0.altitudeMeters?.isFinite ?? false) }) {
-            return .debugSimulated
-        }
+        if samples.contains(where: { ($0.altitudeDiagnostics?.source == .barometerRelative && ($0.altitudeDiagnostics?.trustedAltitudeMeters?.isFinite ?? false)) || ($0.altitudeSource == .barometerRelative && ($0.altitudeMeters?.isFinite ?? false)) }) { return .barometerRelative }
+        if samples.contains(where: { ($0.altitudeDiagnostics?.source == .debugSimulated && ($0.altitudeDiagnostics?.trustedAltitudeMeters?.isFinite ?? false)) || ($0.altitudeSource == .debugSimulated && ($0.altitudeMeters?.isFinite ?? false)) }) { return .debugSimulated }
         return .coreLocationAbsolute
     }
 
     private func trustedDisplayElevationMeters(for sample: MotionSample, source: ElevationDisplaySource) -> Double? {
+        if let diagnostics = sample.altitudeDiagnostics, diagnostics.isTrustedForElevationGain, let trustedAltitude = diagnostics.trustedAltitudeMeters, trustedAltitude.isFinite {
+            return ((source == .barometerRelative && diagnostics.source == .barometerRelative) || (source == .debugSimulated && diagnostics.source == .debugSimulated) || (source == .coreLocationAbsolute && diagnostics.source == .coreLocationAbsolute)) ? trustedAltitude : nil
+        }
         guard let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
         switch source {
         case .barometerRelative:

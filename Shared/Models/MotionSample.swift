@@ -158,11 +158,86 @@ enum MotionSampleSource: String, Codable, Sendable, Equatable {
     case debugSimulated
 }
 
-enum AltitudeSampleSource: String, Codable, Sendable, Equatable {
+enum AltitudeSampleSource: String, Codable, Sendable, Equatable, Hashable {
     case coreLocationAbsolute
     case barometerRelative
     case debugSimulated
     case unavailable
+}
+
+
+enum AltitudeTrustClassification: String, Codable, Sendable, Equatable {
+    case trusted
+    case lowConfidence
+    case rejectedOutlier
+    case missing
+}
+
+enum AltitudeTrustReason: String, Codable, Sendable, Equatable {
+    case trusted
+    case debugSimulatedTrusted
+    case missingAltitude
+    case nonFiniteAltitude
+    case sourceUnavailable
+    case verticalAccuracyUnavailable
+    case verticalAccuracyTooPoor
+    case startupAltitudeWarmup
+    case mixedAbsoluteAndRelativeSource
+    case hardAltitudeJump
+    case verticalSpeedTooHigh
+    case staleLocation
+    case lowRouteConfidence
+    case firstTrustedAnchor
+    case barometerRelativeAccepted
+    case coreLocationAbsoluteAccepted
+    case fallbackLegacyPolicy
+}
+
+struct AltitudeDiagnostics: Codable, Sendable, Equatable {
+    let source: AltitudeSampleSource
+    let trustClassification: AltitudeTrustClassification
+    let reason: AltitudeTrustReason
+    let rawAltitudeMeters: Double?
+    let trustedAltitudeMeters: Double?
+    let previousTrustedAltitudeMeters: Double?
+    let verticalAccuracyMeters: Double?
+    let altitudeDeltaMeters: Double?
+    let timeDeltaSeconds: TimeInterval?
+    let verticalSpeedMetersPerSecond: Double?
+    let rejectedByOutlierGuard: Bool
+    let updatesTrustedAltitudeAnchor: Bool
+
+    init(
+        source: AltitudeSampleSource,
+        trustClassification: AltitudeTrustClassification,
+        reason: AltitudeTrustReason,
+        rawAltitudeMeters: Double? = nil,
+        trustedAltitudeMeters: Double? = nil,
+        previousTrustedAltitudeMeters: Double? = nil,
+        verticalAccuracyMeters: Double? = nil,
+        altitudeDeltaMeters: Double? = nil,
+        timeDeltaSeconds: TimeInterval? = nil,
+        verticalSpeedMetersPerSecond: Double? = nil,
+        rejectedByOutlierGuard: Bool = false,
+        updatesTrustedAltitudeAnchor: Bool = false
+    ) {
+        self.source = source
+        self.trustClassification = trustClassification
+        self.reason = reason
+        self.rawAltitudeMeters = rawAltitudeMeters
+        self.trustedAltitudeMeters = trustedAltitudeMeters
+        self.previousTrustedAltitudeMeters = previousTrustedAltitudeMeters
+        self.verticalAccuracyMeters = verticalAccuracyMeters
+        self.altitudeDeltaMeters = altitudeDeltaMeters
+        self.timeDeltaSeconds = timeDeltaSeconds.map { max(0, $0) }
+        self.verticalSpeedMetersPerSecond = verticalSpeedMetersPerSecond.map { max(0, $0) }
+        self.rejectedByOutlierGuard = rejectedByOutlierGuard
+        self.updatesTrustedAltitudeAnchor = updatesTrustedAltitudeAnchor
+    }
+
+    var isTrustedForElevationGain: Bool {
+        trustClassification == .trusted && trustedAltitudeMeters != nil && updatesTrustedAltitudeAnchor
+    }
 }
 
 enum ActivityFidelityProfile: String, Codable, Sendable, Equatable {
@@ -445,6 +520,342 @@ struct ActivityFidelityPolicy: Codable, Sendable, Equatable {
     }
 }
 
+struct AltitudeOutlierGuardConfig: Codable, Sendable, Equatable {
+    let maxCoreLocationVerticalAccuracyMeters: Double
+    let maxCoreLocationVerticalSpeedMetersPerSecond: Double
+    let maxBarometerVerticalSpeedMetersPerSecond: Double
+    let hardCoreLocationJumpRejectMeters: Double
+    let hardBarometerJumpRejectMeters: Double
+    let minimumDeltaTimeSeconds: TimeInterval
+    let startupWarmupSeconds: TimeInterval
+
+    init(
+        maxCoreLocationVerticalAccuracyMeters: Double,
+        maxCoreLocationVerticalSpeedMetersPerSecond: Double,
+        maxBarometerVerticalSpeedMetersPerSecond: Double = 40,
+        hardCoreLocationJumpRejectMeters: Double = 30,
+        hardBarometerJumpRejectMeters: Double = 30,
+        minimumDeltaTimeSeconds: TimeInterval = 0.2,
+        startupWarmupSeconds: TimeInterval = 30
+    ) {
+        self.maxCoreLocationVerticalAccuracyMeters = max(1, maxCoreLocationVerticalAccuracyMeters)
+        self.maxCoreLocationVerticalSpeedMetersPerSecond = max(0.5, maxCoreLocationVerticalSpeedMetersPerSecond)
+        self.maxBarometerVerticalSpeedMetersPerSecond = max(1, maxBarometerVerticalSpeedMetersPerSecond)
+        self.hardCoreLocationJumpRejectMeters = max(1, hardCoreLocationJumpRejectMeters)
+        self.hardBarometerJumpRejectMeters = max(1, hardBarometerJumpRejectMeters)
+        self.minimumDeltaTimeSeconds = max(0.001, minimumDeltaTimeSeconds)
+        self.startupWarmupSeconds = max(0, startupWarmupSeconds)
+    }
+
+    init(policy: ActivityFidelityPolicy) {
+        let verticalSpeed: Double
+        switch policy.profile {
+        case .technicalSkateboard:
+            verticalSpeed = 2.0
+        case .standardSkateboard, .inlineRecreation:
+            verticalSpeed = 3.0
+        case .electricSkateboard, .inlineSpeed:
+            verticalSpeed = 8.0
+        case .snowReserved:
+            verticalSpeed = 12.0
+        case .vehicleValidation:
+            verticalSpeed = 20.0
+        }
+
+        self.init(
+            maxCoreLocationVerticalAccuracyMeters: policy.maximumVerticalAccuracyMeters,
+            maxCoreLocationVerticalSpeedMetersPerSecond: verticalSpeed,
+            maxBarometerVerticalSpeedMetersPerSecond: 40.0,
+            hardCoreLocationJumpRejectMeters: max(30, policy.maximumElevationStepMeters * 4),
+            hardBarometerJumpRejectMeters: max(30, policy.maximumElevationStepMeters * 4)
+        )
+    }
+}
+
+struct AltitudeOutlierGuard: Sendable, Equatable {
+    private struct TrustedAnchor: Sendable, Equatable {
+        let altitudeMeters: Double
+        let timestamp: Date
+    }
+
+    private var coreLocationAnchor: TrustedAnchor?
+    private var barometerAnchor: TrustedAnchor?
+    private var debugAnchor: TrustedAnchor?
+
+    init() {}
+
+    mutating func reset() {
+        coreLocationAnchor = nil
+        barometerAnchor = nil
+        debugAnchor = nil
+    }
+
+    mutating func evaluate(
+        altitudeMeters: Double?,
+        source: AltitudeSampleSource?,
+        timestamp: Date,
+        verticalAccuracyMeters: Double?,
+        locationDiagnostics: LocationFixDiagnostics?,
+        sessionStartDate: Date?,
+        config: AltitudeOutlierGuardConfig
+    ) -> AltitudeDiagnostics {
+        let resolvedSource = source ?? .unavailable
+        guard resolvedSource != .unavailable else {
+            return AltitudeDiagnostics(
+                source: .unavailable,
+                trustClassification: .missing,
+                reason: .sourceUnavailable,
+                rawAltitudeMeters: altitudeMeters,
+                verticalAccuracyMeters: verticalAccuracyMeters
+            )
+        }
+
+        guard let altitudeMeters else {
+            return AltitudeDiagnostics(
+                source: resolvedSource,
+                trustClassification: .missing,
+                reason: .missingAltitude,
+                verticalAccuracyMeters: verticalAccuracyMeters
+            )
+        }
+
+        guard altitudeMeters.isFinite else {
+            return AltitudeDiagnostics(
+                source: resolvedSource,
+                trustClassification: .rejectedOutlier,
+                reason: .nonFiniteAltitude,
+                rawAltitudeMeters: altitudeMeters,
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                rejectedByOutlierGuard: true
+            )
+        }
+
+        if resolvedSource == .coreLocationAbsolute {
+            if locationDiagnostics?.freshnessState == .stale {
+                return lowConfidenceDiagnostics(
+                    source: resolvedSource,
+                    reason: .staleLocation,
+                    rawAltitudeMeters: altitudeMeters,
+                    verticalAccuracyMeters: verticalAccuracyMeters
+                )
+            }
+
+            if locationDiagnostics?.routeSegmentConfidence == .low || locationDiagnostics?.routeSegmentConfidence == .unavailable {
+                let isStartupWarmup = sessionStartDate.map { timestamp.timeIntervalSince($0) <= config.startupWarmupSeconds } ?? false
+                return lowConfidenceDiagnostics(
+                    source: resolvedSource,
+                    reason: isStartupWarmup ? .startupAltitudeWarmup : .lowRouteConfidence,
+                    rawAltitudeMeters: altitudeMeters,
+                    verticalAccuracyMeters: verticalAccuracyMeters
+                )
+            }
+
+            guard let verticalAccuracyMeters else {
+                return lowConfidenceDiagnostics(
+                    source: resolvedSource,
+                    reason: .verticalAccuracyUnavailable,
+                    rawAltitudeMeters: altitudeMeters,
+                    verticalAccuracyMeters: nil
+                )
+            }
+
+            guard verticalAccuracyMeters <= config.maxCoreLocationVerticalAccuracyMeters else {
+                return lowConfidenceDiagnostics(
+                    source: resolvedSource,
+                    reason: .verticalAccuracyTooPoor,
+                    rawAltitudeMeters: altitudeMeters,
+                    verticalAccuracyMeters: verticalAccuracyMeters
+                )
+            }
+        }
+
+        let previousAnchor = anchor(for: resolvedSource)
+        guard let previousAnchor else {
+            setAnchor(TrustedAnchor(altitudeMeters: altitudeMeters, timestamp: timestamp), for: resolvedSource)
+            return AltitudeDiagnostics(
+                source: resolvedSource,
+                trustClassification: .trusted,
+                reason: firstTrustedReason(for: resolvedSource),
+                rawAltitudeMeters: altitudeMeters,
+                trustedAltitudeMeters: altitudeMeters,
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                updatesTrustedAltitudeAnchor: true
+            )
+        }
+
+        let delta = altitudeMeters - previousAnchor.altitudeMeters
+        let absoluteDelta = abs(delta)
+        let timeDelta = max(timestamp.timeIntervalSince(previousAnchor.timestamp), config.minimumDeltaTimeSeconds)
+        let verticalSpeed = absoluteDelta / timeDelta
+        let hardJumpThreshold = hardJumpRejectMeters(for: resolvedSource, config: config)
+        let verticalSpeedThreshold = maxVerticalSpeedMetersPerSecond(for: resolvedSource, config: config)
+
+        guard absoluteDelta <= hardJumpThreshold else {
+            return rejectedDiagnostics(
+                source: resolvedSource,
+                reason: .hardAltitudeJump,
+                rawAltitudeMeters: altitudeMeters,
+                previousAnchor: previousAnchor,
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                altitudeDeltaMeters: delta,
+                timeDeltaSeconds: timeDelta,
+                verticalSpeedMetersPerSecond: verticalSpeed
+            )
+        }
+
+        guard verticalSpeed <= verticalSpeedThreshold else {
+            return rejectedDiagnostics(
+                source: resolvedSource,
+                reason: .verticalSpeedTooHigh,
+                rawAltitudeMeters: altitudeMeters,
+                previousAnchor: previousAnchor,
+                verticalAccuracyMeters: verticalAccuracyMeters,
+                altitudeDeltaMeters: delta,
+                timeDeltaSeconds: timeDelta,
+                verticalSpeedMetersPerSecond: verticalSpeed
+            )
+        }
+
+        setAnchor(TrustedAnchor(altitudeMeters: altitudeMeters, timestamp: timestamp), for: resolvedSource)
+        return AltitudeDiagnostics(
+            source: resolvedSource,
+            trustClassification: .trusted,
+            reason: acceptedReason(for: resolvedSource),
+            rawAltitudeMeters: altitudeMeters,
+            trustedAltitudeMeters: altitudeMeters,
+            previousTrustedAltitudeMeters: previousAnchor.altitudeMeters,
+            verticalAccuracyMeters: verticalAccuracyMeters,
+            altitudeDeltaMeters: delta,
+            timeDeltaSeconds: timeDelta,
+            verticalSpeedMetersPerSecond: verticalSpeed,
+            updatesTrustedAltitudeAnchor: true
+        )
+    }
+
+    private func lowConfidenceDiagnostics(
+        source: AltitudeSampleSource,
+        reason: AltitudeTrustReason,
+        rawAltitudeMeters: Double,
+        verticalAccuracyMeters: Double?
+    ) -> AltitudeDiagnostics {
+        let previousAnchor = anchor(for: source)
+        return AltitudeDiagnostics(
+            source: source,
+            trustClassification: .lowConfidence,
+            reason: reason,
+            rawAltitudeMeters: rawAltitudeMeters,
+            trustedAltitudeMeters: previousAnchor?.altitudeMeters,
+            previousTrustedAltitudeMeters: previousAnchor?.altitudeMeters,
+            verticalAccuracyMeters: verticalAccuracyMeters,
+            rejectedByOutlierGuard: false,
+            updatesTrustedAltitudeAnchor: false
+        )
+    }
+
+    private func rejectedDiagnostics(
+        source: AltitudeSampleSource,
+        reason: AltitudeTrustReason,
+        rawAltitudeMeters: Double,
+        previousAnchor: TrustedAnchor,
+        verticalAccuracyMeters: Double?,
+        altitudeDeltaMeters: Double,
+        timeDeltaSeconds: TimeInterval,
+        verticalSpeedMetersPerSecond: Double
+    ) -> AltitudeDiagnostics {
+        AltitudeDiagnostics(
+            source: source,
+            trustClassification: .rejectedOutlier,
+            reason: reason,
+            rawAltitudeMeters: rawAltitudeMeters,
+            trustedAltitudeMeters: previousAnchor.altitudeMeters,
+            previousTrustedAltitudeMeters: previousAnchor.altitudeMeters,
+            verticalAccuracyMeters: verticalAccuracyMeters,
+            altitudeDeltaMeters: altitudeDeltaMeters,
+            timeDeltaSeconds: timeDeltaSeconds,
+            verticalSpeedMetersPerSecond: verticalSpeedMetersPerSecond,
+            rejectedByOutlierGuard: true,
+            updatesTrustedAltitudeAnchor: false
+        )
+    }
+
+    private func anchor(for source: AltitudeSampleSource) -> TrustedAnchor? {
+        switch source {
+        case .coreLocationAbsolute:
+            return coreLocationAnchor
+        case .barometerRelative:
+            return barometerAnchor
+        case .debugSimulated:
+            return debugAnchor
+        case .unavailable:
+            return nil
+        }
+    }
+
+    private mutating func setAnchor(_ anchor: TrustedAnchor, for source: AltitudeSampleSource) {
+        switch source {
+        case .coreLocationAbsolute:
+            coreLocationAnchor = anchor
+        case .barometerRelative:
+            barometerAnchor = anchor
+        case .debugSimulated:
+            debugAnchor = anchor
+        case .unavailable:
+            break
+        }
+    }
+
+    private func firstTrustedReason(for source: AltitudeSampleSource) -> AltitudeTrustReason {
+        switch source {
+        case .coreLocationAbsolute:
+            return .firstTrustedAnchor
+        case .barometerRelative:
+            return .barometerRelativeAccepted
+        case .debugSimulated:
+            return .debugSimulatedTrusted
+        case .unavailable:
+            return .sourceUnavailable
+        }
+    }
+
+    private func acceptedReason(for source: AltitudeSampleSource) -> AltitudeTrustReason {
+        switch source {
+        case .coreLocationAbsolute:
+            return .coreLocationAbsoluteAccepted
+        case .barometerRelative:
+            return .barometerRelativeAccepted
+        case .debugSimulated:
+            return .debugSimulatedTrusted
+        case .unavailable:
+            return .sourceUnavailable
+        }
+    }
+
+    private func hardJumpRejectMeters(for source: AltitudeSampleSource, config: AltitudeOutlierGuardConfig) -> Double {
+        switch source {
+        case .barometerRelative:
+            return config.hardBarometerJumpRejectMeters
+        case .coreLocationAbsolute, .debugSimulated, .unavailable:
+            return config.hardCoreLocationJumpRejectMeters
+        }
+    }
+
+    private func maxVerticalSpeedMetersPerSecond(
+        for source: AltitudeSampleSource,
+        config: AltitudeOutlierGuardConfig
+    ) -> Double {
+        switch source {
+        case .barometerRelative:
+            return config.maxBarometerVerticalSpeedMetersPerSecond
+        case .coreLocationAbsolute:
+            return config.maxCoreLocationVerticalSpeedMetersPerSecond
+        case .debugSimulated:
+            return .greatestFiniteMagnitude
+        case .unavailable:
+            return 0
+        }
+    }
+}
+
 struct LocationFixDiagnostics: Codable, Sendable, Equatable {
     let horizontalAccuracyMeters: Double?
     let verticalAccuracyMeters: Double?
@@ -723,6 +1134,7 @@ struct MotionSample: Identifiable, Codable, Sendable, Equatable {
     let gyroscopeRadPS: ThreeAxisValue
     let altitudeMeters: Double?
     let altitudeSource: AltitudeSampleSource?
+    let altitudeDiagnostics: AltitudeDiagnostics?
     let locationDiagnostics: LocationFixDiagnostics?
     let sampleSource: MotionSampleSource?
 
@@ -736,6 +1148,7 @@ struct MotionSample: Identifiable, Codable, Sendable, Equatable {
         gyroscopeRadPS: ThreeAxisValue,
         altitudeMeters: Double? = nil,
         altitudeSource: AltitudeSampleSource? = nil,
+        altitudeDiagnostics: AltitudeDiagnostics? = nil,
         locationDiagnostics: LocationFixDiagnostics? = nil,
         sampleSource: MotionSampleSource? = .timerFusion
     ) {
@@ -748,6 +1161,7 @@ struct MotionSample: Identifiable, Codable, Sendable, Equatable {
         self.gyroscopeRadPS = gyroscopeRadPS
         self.altitudeMeters = altitudeMeters
         self.altitudeSource = altitudeSource
+        self.altitudeDiagnostics = altitudeDiagnostics
         self.locationDiagnostics = locationDiagnostics
         self.sampleSource = sampleSource
     }

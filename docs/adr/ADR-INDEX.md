@@ -165,3 +165,14 @@ Task-030c-b11-r4-1 verification token: diagnostics-only foundation, GPS gap diag
 - Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
 - It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
 
+
+## Task-030c-b12-A — Altitude outlier guard and per-sample diagnostics
+
+- Task-030c-b12-A treats altitude as an independently trusted telemetry component. A rejected altitude value must not delete or invalidate the full `MotionSample`; horizontal coordinates, distance logic, and route rendering remain isolated from altitude trust decisions.
+- `MotionSample.altitudeDiagnostics` is optional for legacy `.skatetrack` compatibility and records raw altitude, trusted altitude, trust classification, rejection reason, vertical accuracy, altitude delta, vertical speed, and whether the trusted altitude anchor was updated.
+- `AltitudeOutlierGuard` keeps CoreLocation absolute altitude and barometer-relative altitude anchors source-isolated. b12-A does not blend these sources, does not create fake barometer values, and does not implement pressure LPF or long-term atmospheric drift correction.
+- Live and final elevation-gain logic may consume trusted altitude diagnostics when present. Rejected outliers and low-confidence altitude samples must not inflate `elevationGainMeters`.
+
+Task-030c-b12 verification token: component-level altitude isolation, source-isolated altitude anchors, AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, no estimated route geometry.
+
+Task-030c-b12 package capability token: altitude-diagnostics-v1.

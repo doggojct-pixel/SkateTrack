@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b11-r4-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b12"',
     ],
     "Shared/Models/MotionSample.swift": [
         "usesStrictSmallAreaLowSpeedGate",
@@ -54,7 +54,7 @@ REQUIRED = {
         "SessionRouteMapView(session: content.session, samples: content.motionSamples)",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b11-r3-3",
+        "Task-030c-b12",
     ],
 }
 

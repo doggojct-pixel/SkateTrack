@@ -56,6 +56,176 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertEqual(liveMetrics.elapsedTime, 10, accuracy: 0.001)
     }
 
+    func testAltitudeOutlierGuardRejectsImplausibleJumpAndKeepsTrustedAnchorStable() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3,
+            hardCoreLocationJumpRejectMeters: 30
+        )
+        let start = Date(timeIntervalSince1970: 10_000)
+        let diagnostics = LocationFixDiagnostics(
+            verticalAccuracyMeters: 8,
+            freshnessState: .fresh,
+            routeSegmentConfidence: .high
+        )
+
+        let first = guardEngine.evaluate(
+            altitudeMeters: 10,
+            source: .coreLocationAbsolute,
+            timestamp: start,
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        let spike = guardEngine.evaluate(
+            altitudeMeters: 110,
+            source: .coreLocationAbsolute,
+            timestamp: start.addingTimeInterval(2),
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        let recovery = guardEngine.evaluate(
+            altitudeMeters: 11,
+            source: .coreLocationAbsolute,
+            timestamp: start.addingTimeInterval(20),
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        XCTAssertEqual(first.trustClassification, .trusted)
+        XCTAssertEqual(first.reason, .firstTrustedAnchor)
+        XCTAssertEqual(spike.trustClassification, .rejectedOutlier)
+        XCTAssertEqual(spike.reason, .hardAltitudeJump)
+        XCTAssertEqual(spike.trustedAltitudeMeters!, 10, accuracy: 0.001)
+        XCTAssertFalse(spike.updatesTrustedAltitudeAnchor)
+        XCTAssertEqual(recovery.trustClassification, .trusted)
+        XCTAssertEqual(recovery.previousTrustedAltitudeMeters!, 10, accuracy: 0.001)
+        XCTAssertEqual(recovery.trustedAltitudeMeters!, 11, accuracy: 0.001)
+    }
+
+    func testAltitudeOutlierGuardClassifiesPoorVerticalAccuracyWithoutDroppingHorizontalSample() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3
+        )
+        let timestamp = Date(timeIntervalSince1970: 20_000)
+        let diagnostics = LocationFixDiagnostics(
+            horizontalAccuracyMeters: 5,
+            verticalAccuracyMeters: 45,
+            freshnessState: .fresh,
+            routeSegmentConfidence: .high
+        )
+
+        let altitudeDiagnostics = guardEngine.evaluate(
+            altitudeMeters: 42,
+            source: .coreLocationAbsolute,
+            timestamp: timestamp,
+            verticalAccuracyMeters: 45,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: timestamp,
+            config: config
+        )
+        let sample = MotionSample(
+            timestamp: timestamp,
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 6,
+            accelerometerG: .zero,
+            gyroscopeRadPS: .zero,
+            altitudeMeters: 42,
+            altitudeSource: .coreLocationAbsolute,
+            altitudeDiagnostics: altitudeDiagnostics,
+            locationDiagnostics: diagnostics,
+            sampleSource: .locationFix
+        )
+
+        XCTAssertEqual(sample.altitudeDiagnostics?.trustClassification, .lowConfidence)
+        XCTAssertEqual(sample.altitudeDiagnostics?.reason, .verticalAccuracyTooPoor)
+        XCTAssertNotNil(sample.gpsCoordinate, "b12-A must isolate only altitude; horizontal coordinates remain available.")
+    }
+
+    func testMetricsAccumulatorIgnoresRejectedAltitudeOutlierButPreservesDistance() {
+        var accumulator = SessionMetricsAccumulator()
+        let start = Date(timeIntervalSince1970: 30_000)
+        accumulator.beginSession(at: start)
+
+        let samples = [
+            MotionSample(
+                timestamp: start.addingTimeInterval(1),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0330, longitude: 121.5650),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 10,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .firstTrustedAnchor,
+                    rawAltitudeMeters: 10,
+                    trustedAltitudeMeters: 10,
+                    updatesTrustedAltitudeAnchor: true
+                )
+            ),
+            MotionSample(
+                timestamp: start.addingTimeInterval(2),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0331, longitude: 121.5651),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 110,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .rejectedOutlier,
+                    reason: .hardAltitudeJump,
+                    rawAltitudeMeters: 110,
+                    trustedAltitudeMeters: 10,
+                    previousTrustedAltitudeMeters: 10,
+                    altitudeDeltaMeters: 100,
+                    timeDeltaSeconds: 1,
+                    verticalSpeedMetersPerSecond: 100,
+                    rejectedByOutlierGuard: true,
+                    updatesTrustedAltitudeAnchor: false
+                )
+            ),
+            MotionSample(
+                timestamp: start.addingTimeInterval(20),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0332, longitude: 121.5652),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 11,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .coreLocationAbsoluteAccepted,
+                    rawAltitudeMeters: 11,
+                    trustedAltitudeMeters: 11,
+                    previousTrustedAltitudeMeters: 10,
+                    altitudeDeltaMeters: 1,
+                    timeDeltaSeconds: 19,
+                    verticalSpeedMetersPerSecond: 1.0 / 19.0,
+                    updatesTrustedAltitudeAnchor: true
+                )
+            )
+        ]
+
+        samples.forEach { accumulator.process($0) }
+
+        XCTAssertEqual(accumulator.elevationGainMeters, 1, accuracy: 0.001)
+        XCTAssertGreaterThan(accumulator.distanceKilometers, 0, "Altitude rejection must not fracture horizontal distance accumulation.")
+    }
+
     func testStartSessionRejectsElectricInlinePowerType() async {
         let coordinator = SessionRecordingCoordinator(
             sensorEngine: MockSessionSensorEngine(),

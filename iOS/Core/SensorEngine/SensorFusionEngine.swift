@@ -38,6 +38,7 @@ final class SensorFusionEngine: SensorProvider {
     private var latestAcceleration = ThreeAxisValue.zero
     private var latestGyroscope = ThreeAxisValue.zero
     private var latestAltitudeMeters: Double?
+    private var altitudeOutlierGuard = AltitudeOutlierGuard()
     private var latestLocationDiagnostics: LocationFixDiagnostics?
     private var latestRawLocation: CLLocation?
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
@@ -136,6 +137,7 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            altitudeOutlierGuard.reset()
             latestLocationDiagnostics = nil
             latestRawLocation = nil
             calibrationEngine.reset()
@@ -228,12 +230,16 @@ final class SensorFusionEngine: SensorProvider {
     }
     private func makeMotionSample() -> MotionSample {
         let now = Date()
+        let altitudeGuardConfig = AltitudeOutlierGuardConfig(
+            policy: ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
+        )
         let snapshot = stateLock.withLock { () -> (
             coordinate: GeoCoordinate?,
             speedKmh: Double,
             acceleration: ThreeAxisValue,
             gyroscope: ThreeAxisValue,
             altitude: Double?,
+            altitudeDiagnostics: AltitudeDiagnostics?,
             locationDiagnostics: LocationFixDiagnostics?,
             calibratedAcceleration: ThreeAxisValue,
             calibratedGyroscope: ThreeAxisValue
@@ -243,8 +249,20 @@ final class SensorFusionEngine: SensorProvider {
             let acceleration = latestAcceleration
             let gyroscope = latestGyroscope
             let altitude = latestAltitudeMeters
+            let altitudeSource: AltitudeSampleSource? = altitude == nil ? nil : .barometerRelative
             let locationDiagnostics = latestLocationDiagnostics.map { diagnostics in
                 timerFusionDiagnostics(from: diagnostics, latestRawLocation: latestRawLocation, now: now)
+            }
+            let altitudeDiagnostics = altitudeSource.map { source in
+                altitudeOutlierGuard.evaluate(
+                    altitudeMeters: altitude,
+                    source: source,
+                    timestamp: now,
+                    verticalAccuracyMeters: nil,
+                    locationDiagnostics: locationDiagnostics,
+                    sessionStartDate: sessionStartDate,
+                    config: altitudeGuardConfig
+                )
             }
             calibrationEngine.ingest(acceleration: acceleration, gyroscope: gyroscope)
             let calibratedAcceleration = calibrationEngine.calibratedAcceleration(from: acceleration)
@@ -256,6 +274,7 @@ final class SensorFusionEngine: SensorProvider {
                 acceleration,
                 gyroscope,
                 altitude,
+                altitudeDiagnostics,
                 locationDiagnostics,
                 calibratedAcceleration,
                 calibratedGyroscope
@@ -270,6 +289,7 @@ final class SensorFusionEngine: SensorProvider {
             gyroscopeRadPS: snapshot.calibratedGyroscope,
             altitudeMeters: snapshot.altitude,
             altitudeSource: snapshot.altitude == nil ? nil : .barometerRelative,
+            altitudeDiagnostics: snapshot.altitudeDiagnostics,
             locationDiagnostics: snapshot.locationDiagnostics,
             sampleSource: .timerFusion
         )
@@ -311,9 +331,23 @@ final class SensorFusionEngine: SensorProvider {
     }
     private func publishRawLocationFixMotionSample(for location: CLLocation, diagnostics: LocationFixDiagnostics) {
         let liveRoutePolicy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
+        let altitudeGuardConfig = AltitudeOutlierGuardConfig(policy: liveRoutePolicy)
         let sample = stateLock.withLock { () -> MotionSample? in
             guard sessionStartDate != nil else { return nil }
             let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let rawAltitude = normalizedAltitude(from: location)
+            let altitudeSource: AltitudeSampleSource? = rawAltitude == nil ? nil : .coreLocationAbsolute
+            let altitudeDiagnostics = altitudeSource.map { source in
+                altitudeOutlierGuard.evaluate(
+                    altitudeMeters: rawAltitude,
+                    source: source,
+                    timestamp: location.timestamp,
+                    verticalAccuracyMeters: diagnostics.verticalAccuracyMeters,
+                    locationDiagnostics: diagnostics,
+                    sessionStartDate: sessionStartDate,
+                    config: altitudeGuardConfig
+                )
+            }
             let trustedForLiveRoute = Self.trustsLocationForLiveRoute(
                 diagnostics,
                 policy: liveRoutePolicy
@@ -330,8 +364,9 @@ final class SensorFusionEngine: SensorProvider {
                 speedKmh: max(speedKmh, 0),
                 accelerometerG: calibrationEngine.calibratedAcceleration(from: latestAcceleration),
                 gyroscopeRadPS: calibrationEngine.calibratedGyroscope(from: latestGyroscope),
-                altitudeMeters: normalizedAltitude(from: location),
-                altitudeSource: normalizedAltitude(from: location) == nil ? nil : .coreLocationAbsolute,
+                altitudeMeters: rawAltitude,
+                altitudeSource: altitudeSource,
+                altitudeDiagnostics: altitudeDiagnostics,
                 locationDiagnostics: diagnostics,
                 sampleSource: .locationFix
             )
@@ -694,6 +729,7 @@ final class SensorFusionEngine: SensorProvider {
             latestAcceleration = .zero
             latestGyroscope = .zero
             latestAltitudeMeters = nil
+            altitudeOutlierGuard.reset()
             latestLocationDiagnostics = nil
             latestRawLocation = nil
         }

@@ -321,6 +321,43 @@ final class RecordingDebugDiagnosticsCollector {
         var previousSource: AltitudeSampleSource?
 
         for sample in samples.sorted(by: { $0.timestamp < $1.timestamp }) {
+            if let diagnostics = sample.altitudeDiagnostics {
+                let source = diagnostics.source
+                sourceCounts[source.rawValue, default: 0] += 1
+                if let verticalAccuracy = diagnostics.verticalAccuracyMeters {
+                    maxVerticalAccuracy = max(maxVerticalAccuracy ?? verticalAccuracy, verticalAccuracy)
+                }
+                if diagnostics.trustClassification != .trusted {
+                    rejectionReasons[diagnostics.reason.rawValue, default: 0] += 1
+                }
+                if let altitude = diagnostics.rawAltitudeMeters, altitude.isFinite {
+                    if let previousAltitude {
+                        let jump = abs(altitude - previousAltitude)
+                        maxSingleJump = max(maxSingleJump ?? jump, jump)
+                        if previousSource != source {
+                            rejectionReasons["mixedAltitudeSource", default: 0] += 1
+                        }
+                    }
+                    previousAltitude = altitude
+                    previousSource = source
+                }
+                switch source {
+                case .coreLocationAbsolute, .debugSimulated:
+                    if diagnostics.trustClassification == .trusted {
+                        acceptedCoreLocation += 1
+                    } else {
+                        rejectedCoreLocation += 1
+                    }
+                case .barometerRelative:
+                    if diagnostics.trustClassification == .trusted {
+                        acceptedBarometer += 1
+                    }
+                case .unavailable:
+                    rejectionReasons["missingAltitude", default: 0] += 1
+                }
+                continue
+            }
+
             guard let source = sample.altitudeSource else { continue }
             sourceCounts[source.rawValue, default: 0] += 1
             if let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters {
@@ -952,6 +989,10 @@ final class SessionRecordingCoordinator {
         fallback: Double
     ) -> Double {
         let sortedSamples = samples.sorted(by: { $0.timestamp < $1.timestamp })
+        if sortedSamples.contains(where: { $0.altitudeDiagnostics != nil }) {
+            return trustedDiagnosticElevationGainMeters(from: sortedSamples, policy: policy)
+        }
+
         let hasBarometerSamples = sortedSamples.contains { $0.altitudeSource == .barometerRelative }
         let barometerGain = trustedBarometerElevationGainMeters(from: sortedSamples, policy: policy)
         if hasBarometerSamples { return barometerGain }
@@ -961,6 +1002,41 @@ final class SessionRecordingCoordinator {
 
         let hasAltitudeSamples = sortedSamples.contains { $0.altitudeMeters != nil }
         return hasAltitudeSamples ? 0 : min(max(fallback, 0), policy.maximumElevationStepMeters)
+    }
+
+    private func trustedDiagnosticElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double {
+        let hasBarometerDiagnostics = samples.contains { $0.altitudeDiagnostics?.source == .barometerRelative }
+        let preferredSources: Set<AltitudeSampleSource> = hasBarometerDiagnostics
+            ? [.barometerRelative]
+            : [.coreLocationAbsolute, .debugSimulated]
+        var lastAltitudeBySource: [AltitudeSampleSource: Double] = [:]
+        var gain = 0.0
+
+        for sample in samples {
+            guard let diagnostics = sample.altitudeDiagnostics,
+                  preferredSources.contains(diagnostics.source),
+                  diagnostics.isTrustedForElevationGain,
+                  let altitude = diagnostics.trustedAltitudeMeters,
+                  altitude.isFinite else { continue }
+
+            defer { lastAltitudeBySource[diagnostics.source] = altitude }
+            guard let previousAltitude = lastAltitudeBySource[diagnostics.source] else { continue }
+            let delta = altitude - previousAltitude
+            switch diagnostics.source {
+            case .barometerRelative:
+                guard delta > 0.03, delta <= min(policy.maximumElevationStepMeters, 1.0) else { continue }
+                gain += delta
+            case .coreLocationAbsolute:
+                guard delta > 0, delta <= min(policy.maximumElevationStepMeters, 1.0) else { continue }
+                gain += delta
+            case .debugSimulated:
+                if delta > 0, delta <= policy.maximumElevationStepMeters { gain += delta }
+            case .unavailable:
+                continue
+            }
+        }
+
+        return gain
     }
 
     private func trustedBarometerElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double {
