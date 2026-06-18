@@ -1169,3 +1169,54 @@ scripts/verify_task030c_trusted_chart_metrics.py        # Verifies trusted chart
 
 Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, verify_task030c_trusted_chart_metrics.py, trusted chart metrics, display source alignment.
 Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard.
+
+### Task-030c-b11 small-area route geometry stabilization
+
+```text
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b11.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows the Task-030c-b11 Debug build signature.
+iOS/Features/SessionSummary/SessionRouteMapView.swift   # Separates rawRoute / trustedRoute / displayRoute and renders a stabilized Summary map route.
+scripts/verify_task030c_small_area_route_geometry.py     # Verifies the b11 small-area display-route guardrails.
+scripts/verify_session_summary.py                       # Guards the updated SessionRouteMapView display route pipeline.
+```
+
+Task-030c-b11 verification token: Small-Area Route Geometry Stabilization, Task-030c-b11, verify_task030c_small_area_route_geometry.py, rawRoute, trustedRoute, displayRoute.
+Task-030c-b11 compatibility token: Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness.
+
+### Task-030c-b11-r1 route confidence display continuity
+
+```text
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b11-r1.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows the Task-030c-b11-r1 Debug build signature.
+iOS/Features/SessionSummary/SessionRouteMapView.swift   # Displays low-confidence route segments as uncertain secondary lines instead of route disappearance.
+scripts/verify_task030c_route_confidence_display.py      # Verifies b11-r1 route confidence display continuity guardrails.
+```
+
+Task-030c-b11-r1 verification token: Route Confidence Display Continuity, Task-030c-b11-r1, verify_task030c_route_confidence_display.py, low-confidence route display, uncertain route segment.
+
+### Task-030c-b11-r2 activity-aware route confidence and small-area display gate
+
+Shared/Models/MotionSample.swift                         # Adds activity-aware display-route and speed-display policy helpers.
+Shared/Protocols/SensorProvider.swift                    # Passes power type and fidelity profile into live recording.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Uses active fidelity profile for live route confidence, speed, and route acceptance.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift # Resolves electric / vehicle-validation debug contexts before starting the sensor engine.
+iOS/Core/SessionRecording/SessionMetricsAccumulator.swift # Applies active fidelity policy to live trusted metrics.
+iOS/Features/SessionSummary/SessionRouteMapView.swift    # Uses session fidelity policy for displayRoute filtering and high-speed proxy continuity.
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift # Keeps fresh uncertain chart segments continuous and uses activity-aware speed corroboration.
+scripts/verify_task030c_activity_aware_route_confidence.py # Guards the b11-r2 confidence alignment.
+
+Task-030c-b11-r2 verification token: Activity-Aware Route Confidence + Small-Area Display Gate, Task-030c-b11-r2, verify_task030c_activity_aware_route_confidence.py.
+
+
+Task-030c-b11-r2 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation.
+
+
+### Task-030c-b11-r3-3 post-record GPS lock guard and approximate start semantics
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b11-r3-3.
+iOS/Features/Debug/DebugToolsPanelView.swift            # Shows the Task-030c-b11-r3-3 Debug build signature.
+iOS/Features/SessionSummary/SessionRouteMapView.swift   # Separates approximate recording-start marker from GPS lock route anchor and uses post-lock route coordinates for primary region.
+scripts/verify_task030c_startup_gps_warmup.py           # Guards startup warm-up display and disclosure behavior.
+scripts/verify_task030c_startup_anchor_semantics.py     # Guards approximate start marker, GPS lock route anchor, and region anchoring semantics.
+
+Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker, startup convergence warm-up, session-route-accuracy-disclosure.

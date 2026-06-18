@@ -297,6 +297,8 @@
 "summary.route.start" = "起點";
 "summary.route.finish" = "終點";
 "summary.route.sampleCountFormat" = "%d GPS";
+"summary.route.accuracy.startup" = "定位校正中・起點可能略有偏移";
+"summary.route.accuracy.approxFormat" = "GPS ±%dm・小範圍路線為近似";
 "summary.safety.clear.title" = "未偵測到跌倒";
 "summary.safety.clear.subtitle" = "這筆已儲存 Session 沒有記錄跌倒事件。";
 "summary.safety.falls.title" = "已記錄安全事件";

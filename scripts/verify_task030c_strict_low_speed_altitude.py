@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 strict low-speed metrics and altitude source isolation."""
+"""Verify Task-030c-b11-r3-3 strict low-speed metrics and altitude source isolation."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b10-r5"',
+        'static let currentDebugBuildTaskID = "Task-030c-b11-r3-3"',
     ],
     "Shared/Models/MotionSample.swift": [
         "strictLowSpeedSuspicionThresholdKmh",
@@ -34,8 +34,8 @@ REQUIRED_TOKENS = {
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "lowSpeedSuspiciousCoreLocationSpeedKmh: Double = 6",
-        "let policy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())",
-        "case .skateboard: return .standardSkateboard",
+        "ActivityFidelityPolicy(profile: currentActivityFidelityProfile())",
+        "ActivityFidelityProfile.defaultProfile(",
         "latestSpeedKmh = 0",
     ],
     "iOS/Core/SessionRecording/SessionMetricsAccumulator.swift": [
@@ -54,19 +54,19 @@ REQUIRED_TOKENS = {
         "min(policy.maximumVerticalAccuracyMeters, 5)",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Strict Low-Speed Metrics + Altitude Source Isolation",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
         "verify_task030c_strict_low_speed_altitude.py",
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "altitude source isolation",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "strict low-speed metrics",
     ],
 }
@@ -85,7 +85,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 strict low-speed/altitude check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 strict low-speed/altitude check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -127,7 +127,7 @@ def main() -> None:
         if token in checked_source:
             fail(f"unexpected out-of-scope token found in source: {token}")
 
-    print("Task-030c-b10-r5 strict low-speed/altitude checks passed.")
+    print("Task-030c-b11-r3-3 strict low-speed/altitude checks passed.")
 
 
 if __name__ == "__main__":

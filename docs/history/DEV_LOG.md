@@ -1909,3 +1909,67 @@ Task-030c-b10-r4 compatibility token: Background Location Runtime + Gap Recovery
 
 Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, trusted chart metrics, display source alignment, verify_task030c_trusted_chart_metrics.py.
 Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard, Background Location Runtime + Gap Recovery Quality Gate.
+
+## Task-030c-b11 — Small-Area Route Geometry Stabilization
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11`.
+- Introduced a Summary map display-route pipeline that separates raw GPS samples from user-facing route geometry.
+- Added `rawRoute`, `trustedRoute`, and `displayRoute` terminology for the GPS fidelity branch:
+  - `rawRoute` remains the unmodified Core Location / motion-sample coordinate stream preserved in diagnostics and exports.
+  - `trustedRoute` is the route subset whose samples pass freshness, confidence, accuracy, and gap checks.
+  - `displayRoute` is the Summary map rendering path built from trusted location fixes with small-area jitter suppression and light smoothing.
+- Updated `SessionRouteMapView` so the map no longer draws timer-fusion coordinate repeats directly and no longer treats low-confidence / stale route segments as normal continuous path geometry.
+- Added small-area jitter suppression for low-speed movement so sub-meter / short-range GPS noise is not drawn as real movement when the phone is stationary or moving slowly in a small residential area.
+- Preserved start / finish annotations on the display route while keeping raw GPS samples available in diagnostics and `.skatetrack` exports.
+- Added `scripts/verify_task030c_small_area_route_geometry.py` and extended the Session Summary verifier to guard the display-route pipeline.
+
+### Scope Boundary
+- Task-030c-b11 does not create skateboard S-curve sensor-fusion presentation, does not use road snapping, does not use map matching, and does not fabricate route points.
+- This task does not delete raw GPS, raw IMU, raw altitude, or diagnostics data.
+- Motorcycle validation remains a background / high-speed stress test only and does not define standard skateboard display geometry.
+- SnowPrototype, Watch Phase 1b, signing, Bundle ID, entitlements, StoreKit, Google, CloudKit, WeatherKit, HealthKit, and production services remain untouched.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_small_area_route_geometry.py` after applying this task, followed by the existing Session Summary, GPS, diagnostics, and trusted metric verify scripts.
+- Real-device validation should use a small residential open area /巷口繞圈 test for 1–2 minutes. The expected result is not 1m absolute positioning, but a less jittery Summary map display path that no longer draws obvious raw GPS drift or timer-fusion repeats as the primary visible route.
+- If small-area display geometry is acceptable, continue to Task-030c-b12 for skateboard S-curve sensor-fusion presentation.
+
+Task-030c-b11 verification token: Small-Area Route Geometry Stabilization, Task-030c-b11, rawRoute, trustedRoute, displayRoute, small-area jitter suppression, verify_task030c_small_area_route_geometry.py.
+Task-030c-b11 compatibility token: Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation, Background Location Runtime + Gap Recovery Quality Gate.
+
+## Task-030c-b11-r1 — Route Confidence Display Continuity
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r1`.
+- Refined the Summary map route renderer so low-confidence / uncertain route fixes are not treated as missing data or immediate route breaks.
+- Added secondary display styling for uncertain route segments using reduced opacity and a dashed line style while preserving trusted segments as the primary route line.
+- Kept true route discontinuities limited to actual time gaps or large coordinate jumps, so high-speed validation sessions do not visually resemble recording dropouts merely because part of the route is low-confidence for the selected activity profile.
+- Raw GPS, trusted metrics, diagnostics, and `.skatetrack` exports remain unchanged. This task does not claim small-area loops are accurate and does not implement IMU reconstruction, skateboard S-curve presentation, road snapping, map matching, or fabricated route points.
+
+Task-030c-b11-r1 verification token: Route Confidence Display Continuity, Task-030c-b11-r1, low-confidence route display, uncertain route segment, verify_task030c_route_confidence_display.py.
+Task-030c-b11-r1 compatibility token: Small-Area Route Geometry Stabilization, Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation.
+
+## Task-030c-b11-r2 — Activity-Aware Route Confidence + Small-Area Display Gate
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r2`.
+- Aligned live SensorFusion route confidence with the active activity profile, including electric skateboard / electric longboard, vehicle-validation, and future snow-proxy testing paths, instead of letting standard-skateboard thresholds mark high-speed proxy routes as low confidence.
+- Passed the selected power type and resolved fidelity profile into the live sensor engine so electric and validation sessions preserve plausible route, speed, and altitude display continuity.
+- Kept strict small-area low-speed filtering for human-powered walking / skateboard-like profiles while using broader activity-aware gates for electric, snow-reserved, speed, and vehicle-validation profiles.
+- Updated Summary map and chart display gates so low-confidence fresh segments remain uncertain rather than missing, while stale fixes and true long gaps still break the visible route / chart.
+
+Task-030c-b11-r2 verification token: Activity-Aware Route Confidence + Small-Area Display Gate, Task-030c-b11-r2, verify_task030c_activity_aware_route_confidence.py.
+Task-030c-b11-r2 compatibility token: Route Confidence Display Continuity, Small-Area Route Geometry Stabilization, Activity-Aware Location Fidelity.
+
+
+
+## Task-030c-b11-r3-3 — Post-Record GPS Lock Guard + Approximate Start Semantics
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r3-3`.
+- Separated Summary Map start marker semantics from the GPS lock route anchor: the start marker now represents an approximate recording-start candidate when GPS is still converging, while trusted route geometry begins from the first confirmed GPS-lock cluster.
+- Extended startup stable-anchor guarding to electric skateboard / electric longboard sessions so post-record medium-confidence convergence fixes are kept as red warm-up context instead of becoming the green route start.
+- Added approximate start marker / approximate start semantics styling using a visually distinct hollow `play.circle` marker when the recording-start fix is low confidence, outside preferred accuracy, or when GPS lock is delayed after recording starts.
+- Anchored the primary map region to post-GPS-lock route coordinates when available, preventing early convergence points from pulling the Summary Map away from the trusted route.
+- Preserved red low-quality / startup dashed segments, warm-up segment isolation, and route accuracy disclosure without changing raw GPS storage, trusted metrics, exports, or `.skatetrack` schema.
+- Deferred `.skatetrack` package-size optimization, IMU / gyro / heading-aided dead reckoning, Wi-Fi RTT diagnostics, and barometric outlier rejection to follow-up tasks.
+
+Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker / approximate start semantics, startup convergence warm-up, session-route-accuracy-disclosure, verify_task030c_startup_anchor_semantics.py.
+Task-030c-b11-r3-3 deferred package-size token: `.skatetrack` export compression / thinning remains deferred and must preserve legacy plaintext package compatibility.

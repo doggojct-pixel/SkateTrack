@@ -25,14 +25,14 @@ REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
         "case electricLongboardLockedPocket",
         "case scooterLockedPocket",
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
         "descriptionLocalizationKey",
         "debug-recording-context-description",
         "debug.recordingContext.electricLongboardLockedPocket",
         "debug.recordingContext.scooterLockedPocket",
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
         "電動長版・鎖螢幕口袋",
@@ -52,19 +52,19 @@ REQUIRED_TOKENS = {
         "車内・手動ロック",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Debug Recording Context Labels",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "debug recording context labels",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "DEBUG recording context labels",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "DEBUG-only",
     ],
 }

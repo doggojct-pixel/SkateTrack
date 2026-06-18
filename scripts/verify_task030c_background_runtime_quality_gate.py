@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 background runtime enablement and gap-recovery quality gates."""
+"""Verify Task-030c-b11-r3-3 background runtime enablement and gap-recovery quality gates."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ REQUIRED_TOKENS = {
         "INFOPLIST_KEY_UIBackgroundModes = location;",
     ],
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b10-r5\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b11-r3-3\"",
         "RecordingDebugBundleInfoSnapshot",
         "let bundleInfo: RecordingDebugBundleInfoSnapshot?",
         "resolvedUIBackgroundModes",
@@ -62,8 +62,8 @@ REQUIRED_TOKENS = {
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "trustsLocationForLiveRoute",
         "latestRawLocation = location",
-        "if Self.trustsLocationForLiveRoute(diagnostics)",
-        "let trustedForLiveRoute = Self.trustsLocationForLiveRoute(diagnostics)",
+        "if Self.trustsLocationForLiveRoute(diagnostics, policy: liveRoutePolicy)",
+        "let trustedForLiveRoute = Self.trustsLocationForLiveRoute(",
         ": 0",
     ],
     "iOS/Core/SessionRecording/SessionMetricsAccumulator.swift": [
@@ -73,26 +73,26 @@ REQUIRED_TOKENS = {
         "lastCoordinate = nil",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Effective Background Location Runtime + Gap Recovery Quality Gate",
         "UIBackgroundModes",
         "gap recovery",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "iOS/App/Info.plist",
         "background runtime",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "UIBackgroundModes",
         "gap-recovery",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "background location runtime",
         "stale / low-accuracy",
     ],
@@ -111,7 +111,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 background runtime quality gate check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 background runtime quality gate check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -159,7 +159,7 @@ def main() -> None:
         if token in combined:
             fail(f"unexpected production integration token found: {token}")
 
-    print("Task-030c-b10-r5 background runtime quality gate checks passed.")
+    print("Task-030c-b11-r3-3 background runtime quality gate checks passed.")
 
 
 if __name__ == "__main__":

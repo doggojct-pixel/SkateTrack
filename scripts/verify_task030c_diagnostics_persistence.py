@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 diagnostics persistence across Core Data save/fetch/export."""
+"""Verify Task-030c-b11-r3-3 diagnostics persistence across Core Data save/fetch/export."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b10-r5\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b11-r3-3\"",
         "let diagnosticsStatus: String?",
     ],
     "Shared/Persistence/SessionEntityMapper.swift": [
@@ -52,29 +52,29 @@ REQUIRED_TOKENS = {
         "diagnostics-export-status-v1",
     ],
     "Tests/iOSTests/SessionRepositoryTests.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "debugRecordingDiagnostics?.buildIdentity.debugBuildTaskID",
         "debugRecordingDiagnostics?.diagnosticsStatus",
         "RecordingDebugDiagnostics(",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Persist Diagnostics Through Session Export",
         "debugRecordingDiagnosticsData",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "debugRecordingDiagnosticsData",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Core Data",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "missingFromPersistedSession",
     ],
 }
@@ -92,7 +92,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 diagnostics persistence check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 diagnostics persistence check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -134,7 +134,7 @@ def main() -> None:
         if token in combined:
             fail(f"unexpected production integration token found: {token}")
 
-    print("Task-030c-b10-r5 diagnostics persistence checks passed.")
+    print("Task-030c-b11-r3-3 diagnostics persistence checks passed.")
 
 
 if __name__ == "__main__":

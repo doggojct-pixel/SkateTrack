@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 startup speed spike and fall handling guards."""
+"""Verify Task-030c-b11-r3-3 startup speed spike and fall handling guards."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b10-r5"',
+        'static let currentDebugBuildTaskID = "Task-030c-b11-r3-3"',
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "startupStabilizationSeconds",
@@ -41,23 +41,23 @@ REQUIRED_TOKENS = {
         "elapsedAfterStart >= Self.startupFallHandlingSuppressionSeconds",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Startup Speed Spike + Fall Handling Guard",
         "coordinate-derived GPS speed spikes",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "verify_task030c_startup_guard.py",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "startup guard",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Startup speed spike",
     ],
 }
@@ -71,7 +71,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 startup guard check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 startup guard check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -113,7 +113,7 @@ def main() -> None:
         if token in combined and token not in read("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md"):
             fail(f"unexpected route geometry token found: {token}")
 
-    print("Task-030c-b10-r5 startup guard checks passed.")
+    print("Task-030c-b11-r3-3 startup guard checks passed.")
 
 
 if __name__ == "__main__":

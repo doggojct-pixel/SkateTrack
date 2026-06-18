@@ -297,6 +297,8 @@
 "summary.route.start" = "開始";
 "summary.route.finish" = "終了";
 "summary.route.sampleCountFormat" = "値： %d";
+"summary.route.accuracy.startup" = "GPS調整中・開始位置はおおよそです";
+"summary.route.accuracy.approxFormat" = "GPS ±%dm・小範囲ルートは概算です";
 "summary.safety.clear.title" = "転倒は検知されませんでした";
 "summary.safety.clear.subtitle" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
 "summary.safety.falls.title" = "安全イベントを記録しました";

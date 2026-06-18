@@ -34,7 +34,7 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertEqual(fetchedSession.spotSnapshot, session.spotSnapshot)
         XCTAssertEqual(
             fetchedSession.debugRecordingDiagnostics?.buildIdentity.debugBuildTaskID,
-            "Task-030c-b10-r5"
+            "Task-030c-b11-r3-3"
         )
         XCTAssertEqual(fetchedSession.debugRecordingDiagnostics?.diagnosticsStatus, "enabled")
 
@@ -91,7 +91,7 @@ final class SessionRepositoryTests: XCTestCase {
             radiusMeters: 150
         )
         let debugDiagnostics = RecordingDebugDiagnostics(
-            buildIdentity: RecordingDebugBuildIdentity(debugBuildTaskID: "Task-030c-b10-r5"),
+            buildIdentity: RecordingDebugBuildIdentity(debugBuildTaskID: "Task-030c-b11-r3-3"),
             testContext: RecordingDebugTestContext(label: .handheldScreenOn),
             diagnosticsStartedAt: startDate,
             diagnosticsEndedAt: startDate.addingTimeInterval(60),

@@ -184,6 +184,48 @@ struct ActivityFidelityPolicy: Codable, Sendable, Equatable {
         }
     }
 
+
+    var usesStrictSmallAreaLowSpeedGate: Bool {
+        switch profile {
+        case .technicalSkateboard, .standardSkateboard, .inlineRecreation:
+            return true
+        case .electricSkateboard, .inlineSpeed, .snowReserved, .vehicleValidation:
+            return false
+        }
+    }
+
+    var displayRouteMaximumHorizontalAccuracyMeters: Double {
+        switch profile {
+        case .technicalSkateboard:
+            return 18
+        case .standardSkateboard, .inlineRecreation:
+            return 24
+        case .electricSkateboard, .inlineSpeed:
+            return 70
+        case .snowReserved:
+            return 90
+        case .vehicleValidation:
+            return maximumUsableHorizontalAccuracyMeters
+        }
+    }
+
+    var speedDisplayCorroborationAccuracyMeters: Double {
+        switch profile {
+        case .technicalSkateboard:
+            return max(8, preferredHorizontalAccuracyMeters)
+        case .standardSkateboard, .inlineRecreation:
+            return max(10, preferredHorizontalAccuracyMeters * 1.25)
+        case .electricSkateboard:
+            return max(20, preferredHorizontalAccuracyMeters * 1.8)
+        case .inlineSpeed:
+            return max(24, preferredHorizontalAccuracyMeters * 1.8)
+        case .snowReserved:
+            return max(30, preferredHorizontalAccuracyMeters * 2.0)
+        case .vehicleValidation:
+            return max(45, preferredHorizontalAccuracyMeters * 2.5)
+        }
+    }
+
     func acceptsSpeed(_ speedKmh: Double) -> Bool {
         speedKmh.isFinite && speedKmh >= 0 && speedKmh <= chartMaximumSpeedKmh
     }
@@ -205,6 +247,23 @@ struct ActivityFidelityPolicy: Codable, Sendable, Equatable {
         let smallAreaSegmentThresholdMeters = 2.5
         let accuracyPenaltyThresholdMeters = max(preferredHorizontalAccuracyMeters, 8.0)
         let strictAccuracyPenaltyThresholdMeters = preferredHorizontalAccuracyMeters
+
+        guard horizontalAccuracyMeters <= maximumUsableHorizontalAccuracyMeters else { return false }
+        if let coordinateDerivedSpeedKmh,
+           coordinateDerivedSpeedKmh > maximumTrustedImpliedSpeedKmh {
+            return false
+        }
+        if let segmentDistanceMeters,
+           segmentDistanceMeters > maximumTrustedSegmentDistanceMeters {
+            return false
+        }
+
+        // Task-030c-b11-r2: keep the strict small-area low-speed gate for human-powered
+        // walking/skateboard-like profiles, but do not apply it to electric, snow, speed,
+        // or vehicle-validation profiles. High-speed proxy sessions should be judged by
+        // their activity-aware route policy rather than by standard-skateboard local-jitter
+        // thresholds.
+        guard usesStrictSmallAreaLowSpeedGate else { return true }
 
         // Task-030c-b10-r4: low-speed metrics should not trust Core Location speed alone
         // when the movement is small, the horizontal accuracy is outside the preferred

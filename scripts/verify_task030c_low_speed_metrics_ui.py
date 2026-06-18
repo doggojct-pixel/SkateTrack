@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 strict low-speed metrics gate and UI responsiveness guards."""
+"""Verify Task-030c-b11-r3-3 strict low-speed metrics gate and UI responsiveness guards."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b10-r5"',
+        'static let currentDebugBuildTaskID = "Task-030c-b11-r3-3"',
     ],
     "Shared/Models/MotionSample.swift": [
         "acceptsLowSpeedMetricSample(",
@@ -78,22 +78,22 @@ REQUIRED_TOKENS = {
         "SessionSummaryContent: Equatable, Sendable",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Low-Speed Metrics Gate + UI Responsiveness",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
         "verify_task030c_low_speed_metrics_ui.py",
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "low-speed metrics gate",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "low-speed metrics",
     ],
 }
@@ -112,7 +112,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 low-speed metrics/UI check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 low-speed metrics/UI check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -156,7 +156,7 @@ def main() -> None:
         if token in checked_source:
             fail(f"unexpected out-of-scope token found in source: {token}")
 
-    print("Task-030c-b10-r5 low-speed metrics/UI checks passed.")
+    print("Task-030c-b11-r3-3 low-speed metrics/UI checks passed.")
 
 
 if __name__ == "__main__":

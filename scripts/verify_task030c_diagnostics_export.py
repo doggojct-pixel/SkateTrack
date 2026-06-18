@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b10-r5 diagnostics export identity and package capability guard."""
+"""Verify Task-030c-b11-r3-3 diagnostics export identity and package capability guard."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b10-r5\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b11-r3-3\"",
         "let diagnosticsStatus: String?",
         "diagnosticsStatus: String? = nil",
     ],
@@ -43,25 +43,25 @@ REQUIRED_TOKENS = {
         "if session.debugRecordingDiagnostics != nil",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "debug-build-signature-card",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "Ensure Background Diagnostics Export",
         "debug-build-identity-v1",
         "diagnostics-export-status-v1",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "diagnostics export",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "diagnostics export",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b10-r5",
+        "Task-030c-b11-r3-3",
         "diagnostics export",
     ],
 }
@@ -79,7 +79,7 @@ FORBIDDEN_TOKENS = [
 
 
 def fail(message: str) -> None:
-    print(f"Task-030c-b10-r5 diagnostics export check failed: {message}", file=sys.stderr)
+    print(f"Task-030c-b11-r3-3 diagnostics export check failed: {message}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -110,7 +110,7 @@ def main() -> None:
     for token in FORBIDDEN_TOKENS:
         if token in combined:
             fail(f"unexpected production integration token found: {token}")
-    print("Task-030c-b10-r5 diagnostics export checks passed.")
+    print("Task-030c-b11-r3-3 diagnostics export checks passed.")
 
 
 if __name__ == "__main__":

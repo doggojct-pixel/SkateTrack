@@ -97,7 +97,7 @@ for token in [
     "emergencyContactStore.clearContacts()",
     "debug-tools-panel",
     "debugBuildSignatureCard",
-    "Task-030c-b10-r5",
+    "Task-030c-b11-r3-3",
     "debug-build-signature-card",
     "recordingDiagnosticsContextSection",
     "debug-recording-context-picker",

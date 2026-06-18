@@ -151,7 +151,7 @@ struct SessionSummaryView: View {
 
     private func summaryDetailStack(_ content: SessionSummaryContent) -> some View {
         VStack(spacing: 10) {
-            SessionRouteMapView(samples: content.motionSamples)
+            SessionRouteMapView(session: content.session, samples: content.motionSamples)
             SessionSummarySafetyStatusView(content: content)
 
             SessionAdvancedChartsView(

@@ -33,9 +33,14 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
     private var speedSampleSum: Double = 0
     private var movingElapsedTime: TimeInterval = 0
     private var isPaused = false
+    private var activePolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
 
-    mutating func beginSession(at startDate: Date = Date()) {
+    mutating func beginSession(
+        at startDate: Date = Date(),
+        policy: ActivityFidelityPolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
+    ) {
         reset()
+        activePolicy = policy
         sessionStartDate = startDate
         lastProcessedTimestamp = startDate
     }
@@ -88,6 +93,7 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         speedSampleSum = 0
         movingElapsedTime = 0
         isPaused = false
+        activePolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
     }
 
     func makeSummaryMetrics() -> SessionSummaryMetrics {
@@ -176,7 +182,7 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         if sample.sampleSource == .debugSimulated { return true }
         guard diagnostics.routeSegmentConfidence != .low,
               diagnostics.routeSegmentConfidence != .unavailable else { return false }
-        let policy = ActivityFidelityPolicy(profile: .standardSkateboard)
+        let policy = activePolicy
         guard policy.acceptsLowSpeedMetricSample(
             speedKmh: sample.speedKmh,
             horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
@@ -202,7 +208,7 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
 
     private mutating func accumulateElevation(from sample: MotionSample) {
         guard let altitude = sample.altitudeMeters, altitude.isFinite else { return }
-        let policy = ActivityFidelityPolicy(profile: .standardSkateboard)
+        let policy = activePolicy
 
         switch sample.altitudeSource {
         case .barometerRelative:

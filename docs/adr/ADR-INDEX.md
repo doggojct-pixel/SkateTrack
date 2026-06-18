@@ -118,3 +118,35 @@ Task-030c-b10-r4 compatibility token: Background Location Runtime + Gap Recovery
 
 Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, trusted chart metrics, display source alignment.
 Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard.
+
+- Task-030c-b11: Session Summary route rendering must separate `rawRoute`, `trustedRoute`, and `displayRoute`. Raw GPS and IMU samples remain preserved in diagnostics and export payloads, while the user-facing Summary map uses trusted location fixes, small-area jitter suppression, and light display smoothing so low-speed residential loops do not show timer-fusion repeats or obvious GPS drift as the primary route geometry.
+
+Task-030c-b11 verification token: Small-Area Route Geometry Stabilization, Task-030c-b11, rawRoute, trustedRoute, displayRoute, small-area jitter suppression.
+Task-030c-b11 compatibility token: Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness.
+
+## Task-030c-b11-r1 — Route confidence display continuity
+
+- Low-confidence route fixes are not equivalent to missing data. The Summary map should display them as uncertain secondary route segments rather than cutting the visible route whenever a segment is downgraded by the current activity profile.
+- True route breaks remain reserved for actual temporal gaps or large coordinate jumps. Raw GPS and diagnostics stay preserved, while the display route communicates confidence without fabricating higher precision.
+- This decision does not claim small-area loops are accurate and does not introduce IMU reconstruction, skateboard S-curve presentation, road snapping, or map matching.
+
+Task-030c-b11-r1 verification token: Route Confidence Display Continuity, Task-030c-b11-r1, uncertain route segment, low-confidence display continuity.
+
+## Task-030c-b11-r2 — Activity-aware route confidence display gates
+
+- Task-030c-b11-r2 requires live route confidence, Summary map display gates, and Summary chart continuity to use the resolved activity fidelity profile. Electric longboard, vehicle-validation, and future snow-proxy sessions must not be judged by standard-skateboard speed and segment-distance limits, while walking / small-area sessions keep conservative display filtering for poor-accuracy fixes.
+
+Task-030c-b11-r2 verification token: Activity-Aware Route Confidence + Small-Area Display Gate, Task-030c-b11-r2, activity-aware route confidence, small-area display gate.
+
+
+Task-030c-b11-r2 compatibility token: altitude source isolation, Strict Low-Speed Metrics + Altitude Source Isolation.
+
+
+## Task-030c-b11-r3-3 — Post-record GPS lock guard and approximate start semantics
+
+- Task-030c-b11-r3-3: Summary route rendering must separate approximate recording-start markers from the GPS lock route anchor. The start marker may be approximate when GPS is still converging, while trusted green route geometry must wait for a confirmed GPS-lock cluster.
+- Task-030c-b11-r3-3: Electric skateboard / electric longboard startup rendering must keep medium-confidence post-record convergence fixes as red warm-up context until GPS lock is confirmed, avoiding a misleading green route start.
+- Task-030c-b11-r3-3: Primary Summary Map region should prefer post-GPS-lock route coordinates when available; early convergence points should not pull the region away from the trusted route.
+- Task-030c-b11-r3-3: Summary Map may disclose route accuracy limits for startup warm-up or small-area sessions; this is preferred over over-smoothing or fabricating 1m-level route geometry.
+
+Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker, startup convergence warm-up, GPS warming up, session-route-accuracy-disclosure.

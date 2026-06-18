@@ -96,8 +96,7 @@ struct SessionAdvancedChartsView: View {
         guard let diagnostics = sample.locationDiagnostics else {
             return fidelityPolicy.acceptsSpeed(sample.speedKmh) ? sample.speedKmh : nil
         }
-        guard diagnostics.routeSegmentConfidence != .low,
-              diagnostics.routeSegmentConfidence != .unavailable else { return nil }
+        guard diagnostics.routeSegmentConfidence != .unavailable else { return nil }
         guard diagnostics.freshnessState == .fresh || diagnostics.freshnessState == .recent else { return nil }
         guard fidelityPolicy.acceptsLowSpeedMetricSample(
             speedKmh: sample.speedKmh,
@@ -121,7 +120,7 @@ struct SessionAdvancedChartsView: View {
             let horizontalAccuracy = diagnostics.horizontalAccuracyMeters ?? .infinity
             let speedAccuracy = diagnostics.speedAccuracyMetersPerSecond ?? .infinity
             let coordinateSpeed = diagnostics.coordinateDerivedSpeedKmh ?? sample.speedKmh
-            let isPreciseFix = horizontalAccuracy <= max(5.0, fidelityPolicy.preferredHorizontalAccuracyMeters)
+            let isPreciseFix = horizontalAccuracy <= fidelityPolicy.speedDisplayCorroborationAccuracyMeters
             let isSpeedAccurate = speedAccuracy <= 1.1
             let isCoordinateCorroborated = abs(coordinateSpeed - sample.speedKmh) <= max(2.0, sample.speedKmh * 0.35)
             if !(isPreciseFix && (isSpeedAccurate || isCoordinateCorroborated)) {
@@ -234,7 +233,9 @@ struct SessionAdvancedChartsView: View {
 
         guard let diagnostics = sample.locationDiagnostics else { return false }
         if diagnostics.freshnessState == .stale { return true }
-        if diagnostics.routeSegmentConfidence == .low { return true }
+        // Task-030c-b11-r2: low-confidence means uncertain, not missing. Keep charts
+        // continuous across fresh uncertain segments; real stale fixes and long update gaps
+        // remain the only chart-break triggers.
         if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > 12 }) == true { return true }
         return false
     }

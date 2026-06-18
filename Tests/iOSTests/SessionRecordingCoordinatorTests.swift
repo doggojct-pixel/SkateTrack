@@ -231,7 +231,7 @@ private final class MockSessionSensorEngine: SessionSensorProviding {
         motionSampleSubject.eraseToAnyPublisher()
     }
 
-    func startRecording(mode: SportMode) async throws {}
+    func startRecording(mode: SportMode, powerType: PowerType, fidelityProfile: ActivityFidelityProfile?) async throws {}
 
     func stopRecording() async -> SessionData {
         stopCalled = true

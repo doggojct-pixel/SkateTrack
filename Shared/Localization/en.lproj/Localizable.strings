@@ -297,6 +297,8 @@
 "summary.route.start" = "Start";
 "summary.route.finish" = "Finish";
 "summary.route.sampleCountFormat" = "%d GPS";
+"summary.route.accuracy.startup" = "GPS warming up · start may be approximate";
+"summary.route.accuracy.approxFormat" = "GPS ±%dm · small-area route is approximate";
 "summary.safety.clear.title" = "No falls detected";
 "summary.safety.clear.subtitle" = "No fall events were recorded for this saved session.";
 "summary.safety.falls.title" = "Safety event recorded";

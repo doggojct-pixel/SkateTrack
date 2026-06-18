@@ -28,6 +28,8 @@ final class SensorFusionEngine: SensorProvider {
     private var sampleTimer: DispatchSourceTimer?
 
     private var currentMode: SportMode?
+    private var currentPowerType: PowerType = .humanPowered
+    private var currentFidelityProfileOverride: ActivityFidelityProfile?
     private var currentPriorityPlan: SensorFusionPriorityPlan?
     private var sessionStartDate: Date?
     private var sessionSamples: [MotionSample] = []
@@ -53,7 +55,11 @@ final class SensorFusionEngine: SensorProvider {
         self.calibrationEngine = calibrationEngine
     }
 
-    func startSession(mode: SportMode) async throws {
+    func startSession(
+        mode: SportMode,
+        powerType: PowerType = .humanPowered,
+        fidelityProfile: ActivityFidelityProfile? = nil
+    ) async throws {
         let alreadyRunning = stateLock.withLock {
             sessionStartDate != nil
         }
@@ -62,7 +68,7 @@ final class SensorFusionEngine: SensorProvider {
             throw SensorFusionEngineError.sessionAlreadyRunning
         }
 
-        resetSessionState(mode: mode)
+        resetSessionState(mode: mode, powerType: powerType, fidelityProfile: fidelityProfile)
         #if DEBUG
         RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
             RecordingDebugRecoveryEvent(
@@ -96,12 +102,18 @@ final class SensorFusionEngine: SensorProvider {
             startDate: snapshot.startDate,
             endDate: Date(),
             sportMode: snapshot.mode,
-            motionSamples: snapshot.samples
+            powerType: snapshot.powerType,
+            motionSamples: snapshot.samples,
+            fidelityProfile: snapshot.fidelityProfile
         )
     }
 
-    func startRecording(mode: SportMode) async throws {
-        try await startSession(mode: mode)
+    func startRecording(
+        mode: SportMode,
+        powerType: PowerType = .humanPowered,
+        fidelityProfile: ActivityFidelityProfile? = nil
+    ) async throws {
+        try await startSession(mode: mode, powerType: powerType, fidelityProfile: fidelityProfile)
     }
 
     func stopRecording() async -> SessionData {
@@ -111,9 +123,11 @@ final class SensorFusionEngine: SensorProvider {
     func priorityPlan(for mode: SportMode) -> SensorFusionPriorityPlan {
         calibrationEngine.priorityPlan(for: mode)
     }
-    private func resetSessionState(mode: SportMode) {
+    private func resetSessionState(mode: SportMode, powerType: PowerType, fidelityProfile: ActivityFidelityProfile?) {
         stateLock.withLock {
             currentMode = mode
+            currentPowerType = powerType
+            currentFidelityProfileOverride = fidelityProfile
             currentPriorityPlan = calibrationEngine.priorityPlan(for: mode)
             sessionStartDate = Date()
             sessionSamples = []
@@ -270,11 +284,12 @@ final class SensorFusionEngine: SensorProvider {
             receivedAt: receivedAt
         )
 
+        let liveRoutePolicy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
         stateLock.withLock {
             latestRawLocation = location
             latestLocationDiagnostics = diagnostics
 
-            if Self.trustsLocationForLiveRoute(diagnostics) {
+            if Self.trustsLocationForLiveRoute(diagnostics, policy: liveRoutePolicy) {
                 latestCoordinate = GeoCoordinate(
                     latitude: location.coordinate.latitude,
                     longitude: location.coordinate.longitude
@@ -292,10 +307,14 @@ final class SensorFusionEngine: SensorProvider {
         publishRawLocationFixMotionSample(for: location, diagnostics: diagnostics)
     }
     private func publishRawLocationFixMotionSample(for location: CLLocation, diagnostics: LocationFixDiagnostics) {
+        let liveRoutePolicy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
         let sample = stateLock.withLock { () -> MotionSample? in
             guard sessionStartDate != nil else { return nil }
             let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let trustedForLiveRoute = Self.trustsLocationForLiveRoute(diagnostics)
+            let trustedForLiveRoute = Self.trustsLocationForLiveRoute(
+                diagnostics,
+                policy: liveRoutePolicy
+            )
             let speedKmh = trustedForLiveRoute
                 ? (location.speed >= 0
                     ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
@@ -345,12 +364,17 @@ final class SensorFusionEngine: SensorProvider {
             sessionStartDate: sessionStartDate,
             receivedAt: receivedAt
         )
+        let confidenceProfile = routeConfidenceProfile(
+            coreLocationSpeedKmh: coreLocationSpeedKmh,
+            coordinateDerivedSpeedKmh: rawCoordinateDerivedSpeedKmh
+        )
         let isLowSpeedLocalJump = isLowSpeedLocalMetricOutlier(
             coreLocationSpeedKmh: coreLocationSpeedKmh,
             coordinateDerivedSpeedKmh: rawCoordinateDerivedSpeedKmh,
             horizontalAccuracyMeters: horizontalAccuracy,
             speedAccuracyMetersPerSecond: normalizedAccuracy(location.speedAccuracy),
-            segmentDistanceMeters: segmentDistance
+            segmentDistanceMeters: segmentDistance,
+            profile: confidenceProfile
         )
         let coordinateDerivedSpeedKmh = (isStartupSpeedSpike || isLowSpeedLocalJump) ? nil : rawCoordinateDerivedSpeedKmh
         let speedSource = locationSpeedSource(
@@ -366,7 +390,7 @@ final class SensorFusionEngine: SensorProvider {
                 updateIntervalSeconds: updateInterval,
                 segmentDistanceMeters: segmentDistance,
                 coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
-                profile: currentActivityFidelityProfile()
+                profile: confidenceProfile
             )
 
         return LocationFixDiagnostics(
@@ -386,10 +410,9 @@ final class SensorFusionEngine: SensorProvider {
             routeSegmentConfidence: confidence
         )
     }
-    private static func trustsLocationForLiveRoute(_ diagnostics: LocationFixDiagnostics) -> Bool {
+    private static func trustsLocationForLiveRoute(_ diagnostics: LocationFixDiagnostics, policy: ActivityFidelityPolicy) -> Bool {
         guard diagnostics.routeSegmentConfidence != .low,
               diagnostics.routeSegmentConfidence != .unavailable else { return false }
-        let policy = ActivityFidelityPolicy(profile: .standardSkateboard)
         return policy.trustsRouteSegment(
             horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
             freshnessState: diagnostics.freshnessState,
@@ -427,9 +450,10 @@ final class SensorFusionEngine: SensorProvider {
         coordinateDerivedSpeedKmh: Double?,
         horizontalAccuracyMeters: Double?,
         speedAccuracyMetersPerSecond: Double?,
-        segmentDistanceMeters: Double?
+        segmentDistanceMeters: Double?,
+        profile: ActivityFidelityProfile
     ) -> Bool {
-        let policy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
+        let policy = ActivityFidelityPolicy(profile: profile)
         let speedKmh = coreLocationSpeedKmh ?? coordinateDerivedSpeedKmh ?? 0
         guard speedKmh > 0 else { return false }
         if speedKmh >= Self.lowSpeedSuspiciousCoreLocationSpeedKmh {
@@ -491,14 +515,34 @@ final class SensorFusionEngine: SensorProvider {
         if horizontalAccuracyMeters <= policy.maximumUsableHorizontalAccuracyMeters { return .medium }
         return .low
     }
+    private func routeConfidenceProfile(
+        coreLocationSpeedKmh: Double?,
+        coordinateDerivedSpeedKmh: Double?
+    ) -> ActivityFidelityProfile {
+        let baseProfile = currentActivityFidelityProfile()
+        let candidateSpeed = max(coreLocationSpeedKmh ?? 0, coordinateDerivedSpeedKmh ?? 0)
+        let basePolicy = ActivityFidelityPolicy(profile: baseProfile)
+        let powerType = stateLock.withLock { currentPowerType }
+
+        // Task-030c-b11-r2: motorcycle / vehicle validation may still be started from a
+        // human-powered UI path during summer snow-proxy testing. Treat clearly high-speed
+        // proxy movement as validation so route continuity is not judged by skateboard-only
+        // limits, while normal skateboard / walking sessions keep their stricter gates.
+        if powerType == .humanPowered,
+           candidateSpeed > basePolicy.chartMaximumSpeedKmh + 20 {
+            return .vehicleValidation
+        }
+
+        return baseProfile
+    }
+
     private func currentActivityFidelityProfile() -> ActivityFidelityProfile {
         stateLock.withLock {
-            switch currentMode ?? .skateboard(.streetPark) {
-            case .skateboard(.surfskate): return .technicalSkateboard
-            case .skateboard: return .standardSkateboard
-            case .inline(.fitnessSpeed): return .inlineSpeed
-            case .inline: return .inlineRecreation
-            }
+            if let currentFidelityProfileOverride { return currentFidelityProfileOverride }
+            return ActivityFidelityProfile.defaultProfile(
+                for: currentMode ?? .skateboard(.streetPark),
+                powerType: currentPowerType
+            )
         }
     }
     private func normalizedAccuracy(_ accuracy: CLLocationAccuracy) -> Double? {
@@ -535,17 +579,28 @@ final class SensorFusionEngine: SensorProvider {
             latestAltitudeMeters = altitude
         }
     }
-    private func sessionSnapshot() -> (startDate: Date, mode: SportMode, samples: [MotionSample]) {
+    private func sessionSnapshot() -> (
+        startDate: Date,
+        mode: SportMode,
+        powerType: PowerType,
+        fidelityProfile: ActivityFidelityProfile,
+        samples: [MotionSample]
+    ) {
         stateLock.withLock {
             let startDate = sessionStartDate ?? Date()
             let mode = currentMode ?? .skateboard(.streetPark)
+            let powerType = currentPowerType
+            let fidelityProfile = currentFidelityProfileOverride
+                ?? ActivityFidelityProfile.defaultProfile(for: mode, powerType: powerType)
             let samples = sessionSamples
-            return (startDate, mode, samples)
+            return (startDate, mode, powerType, fidelityProfile, samples)
         }
     }
     private func resetTransientState() {
         stateLock.withLock {
             currentMode = nil
+            currentPowerType = .humanPowered
+            currentFidelityProfileOverride = nil
             currentPriorityPlan = nil
             sessionStartDate = nil
             latestCoordinate = nil

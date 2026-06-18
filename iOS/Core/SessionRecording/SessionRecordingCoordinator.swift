@@ -29,7 +29,7 @@ enum SessionRecordingDataSource: Sendable, Equatable {
 #endif
 protocol SessionSensorProviding: AnyObject {
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> { get }
-    func startRecording(mode: SportMode) async throws
+    func startRecording(mode: SportMode, powerType: PowerType, fidelityProfile: ActivityFidelityProfile?) async throws
     func stopRecording() async -> SessionData
 }
 protocol SessionFallDetecting: AnyObject {
@@ -505,17 +505,17 @@ final class SessionRecordingCoordinator {
         fallCountdownSubject.send(nil)
         sosTriggerEventSubject.send(nil)
         completedSession = nil
-        metricsAccumulator.beginSession(at: sessionStartDate ?? Date())
+        metricsAccumulator.beginSession(at: sessionStartDate ?? Date(), policy: ActivityFidelityPolicy(profile: currentFidelityProfile()))
         await Task.yield()
 
         do {
             #if DEBUG
             if dataSource == .mock { startMockSampleFeed(for: mode) } else {
-                try await sensorEngine.startRecording(mode: mode)
+                try await sensorEngine.startRecording(mode: mode, powerType: powerType, fidelityProfile: currentFidelityProfile())
                 bindLiveSampleStream(for: mode)
             }
             #else
-            try await sensorEngine.startRecording(mode: mode)
+            try await sensorEngine.startRecording(mode: mode, powerType: powerType, fidelityProfile: currentFidelityProfile())
             bindLiveSampleStream(for: mode)
             #endif
             try applyTransition(to: .recording)
@@ -927,6 +927,17 @@ final class SessionRecordingCoordinator {
     }
 
     private func currentFidelityProfile(observedSamples: [MotionSample] = []) -> ActivityFidelityProfile {
+        #if DEBUG
+        switch debugRecordingTestContext.label {
+        case .vehicleScreenOff, .scooterLockedPocket:
+            return .vehicleValidation
+        case .electricLongboardLockedPocket:
+            return .electricSkateboard
+        default:
+            break
+        }
+        #endif
+
         let baseProfile = ActivityFidelityProfile.defaultProfile(
             for: selectedSportMode ?? .skateboard(.streetPark),
             powerType: selectedPowerType

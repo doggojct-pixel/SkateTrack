@@ -183,7 +183,7 @@ struct DebugToolsPanelView: View {
                     .font(.system(size: 11, weight: .black, design: .rounded))
                     .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
                     .textCase(.uppercase)
-                Text("Task-030c-b10-r5")
+                Text("Task-030c-b11-r3-3")
                     .font(.system(size: 18, weight: .black, design: .rounded))
                     .foregroundStyle(.white)
                     .tracking(0.3)
