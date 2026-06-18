@@ -153,3 +153,15 @@ Snow-Task-007 provides a read-only macOS Snow viewer. The DEBUG preview exists f
 | Scope boundary | Inspect behavior and source after QA | No package schema / reader / writer, iOS, watchOS, WatchBridge, HealthKit, WeatherKit, CloudKit, or persistence changes are introduced. |
 
 Snow-Task-007 manual QA token: macOS Snow viewer smoke test complete.
+
+## Snow-Task-008a Manual QA Addendum
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| Old package import | Import a schema 1 `.skatetrack` package with no Snow fields | Package decodes and previews normally; no Snow crash. |
+| Non-Snow export | Export a skateboard / inline session | Package has no `snowPayload`; existing preview behavior remains unchanged. |
+| Snow export with state | Export a Snow session after repository-backed Snow state exists | Package declares Snow capability keys and includes official `snowPayload`. |
+| Snow export without state | Export a Snow session with no repository Snow state | Package remains valid but `snowPayload` is nil; no empty placeholder analysis is fabricated. |
+| macOS imported Snow package | Import a schema 2 Snow package with valid `snowPayload` | macOS shows Snow analysis through `MacSnowRootView` with source `.importedPackage`. |
+| macOS imported pending package | Import a Snow package without `snowPayload` | macOS shows the existing `packageSchemaPending` state. |
+

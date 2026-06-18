@@ -1,5 +1,5 @@
 // [協作區] Shared/Models/SkateTrackPackageManifest.swift
-// 用途：定義 Task-027 可攜式 .skatetrack 匯出 package manifest 與 schema 版本策略。
+// 用途：定義 Task-027/008a 可攜式 .skatetrack 匯出 package manifest、schema 版本策略與 capability 宣告。
 // 委派至：SkateTrackPackageWriter / Reader 與 iOS package export provider；不得混用 Task-026 backup package。
 
 import Foundation
@@ -9,7 +9,8 @@ enum SkateTrackPackageType: String, Codable, Sendable, Equatable {
 }
 
 struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
-    static let currentSchemaVersion = 1
+    static let currentSchemaVersion = 2
+    static let supportedSchemaVersions: Set<Int> = [1, 2]
 
     let packageType: SkateTrackPackageType
     let schemaVersion: Int
@@ -22,6 +23,7 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
     let includesAccountData: Bool
     let includesAchievements: Bool
     let formatDescription: String
+    let capabilities: [String]?
 
     init(
         packageType: SkateTrackPackageType = .export,
@@ -34,7 +36,8 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         includesMotionSamples: Bool,
         includesAccountData: Bool = false,
         includesAchievements: Bool = false,
-        formatDescription: String = "portable-session-export"
+        formatDescription: String = "portable-session-export",
+        capabilities: [String]? = nil
     ) {
         self.packageType = packageType
         self.schemaVersion = schemaVersion
@@ -47,6 +50,15 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         self.includesAccountData = includesAccountData
         self.includesAchievements = includesAchievements
         self.formatDescription = formatDescription
+        self.capabilities = Self.normalizedCapabilities(capabilities)
+    }
+
+    var declaresSnowPackagePayload: Bool {
+        normalizedCapabilitySet.contains(SkateTrackPackageSnowCapability.snowSports.rawValue)
+    }
+
+    var normalizedCapabilitySet: Set<String> {
+        Set(capabilities ?? [])
     }
 
     static func decode(from data: Data) throws -> SkateTrackPackageManifest {
@@ -58,10 +70,7 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
     }
 
     static func validate(_ manifest: SkateTrackPackageManifest) throws {
-        switch manifest.schemaVersion {
-        case currentSchemaVersion:
-            break
-        default:
+        guard supportedSchemaVersions.contains(manifest.schemaVersion) else {
             throw SkateTrackPackageError.unsupportedSchemaVersion(manifest.schemaVersion)
         }
 
@@ -76,6 +85,43 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         guard !manifest.includesAchievements else {
             throw SkateTrackPackageError.achievementsNotAllowed
         }
+    }
+
+    private static func normalizedCapabilities(_ capabilities: [String]?) -> [String]? {
+        guard let capabilities else { return nil }
+        let normalized = Array(Set(capabilities.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })).sorted()
+        return normalized.isEmpty ? nil : normalized
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case packageType
+        case schemaVersion
+        case appVersion
+        case buildNumber
+        case createdAt
+        case localeIdentifier
+        case sessionCount
+        case includesMotionSamples
+        case includesAccountData
+        case includesAchievements
+        case formatDescription
+        case capabilities
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        packageType = try container.decode(SkateTrackPackageType.self, forKey: .packageType)
+        schemaVersion = try container.decode(Int.self, forKey: .schemaVersion)
+        appVersion = try container.decode(String.self, forKey: .appVersion)
+        buildNumber = try container.decode(String.self, forKey: .buildNumber)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        localeIdentifier = try container.decode(String.self, forKey: .localeIdentifier)
+        sessionCount = max(0, try container.decode(Int.self, forKey: .sessionCount))
+        includesMotionSamples = try container.decode(Bool.self, forKey: .includesMotionSamples)
+        includesAccountData = try container.decode(Bool.self, forKey: .includesAccountData)
+        includesAchievements = try container.decode(Bool.self, forKey: .includesAchievements)
+        formatDescription = try container.decode(String.self, forKey: .formatDescription)
+        capabilities = Self.normalizedCapabilities(try container.decodeIfPresent([String].self, forKey: .capabilities))
     }
 }
 

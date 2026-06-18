@@ -405,6 +405,10 @@
 		35C620000000000000000112 /* WatchSnowControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000012 /* WatchSnowControlView.swift */; };
 		35C620000000000000000113 /* WatchSnowFallAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000013 /* WatchSnowFallAlertView.swift */; };
 		35C620000000000000000114 /* WatchSnowLowConfidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */; };
+		37E800000000000000000101 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E800000000000000000102 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E800000000000000000103 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -432,6 +436,7 @@
 		31C200000000000000000004 /* SnowDistanceBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDistanceBreakdown.swift; sourceTree = "<group>"; };
 		31C200000000000000000005 /* SnowVerticalMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowVerticalMetrics.swift; sourceTree = "<group>"; };
 		31C200000000000000000006 /* SnowSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionState.swift; sourceTree = "<group>"; };
+		37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowPayload.swift; sourceTree = "<group>"; };
 		31C210000000000000000001 /* SnowSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionRepository.swift; sourceTree = "<group>"; };
 		31C210000000000000000002 /* SnowSessionEntityMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionEntityMapper.swift; sourceTree = "<group>"; };
 		31C220000000000000000001 /* useSnowSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowSession.swift; sourceTree = "<group>"; };
@@ -455,6 +460,7 @@
 		34C500000000000000000007 /* useSnowLiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowLiveSession.swift; sourceTree = "<group>"; };
 		34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfigTests.swift; sourceTree = "<group>"; };
 		34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapperTests.swift; sourceTree = "<group>"; };
+		37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowCompatibilityTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -799,6 +805,7 @@
 				31C200000000000000000004 /* SnowDistanceBreakdown.swift */,
 				31C200000000000000000005 /* SnowVerticalMetrics.swift */,
 				31C200000000000000000006 /* SnowSessionState.swift */,
+				37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */,
 				32C300000000000000000001 /* SnowClassifierConfig.swift */,
 				32C300000000000000000002 /* SnowSegmentClassification.swift */,
 				32C300000000000000000003 /* SnowSegmentClassifier.swift */,
@@ -930,6 +937,7 @@
 				33C410000000000000000001 /* RunBoundaryDetectorTests.swift */,
 				34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */,
 				34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */,
+				37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1643,6 +1651,7 @@
 				33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */,
 				34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */,
 				34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */,
+				37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1857,6 +1866,7 @@
 				31C20000000000000000010A /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010D /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000110 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000101 /* SkateTrackPackageSnowPayload.swift in Sources */,
 				32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */,
@@ -1934,6 +1944,7 @@
 				31C20000000000000000010C /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010F /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000112 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000103 /* SkateTrackPackageSnowPayload.swift in Sources */,
 				32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */,
@@ -1989,6 +2000,7 @@
 				31C20000000000000000010B /* SnowDistanceBreakdown.swift in Sources */,
 				31C20000000000000000010E /* SnowVerticalMetrics.swift in Sources */,
 				31C200000000000000000111 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000102 /* SkateTrackPackageSnowPayload.swift in Sources */,
 				32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */,
 				32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */,
 				32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */,

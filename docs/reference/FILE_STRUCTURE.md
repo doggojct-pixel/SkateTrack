@@ -1132,3 +1132,18 @@ scripts/create_snow_task007_review_pack.sh            # [協作區] Snow-Task-00
 Snow-Task-007 intentionally does not add or modify package schema, package reader / writer, backup / restore flow, iOS source, watchOS source, WatchBridge, or Snow value types.
 
 Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a Package Compatibility Files
+
+Snow-Task-008a adds the following package compatibility files / responsibilities:
+
+- `Shared/Models/SkateTrackPackageSnowPayload.swift` — official package Snow payload model and Snow capability keys.
+- `Shared/Models/SkateTrackPackageManifest.swift` — schema version 2 and supported schema versions 1 / 2.
+- `Shared/Models/SkateTrackPackagePayload.swift` — optional `snowPayload` on package sessions.
+- `iOS/Core/Export/SkateTrackPackageExportProvider.swift` — repository-backed Snow payload assembly during package export.
+- `macOS/Core/Snow/MacSnowSessionAnalysisMapper.swift` — package payload to `MacSnowSessionAnalysis` availability conversion.
+- `macOS/Features/Import/MacPackageImportViewModel.swift` and `MacPackagePreviewView.swift` — imported package Snow viewer routing.
+- `Tests/iOSTests/SkateTrackPackageSnowCompatibilityTests.swift` — schema and payload compatibility tests.
+- `scripts/verify_snow_package_compatibility.py` — Snow-Task-008a guardrail verification.
+- `scripts/create_snow_task008a_review_pack.sh` — writes 008a review artifacts to `/Users/doggo/Documents/App軟體區/upload/`.
+

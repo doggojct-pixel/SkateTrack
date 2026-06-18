@@ -225,6 +225,27 @@ FORBIDDEN_CHANGED_FILES = [
     "Shared/Models/SnowSessionState.swift",
 ]
 
+# Snow-Task-007 originally blocked package/export/iOS paths to keep the
+# read-only macOS viewer task from drifting into Snow package compatibility.
+# Snow-Task-008a is the explicitly approved package-compatibility task, so
+# these exact paths are allowed to be modified while the 007 feature checks
+# continue to run as cumulative regression guardrails.
+POST_007_ALLOWED_TASK008A_CHANGED_PATHS = {
+    "Shared/Models/SkateTrackPackageManifest.swift",
+    "Shared/Models/SkateTrackPackagePayload.swift",
+    "Shared/Models/SkateTrackPackageSnowPayload.swift",
+    "Shared/Export/SkateTrackPackageReader.swift",
+    "Shared/Export/SkateTrackPackageWriter.swift",
+    "iOS/Core/Export/SkateTrackPackageExportProvider.swift",
+    "iOS/Hooks/useSkateTrackPackageExport.swift",
+    "iOS/Features/SessionSummary/SessionPackageExportActionView.swift",
+    "macOS/Core/Snow/MacSnowSessionAnalysisMapper.swift",
+    "macOS/Features/Import/MacPackageImportViewModel.swift",
+    "macOS/Features/Import/MacPackagePreviewView.swift",
+    "Tests/iOSTests/SkateTrackPackageSnowCompatibilityTests.swift",
+    "scripts/verify_snow_package_compatibility.py",
+}
+
 PROJECT_TOKENS = [
     "MacSnowAnalysisAvailability.swift",
     "MacSnowSessionAnalysis.swift",
@@ -351,6 +372,8 @@ def main() -> None:
 
     changed = git_changed_files()
     for path in changed:
+        if path in POST_007_ALLOWED_TASK008A_CHANGED_PATHS:
+            continue
         if path in FORBIDDEN_CHANGED_FILES:
             fail(f"forbidden Snow value type modified in Task-007: {path}")
         for prefix in FORBIDDEN_CHANGED_PREFIXES:
@@ -381,7 +404,7 @@ def main() -> None:
         "[snow-task-007] PASS: macOS Snow analysis data boundary, "
         "struct-based presentation model, DEBUG mock provider, core viewer UI views, "
         "DEBUG MacRootView integration, localization, route/elevation filtering, "
-        "documentation, review-pack script, project membership, and 007/008 package guardrails are present."
+        "documentation, review-pack script, project membership, and post-007 Task-008a package guardrails are present."
     )
 
 

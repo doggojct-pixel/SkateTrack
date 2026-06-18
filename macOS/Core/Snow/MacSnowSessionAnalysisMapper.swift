@@ -28,6 +28,30 @@ enum MacSnowSessionAnalysisMapper {
         .packageSchemaPending
     }
 
+    static func makeAvailabilityFromPackage(
+        packageSession: SkateTrackPackageSession,
+        snowPayload: SkateTrackPackageSnowPayload?
+    ) -> MacSnowAnalysisAvailability {
+        guard isSnowSession(packageSession.session) else {
+            return .unavailable(reason: "noSnowSession")
+        }
+
+        guard let snowPayload else {
+            return .packageSchemaPending
+        }
+
+        guard snowPayload.sessionID == packageSession.session.id else {
+            return .unavailable(reason: "snowPayloadSessionMismatch")
+        }
+
+        return makeAvailability(
+            session: packageSession.session,
+            snowState: snowPayload.makeSnowSessionState(),
+            motionSamples: packageSession.motionSamples,
+            source: .importedPackage
+        )
+    }
+
     static func makeAnalysis(
         session: SessionData,
         snowState: SnowSessionState,

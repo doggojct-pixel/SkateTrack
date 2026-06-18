@@ -1762,3 +1762,18 @@ Claude's Snow-Task-007 guidance confirmed that Release builds should distinguish
 - Future macOS main-shell integration may require outer layout adjustments when the app moves toward `SkateTrack_macOS_UI_v2`.
 
 Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a — Snow Package Compatibility and macOS Imported Package Viewer
+
+### Completed
+- Added official optional Snow payload support to `.skatetrack` package sessions through `SkateTrackPackageSnowPayload`.
+- Bumped the package manifest schema to version 2 while preserving schema 1 decode compatibility.
+- Added optional package `capabilities` with Snow capability keys for payload-aware exports.
+- Updated iOS package export to include Snow payload only when real `SnowSessionState` is available from the repository.
+- Preserved `snowPayload == nil` for non-Snow sessions and Snow sessions without official repository Snow state.
+- Wired imported Snow packages into the macOS Snow viewer through `MacSnowSessionAnalysisMapper.makeAvailabilityFromPackage(...)` and `.importedPackage` source.
+- Added package compatibility verification, tests, and a review-pack script that writes artifacts outside the repo under `/Users/doggo/Documents/App軟體區/upload/`.
+
+### Deferred
+- Backup `snowSessions` compatibility and Snow Health export provider boundary remain deferred to Snow-Task-008b.
+

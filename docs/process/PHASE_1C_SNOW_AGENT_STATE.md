@@ -242,3 +242,17 @@ Deferred from Snow-Task-007:
 - Manual correction persistence for Snow segments: later UX / persistence task.
 
 Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a Package Compatibility State
+
+Snow-Task-008a adds the package compatibility half of Snow-Task-008. The package manifest now uses schema version 2 while supporting decode of schema versions 1 and 2. Snow package data is optional and capability-declared through `capabilities` with `snow-*` keys.
+
+Rules established by Snow-Task-008a:
+
+- Schema 1 `.skatetrack` packages remain valid and decode without Snow fields.
+- Schema 2 packages may contain `SkateTrackPackageSnowPayload` on each package session.
+- `snowPayload == nil` means no official Snow analysis payload is available and macOS should continue to show `packageSchemaPending`.
+- iOS export may create Snow payload only from real `SnowSessionState` returned by `SnowSessionRepositoryProtocol`.
+- macOS imported packages use `MacSnowSessionAnalysisMapper.makeAvailabilityFromPackage(...)` and source `.importedPackage`.
+- Backup compatibility and Snow Health export provider boundary remain Snow-Task-008b scope.
+

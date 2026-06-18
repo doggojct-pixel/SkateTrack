@@ -108,3 +108,11 @@ Snow-Task-006a verification token: mock-backed Watch Snow UI complete without Wa
 - Snow-Task-007 does not modify package manifest / payload / reader / writer files, backup / restore flows, iOS source, watchOS source, WatchBridge, or Snow value types.
 
 Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+### Snow-Task-008a Package Compatibility
+
+- `Shared/Models/SkateTrackPackageSnowPayload.swift` defines the official optional Snow package payload.
+- `scripts/verify_snow_package_compatibility.py` verifies schema 1 / 2 compatibility, optional capabilities, optional `snowPayload`, iOS export provider wiring, macOS imported package viewer wiring, and 008a scope guardrails.
+- `scripts/create_snow_task008a_review_pack.sh` creates the Snow-Task-008a review pack in `/Users/doggo/Documents/App軟體區/upload/`.
+- Snow-Task-008b remains responsible for backup compatibility and Snow Health export provider boundary.
+

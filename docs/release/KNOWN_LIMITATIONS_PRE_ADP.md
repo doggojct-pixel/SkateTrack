@@ -188,3 +188,14 @@ Snow-Task-007 intentionally adds the macOS Snow viewer before official `.skatetr
 - The outer macOS shell remains temporary; future integration with `SkateTrack_macOS_UI_v2` may require layout adjustments around the Snow viewer.
 
 Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a Package Compatibility Limitations
+
+Snow-Task-008a supports optional Snow package payloads for `.skatetrack` export/import, but the following remain deferred:
+
+- Backup package Snow compatibility is deferred to Snow-Task-008b.
+- Snow Health export provider boundary and any future HealthKit implementation are deferred to Snow-Task-008b / later ADP-ready work.
+- Production HealthKit export remains disabled and no HealthKit entitlement is required by Snow-Task-008a.
+- Imported Snow packages without `snowPayload` still show `packageSchemaPending`; the app does not fabricate Snow analysis from raw motion samples.
+- Manual correction persistence, resort maps, WeatherKit, CloudKit, and WatchBridge real Snow wiring remain deferred.
+
