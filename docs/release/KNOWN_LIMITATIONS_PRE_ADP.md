@@ -320,3 +320,14 @@ Task-030c-b12 package capability token: altitude-diagnostics-v1.
 - **Safety boundary:** Pressure smoothing diagnostics must not alter horizontal route geometry, trusted distance, trusted speed, or estimated route behavior.
 
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilter, Pressure LPF diagnostics, does not guarantee survey-grade elevation precision, no estimated route geometry.
+
+
+### Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+
+- **Current status:** Task-030c-b13-A improves how low-confidence route segments are displayed and reduces false low-confidence classifications for low-speed freebord riding when CoreLocation does not provide a valid speed scalar.
+- Low-confidence route segments now use a solid fluorescent-pink style instead of a semi-transparent dashed red style. This makes uncertain but present GPS geometry look visually integrated with trusted route geometry.
+- The freebord calibration is intentionally narrow: the suspicious CoreLocation-speed outlier gate only runs when CoreLocation actually reports a valid speed. The coordinate-derived local-jump gate remains active for implausible GPS jumps.
+- This task does not add IMU dead reckoning, road snapping, map matching, GPS gap interpolation, indoor localization, or any estimated route geometry.
+- A small amount of low-confidence route data remains expected under tree canopy, poor horizontal accuracy, stale fixes, or genuine GPS jumps.
+
+Task-030c-b13-A verification token: solid fluorescent-pink route segments, freebord confidence calibration, does not add IMU dead reckoning, no estimated route geometry, startup warm-up dashed style preserved.

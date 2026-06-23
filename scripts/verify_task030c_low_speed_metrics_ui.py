@@ -27,7 +27,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b12-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
     ],
     "Shared/Models/MotionSample.swift": [
         "acceptsLowSpeedMetricSample(",
@@ -78,7 +78,7 @@ REQUIRED_TOKENS = {
         "SessionSummaryContent: Equatable, Sendable",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b12-B",
+        "Task-030c-b13-A",
     ],
     "docs/history/DEV_LOG.md": [
         "Task-030c-b11-r3-3",

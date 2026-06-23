@@ -185,3 +185,13 @@ Task-030c-b12 package capability token: altitude-diagnostics-v1.
 - CoreLocation absolute altitude and barometer-relative altitude remain source-isolated. b12-B does not perform atmospheric drift correction, pressure-to-absolute-altitude conversion, blended altitude, IMU dead reckoning, Wi-Fi RTT, or indoor localization.
 
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, diagnostics-only pressure smoothing, horizontal coordinates, distance logic, and route rendering remain isolated.
+
+
+## Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+
+- Low-confidence route fixes should remain visible, but they should no longer look like broken or missing route data. b13-A renders uncertain route segments as solid fluorescent-pink geometry with the same visual weight as trusted teal/green route segments.
+- Startup warm-up remains visually separate and dashed because it represents approximate GPS lock semantics, not merely lower confidence after GPS is present.
+- The suspicious CoreLocation-speed outlier gate is semantically tied to CoreLocation reporting a valid speed. Coordinate-derived speed must not substitute into the suspicious CoreLocation-speed gate, because that causes false low-confidence classifications for low-speed freebord riding under tree canopy when `CLLocation.speed` is unavailable.
+- The coordinate-derived local-jump gate remains unchanged and continues to reject genuinely implausible GPS jumps.
+
+Task-030c-b13-A verification token: solid fluorescent-pink low-confidence route style, coordinate-derived speed must not substitute into the suspicious CoreLocation-speed gate, freebord confidence calibration, startup warm-up dashed style preserved, no estimated route geometry.

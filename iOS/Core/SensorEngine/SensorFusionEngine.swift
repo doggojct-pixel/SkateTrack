@@ -587,20 +587,26 @@ final class SensorFusionEngine: SensorProvider {
         profile: ActivityFidelityProfile
     ) -> Bool {
         let policy = ActivityFidelityPolicy(profile: profile)
-        let speedKmh = coreLocationSpeedKmh ?? coordinateDerivedSpeedKmh ?? 0
-        guard speedKmh > 0 else { return false }
-        if speedKmh >= Self.lowSpeedSuspiciousCoreLocationSpeedKmh {
-            return !policy.acceptsLowSpeedMetricSample(
-                speedKmh: speedKmh,
-                horizontalAccuracyMeters: horizontalAccuracyMeters,
-                speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
-                coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
-                segmentDistanceMeters: segmentDistanceMeters
-            )
+
+        // Task-030c-b13-A: coreLocationSpeedKmh only fires when CLLocation actually reported a speed.
+        // Coordinate-derived speed must not substitute into this gate; doing so over-penalizes
+        // low-speed freebord carving under tree canopy when CLLocation.speed is unavailable.
+        if let coreSpeedKmh = coreLocationSpeedKmh, coreSpeedKmh > 0 {
+            if coreSpeedKmh >= Self.lowSpeedSuspiciousCoreLocationSpeedKmh {
+                return !policy.acceptsLowSpeedMetricSample(
+                    speedKmh: coreSpeedKmh,
+                    horizontalAccuracyMeters: horizontalAccuracyMeters,
+                    speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
+                    coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,
+                    segmentDistanceMeters: segmentDistanceMeters
+                )
+            }
         }
+
         if let coordinateDerivedSpeedKmh, coordinateDerivedSpeedKmh >= Self.lowSpeedLocalJumpKmh {
+            let metricSpeedKmh = coreLocationSpeedKmh ?? coordinateDerivedSpeedKmh
             return !policy.acceptsLowSpeedMetricSample(
-                speedKmh: speedKmh,
+                speedKmh: metricSpeedKmh,
                 horizontalAccuracyMeters: horizontalAccuracyMeters,
                 speedAccuracyMetersPerSecond: speedAccuracyMetersPerSecond,
                 coordinateDerivedSpeedKmh: coordinateDerivedSpeedKmh,

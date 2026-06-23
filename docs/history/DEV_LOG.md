@@ -2018,3 +2018,14 @@ Task-030c-b12 package capability token: altitude-diagnostics-v1.
 
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, no estimated route geometry, no SnowPrototype changes.
 Task-030c-b12-B limitation token: Pressure LPF diagnostics are recorded, but long-term atmospheric drift correction, pressure-to-absolute-altitude conversion, full barometer fusion, IMU dead reckoning, Wi-Fi RTT, and indoor localization remain deferred.
+
+
+## Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-A`.
+- Changed low-confidence route rendering from semi-transparent dashed red to solid fluorescent-pink route segments with the same line weight and opacity as trusted teal/green segments.
+- Preserved startup warm-up as a separate dashed style so GPS warm-up remains visually distinct from low-confidence-but-present route fixes.
+- Calibrated the low-speed local metric outlier gate so the suspicious CoreLocation-speed rule only runs when CoreLocation actually reports a valid speed. Coordinate-derived speed no longer substitutes into that CoreLocation-specific gate, which prevents low-speed freebord carving under tree canopy from being over-penalized when `CLLocation.speed` is unavailable.
+- Kept the coordinate-derived local-jump gate intact for genuinely implausible GPS teleports; no estimated route geometry, dead reckoning, map matching, road snapping, altitude, pressure, or summary metric logic changed.
+
+Task-030c-b13-A verification token: solid fluorescent-pink route segments, CoreLocation speed availability, coordinate-derived local jump gate unchanged, freebord confidence calibration, no estimated route geometry, no SnowPrototype changes.

@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b12-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b12-B")',
+        'Text("Task-030c-b13-A")',
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [

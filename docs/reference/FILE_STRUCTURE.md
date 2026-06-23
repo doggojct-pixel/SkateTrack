@@ -1266,3 +1266,15 @@ Tests/iOSTests/SessionRepositoryTests.swift               # Adds Codable round-t
 scripts/verify_task030c_b12_altitude_outlier_guard.py     # Guards b12-B pressure smoothing diagnostics and b12-A altitude isolation boundaries.
 
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, verify_task030c_b12_altitude_outlier_guard.py.
+
+
+### Task-030c-b13-A route confidence visual and freebord calibration
+
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b13-A.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b13-A Debug build signature.
+iOS/Features/SessionSummary/SessionRouteMapView.swift    # Renders low-confidence route segments as solid fluorescent pink while keeping startup warm-up dashed.
+iOS/Core/SensorEngine/SensorFusionEngine.swift           # Guards the suspicious CoreLocation-speed low-speed outlier gate behind valid CoreLocation speed availability.
+scripts/verify_task030c_b13a_route_confidence_visual_freebord.py # Verifies b13-A visual style, freebord calibration, and no estimated-route scope creep.
+scripts/verify_task030c_route_confidence_display.py      # Updated display verification for solid fluorescent-pink uncertain route segments.
+
+Task-030c-b13-A verification token: solid fluorescent-pink low-confidence route style, coreLocationSpeedKmh only fires when CLLocation actually reported a speed, coordinate-derived local jump gate unchanged, verify_task030c_b13a_route_confidence_visual_freebord.py.

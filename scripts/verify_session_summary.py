@@ -215,6 +215,7 @@ SOURCE_TOKENS = {
         "routeAccuracyDisclosureText",
         "session-route-accuracy-disclosure",
         "segment.style.opacity",
+        "private static let fluorescentPink",
         "makeDisplayRoutePoints",
         "deduplicatedTrustedLocationFixes",
         "isTrustedDisplayRouteSample",
