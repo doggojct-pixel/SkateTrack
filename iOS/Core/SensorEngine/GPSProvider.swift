@@ -238,7 +238,7 @@ final class GPSProvider: NSObject {
         RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
             RecordingDebugRecoveryEvent(
                 eventType: "startUpdatingHeadingCalled",
-                reason: "Task-030c-b13-B magnetometer diagnostics"
+                reason: "Task-030c-b13-B-1 magnetometer diagnostics"
             )
         )
         #endif

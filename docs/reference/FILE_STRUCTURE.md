@@ -1290,14 +1290,14 @@ scripts/verify_task030c_b13a1_display_metrics_and_colors.py # Verifies b13-A-1 d
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
 
-### Task-030c-b13-B magnetometer heading diagnostics foundation
+### Task-030c-b13-B-1 magnetometer heading diagnostics foundation
 
-Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b13-B.
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b13-B-1.
 Shared/Models/MotionSample.swift                         # Extends HeadingDiagnostics with device magnetometer heading fields and reliability metadata.
 iOS/Core/SensorEngine/GPSProvider.swift                  # Publishes CLHeading updates alongside active ride GPS updates when heading is available.
 iOS/Core/SensorEngine/SensorFusionEngine.swift           # Fuses CoreLocation course-over-ground and device magnetometer heading into diagnostics-only readiness metadata.
-iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b13-B Debug build signature.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b13-B-1 Debug build signature.
 Tests/iOSTests/SessionRepositoryTests.swift              # Adds Codable round-trip coverage for b13-B heading diagnostics fields.
 scripts/verify_task030c_b13b_magnetometer_heading_diagnostics.py # Guards b13-B scope and heading diagnostics integration.
 
-Task-030c-b13-B verification token: deviceHeadingDegrees, deviceHeadingAccuracyDegrees, deviceHeadingTimestampMillisecondsSince1970, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, verify_task030c_b13b_magnetometer_heading_diagnostics.py.
+Task-030c-b13-B-1 verification token: deviceHeadingDegrees, deviceHeadingAccuracyDegrees, deviceHeadingTimestampMillisecondsSince1970, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, verify_task030c_b13b_magnetometer_heading_diagnostics.py.

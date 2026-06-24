@@ -203,10 +203,10 @@ Decision: keep recorded samples immutable and correct History/Summary presentati
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
 
-## Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation
+## Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation
 
 Decision: collect device magnetometer heading as diagnostics-only route-continuity metadata. CoreLocation course-over-ground remains useful when movement speed is sufficient, while device heading can describe absolute heading availability during GPS gaps or low-speed movement. The two heading signals are recorded separately with accuracy, age, and agreement metadata.
 
 Boundary: b13-B must not generate estimated route geometry, must keep `estimatedRouteActive` false, and must not change distance, speed, altitude, display-derived metrics, route color semantics, or SnowPrototype.
 
-Task-030c-b13-B verification token: device magnetometer heading diagnostics, course/device heading agreement, diagnostics-only heading readiness, no dead reckoning route reconstruction.
+Task-030c-b13-B-1 verification token: device magnetometer heading diagnostics, course/device heading agreement, diagnostics-only heading readiness, no dead reckoning route reconstruction.

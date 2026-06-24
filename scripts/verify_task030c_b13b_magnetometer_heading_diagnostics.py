@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b13-B magnetometer heading diagnostics foundation."""
+"""Verify Task-030c-b13-B-1 magnetometer heading diagnostics foundation."""
 from pathlib import Path
 import sys
 
@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b13-B")',
+        'Text("Task-030c-b13-B-1")',
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [
@@ -26,6 +26,8 @@ REQUIRED = {
         "let courseDeviceHeadingDeltaDegrees: Double?",
         "let courseDeviceHeadingAgreement: Bool?",
         "var hasReliableHeadingForRouteContinuity: Bool",
+        "init(from decoder: Decoder) throws",
+        "deviceHeadingReliableForRouteContinuity: try container.decodeIfPresent(Bool.self",
     ],
     "iOS/Core/SensorEngine/GPSProvider.swift": [
         "private let headingSubject = CurrentValueSubject<CLHeading?, Never>(nil)",
@@ -37,7 +39,7 @@ REQUIRED = {
         "locationManager.startUpdatingHeading()",
         "locationManager.stopUpdatingHeading()",
         "func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading)",
-        "Task-030c-b13-B magnetometer diagnostics",
+        "Task-030c-b13-B-1 magnetometer diagnostics",
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "private var latestDeviceHeading: CLHeading?",
@@ -59,26 +61,28 @@ REQUIRED = {
         "deviceHeadingDegrees",
         "courseDeviceHeadingAgreement",
         "hasReliableHeadingForRouteContinuity",
+        "testB13B1HeadingDiagnosticsDecodesLegacyB13BPayload",
+        "deviceHeadingReliableForRouteContinuity, false",
     ],
     "scripts/verify_task030c_b13b_magnetometer_heading_diagnostics.py": [
-        "Task-030c-b13-B magnetometer heading diagnostics foundation",
+        "Task-030c-b13-B-1 magnetometer heading diagnostics foundation",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation",
+        "Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation",
         "deviceHeadingDegrees",
         "courseDeviceHeadingAgreement",
         "estimatedRouteActive false",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation",
+        "Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation",
         "diagnostics-only heading readiness",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b13-B magnetometer heading diagnostics foundation",
+        "Task-030c-b13-B-1 magnetometer heading diagnostics foundation",
         "verify_task030c_b13b_magnetometer_heading_diagnostics.py",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation",
+        "Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation",
         "magnetometer heading can be disturbed",
         "no estimated route geometry",
     ],
@@ -141,11 +145,11 @@ def main() -> int:
             if token in text:
                 failures.append(f"{rel}: forbidden SnowPrototype reference {token!r}")
     if failures:
-        print("Task-030c-b13-B magnetometer heading diagnostics check failed:", file=sys.stderr)
+        print("Task-030c-b13-B-1 magnetometer heading diagnostics check failed:", file=sys.stderr)
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         return 1
-    print("Task-030c-b13-B magnetometer heading diagnostics checks passed.")
+    print("Task-030c-b13-B-1 magnetometer heading diagnostics checks passed.")
     return 0
 
 

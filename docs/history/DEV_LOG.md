@@ -2041,12 +2041,18 @@ Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route s
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
 
-## Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation
+## Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation
 
-- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-B`.
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-B-1`.
 - Added device magnetometer heading support to `GPSProvider` by starting/stopping CoreLocation heading updates alongside active ride location updates when heading is available.
 - Extended optional `HeadingDiagnostics` with device heading degrees, heading accuracy, timestamp, age, course/device heading delta, agreement, and device-heading reliability fields while preserving legacy `.skatetrack` compatibility.
 - Wired device heading into `SensorFusionEngine` location-fix and timer-fusion diagnostics so future dead-reckoning readiness can distinguish CoreLocation course-over-ground from device magnetometer heading.
 - Kept `DeadReckoningDiagnostics.estimatedRouteActive` false. b13-B records readiness metadata only and does not reconstruct route geometry, estimate missing coordinates, map match, road snap, or alter distance/speed/altitude/summary metrics.
 
-Task-030c-b13-B verification token: magnetometer heading diagnostics foundation, deviceHeadingDegrees, deviceHeadingAccuracyDegrees, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, startUpdatingHeading, estimatedRouteActive false, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b13-B-1 verification token: magnetometer heading diagnostics foundation, deviceHeadingDegrees, deviceHeadingAccuracyDegrees, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, startUpdatingHeading, estimatedRouteActive false, no estimated route geometry, no SnowPrototype changes.
+
+
+### Task-030c-b13-B-1 — Heading Diagnostics Legacy Decode Guard
+- Added a custom `HeadingDiagnostics` decoder so sessions recorded before magnetometer heading diagnostics can still be read when newer b13-B fields are absent.
+- Preserved `estimatedRouteActive == false`; this remains diagnostics-only and does not alter distance, speed, altitude, route confidence, or estimated route geometry.
+- Verification token: Task-030c-b13-B-1, heading diagnostics legacy decode guard, `testB13B1HeadingDiagnosticsDecodesLegacyB13BPayload`.

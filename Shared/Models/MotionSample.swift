@@ -106,6 +106,45 @@ struct HeadingDiagnostics: Codable, Sendable, Equatable {
         self.courseDeviceHeadingAgreement = courseDeviceHeadingAgreement
     }
 
+    private enum CodingKeys: String, CodingKey {
+        case source
+        case headingAvailable
+        case courseOverGroundDegrees
+        case courseAccuracyDegrees
+        case coreLocationSpeedKmh
+        case courseReliableForRouteContinuity
+        case deviceHeadingDeferred
+        case deviceHeadingDegrees
+        case deviceHeadingAccuracyDegrees
+        case deviceHeadingTimestamp
+        case deviceHeadingTimestampMillisecondsSince1970
+        case deviceHeadingAgeSeconds
+        case deviceHeadingReliableForRouteContinuity
+        case courseDeviceHeadingDeltaDegrees
+        case courseDeviceHeadingAgreement
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            source: try container.decodeIfPresent(HeadingDiagnosticsSource.self, forKey: .source) ?? .unavailable,
+            headingAvailable: try container.decodeIfPresent(Bool.self, forKey: .headingAvailable) ?? false,
+            courseOverGroundDegrees: try container.decodeIfPresent(Double.self, forKey: .courseOverGroundDegrees),
+            courseAccuracyDegrees: try container.decodeIfPresent(Double.self, forKey: .courseAccuracyDegrees),
+            coreLocationSpeedKmh: try container.decodeIfPresent(Double.self, forKey: .coreLocationSpeedKmh),
+            courseReliableForRouteContinuity: try container.decodeIfPresent(Bool.self, forKey: .courseReliableForRouteContinuity) ?? false,
+            deviceHeadingDeferred: try container.decodeIfPresent(Bool.self, forKey: .deviceHeadingDeferred) ?? true,
+            deviceHeadingDegrees: try container.decodeIfPresent(Double.self, forKey: .deviceHeadingDegrees),
+            deviceHeadingAccuracyDegrees: try container.decodeIfPresent(Double.self, forKey: .deviceHeadingAccuracyDegrees),
+            deviceHeadingTimestamp: try container.decodeIfPresent(Date.self, forKey: .deviceHeadingTimestamp),
+            deviceHeadingTimestampMillisecondsSince1970: try container.decodeIfPresent(Int64.self, forKey: .deviceHeadingTimestampMillisecondsSince1970),
+            deviceHeadingAgeSeconds: try container.decodeIfPresent(TimeInterval.self, forKey: .deviceHeadingAgeSeconds),
+            deviceHeadingReliableForRouteContinuity: try container.decodeIfPresent(Bool.self, forKey: .deviceHeadingReliableForRouteContinuity) ?? false,
+            courseDeviceHeadingDeltaDegrees: try container.decodeIfPresent(Double.self, forKey: .courseDeviceHeadingDeltaDegrees),
+            courseDeviceHeadingAgreement: try container.decodeIfPresent(Bool.self, forKey: .courseDeviceHeadingAgreement)
+        )
+    }
+
     var hasReliableHeadingForRouteContinuity: Bool {
         courseReliableForRouteContinuity || deviceHeadingReliableForRouteContinuity
     }

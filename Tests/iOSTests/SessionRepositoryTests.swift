@@ -216,6 +216,31 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertEqual(decoded.hasReliableHeadingForRouteContinuity, true)
     }
 
+    func testB13B1HeadingDiagnosticsDecodesLegacyB13BPayload() throws {
+        let legacyJSON = Data("""
+        {
+          "source": "coreLocationCourse",
+          "headingAvailable": true,
+          "courseOverGroundDegrees": 92.5,
+          "courseAccuracyDegrees": 14.0,
+          "coreLocationSpeedKmh": 6.4,
+          "courseReliableForRouteContinuity": true,
+          "deviceHeadingDeferred": true
+        }
+        """.utf8)
+
+        let decoded = try JSONDecoder().decode(HeadingDiagnostics.self, from: legacyJSON)
+
+        XCTAssertEqual(decoded.source, .coreLocationCourse)
+        XCTAssertEqual(decoded.courseOverGroundDegrees ?? .nan, 92.5, accuracy: 0.001)
+        XCTAssertEqual(decoded.courseReliableForRouteContinuity, true)
+        XCTAssertEqual(decoded.deviceHeadingDeferred, true)
+        XCTAssertEqual(decoded.deviceHeadingReliableForRouteContinuity, false)
+        XCTAssertNil(decoded.deviceHeadingDegrees)
+        XCTAssertNil(decoded.courseDeviceHeadingAgreement)
+        XCTAssertEqual(decoded.hasReliableHeadingForRouteContinuity, true)
+    }
+
     private func makeCompletedSession() throws -> SessionData {
         let startDate = Date(timeIntervalSince1970: 1_700_000_000)
 
