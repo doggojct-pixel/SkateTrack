@@ -341,3 +341,12 @@ Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route s
 - **Still deferred:** this does not add IMU dead reckoning, route completion, road snapping, map matching, Wi-Fi RTT, or SnowPrototype changes.
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
+
+### Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation
+
+- **Current status:** Task-030c-b13-B records device magnetometer heading availability and reliability metadata for future route-continuity work.
+- **What improved:** Diagnostics can now distinguish CoreLocation course-over-ground from device magnetometer heading, including heading accuracy, signal age, and course/device agreement.
+- **Still deferred:** b13-B does not add IMU dead reckoning, estimated route geometry, road snapping, map matching, indoor localization, Wi-Fi RTT, or route completion.
+- **Reliability limitation:** magnetometer heading can be disturbed by nearby metal, magnetic accessories, vehicles, or calibration state. It should be used as readiness metadata until a later dead-reckoning phase adds cross-sensor filtering.
+
+Task-030c-b13-B verification token: magnetometer heading diagnostics foundation, device heading reliability, course/device agreement, no estimated route geometry, no distance/speed/altitude recalculation.

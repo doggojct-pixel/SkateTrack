@@ -182,6 +182,40 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertEqual(decoded.pressureDiagnostics?.spikeSuppressed, true)
     }
 
+
+    func testB13BHeadingDiagnosticsCodableRoundTrip() throws {
+        let timestamp = Date(timeIntervalSince1970: 1_700_000_123)
+        let diagnostics = HeadingDiagnostics(
+            source: .courseAndDeviceMagnetometer,
+            headingAvailable: true,
+            courseOverGroundDegrees: 184,
+            courseAccuracyDegrees: 12,
+            coreLocationSpeedKmh: 7.2,
+            courseReliableForRouteContinuity: true,
+            deviceHeadingDeferred: false,
+            deviceHeadingDegrees: 190,
+            deviceHeadingAccuracyDegrees: 8,
+            deviceHeadingTimestamp: timestamp,
+            deviceHeadingTimestampMillisecondsSince1970: Int64((timestamp.timeIntervalSince1970 * 1_000).rounded()),
+            deviceHeadingAgeSeconds: 0.4,
+            deviceHeadingReliableForRouteContinuity: true,
+            courseDeviceHeadingDeltaDegrees: 6,
+            courseDeviceHeadingAgreement: true
+        )
+
+        let encoded = try JSONEncoder().encode(diagnostics)
+        let json = String(data: encoded, encoding: .utf8) ?? ""
+        XCTAssertTrue(json.contains("deviceHeadingDegrees"))
+        XCTAssertTrue(json.contains("courseAndDeviceMagnetometer"))
+        XCTAssertTrue(json.contains("courseDeviceHeadingAgreement"))
+
+        let decoded = try JSONDecoder().decode(HeadingDiagnostics.self, from: encoded)
+        XCTAssertEqual(decoded.source, .courseAndDeviceMagnetometer)
+        XCTAssertEqual(decoded.deviceHeadingDegrees ?? .nan, 190, accuracy: 0.001)
+        XCTAssertEqual(decoded.deviceHeadingReliableForRouteContinuity, true)
+        XCTAssertEqual(decoded.hasReliableHeadingForRouteContinuity, true)
+    }
+
     private func makeCompletedSession() throws -> SessionData {
         let startDate = Date(timeIntervalSince1970: 1_700_000_000)
 

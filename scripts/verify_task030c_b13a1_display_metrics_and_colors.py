@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-B"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b13-A-4")',
+        'Text("Task-030c-b13-B")',
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "private static let fluorescentPink = Color(red: 1.0, green: 0.2, blue: 0.6)",

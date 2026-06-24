@@ -55,12 +55,14 @@ final class GPSProvider: NSObject {
     private let authorizationHandler: GPSAuthorizationHandling
     private let locationSubject = PassthroughSubject<CLLocation, Never>()
     private let speedSubject = CurrentValueSubject<Double, Never>(0)
+    private let headingSubject = CurrentValueSubject<CLHeading?, Never>(nil)
     private let authorizationSubject: CurrentValueSubject<CLAuthorizationStatus, Never>
 
     private var accuracyMode: GPSAccuracyMode = .stationaryPowerSaving
     private var wantsLocationUpdates = false
     private var wantsBackgroundLocationUpdates = false
     private var wantsSignificantLocationChangeBackup = false
+    private var wantsHeadingUpdates = false
     private var didRequestAlwaysAuthorizationUpgrade = false
     private var lastAcceptedLocation: CLLocation?
 
@@ -70,6 +72,10 @@ final class GPSProvider: NSObject {
 
     var speedKilometersPerHourPublisher: AnyPublisher<Double, Never> {
         speedSubject.eraseToAnyPublisher()
+    }
+
+    var headingPublisher: AnyPublisher<CLHeading?, Never> {
+        headingSubject.eraseToAnyPublisher()
     }
 
     var authorizationStatusPublisher: AnyPublisher<CLAuthorizationStatus, Never> {
@@ -115,6 +121,7 @@ final class GPSProvider: NSObject {
 
         requestAlwaysAuthorizationUpgradeIfNeeded()
         locationManager.startUpdatingLocation()
+        startHeadingUpdatesIfNeeded()
         #if DEBUG
         RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
             RecordingDebugRecoveryEvent(
@@ -130,7 +137,9 @@ final class GPSProvider: NSObject {
         wantsLocationUpdates = false
         wantsBackgroundLocationUpdates = false
         wantsSignificantLocationChangeBackup = false
+        wantsHeadingUpdates = false
         locationManager.stopUpdatingLocation()
+        locationManager.stopUpdatingHeading()
         locationManager.stopMonitoringSignificantLocationChanges()
         configureBackgroundLocationUpdatesIfNeeded()
         #if DEBUG
@@ -144,6 +153,7 @@ final class GPSProvider: NSObject {
         #endif
         lastAcceptedLocation = nil
         speedSubject.send(0)
+        headingSubject.send(nil)
         setAccuracyMode(.stationaryPowerSaving)
     }
 
@@ -161,6 +171,7 @@ final class GPSProvider: NSObject {
 
     private func configureLocationManager() {
         locationManager.delegate = self
+        locationManager.headingFilter = kCLHeadingFilterNone
         setAccuracyMode(accuracyMode)
     }
 
@@ -203,6 +214,33 @@ final class GPSProvider: NSObject {
             )
         )
         recordLocationManagerSnapshot(reason: "significantLocationBackupStarted")
+        #endif
+    }
+
+    private func startHeadingUpdatesIfNeeded() {
+        guard CLLocationManager.headingAvailable() else {
+            headingSubject.send(nil)
+            #if DEBUG
+            RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+                RecordingDebugRecoveryEvent(
+                    eventType: "startUpdatingHeadingUnavailable",
+                    reason: "headingUnavailable"
+                )
+            )
+            #endif
+            return
+        }
+
+        wantsHeadingUpdates = true
+        locationManager.headingFilter = kCLHeadingFilterNone
+        locationManager.startUpdatingHeading()
+        #if DEBUG
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: "startUpdatingHeadingCalled",
+                reason: "Task-030c-b13-B magnetometer diagnostics"
+            )
+        )
         #endif
     }
 
@@ -434,10 +472,20 @@ extension GPSProvider: CLLocationManagerDelegate {
             configureBackgroundLocationUpdatesIfNeeded()
             requestAlwaysAuthorizationUpgradeIfNeeded()
             manager.startUpdatingLocation()
+            startHeadingUpdatesIfNeeded()
             startSignificantLocationChangeBackupIfNeeded()
         } else if !authorizationHandler.shouldRequestAuthorization() {
             stopUpdatingLocation()
         }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        guard wantsHeadingUpdates else { return }
+        headingSubject.send(newHeading)
+    }
+
+    func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool {
+        false
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

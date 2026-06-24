@@ -43,6 +43,7 @@ final class SensorFusionEngine: SensorProvider {
     private var latestPressureDiagnostics: AltitudePressureDiagnostics?
     private var latestLocationDiagnostics: LocationFixDiagnostics?
     private var latestRawLocation: CLLocation?
+    private var latestDeviceHeading: CLHeading?
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
         motionSampleSubject.eraseToAnyPublisher()
     }
@@ -144,6 +145,7 @@ final class SensorFusionEngine: SensorProvider {
             latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
+            latestDeviceHeading = nil
             calibrationEngine.reset()
         }
     }
@@ -159,6 +161,12 @@ final class SensorFusionEngine: SensorProvider {
         gpsProvider.speedKilometersPerHourPublisher
             .sink { [weak self] speedKmh in
                 self?.updateSpeed(speedKmh)
+            }
+            .store(in: &cancellables)
+
+        gpsProvider.headingPublisher
+            .sink { [weak self] heading in
+                self?.updateDeviceHeading(heading)
             }
             .store(in: &cancellables)
 
@@ -261,8 +269,14 @@ final class SensorFusionEngine: SensorProvider {
             let altitude = latestAltitudeMeters
             let pressureDiagnostics = latestPressureDiagnostics
             let altitudeSource: AltitudeSampleSource? = altitude == nil ? nil : .barometerRelative
+            let deviceHeading = latestDeviceHeading
             let locationDiagnostics = latestLocationDiagnostics.map { diagnostics in
-                timerFusionDiagnostics(from: diagnostics, latestRawLocation: latestRawLocation, now: now)
+                timerFusionDiagnostics(
+                    from: diagnostics,
+                    latestRawLocation: latestRawLocation,
+                    latestDeviceHeading: deviceHeading,
+                    now: now
+                )
             }
             let altitudeDiagnostics = altitudeSource.map { source in
                 altitudeOutlierGuard.evaluate(
@@ -310,13 +324,15 @@ final class SensorFusionEngine: SensorProvider {
         let receivedAt = Date()
         let stateSnapshot = stateLock.withLock { (
             previousLocation: latestRawLocation,
-            sessionStartDate: sessionStartDate
+            sessionStartDate: sessionStartDate,
+            latestDeviceHeading: latestDeviceHeading
         ) }
         let diagnostics = makeLocationDiagnostics(
             for: location,
             previousLocation: stateSnapshot.previousLocation,
             sessionStartDate: stateSnapshot.sessionStartDate,
-            receivedAt: receivedAt
+            receivedAt: receivedAt,
+            deviceHeading: stateSnapshot.latestDeviceHeading
         )
 
         let liveRoutePolicy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
@@ -393,7 +409,8 @@ final class SensorFusionEngine: SensorProvider {
         for location: CLLocation,
         previousLocation: CLLocation?,
         sessionStartDate: Date?,
-        receivedAt: Date
+        receivedAt: Date,
+        deviceHeading: CLHeading?
     ) -> LocationFixDiagnostics {
         let updateInterval = previousLocation.flatMap { previous -> TimeInterval? in
             let interval = location.timestamp.timeIntervalSince(previous.timestamp)
@@ -443,6 +460,19 @@ final class SensorFusionEngine: SensorProvider {
                 profile: confidenceProfile
             )
 
+        let headingDiagnostics = headingDiagnostics(
+            for: location,
+            coreLocationSpeedKmh: coreLocationSpeedKmh,
+            deviceHeading: deviceHeading,
+            receivedAt: receivedAt
+        )
+        let gpsGapDiagnostics = gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false)
+        let deadReckoningDiagnostics = deadReckoningDiagnostics(
+            gpsGapDiagnostics: gpsGapDiagnostics,
+            headingDiagnostics: headingDiagnostics,
+            anchorAvailable: confidence != .low && confidence != .unavailable
+        )
+
         return LocationFixDiagnostics(
             horizontalAccuracyMeters: horizontalAccuracy,
             verticalAccuracyMeters: normalizedAccuracy(location.verticalAccuracy),
@@ -458,49 +488,108 @@ final class SensorFusionEngine: SensorProvider {
             speedSource: speedSource,
             freshnessState: freshnessState,
             routeSegmentConfidence: confidence,
-            headingDiagnostics: headingDiagnostics(for: location, coreLocationSpeedKmh: coreLocationSpeedKmh),
-            gpsGapDiagnostics: gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false),
-            deadReckoningDiagnostics: deadReckoningDiagnostics(
-                gpsGapDiagnostics: gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false),
-                headingDiagnostics: headingDiagnostics(for: location, coreLocationSpeedKmh: coreLocationSpeedKmh),
-                anchorAvailable: confidence != .low && confidence != .unavailable
-            )
+            headingDiagnostics: headingDiagnostics,
+            gpsGapDiagnostics: gpsGapDiagnostics,
+            deadReckoningDiagnostics: deadReckoningDiagnostics
         )
     }
     private func timerFusionDiagnostics(
         from diagnostics: LocationFixDiagnostics,
         latestRawLocation: CLLocation?,
+        latestDeviceHeading: CLHeading?,
         now: Date
     ) -> LocationFixDiagnostics {
         let gapSeconds = latestRawLocation.map { max(now.timeIntervalSince($0.timestamp), 0) }
         let gpsGap = gpsGapDiagnostics(gapSeconds: gapSeconds, isTimerFusionRepeat: true)
+        let headingDiagnostics = headingDiagnostics(
+            for: latestRawLocation,
+            fallback: diagnostics.headingDiagnostics,
+            deviceHeading: latestDeviceHeading,
+            receivedAt: now
+        )
         let deadReckoning = deadReckoningDiagnostics(
             gpsGapDiagnostics: gpsGap,
-            headingDiagnostics: diagnostics.headingDiagnostics,
+            headingDiagnostics: headingDiagnostics,
             anchorAvailable: diagnostics.routeSegmentConfidence != .low && diagnostics.routeSegmentConfidence != .unavailable
         )
         return diagnostics.replacingR4Diagnostics(
+            headingDiagnostics: headingDiagnostics,
             gpsGapDiagnostics: gpsGap,
             deadReckoningDiagnostics: deadReckoning
         )
     }
-    private func headingDiagnostics(for location: CLLocation, coreLocationSpeedKmh: Double?) -> HeadingDiagnostics {
-        let courseDegrees = location.course >= 0 && location.course.isFinite ? location.course : nil
-        let accuracyDegrees = courseAccuracyDegrees(for: location)
-        let speedKmh = coreLocationSpeedKmh ?? (location.speed >= 0
-            ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
-            : nil)
-        let reliable = courseDegrees != nil
+
+    private func headingDiagnostics(
+        for location: CLLocation,
+        coreLocationSpeedKmh: Double?,
+        deviceHeading: CLHeading?,
+        receivedAt: Date
+    ) -> HeadingDiagnostics {
+        headingDiagnostics(
+            for: Optional(location),
+            fallback: nil,
+            coreLocationSpeedKmh: coreLocationSpeedKmh,
+            deviceHeading: deviceHeading,
+            receivedAt: receivedAt
+        )
+    }
+
+    private func headingDiagnostics(
+        for location: CLLocation?,
+        fallback: HeadingDiagnostics?,
+        coreLocationSpeedKmh: Double? = nil,
+        deviceHeading: CLHeading?,
+        receivedAt: Date
+    ) -> HeadingDiagnostics {
+        let courseDegrees = location.flatMap { normalizedHeadingDegrees($0.course) }
+            ?? fallback?.courseOverGroundDegrees
+        let accuracyDegrees = location.flatMap { courseAccuracyDegrees(for: $0) }
+            ?? fallback?.courseAccuracyDegrees
+        let speedKmh = coreLocationSpeedKmh
+            ?? fallback?.coreLocationSpeedKmh
+            ?? location.flatMap { $0.speed >= 0 ? GPSProvider.kilometersPerHour(fromMetersPerSecond: $0.speed) : nil }
+        let courseReliable = courseDegrees != nil
             && speedKmh.map { $0 >= 3 } == true
             && accuracyDegrees.map { $0 <= 45 } != false
+
+        let deviceDegrees = deviceHeadingDegrees(for: deviceHeading)
+        let deviceAccuracy = deviceHeading.flatMap { normalizedAccuracy($0.headingAccuracy) }
+        let deviceTimestamp = deviceHeading?.timestamp
+        let deviceAge = deviceTimestamp.map { max(receivedAt.timeIntervalSince($0), 0) }
+        let deviceReliable = deviceDegrees != nil
+            && deviceAccuracy.map { $0 <= 35 } == true
+            && deviceAge.map { $0 <= 5 } != false
+        let deltaDegrees = angularDifferenceDegrees(courseDegrees, deviceDegrees)
+        let courseDeviceAgreement = deltaDegrees.map { $0 <= 45 }
+
+        let source: HeadingDiagnosticsSource
+        switch (courseDegrees != nil, deviceDegrees != nil) {
+        case (true, true):
+            source = .courseAndDeviceMagnetometer
+        case (true, false):
+            source = .coreLocationCourse
+        case (false, true):
+            source = .deviceMagnetometer
+        case (false, false):
+            source = .unavailable
+        }
+
         return HeadingDiagnostics(
-            source: courseDegrees == nil ? .unavailable : .coreLocationCourse,
-            headingAvailable: courseDegrees != nil,
+            source: source,
+            headingAvailable: source != .unavailable,
             courseOverGroundDegrees: courseDegrees,
             courseAccuracyDegrees: accuracyDegrees,
             coreLocationSpeedKmh: speedKmh,
-            courseReliableForRouteContinuity: reliable,
-            deviceHeadingDeferred: true
+            courseReliableForRouteContinuity: courseReliable,
+            deviceHeadingDeferred: false,
+            deviceHeadingDegrees: deviceDegrees,
+            deviceHeadingAccuracyDegrees: deviceAccuracy,
+            deviceHeadingTimestamp: deviceTimestamp,
+            deviceHeadingTimestampMillisecondsSince1970: deviceTimestamp?.millisecondsSince1970,
+            deviceHeadingAgeSeconds: deviceAge,
+            deviceHeadingReliableForRouteContinuity: deviceReliable,
+            courseDeviceHeadingDeltaDegrees: deltaDegrees,
+            courseDeviceHeadingAgreement: courseDeviceAgreement
         )
     }
     private func gpsGapDiagnostics(
@@ -522,7 +611,7 @@ final class SensorFusionEngine: SensorProvider {
     ) -> DeadReckoningDiagnostics? {
         guard let gpsGapDiagnostics else { return nil }
         let hasGap = gpsGapDiagnostics.classification != .normalCadence
-        let headingAvailable = headingDiagnostics?.courseReliableForRouteContinuity ?? false
+        let headingAvailable = headingDiagnostics?.hasReliableHeadingForRouteContinuity ?? false
         let eligible = hasGap && headingAvailable && anchorAvailable
         let reason: DeadReckoningReadinessReason
         if !hasGap {
@@ -693,6 +782,24 @@ final class SensorFusionEngine: SensorProvider {
         }
         return nil
     }
+
+    private func deviceHeadingDegrees(for heading: CLHeading?) -> Double? {
+        guard let heading else { return nil }
+        if let trueHeading = normalizedHeadingDegrees(heading.trueHeading) { return trueHeading }
+        return normalizedHeadingDegrees(heading.magneticHeading)
+    }
+
+    private func normalizedHeadingDegrees(_ degrees: CLLocationDirection) -> Double? {
+        guard degrees >= 0, degrees.isFinite else { return nil }
+        let normalized = degrees.truncatingRemainder(dividingBy: 360)
+        return normalized >= 0 ? normalized : normalized + 360
+    }
+
+    private func angularDifferenceDegrees(_ lhs: Double?, _ rhs: Double?) -> Double? {
+        guard let lhs, let rhs else { return nil }
+        let delta = abs(lhs - rhs).truncatingRemainder(dividingBy: 360)
+        return min(delta, 360 - delta)
+    }
     private func updateSpeed(_ speedKmh: Double) {
         stateLock.withLock {
             if latestLocationDiagnostics?.routeSegmentConfidence == .low ||
@@ -722,6 +829,12 @@ final class SensorFusionEngine: SensorProvider {
     private func updatePressure(_ pressureKilopascals: Double?) {
         stateLock.withLock {
             latestPressureDiagnostics = pressureFilter.evaluate(rawPressureKilopascals: pressureKilopascals)
+        }
+    }
+
+    private func updateDeviceHeading(_ heading: CLHeading?) {
+        stateLock.withLock {
+            latestDeviceHeading = heading
         }
     }
     private func sessionSnapshot() -> (
@@ -758,6 +871,7 @@ final class SensorFusionEngine: SensorProvider {
             latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
+            latestDeviceHeading = nil
         }
     }
 }

@@ -202,3 +202,11 @@ Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route s
 Decision: keep recorded samples immutable and correct History/Summary presentation through a display-derived metrics layer. Low-confidence route confidence is no longer treated as the same thing as metric ineligibility; fresh/recent samples with usable horizontal accuracy can contribute to displayed distance and speed. Barometer-relative altitude remains the stable profile source, but charts display it against a trusted absolute CoreLocation anchor when available. Route visual semantics are now teal = trusted, bright orange = low confidence/uncertain, fluorescent pink = startup/warm-up/approximate start.
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
+
+## Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation
+
+Decision: collect device magnetometer heading as diagnostics-only route-continuity metadata. CoreLocation course-over-ground remains useful when movement speed is sufficient, while device heading can describe absolute heading availability during GPS gaps or low-speed movement. The two heading signals are recorded separately with accuracy, age, and agreement metadata.
+
+Boundary: b13-B must not generate estimated route geometry, must keep `estimatedRouteActive` false, and must not change distance, speed, altitude, display-derived metrics, route color semantics, or SnowPrototype.
+
+Task-030c-b13-B verification token: device magnetometer heading diagnostics, course/device heading agreement, diagnostics-only heading readiness, no dead reckoning route reconstruction.

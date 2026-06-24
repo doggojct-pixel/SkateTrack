@@ -2040,3 +2040,13 @@ Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route s
 - No recording, SensorFusionEngine, altitude/pressure guard, schema, or SnowPrototype changes.
 
 Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
+
+## Task-030c-b13-B — Magnetometer Heading Diagnostics Foundation
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-B`.
+- Added device magnetometer heading support to `GPSProvider` by starting/stopping CoreLocation heading updates alongside active ride location updates when heading is available.
+- Extended optional `HeadingDiagnostics` with device heading degrees, heading accuracy, timestamp, age, course/device heading delta, agreement, and device-heading reliability fields while preserving legacy `.skatetrack` compatibility.
+- Wired device heading into `SensorFusionEngine` location-fix and timer-fusion diagnostics so future dead-reckoning readiness can distinguish CoreLocation course-over-ground from device magnetometer heading.
+- Kept `DeadReckoningDiagnostics.estimatedRouteActive` false. b13-B records readiness metadata only and does not reconstruct route geometry, estimate missing coordinates, map match, road snap, or alter distance/speed/altitude/summary metrics.
+
+Task-030c-b13-B verification token: magnetometer heading diagnostics foundation, deviceHeadingDegrees, deviceHeadingAccuracyDegrees, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, startUpdatingHeading, estimatedRouteActive false, no estimated route geometry, no SnowPrototype changes.

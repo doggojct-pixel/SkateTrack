@@ -50,6 +50,8 @@ enum RouteSegmentConfidence: String, Codable, Sendable, Equatable {
 
 enum HeadingDiagnosticsSource: String, Codable, Sendable, Equatable {
     case coreLocationCourse
+    case deviceMagnetometer
+    case courseAndDeviceMagnetometer
     case unavailable
 }
 
@@ -61,6 +63,14 @@ struct HeadingDiagnostics: Codable, Sendable, Equatable {
     let coreLocationSpeedKmh: Double?
     let courseReliableForRouteContinuity: Bool
     let deviceHeadingDeferred: Bool
+    let deviceHeadingDegrees: Double?
+    let deviceHeadingAccuracyDegrees: Double?
+    let deviceHeadingTimestamp: Date?
+    let deviceHeadingTimestampMillisecondsSince1970: Int64?
+    let deviceHeadingAgeSeconds: TimeInterval?
+    let deviceHeadingReliableForRouteContinuity: Bool
+    let courseDeviceHeadingDeltaDegrees: Double?
+    let courseDeviceHeadingAgreement: Bool?
 
     init(
         source: HeadingDiagnosticsSource = .unavailable,
@@ -69,7 +79,15 @@ struct HeadingDiagnostics: Codable, Sendable, Equatable {
         courseAccuracyDegrees: Double? = nil,
         coreLocationSpeedKmh: Double? = nil,
         courseReliableForRouteContinuity: Bool = false,
-        deviceHeadingDeferred: Bool = true
+        deviceHeadingDeferred: Bool = true,
+        deviceHeadingDegrees: Double? = nil,
+        deviceHeadingAccuracyDegrees: Double? = nil,
+        deviceHeadingTimestamp: Date? = nil,
+        deviceHeadingTimestampMillisecondsSince1970: Int64? = nil,
+        deviceHeadingAgeSeconds: TimeInterval? = nil,
+        deviceHeadingReliableForRouteContinuity: Bool = false,
+        courseDeviceHeadingDeltaDegrees: Double? = nil,
+        courseDeviceHeadingAgreement: Bool? = nil
     ) {
         self.source = source
         self.headingAvailable = headingAvailable
@@ -78,6 +96,18 @@ struct HeadingDiagnostics: Codable, Sendable, Equatable {
         self.coreLocationSpeedKmh = coreLocationSpeedKmh
         self.courseReliableForRouteContinuity = courseReliableForRouteContinuity
         self.deviceHeadingDeferred = deviceHeadingDeferred
+        self.deviceHeadingDegrees = deviceHeadingDegrees
+        self.deviceHeadingAccuracyDegrees = deviceHeadingAccuracyDegrees
+        self.deviceHeadingTimestamp = deviceHeadingTimestamp
+        self.deviceHeadingTimestampMillisecondsSince1970 = deviceHeadingTimestampMillisecondsSince1970
+        self.deviceHeadingAgeSeconds = deviceHeadingAgeSeconds.map { max(0, $0) }
+        self.deviceHeadingReliableForRouteContinuity = deviceHeadingReliableForRouteContinuity
+        self.courseDeviceHeadingDeltaDegrees = courseDeviceHeadingDeltaDegrees
+        self.courseDeviceHeadingAgreement = courseDeviceHeadingAgreement
+    }
+
+    var hasReliableHeadingForRouteContinuity: Bool {
+        courseReliableForRouteContinuity || deviceHeadingReliableForRouteContinuity
     }
 }
 

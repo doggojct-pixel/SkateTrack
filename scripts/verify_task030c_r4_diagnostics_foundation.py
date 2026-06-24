@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-B"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-A-4",
+        "Task-030c-b13-B",
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [
@@ -33,12 +33,12 @@ REQUIRED = {
         "static func classification(for gapSeconds: TimeInterval?)",
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
-        "timerFusionDiagnostics(from: diagnostics, latestRawLocation: latestRawLocation, now: now)",
-        "headingDiagnostics(for: location, coreLocationSpeedKmh: coreLocationSpeedKmh)",
+        "latestDeviceHeading: deviceHeading",
+        "deviceHeading: deviceHeading",
         "gpsGapDiagnostics(gapSeconds: updateInterval, isTimerFusionRepeat: false)",
         "deadReckoningDiagnostics(",
         "courseReliableForRouteContinuity",
-        "deviceHeadingDeferred: true",
+        "deviceHeadingDeferred: false",
         "estimatedRouteActive: false",
         "r4RouteReconstructionDeferred",
     ],
@@ -80,8 +80,7 @@ FORBIDDEN = {
         "DeadReckoningScaffolding",
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
-        "startUpdatingHeading",
-        "CLLocationManagerDelegate",
+                "CLLocationManagerDelegate",
         "estimatedVelocityMps",
         "estimatedHeadingDegrees",
     ],
