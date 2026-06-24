@@ -7,13 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-A",
+        "Task-030c-b13-A-4",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
-        "Task-030c-b13-A keeps post-record GPS lock guarding",
+        "Task-030c-b13-A-4 keeps post-record GPS lock guarding",
         "isStartupWarmup",
         "startupWarmup",
         "isReliableAnchor",
@@ -35,8 +35,8 @@ REQUIRED = {
         "stableStartupAnchorTimestamp",
         "reset display smoothing at the first stable",
         "primaryMapRegionCoordinates",
-        "SkateTrackSessionStartColors.accent2",
-        "dash: [CGFloat] { self == .startupWarmup ? [3, 3] : [] }",
+        "return Self.fluorescentPink",
+        "var dash: [CGFloat] { [] }",
         "routeAccuracyDisclosureText",
         "summary.route.accuracy.startup",
         "summary.route.accuracy.approxFormat",

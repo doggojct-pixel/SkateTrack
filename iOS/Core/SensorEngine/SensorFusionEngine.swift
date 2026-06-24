@@ -588,7 +588,7 @@ final class SensorFusionEngine: SensorProvider {
     ) -> Bool {
         let policy = ActivityFidelityPolicy(profile: profile)
 
-        // Task-030c-b13-A: coreLocationSpeedKmh only fires when CLLocation actually reported a speed.
+        // Task-030c-b13-A-4: coreLocationSpeedKmh only fires when CLLocation actually reported a speed.
         // Coordinate-derived speed must not substitute into this gate; doing so over-penalizes
         // low-speed freebord carving under tree canopy when CLLocation.speed is unavailable.
         if let coreSpeedKmh = coreLocationSpeedKmh, coreSpeedKmh > 0 {

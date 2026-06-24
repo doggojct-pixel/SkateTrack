@@ -187,11 +187,18 @@ Task-030c-b12 package capability token: altitude-diagnostics-v1.
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, diagnostics-only pressure smoothing, horizontal coordinates, distance logic, and route rendering remain isolated.
 
 
-## Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+## Task-030c-b13-A-4 — Route Confidence Visual + Freebord Confidence Calibration
 
 - Low-confidence route fixes should remain visible, but they should no longer look like broken or missing route data. b13-A renders uncertain route segments as solid fluorescent-pink geometry with the same visual weight as trusted teal/green route segments.
 - Startup warm-up remains visually separate and dashed because it represents approximate GPS lock semantics, not merely lower confidence after GPS is present.
 - The suspicious CoreLocation-speed outlier gate is semantically tied to CoreLocation reporting a valid speed. Coordinate-derived speed must not substitute into the suspicious CoreLocation-speed gate, because that causes false low-confidence classifications for low-speed freebord riding under tree canopy when `CLLocation.speed` is unavailable.
 - The coordinate-derived local-jump gate remains unchanged and continues to reject genuinely implausible GPS jumps.
 
-Task-030c-b13-A verification token: solid fluorescent-pink low-confidence route style, coordinate-derived speed must not substitute into the suspicious CoreLocation-speed gate, freebord confidence calibration, startup warm-up dashed style preserved, no estimated route geometry.
+Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route style with solid fluorescent-pink startup/warm-up styling, coordinate-derived speed must not substitute into the suspicious CoreLocation-speed gate, freebord confidence calibration, startup warm-up rendered as solid fluorescent pink, no estimated route geometry.
+
+
+## Task-030c-b13-A-4 — Display Metrics + Altitude Anchor + Route Color Semantics
+
+Decision: keep recorded samples immutable and correct History/Summary presentation through a display-derived metrics layer. Low-confidence route confidence is no longer treated as the same thing as metric ineligibility; fresh/recent samples with usable horizontal accuracy can contribute to displayed distance and speed. Barometer-relative altitude remains the stable profile source, but charts display it against a trusted absolute CoreLocation anchor when available. Route visual semantics are now teal = trusted, bright orange = low confidence/uncertain, fluorescent pink = startup/warm-up/approximate start.
+
+Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.

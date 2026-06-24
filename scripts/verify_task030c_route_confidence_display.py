@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIREMENTS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-A",
+        "Task-030c-b13-A-4",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "RouteMapSegmentStyle",
@@ -19,9 +19,10 @@ REQUIREMENTS = {
         "segment.style.opacity",
         "segment.style.dash",
         "private static let fluorescentPink = Color(red: 1.0, green: 0.2, blue: 0.6)",
-        "var dash: [CGFloat] { self == .startupWarmup ? [3, 3] : [] }",
+        "var dash: [CGFloat] { [] }",
+        "return Self.brightOrange",
         "return Self.fluorescentPink",
-        "low-confidence fixes remain visible as solid fluorescent-pink uncertain route segments",
+        "low-confidence fixes remain visible as solid bright-orange uncertain route segments",
         "existingStyle != pointStyle",
         "pointStyle == .trusted ? [] : [previousPoint.displayCoordinate]",
         "isolate warm-up/uncertain geometry from",
@@ -79,14 +80,14 @@ def main() -> int:
     forbidden = [token for token in FORBIDDEN_ROUTE_TOKENS if token in route_map]
 
     if missing or forbidden:
-        print("Task-030c-b13-A route confidence display check failed:", file=sys.stderr)
+        print("Task-030c-b13-A-4 route confidence display check failed:", file=sys.stderr)
         for path, token in missing:
             print(f"  {path}: missing {token!r}", file=sys.stderr)
         for token in forbidden:
             print(f"  SessionRouteMapView.swift: forbidden direct-break token {token!r}", file=sys.stderr)
         return 1
 
-    print("Task-030c-b13-A route confidence display checks passed.")
+    print("Task-030c-b13-A-4 route confidence display checks passed.")
     return 0
 
 

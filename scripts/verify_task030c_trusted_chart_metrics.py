@@ -7,19 +7,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIREMENTS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-A",
+        "Task-030c-b13-A-4",
     ],
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
-        "trustedDisplaySpeedKilometersPerHour(for:",
+        "displaySpeedKilometersPerHour(for:",
         "smoothedSpeedPoints(",
         "preferredElevationDisplaySource(for:",
-        "trustedDisplayElevationMeters(for:",
-        "normalizedElevationPoints(",
+        "displayElevationMeters(for:",
+        "absoluteElevationDisplayAnchor(for:",
         "sample.altitudeSource == .barometerRelative",
-        "raw speed in",
+        "chart display falls back to metric-eligible diagnostics speed",
     ],
     "iOS/Features/SessionRecording/LiveHUDView.swift": [
         "smoothedDisplaySpeedKilometersPerHour(",

@@ -71,7 +71,7 @@ ACCUMULATOR_TOKENS = [
 
 CHART_TOKENS = [
     "fidelityPolicy",
-    "fidelityPolicy.acceptsSpeed",
+    "SessionSummaryDisplayMetrics.displaySpeedKilometersPerHour",
     "sample.altitudeSource == .coreLocationAbsolute",
     "fidelityPolicy.maximumVerticalAccuracyMeters",
 ]

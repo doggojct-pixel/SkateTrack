@@ -1,6 +1,6 @@
 // [協作區] SessionRouteMapView.swift
 // 用途：呈現 Task-018b Session Summary 的 MapKit 路線預覽、起點與終點標記。
-// 委派至：SessionSummaryView 提供 motion samples；Task-030c-b13-A keeps post-record GPS lock guarding, approximate start semantics, and solid fluorescent-pink low-confidence route styling。
+// 委派至：SessionSummaryView 提供 motion samples；Task-030c-b13-A-4 keeps post-record GPS lock guarding, approximate start semantics, and absolute-display metrics and updated warm-up / low-confidence route color semantics。
 
 import MapKit
 import SwiftUI
@@ -30,18 +30,19 @@ private enum RouteMapSegmentStyle {
     case startupWarmup
 
     private static let fluorescentPink = Color(red: 1.0, green: 0.2, blue: 0.6)
+    private static let brightOrange = Color(red: 1.0, green: 0.56, blue: 0.0)
 
-    var lineWidth: CGFloat { self == .startupWarmup ? 3 : 4 }
-    var opacity: Double { self == .startupWarmup ? 0.64 : 1 }
-    var dash: [CGFloat] { self == .startupWarmup ? [3, 3] : [] }
+    var lineWidth: CGFloat { 4 }
+    var opacity: Double { 1 }
+    var dash: [CGFloat] { [] }
     var color: Color {
         switch self {
         case .trusted:
             return SkateTrackSessionStartColors.teal
         case .uncertain:
-            return Self.fluorescentPink
+            return Self.brightOrange
         case .startupWarmup:
-            return SkateTrackSessionStartColors.accent2
+            return Self.fluorescentPink
         }
     }
 }
@@ -454,7 +455,7 @@ struct SessionRouteMapView: View {
 
         guard let diagnostics = sample.locationDiagnostics else { return true }
         if diagnostics.freshnessState == .stale { return false }
-        // Task-030c-b13-A: low-confidence fixes remain visible as solid fluorescent-pink uncertain route segments.
+        // Task-030c-b13-A-4: low-confidence fixes remain visible as solid bright-orange uncertain route segments; startup/warm-up fixes use solid fluorescent pink.
         if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > max(12, fidelityPolicy.maximumTrustedUpdateIntervalSeconds + 4) }) == true { return false }
         if diagnostics.horizontalAccuracyMeters.map({ $0 > fidelityPolicy.displayRouteMaximumHorizontalAccuracyMeters }) == true { return false }
         if diagnostics.coordinateDerivedSpeedKmh.map({ $0 > fidelityPolicy.maximumTrustedImpliedSpeedKmh }) == true { return false }
@@ -479,7 +480,7 @@ struct SessionRouteMapView: View {
                       let existingStyle = currentStyle,
                       existingStyle != pointStyle {
                 appendSegmentIfNeeded(currentCoordinates, style: existingStyle, id: segmentID, to: &segments)
-                // Task-030c-b13-A: isolate warm-up/uncertain geometry from
+                // Task-030c-b13-A-4: isolate warm-up/uncertain geometry from
                 // the trusted route. Do not draw the first trusted segment from the
                 // previous low-quality point, because that makes startup drift look
                 // like confirmed route geometry.

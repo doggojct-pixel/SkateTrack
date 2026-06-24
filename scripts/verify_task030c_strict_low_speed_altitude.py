@@ -23,7 +23,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
     ],
     "Shared/Models/MotionSample.swift": [
         "strictLowSpeedSuspicionThresholdKmh",

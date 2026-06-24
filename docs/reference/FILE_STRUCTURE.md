@@ -1268,13 +1268,24 @@ scripts/verify_task030c_b12_altitude_outlier_guard.py     # Guards b12-B pressur
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, verify_task030c_b12_altitude_outlier_guard.py.
 
 
-### Task-030c-b13-A route confidence visual and freebord calibration
+### Task-030c-b13-A-4 route confidence visual and freebord calibration
 
-Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b13-A.
-iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b13-A Debug build signature.
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b13-A-4.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b13-A-4 Debug build signature.
 iOS/Features/SessionSummary/SessionRouteMapView.swift    # Renders low-confidence route segments as solid fluorescent pink while keeping startup warm-up dashed.
 iOS/Core/SensorEngine/SensorFusionEngine.swift           # Guards the suspicious CoreLocation-speed low-speed outlier gate behind valid CoreLocation speed availability.
 scripts/verify_task030c_b13a_route_confidence_visual_freebord.py # Verifies b13-A visual style, freebord calibration, and no estimated-route scope creep.
 scripts/verify_task030c_route_confidence_display.py      # Updated display verification for solid fluorescent-pink uncertain route segments.
 
-Task-030c-b13-A verification token: solid fluorescent-pink low-confidence route style, coreLocationSpeedKmh only fires when CLLocation actually reported a speed, coordinate-derived local jump gate unchanged, verify_task030c_b13a_route_confidence_visual_freebord.py.
+Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route style with solid fluorescent-pink startup/warm-up styling, coreLocationSpeedKmh only fires when CLLocation actually reported a speed, coordinate-derived local jump gate unchanged, verify_task030c_b13a_route_confidence_visual_freebord.py.
+
+
+### Task-030c-b13-A-4 display metrics and color semantics
+
+iOS/Hooks/useSessionSummary.swift                         # Adds SessionSummaryDisplayMetrics for display-derived distance/speed/elevation without rewriting records.
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift # Adds diagnostics speed fallback and absolute-anchor elevation display.
+iOS/Features/SessionSummary/SessionRouteMapView.swift       # Updates route colors: trusted teal, uncertain bright orange, startup fluorescent pink.
+iOS/Features/SessionHistory/SessionHistoryCardView.swift    # Uses display-derived metrics when motion samples are available.
+scripts/verify_task030c_b13a1_display_metrics_and_colors.py # Verifies b13-A-1 display metrics/color scope.
+
+Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.

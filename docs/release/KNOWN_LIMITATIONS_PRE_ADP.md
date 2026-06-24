@@ -322,12 +322,22 @@ Task-030c-b12 package capability token: altitude-diagnostics-v1.
 Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilter, Pressure LPF diagnostics, does not guarantee survey-grade elevation precision, no estimated route geometry.
 
 
-### Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+### Task-030c-b13-A-4 — Route Confidence Visual + Freebord Confidence Calibration
 
-- **Current status:** Task-030c-b13-A improves how low-confidence route segments are displayed and reduces false low-confidence classifications for low-speed freebord riding when CoreLocation does not provide a valid speed scalar.
+- **Current status:** Task-030c-b13-A-4 improves how low-confidence route segments are displayed and reduces false low-confidence classifications for low-speed freebord riding when CoreLocation does not provide a valid speed scalar.
 - Low-confidence route segments now use a solid fluorescent-pink style instead of a semi-transparent dashed red style. This makes uncertain but present GPS geometry look visually integrated with trusted route geometry.
 - The freebord calibration is intentionally narrow: the suspicious CoreLocation-speed outlier gate only runs when CoreLocation actually reports a valid speed. The coordinate-derived local-jump gate remains active for implausible GPS jumps.
 - This task does not add IMU dead reckoning, road snapping, map matching, GPS gap interpolation, indoor localization, or any estimated route geometry.
 - A small amount of low-confidence route data remains expected under tree canopy, poor horizontal accuracy, stale fixes, or genuine GPS jumps.
 
-Task-030c-b13-A verification token: solid fluorescent-pink route segments, freebord confidence calibration, does not add IMU dead reckoning, no estimated route geometry, startup warm-up dashed style preserved.
+Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments, freebord confidence calibration, does not add IMU dead reckoning, no estimated route geometry, startup warm-up rendered as solid fluorescent pink.
+
+
+### Task-030c-b13-A-4 — Display Metrics + Altitude Anchor + Route Color Semantics
+
+- **Current status:** History/Summary display now derives corrected distance, speed, and elevation presentation from persisted motion samples and diagnostics when available. This improves existing records without rewriting raw `.skatetrack` data.
+- **Color semantics:** trusted route remains teal, low-confidence/uncertain route is solid bright orange, and startup/warm-up/approximate-start route is solid fluorescent pink.
+- **Altitude display:** barometer-relative profiles can be displayed against the first trusted absolute CoreLocation anchor when available; records without a trusted anchor still fall back to relative elevation presentation.
+- **Still deferred:** this does not add IMU dead reckoning, route completion, road snapping, map matching, Wi-Fi RTT, or SnowPrototype changes.
+
+Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.

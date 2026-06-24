@@ -2020,12 +2020,23 @@ Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressur
 Task-030c-b12-B limitation token: Pressure LPF diagnostics are recorded, but long-term atmospheric drift correction, pressure-to-absolute-altitude conversion, full barometer fusion, IMU dead reckoning, Wi-Fi RTT, and indoor localization remain deferred.
 
 
-## Task-030c-b13-A — Route Confidence Visual + Freebord Confidence Calibration
+## Task-030c-b13-A-4 — Route Confidence Visual + Freebord Confidence Calibration
 
-- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-A`.
-- Changed low-confidence route rendering from semi-transparent dashed red to solid fluorescent-pink route segments with the same line weight and opacity as trusted teal/green segments.
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-A-4`.
+- Changed low-confidence route rendering from semi-transparent dashed red to solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments with the same line weight and opacity as trusted teal/green segments.
 - Preserved startup warm-up as a separate dashed style so GPS warm-up remains visually distinct from low-confidence-but-present route fixes.
 - Calibrated the low-speed local metric outlier gate so the suspicious CoreLocation-speed rule only runs when CoreLocation actually reports a valid speed. Coordinate-derived speed no longer substitutes into that CoreLocation-specific gate, which prevents low-speed freebord carving under tree canopy from being over-penalized when `CLLocation.speed` is unavailable.
 - Kept the coordinate-derived local-jump gate intact for genuinely implausible GPS teleports; no estimated route geometry, dead reckoning, map matching, road snapping, altitude, pressure, or summary metric logic changed.
 
-Task-030c-b13-A verification token: solid fluorescent-pink route segments, CoreLocation speed availability, coordinate-derived local jump gate unchanged, freebord confidence calibration, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments, CoreLocation speed availability, coordinate-derived local jump gate unchanged, freebord confidence calibration, no estimated route geometry, no SnowPrototype changes.
+
+
+### Task-030c-b13-A-4 — Display Metrics + Altitude Anchor + Route Color Semantics
+
+- Added display-derived summary metrics so low-confidence-but-metric-eligible route samples can contribute to displayed distance and speed without rewriting recorded `.skatetrack` data.
+- Updated speed charts to fall back to persisted diagnostics speed when `sample.speedKmh` is zero but CoreLocation or coordinate-derived diagnostics are metric-eligible.
+- Updated elevation charts to display stable barometer-relative profiles against the first trusted absolute CoreLocation anchor when available.
+- Updated route color semantics: trusted remains teal, low-confidence/uncertain is solid bright orange, and startup/warm-up/approximate-start is solid fluorescent pink.
+- No recording, SensorFusionEngine, altitude/pressure guard, schema, or SnowPrototype changes.
+
+Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.

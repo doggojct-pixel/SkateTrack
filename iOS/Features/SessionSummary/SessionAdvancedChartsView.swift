@@ -26,12 +26,13 @@ struct SessionAdvancedChartsView: View {
     }
 
     private var speedPoints: [SessionSummaryChartPoint] {
-        smoothedSpeedPoints(chartPoints(from: content.motionSamples) { trustedDisplaySpeedKilometersPerHour(for: $0) })
+        smoothedSpeedPoints(chartPoints(from: content.motionSamples) { displaySpeedKilometersPerHour(for: $0) })
     }
 
     private var elevationPoints: [SessionSummaryChartPoint] {
         let source = preferredElevationDisplaySource(for: content.motionSamples)
-        return normalizedElevationPoints(chartPoints(from: content.motionSamples) { trustedDisplayElevationMeters(for: $0, source: source) })
+        let anchor = absoluteElevationDisplayAnchor(for: content.motionSamples)
+        return smoothedElevationPoints(chartPoints(from: content.motionSamples) { displayElevationMeters(for: $0, source: source, anchor: anchor) })
     }
 
     var body: some View {
@@ -87,48 +88,9 @@ struct SessionAdvancedChartsView: View {
             .accessibilityIdentifier("session-advanced-charts-unlocked")
     }
 
-    private func trustedDisplaySpeedKilometersPerHour(for sample: MotionSample) -> Double? {
-        guard sample.speedKmh.isFinite, sample.speedKmh >= 0 else { return nil }
-        if sample.sampleSource == .debugSimulated {
-            return fidelityPolicy.acceptsSpeed(sample.speedKmh) ? sample.speedKmh : nil
-        }
-
-        guard let diagnostics = sample.locationDiagnostics else {
-            return fidelityPolicy.acceptsSpeed(sample.speedKmh) ? sample.speedKmh : nil
-        }
-        guard diagnostics.routeSegmentConfidence != .unavailable else { return nil }
-        guard diagnostics.freshnessState == .fresh || diagnostics.freshnessState == .recent else { return nil }
-        guard fidelityPolicy.acceptsLowSpeedMetricSample(
-            speedKmh: sample.speedKmh,
-            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
-            speedAccuracyMetersPerSecond: diagnostics.speedAccuracyMetersPerSecond,
-            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh,
-            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters
-        ) else { return nil }
-        guard fidelityPolicy.trustsRouteSegment(
-            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
-            freshnessState: diagnostics.freshnessState,
-            updateIntervalSeconds: diagnostics.gpsUpdateIntervalSeconds,
-            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters,
-            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh
-        ) else { return nil }
-
-        // Task-030c-b10-r5: summary charts should not present one-off Core Location
-        // instantaneous speed pulses as the rider's displayed timeline. Keep raw speed in
-        // diagnostics; require either a precise fix or corroborated coordinate-derived speed.
-        if sample.speedKmh >= 5.5 {
-            let horizontalAccuracy = diagnostics.horizontalAccuracyMeters ?? .infinity
-            let speedAccuracy = diagnostics.speedAccuracyMetersPerSecond ?? .infinity
-            let coordinateSpeed = diagnostics.coordinateDerivedSpeedKmh ?? sample.speedKmh
-            let isPreciseFix = horizontalAccuracy <= fidelityPolicy.speedDisplayCorroborationAccuracyMeters
-            let isSpeedAccurate = speedAccuracy <= 1.1
-            let isCoordinateCorroborated = abs(coordinateSpeed - sample.speedKmh) <= max(2.0, sample.speedKmh * 0.35)
-            if !(isPreciseFix && (isSpeedAccurate || isCoordinateCorroborated)) {
-                return nil
-            }
-        }
-
-        return sample.speedKmh
+    private func displaySpeedKilometersPerHour(for sample: MotionSample) -> Double? {
+        // Task-030c-b13-A-4: chart display falls back to metric-eligible diagnostics speed.
+        SessionSummaryDisplayMetrics.displaySpeedKilometersPerHour(for: sample, policy: fidelityPolicy)
     }
 
     private enum ElevationDisplaySource {
@@ -143,23 +105,144 @@ struct SessionAdvancedChartsView: View {
         return .coreLocationAbsolute
     }
 
-    private func trustedDisplayElevationMeters(for sample: MotionSample, source: ElevationDisplaySource) -> Double? {
-        if let diagnostics = sample.altitudeDiagnostics, diagnostics.isTrustedForElevationGain, let trustedAltitude = diagnostics.trustedAltitudeMeters, trustedAltitude.isFinite {
-            return ((source == .barometerRelative && diagnostics.source == .barometerRelative) || (source == .debugSimulated && diagnostics.source == .debugSimulated) || (source == .coreLocationAbsolute && diagnostics.source == .coreLocationAbsolute)) ? trustedAltitude : nil
+    private struct AbsoluteElevationDisplayAnchor: Equatable {
+        let offsetMeters: Double
+    }
+
+    private func absoluteElevationDisplayAnchor(for samples: [MotionSample]) -> AbsoluteElevationDisplayAnchor? {
+        let sorted = samples.sorted { $0.timestamp < $1.timestamp }
+        let absoluteSamples = sorted.compactMap { sample -> (Date, Double)? in
+            guard let altitude = trustedCoreLocationAbsoluteAltitude(for: sample) else { return nil }
+            return (sample.timestamp, altitude)
         }
-        guard let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
-        switch source {
-        case .barometerRelative:
-            return sample.altitudeSource == .barometerRelative ? altitude : nil
-        case .debugSimulated:
-            return sample.altitudeSource == .debugSimulated ? altitude : nil
-        case .coreLocationAbsolute:
-            guard sample.altitudeSource == .coreLocationAbsolute else { return nil }
-            guard let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters,
-                  verticalAccuracy <= min(fidelityPolicy.maximumVerticalAccuracyMeters, 5) else { return nil }
-            guard sample.locationDiagnostics?.freshnessState != .stale else { return nil }
-            return altitude
+        let relativeSamples = sorted.compactMap { sample -> (Date, Double)? in
+            guard let altitude = trustedBarometerRelativeAltitude(for: sample) else { return nil }
+            return (sample.timestamp, altitude)
         }
+
+        guard !absoluteSamples.isEmpty, !relativeSamples.isEmpty else { return nil }
+
+        let pairedOffsets = absoluteSamples.compactMap { absoluteTimestamp, absoluteAltitude -> Double? in
+            guard let nearestRelative = relativeSamples.min(by: {
+                abs($0.0.timeIntervalSince(absoluteTimestamp)) < abs($1.0.timeIntervalSince(absoluteTimestamp))
+            }) else { return nil }
+            guard abs(nearestRelative.0.timeIntervalSince(absoluteTimestamp)) <= 20 else { return nil }
+            return absoluteAltitude - nearestRelative.1
+        }
+
+        guard let robustOffset = robustAbsoluteElevationOffsetMeters(from: pairedOffsets) ?? fallbackAbsoluteElevationOffsetMeters(absoluteSamples: absoluteSamples, relativeSamples: relativeSamples) else { return nil }
+        return AbsoluteElevationDisplayAnchor(offsetMeters: robustOffset)
+    }
+
+    private func robustAbsoluteElevationOffsetMeters(from offsets: [Double]) -> Double? {
+        let finiteOffsets = offsets.filter(\.isFinite).sorted()
+        guard finiteOffsets.count >= 3 else { return nil }
+
+        let lowerQuartile = finiteOffsets[finiteOffsets.count / 4]
+        let medianOffset = finiteOffsets[finiteOffsets.count / 2]
+        let upperQuartile = finiteOffsets[(finiteOffsets.count * 3) / 4]
+
+        // Task-030c-b13-A-4: when CoreLocation altitude offsets are multi-modal,
+        // the median can be pulled into a late high-altitude drift cluster. Use
+        // the lower stable quartile only when the spread clearly indicates that
+        // absolute altitude samples disagree by several meters. This is a
+        // generic drift guard, not a per-session correction.
+        if upperQuartile - lowerQuartile >= 7, medianOffset - lowerQuartile >= 5 {
+            return lowerQuartile
+        }
+
+        let trimCount = finiteOffsets.count >= 7 ? max(1, finiteOffsets.count / 5) : 0
+        let upperExclusive = finiteOffsets.count - trimCount
+        guard trimCount < upperExclusive else { return medianOffset }
+        let trimmed = Array(finiteOffsets[trimCount..<upperExclusive])
+        return trimmed[trimmed.count / 2]
+    }
+
+    private func fallbackAbsoluteElevationOffsetMeters(
+        absoluteSamples: [(Date, Double)],
+        relativeSamples: [(Date, Double)]
+    ) -> Double? {
+        guard let firstTimestamp = [absoluteSamples.first?.0, relativeSamples.first?.0].compactMap({ $0 }).min() else { return nil }
+        let absoluteWindow = absoluteSamples
+            .filter { $0.0.timeIntervalSince(firstTimestamp) <= 90 }
+            .map(\.1)
+            .filter(\.isFinite)
+            .sorted()
+        let relativeWindow = relativeSamples
+            .filter { $0.0.timeIntervalSince(firstTimestamp) <= 90 }
+            .map(\.1)
+            .filter(\.isFinite)
+            .sorted()
+        guard let absoluteMedian = median(absoluteWindow), let relativeMedian = median(relativeWindow) else { return nil }
+        return absoluteMedian - relativeMedian
+    }
+
+    private func median(_ values: [Double]) -> Double? {
+        guard !values.isEmpty else { return nil }
+        return values[values.count / 2]
+    }
+
+    private func displayElevationMeters(
+        for sample: MotionSample,
+        source: ElevationDisplaySource,
+        anchor: AbsoluteElevationDisplayAnchor?
+    ) -> Double? {
+        if source == .barometerRelative,
+           let relativeAltitude = trustedBarometerRelativeAltitude(for: sample) {
+            // Task-030c-b13-A-4: display stable relative altitude against a robust absolute anchor when available.
+            return anchor.map { $0.offsetMeters + relativeAltitude } ?? relativeAltitude
+        }
+
+        if source == .debugSimulated {
+            return trustedDebugAltitude(for: sample)
+        }
+
+        return trustedCoreLocationAbsoluteAltitude(for: sample)
+    }
+
+    private func trustedBarometerRelativeAltitude(for sample: MotionSample) -> Double? {
+        if let diagnostics = sample.altitudeDiagnostics,
+           diagnostics.source == .barometerRelative,
+           diagnostics.isTrustedForElevationGain,
+           let trustedAltitude = diagnostics.trustedAltitudeMeters,
+           trustedAltitude.isFinite {
+            return trustedAltitude
+        }
+        guard sample.altitudeSource == .barometerRelative,
+              let altitude = sample.altitudeMeters,
+              altitude.isFinite else { return nil }
+        return altitude
+    }
+
+    private func trustedCoreLocationAbsoluteAltitude(for sample: MotionSample) -> Double? {
+        if let diagnostics = sample.altitudeDiagnostics,
+           diagnostics.source == .coreLocationAbsolute,
+           diagnostics.isTrustedForElevationGain,
+           let trustedAltitude = diagnostics.trustedAltitudeMeters,
+           trustedAltitude.isFinite {
+            return trustedAltitude
+        }
+        guard sample.altitudeSource == .coreLocationAbsolute,
+              let altitude = sample.altitudeMeters,
+              altitude.isFinite else { return nil }
+        guard let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters,
+              verticalAccuracy <= min(fidelityPolicy.maximumVerticalAccuracyMeters, 8) else { return nil }
+        guard sample.locationDiagnostics?.freshnessState != .stale else { return nil }
+        return altitude
+    }
+
+    private func trustedDebugAltitude(for sample: MotionSample) -> Double? {
+        if let diagnostics = sample.altitudeDiagnostics,
+           diagnostics.source == .debugSimulated,
+           diagnostics.isTrustedForElevationGain,
+           let trustedAltitude = diagnostics.trustedAltitudeMeters,
+           trustedAltitude.isFinite {
+            return trustedAltitude
+        }
+        guard sample.altitudeSource == .debugSimulated,
+              let altitude = sample.altitudeMeters,
+              altitude.isFinite else { return nil }
+        return altitude
     }
 
     private func chartPoints(
@@ -188,37 +271,32 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func smoothedSpeedPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
-        smooth(points, windowRadius: 2, maximumStepKmh: 2.2)
+        smooth(points, windowRadius: 2, maximumStepValue: 2.2)
     }
 
-    private func normalizedElevationPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
-        let grouped = Dictionary(grouping: points, by: \.segmentID)
-        return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
-            let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
-            guard let baseline = sorted.first?.value else { return sorted }
-            return sorted.map { point in
-                SessionSummaryChartPoint(id: point.id, elapsedSeconds: point.elapsedSeconds, value: point.value - baseline, segmentID: point.segmentID)
-            }
-        }
-        .sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+    private func smoothedElevationPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
+        // Task-030c-b13-A-4: display-only smoothing reduces short altitude spikes without rewriting stored samples.
+        smooth(points, windowRadius: 5, maximumStepValue: 0.45)
     }
 
     private func smooth(
         _ points: [SessionSummaryChartPoint],
         windowRadius: Int,
-        maximumStepKmh: Double
+        maximumStepValue: Double
     ) -> [SessionSummaryChartPoint] {
         let grouped = Dictionary(grouping: points, by: \.segmentID)
         return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
             let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
             guard sorted.count >= 3 else { return sorted }
+            var previousSmoothedValue: Double?
             return sorted.enumerated().map { offset, point in
                 let lowerBound = max(0, offset - windowRadius)
                 let upperBound = min(sorted.count - 1, offset + windowRadius)
                 let windowValues = sorted[lowerBound...upperBound].map(\.value).sorted()
                 let median = windowValues[windowValues.count / 2]
-                let previousValue = offset > 0 ? sorted[offset - 1].value : median
-                let limitedValue = min(max(median, previousValue - maximumStepKmh), previousValue + maximumStepKmh)
+                let referenceValue = previousSmoothedValue ?? median
+                let limitedValue = min(max(median, referenceValue - maximumStepValue), referenceValue + maximumStepValue)
+                previousSmoothedValue = limitedValue
                 return SessionSummaryChartPoint(id: point.id, elapsedSeconds: point.elapsedSeconds, value: limitedValue, segmentID: point.segmentID)
             }
         }

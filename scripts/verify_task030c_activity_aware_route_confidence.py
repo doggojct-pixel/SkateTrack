@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b13-A-4"',
     ],
     "Shared/Models/MotionSample.swift": [
         "usesStrictSmallAreaLowSpeedGate",
@@ -47,14 +47,14 @@ REQUIRED = {
         "fidelityPolicy.maximumTrustedImpliedSpeedKmh",
     ],
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
-        "speedDisplayCorroborationAccuracyMeters",
+        "SessionSummaryDisplayMetrics.displaySpeedKilometersPerHour",
         "low-confidence means uncertain, not missing",
     ],
     "iOS/Features/SessionSummary/SessionSummaryView.swift": [
         "SessionRouteMapView(session: content.session, samples: content.motionSamples)",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-A",
+        "Task-030c-b13-A-4",
     ],
 }
 
