@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b13-B-1")',
+        'Text("Task-030c-b14-B-1")',
         "debugBuildSignatureCard",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
@@ -23,7 +23,7 @@ REQUIRED = {
         "return Self.brightOrange",
         "case .startupWarmup:",
         "return Self.fluorescentPink",
-        "solid bright-orange uncertain route segments",
+        "low-confidence fixes remain visible as bright-orange uncertain route segments",
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "Task-030c-b13-A-4: coreLocationSpeedKmh only fires when CLLocation actually reported a speed.",
@@ -40,7 +40,7 @@ REQUIRED = {
     ],
     "docs/history/DEV_LOG.md": [
         "Task-030c-b13-A-4 — Route Confidence Visual + Freebord Confidence Calibration",
-        "solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments",
+        "solid fluorescent-pink startup/warm-up context",
         "CoreLocation speed availability",
     ],
     "docs/adr/ADR-INDEX.md": [

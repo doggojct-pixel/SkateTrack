@@ -32,7 +32,9 @@ struct SessionAdvancedChartsView: View {
     private var elevationPoints: [SessionSummaryChartPoint] {
         let source = preferredElevationDisplaySource(for: content.motionSamples)
         let anchor = absoluteElevationDisplayAnchor(for: content.motionSamples)
-        return smoothedElevationPoints(chartPoints(from: content.motionSamples) { displayElevationMeters(for: $0, source: source, anchor: anchor) })
+        let rawPoints = chartPoints(from: content.motionSamples) { displayElevationMeters(for: $0, source: source, anchor: anchor) }
+        let sourceGuardedPoints = source == .barometerRelative ? altitudeMicroDipDisplayGuardedPoints(rawPoints) : rawPoints
+        return smoothedElevationPoints(sourceGuardedPoints)
     }
 
     var body: some View {
@@ -100,8 +102,8 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func preferredElevationDisplaySource(for samples: [MotionSample]) -> ElevationDisplaySource {
-        if samples.contains(where: { ($0.altitudeDiagnostics?.source == .barometerRelative && ($0.altitudeDiagnostics?.trustedAltitudeMeters?.isFinite ?? false)) || ($0.altitudeSource == .barometerRelative && ($0.altitudeMeters?.isFinite ?? false)) }) { return .barometerRelative }
-        if samples.contains(where: { ($0.altitudeDiagnostics?.source == .debugSimulated && ($0.altitudeDiagnostics?.trustedAltitudeMeters?.isFinite ?? false)) || ($0.altitudeSource == .debugSimulated && ($0.altitudeMeters?.isFinite ?? false)) }) { return .debugSimulated }
+        if samples.contains(where: { trustedBarometerRelativeAltitude(for: $0) != nil }) { return .barometerRelative }
+        if samples.contains(where: { trustedDebugAltitude(for: $0) != nil }) { return .debugSimulated }
         return .coreLocationAbsolute
     }
 
@@ -201,30 +203,20 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func trustedBarometerRelativeAltitude(for sample: MotionSample) -> Double? {
-        if let diagnostics = sample.altitudeDiagnostics,
-           diagnostics.source == .barometerRelative,
-           diagnostics.isTrustedForElevationGain,
-           let trustedAltitude = diagnostics.trustedAltitudeMeters,
-           trustedAltitude.isFinite {
-            return trustedAltitude
+        if let diagnostics = sample.altitudeDiagnostics, diagnostics.source == .barometerRelative {
+            return diagnostics.isTrustedForElevationGain ? diagnostics.trustedAltitudeMeters : nil
         }
-        guard sample.altitudeSource == .barometerRelative,
-              let altitude = sample.altitudeMeters,
-              altitude.isFinite else { return nil }
+        guard sample.altitudeDiagnostics == nil, sample.altitudeSource == .barometerRelative,
+              let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
         return altitude
     }
 
     private func trustedCoreLocationAbsoluteAltitude(for sample: MotionSample) -> Double? {
-        if let diagnostics = sample.altitudeDiagnostics,
-           diagnostics.source == .coreLocationAbsolute,
-           diagnostics.isTrustedForElevationGain,
-           let trustedAltitude = diagnostics.trustedAltitudeMeters,
-           trustedAltitude.isFinite {
-            return trustedAltitude
+        if let diagnostics = sample.altitudeDiagnostics, diagnostics.source == .coreLocationAbsolute {
+            return diagnostics.isTrustedForElevationGain ? diagnostics.trustedAltitudeMeters : nil
         }
-        guard sample.altitudeSource == .coreLocationAbsolute,
-              let altitude = sample.altitudeMeters,
-              altitude.isFinite else { return nil }
+        guard sample.altitudeDiagnostics == nil, sample.altitudeSource == .coreLocationAbsolute,
+              let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
         guard let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters,
               verticalAccuracy <= min(fidelityPolicy.maximumVerticalAccuracyMeters, 8) else { return nil }
         guard sample.locationDiagnostics?.freshnessState != .stale else { return nil }
@@ -232,16 +224,11 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func trustedDebugAltitude(for sample: MotionSample) -> Double? {
-        if let diagnostics = sample.altitudeDiagnostics,
-           diagnostics.source == .debugSimulated,
-           diagnostics.isTrustedForElevationGain,
-           let trustedAltitude = diagnostics.trustedAltitudeMeters,
-           trustedAltitude.isFinite {
-            return trustedAltitude
+        if let diagnostics = sample.altitudeDiagnostics, diagnostics.source == .debugSimulated {
+            return diagnostics.isTrustedForElevationGain ? diagnostics.trustedAltitudeMeters : nil
         }
-        guard sample.altitudeSource == .debugSimulated,
-              let altitude = sample.altitudeMeters,
-              altitude.isFinite else { return nil }
+        guard sample.altitudeDiagnostics == nil, sample.altitudeSource == .debugSimulated,
+              let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
         return altitude
     }
 
@@ -278,7 +265,28 @@ struct SessionAdvancedChartsView: View {
         // Task-030c-b13-A-4: display-only smoothing reduces short altitude spikes without rewriting stored samples.
         smooth(points, windowRadius: 5, maximumStepValue: 0.45)
     }
-
+    private func altitudeMicroDipDisplayGuardedPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
+        // Task-030c-b14-B-1: display-only guard for very short barometer notches; does not rewrite MotionSample, elevation gain summaries, route geometry, or exported diagnostics.
+        let grouped = Dictionary(grouping: points, by: \.segmentID)
+        return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
+            let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+            guard sorted.count >= 15 else { return sorted }
+            let lookback = 8, lookahead = 8, guardBand = 2, minimumDipMeters = 1.35
+            let maximumBaselineDisagreementMeters = 0.85, maximumGuardSpanSeconds = 34.0
+            return sorted.enumerated().map { offset, point in
+                let leftStart = max(0, offset - lookback), leftEnd = max(0, offset - guardBand)
+                let rightStart = min(sorted.count, offset + guardBand + 1), rightEnd = min(sorted.count, offset + lookahead + 1)
+                guard leftEnd - leftStart >= 3, rightEnd - rightStart >= 3 else { return point }
+                let leftWindow = Array(sorted[leftStart..<leftEnd]), rightWindow = Array(sorted[rightStart..<rightEnd])
+                let timeSpan = (rightWindow.last?.elapsedSeconds ?? point.elapsedSeconds) - (leftWindow.first?.elapsedSeconds ?? point.elapsedSeconds)
+                guard timeSpan <= maximumGuardSpanSeconds, let leftMedian = median(leftWindow.map(\.value).sorted()), let rightMedian = median(rightWindow.map(\.value).sorted()),
+                      abs(leftMedian - rightMedian) <= maximumBaselineDisagreementMeters else { return point }
+                let baseline = (leftMedian + rightMedian) / 2
+                guard baseline - point.value >= minimumDipMeters else { return point }
+                return SessionSummaryChartPoint(id: point.id, elapsedSeconds: point.elapsedSeconds, value: baseline, segmentID: point.segmentID)
+            }
+        }.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+    }
     private func smooth(
         _ points: [SessionSummaryChartPoint],
         windowRadius: Int,
@@ -304,10 +312,9 @@ struct SessionAdvancedChartsView: View {
     }
 
     private func shouldStartNewChartSegment(after previousTimestamp: Date?, current sample: MotionSample) -> Bool {
-        if let previousTimestamp, sample.timestamp.timeIntervalSince(previousTimestamp) > 12 {
-            return true
-        }
-
+        if let previousTimestamp, sample.timestamp.timeIntervalSince(previousTimestamp) > 12 { return true }
+        // Task-030c-b14-B-1: barometer/debug altitude charts are independent from GPS fix cadence.
+        if [AltitudeSampleSource.barometerRelative, .debugSimulated].contains(sample.altitudeDiagnostics?.source ?? sample.altitudeSource ?? .unavailable) { return false }
         guard let diagnostics = sample.locationDiagnostics else { return false }
         if diagnostics.freshnessState == .stale { return true }
         // Task-030c-b11-r2: low-confidence means uncertain, not missing. Keep charts

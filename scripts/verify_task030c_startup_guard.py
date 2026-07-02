@@ -22,7 +22,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
     ],
     "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
         "startupStabilizationSeconds",
@@ -41,7 +41,7 @@ REQUIRED_TOKENS = {
         "elapsedAfterStart >= Self.startupFallHandlingSuppressionSeconds",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-B-1",
+        "Task-030c-b14-B-1",
     ],
     "docs/history/DEV_LOG.md": [
         "Task-030c-b11-r3-3",

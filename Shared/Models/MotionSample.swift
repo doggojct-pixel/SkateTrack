@@ -221,6 +221,742 @@ struct DeadReckoningDiagnostics: Codable, Sendable, Equatable {
     }
 }
 
+
+enum DeadReckoningReplayReadinessBlockingReason: String, Codable, Sendable, Equatable, Hashable {
+    case noBlockingReason
+    case notNeededNormalCadence
+    case gapTooShort
+    case gapTooLong
+    case missingPreGapAnchor
+    case missingPostGapAnchor
+    case insufficientIMUSamples
+    case headingUnavailable
+    case headingTooOld
+    case headingAccuracyTooPoor
+    case diagnosticsUnavailable
+    case replayOnlyNotProduction
+}
+
+struct DeadReckoningReadinessConfig: Codable, Sendable, Equatable {
+    let minimumGapSeconds: TimeInterval
+    let maximumReplayGapSeconds: TimeInterval
+    let minimumIMUSamplesPerSecond: Double
+    let maximumHeadingAgeSeconds: TimeInterval
+    let maximumHeadingAccuracyDegrees: Double
+    let requirePostGapAnchor: Bool
+
+    init(
+        minimumGapSeconds: TimeInterval = 1.5,
+        maximumReplayGapSeconds: TimeInterval = 30,
+        minimumIMUSamplesPerSecond: Double = 5,
+        maximumHeadingAgeSeconds: TimeInterval = 5,
+        maximumHeadingAccuracyDegrees: Double = 35,
+        requirePostGapAnchor: Bool = true
+    ) {
+        self.minimumGapSeconds = max(0, minimumGapSeconds)
+        self.maximumReplayGapSeconds = max(minimumGapSeconds, maximumReplayGapSeconds)
+        self.minimumIMUSamplesPerSecond = max(0, minimumIMUSamplesPerSecond)
+        self.maximumHeadingAgeSeconds = max(0, maximumHeadingAgeSeconds)
+        self.maximumHeadingAccuracyDegrees = max(0, maximumHeadingAccuracyDegrees)
+        self.requirePostGapAnchor = requirePostGapAnchor
+    }
+
+    static let conservativeReplayOnly = DeadReckoningReadinessConfig()
+}
+
+struct DeadReckoningReadinessGapCandidate: Codable, Sendable, Equatable {
+    let sampleID: UUID
+    let sampleTimestamp: Date
+    let gapClassification: GPSGapClassification
+    let gapSeconds: TimeInterval
+    let preGapAnchorAvailable: Bool
+    let postGapAnchorAvailable: Bool
+    let imuSampleCount: Int
+    let imuCadenceHz: Double?
+    let headingAvailable: Bool
+    let headingSource: HeadingDiagnosticsSource?
+    let headingAgeSeconds: TimeInterval?
+    let headingAccuracyDegrees: Double?
+    let eligibleForReplay: Bool
+    let blockingReason: DeadReckoningReplayReadinessBlockingReason
+
+    init(
+        sampleID: UUID,
+        sampleTimestamp: Date,
+        gapClassification: GPSGapClassification,
+        gapSeconds: TimeInterval,
+        preGapAnchorAvailable: Bool,
+        postGapAnchorAvailable: Bool,
+        imuSampleCount: Int,
+        imuCadenceHz: Double? = nil,
+        headingAvailable: Bool,
+        headingSource: HeadingDiagnosticsSource? = nil,
+        headingAgeSeconds: TimeInterval? = nil,
+        headingAccuracyDegrees: Double? = nil,
+        eligibleForReplay: Bool,
+        blockingReason: DeadReckoningReplayReadinessBlockingReason
+    ) {
+        self.sampleID = sampleID
+        self.sampleTimestamp = sampleTimestamp
+        self.gapClassification = gapClassification
+        self.gapSeconds = max(0, gapSeconds)
+        self.preGapAnchorAvailable = preGapAnchorAvailable
+        self.postGapAnchorAvailable = postGapAnchorAvailable
+        self.imuSampleCount = max(0, imuSampleCount)
+        self.imuCadenceHz = imuCadenceHz.map { max(0, $0) }
+        self.headingAvailable = headingAvailable
+        self.headingSource = headingSource
+        self.headingAgeSeconds = headingAgeSeconds.map { max(0, $0) }
+        self.headingAccuracyDegrees = headingAccuracyDegrees.map { max(0, $0) }
+        self.eligibleForReplay = eligibleForReplay
+        self.blockingReason = blockingReason
+    }
+}
+
+struct DeadReckoningReadinessSummary: Codable, Sendable, Equatable {
+    let totalSamples: Int
+    let locationFixSampleCount: Int
+    let timerFusionSampleCount: Int
+    let gapCandidateCount: Int
+    let replayEligibleGapCount: Int
+    let blockedGapCount: Int
+    let blockingReasonCounts: [DeadReckoningReplayReadinessBlockingReason: Int]
+    let longestGapSeconds: TimeInterval?
+    let medianTimerFusionCadenceHz: Double?
+    let medianHeadingAgeSeconds: TimeInterval?
+    let candidates: [DeadReckoningReadinessGapCandidate]
+
+    init(
+        totalSamples: Int,
+        locationFixSampleCount: Int,
+        timerFusionSampleCount: Int,
+        gapCandidateCount: Int,
+        replayEligibleGapCount: Int,
+        blockedGapCount: Int,
+        blockingReasonCounts: [DeadReckoningReplayReadinessBlockingReason: Int],
+        longestGapSeconds: TimeInterval? = nil,
+        medianTimerFusionCadenceHz: Double? = nil,
+        medianHeadingAgeSeconds: TimeInterval? = nil,
+        candidates: [DeadReckoningReadinessGapCandidate]
+    ) {
+        self.totalSamples = max(0, totalSamples)
+        self.locationFixSampleCount = max(0, locationFixSampleCount)
+        self.timerFusionSampleCount = max(0, timerFusionSampleCount)
+        self.gapCandidateCount = max(0, gapCandidateCount)
+        self.replayEligibleGapCount = max(0, replayEligibleGapCount)
+        self.blockedGapCount = max(0, blockedGapCount)
+        self.blockingReasonCounts = blockingReasonCounts
+        self.longestGapSeconds = longestGapSeconds.map { max(0, $0) }
+        self.medianTimerFusionCadenceHz = medianTimerFusionCadenceHz.map { max(0, $0) }
+        self.medianHeadingAgeSeconds = medianHeadingAgeSeconds.map { max(0, $0) }
+        self.candidates = candidates
+    }
+}
+
+enum DeadReckoningReadinessAnalyzer {
+    static func analyze(
+        samples: [MotionSample],
+        config: DeadReckoningReadinessConfig = .conservativeReplayOnly
+    ) -> DeadReckoningReadinessSummary {
+        let sortedSamples = samples.sorted { lhs, rhs in
+            lhs.timestamp < rhs.timestamp
+        }
+
+        let locationFixSampleCount = sortedSamples.filter { $0.sampleSource == .locationFix }.count
+        let timerFusionSampleCount = sortedSamples.filter { $0.sampleSource == .timerFusion }.count
+
+        var candidates: [DeadReckoningReadinessGapCandidate] = []
+        var timerCadences: [Double] = []
+        var headingAges: [TimeInterval] = []
+
+        for sample in sortedSamples {
+            guard let diagnostics = sample.locationDiagnostics,
+                  let gpsGapDiagnostics = diagnostics.gpsGapDiagnostics,
+                  let rawGapSeconds = gpsGapDiagnostics.gapSeconds else {
+                continue
+            }
+
+            let gapSeconds = max(0, rawGapSeconds)
+            let classification = gpsGapDiagnostics.classification
+            guard classification != .normalCadence || gapSeconds >= config.minimumGapSeconds else {
+                continue
+            }
+
+            let gapStart = diagnostics.rawLocationTimestamp ?? sample.timestamp.addingTimeInterval(-gapSeconds)
+            let gapEnd = sample.timestamp
+            let imuSamples = sortedSamples.filter { candidate in
+                candidate.sampleSource == .timerFusion &&
+                candidate.timestamp > gapStart &&
+                candidate.timestamp <= gapEnd
+            }
+
+            let imuCadenceHz: Double?
+            if gapSeconds > 0 {
+                imuCadenceHz = Double(imuSamples.count) / gapSeconds
+            } else {
+                imuCadenceHz = nil
+            }
+
+            if let imuCadenceHz {
+                timerCadences.append(imuCadenceHz)
+            }
+
+            let preGapAnchorAvailable = sortedSamples.contains { candidate in
+                candidate.timestamp <= gapStart && isTrustedGPSAnchor(candidate)
+            }
+            let postGapAnchorAvailable = sortedSamples.contains { candidate in
+                candidate.timestamp >= gapEnd && isTrustedGPSAnchor(candidate)
+            }
+
+            let headingDiagnostics = diagnostics.headingDiagnostics
+            let headingAvailable = headingDiagnostics?.hasReliableHeadingForRouteContinuity == true
+            let headingAgeSeconds = headingDiagnostics?.deviceHeadingAgeSeconds
+            let headingAccuracyDegrees = headingDiagnostics?.deviceHeadingAccuracyDegrees
+                ?? headingDiagnostics?.courseAccuracyDegrees
+
+            if let headingAgeSeconds {
+                headingAges.append(headingAgeSeconds)
+            }
+
+            let blockingReason = readinessBlockingReason(
+                gapSeconds: gapSeconds,
+                preGapAnchorAvailable: preGapAnchorAvailable,
+                postGapAnchorAvailable: postGapAnchorAvailable,
+                imuCadenceHz: imuCadenceHz,
+                headingAvailable: headingAvailable,
+                headingAgeSeconds: headingAgeSeconds,
+                headingAccuracyDegrees: headingAccuracyDegrees,
+                config: config
+            )
+
+            let eligibleForReplay = blockingReason == .noBlockingReason
+            candidates.append(
+                DeadReckoningReadinessGapCandidate(
+                    sampleID: sample.id,
+                    sampleTimestamp: sample.timestamp,
+                    gapClassification: classification,
+                    gapSeconds: gapSeconds,
+                    preGapAnchorAvailable: preGapAnchorAvailable,
+                    postGapAnchorAvailable: postGapAnchorAvailable,
+                    imuSampleCount: imuSamples.count,
+                    imuCadenceHz: imuCadenceHz,
+                    headingAvailable: headingAvailable,
+                    headingSource: headingDiagnostics?.source,
+                    headingAgeSeconds: headingAgeSeconds,
+                    headingAccuracyDegrees: headingAccuracyDegrees,
+                    eligibleForReplay: eligibleForReplay,
+                    blockingReason: blockingReason
+                )
+            )
+        }
+
+        var reasonCounts: [DeadReckoningReplayReadinessBlockingReason: Int] = [:]
+        for candidate in candidates {
+            reasonCounts[candidate.blockingReason, default: 0] += 1
+        }
+
+        let replayEligibleGapCount = candidates.filter(\.eligibleForReplay).count
+        let longestGapSeconds = candidates.map(\.gapSeconds).max()
+        return DeadReckoningReadinessSummary(
+            totalSamples: sortedSamples.count,
+            locationFixSampleCount: locationFixSampleCount,
+            timerFusionSampleCount: timerFusionSampleCount,
+            gapCandidateCount: candidates.count,
+            replayEligibleGapCount: replayEligibleGapCount,
+            blockedGapCount: max(0, candidates.count - replayEligibleGapCount),
+            blockingReasonCounts: reasonCounts,
+            longestGapSeconds: longestGapSeconds,
+            medianTimerFusionCadenceHz: median(timerCadences),
+            medianHeadingAgeSeconds: median(headingAges),
+            candidates: candidates
+        )
+    }
+
+    private static func readinessBlockingReason(
+        gapSeconds: TimeInterval,
+        preGapAnchorAvailable: Bool,
+        postGapAnchorAvailable: Bool,
+        imuCadenceHz: Double?,
+        headingAvailable: Bool,
+        headingAgeSeconds: TimeInterval?,
+        headingAccuracyDegrees: Double?,
+        config: DeadReckoningReadinessConfig
+    ) -> DeadReckoningReplayReadinessBlockingReason {
+        guard gapSeconds.isFinite else { return .diagnosticsUnavailable }
+        if gapSeconds < config.minimumGapSeconds {
+            return .gapTooShort
+        }
+        if gapSeconds > config.maximumReplayGapSeconds {
+            return .gapTooLong
+        }
+        guard preGapAnchorAvailable else {
+            return .missingPreGapAnchor
+        }
+        if config.requirePostGapAnchor, !postGapAnchorAvailable {
+            return .missingPostGapAnchor
+        }
+        guard let imuCadenceHz, imuCadenceHz >= config.minimumIMUSamplesPerSecond else {
+            return .insufficientIMUSamples
+        }
+        guard headingAvailable else {
+            return .headingUnavailable
+        }
+        if let headingAgeSeconds, headingAgeSeconds > config.maximumHeadingAgeSeconds {
+            return .headingTooOld
+        }
+        if let headingAccuracyDegrees, headingAccuracyDegrees > config.maximumHeadingAccuracyDegrees {
+            return .headingAccuracyTooPoor
+        }
+        return .noBlockingReason
+    }
+
+    private static func isTrustedGPSAnchor(_ sample: MotionSample) -> Bool {
+        guard sample.sampleSource == .locationFix,
+              sample.gpsCoordinate != nil else {
+            return false
+        }
+
+        guard let confidence = sample.locationDiagnostics?.routeSegmentConfidence else {
+            return true
+        }
+
+        switch confidence {
+        case .high, .medium:
+            return true
+        case .low, .unavailable:
+            return false
+        }
+    }
+
+    private static func median(_ values: [Double]) -> Double? {
+        guard !values.isEmpty else { return nil }
+        let sorted = values.sorted()
+        let middle = sorted.count / 2
+        if sorted.count.isMultiple(of: 2) {
+            return (sorted[middle - 1] + sorted[middle]) / 2
+        }
+        return sorted[middle]
+    }
+}
+
+
+enum DeadReckoningCandidateInterpolationStatus: String, Codable, Sendable, Equatable, Hashable {
+    case debugCandidateOnly
+    case blockedByReadiness
+    case missingAnchors
+    case anchorClosureTooLarge
+    case noCandidatePoints
+}
+
+enum DeadReckoningCandidateInterpolationConfidence: String, Codable, Sendable, Equatable, Hashable {
+    case blocked
+    case debugLow
+    case debugMedium
+    case debugHigh
+}
+
+enum DeadReckoningCandidateInterpolationWarningReason: String, Codable, Sendable, Equatable, Hashable {
+    case noWarning
+    case replayOnlyNotProduction
+    case anchorClosureModerate
+    case headingAccuracyModerate
+    case imuCadenceModerate
+}
+
+struct DeadReckoningCandidateInterpolationConfig: Codable, Sendable, Equatable {
+    let candidatePointIntervalSeconds: TimeInterval
+    let maximumCandidatePointCount: Int
+    let maximumAnchorClosureDistanceMeters: Double
+    let highConfidenceClosureDistanceMeters: Double
+    let mediumConfidenceClosureDistanceMeters: Double
+    let highConfidenceMinimumIMUCadenceHz: Double
+    let highConfidenceMaximumHeadingAccuracyDegrees: Double
+
+    init(
+        candidatePointIntervalSeconds: TimeInterval = 1.0,
+        maximumCandidatePointCount: Int = 30,
+        maximumAnchorClosureDistanceMeters: Double = 80,
+        highConfidenceClosureDistanceMeters: Double = 20,
+        mediumConfidenceClosureDistanceMeters: Double = 45,
+        highConfidenceMinimumIMUCadenceHz: Double = 10,
+        highConfidenceMaximumHeadingAccuracyDegrees: Double = 20
+    ) {
+        self.candidatePointIntervalSeconds = max(0.25, candidatePointIntervalSeconds)
+        self.maximumCandidatePointCount = max(1, maximumCandidatePointCount)
+        self.maximumAnchorClosureDistanceMeters = max(1, maximumAnchorClosureDistanceMeters)
+        self.highConfidenceClosureDistanceMeters = max(1, highConfidenceClosureDistanceMeters)
+        self.mediumConfidenceClosureDistanceMeters = max(highConfidenceClosureDistanceMeters, mediumConfidenceClosureDistanceMeters)
+        self.highConfidenceMinimumIMUCadenceHz = max(0, highConfidenceMinimumIMUCadenceHz)
+        self.highConfidenceMaximumHeadingAccuracyDegrees = max(0, highConfidenceMaximumHeadingAccuracyDegrees)
+    }
+
+    static let debugReplayOnly = DeadReckoningCandidateInterpolationConfig()
+}
+
+struct DeadReckoningInterpolatedRoutePoint: Codable, Sendable, Equatable {
+    let timestamp: Date
+    let timestampMillisecondsSince1970: Int64?
+    let coordinate: GeoCoordinate
+    let progress: Double
+
+    init(timestamp: Date, coordinate: GeoCoordinate, progress: Double) {
+        self.timestamp = timestamp
+        self.timestampMillisecondsSince1970 = timestamp.millisecondsSince1970
+        self.coordinate = coordinate
+        self.progress = min(max(progress, 0), 1)
+    }
+}
+
+struct DeadReckoningCandidateInterpolationResult: Codable, Sendable, Equatable {
+    let sampleID: UUID
+    let gapStartTimestamp: Date
+    let gapEndTimestamp: Date
+    let gapSeconds: TimeInterval
+    let status: DeadReckoningCandidateInterpolationStatus
+    let confidence: DeadReckoningCandidateInterpolationConfidence
+    let readinessBlockingReason: DeadReckoningReplayReadinessBlockingReason
+    let warningReason: DeadReckoningCandidateInterpolationWarningReason
+    let preGapAnchorCoordinate: GeoCoordinate?
+    let postGapAnchorCoordinate: GeoCoordinate?
+    let anchorClosureDistanceMeters: Double?
+    let candidatePointCount: Int
+    let candidatePoints: [DeadReckoningInterpolatedRoutePoint]
+    let estimatedCandidateDistanceMeters: Double?
+    let imuCadenceHz: Double?
+    let headingAgeSeconds: TimeInterval?
+    let headingAccuracyDegrees: Double?
+
+    init(
+        sampleID: UUID,
+        gapStartTimestamp: Date,
+        gapEndTimestamp: Date,
+        gapSeconds: TimeInterval,
+        status: DeadReckoningCandidateInterpolationStatus,
+        confidence: DeadReckoningCandidateInterpolationConfidence,
+        readinessBlockingReason: DeadReckoningReplayReadinessBlockingReason,
+        warningReason: DeadReckoningCandidateInterpolationWarningReason,
+        preGapAnchorCoordinate: GeoCoordinate? = nil,
+        postGapAnchorCoordinate: GeoCoordinate? = nil,
+        anchorClosureDistanceMeters: Double? = nil,
+        candidatePoints: [DeadReckoningInterpolatedRoutePoint] = [],
+        estimatedCandidateDistanceMeters: Double? = nil,
+        imuCadenceHz: Double? = nil,
+        headingAgeSeconds: TimeInterval? = nil,
+        headingAccuracyDegrees: Double? = nil
+    ) {
+        self.sampleID = sampleID
+        self.gapStartTimestamp = gapStartTimestamp
+        self.gapEndTimestamp = gapEndTimestamp
+        self.gapSeconds = max(0, gapSeconds)
+        self.status = status
+        self.confidence = confidence
+        self.readinessBlockingReason = readinessBlockingReason
+        self.warningReason = warningReason
+        self.preGapAnchorCoordinate = preGapAnchorCoordinate
+        self.postGapAnchorCoordinate = postGapAnchorCoordinate
+        self.anchorClosureDistanceMeters = anchorClosureDistanceMeters.map { max(0, $0) }
+        self.candidatePointCount = candidatePoints.count
+        self.candidatePoints = candidatePoints
+        self.estimatedCandidateDistanceMeters = estimatedCandidateDistanceMeters.map { max(0, $0) }
+        self.imuCadenceHz = imuCadenceHz.map { max(0, $0) }
+        self.headingAgeSeconds = headingAgeSeconds.map { max(0, $0) }
+        self.headingAccuracyDegrees = headingAccuracyDegrees.map { max(0, $0) }
+    }
+}
+
+struct DeadReckoningCandidateInterpolationSummary: Codable, Sendable, Equatable {
+    let totalReadinessCandidateCount: Int
+    let debugCandidateCount: Int
+    let blockedCandidateCount: Int
+    let maximumAnchorClosureDistanceMeters: Double?
+    let statusCounts: [DeadReckoningCandidateInterpolationStatus: Int]
+    let confidenceCounts: [DeadReckoningCandidateInterpolationConfidence: Int]
+    let results: [DeadReckoningCandidateInterpolationResult]
+
+    init(
+        totalReadinessCandidateCount: Int,
+        debugCandidateCount: Int,
+        blockedCandidateCount: Int,
+        maximumAnchorClosureDistanceMeters: Double? = nil,
+        statusCounts: [DeadReckoningCandidateInterpolationStatus: Int],
+        confidenceCounts: [DeadReckoningCandidateInterpolationConfidence: Int],
+        results: [DeadReckoningCandidateInterpolationResult]
+    ) {
+        self.totalReadinessCandidateCount = max(0, totalReadinessCandidateCount)
+        self.debugCandidateCount = max(0, debugCandidateCount)
+        self.blockedCandidateCount = max(0, blockedCandidateCount)
+        self.maximumAnchorClosureDistanceMeters = maximumAnchorClosureDistanceMeters.map { max(0, $0) }
+        self.statusCounts = statusCounts
+        self.confidenceCounts = confidenceCounts
+        self.results = results
+    }
+}
+
+enum DeadReckoningCandidateInterpolationAnalyzer {
+    static func analyze(
+        samples: [MotionSample],
+        readinessSummary: DeadReckoningReadinessSummary? = nil,
+        readinessConfig: DeadReckoningReadinessConfig = .conservativeReplayOnly,
+        interpolationConfig: DeadReckoningCandidateInterpolationConfig = .debugReplayOnly
+    ) -> DeadReckoningCandidateInterpolationSummary {
+        let sortedSamples = samples.sorted { lhs, rhs in lhs.timestamp < rhs.timestamp }
+        let readiness = readinessSummary ?? DeadReckoningReadinessAnalyzer.analyze(
+            samples: sortedSamples,
+            config: readinessConfig
+        )
+
+        let results = readiness.candidates.map { candidate in
+            interpolationResult(
+                for: candidate,
+                samples: sortedSamples,
+                config: interpolationConfig
+            )
+        }
+        var statusCounts: [DeadReckoningCandidateInterpolationStatus: Int] = [:]
+        var confidenceCounts: [DeadReckoningCandidateInterpolationConfidence: Int] = [:]
+        for result in results {
+            statusCounts[result.status, default: 0] += 1
+            confidenceCounts[result.confidence, default: 0] += 1
+        }
+        let debugCandidateCount = results.filter { $0.status == .debugCandidateOnly }.count
+        let closureDistances = results.compactMap(\.anchorClosureDistanceMeters)
+        return DeadReckoningCandidateInterpolationSummary(
+            totalReadinessCandidateCount: readiness.candidates.count,
+            debugCandidateCount: debugCandidateCount,
+            blockedCandidateCount: max(0, results.count - debugCandidateCount),
+            maximumAnchorClosureDistanceMeters: closureDistances.max(),
+            statusCounts: statusCounts,
+            confidenceCounts: confidenceCounts,
+            results: results
+        )
+    }
+
+    private static func interpolationResult(
+        for candidate: DeadReckoningReadinessGapCandidate,
+        samples: [MotionSample],
+        config: DeadReckoningCandidateInterpolationConfig
+    ) -> DeadReckoningCandidateInterpolationResult {
+        let gapEnd = candidate.sampleTimestamp
+        let gapStart = candidate.sampleTimestamp.addingTimeInterval(-candidate.gapSeconds)
+        guard candidate.eligibleForReplay else {
+            return DeadReckoningCandidateInterpolationResult(
+                sampleID: candidate.sampleID,
+                gapStartTimestamp: gapStart,
+                gapEndTimestamp: gapEnd,
+                gapSeconds: candidate.gapSeconds,
+                status: .blockedByReadiness,
+                confidence: .blocked,
+                readinessBlockingReason: candidate.blockingReason,
+                warningReason: .replayOnlyNotProduction,
+                imuCadenceHz: candidate.imuCadenceHz,
+                headingAgeSeconds: candidate.headingAgeSeconds,
+                headingAccuracyDegrees: candidate.headingAccuracyDegrees
+            )
+        }
+
+        guard let preAnchor = latestTrustedAnchor(beforeOrAt: gapStart, samples: samples),
+              let postAnchor = earliestTrustedAnchor(afterOrAt: gapEnd, samples: samples),
+              let preCoordinate = preAnchor.gpsCoordinate,
+              let postCoordinate = postAnchor.gpsCoordinate else {
+            return DeadReckoningCandidateInterpolationResult(
+                sampleID: candidate.sampleID,
+                gapStartTimestamp: gapStart,
+                gapEndTimestamp: gapEnd,
+                gapSeconds: candidate.gapSeconds,
+                status: .missingAnchors,
+                confidence: .blocked,
+                readinessBlockingReason: .diagnosticsUnavailable,
+                warningReason: .replayOnlyNotProduction,
+                imuCadenceHz: candidate.imuCadenceHz,
+                headingAgeSeconds: candidate.headingAgeSeconds,
+                headingAccuracyDegrees: candidate.headingAccuracyDegrees
+            )
+        }
+
+        let closureDistance = haversineDistanceMeters(from: preCoordinate, to: postCoordinate)
+        guard closureDistance <= config.maximumAnchorClosureDistanceMeters else {
+            return DeadReckoningCandidateInterpolationResult(
+                sampleID: candidate.sampleID,
+                gapStartTimestamp: gapStart,
+                gapEndTimestamp: gapEnd,
+                gapSeconds: candidate.gapSeconds,
+                status: .anchorClosureTooLarge,
+                confidence: .blocked,
+                readinessBlockingReason: candidate.blockingReason,
+                warningReason: .anchorClosureModerate,
+                preGapAnchorCoordinate: preCoordinate,
+                postGapAnchorCoordinate: postCoordinate,
+                anchorClosureDistanceMeters: closureDistance,
+                imuCadenceHz: candidate.imuCadenceHz,
+                headingAgeSeconds: candidate.headingAgeSeconds,
+                headingAccuracyDegrees: candidate.headingAccuracyDegrees
+            )
+        }
+
+        let pointCount = candidatePointCount(gapSeconds: candidate.gapSeconds, config: config)
+        guard pointCount > 0 else {
+            return DeadReckoningCandidateInterpolationResult(
+                sampleID: candidate.sampleID,
+                gapStartTimestamp: gapStart,
+                gapEndTimestamp: gapEnd,
+                gapSeconds: candidate.gapSeconds,
+                status: .noCandidatePoints,
+                confidence: .blocked,
+                readinessBlockingReason: candidate.blockingReason,
+                warningReason: .replayOnlyNotProduction,
+                preGapAnchorCoordinate: preCoordinate,
+                postGapAnchorCoordinate: postCoordinate,
+                anchorClosureDistanceMeters: closureDistance,
+                imuCadenceHz: candidate.imuCadenceHz,
+                headingAgeSeconds: candidate.headingAgeSeconds,
+                headingAccuracyDegrees: candidate.headingAccuracyDegrees
+            )
+        }
+
+        let candidatePoints = (1...pointCount).map { index in
+            let progress = Double(index) / Double(pointCount + 1)
+            let timestamp = gapStart.addingTimeInterval(candidate.gapSeconds * progress)
+            return DeadReckoningInterpolatedRoutePoint(
+                timestamp: timestamp,
+                coordinate: interpolateCoordinate(from: preCoordinate, to: postCoordinate, progress: progress),
+                progress: progress
+            )
+        }
+        let confidence = confidenceForDebugCandidate(
+            closureDistanceMeters: closureDistance,
+            imuCadenceHz: candidate.imuCadenceHz,
+            headingAccuracyDegrees: candidate.headingAccuracyDegrees,
+            config: config
+        )
+        let warningReason = warningReasonForDebugCandidate(
+            closureDistanceMeters: closureDistance,
+            imuCadenceHz: candidate.imuCadenceHz,
+            headingAccuracyDegrees: candidate.headingAccuracyDegrees,
+            config: config
+        )
+        return DeadReckoningCandidateInterpolationResult(
+            sampleID: candidate.sampleID,
+            gapStartTimestamp: gapStart,
+            gapEndTimestamp: gapEnd,
+            gapSeconds: candidate.gapSeconds,
+            status: .debugCandidateOnly,
+            confidence: confidence,
+            readinessBlockingReason: candidate.blockingReason,
+            warningReason: warningReason,
+            preGapAnchorCoordinate: preCoordinate,
+            postGapAnchorCoordinate: postCoordinate,
+            anchorClosureDistanceMeters: closureDistance,
+            candidatePoints: candidatePoints,
+            estimatedCandidateDistanceMeters: closureDistance,
+            imuCadenceHz: candidate.imuCadenceHz,
+            headingAgeSeconds: candidate.headingAgeSeconds,
+            headingAccuracyDegrees: candidate.headingAccuracyDegrees
+        )
+    }
+
+    private static func candidatePointCount(
+        gapSeconds: TimeInterval,
+        config: DeadReckoningCandidateInterpolationConfig
+    ) -> Int {
+        guard gapSeconds.isFinite, gapSeconds > config.candidatePointIntervalSeconds else { return 0 }
+        let interiorPointCount = max(1, Int(gapSeconds / config.candidatePointIntervalSeconds) - 1)
+        return min(interiorPointCount, config.maximumCandidatePointCount)
+    }
+
+    private static func latestTrustedAnchor(beforeOrAt timestamp: Date, samples: [MotionSample]) -> MotionSample? {
+        samples.last { sample in
+            routeTimestamp(for: sample) <= timestamp && isTrustedGPSAnchor(sample)
+        }
+    }
+
+    private static func earliestTrustedAnchor(afterOrAt timestamp: Date, samples: [MotionSample]) -> MotionSample? {
+        samples.first { sample in
+            routeTimestamp(for: sample) >= timestamp && isTrustedGPSAnchor(sample)
+        }
+    }
+
+    private static func isTrustedGPSAnchor(_ sample: MotionSample) -> Bool {
+        guard sample.sampleSource == .locationFix,
+              sample.gpsCoordinate != nil else {
+            return false
+        }
+        guard let confidence = sample.locationDiagnostics?.routeSegmentConfidence else {
+            return true
+        }
+        switch confidence {
+        case .high, .medium:
+            return true
+        case .low, .unavailable:
+            return false
+        }
+    }
+
+    private static func routeTimestamp(for sample: MotionSample) -> Date {
+        // Task-030c-b14-B-1: candidate interpolation works over persisted sample cadence
+        // and remains replay-only; it does not rewrite raw CoreLocation timestamps.
+        sample.timestamp
+    }
+
+    private static func interpolateCoordinate(
+        from start: GeoCoordinate,
+        to end: GeoCoordinate,
+        progress: Double
+    ) -> GeoCoordinate {
+        let boundedProgress = min(max(progress, 0), 1)
+        return GeoCoordinate(
+            latitude: start.latitude + ((end.latitude - start.latitude) * boundedProgress),
+            longitude: start.longitude + ((end.longitude - start.longitude) * boundedProgress)
+        )
+    }
+
+    private static func confidenceForDebugCandidate(
+        closureDistanceMeters: Double,
+        imuCadenceHz: Double?,
+        headingAccuracyDegrees: Double?,
+        config: DeadReckoningCandidateInterpolationConfig
+    ) -> DeadReckoningCandidateInterpolationConfidence {
+        if closureDistanceMeters <= config.highConfidenceClosureDistanceMeters,
+           (imuCadenceHz ?? 0) >= config.highConfidenceMinimumIMUCadenceHz,
+           (headingAccuracyDegrees ?? .infinity) <= config.highConfidenceMaximumHeadingAccuracyDegrees {
+            return .debugHigh
+        }
+        if closureDistanceMeters <= config.mediumConfidenceClosureDistanceMeters {
+            return .debugMedium
+        }
+        return .debugLow
+    }
+
+    private static func warningReasonForDebugCandidate(
+        closureDistanceMeters: Double,
+        imuCadenceHz: Double?,
+        headingAccuracyDegrees: Double?,
+        config: DeadReckoningCandidateInterpolationConfig
+    ) -> DeadReckoningCandidateInterpolationWarningReason {
+        if closureDistanceMeters > config.mediumConfidenceClosureDistanceMeters {
+            return .anchorClosureModerate
+        }
+        if (headingAccuracyDegrees ?? 0) > config.highConfidenceMaximumHeadingAccuracyDegrees {
+            return .headingAccuracyModerate
+        }
+        if (imuCadenceHz ?? 0) < config.highConfidenceMinimumIMUCadenceHz {
+            return .imuCadenceModerate
+        }
+        return .replayOnlyNotProduction
+    }
+
+    private static func haversineDistanceMeters(from start: GeoCoordinate, to end: GeoCoordinate) -> Double {
+        let earthRadiusMeters = 6_371_000.0
+        let deltaLatitude = (end.latitude - start.latitude) * (.pi / 180)
+        let deltaLongitude = (end.longitude - start.longitude) * (.pi / 180)
+        let startLatitude = start.latitude * (.pi / 180)
+        let endLatitude = end.latitude * (.pi / 180)
+        let haversine = sin(deltaLatitude / 2) * sin(deltaLatitude / 2)
+            + cos(startLatitude) * cos(endLatitude) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2)
+        let centralAngle = 2 * atan2(sqrt(haversine), sqrt(1 - haversine))
+        return earthRadiusMeters * centralAngle
+    }
+}
+
 enum MotionSampleSource: String, Codable, Sendable, Equatable {
     case timerFusion
     case locationFix

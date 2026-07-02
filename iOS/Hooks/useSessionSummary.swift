@@ -1,14 +1,11 @@
 // [協作區 — 邊界適配層] useSessionSummary.swift
 // 用途：向 SwiftUI Views 暴露單筆 Session Summary 載入狀態、核心指標與 Task-018a 摘要資料。
 // 委派至：SessionRepositoryProtocol 讀取 Task-015 本機持久化資料，不讓 Views 直接碰 Core Data。
-
 import Combine
 import Foundation
-
 struct SessionSummaryContent: Equatable, Sendable {
     let session: SessionData
     let motionSamples: [MotionSample]
-
     var metrics: SessionSummaryMetrics { SessionSummaryDisplayMetrics.make(session: session, samples: motionSamples) }
     var durationSeconds: TimeInterval? { session.durationSeconds }
     var fallCount: Int { session.fallEvents.count }
@@ -16,9 +13,6 @@ struct SessionSummaryContent: Equatable, Sendable {
     var hasRouteSamples: Bool { motionSamples.contains { $0.gpsCoordinate != nil } }
     var hasAltitudeSamples: Bool { motionSamples.contains { $0.altitudeMeters != nil } }
 }
-
-
-
 enum SessionSummaryDisplayMetrics {
     private static let movingSpeedThresholdKmh = 1.0
     private static let minimumSegmentDistanceKilometers = 0.003
@@ -27,36 +21,30 @@ enum SessionSummaryDisplayMetrics {
     private static let lowConfidenceDistanceActivationRatio = 0.03
     private static let conservativeMedianSpeedBlendWeight = 0.65
     private static let conservativeSpeedDistanceCapMultiplier = 1.30
-
     static func make(session: SessionData, samples: [MotionSample]) -> SessionSummaryMetrics {
         let persisted = session.summaryMetrics ?? .zero
         let sortedSamples = samples.sorted { $0.timestamp < $1.timestamp }
         guard !sortedSamples.isEmpty else { return persisted }
-
         let policy = ActivityFidelityPolicy(
             profile: session.fidelityProfile
                 ?? ActivityFidelityProfile.defaultProfile(for: session.sportMode, powerType: session.powerType)
         )
-
         let distanceKilometers = displayDistanceKilometers(from: sortedSamples, policy: policy)
         let speedStats = displaySpeedStats(from: sortedSamples, policy: policy, session: session)
         let elevationGainMeters = displayElevationGainMeters(from: sortedSamples, policy: policy)
-
         return SessionSummaryMetrics(
             distanceKilometers: distanceKilometers > 0 ? distanceKilometers : persisted.distanceKilometers,
             maxSpeedKilometersPerHour: speedStats.maxSpeedKilometersPerHour > 0 ? speedStats.maxSpeedKilometersPerHour : persisted.maxSpeedKilometersPerHour,
             averageSpeedKilometersPerHour: speedStats.averageSpeedKilometersPerHour > 0 ? speedStats.averageSpeedKilometersPerHour : persisted.averageSpeedKilometersPerHour,
-            elevationGainMeters: elevationGainMeters > 0 ? elevationGainMeters : persisted.elevationGainMeters,
+            elevationGainMeters: elevationGainMeters ?? persisted.elevationGainMeters,
             movingRatio: speedStats.movingRatio > 0 ? speedStats.movingRatio : persisted.movingRatio
         )
     }
-
     static func displaySpeedKilometersPerHour(for sample: MotionSample, policy: ActivityFidelityPolicy) -> Double? {
         let diagnostics = sample.locationDiagnostics
         let coreLocationSpeed = diagnostics?.headingDiagnostics?.coreLocationSpeedKmh
         let coordinateSpeed = diagnostics?.coordinateDerivedSpeedKmh
         let rawSpeed = sample.speedKmh.isFinite && sample.speedKmh > 0 ? sample.speedKmh : nil
-
         let candidate: Double?
         switch diagnostics?.speedSource {
         case .coreLocation:
@@ -294,33 +282,56 @@ enum SessionSummaryDisplayMetrics {
         return false
     }
 
-    private static func displayElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double {
-        var elevationGain = 0.0
-        var lastAltitudeBySource: [AltitudeSampleSource: Double] = [:]
-
-        for sample in samples {
-            guard let altitude = trustedElevationMeters(for: sample), altitude.isFinite else { continue }
-            let source = sample.altitudeDiagnostics?.source ?? sample.altitudeSource ?? .unavailable
-            defer { lastAltitudeBySource[source] = altitude }
-            guard let previous = lastAltitudeBySource[source] else { continue }
-            let delta = altitude - previous
-            if delta > 0.03, delta <= policy.maximumElevationStepMeters {
-                elevationGain += delta
-            }
+    private static func displayElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double? {
+        // Task-030c-b14-B-1: Summary climb must use the same trusted altitude-source preference as the elevation chart.
+        if samples.contains(where: { $0.altitudeDiagnostics != nil }) { return displayDiagnosticElevationGainMeters(from: samples, policy: policy) }
+        if samples.contains(where: { $0.altitudeSource == .barometerRelative && $0.altitudeMeters?.isFinite == true }) {
+            return displayLegacySourceElevationGainMeters(from: samples, preferredSources: [.barometerRelative], policy: policy)
         }
-
-        return elevationGain
+        guard samples.contains(where: { ($0.altitudeSource == .coreLocationAbsolute || $0.altitudeSource == .debugSimulated) && $0.altitudeMeters?.isFinite == true }) else { return nil }
+        return displayLegacySourceElevationGainMeters(from: samples, preferredSources: [.coreLocationAbsolute, .debugSimulated], policy: policy)
     }
 
-    static func trustedElevationMeters(for sample: MotionSample) -> Double? {
-        if let diagnostics = sample.altitudeDiagnostics,
-           diagnostics.isTrustedForElevationGain,
-           let trustedAltitude = diagnostics.trustedAltitudeMeters,
-           trustedAltitude.isFinite {
-            return trustedAltitude
+    private static func displayDiagnosticElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double {
+        let hasTrustedBarometer = samples.contains { sample in
+            guard let d = sample.altitudeDiagnostics else { return false }
+            return d.source == .barometerRelative && d.isTrustedForElevationGain && d.trustedAltitudeMeters?.isFinite == true
         }
-        guard let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
-        return altitude
+        let preferredSources: Set<AltitudeSampleSource> = hasTrustedBarometer ? [.barometerRelative] : [.coreLocationAbsolute, .debugSimulated]
+        let entries = samples.compactMap { sample -> (source: AltitudeSampleSource, altitude: Double, sample: MotionSample)? in
+            guard let d = sample.altitudeDiagnostics, preferredSources.contains(d.source), d.isTrustedForElevationGain,
+                  let altitude = d.trustedAltitudeMeters, altitude.isFinite else { return nil }
+            return (d.source, altitude, sample)
+        }
+        return displayElevationGain(from: entries, policy: policy)
+    }
+
+    private static func displayLegacySourceElevationGainMeters(from samples: [MotionSample], preferredSources: Set<AltitudeSampleSource>, policy: ActivityFidelityPolicy) -> Double {
+        let entries = samples.compactMap { sample -> (source: AltitudeSampleSource, altitude: Double, sample: MotionSample)? in
+            guard let source = sample.altitudeSource, preferredSources.contains(source), let altitude = sample.altitudeMeters, altitude.isFinite else { return nil }
+            return (source, altitude, sample)
+        }
+        return displayElevationGain(from: entries, firstTimestamp: samples.first?.timestamp, policy: policy)
+    }
+
+    private static func displayElevationGain(from entries: [(source: AltitudeSampleSource, altitude: Double, sample: MotionSample)], firstTimestamp: Date? = nil, policy: ActivityFidelityPolicy) -> Double {
+        var lastAltitudeBySource: [AltitudeSampleSource: Double] = [:]
+        var gain = 0.0
+        for entry in entries {
+            defer { lastAltitudeBySource[entry.source] = entry.altitude }
+            guard let previous = lastAltitudeBySource[entry.source] else { continue }
+            let delta = entry.altitude - previous
+            switch entry.source {
+            case .barometerRelative where delta > 0.03 && delta <= min(policy.maximumElevationStepMeters, 1.0): gain += delta
+            case .coreLocationAbsolute:
+                guard let firstTimestamp, entry.sample.timestamp.timeIntervalSince(firstTimestamp) > 30 else { continue }
+                let strictVerticalAccuracy = min(policy.maximumVerticalAccuracyMeters, 5)
+                if delta > 0 && delta <= min(policy.maximumElevationStepMeters, 1.0) && entry.sample.locationDiagnostics?.verticalAccuracyMeters.map({ $0 <= strictVerticalAccuracy }) == true { gain += delta }
+            case .debugSimulated where delta > 0 && delta <= policy.maximumElevationStepMeters: gain += delta
+            default: continue
+            }
+        }
+        return gain
     }
 
     private static func haversineDistanceKilometers(from: GeoCoordinate, to: GeoCoordinate) -> Double {

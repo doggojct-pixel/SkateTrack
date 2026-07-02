@@ -210,3 +210,44 @@ Decision: collect device magnetometer heading as diagnostics-only route-continui
 Boundary: b13-B must not generate estimated route geometry, must keep `estimatedRouteActive` false, and must not change distance, speed, altitude, display-derived metrics, route color semantics, or SnowPrototype.
 
 Task-030c-b13-B-1 verification token: device magnetometer heading diagnostics, course/device heading agreement, diagnostics-only heading readiness, no dead reckoning route reconstruction.
+
+## Task-030c-b14-B-1 — Replay-Only Dead-Reckoning Readiness Diagnostics
+
+Decision: Task-030c-b14-B-1 adds only replay-only readiness classification for future IMU-aided route continuity. It analyzes persisted samples for gap duration, trusted anchors, timer-fusion cadence, heading availability, heading age, and heading accuracy, but it does not create estimated coordinates or mutate production route data.
+
+Rationale: b13-B-1 provides magnetometer/device heading diagnostics, but real dead reckoning remains risky without replay evidence. The next safe step is to measure whether sessions are eligible for future interpolation while keeping route geometry, distance, speed, altitude, and summary metrics unchanged.
+
+Task-030c-b14-B-1 verification token: replay-only readiness, DeadReckoningReadinessAnalyzer, estimatedRouteActive remains false, preserves b13-A-4 display/altitude behavior, preserves b13-B-1 legacy decode compatibility.
+
+
+## Task-030c-b14-B-1 — Altitude Chart Source Guard
+
+Decision: Task-030c-b14-B-1 is a display-only altitude source guard. When a session has trusted barometer-relative altitude, the elevation chart should use that altitude stream continuously and should not split the profile merely because GPS location diagnostics report stale fixes or background gaps. Raw altitude fallback remains only for legacy packages without altitude diagnostics.
+
+Boundary: route geometry remains unchanged, stored samples are not rewritten, summary metrics are not recalculated, and dead reckoning remains disabled.
+
+Task-030c-b14-B-1 verification token: display-only altitude source guard, barometer-relative profile continuity, route geometry remains unchanged, estimatedRouteActive remains false.
+
+## Task-030c-b14-B-1 — Altitude Chart Micro-Dip Display Guard
+
+Decision: Task-030c-b14-B-1 adds a display-only guard for very short barometer notches in the advanced elevation chart. The guard is intentionally conservative: it only adjusts chart points when nearby left and right baselines agree, the center point is a sharp local dip, and the local span is short.
+
+Non-goals: no stored sample rewrite, no elevation gain recalculation, no route geometry mutation, no recording-pipeline altitude change, no dead reckoning enablement, no road snapping, no map matching.
+
+Task-030c-b14-B-1 verification token: display-only guard for very short barometer notches, route geometry remains unchanged, estimatedRouteActive remains false.
+
+## Task-030c-b14-B-1 — Startup Route Visual Suppression
+
+Decision: Task-030c-b14-B-1 applies visual-only suppression to startup / GPS warm-up route segments. Startup geometry remains available as solid fluorescent-pink route context with route accuracy disclosure, full route-line weight, and clear separation from the first trusted GPS-lock segment. Raw samples and diagnostics remain immutable. Distance, speed, altitude, route geometry, and exported diagnostics are unchanged.
+
+Task-030c-b14-B-1 verification token: visual-only suppression, startup route visual suppression, solid fluorescent-pink route context, route geometry remains unchanged, estimatedRouteActive remains false.
+
+## Task-030c-b14-B-1 — Replay-Only Candidate Gap Interpolation Prototype
+Decision: Task-030c-b14-B-1 may generate candidate interpolation points only as replay/debug diagnostics. Candidate points are derived from existing readiness candidates and trusted pre/post GPS anchors, but they are not production route geometry and must never affect distance, speed, altitude, summaries, exports, or persisted motion samples.
+
+Task-030c-b14-B-1 verification token: replay-only candidate gap interpolation, debug-only candidate points, anchor closure blocking, solid fluorescent-pink startup/warm-up route context, estimatedRouteActive remains false.
+
+## Task-030c-b14-B-1 — Summary Elevation Gain Source Guard
+- Decision: Task-030c-b14-B-1 aligns the Summary climb card with the trusted altitude-source policy already used by the advanced elevation chart. When trusted barometer-relative altitude exists, Core Location absolute altitude remains available for diagnostics/export but must not inflate user-facing `elevationGainMeters`.
+- The display layer can return a zero-meter climb when trusted altitude samples are flat instead of falling back to an older persisted climb value merely because the recomputed display gain is zero.
+Task-030c-b14-B-1 verification token: summary elevation gain source guard, trusted barometer-relative climb, Core Location absolute altitude diagnostics only, route geometry remains unchanged, estimatedRouteActive remains false.

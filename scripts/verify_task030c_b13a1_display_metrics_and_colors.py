@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b13-B-1")',
+        'Text("Task-030c-b14-B-1")',
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "private static let fluorescentPink = Color(red: 1.0, green: 0.2, blue: 0.6)",
@@ -20,7 +20,7 @@ REQUIRED = {
         "var dash: [CGFloat] { [] }",
         "return Self.brightOrange",
         "return Self.fluorescentPink",
-        "solid bright-orange uncertain route segments; startup/warm-up fixes use solid fluorescent pink",
+        "low-confidence fixes remain visible as bright-orange uncertain route segments; startup/warm-up fixes are restored to solid fluorescent-pink route context",
     ],
     "iOS/Hooks/useSessionSummary.swift": [
         "enum SessionSummaryDisplayMetrics",

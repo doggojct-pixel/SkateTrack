@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-B-1",
+        "Task-030c-b14-B-1",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "Task-030c-b13-A-4 keeps post-record GPS lock guarding",

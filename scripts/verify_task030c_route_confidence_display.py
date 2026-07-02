@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIREMENTS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b13-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b13-B-1",
+        "Task-030c-b14-B-1",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "RouteMapSegmentStyle",
@@ -22,7 +22,7 @@ REQUIREMENTS = {
         "var dash: [CGFloat] { [] }",
         "return Self.brightOrange",
         "return Self.fluorescentPink",
-        "low-confidence fixes remain visible as solid bright-orange uncertain route segments",
+        "low-confidence fixes remain visible as bright-orange uncertain route segments",
         "existingStyle != pointStyle",
         "pointStyle == .trusted ? [] : [previousPoint.displayCoordinate]",
         "isolate warm-up/uncertain geometry from",

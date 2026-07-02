@@ -79,6 +79,7 @@ struct SessionRouteMapView: View {
     private static let startupGPSLockSearchWindowSeconds: TimeInterval = 60
     private static let startupConvergenceWarmupSeconds: TimeInterval = 45
     private static let approximateStartLockDelaySeconds: TimeInterval = 5
+    private static let startupRouteVisualSuppressionMaximumSeconds: TimeInterval = 45
 
 
     private var displayRoutePoints: [RouteDisplayPoint] {
@@ -382,15 +383,22 @@ struct SessionRouteMapView: View {
             guard let stableStartupAnchorTimestamp else {
                 return elapsed <= Self.startupConvergenceWarmupSeconds && !isPreferredFreshAnchor(sample)
             }
-            return timestamp < stableStartupAnchorTimestamp
+            if timestamp < stableStartupAnchorTimestamp { return true }
+            // Task-030c-b14-B-1: keep the first seconds after GPS lock visually
+            // conservative if the session only just escaped startup convergence.
+            // This is display-only and does not delete raw GPS samples or rewrite
+            // distance, speed, altitude, route geometry, or exported diagnostics.
+            return elapsed <= Self.startupRouteVisualSuppressionMaximumSeconds
+                && timestamp.timeIntervalSince(stableStartupAnchorTimestamp) <= 3
+                && !isPreferredFreshAnchor(sample)
         }
 
         if let gpsLockAnchorTimestamp {
             return timestamp < gpsLockAnchorTimestamp
         }
 
-        // Before the first reliable anchor, recent/medium startup points remain red
-        // dashed warm-up context instead of trusted anchors.
+        // Before the first reliable anchor, recent/medium startup points remain solid
+        // fluorescent-pink warm-up context instead of trusted anchors.
         let isEarlyStartupWindow = elapsed <= 10
         return isEarlyStartupWindow && !isPreferredFreshAnchor(sample)
     }
@@ -455,7 +463,7 @@ struct SessionRouteMapView: View {
 
         guard let diagnostics = sample.locationDiagnostics else { return true }
         if diagnostics.freshnessState == .stale { return false }
-        // Task-030c-b13-A-4: low-confidence fixes remain visible as solid bright-orange uncertain route segments; startup/warm-up fixes use solid fluorescent pink.
+        // Task-030c-b14-B-1: low-confidence fixes remain visible as bright-orange uncertain route segments; startup/warm-up fixes are restored to solid fluorescent-pink route context while staying separated from trusted GPS-lock geometry.
         if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > max(12, fidelityPolicy.maximumTrustedUpdateIntervalSeconds + 4) }) == true { return false }
         if diagnostics.horizontalAccuracyMeters.map({ $0 > fidelityPolicy.displayRouteMaximumHorizontalAccuracyMeters }) == true { return false }
         if diagnostics.coordinateDerivedSpeedKmh.map({ $0 > fidelityPolicy.maximumTrustedImpliedSpeedKmh }) == true { return false }
@@ -471,6 +479,10 @@ struct SessionRouteMapView: View {
 
         for point in points.sorted(by: { $0.timestamp < $1.timestamp }) {
             let pointStyle = point.segmentStyle
+            // Task-030c-b14-B-1: startup warm-up geometry remains available as
+            // solid fluorescent-pink context with full route-line weight. It stays
+            // semantically separated from trusted teal geometry and does not bridge
+            // into the first trusted GPS-lock segment.
             if let previousPoint, shouldStartNewRouteSegment(after: previousPoint, current: point) {
                 appendSegmentIfNeeded(currentCoordinates, style: currentStyle ?? .trusted, id: segmentID, to: &segments)
                 currentCoordinates = []

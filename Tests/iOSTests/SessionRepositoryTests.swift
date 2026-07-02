@@ -241,6 +241,307 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertEqual(decoded.hasReliableHeadingForRouteContinuity, true)
     }
 
+
+    func testB14ADeadReckoningReadinessAnalyzerClassifiesReplayEligibleGap() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: makeB14AReliableHeadingDiagnostics())
+        let summary = DeadReckoningReadinessAnalyzer.analyze(samples: samples)
+
+        XCTAssertEqual(summary.totalSamples, samples.count)
+        XCTAssertEqual(summary.locationFixSampleCount, 2)
+        XCTAssertEqual(summary.timerFusionSampleCount, 50)
+        XCTAssertEqual(summary.gapCandidateCount, 1)
+        XCTAssertEqual(summary.replayEligibleGapCount, 1)
+        XCTAssertEqual(summary.blockedGapCount, 0)
+        XCTAssertEqual(summary.candidates.first?.blockingReason, .noBlockingReason)
+        XCTAssertEqual(summary.candidates.first?.eligibleForReplay, true)
+        XCTAssertEqual(summary.candidates.first?.imuSampleCount, 50)
+        XCTAssertEqual(summary.candidates.first?.imuCadenceHz ?? 0, 10, accuracy: 0.01)
+    }
+
+    func testB14ADeadReckoningReadinessAnalyzerBlocksMissingHeading() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: nil)
+        let summary = DeadReckoningReadinessAnalyzer.analyze(samples: samples)
+
+        XCTAssertEqual(summary.gapCandidateCount, 1)
+        XCTAssertEqual(summary.replayEligibleGapCount, 0)
+        XCTAssertEqual(summary.blockedGapCount, 1)
+        XCTAssertEqual(summary.candidates.first?.blockingReason, .headingUnavailable)
+        XCTAssertEqual(summary.blockingReasonCounts[.headingUnavailable], 1)
+    }
+
+    func testB14ADeadReckoningReadinessAnalyzerDoesNotMutateSamplesOrEnableRouteEstimation() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: makeB14AReliableHeadingDiagnostics())
+        let originalSamples = samples
+        let summary = DeadReckoningReadinessAnalyzer.analyze(samples: samples)
+
+        XCTAssertEqual(samples, originalSamples)
+        XCTAssertEqual(summary.replayEligibleGapCount, 1)
+        XCTAssertFalse(
+            samples.contains { $0.locationDiagnostics?.deadReckoningDiagnostics?.estimatedRouteActive == true },
+            "Task-030c-b14-A must remain replay-only and must not enable estimated route geometry."
+        )
+    }
+
+
+    func testB14BCandidateInterpolationProducesDebugOnlyPoints() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: makeB14AReliableHeadingDiagnostics())
+        let originalSamples = samples
+        let summary = DeadReckoningCandidateInterpolationAnalyzer.analyze(samples: samples)
+
+        XCTAssertEqual(samples, originalSamples)
+        XCTAssertEqual(summary.totalReadinessCandidateCount, 1)
+        XCTAssertEqual(summary.debugCandidateCount, 1)
+        XCTAssertEqual(summary.blockedCandidateCount, 0)
+        XCTAssertEqual(summary.results.first?.status, .debugCandidateOnly)
+        XCTAssertNotEqual(summary.results.first?.confidence, .blocked)
+        XCTAssertEqual(summary.results.first?.readinessBlockingReason, .noBlockingReason)
+        XCTAssertGreaterThan(summary.results.first?.candidatePointCount ?? 0, 0)
+        XCTAssertFalse(
+            samples.contains { $0.locationDiagnostics?.deadReckoningDiagnostics?.estimatedRouteActive == true },
+            "Task-030c-b14-B-1 must remain replay-only and must not enable production estimated route geometry."
+        )
+    }
+
+    func testB14BCandidateInterpolationBlocksMissingHeading() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: nil)
+        let summary = DeadReckoningCandidateInterpolationAnalyzer.analyze(samples: samples)
+
+        XCTAssertEqual(summary.totalReadinessCandidateCount, 1)
+        XCTAssertEqual(summary.debugCandidateCount, 0)
+        XCTAssertEqual(summary.blockedCandidateCount, 1)
+        XCTAssertEqual(summary.results.first?.status, .blockedByReadiness)
+        XCTAssertEqual(summary.results.first?.confidence, .blocked)
+        XCTAssertEqual(summary.results.first?.readinessBlockingReason, .headingUnavailable)
+        XCTAssertEqual(summary.results.first?.candidatePointCount, 0)
+    }
+
+    func testB14BCandidateInterpolationBlocksLargeAnchorClosure() {
+        let samples = makeB14AReadinessSamples(headingDiagnostics: makeB14AReliableHeadingDiagnostics())
+        let summary = DeadReckoningCandidateInterpolationAnalyzer.analyze(
+            samples: samples,
+            interpolationConfig: DeadReckoningCandidateInterpolationConfig(maximumAnchorClosureDistanceMeters: 1)
+        )
+
+        XCTAssertEqual(summary.totalReadinessCandidateCount, 1)
+        XCTAssertEqual(summary.debugCandidateCount, 0)
+        XCTAssertEqual(summary.blockedCandidateCount, 1)
+        XCTAssertEqual(summary.results.first?.status, .anchorClosureTooLarge)
+        XCTAssertEqual(summary.results.first?.confidence, .blocked)
+        XCTAssertEqual(summary.results.first?.candidatePointCount, 0)
+    }
+
+    func testB14B1DisplayElevationGainPrefersTrustedBarometerOverCoreLocationJitter() throws {
+        let start = Date(timeIntervalSince1970: 1_700_300_000)
+        let samples = [
+            makeB14B1AltitudeSample(start: start, offset: 0, altitude: 0.00, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 1, altitude: 10.0, source: .coreLocationAbsolute),
+            makeB14B1AltitudeSample(start: start, offset: 2, altitude: 0.25, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 3, altitude: 11.0, source: .coreLocationAbsolute),
+            makeB14B1AltitudeSample(start: start, offset: 4, altitude: 0.45, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 5, altitude: 10.0, source: .coreLocationAbsolute),
+            makeB14B1AltitudeSample(start: start, offset: 6, altitude: 0.55, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 7, altitude: 11.0, source: .coreLocationAbsolute)
+        ]
+        let session = try makeB14B1SummaryDisplaySession(
+            start: start,
+            samples: samples,
+            persistedElevationGainMeters: 35
+        )
+
+        let metrics = SessionSummaryDisplayMetrics.make(session: session, samples: samples)
+
+        XCTAssertEqual(metrics.elevationGainMeters, 0.55, accuracy: 0.001)
+        XCTAssertLessThan(metrics.elevationGainMeters, 1)
+    }
+
+    func testB14B1DisplayElevationGainCanReturnZeroInsteadOfPersistedInflatedFallback() throws {
+        let start = Date(timeIntervalSince1970: 1_700_300_100)
+        let samples = [
+            makeB14B1AltitudeSample(start: start, offset: 0, altitude: 0.0, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 1, altitude: 12.0, source: .coreLocationAbsolute),
+            makeB14B1AltitudeSample(start: start, offset: 2, altitude: 0.0, source: .barometerRelative),
+            makeB14B1AltitudeSample(start: start, offset: 3, altitude: 13.0, source: .coreLocationAbsolute),
+            makeB14B1AltitudeSample(start: start, offset: 4, altitude: 0.0, source: .barometerRelative)
+        ]
+        let session = try makeB14B1SummaryDisplaySession(
+            start: start,
+            samples: samples,
+            persistedElevationGainMeters: 23
+        )
+
+        let metrics = SessionSummaryDisplayMetrics.make(session: session, samples: samples)
+
+        XCTAssertEqual(metrics.elevationGainMeters, 0, accuracy: 0.001)
+    }
+
+    private func makeB14B1SummaryDisplaySession(
+        start: Date,
+        samples: [MotionSample],
+        persistedElevationGainMeters: Double
+    ) throws -> SessionData {
+        try SessionData(
+            startDate: start,
+            endDate: start.addingTimeInterval(120),
+            sportMode: .skateboard(.streetPark),
+            powerType: .humanPowered,
+            motionSamples: samples,
+            summaryMetrics: SessionSummaryMetrics(
+                distanceKilometers: 0.13,
+                maxSpeedKilometersPerHour: 8.6,
+                averageSpeedKilometersPerHour: 3.5,
+                elevationGainMeters: persistedElevationGainMeters,
+                movingRatio: 0.96
+            )
+        )
+    }
+
+    private func makeB14B1AltitudeSample(
+        start: Date,
+        offset: TimeInterval,
+        altitude: Double,
+        source: AltitudeSampleSource
+    ) -> MotionSample {
+        MotionSample(
+            timestamp: start.addingTimeInterval(offset),
+            speedKmh: 3.5,
+            accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
+            gyroscopeRadPS: ThreeAxisValue(x: 0, y: 0, z: 0),
+            altitudeMeters: altitude,
+            altitudeSource: source,
+            altitudeDiagnostics: AltitudeDiagnostics(
+                source: source,
+                trustClassification: .trusted,
+                reason: source == .barometerRelative ? .barometerRelativeAccepted : .coreLocationAbsoluteAccepted,
+                rawAltitudeMeters: altitude,
+                trustedAltitudeMeters: altitude,
+                verticalAccuracyMeters: source == .coreLocationAbsolute ? 4 : nil,
+                updatesTrustedAltitudeAnchor: true
+            )
+        )
+    }
+
+    private func makeB14AReliableHeadingDiagnostics() -> HeadingDiagnostics {
+        HeadingDiagnostics(
+            source: .deviceMagnetometer,
+            headingAvailable: true,
+            courseOverGroundDegrees: nil,
+            courseAccuracyDegrees: nil,
+            coreLocationSpeedKmh: nil,
+            courseReliableForRouteContinuity: false,
+            deviceHeadingDeferred: false,
+            deviceHeadingDegrees: 178,
+            deviceHeadingAccuracyDegrees: 12,
+            deviceHeadingTimestamp: Date(timeIntervalSince1970: 1_700_100_004),
+            deviceHeadingTimestampMillisecondsSince1970: 1_700_100_004_000,
+            deviceHeadingAgeSeconds: 0.2,
+            deviceHeadingReliableForRouteContinuity: true,
+            courseDeviceHeadingDeltaDegrees: nil,
+            courseDeviceHeadingAgreement: nil
+        )
+    }
+
+    private func makeB14AReadinessSamples(
+        headingDiagnostics: HeadingDiagnostics?
+    ) -> [MotionSample] {
+        let startDate = Date(timeIntervalSince1970: 1_700_100_000)
+
+        func locationDiagnostics(
+            at timestamp: Date,
+            gapSeconds: TimeInterval? = nil,
+            gapClassification: GPSGapClassification = .normalCadence,
+            headingDiagnostics: HeadingDiagnostics? = nil
+        ) -> LocationFixDiagnostics {
+            LocationFixDiagnostics(
+                horizontalAccuracyMeters: 6,
+                verticalAccuracyMeters: 10,
+                speedAccuracyMetersPerSecond: 1,
+                courseAccuracyDegrees: 10,
+                rawLocationTimestamp: startDate,
+                receivedAtTimestamp: timestamp,
+                gpsUpdateIntervalSeconds: gapSeconds,
+                gpsSegmentDistanceMeters: 0,
+                coordinateDerivedSpeedKmh: 0,
+                speedSource: .unavailable,
+                freshnessState: .fresh,
+                routeSegmentConfidence: .high,
+                headingDiagnostics: headingDiagnostics,
+                gpsGapDiagnostics: gapSeconds.map {
+                    GPSGapDiagnostics(
+                        classification: gapClassification,
+                        gapSeconds: $0,
+                        isTimerFusionRepeat: gapClassification != .normalCadence,
+                        rawLocationAvailable: true
+                    )
+                },
+                deadReckoningDiagnostics: DeadReckoningDiagnostics(
+                    estimatedRouteActive: false,
+                    eligibleForFutureEstimation: false,
+                    anchorAvailable: true,
+                    gapSeconds: gapSeconds,
+                    headingAvailable: headingDiagnostics?.hasReliableHeadingForRouteContinuity == true,
+                    reason: .r4RouteReconstructionDeferred
+                )
+            )
+        }
+
+        var samples: [MotionSample] = [
+            MotionSample(
+                timestamp: startDate,
+                gpsCoordinate: GeoCoordinate(latitude: 25.0330, longitude: 121.5650),
+                speedKmh: 0,
+                accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
+                gyroscopeRadPS: ThreeAxisValue(x: 0, y: 0, z: 0),
+                locationDiagnostics: locationDiagnostics(
+                    at: startDate,
+                    gapSeconds: 0.5,
+                    gapClassification: .normalCadence,
+                    headingDiagnostics: headingDiagnostics
+                ),
+                sampleSource: .locationFix
+            )
+        ]
+
+        for index in 1...50 {
+            let timestamp = startDate.addingTimeInterval(Double(index) * 0.1)
+            let isGapCandidate = index == 50
+            samples.append(
+                MotionSample(
+                    timestamp: timestamp,
+                    gpsCoordinate: GeoCoordinate(latitude: 25.0330, longitude: 121.5650),
+                    speedKmh: 0,
+                    accelerometerG: ThreeAxisValue(x: 0.01, y: 0.02, z: 1.0),
+                    gyroscopeRadPS: ThreeAxisValue(x: 0.01, y: 0, z: 0),
+                    locationDiagnostics: isGapCandidate ? locationDiagnostics(
+                        at: timestamp,
+                        gapSeconds: 5.0,
+                        gapClassification: .shortGap,
+                        headingDiagnostics: headingDiagnostics
+                    ) : nil,
+                    sampleSource: .timerFusion
+                )
+            )
+        }
+
+        samples.append(
+            MotionSample(
+                timestamp: startDate.addingTimeInterval(6),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0331, longitude: 121.5651),
+                speedKmh: 2,
+                accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
+                gyroscopeRadPS: ThreeAxisValue(x: 0, y: 0, z: 0),
+                locationDiagnostics: locationDiagnostics(
+                    at: startDate.addingTimeInterval(6),
+                    gapSeconds: 1.0,
+                    gapClassification: .normalCadence,
+                    headingDiagnostics: headingDiagnostics
+                ),
+                sampleSource: .locationFix
+            )
+        )
+
+        return samples
+    }
+
     private func makeCompletedSession() throws -> SessionData {
         let startDate = Date(timeIntervalSince1970: 1_700_000_000)
 
