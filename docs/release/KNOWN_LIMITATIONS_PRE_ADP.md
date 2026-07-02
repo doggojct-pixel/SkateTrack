@@ -495,3 +495,12 @@ Task-030c-b17-B verification token: replay-only dead reckoning engine, no produc
 - **Next milestone:** Task-030c-b17-D must produce the real-session replay review pack before any b18 display or production eligibility gate work begins.
 
 Task-030c-b17-C verification token: anchor closure error and confidence scoring, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D — Real-Session Replay Review Pack
+
+- **Current status:** Task-030c-b17-D can turn real-session replay diagnostics into review-pack artifacts for `Task030c_b17D_ReplayReviewPack.zip`, including JSON, Markdown, and CSV outputs.
+- **Evidence captured:** Each gap record includes gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative eligibility, replay blocking reason, and blocking reasons.
+- **Production boundary:** The review pack remains replay-review-only. No user-visible estimated route is enabled, no route map rendering changes are made, and no trusted metrics are mutated. `estimatedRouteActive` remains false.
+- **Decision boundary:** The b17-D review pack is evidence for the required non-code product decision checkpoint. b18 display model work and any production eligibility gate must remain blocked until that decision checkpoint is complete.
+
+Task-030c-b17-D verification token: real-session replay review pack, no user-visible route display, no trusted metric mutation, product decision checkpoint required, estimatedRouteActive remains false.

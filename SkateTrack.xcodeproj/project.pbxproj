@@ -328,6 +328,11 @@
 		B17C010000000000000103 /* DeadReckoningClosureDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */; };
 		B17C020000000000000101 /* DeadReckoningClosureScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C020000000000000001 /* DeadReckoningClosureScorer.swift */; };
 		B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */; };
+		B17D010000000000000101 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D010000000000000102 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D010000000000000103 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D020000000000000101 /* DeadReckoningReplayReviewPackBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */; };
+		B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 /* End PBXBuildFile section */
 
@@ -592,6 +597,9 @@
 		B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureDiagnostics.swift; sourceTree = "<group>"; };
 		B17C020000000000000001 /* DeadReckoningClosureScorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureScorer.swift; sourceTree = "<group>"; };
 		B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureScoringTests.swift; sourceTree = "<group>"; };
+		B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPack.swift; sourceTree = "<group>"; };
+		B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPackBuilder.swift; sourceTree = "<group>"; };
+		B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPackTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -668,6 +676,7 @@
 				B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */,
 				B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */,
 				B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */,
+				B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
@@ -755,6 +764,7 @@
 				B17A030000000000000001 /* GravityCompensatedMotionSample.swift */,
 				B17B020000000000000001 /* DeadReckoningEngine.swift */,
 				B17C020000000000000001 /* DeadReckoningClosureScorer.swift */,
+				B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -784,6 +794,7 @@
 				B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */,
 				B17B030000000000000001 /* DeadReckoningEngineReplayTests.swift */,
 				B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */,
+				B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -1409,6 +1420,7 @@
 				B17A040000000000000101 /* IMULocalFrameBiasFoundationTests.swift in Sources */,
 				B17B030000000000000101 /* DeadReckoningEngineReplayTests.swift in Sources */,
 				B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */,
+				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1585,6 +1597,7 @@
 				B17A030000000000000101 /* GravityCompensatedMotionSample.swift in Sources */,
 				B17B020000000000000101 /* DeadReckoningEngine.swift in Sources */,
 				B17C020000000000000101 /* DeadReckoningClosureScorer.swift in Sources */,
+				B17D020000000000000101 /* DeadReckoningReplayReviewPackBuilder.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
@@ -1622,6 +1635,7 @@
 				B1701000000000000000101 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				B17B010000000000000101 /* DeadReckoningReplayDiagnostics.swift in Sources */,
 				B17C010000000000000101 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000101 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
@@ -1665,6 +1679,7 @@
 				B1701000000000000000103 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				B17B010000000000000103 /* DeadReckoningReplayDiagnostics.swift in Sources */,
 				B17C010000000000000103 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000103 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
@@ -1711,6 +1726,7 @@
 				B1701000000000000000102 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				B17B010000000000000102 /* DeadReckoningReplayDiagnostics.swift in Sources */,
 				B17C010000000000000102 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000102 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,

@@ -68,16 +68,16 @@ def main() -> None:
             "testDriftRateProducesNamedAccuracyGrowth",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-C"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-D"',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "SkateTrack.xcodeproj/project.pbxproj": [
             "DeadReckoningReplayDiagnostics.swift in Sources",
@@ -151,7 +151,7 @@ def main() -> None:
                 raise AssertionError(f"Forbidden production mutation token in {relative_path}: {token}")
 
     panel_text = read("iOS/Features/Debug/DebugToolsPanelView.swift")
-    if 'Text("Task-030c-b17-C")' in panel_text or 'Text("DEBUG")' in panel_text:
+    if 'Text("Task-030c-b17-D")' in panel_text or 'Text("DEBUG")' in panel_text:
         raise AssertionError("Debug panel visible task/badge strings must stay localized")
 
     engine_text = read("iOS/Core/SensorEngine/DeadReckoningEngine.swift")

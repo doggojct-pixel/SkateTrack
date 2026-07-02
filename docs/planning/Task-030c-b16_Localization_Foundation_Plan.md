@@ -640,3 +640,13 @@ This milestone deliberately does not display estimated routes, does not write es
 The initial gates match v1.2's conservative intent: short gaps are eligible only when closure error, heading reliability, and IMU coverage are acceptable; 30–60 second gaps require very low closure error; gaps over 60 seconds are blocked from outdoor user-visible estimated routes; high closure error, unreliable heading, or low IMU coverage block eligibility.
 
 The next v1.2 milestone after b17-C is `Task-030c-b17-D — Real-Session Replay Review Pack`; b18 display model work and the product decision checkpoint must not be skipped.
+
+## Task-030c-b17-D Implementation Note
+
+`Task-030c-b17-D` implements the `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` real-session replay review pack milestone. It packages b17-B replay diagnostics and b17-C closure scoring into per-session and per-gap review artifacts for `Task030c_b17D_ReplayReviewPack.zip`.
+
+The review pack must include JSON, Markdown, and CSV artifact contents. Per-gap fields include gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, eligibility, replay blocking reason, and blocking reasons.
+
+This milestone deliberately does not display estimated routes, does not write estimated samples into `MotionSample`, does not modify `SessionData.summaryMetrics`, does not alter route map rendering, does not alter export trusted metrics, and does not enable `estimatedRouteActive`.
+
+After b17-D, a non-code product decision checkpoint is required before any b18 display model work or production eligibility gate work begins.

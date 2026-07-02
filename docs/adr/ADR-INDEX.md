@@ -358,3 +358,13 @@ Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Pla
 Implementation: Shared closure output lives in `Shared/Models/DeadReckoningClosureDiagnostics.swift`. The scorer lives in `iOS/Core/SensorEngine/DeadReckoningClosureScorer.swift`, and b17-B `DeadReckoningEngine` attaches closure diagnostics to successful replay diagnostics. Deterministic XCTest coverage lives in `Tests/iOSTests/DeadReckoningClosureScoringTests.swift`.
 
 Task-030c-b17-C verification token: Anchor Closure Error and Confidence Scoring, DeadReckoningClosureDiagnostics, DeadReckoningClosureScorer, closureErrorRatio, imuSampleCoverageRatio, eligibleForUserVisibleEstimatedRoute, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b17-D — Real-Session Replay Review Pack
+
+Decision: Task-030c-b17-D turns the b17-A/B/C replay-only IMU foundation into a real-session replay review pack format. The pack records per-session and per-gap evidence for gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative user-visible eligibility, and blocking reasons.
+
+Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` b17-D only. It does not implement b18 display models, product UI, production estimated route rendering, route map changes, route geometry mutation, trusted metrics mutation, road snapping, or map matching. `estimatedRouteActive` remains false. The generated `Task030c_b17D_ReplayReviewPack.zip` artifacts are evidence for the required non-code product decision checkpoint before b18 display or production eligibility gate work.
+
+Implementation: Shared review-pack output lives in `Shared/Models/DeadReckoningReplayReviewPack.swift`. The iOS-only builder lives in `iOS/Core/SensorEngine/DeadReckoningReplayReviewPackBuilder.swift`, converting real-session replay diagnostics into JSON, Markdown, and CSV artifacts. Deterministic XCTest coverage lives in `Tests/iOSTests/DeadReckoningReplayReviewPackTests.swift`.
+
+Task-030c-b17-D verification token: Real-Session Replay Review Pack, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

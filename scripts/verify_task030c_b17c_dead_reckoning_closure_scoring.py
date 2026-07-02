@@ -83,16 +83,16 @@ def main() -> int:
             "testReplayDiagnosticsReceivesClosureDiagnostics",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-C"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-D"',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
         ],
         "SkateTrack.xcodeproj/project.pbxproj": [
             "DeadReckoningClosureDiagnostics.swift in Sources",
@@ -156,7 +156,7 @@ def main() -> int:
                 raise AssertionError(f"{relative_path} contains forbidden production/display token: {token}")
 
     panel_text = read("iOS/Features/Debug/DebugToolsPanelView.swift")
-    if 'Text("Task-030c-b17-C")' in panel_text or 'Text("DEBUG")' in panel_text:
+    if 'Text("Task-030c-b17-D")' in panel_text or 'Text("DEBUG")' in panel_text:
         raise AssertionError("Debug visible build strings must stay localized, not hard-coded Text literals")
 
     sensor_fusion_text = read("iOS/Core/SensorEngine/SensorFusionEngine.swift")

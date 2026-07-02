@@ -68,22 +68,22 @@ def main() -> int:
             "LocalizationDiagnosticsReviewPackTests.swift in Sources",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-C"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-D"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
             'Text("debug.build.currentTaskID")',
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "iOS/Core/SensorEngine/SensorFusionEngine.swift": [

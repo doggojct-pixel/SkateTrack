@@ -2232,3 +2232,12 @@ Task-030c-b17-B verification token: v1.2 replay-only dead reckoning engine, Dead
 - Advanced the DEBUG build identity to `Task-030c-b17-C` while keeping `estimatedRouteActive` false.
 
 Task-030c-b17-C verification token: v1.2 anchor closure error and confidence scoring, DeadReckoningClosureDiagnostics, DeadReckoningClosureScorer, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D — Real-Session Replay Review Pack
+
+- Added `DeadReckoningReplayReviewPack`, `DeadReckoningReplayReviewSessionSummary`, and `DeadReckoningReplayReviewGapRecord` as shared b17-D review-pack models.
+- Added `DeadReckoningReplayReviewPackBuilder` to convert real-session replay diagnostics into JSON, Markdown, and CSV artifact contents for `Task030c_b17D_ReplayReviewPack.zip`.
+- Added deterministic XCTest coverage for eligible gaps, blocked gaps, artifact rendering, replay-only safety flags, and blocking-reason preservation.
+- Advanced the DEBUG build identity to `Task-030c-b17-D` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-D verification token: v1.2 real-session replay review pack, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

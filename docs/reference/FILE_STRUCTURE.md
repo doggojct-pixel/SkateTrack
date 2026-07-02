@@ -1487,3 +1487,14 @@ scripts/verify_task030c_b17c_dead_reckoning_closure_scoring.py # Verifies b17-C 
 ```
 
 Task-030c-b17-C verification token: Anchor Closure Error and Confidence Scoring, `DeadReckoningClosureDiagnostics`, `DeadReckoningClosureScorer`, `closureErrorRatio`, `imuSampleCoverageRatio`, `eligibleForUserVisibleEstimatedRoute`, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D real-session replay review pack
+
+```text
+Shared/Models/DeadReckoningReplayReviewPack.swift       # Shared real-session replay review pack model and per-gap/session records.
+iOS/Core/SensorEngine/DeadReckoningReplayReviewPackBuilder.swift # Builds JSON / Markdown / CSV review artifacts for Task030c_b17D_ReplayReviewPack.zip.
+Tests/iOSTests/DeadReckoningReplayReviewPackTests.swift # Deterministic XCTest coverage for b17-D replay review pack artifacts and safety flags.
+scripts/verify_task030c_b17d_replay_review_pack.py      # Verifies b17-D v1.2 scope, artifact contract, and safety boundaries.
+```
+
+Task-030c-b17-D verification token: Real-Session Replay Review Pack, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
