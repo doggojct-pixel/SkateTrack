@@ -1431,3 +1431,15 @@ scripts/verify_task030c_b16d_heading_quality_gate.py       # Guard for diagnosti
 ```
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, `HeadingReliability`, `HeadingQualityAssessment`, `HeadingQualityClassifier`, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b17 localization diagnostics review pack
+
+```text
+Shared/Models/LocalizationDiagnosticsReviewPack.swift       # Shared replay-only review pack model for b16 diagnostics consolidation.
+iOS/Core/SensorEngine/LocalizationDiagnosticsReviewBuilder.swift # iOS-only builder that summarizes MotionSample diagnostics into review packs.
+Tests/iOSTests/LocalizationDiagnosticsReviewPackTests.swift # XCTest coverage for b17 summary counts, safety flags, and empty-diagnostics behavior.
+scripts/verify_task030c_b17_diagnostics_review_pack.py      # Static verification for b17 diagnostics-only boundaries.
+Shared/Localization/*/Localizable.strings                   # Localized DEBUG build signature token and badge keys.
+```
+
+Task-030c-b17 verification token: localization diagnostics review pack, `LocalizationDiagnosticsReviewPack`, `LocalizationDiagnosticsReviewBuilder`, `diagnosticsOnly`, `replayReviewOnly`, `productionRouteMutationApplied false`, localized DEBUG build signature, estimatedRouteActive remains false.

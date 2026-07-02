@@ -2181,3 +2181,13 @@ Task-030c-b16-C verification token: passive accuracy-source diagnostics, no Wi-F
 - Advanced the DEBUG build identity to `Task-030c-b16-D` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, HeadingQualityAssessment, HeadingQualityClassifier, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b17 — Localization Diagnostics Review Pack
+
+- Added `LocalizationDiagnosticsReviewPack`, `LocalizationDiagnosticsReviewSummary`, and `LocalizationDiagnosticsReviewSample` to consolidate b16-B/C/D diagnostics for replay-only review.
+- Added `LocalizationDiagnosticsReviewBuilder` so session samples can be summarized without expanding oversized legacy model or sensor-fusion files.
+- Added XCTest coverage for barometric outlier summary counts, passive accuracy-source counts, heading replay-readiness counts, safety flags, and empty-diagnostics behavior.
+- Advanced the DEBUG build identity to `Task-030c-b17` and moved the visible DEBUG task token / badge through `Localizable.strings`.
+- Kept b17 diagnostics-only and replay-review-only: no route geometry mutation, trusted metric mutation, production route rejection, Wi-Fi entitlement, Wi-Fi scan, road snapping, map matching, raw sample mutation, or production estimated route display.
+
+Task-030c-b17 verification token: localization diagnostics review pack, diagnosticsOnly true, replayReviewOnly true, productionRouteMutationApplied false, localized DEBUG build signature, estimatedRouteActive remains false.

@@ -23,8 +23,8 @@ def forbid(rel: str, token: str) -> None:
 
 def main() -> None:
     required = [
-        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b16-D"'),
-        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("Task-030c-b16-D")'),
+        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b17"'),
+        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("debug.build.currentTaskID")'),
         ("iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift", "Task-030c-b15-B-3: DEBUG mock recording must run on the main queue"),
         ("iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift", "DispatchSource.makeTimerSource(queue: .main)"),
         ("iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift", "deadline: .now() + .milliseconds(150)"),

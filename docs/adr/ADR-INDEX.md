@@ -315,3 +315,13 @@ Boundary: b16-D is replay-readiness diagnostics only. It must not create product
 Implementation: The shared model lives in `Shared/Models/HeadingQualityDiagnostics.swift`; the iOS-only classifier lives in `iOS/Core/SensorEngine/HeadingQualityClassifier.swift`. The implementation intentionally avoids adding new logic to oversized legacy files beyond DEBUG build identity updates.
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, HeadingQualityAssessment, HeadingQualityClassifier, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
+
+## Task-030c-b17 — Localization Diagnostics Review Pack
+
+Decision: Task-030c-b17 consolidates the b16-A/B/C/D diagnostics into a replay-only review pack model and builder. The pack summarizes barometric GPS outlier evidence, passive accuracy-source inference, heading reliability, and safety flags so later review workflows can compare real sessions without enabling production route correction.
+
+Boundary: b17 is diagnostics-only and replay-review-only. It must not mutate route geometry, raw samples, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, production route acceptance, Wi-Fi entitlements, Wi-Fi scanning, road snapping, map matching, or production estimated route display. `estimatedRouteActive` remains false.
+
+Implementation: The shared pack model lives in `Shared/Models/LocalizationDiagnosticsReviewPack.swift`; the iOS builder lives in `iOS/Core/SensorEngine/LocalizationDiagnosticsReviewBuilder.swift`. The implementation intentionally avoids adding new logic to oversized legacy files and replaces the DEBUG visible build signature with localized keys.
+
+Task-030c-b17 verification token: localization diagnostics review pack, LocalizationDiagnosticsReviewPack, LocalizationDiagnosticsReviewBuilder, diagnosticsOnly true, replayReviewOnly true, productionRouteMutationApplied false, estimatedRouteActive remains false.

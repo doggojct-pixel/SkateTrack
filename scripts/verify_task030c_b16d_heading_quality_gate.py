@@ -74,10 +74,10 @@ def main() -> int:
             "HeadingQualityClassifierTests.swift in Sources",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b16-D"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
-            'Text("Task-030c-b16-D")',
+            'Text("debug.build.currentTaskID")',
         ],
         "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
             "estimatedRouteActive: false",

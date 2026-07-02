@@ -68,10 +68,10 @@ def main() -> int:
             "estimatedRouteActive: false",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b16-D"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
-            'Text("Task-030c-b16-D")',
+            'Text("debug.build.currentTaskID")',
         ],
         "Tests/iOSTests/BarometricGPSOutlierDiagnosticsTests.swift": [
             "testBarometricConflictIsDiagnosticsOnlyAndWouldRejectIfGateWereEnabled",

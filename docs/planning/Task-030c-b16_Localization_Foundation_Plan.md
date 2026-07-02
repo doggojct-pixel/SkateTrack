@@ -588,3 +588,9 @@ python3 scripts/verify_task030c_b16a_localization_foundation_plan.py
 `Task-030c-b16-D` implements magnetometer heading quality consolidation as a replay-readiness diagnostic layer over existing `HeadingDiagnostics`. The implementation adds `HeadingReliability`, `HeadingQualityConfig`, and `HeadingQualityAssessment`, plus an iOS-only `HeadingQualityClassifier` that maps existing course and device-magnetometer evidence into high, moderate, poor, invalid, too-old, or unavailable reliability states.
 
 The milestone intentionally does not persist a new route decision, does not generate production estimated route geometry, does not rewrite GPS samples, and does not change trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain. The classifier is split into new small files so the existing oversized `MotionSample.swift` and `SensorFusionEngine.swift` files do not absorb the new b16-D logic. `estimatedRouteActive` remains false.
+
+## Task-030c-b17 Implementation Note
+
+`Task-030c-b17` implements the first localization diagnostics review pack over the b16-A/B/C/D foundation. It adds a shared `LocalizationDiagnosticsReviewPack` model and an iOS-only `LocalizationDiagnosticsReviewBuilder` that summarizes existing b16 diagnostics into replay-only review counters: barometric outlier candidates, passive accuracy-source diagnostics, high-precision-or-Wi-Fi-like accuracy inference, heading replay readiness, and production safety flags.
+
+This milestone remains diagnostics-only. It does not enable estimated route geometry, route rewriting, road snapping, map matching, trusted metric mutation, production route rejection, Wi-Fi scanning, Wi-Fi entitlements, or confirmed Wi-Fi RTT claims. The visible DEBUG build signature is now localized through `debug.build.currentTaskID` and `debug.build.badge`. `estimatedRouteActive` remains false.

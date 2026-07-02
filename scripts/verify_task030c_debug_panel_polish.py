@@ -21,9 +21,12 @@ for path in [debug_panel, session_hook, *localizations]:
 panel_text = debug_panel.read_text(encoding="utf-8")
 for token in [
     "debugBuildSignatureCard",
-    "Task-030c-b16-D",
+    "debug.build.currentTaskID",
+    "debug.build.badge",
     "debug-build-signature-card",
     "debug.build.title",
+    "debug.build.currentTaskID",
+    "debug.build.badge",
     "debug.build.subtitle",
 ]:
     if token not in panel_text:
@@ -70,6 +73,8 @@ required_keys = [
     "debug.status.freshness.unavailable",
     "debug.status.freshness.none",
     "debug.build.title",
+    "debug.build.currentTaskID",
+    "debug.build.badge",
     "debug.build.subtitle",
 ]
 
@@ -79,4 +84,4 @@ for loc in localizations:
         if f'"{key}"' not in text:
             sys.exit(f"{loc.relative_to(ROOT)} missing b6 localization key: {key}")
 
-print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b16-D build signature are present.")
+print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b17 build signature are present.")

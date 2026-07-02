@@ -81,8 +81,13 @@
 		B16D01000000000000000101 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
 		B16D01000000000000000102 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
 		B16D01000000000000000103 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
+		B1701000000000000000101 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
+		B1701000000000000000102 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
+		B1701000000000000000103 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
 		B16D02000000000000000101 /* HeadingQualityClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D02000000000000000001 /* HeadingQualityClassifier.swift */; };
+		B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */; };
 		B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */; };
+		B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */; };
 		12AD01000000000000000101 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD01000000000000000001 /* RootNavigationView.swift */; };
 		12AD02000000000000000101 /* SessionStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD02000000000000000001 /* SessionStartView.swift */; };
 		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
@@ -335,6 +340,7 @@
 		B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnostics.swift; sourceTree = "<group>"; };
 		B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnostics.swift; sourceTree = "<group>"; };
 		B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityDiagnostics.swift; sourceTree = "<group>"; };
+		B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewPack.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
 		12A300000000000000000006 /* FallEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallEvent.swift; sourceTree = "<group>"; };
 		12A300000000000000000007 /* EquipmentProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentProfile.swift; sourceTree = "<group>"; };
@@ -357,6 +363,7 @@
 		B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift"; sourceTree = "<group>"; };
 		B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceClassifier.swift; sourceTree = "<group>"; };
 		B16D02000000000000000001 /* HeadingQualityClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityClassifier.swift; sourceTree = "<group>"; };
+		B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewBuilder.swift; sourceTree = "<group>"; };
 		12AA00000000000000000001 /* FallDetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionEngine.swift; sourceTree = "<group>"; };
 		12AB01000000000000000001 /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		12AB02000000000000000001 /* SessionMetricsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetricsAccumulator.swift; sourceTree = "<group>"; };
@@ -368,6 +375,7 @@
 		B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnosticsTests.swift; sourceTree = "<group>"; };
 		B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnosticsTests.swift; sourceTree = "<group>"; };
 		B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityClassifierTests.swift; sourceTree = "<group>"; };
+		B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewPackTests.swift; sourceTree = "<group>"; };
 		12AD01000000000000000001 /* RootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
 		12AD02000000000000000001 /* SessionStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartView.swift; sourceTree = "<group>"; };
 		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
@@ -633,6 +641,7 @@
 				B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */,
 				B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */,
 				B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */,
+				B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
@@ -714,6 +723,7 @@
 				B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */,
 				B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */,
 				B16D02000000000000000001 /* HeadingQualityClassifier.swift */,
+				B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -739,6 +749,7 @@
 				B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */,
 				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
 				B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */,
+				B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -1360,6 +1371,7 @@
 				B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */,
 				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
 				B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */,
+				B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1530,6 +1542,7 @@
 				B16B02000000000000000101 /* BarometricGPSOutlierGuard.swift in Sources */,
 				B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */,
 				B16D02000000000000000101 /* HeadingQualityClassifier.swift in Sources */,
+				B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
@@ -1564,6 +1577,7 @@
 				B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
 				B16C01000000000000000101 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				B16D01000000000000000101 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000101 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
@@ -1604,6 +1618,7 @@
 				B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
 				B16C01000000000000000103 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				B16D01000000000000000103 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000103 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
@@ -1647,6 +1662,7 @@
 				B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
 				B16C01000000000000000102 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				B16D01000000000000000102 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000102 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,

@@ -459,3 +459,11 @@ Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnost
 - **Legacy oversized files:** New heading quality logic is split into small files instead of expanding existing oversized production files.
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b17 — Localization Diagnostics Review Pack
+
+- **Current status:** Task-030c-b17 summarizes b16-B/C/D diagnostics into a replay-only review pack for future analysis. It can count suspicious barometric GPS outlier evidence, passive accuracy-source inference, and heading replay-readiness, but it does not correct or rewrite the route.
+- **Production boundary:** No production route mutation is enabled. The review pack is diagnostics-only and replay-review-only; `productionRouteMutationApplied` remains false and `estimatedRouteActive` remains false.
+- **Localization boundary:** The visible DEBUG build signature uses localized keys instead of hard-coded visible strings.
+
+Task-030c-b17 verification token: localization diagnostics review pack, replay-review-only, no route mutation, localized DEBUG build signature, estimatedRouteActive remains false.

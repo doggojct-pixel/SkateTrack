@@ -1042,6 +1042,8 @@
 "debug.status.freshness.unavailable" = "Unavailable";
 "debug.status.freshness.none" = "No fix";
 "debug.build.title" = "Test build signature";
+"debug.build.currentTaskID" = "Task-030c-b17";
+"debug.build.badge" = "DEBUG";
 "debug.build.subtitle" = "Use this badge to confirm the installed app includes the latest GPS fidelity test build.";
 
 /* Task-030c-b7 Background recording gap diagnostics */
