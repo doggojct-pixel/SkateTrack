@@ -18,7 +18,7 @@ final class LocalizationDiagnosticsReviewPackTests: XCTestCase {
             createdAt: Date(timeIntervalSince1970: 1_234)
         )
 
-        XCTAssertEqual(pack.taskIdentifier, "Task-030c-b17")
+        XCTAssertEqual(pack.taskIdentifier, "Task-030c-b17-0")
         XCTAssertTrue(pack.diagnosticsOnly)
         XCTAssertTrue(pack.replayReviewOnly)
         XCTAssertFalse(pack.productionRouteMutationApplied)

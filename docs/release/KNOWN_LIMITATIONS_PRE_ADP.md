@@ -460,10 +460,12 @@ Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnost
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
 
-### Task-030c-b17 — Localization Diagnostics Review Pack
+### Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation
 
-- **Current status:** Task-030c-b17 summarizes b16-B/C/D diagnostics into a replay-only review pack for future analysis. It can count suspicious barometric GPS outlier evidence, passive accuracy-source inference, and heading replay-readiness, but it does not correct or rewrite the route.
+- **Current status:** Task-030c-b17-0 summarizes b16-B/C/D diagnostics into a replay-only review pack foundation for future analysis.
+
+- **v1.2 alignment:** This is not the full `Task-030c-b17` Replay-Only IMU Gap Interpolation Engine from `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`. The next required milestone remains `Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation`. It can count suspicious barometric GPS outlier evidence, passive accuracy-source inference, and heading replay-readiness, but it does not correct or rewrite the route.
 - **Production boundary:** No production route mutation is enabled. The review pack is diagnostics-only and replay-review-only; `productionRouteMutationApplied` remains false and `estimatedRouteActive` remains false.
 - **Localization boundary:** The visible DEBUG build signature uses localized keys instead of hard-coded visible strings.
 
-Task-030c-b17 verification token: localization diagnostics review pack, replay-review-only, no route mutation, localized DEBUG build signature, estimatedRouteActive remains false.
+Task-030c-b17-0 verification token: localization diagnostics review pack foundation, replay-review-only, no route mutation, localized DEBUG build signature, estimatedRouteActive remains false.

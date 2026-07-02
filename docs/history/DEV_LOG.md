@@ -2191,3 +2191,14 @@ Task-030c-b16-D verification token: magnetometer heading quality consolidation, 
 - Kept b17 diagnostics-only and replay-review-only: no route geometry mutation, trusted metric mutation, production route rejection, Wi-Fi entitlement, Wi-Fi scan, road snapping, map matching, raw sample mutation, or production estimated route display.
 
 Task-030c-b17 verification token: localization diagnostics review pack, diagnosticsOnly true, replayReviewOnly true, productionRouteMutationApplied false, localized DEBUG build signature, estimatedRouteActive remains false.
+
+### Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation
+
+- v1.2 alignment checkpoint for `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`.
+- Reclassified the already-pushed `Task-030c-b17` localization diagnostics review pack as `Task-030c-b17-0` / preflight foundation because `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` defines b17 as the replay-only IMU gap interpolation engine.
+- Added a v1.2 alignment verify guard so future Task-030c hotfixes must check the plan before continuing.
+- Added the v1.2-named b16-C verifier alias `verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py` while keeping the implemented passive accuracy-source verifier name honest and non-RTT-confirming.
+- Preserved the existing diagnostics-only boundary: no route geometry mutation, no trusted metrics mutation, no production estimated route display, and `estimatedRouteActive` remains false.
+
+Task-030c-b17-0 verification token: v1.2 alignment checkpoint, b17 preflight only, next milestone is Task-030c-b17-A local tangent coordinate frame and sensor bias foundation, estimatedRouteActive remains false.
+

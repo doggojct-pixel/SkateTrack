@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b17 localization diagnostics review pack safety boundaries."""
+"""Verify Task-030c-b17-0 localization diagnostics review pack foundation safety boundaries."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -68,50 +68,50 @@ def main() -> int:
             "LocalizationDiagnosticsReviewPackTests.swift in Sources",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-0"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
             'Text("debug.build.currentTaskID")',
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "iOS/Core/SensorEngine/SensorFusionEngine.swift": [
             "estimatedRouteActive: false",
         ],
         "docs/adr/ADR-INDEX.md": [
-            "Task-030c-b17 — Localization Diagnostics Review Pack",
+            "Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation",
             "diagnostics-only and replay-review-only",
             "estimatedRouteActive remains false",
         ],
         "docs/history/DEV_LOG.md": [
-            "Task-030c-b17 — Localization Diagnostics Review Pack",
+            "Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation",
             "localized DEBUG build signature",
             "estimatedRouteActive remains false",
         ],
         "docs/reference/FILE_STRUCTURE.md": [
-            "Task-030c-b17 localization diagnostics review pack",
+            "Task-030c-b17-0 localization diagnostics review pack foundation",
             "LocalizationDiagnosticsReviewPack.swift",
             "LocalizationDiagnosticsReviewBuilder.swift",
             "LocalizationDiagnosticsReviewPackTests.swift",
         ],
         "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-            "Task-030c-b17 — Localization Diagnostics Review Pack",
+            "Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation",
             "Production boundary",
             "estimatedRouteActive remains false",
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [
-            "Task-030c-b17 Implementation Note",
+            "Task-030c-b17-0 Implementation Note",
             "LocalizationDiagnosticsReviewPack",
             "localized through `debug.build.currentTaskID`",
         ],
@@ -163,7 +163,7 @@ def main() -> int:
             forbid(rel, token)
 
     panel_text = read("iOS/Features/Debug/DebugToolsPanelView.swift")
-    if 'Text("Task-030c-b17")' in panel_text:
+    if 'Text("Task-030c-b17-0")' in panel_text:
         raise AssertionError("DebugToolsPanelView must use Localizable.strings key for the visible task ID")
     if 'Text("DEBUG")' in panel_text:
         raise AssertionError("DebugToolsPanelView must use Localizable.strings key for the visible DEBUG badge")
@@ -172,7 +172,7 @@ def main() -> int:
     if re.search(r"let\s+productionRouteMutationApplied\s*=\s*true", model_text):
         raise AssertionError("LocalizationDiagnosticsReviewPack must not allow productionRouteMutationApplied true")
 
-    print("Task-030c-b17 localization diagnostics review pack checks passed.")
+    print("Task-030c-b17-0 localization diagnostics review pack foundation checks passed.")
     return 0
 
 
@@ -180,5 +180,5 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except AssertionError as exc:
-        print(f"Task-030c-b17 check failed: {exc}", file=sys.stderr)
+        print(f"Task-030c-b17-0 check failed: {exc}", file=sys.stderr)
         raise SystemExit(1)

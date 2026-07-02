@@ -97,7 +97,7 @@ struct LocalizationDiagnosticsReviewPack: Codable, Sendable, Equatable {
 
     init(
         schemaVersion: Int = 1,
-        taskIdentifier: String = "Task-030c-b17",
+        taskIdentifier: String = "Task-030c-b17-0",
         createdAt: Date,
         summary: LocalizationDiagnosticsReviewSummary,
         samples: [LocalizationDiagnosticsReviewSample]

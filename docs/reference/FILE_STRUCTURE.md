@@ -1432,7 +1432,7 @@ scripts/verify_task030c_b16d_heading_quality_gate.py       # Guard for diagnosti
 
 Task-030c-b16-D verification token: magnetometer heading quality consolidation, `HeadingReliability`, `HeadingQualityAssessment`, `HeadingQualityClassifier`, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
 
-### Task-030c-b17 localization diagnostics review pack
+### Task-030c-b17-0 localization diagnostics review pack foundation
 
 ```text
 Shared/Models/LocalizationDiagnosticsReviewPack.swift       # Shared replay-only review pack model for b16 diagnostics consolidation.
@@ -1442,4 +1442,14 @@ scripts/verify_task030c_b17_diagnostics_review_pack.py      # Static verificatio
 Shared/Localization/*/Localizable.strings                   # Localized DEBUG build signature token and badge keys.
 ```
 
-Task-030c-b17 verification token: localization diagnostics review pack, `LocalizationDiagnosticsReviewPack`, `LocalizationDiagnosticsReviewBuilder`, `diagnosticsOnly`, `replayReviewOnly`, `productionRouteMutationApplied false`, localized DEBUG build signature, estimatedRouteActive remains false.
+Task-030c-b17-0 verification token: v1.2 alignment, localization diagnostics review pack foundation, `LocalizationDiagnosticsReviewPack`, `LocalizationDiagnosticsReviewBuilder`, `diagnosticsOnly`, `replayReviewOnly`, `productionRouteMutationApplied false`, localized DEBUG build signature, estimatedRouteActive remains false.
+
+### Task-030c v1.2 alignment guards
+
+```text
+scripts/verify_task030c_post_b15_v12_alignment.py           # Confirms future Task-030c work remains aligned to Post-b15 Localization Completion Plan v1.2.
+scripts/verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py # v1.2-compatible alias for the passive accuracy-source diagnostics verifier.
+```
+
+Task-030c v1.2 alignment token: before future hotfixes, compare scope to `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`; b17-0 is preflight only; next milestone is b17-A; estimatedRouteActive remains false.
+

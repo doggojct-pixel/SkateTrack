@@ -589,8 +589,26 @@ python3 scripts/verify_task030c_b16a_localization_foundation_plan.py
 
 The milestone intentionally does not persist a new route decision, does not generate production estimated route geometry, does not rewrite GPS samples, and does not change trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain. The classifier is split into new small files so the existing oversized `MotionSample.swift` and `SensorFusionEngine.swift` files do not absorb the new b16-D logic. `estimatedRouteActive` remains false.
 
-## Task-030c-b17 Implementation Note
+## Task-030c-b17-0 Implementation Note
 
-`Task-030c-b17` implements the first localization diagnostics review pack over the b16-A/B/C/D foundation. It adds a shared `LocalizationDiagnosticsReviewPack` model and an iOS-only `LocalizationDiagnosticsReviewBuilder` that summarizes existing b16 diagnostics into replay-only review counters: barometric outlier candidates, passive accuracy-source diagnostics, high-precision-or-Wi-Fi-like accuracy inference, heading replay readiness, and production safety flags.
+`Task-030c-b17-0` implements the first localization diagnostics review pack over the b16-A/B/C/D foundation. It adds a shared `LocalizationDiagnosticsReviewPack` model and an iOS-only `LocalizationDiagnosticsReviewBuilder` that summarizes existing b16 diagnostics into replay-only review counters: barometric outlier candidates, passive accuracy-source diagnostics, high-precision-or-Wi-Fi-like accuracy inference, heading replay readiness, and production safety flags.
 
 This milestone remains diagnostics-only. It does not enable estimated route geometry, route rewriting, road snapping, map matching, trusted metric mutation, production route rejection, Wi-Fi scanning, Wi-Fi entitlements, or confirmed Wi-Fi RTT claims. The visible DEBUG build signature is now localized through `debug.build.currentTaskID` and `debug.build.badge`. `estimatedRouteActive` remains false.
+
+## Task-030c Post-b15 v1.2 Alignment Checkpoint
+
+`Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` is the controlling plan until Task-030c is complete. Before every future Task-030c hotfix, the implementation scope must be checked against that plan.
+
+Current alignment decision:
+
+- `Task-030c-b16-A` through `Task-030c-b16-D` remain accepted as the v1.2 sensor-source diagnostics and cross-validation foundation.
+- The already-pushed localization diagnostics review pack is now classified as `Task-030c-b17-0`, not as full b17 completion.
+- The next implementation milestone is `Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation`.
+- `Task-030c-b17-B`, `Task-030c-b17-C`, and `Task-030c-b17-D` must not be skipped.
+- `Task-030c-b18-C` must not be implemented until the non-code product decision checkpoint after b17-D.
+
+Small b16 alignment note:
+
+- b16-C implemented passive CoreLocation accuracy-source diagnostics without Wi-Fi entitlement or explicit Wi-Fi APIs. The v1.2 verifier name is preserved through `scripts/verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py`, which delegates to the implemented passive accuracy-source verifier.
+- b16-C does not claim confirmed Wi-Fi RTT. This is intentionally stricter than the plan wording and preserves the v1.2 false-RTT-assumption mitigation.
+
