@@ -5,6 +5,10 @@
 import CoreData
 import Foundation
 
+extension Notification.Name {
+    static let skateTrackSessionDidSave = Notification.Name("SkateTrackSessionRepositoryDidSave")
+}
+
 protocol SessionRepositoryProtocol: AnyObject, Sendable {
     @discardableResult
     func saveCompletedSession(_ session: SessionData) async throws -> SessionData
@@ -39,11 +43,28 @@ final class SessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
     func saveCompletedSession(_ session: SessionData) async throws -> SessionData {
         let sampleFileName = try sampleStore.save(session.motionSamples, for: session.id)
         let context = persistenceController.viewContext
-        try await context.perform {
-            try SessionEntityMapper.upsertSession(session, sampleFileName: sampleFileName, in: context)
-            if context.hasChanges {
-                try context.save()
+        do {
+            try await context.perform {
+                try SessionEntityMapper.upsertSession(session, sampleFileName: sampleFileName, in: context)
+                if context.hasChanges {
+                    try context.save()
+                }
+                guard try SessionEntityMapper.fetchSessionObject(id: session.id, in: context) != nil else {
+                    throw RepositoryError.saveFailed
+                }
             }
+        } catch {
+            // Task-030c-b15-B-3: avoid leaving DEBUG simulator motion sample files orphaned
+            // when the Core Data row fails to save. This keeps future History reloads from
+            // appearing to have invisible recordings.
+            try? sampleStore.delete(fileName: sampleFileName)
+            throw error
+        }
+        // Task-030c-b15-B-3: History may already be loaded while the Live HUD saves a
+        // completed debug/simulator session. Broadcast a local save event so the list
+        // reloads instead of looking like the session disappeared.
+        Task { @MainActor in
+            NotificationCenter.default.post(name: .skateTrackSessionDidSave, object: session.id)
         }
         return session
     }
@@ -52,8 +73,11 @@ final class SessionRepository: SessionRepositoryProtocol, @unchecked Sendable {
         let context = persistenceController.viewContext
         return try await context.perform {
             let objects = try SessionEntityMapper.fetchRecentSessionObjects(limit: limit, in: context)
-            return try objects.map { object in
-                try self.makeSessionData(from: object, in: context)
+            // Task-030c-b15-B-3: a single legacy/corrupt row or missing motion-sample file
+            // must not make the whole History screen look empty after a simulator save.
+            // Keep valid sessions visible and let targeted fetch/export surface errors later.
+            return objects.compactMap { object in
+                try? self.makeSessionData(from: object, in: context)
             }
         }
     }

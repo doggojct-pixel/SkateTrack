@@ -1302,61 +1302,82 @@ scripts/verify_task030c_b13b_magnetometer_heading_diagnostics.py # Guards b13-B 
 
 Task-030c-b13-B-1 verification token: deviceHeadingDegrees, deviceHeadingAccuracyDegrees, deviceHeadingTimestampMillisecondsSince1970, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, verify_task030c_b13b_magnetometer_heading_diagnostics.py.
 
-### Task-030c-b15-A replay-only dead-reckoning readiness diagnostics
+### Task-030c-b15-B-3 replay-only dead-reckoning readiness diagnostics
 
-Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b15-A.
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b15-B-3.
 Shared/Models/MotionSample.swift                         # Adds DeadReckoningReadinessAnalyzer, replay-only config, summary, candidate, and blocking reason models.
-iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b15-A Debug build signature.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b15-B-3 Debug build signature.
 Tests/iOSTests/SessionRepositoryTests.swift              # Adds replay-only readiness analyzer tests and no-estimated-route regression coverage.
 scripts/verify_task030c_b14a_dead_reckoning_readiness.py  # Guards b14-A scope: readiness diagnostics only, no estimated geometry, no route mutation.
 
-Task-030c-b15-A verification token: DeadReckoningReadinessAnalyzer, DeadReckoningReadinessConfig, replay-only gap eligibility, blockingReasonCounts, verify_task030c_b14a_dead_reckoning_readiness.py.
+Task-030c-b15-B-3 verification token: DeadReckoningReadinessAnalyzer, DeadReckoningReadinessConfig, replay-only gap eligibility, blockingReasonCounts, verify_task030c_b14a_dead_reckoning_readiness.py.
 
 
-### Task-030c-b15-A altitude chart source guard
+### Task-030c-b15-B-3 altitude chart source guard
 
-Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b15-A.
-iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b15-A Debug build signature.
+Shared/Models/SessionData.swift                         # Updates diagnostics build identity to Task-030c-b15-B-3.
+iOS/Features/Debug/DebugToolsPanelView.swift             # Shows the Task-030c-b15-B-3 Debug build signature.
 iOS/Features/SessionSummary/SessionAdvancedChartsView.swift # Keeps elevation chart display altitude-source aware and prevents GPS stale/gap diagnostics from splitting trusted barometer-relative profiles.
 scripts/verify_task030c_b14a1_altitude_display_source_guard.py # Verifies the A-1 display-only altitude chart guard.
 
-Task-030c-b15-A verification token: altitude chart source guard, barometer-relative altitude profile, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: altitude chart source guard, barometer-relative altitude profile, no stored sample rewrite, no route geometry change.
 
-### Task-030c-b15-A altitude micro-dip display guard
+### Task-030c-b15-B-3 altitude micro-dip display guard
 
 `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` # Adds display-only `altitudeMicroDipDisplayGuardedPoints` for very short barometer chart notches.
 `scripts/verify_task030c_b14a11_altitude_micro_dip_display_guard.py` # Verifies the micro-dip guard remains display-only and does not enable estimated route geometry.
-`Shared/Models/SessionData.swift` # Updates diagnostics build identity to Task-030c-b15-A.
-`iOS/Features/Debug/DebugToolsPanelView.swift` # Shows the Task-030c-b15-A Debug build signature.
+`Shared/Models/SessionData.swift` # Updates diagnostics build identity to Task-030c-b15-B-3.
+`iOS/Features/Debug/DebugToolsPanelView.swift` # Shows the Task-030c-b15-B-3 Debug build signature.
 
-Task-030c-b15-A verification token: altitude micro-dip display guard, barometer-relative chart profile, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: altitude micro-dip display guard, barometer-relative chart profile, no stored sample rewrite, no route geometry change.
 
-### Task-030c-b15-A startup route visual suppression
+### Task-030c-b15-B-3 startup route visual suppression
 
 `iOS/Features/SessionSummary/SessionRouteMapView.swift` # Makes startup / GPS warm-up route segments solid fluorescent-pink display context and keeps them isolated from trusted route geometry.
-`Shared/Models/SessionData.swift` # Updates diagnostics build identity to Task-030c-b15-A.
-`iOS/Features/Debug/DebugToolsPanelView.swift` # Shows the Task-030c-b15-A Debug build signature.
+`Shared/Models/SessionData.swift` # Updates diagnostics build identity to Task-030c-b15-B-3.
+`iOS/Features/Debug/DebugToolsPanelView.swift` # Shows the Task-030c-b15-B-3 Debug build signature.
 `scripts/verify_task030c_b14a2_startup_route_visual_suppression.py` # Verifies display-only startup route visual suppression guardrails.
 
-Task-030c-b15-A verification token: startup route visual suppression, solid fluorescent-pink route context, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: startup route visual suppression, solid fluorescent-pink route context, no stored sample rewrite, no route geometry change.
 
-### Task-030c-b15-A replay-only candidate gap interpolation prototype
+### Task-030c-b15-B-3 replay-only candidate gap interpolation prototype
 `Shared/Models/MotionSample.swift` # Adds DeadReckoningCandidateInterpolationAnalyzer, debug-only candidate models, conservative config, and blocking / confidence summaries.
 `Tests/iOSTests/SessionRepositoryTests.swift` # Guards debug-only candidate creation, blocked missing-heading cases, and large anchor-closure blocking.
 `iOS/Features/SessionSummary/SessionRouteMapView.swift` # Restores startup / warm-up route segments to solid fluorescent-pink route context while preserving segment separation.
 `scripts/verify_task030c_b14b_candidate_gap_interpolation.py` # Verifies b14-B replay-only candidate interpolation and production-route guardrails.
 
-Task-030c-b15-A verification token: DeadReckoningCandidateInterpolationAnalyzer, debugCandidateOnly, anchorClosureTooLarge, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: DeadReckoningCandidateInterpolationAnalyzer, debugCandidateOnly, anchorClosureTooLarge, no stored sample rewrite, no route geometry change.
 
-### Task-030c-b15-A summary elevation gain source guard
+### Task-030c-b15-B-3 summary elevation gain source guard
 `iOS/Hooks/useSessionSummary.swift` # Aligns Summary climb display with trusted barometer-relative altitude source selection and prevents Core Location altitude jitter from inflating user-facing climb totals.
 `Tests/iOSTests/SessionRepositoryTests.swift` # Adds regression coverage for barometer-preferred climb and zero-climb display fallback behavior.
 `scripts/verify_task030c_b14b1_summary_elevation_gain_source_guard.py` # Verifies b14-B-1 Summary elevation-gain display guard tokens.
-Task-030c-b15-A verification token: summary elevation gain source guard, trusted barometer-relative climb, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: summary elevation gain source guard, trusted barometer-relative climb, no stored sample rewrite, no route geometry change.
 
-### Task-030c-b15-A total elevation gain terminology
+### Task-030c-b15-B-3 total elevation gain terminology
 `Shared/Localization/zh-Hant.lproj/Localizable.strings` # Renames `summary.metric.elevationGain` to `總爬升量`.
 `Shared/Localization/en.lproj/Localizable.strings` # Renames `summary.metric.elevationGain` to `Total elevation gain`.
 `Shared/Localization/ja.lproj/Localizable.strings` # Renames `summary.metric.elevationGain` to `総獲得標高`.
 `scripts/verify_task030c_b15a_total_elevation_gain_label.py` # Guards localized metric terminology while preserving b14-B-1 calculation and replay-only route boundaries.
-Task-030c-b15-A verification token: total elevation gain terminology, summary.metric.elevationGain, localization-only, no stored sample rewrite, no route geometry change.
+Task-030c-b15-B-3 verification token: total elevation gain terminology, summary.metric.elevationGain, localization-only, no stored sample rewrite, no route geometry change.
+
+### Task-030c-b15-B-3 simulator recording persistence guard
+`iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` # Retains coordinator-observed live samples and adds DEBUG iOS Simulator persistence fallback when the live sensor stop snapshot is empty.
+`Tests/iOSTests/SessionRecordingCoordinatorTests.swift` # Adds simulator persistence regressions for coordinator-observed sample recovery and no-sample debug fallback.
+`scripts/verify_task030c_b15b_simulator_recording_persistence.py` # Verifies simulator-only persistence guardrails and production-route boundaries.
+
+Task-030c-b15-B-3 verification token: simulator recording persistence guard, liveSessionSamples, debugSimulatorPersistenceSessionIfNeeded, debugSimulatorPersistenceFallback, no route geometry mutation.
+
+### Task-030c-b15-B-3 debug mock recording pipeline hardening
+`iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift` # Delivers DEBUG mock route samples on the main queue.
+`iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` # Appends debugSimulated samples into the same persistence buffer used at stop/save.
+`Shared/Persistence/SessionRepository.swift` # Broadcasts local session-save notifications after successful saves.
+`iOS/Features/SessionHistory/SessionHistoryView.swift` # Reloads when sessions are saved and when the History view appears.
+`iOS/Features/SessionRecording/LiveHUDView.swift` # Lets DEBUG simulated speed drive the speed trace directly.
+Task-030c-b15-B-3 verification token: debug mock recording pipeline, simulator recording persistence guard, main-queue mock samples, no schema change.
+
+### Task-030c-b15-B-3 simulator save pipeline hardening
+`Shared/Persistence/SessionEntityMapper.swift` # Safely encodes optional DEBUG diagnostics and supports non-conforming floating-point values.
+`Shared/Persistence/MotionSampleFileStore.swift` # Uses matching non-conforming float encode/decode support for persisted motion samples.
+`Shared/Persistence/SessionRepository.swift` # Verifies Core Data row save, cleans up failed sample writes, and keeps History resilient to individual corrupt rows.
+Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEncodedDebugRecordingDiagnostics, orphan sample cleanup, resilient History fetch.

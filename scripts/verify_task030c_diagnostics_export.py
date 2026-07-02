@@ -22,7 +22,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b15-A\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b15-B-3\"",
         "let diagnosticsStatus: String?",
         "diagnosticsStatus: String? = nil",
     ],
@@ -43,7 +43,7 @@ REQUIRED_TOKENS = {
         "if session.debugRecordingDiagnostics != nil",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b15-A",
+        "Task-030c-b15-B-3",
         "debug-build-signature-card",
     ],
     "docs/history/DEV_LOG.md": [

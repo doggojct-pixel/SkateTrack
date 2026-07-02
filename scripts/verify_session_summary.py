@@ -415,7 +415,7 @@ def verify_localization() -> None:
     for locale, label in expected_elevation_gain_labels.items():
         token = f'"summary.metric.elevationGain" = "{label}";'
         if token not in read(f"Shared/Localization/{locale}.lproj/Localizable.strings"):
-            fail(f"Task-030c-b15-A missing total elevation gain label for {locale}: {label}")
+            fail(f"Task-030c-b15-B-3 missing total elevation gain label for {locale}: {label}")
 
 
 def verify_source_contracts() -> None:

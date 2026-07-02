@@ -449,6 +449,7 @@ final class SessionRecordingCoordinator {
     var mockSampleTimer: DispatchSourceTimer?
     var mockSampleIndex = 0
     var mockSessionSamples: [MotionSample] = []
+    var liveSessionSamples: [MotionSample] = []
     #if DEBUG
     var dataSource: SessionRecordingDataSource = .live
     var mockRouteSimulator = DebugOutdoorRouteSimulator()
@@ -539,6 +540,7 @@ final class SessionRecordingCoordinator {
         fallCountdownSubject.send(nil)
         sosTriggerEventSubject.send(nil)
         completedSession = nil
+        liveSessionSamples = []
         metricsAccumulator.beginSession(at: sessionStartDate ?? Date(), policy: ActivityFidelityPolicy(profile: currentFidelityProfile()))
         await Task.yield()
 
@@ -684,8 +686,15 @@ final class SessionRecordingCoordinator {
 
     func handleMotionSample(_ sample: MotionSample) {
         guard stateMachine.status == .recording else { return }
+        // Task-030c-b15-B-3: retain coordinator-observed live samples so Simulator
+        // sessions are still persistable even if the sensor engine returns an empty
+        // stop snapshot. This does not create production estimated route geometry.
+        liveSessionSamples.append(sample)
         #if DEBUG
-        if dataSource == .mock {
+        // Task-030c-b15-B-3: append every DEBUG simulated sample to the mock buffer,
+        // even when it is injected as a simulator fallback rather than an explicitly
+        // toggled demo-speed session. Stop/save then uses the same samples the HUD saw.
+        if dataSource == .mock || sample.sampleSource == .debugSimulated {
             mockSessionSamples.append(sample)
         }
         #endif
@@ -748,8 +757,15 @@ final class SessionRecordingCoordinator {
             #endif
         }
 
-        let enrichedSession = enrich(
+        let persistenceSession = debugSimulatorPersistenceSessionIfNeeded(
             baseSession,
+            endDate: endDate,
+            liveSummaryMetrics: liveSummaryMetrics,
+            fallEvents: fallEvents
+        )
+
+        let enrichedSession = enrich(
+            persistenceSession,
             endDate: endDate,
             powerType: selectedPowerType,
             fallEvents: fallEvents,
@@ -1120,6 +1136,105 @@ final class SessionRecordingCoordinator {
         )
     }
 
+    private func debugSimulatorPersistenceSessionIfNeeded(
+        _ session: SessionData,
+        endDate: Date,
+        liveSummaryMetrics: SessionSummaryMetrics,
+        fallEvents: [FallEvent]
+    ) -> SessionData {
+        #if DEBUG
+        #if targetEnvironment(simulator)
+        // Task-030c-b15-B-3: Simulator CoreLocation / CoreMotion can emit timerFusion
+        // samples without usable route coordinates. Treat those sessions as non-persistable
+        // for History / Summary development and repair them with coordinator-observed
+        // debug samples or a deterministic DEBUG-only simulated route.
+        let hasPersistableRouteSamples = session.motionSamples.contains { $0.gpsCoordinate != nil }
+        guard session.motionSamples.isEmpty || hasPersistableRouteSamples == false else { return session }
+
+        let recoveredSamples = debugSimulatorPersistableSamples(endDate: endDate)
+        guard recoveredSamples.isEmpty == false else { return session }
+
+        let eventType: String
+        if liveSessionSamples.contains(where: { $0.gpsCoordinate != nil }) {
+            eventType = "debugSimulatorObservedSamplesRecovered"
+        } else if mockSessionSamples.contains(where: { $0.gpsCoordinate != nil }) {
+            eventType = "debugSimulatorMockSamplesRecovered"
+        } else {
+            eventType = "debugSimulatorPersistenceFallback"
+        }
+
+        RecordingDebugDiagnosticsCollector.shared.recordRecoveryEvent(
+            RecordingDebugRecoveryEvent(
+                eventType: eventType,
+                reason: "Task-030c-b15-B-3 simulator recording persistence guard"
+            )
+        )
+
+        return try! SessionData(
+            id: session.id,
+            startDate: session.startDate,
+            endDate: session.endDate ?? endDate,
+            sportMode: session.sportMode,
+            powerType: session.powerType,
+            motionSamples: recoveredSamples,
+            trickEvents: session.trickEvents,
+            fallEvents: fallEvents,
+            summaryMetrics: liveSummaryMetrics,
+            routeQualitySummary: RouteQualitySummary.make(from: recoveredSamples),
+            fidelityProfile: session.fidelityProfile,
+            debugRecordingDiagnostics: session.debugRecordingDiagnostics,
+            equipmentID: session.equipmentID,
+            equipmentSnapshot: session.equipmentSnapshot,
+            spotID: session.spotID,
+            spotSnapshot: session.spotSnapshot
+        )
+        #else
+        return session
+        #endif
+        #else
+        return session
+        #endif
+    }
+
+    #if DEBUG
+    private func debugSimulatorPersistableSamples(endDate: Date) -> [MotionSample] {
+        #if targetEnvironment(simulator)
+        if liveSessionSamples.contains(where: { $0.gpsCoordinate != nil }) {
+            return liveSessionSamples
+        }
+        if mockSessionSamples.contains(where: { $0.gpsCoordinate != nil }) {
+            return mockSessionSamples
+        }
+        return makeDebugSimulatorPersistenceFallbackSamples(endDate: endDate)
+        #else
+        return []
+        #endif
+    }
+    #endif
+
+    #if DEBUG
+    private func makeDebugSimulatorPersistenceFallbackSamples(endDate: Date) -> [MotionSample] {
+        #if targetEnvironment(simulator)
+        let mode = selectedSportMode ?? .skateboard(.streetPark)
+        var simulator = DebugOutdoorRouteSimulator()
+        simulator.reset(for: mode, startDate: sessionStartDate ?? endDate)
+
+        let duration = max(
+            endDate.timeIntervalSince(sessionStartDate ?? endDate),
+            DebugOutdoorRouteSimulator.sampleIntervalSeconds * 4
+        )
+        let sampleCount = min(
+            max(Int(duration / DebugOutdoorRouteSimulator.sampleIntervalSeconds), 4),
+            40
+        )
+
+        return (0..<sampleCount).map { _ in simulator.nextSample(for: mode) }
+        #else
+        return []
+        #endif
+    }
+    #endif
+
 
     private func teardownActiveSession(resetToIdle: Bool) async {
         stopMockSampleFeed()
@@ -1218,6 +1333,7 @@ final class SessionRecordingCoordinator {
         metricsAccumulator.reset()
         mockSampleIndex = 0
         mockSessionSamples = []
+        liveSessionSamples = []
     }
 
 }

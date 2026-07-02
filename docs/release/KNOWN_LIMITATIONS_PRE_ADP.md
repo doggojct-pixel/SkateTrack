@@ -354,55 +354,72 @@ Task-030c-b13-B-1 verification token: magnetometer heading diagnostics foundatio
 
 Task-030c-b13-B-1 note: magnetometer heading diagnostics remain diagnostics-only; legacy sessions should continue to decode even when newer heading fields are absent.
 
-### Task-030c-b15-A — Replay-Only Dead-Reckoning Readiness Diagnostics
+### Task-030c-b15-B-3 — Replay-Only Dead-Reckoning Readiness Diagnostics
 
-- **Current status:** Task-030c-b15-A can classify persisted GPS gap candidates for future replay / interpolation readiness using trusted anchors, timer-fusion IMU cadence, and heading diagnostics.
+- **Current status:** Task-030c-b15-B-3 can classify persisted GPS gap candidates for future replay / interpolation readiness using trusted anchors, timer-fusion IMU cadence, and heading diagnostics.
 - **Safety boundary:** dead reckoning remains disabled. The task does not write estimated route points, does not fill GPS gaps, and does not alter route geometry, distance, speed, altitude, confidence colors, or summary metrics.
 - **Why this remains limited:** IMU dead reckoning can drift quickly, magnetometer heading can be disturbed, and small-area GPS geometry may still have signal-to-noise limits. b14-A only decides whether a gap is eligible for future replay analysis.
 - **Still deferred:** production estimated route geometry, runtime gap filling, map matching, road snapping, camera-aided localization, Wi-Fi RTT, indoor localization, and SnowPrototype work remain deferred until explicitly approved.
 
-Task-030c-b15-A verification token: replay-only dead-reckoning readiness diagnostics, no estimated route geometry, dead reckoning remains disabled, preserves b13-B-1 legacy decode compatibility.
+Task-030c-b15-B-3 verification token: replay-only dead-reckoning readiness diagnostics, no estimated route geometry, dead reckoning remains disabled, preserves b13-B-1 legacy decode compatibility.
 
 
-### Task-030c-b15-A — Altitude Chart Source Guard
+### Task-030c-b15-B-3 — Altitude Chart Source Guard
 
 - **Current status:** The elevation chart display is now altitude-source aware. Trusted barometer-relative altitude profiles remain visually continuous across unrelated GPS stale/gap diagnostics.
 - **Boundary:** This is a display-only guard. It does not change elevation gain summaries, does not rewrite stored motion samples, does not alter route geometry, and does not enable dead reckoning.
 - **Remaining limitation:** CoreLocation absolute altitude can still be noisy in diagnostics; it is retained for analysis but should not be treated as authoritative when trusted barometer-relative altitude is available.
 
-Task-030c-b15-A verification token: altitude chart source guard, does not change elevation gain summaries, does not enable dead reckoning, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: altitude chart source guard, does not change elevation gain summaries, does not enable dead reckoning, estimatedRouteActive remains false.
 
-### Task-030c-b15-A — Altitude Chart Micro-Dip Display Guard
+### Task-030c-b15-B-3 — Altitude Chart Micro-Dip Display Guard
 
 - **Current status:** The advanced elevation chart now has a conservative display-only micro-dip guard for very short barometer notches after the b14-A-1 source guard selects the barometer-relative profile.
 - **Important limitation:** This does not change recorded altitude samples, elevation gain summaries, route geometry, or exported diagnostics. Long or real elevation trends remain visible.
 - **Still deferred:** Recording-time altitude correction, production dead reckoning, and startup route visual suppression remain separate tasks.
 
-Task-030c-b15-A verification token: altitude micro-dip display guard, does not change elevation gain summaries, does not enable dead reckoning, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: altitude micro-dip display guard, does not change elevation gain summaries, does not enable dead reckoning, estimatedRouteActive remains false.
 
-### Task-030c-b15-A — Startup Route Visual Suppression
+### Task-030c-b15-B-3 — Startup Route Visual Suppression
 
 - **Current status:** Startup / GPS warm-up route geometry is displayed only as solid fluorescent-pink route context and remains visually separated from trusted teal route segments.
 - **Display-only:** This does not change distance, speed, altitude, elevation gain, route geometry, raw samples, exported diagnostics, or `.skatetrack` schema.
 - **Still deferred:** Real route reconstruction, IMU interpolation, road snapping, map matching, and production dead reckoning remain disabled.
 
-Task-030c-b15-A verification token: startup route visual suppression, solid fluorescent-pink route context, does not change distance, speed, altitude, or route geometry, does not enable dead reckoning, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: startup route visual suppression, solid fluorescent-pink route context, does not change distance, speed, altitude, or route geometry, does not enable dead reckoning, estimatedRouteActive remains false.
 
-### Task-030c-b15-A — Replay-Only Candidate Gap Interpolation Prototype
+### Task-030c-b15-B-3 — Replay-Only Candidate Gap Interpolation Prototype
 - **Current status:** b14-B can create debug-only candidate interpolation points for eligible GPS gaps using conservative readiness diagnostics, trusted anchors, IMU cadence, and heading diagnostics.
 - **Display note:** Startup / warm-up route context uses solid fluorescent pink with full route-line weight again, while remaining segmented away from trusted teal GPS-lock geometry.
 - **Still deferred:** Production route estimation, official map correction, distance / speed / altitude metric mutation, and any `estimatedRouteActive == true` behavior remain deferred.
 
-Task-030c-b15-A verification token: replay-only candidate gap interpolation, debug-only candidate points, anchor closure blocking, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: replay-only candidate gap interpolation, debug-only candidate points, anchor closure blocking, estimatedRouteActive remains false.
 
-### Task-030c-b15-A — Summary Elevation Gain Source Guard
+### Task-030c-b15-B-3 — Summary Elevation Gain Source Guard
 - **Current status:** The Summary climb card now uses the trusted barometer-relative altitude stream when available, so flat walking / sheltered skate sessions no longer show large climb totals caused by Core Location absolute altitude jitter.
 - **Still deferred:** Recording-time altitude correction, production dead reckoning, and route geometry interpolation remain separate tasks.
-Task-030c-b15-A verification token: summary elevation gain source guard, trusted barometer-relative climb, does not change distance, speed, route geometry, or stored samples, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: summary elevation gain source guard, trusted barometer-relative climb, does not change distance, speed, route geometry, or stored samples, estimatedRouteActive remains false.
 
-### Task-030c-b15-A — Total Elevation Gain Terminology
+### Task-030c-b15-B-3 — Total Elevation Gain Terminology
 - **Current status:** The Summary and share-card elevation metric now uses explicit cumulative-gain wording: `總爬升量`, `Total elevation gain`, and `総獲得標高`.
 - **Meaning unchanged:** The number still represents trusted cumulative positive elevation gain. It is not max altitude minus start altitude.
 - **Boundary:** This is terminology-only and does not change raw samples, schema, route geometry, distance, speed, altitude charts, the b14-B-1 trusted climb calculation, or replay-only candidate interpolation.
 
-Task-030c-b15-A verification token: total elevation gain terminology, summary.metric.elevationGain, localization-only, no calculation change, estimatedRouteActive remains false.
+Task-030c-b15-B-3 verification token: total elevation gain terminology, summary.metric.elevationGain, localization-only, no calculation change, estimatedRouteActive remains false.
+
+### Task-030c-b15-B-3 — Simulator Recording Persistence Guard
+- **Current status:** DEBUG iOS Simulator recording can now persist a session even when the sensor engine stop snapshot is empty. The coordinator first recovers live samples it observed during recording, and only in Simulator DEBUG can it fall back to a small debug-simulated sample set.
+- **Boundary:** This does not affect real-device recording, does not change route/distance/speed/total elevation gain calculations, does not modify `.skatetrack` schema, and does not enable production dead reckoning.
+- **Still deferred:** Production IMU-aided localization, real dead-reckoning route geometry, road snapping, map matching, and indoor localization remain future tasks.
+
+Task-030c-b15-B-3 verification token: simulator recording persistence guard, debug-only simulator fallback, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b15-B-3 — Debug Mock Recording Pipeline Hardening
+- **Current status:** Simulator/debug recordings use a more deterministic mock sample path for development validation when CoreMotion / CoreLocation simulator services are incomplete.
+- **Boundary:** This remains DEBUG/simulator-only support. It does not change real-device recording, `.skatetrack` schema, distance, speed, total elevation gain, or production route geometry.
+Task-030c-b15-B-3 verification token: simulator recording persistence guard, debug mock recording pipeline, no calculation change, estimatedRouteActive remains false.
+
+### Task-030c-b15-B-3 — Simulator Save Pipeline Hardening
+- **Current status:** DEBUG simulator recordings use a hardened save path that tolerates optional diagnostics encoding issues, verifies the Core Data session row after save, and avoids orphaned motion sample files.
+- **Boundary:** This is still simulator/debug persistence hardening only. It does not change real-device recording behavior, schemas, distance/speed/total elevation gain semantics, or production route estimation.
+Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safe diagnostics encoding, resilient History fetch, no calculation change, estimatedRouteActive remains false.

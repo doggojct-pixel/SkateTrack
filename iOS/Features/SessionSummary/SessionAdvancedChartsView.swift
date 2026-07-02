@@ -266,7 +266,7 @@ struct SessionAdvancedChartsView: View {
         smooth(points, windowRadius: 5, maximumStepValue: 0.45)
     }
     private func altitudeMicroDipDisplayGuardedPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
-        // Task-030c-b15-A: display-only guard for very short barometer notches; does not rewrite MotionSample, elevation gain summaries, route geometry, or exported diagnostics.
+        // Task-030c-b15-B-3: display-only guard for very short barometer notches; does not rewrite MotionSample, elevation gain summaries, route geometry, or exported diagnostics.
         let grouped = Dictionary(grouping: points, by: \.segmentID)
         return grouped.flatMap { _, segmentPoints -> [SessionSummaryChartPoint] in
             let sorted = segmentPoints.sorted { $0.elapsedSeconds < $1.elapsedSeconds }
@@ -313,7 +313,7 @@ struct SessionAdvancedChartsView: View {
 
     private func shouldStartNewChartSegment(after previousTimestamp: Date?, current sample: MotionSample) -> Bool {
         if let previousTimestamp, sample.timestamp.timeIntervalSince(previousTimestamp) > 12 { return true }
-        // Task-030c-b15-A: barometer/debug altitude charts are independent from GPS fix cadence.
+        // Task-030c-b15-B-3: barometer/debug altitude charts are independent from GPS fix cadence.
         if [AltitudeSampleSource.barometerRelative, .debugSimulated].contains(sample.altitudeDiagnostics?.source ?? sample.altitudeSource ?? .unavailable) { return false }
         guard let diagnostics = sample.locationDiagnostics else { return false }
         if diagnostics.freshnessState == .stale { return true }

@@ -13,6 +13,7 @@ struct LiveHUDView: View {
     @StateObject private var emergencyContactStore = EmergencyContactStore.shared
     @State private var isShowingEmergencyContactsSettings = false
     @State private var speedTraceSamples: [LiveSpeedTraceSample] = []
+    @State private var speedTraceStartedAt: Date?
 
     private let onOpenDebugTools: (() -> Void)?
     private let speedTraceTimer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
@@ -116,7 +117,11 @@ struct LiveHUDView: View {
         .onChange(of: sessionRecording.state.status) { _, status in
             if status == .idle || status == .failed {
                 speedTraceSamples.removeAll(keepingCapacity: true)
+                speedTraceStartedAt = nil
+            } else if status == .preparing {
+                speedTraceStartedAt = Date()
             } else if status == .recording {
+                if speedTraceStartedAt == nil { speedTraceStartedAt = Date() }
                 appendSpeedTraceSampleIfNeeded(force: true)
             }
             healthReminders.updateSessionReminderState(sessionRecording.state)
@@ -470,10 +475,23 @@ struct LiveHUDView: View {
     private func appendSpeedTraceSampleIfNeeded(force: Bool = false) {
         guard sessionRecording.state.status == .recording else { return }
 
-        let elapsedTime = max(0, sessionRecording.state.elapsedTime)
-        let speed = smoothedDisplaySpeedKilometersPerHour(
-            rawSpeedKilometersPerHour: max(0, sessionRecording.state.currentSpeedKilometersPerHour)
-        )
+        // Task-030c-b15-B-3: Simulator / DEBUG mock samples can update speed before
+        // the accumulated sample timestamp advances enough for the trace. Use a
+        // wall-clock fallback so the Live HUD speed curve visibly progresses while
+        // preserving the real accumulated elapsed time when it is available.
+        if speedTraceStartedAt == nil { speedTraceStartedAt = Date() }
+        let wallClockElapsed = speedTraceStartedAt.map { Date().timeIntervalSince($0) } ?? 0
+        let previousElapsedTime = speedTraceSamples.last?.elapsedTime ?? 0
+        let elapsedTime = max(0, sessionRecording.state.elapsedTime, wallClockElapsed, previousElapsedTime + (force ? 0 : 0.01))
+        let rawSpeed = max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+        let speed: Double
+        if sessionRecording.state.latestMotionSample?.sampleSource == .debugSimulated {
+            // Task-030c-b15-B-3: DEBUG simulated speed should drive the trace directly;
+            // otherwise the smoothing window can make simulator validation look flat.
+            speed = rawSpeed
+        } else {
+            speed = smoothedDisplaySpeedKilometersPerHour(rawSpeedKilometersPerHour: rawSpeed)
+        }
 
         if let last = speedTraceSamples.last {
             let isDuplicateSample = abs(elapsedTime - last.elapsedTime) < 0.001

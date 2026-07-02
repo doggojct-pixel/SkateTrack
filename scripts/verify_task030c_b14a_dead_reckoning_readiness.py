@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b15-A replay-only dead-reckoning readiness diagnostics."""
+"""Verify Task-030c-b15-B-3 replay-only dead-reckoning readiness diagnostics."""
 from pathlib import Path
 import sys
 
@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b15-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b15-B-3"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b15-A")',
+        'Text("Task-030c-b15-B-3")',
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [
@@ -38,26 +38,26 @@ REQUIRED = {
         "estimatedRouteActive == true",
     ],
     "scripts/verify_task030c_b14a_dead_reckoning_readiness.py": [
-        "Task-030c-b15-A replay-only dead-reckoning readiness diagnostics",
+        "Task-030c-b15-B-3 replay-only dead-reckoning readiness diagnostics",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b15-A — Replay-Only Dead-Reckoning Readiness Diagnostics",
+        "Task-030c-b15-B-3 — Replay-Only Dead-Reckoning Readiness Diagnostics",
         "does not write estimated route points",
         "preserves b13-A-4 distance/altitude behavior",
         "preserves b13-B-1 legacy heading diagnostics decoding",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b15-A — Replay-Only Dead-Reckoning Readiness Diagnostics",
+        "Task-030c-b15-B-3 — Replay-Only Dead-Reckoning Readiness Diagnostics",
         "replay-only readiness",
         "estimatedRouteActive remains false",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b15-A replay-only dead-reckoning readiness diagnostics",
+        "Task-030c-b15-B-3 replay-only dead-reckoning readiness diagnostics",
         "verify_task030c_b14a_dead_reckoning_readiness.py",
         "DeadReckoningReadinessAnalyzer",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b15-A — Replay-Only Dead-Reckoning Readiness Diagnostics",
+        "Task-030c-b15-B-3 — Replay-Only Dead-Reckoning Readiness Diagnostics",
         "no estimated route geometry",
         "dead reckoning remains disabled",
     ],
@@ -132,11 +132,11 @@ def main() -> int:
             if token in text:
                 failures.append(f"{rel}: forbidden SnowPrototype reference {token!r}")
     if failures:
-        print("Task-030c-b15-A replay-only dead-reckoning readiness check failed:", file=sys.stderr)
+        print("Task-030c-b15-B-3 replay-only dead-reckoning readiness check failed:", file=sys.stderr)
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         return 1
-    print("Task-030c-b15-A replay-only dead-reckoning readiness checks passed.")
+    print("Task-030c-b15-B-3 replay-only dead-reckoning readiness checks passed.")
     return 0
 
 

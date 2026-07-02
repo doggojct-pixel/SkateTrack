@@ -38,7 +38,7 @@ REQUIRED_TOKENS = {
         "INFOPLIST_KEY_UIBackgroundModes = location;",
     ],
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b15-A\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b15-B-3\"",
         "RecordingDebugBundleInfoSnapshot",
         "let bundleInfo: RecordingDebugBundleInfoSnapshot?",
         "resolvedUIBackgroundModes",
@@ -73,7 +73,7 @@ REQUIRED_TOKENS = {
         "lastCoordinate = nil",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b15-A",
+        "Task-030c-b15-B-3",
     ],
     "docs/history/DEV_LOG.md": [
         "Task-030c-b11-r3-3",

@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIREMENTS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b15-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b15-B-3"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b15-A",
+        "Task-030c-b15-B-3",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
         "RouteMapSegmentStyle",

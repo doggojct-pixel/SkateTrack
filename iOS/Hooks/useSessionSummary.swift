@@ -283,7 +283,7 @@ enum SessionSummaryDisplayMetrics {
     }
 
     private static func displayElevationGainMeters(from samples: [MotionSample], policy: ActivityFidelityPolicy) -> Double? {
-        // Task-030c-b15-A: Summary climb must use the same trusted altitude-source preference as the elevation chart.
+        // Task-030c-b15-B-3: Summary climb must use the same trusted altitude-source preference as the elevation chart.
         if samples.contains(where: { $0.altitudeDiagnostics != nil }) { return displayDiagnosticElevationGainMeters(from: samples, policy: policy) }
         if samples.contains(where: { $0.altitudeSource == .barometerRelative && $0.altitudeMeters?.isFinite == true }) {
             return displayLegacySourceElevationGainMeters(from: samples, preferredSources: [.barometerRelative], policy: policy)

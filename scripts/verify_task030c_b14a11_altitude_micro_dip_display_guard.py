@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b15-A altitude micro-dip display guard remains display-only."""
+"""Verify Task-030c-b15-B-3 altitude micro-dip display guard remains display-only."""
 from pathlib import Path
 import sys
 
@@ -7,16 +7,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b15-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b15-B-3"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b15-A")',
+        'Text("Task-030c-b15-B-3")',
         "debugBuildSignatureCard",
     ],
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
         "altitudeMicroDipDisplayGuardedPoints",
         "source == .barometerRelative ? altitudeMicroDipDisplayGuardedPoints(rawPoints) : rawPoints",
-        "Task-030c-b15-A: display-only guard for very short barometer notches",
+        "Task-030c-b15-B-3: display-only guard for very short barometer notches",
         "minimumDipMeters = 1.35",
         "maximumBaselineDisagreementMeters = 0.85",
         "maximumGuardSpanSeconds = 34.0",
@@ -24,24 +24,24 @@ REQUIRED = {
         "trustedBarometerRelativeAltitude(for: $0) != nil",
     ],
     "scripts/verify_task030c_b14a11_altitude_micro_dip_display_guard.py": [
-        "Task-030c-b15-A altitude micro-dip display guard remains display-only",
+        "Task-030c-b15-B-3 altitude micro-dip display guard remains display-only",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b15-A — Altitude Chart Micro-Dip Display Guard",
+        "Task-030c-b15-B-3 — Altitude Chart Micro-Dip Display Guard",
         "display-only micro-dip guard",
         "does not rewrite stored samples",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b15-A — Altitude Chart Micro-Dip Display Guard",
+        "Task-030c-b15-B-3 — Altitude Chart Micro-Dip Display Guard",
         "display-only guard for very short barometer notches",
         "route geometry remains unchanged",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b15-A altitude micro-dip display guard",
+        "Task-030c-b15-B-3 altitude micro-dip display guard",
         "verify_task030c_b14a11_altitude_micro_dip_display_guard.py",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b15-A — Altitude Chart Micro-Dip Display Guard",
+        "Task-030c-b15-B-3 — Altitude Chart Micro-Dip Display Guard",
         "does not change elevation gain summaries",
         "does not enable dead reckoning",
     ],
@@ -119,11 +119,11 @@ def main() -> int:
             if token in text:
                 failures.append(f"{rel}: forbidden SnowPrototype reference {token!r}")
     if failures:
-        print("Task-030c-b15-A altitude micro-dip display guard check failed:", file=sys.stderr)
+        print("Task-030c-b15-B-3 altitude micro-dip display guard check failed:", file=sys.stderr)
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         return 1
-    print("Task-030c-b15-A altitude micro-dip display guard checks passed.")
+    print("Task-030c-b15-B-3 altitude micro-dip display guard checks passed.")
     return 0
 
 

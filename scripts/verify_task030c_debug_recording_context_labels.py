@@ -25,14 +25,14 @@ REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
         "case electricLongboardLockedPocket",
         "case scooterLockedPocket",
-        "Task-030c-b15-A",
+        "Task-030c-b15-B-3",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
         "descriptionLocalizationKey",
         "debug-recording-context-description",
         "debug.recordingContext.electricLongboardLockedPocket",
         "debug.recordingContext.scooterLockedPocket",
-        "Task-030c-b15-A",
+        "Task-030c-b15-B-3",
     ],
     "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
         "電動長版・鎖螢幕口袋",

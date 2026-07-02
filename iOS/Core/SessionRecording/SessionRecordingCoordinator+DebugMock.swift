@@ -12,8 +12,14 @@ extension SessionRecordingCoordinator {
         mockSessionSamples = []
         mockRouteSimulator.reset(for: mode, startDate: Date())
 
-        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .userInitiated))
-        timer.schedule(deadline: .now(), repeating: .milliseconds(Int(DebugOutdoorRouteSimulator.sampleIntervalSeconds * 1_000)))
+        // Task-030c-b15-B-3: DEBUG mock recording must run on the main queue so
+        // SessionRecordingCoordinator, Combine publishers, Live HUD trace state, and
+        // the final save path all observe the same deterministic MotionSample stream.
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(
+            deadline: .now() + .milliseconds(150),
+            repeating: .milliseconds(Int(DebugOutdoorRouteSimulator.sampleIntervalSeconds * 1_000))
+        )
         timer.setEventHandler { [weak self] in
             guard let self else { return }
             handleMotionSample(makeMockSample(for: mode))

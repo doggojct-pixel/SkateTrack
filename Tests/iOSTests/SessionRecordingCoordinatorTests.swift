@@ -332,6 +332,94 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertTrue(sensorEngine.stopCalled)
     }
 
+    func testB15BSimulatorPersistenceRecoversCoordinatorObservedSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+
+        let sample = MotionSample(
+            timestamp: Date(),
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 9,
+            accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
+            gyroscopeRadPS: .zero,
+            sampleSource: .timerFusion
+        )
+        sensorEngine.emit(sample)
+
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertEqual(sessionData.motionSamples.map(\.id), [sample.id])
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.map(\.id), [sample.id])
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
+    }
+
+    func testB15BSimulatorPersistenceCreatesDebugFallbackWhenLiveHasNoSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.longboard), powerType: .humanPowered)
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertGreaterThanOrEqual(sessionData.motionSamples.count, 4)
+        XCTAssertTrue(sessionData.motionSamples.allSatisfy { $0.sampleSource == .debugSimulated })
+        XCTAssertFalse(sessionData.motionSamples.compactMap(\.gpsCoordinate).isEmpty)
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.count, sessionData.motionSamples.count)
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
+    }
+
+    func testB15B1SimulatorPersistenceReplacesCoordinateLessTimerFusionSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+        sensorEngine.emit(
+            MotionSample(
+                timestamp: Date(),
+                gpsCoordinate: nil,
+                speedKmh: 7.5,
+                accelerometerG: ThreeAxisValue(x: 0.02, y: 0.04, z: 0.98),
+                gyroscopeRadPS: .zero,
+                sampleSource: .timerFusion
+            )
+        )
+
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertGreaterThanOrEqual(sessionData.motionSamples.count, 4)
+        XCTAssertFalse(sessionData.motionSamples.compactMap(\.gpsCoordinate).isEmpty)
+        XCTAssertTrue(sessionData.motionSamples.allSatisfy { $0.sampleSource == .debugSimulated })
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.count, sessionData.motionSamples.count)
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
+    }
+
 
     func testRequestEndSessionPersistsSelectedSpotSnapshot() async throws {
         let sensorEngine = MockSessionSensorEngine()
