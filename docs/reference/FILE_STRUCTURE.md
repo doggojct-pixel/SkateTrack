@@ -1453,3 +1453,15 @@ scripts/verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py # v1.2-comp
 
 Task-030c v1.2 alignment token: before future hotfixes, compare scope to `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`; b17-0 is preflight only; next milestone is b17-A; estimatedRouteActive remains false.
 
+
+### Task-030c-b17-A local tangent coordinate frame and sensor bias foundation
+
+```text
+iOS/Core/SensorEngine/LocalTangentPlane.swift              # Pure ENU local tangent coordinate frame around a GPS anchor.
+iOS/Core/SensorEngine/IMUBiasEstimator.swift               # Low-motion accelerometer bias estimation for replay/debug analysis.
+iOS/Core/SensorEngine/GravityCompensatedMotionSample.swift # Bias/gravity compensated IMU sample for future b17-B replay integration.
+Tests/iOSTests/IMULocalFrameBiasFoundationTests.swift       # XCTest coverage for ENU round trip, bias convergence, high-motion refusal, and gravity compensation.
+scripts/verify_task030c_b17a_imu_local_frame_bias_foundation.py # Verifies b17-A v1.2 scope and safety boundaries.
+```
+
+Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, `LocalTangentPlane`, `IMUBiasEstimator`, `GravityCompensatedMotionSample`, no route geometry, no trusted metric mutation, estimatedRouteActive remains false.

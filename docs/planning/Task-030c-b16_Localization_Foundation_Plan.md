@@ -612,3 +612,11 @@ Small b16 alignment note:
 - b16-C implemented passive CoreLocation accuracy-source diagnostics without Wi-Fi entitlement or explicit Wi-Fi APIs. The v1.2 verifier name is preserved through `scripts/verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py`, which delegates to the implemented passive accuracy-source verifier.
 - b16-C does not claim confirmed Wi-Fi RTT. This is intentionally stricter than the plan wording and preserves the v1.2 false-RTT-assumption mitigation.
 
+
+## Task-030c-b17-A Implementation Note
+
+`Task-030c-b17-A` is the first true implementation milestone under `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` b17. It adds the local tangent coordinate frame and sensor bias foundation needed before any replay-only dead-reckoning integration. The implementation introduces `LocalTangentPlane`, `LocalTangentMeters`, `IMUBiasEstimator`, `IMUBiasEstimatorConfig`, `IMUBiasEstimate`, and `GravityCompensatedMotionSample`.
+
+This milestone remains mathematical, pure, deterministic, and unit-testable. It does not create estimated route geometry, does not alter the route map, does not alter trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, or export metrics, and does not instantiate or configure any CoreLocation manager. `estimatedRouteActive` remains false.
+
+The next v1.2 milestone after b17-A is `Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1`.

@@ -1042,7 +1042,7 @@
 "debug.status.freshness.unavailable" = "不可用";
 "debug.status.freshness.none" = "無定位";
 "debug.build.title" = "測試版本標籤";
-"debug.build.currentTaskID" = "Task-030c-b17-0";
+"debug.build.currentTaskID" = "Task-030c-b17-A";
 "debug.build.badge" = "DEBUG";
 "debug.build.subtitle" = "用這個標籤確認手機內已安裝最新 GPS fidelity 測試版本。";
 

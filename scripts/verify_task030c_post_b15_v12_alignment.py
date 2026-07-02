@@ -25,6 +25,11 @@ def require_token(relative_path: str, token: str) -> None:
         raise AssertionError(f"Missing token in {relative_path}: {token}")
 
 
+def require_tokens(relative_path: str, tokens: list[str]) -> None:
+    for token in tokens:
+        require_token(relative_path, token)
+
+
 def require_no_token(relative_path: str, token: str) -> None:
     text = read(relative_path)
     if token in text:
@@ -40,7 +45,7 @@ def require_first_line_marker(relative_path: str, marker: str) -> None:
 def main() -> None:
     required_tokens = {
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-0"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-A"',
         ],
         "Shared/Models/LocalizationDiagnosticsReviewPack.swift": [
             'taskIdentifier: String = "Task-030c-b17-0"',
@@ -51,15 +56,15 @@ def main() -> None:
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-0";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [
@@ -116,6 +121,20 @@ def main() -> None:
     if re.search(r"let\s+productionRouteMutationApplied\s*=\s*true", model_text):
         raise AssertionError("LocalizationDiagnosticsReviewPack must not allow productionRouteMutationApplied true")
 
+    require_first_line_marker("iOS/Core/SensorEngine/LocalTangentPlane.swift", "// [自主區]")
+    require_first_line_marker("iOS/Core/SensorEngine/IMUBiasEstimator.swift", "// [自主區]")
+    require_first_line_marker("iOS/Core/SensorEngine/GravityCompensatedMotionSample.swift", "// [自主區]")
+    require_first_line_marker("Tests/iOSTests/IMULocalFrameBiasFoundationTests.swift", "// [自主區]")
+    require_tokens("docs/adr/ADR-INDEX.md", [
+        "Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation",
+        "Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2",
+    ])
+    require_tokens("SkateTrack.xcodeproj/project.pbxproj", [
+        "LocalTangentPlane.swift in Sources",
+        "IMUBiasEstimator.swift in Sources",
+        "GravityCompensatedMotionSample.swift in Sources",
+        "IMULocalFrameBiasFoundationTests.swift in Sources",
+    ])
     print("Task-030c Post-b15 v1.2 alignment checks passed.")
 
 

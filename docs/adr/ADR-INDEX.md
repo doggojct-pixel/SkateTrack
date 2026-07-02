@@ -328,3 +328,13 @@ Implementation: The shared pack model lives in `Shared/Models/LocalizationDiagno
 Boundary update: `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` defines b17 as the Replay-Only IMU Gap Interpolation Engine. The pushed `bea5077` diagnostics review pack is therefore treated as `Task-030c-b17-0` / preflight, not as b17-A/B/C/D completion. The next code milestone must be `Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation`.
 
 Task-030c-b17-0 verification token: v1.2 alignment, localization diagnostics review pack foundation, LocalizationDiagnosticsReviewPack, LocalizationDiagnosticsReviewBuilder, diagnosticsOnly true, replayReviewOnly true, productionRouteMutationApplied false, estimatedRouteActive remains false.
+
+## Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation
+
+Decision: Task-030c-b17-A begins the true v1.2 replay-only IMU gap interpolation engine by adding the pure mathematical foundation for local ENU coordinates, low-motion accelerometer bias estimation, and gravity-compensated motion samples. This milestone intentionally does not produce route geometry or estimated route display.
+
+Boundary: The implementation follows `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` b17-A only. It does not implement b17-B dead-reckoning estimates, b17-C closure scoring, b17-D real-session review packs, b18 display models, production route mutation, trusted metric mutation, CoreLocation manager side effects, road snapping, or map matching.
+
+Implementation: The iOS-only foundation lives in `iOS/Core/SensorEngine/LocalTangentPlane.swift`, `iOS/Core/SensorEngine/IMUBiasEstimator.swift`, and `iOS/Core/SensorEngine/GravityCompensatedMotionSample.swift`, with deterministic XCTest coverage in `Tests/iOSTests/IMULocalFrameBiasFoundationTests.swift`.
+
+Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, GravityCompensatedMotionSample, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.

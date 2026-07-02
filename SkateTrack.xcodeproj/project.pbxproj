@@ -88,6 +88,10 @@
 		B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */; };
 		B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */; };
 		B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */; };
+		B17A010000000000000101 /* LocalTangentPlane.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A010000000000000001 /* LocalTangentPlane.swift */; };
+		B17A020000000000000101 /* IMUBiasEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A020000000000000001 /* IMUBiasEstimator.swift */; };
+		B17A030000000000000101 /* GravityCompensatedMotionSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A030000000000000001 /* GravityCompensatedMotionSample.swift */; };
+		B17A040000000000000101 /* IMULocalFrameBiasFoundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */; };
 		12AD01000000000000000101 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD01000000000000000001 /* RootNavigationView.swift */; };
 		12AD02000000000000000101 /* SessionStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD02000000000000000001 /* SessionStartView.swift */; };
 		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
@@ -376,6 +380,10 @@
 		B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnosticsTests.swift; sourceTree = "<group>"; };
 		B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityClassifierTests.swift; sourceTree = "<group>"; };
 		B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewPackTests.swift; sourceTree = "<group>"; };
+		B17A010000000000000001 /* LocalTangentPlane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTangentPlane.swift; sourceTree = "<group>"; };
+		B17A020000000000000001 /* IMUBiasEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMUBiasEstimator.swift; sourceTree = "<group>"; };
+		B17A030000000000000001 /* GravityCompensatedMotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravityCompensatedMotionSample.swift; sourceTree = "<group>"; };
+		B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMULocalFrameBiasFoundationTests.swift; sourceTree = "<group>"; };
 		12AD01000000000000000001 /* RootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
 		12AD02000000000000000001 /* SessionStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartView.swift; sourceTree = "<group>"; };
 		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
@@ -724,6 +732,9 @@
 				B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */,
 				B16D02000000000000000001 /* HeadingQualityClassifier.swift */,
 				B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */,
+				B17A010000000000000001 /* LocalTangentPlane.swift */,
+				B17A020000000000000001 /* IMUBiasEstimator.swift */,
+				B17A030000000000000001 /* GravityCompensatedMotionSample.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -750,6 +761,7 @@
 				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
 				B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */,
 				B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */,
+				B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -1372,6 +1384,7 @@
 				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
 				B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */,
 				B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */,
+				B17A040000000000000101 /* IMULocalFrameBiasFoundationTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1543,6 +1556,9 @@
 				B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */,
 				B16D02000000000000000101 /* HeadingQualityClassifier.swift in Sources */,
 				B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */,
+				B17A010000000000000101 /* LocalTangentPlane.swift in Sources */,
+				B17A020000000000000101 /* IMUBiasEstimator.swift in Sources */,
+				B17A030000000000000101 /* GravityCompensatedMotionSample.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,

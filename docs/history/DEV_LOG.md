@@ -2202,3 +2202,13 @@ Task-030c-b17 verification token: localization diagnostics review pack, diagnost
 
 Task-030c-b17-0 verification token: v1.2 alignment checkpoint, b17 preflight only, next milestone is Task-030c-b17-A local tangent coordinate frame and sensor bias foundation, estimatedRouteActive remains false.
 
+
+### Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation
+
+- Added `LocalTangentPlane` and `LocalTangentMeters` for deterministic ENU conversion around a GPS anchor without storing production route geometry.
+- Added `IMUBiasEstimator`, `IMUBiasEstimatorConfig`, and `IMUBiasEstimate` for low-motion accelerometer bias estimation over replay/debug samples.
+- Added `GravityCompensatedMotionSample` to remove the estimated accelerometer bias and gravity axis before future b17-B replay-only integration.
+- Added `IMULocalFrameBiasFoundationTests` covering Taipei-latitude ENU round trip, synthetic bias convergence, high-motion refusal, and gravity compensation.
+- Advanced the DEBUG build identity to `Task-030c-b17-A` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-A verification token: v1.2 b17-A local tangent coordinate frame and sensor bias foundation, no route geometry, no trusted metric mutation, estimatedRouteActive remains false.

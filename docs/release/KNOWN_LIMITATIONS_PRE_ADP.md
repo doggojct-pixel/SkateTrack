@@ -469,3 +469,11 @@ Task-030c-b16-D verification token: magnetometer heading quality consolidation, 
 - **Localization boundary:** The visible DEBUG build signature uses localized keys instead of hard-coded visible strings.
 
 Task-030c-b17-0 verification token: localization diagnostics review pack foundation, replay-review-only, no route mutation, localized DEBUG build signature, estimatedRouteActive remains false.
+
+### Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation
+
+- **Current status:** Task-030c-b17-A adds the mathematical IMU replay foundation requested by `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`: local tangent coordinate conversion, low-motion accelerometer bias estimation, and gravity-compensated motion samples.
+- **Boundary:** No route geometry is generated. No replay estimate is integrated into the route map. No trusted metrics are changed. No CoreLocation manager side effects are introduced.
+- **Next milestone:** Task-030c-b17-B must add the replay-only dead-reckoning engine before closure scoring or real-session review packs can be produced.
+
+Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
