@@ -184,7 +184,7 @@ struct DebugToolsPanelView: View {
                     .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
                     .textCase(.uppercase)
                 // Previous verified startup route build: Task-030c-b11-r3-3; current b12-B signature is shown below.
-                Text("Task-030c-b14-B-1")
+                Text("Task-030c-b15-A")
                     .font(.system(size: 18, weight: .black, design: .rounded))
                     .foregroundStyle(.white)
                     .tracking(0.3)

@@ -278,7 +278,7 @@
 "summary.metric.duration" = "Duration";
 "summary.metric.maxSpeed" = "Max speed";
 "summary.metric.avgSpeed" = "Avg speed";
-"summary.metric.elevationGain" = "Elevation gain";
+"summary.metric.elevationGain" = "Total elevation gain";
 "summary.metric.movingRatio" = "Moving ratio";
 "summary.metric.falls" = "Falls";
 "summary.metric.tricks" = "Tricks";

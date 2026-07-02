@@ -384,7 +384,7 @@ struct SessionRouteMapView: View {
                 return elapsed <= Self.startupConvergenceWarmupSeconds && !isPreferredFreshAnchor(sample)
             }
             if timestamp < stableStartupAnchorTimestamp { return true }
-            // Task-030c-b14-B-1: keep the first seconds after GPS lock visually
+            // Task-030c-b15-A: keep the first seconds after GPS lock visually
             // conservative if the session only just escaped startup convergence.
             // This is display-only and does not delete raw GPS samples or rewrite
             // distance, speed, altitude, route geometry, or exported diagnostics.
@@ -463,7 +463,7 @@ struct SessionRouteMapView: View {
 
         guard let diagnostics = sample.locationDiagnostics else { return true }
         if diagnostics.freshnessState == .stale { return false }
-        // Task-030c-b14-B-1: low-confidence fixes remain visible as bright-orange uncertain route segments; startup/warm-up fixes are restored to solid fluorescent-pink route context while staying separated from trusted GPS-lock geometry.
+        // Task-030c-b15-A: low-confidence fixes remain visible as bright-orange uncertain route segments; startup/warm-up fixes are restored to solid fluorescent-pink route context while staying separated from trusted GPS-lock geometry.
         if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > max(12, fidelityPolicy.maximumTrustedUpdateIntervalSeconds + 4) }) == true { return false }
         if diagnostics.horizontalAccuracyMeters.map({ $0 > fidelityPolicy.displayRouteMaximumHorizontalAccuracyMeters }) == true { return false }
         if diagnostics.coordinateDerivedSpeedKmh.map({ $0 > fidelityPolicy.maximumTrustedImpliedSpeedKmh }) == true { return false }
@@ -479,7 +479,7 @@ struct SessionRouteMapView: View {
 
         for point in points.sorted(by: { $0.timestamp < $1.timestamp }) {
             let pointStyle = point.segmentStyle
-            // Task-030c-b14-B-1: startup warm-up geometry remains available as
+            // Task-030c-b15-A: startup warm-up geometry remains available as
             // solid fluorescent-pink context with full route-line weight. It stays
             // semantically separated from trusted teal geometry and does not bridge
             // into the first trusted GPS-lock segment.

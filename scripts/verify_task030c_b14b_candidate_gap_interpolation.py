@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030c-b14-B-1 replay-only candidate gap interpolation stays debug-only."""
+"""Verify Task-030c-b15-A replay-only candidate gap interpolation stays debug-only."""
 from pathlib import Path
 import sys
 
@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b14-B-1"',
+        'static let currentDebugBuildTaskID = "Task-030c-b15-A"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        'Text("Task-030c-b14-B-1")',
+        'Text("Task-030c-b15-A")',
         "debugBuildSignatureCard",
     ],
     "Shared/Models/MotionSample.swift": [
@@ -24,7 +24,7 @@ REQUIRED = {
         "case anchorClosureTooLarge",
         "readinessSummary: DeadReckoningReadinessSummary? = nil",
         "DeadReckoningReadinessAnalyzer.analyze(",
-        "Task-030c-b14-B-1: candidate interpolation works over persisted sample cadence",
+        "Task-030c-b15-A: candidate interpolation works over persisted sample cadence",
         "estimatedRouteActive: Bool = false",
     ],
     "Tests/iOSTests/SessionRepositoryTests.swift": [
@@ -33,10 +33,10 @@ REQUIRED = {
         "testB14BCandidateInterpolationBlocksLargeAnchorClosure",
         "DeadReckoningCandidateInterpolationAnalyzer.analyze(samples: samples)",
         "maximumAnchorClosureDistanceMeters: 1",
-        "Task-030c-b14-B-1 must remain replay-only",
+        "Task-030c-b15-A must remain replay-only",
     ],
     "iOS/Features/SessionSummary/SessionRouteMapView.swift": [
-        "Task-030c-b14-B-1: startup warm-up geometry remains available as",
+        "Task-030c-b15-A: startup warm-up geometry remains available as",
         "solid fluorescent-pink context with full route-line weight",
         "var lineWidth: CGFloat { 4 }",
         "var opacity: Double { 1 }",
@@ -44,24 +44,24 @@ REQUIRED = {
         "currentCoordinates = pointStyle == .trusted ? [] : [previousPoint.displayCoordinate]",
     ],
     "scripts/verify_task030c_b14b_candidate_gap_interpolation.py": [
-        "Task-030c-b14-B-1 replay-only candidate gap interpolation stays debug-only",
+        "Task-030c-b15-A replay-only candidate gap interpolation stays debug-only",
     ],
     "docs/history/DEV_LOG.md": [
-        "Task-030c-b14-B-1 — Replay-Only Candidate Gap Interpolation Prototype",
+        "Task-030c-b15-A — Replay-Only Candidate Gap Interpolation Prototype",
         "DeadReckoningCandidateInterpolationAnalyzer",
         "solid fluorescent-pink startup/warm-up route context",
     ],
     "docs/adr/ADR-INDEX.md": [
-        "Task-030c-b14-B-1 — Replay-Only Candidate Gap Interpolation Prototype",
+        "Task-030c-b15-A — Replay-Only Candidate Gap Interpolation Prototype",
         "debug-only candidate points",
         "estimatedRouteActive remains false",
     ],
     "docs/reference/FILE_STRUCTURE.md": [
-        "Task-030c-b14-B-1 replay-only candidate gap interpolation prototype",
+        "Task-030c-b15-A replay-only candidate gap interpolation prototype",
         "verify_task030c_b14b_candidate_gap_interpolation.py",
     ],
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md": [
-        "Task-030c-b14-B-1 — Replay-Only Candidate Gap Interpolation Prototype",
+        "Task-030c-b15-A — Replay-Only Candidate Gap Interpolation Prototype",
         "Production route estimation",
         "estimatedRouteActive == true",
     ],
@@ -137,11 +137,11 @@ def main() -> int:
             if token in text:
                 failures.append(f"{rel}: forbidden SnowPrototype reference {token!r}")
     if failures:
-        print("Task-030c-b14-B-1 candidate gap interpolation check failed:", file=sys.stderr)
+        print("Task-030c-b15-A candidate gap interpolation check failed:", file=sys.stderr)
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         return 1
-    print("Task-030c-b14-B-1 candidate gap interpolation checks passed.")
+    print("Task-030c-b15-A candidate gap interpolation checks passed.")
     return 0
 
 

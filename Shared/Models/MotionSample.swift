@@ -892,7 +892,7 @@ enum DeadReckoningCandidateInterpolationAnalyzer {
     }
 
     private static func routeTimestamp(for sample: MotionSample) -> Date {
-        // Task-030c-b14-B-1: candidate interpolation works over persisted sample cadence
+        // Task-030c-b15-A: candidate interpolation works over persisted sample cadence
         // and remains replay-only; it does not rewrite raw CoreLocation timestamps.
         sample.timestamp
     }

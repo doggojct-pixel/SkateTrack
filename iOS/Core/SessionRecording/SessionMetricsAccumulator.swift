@@ -1,5 +1,5 @@
 // [自主區] iOS/Core/SessionRecording/SessionMetricsAccumulator.swift
-// 用途：依 MotionSample 即時累積速度、距離、爬升、傾角與滑行比例。
+// 用途：依 MotionSample 即時累積速度、距離、總爬升量、傾角與滑行比例。
 // 委派至：SessionRecordingCoordinator、Live HUD（Task-013）與 Session summary。
 
 import Foundation

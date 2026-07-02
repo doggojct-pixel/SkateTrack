@@ -407,6 +407,16 @@ def verify_localization() -> None:
             if f'"{key}"' not in text:
                 fail(f"Missing localization key {key} in {locale}")
 
+    expected_elevation_gain_labels = {
+        "en": "Total elevation gain",
+        "zh-Hant": "總爬升量",
+        "ja": "総獲得標高",
+    }
+    for locale, label in expected_elevation_gain_labels.items():
+        token = f'"summary.metric.elevationGain" = "{label}";'
+        if token not in read(f"Shared/Localization/{locale}.lproj/Localizable.strings"):
+            fail(f"Task-030c-b15-A missing total elevation gain label for {locale}: {label}")
+
 
 def verify_source_contracts() -> None:
     for relative, tokens in SOURCE_TOKENS.items():

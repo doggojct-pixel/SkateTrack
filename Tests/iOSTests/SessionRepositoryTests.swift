@@ -298,7 +298,7 @@ final class SessionRepositoryTests: XCTestCase {
         XCTAssertGreaterThan(summary.results.first?.candidatePointCount ?? 0, 0)
         XCTAssertFalse(
             samples.contains { $0.locationDiagnostics?.deadReckoningDiagnostics?.estimatedRouteActive == true },
-            "Task-030c-b14-B-1 must remain replay-only and must not enable production estimated route geometry."
+            "Task-030c-b15-A must remain replay-only and must not enable production estimated route geometry."
         )
     }
 

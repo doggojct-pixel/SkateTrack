@@ -278,7 +278,7 @@
 "summary.metric.duration" = "時間";
 "summary.metric.maxSpeed" = "最高速度";
 "summary.metric.avgSpeed" = "平均速度";
-"summary.metric.elevationGain" = "爬升";
+"summary.metric.elevationGain" = "總爬升量";
 "summary.metric.movingRatio" = "移動比例";
 "summary.metric.falls" = "跌倒";
 "summary.metric.tricks" = "招式";
