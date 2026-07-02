@@ -2172,3 +2172,12 @@ Task-030c-b16-B verification token: barometric GPS outlier cross-validation diag
 - Advanced the DEBUG build identity to `Task-030c-b16-C` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
 
 Task-030c-b16-C verification token: passive accuracy-source diagnostics, no Wi-Fi entitlement, no Wi-Fi scanning, no confirmed Wi-Fi RTT claim, estimatedRouteActive remains false.
+
+### Task-030c-b16-D — Magnetometer Heading Quality Consolidation
+
+- Added `HeadingReliability`, `HeadingQualityConfig`, and `HeadingQualityAssessment` as small shared diagnostics models for replay-readiness classification.
+- Added `HeadingQualityClassifier` so existing `HeadingDiagnostics` can be classified without expanding legacy oversized model or sensor-fusion files.
+- Added XCTest coverage for high, moderate, too-old, invalid, unavailable, and Codable round-trip heading quality boundaries.
+- Advanced the DEBUG build identity to `Task-030c-b16-D` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
+
+Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, HeadingQualityAssessment, HeadingQualityClassifier, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.

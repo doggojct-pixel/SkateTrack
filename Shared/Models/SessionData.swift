@@ -20,7 +20,7 @@ enum DebugRecordingTestContextLabel: String, Codable, CaseIterable, Identifiable
 }
 
 struct RecordingDebugBuildIdentity: Codable, Sendable, Equatable {
-    static let currentDebugBuildTaskID = "Task-030c-b16-C"
+    static let currentDebugBuildTaskID = "Task-030c-b16-D"
 
     let debugBuildTaskID: String
     let gitBranchName: String?

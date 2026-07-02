@@ -1420,3 +1420,14 @@ scripts/verify_task030c_b16c_location_accuracy_source_diagnostics.py # Static gu
 ```
 
 Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnostics, `locationAccuracySourceDiagnostics`, `passiveInferenceOnly`, `explicitWiFiAPIUsed false`, `wifiRTTConfirmed false`, no Wi-Fi entitlement, no production route mutation, estimatedRouteActive remains false.
+
+### Task-030c-b16-D heading quality consolidation
+
+```text
+Shared/Models/HeadingQualityDiagnostics.swift              # Shared heading reliability / replay-readiness diagnostic model.
+iOS/Core/SensorEngine/HeadingQualityClassifier.swift       # iOS-only classifier for existing HeadingDiagnostics evidence.
+Tests/iOSTests/HeadingQualityClassifierTests.swift         # XCTest coverage for high/moderate/too-old/invalid/unavailable reliability.
+scripts/verify_task030c_b16d_heading_quality_gate.py       # Guard for diagnostics-only heading quality consolidation.
+```
+
+Task-030c-b16-D verification token: magnetometer heading quality consolidation, `HeadingReliability`, `HeadingQualityAssessment`, `HeadingQualityClassifier`, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.

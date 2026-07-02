@@ -71,10 +71,10 @@ def main() -> int:
             "estimatedRouteActive: false",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b16-C"',
+            'static let currentDebugBuildTaskID = "Task-030c-b16-D"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
-            'Text("Task-030c-b16-C")',
+            'Text("Task-030c-b16-D")',
         ],
         "Tests/iOSTests/LocationAccuracySourceDiagnosticsTests.swift": [
             "testHighPrecisionAccuracyIsPassiveAndNotConfirmedWiFiRTT",

@@ -24,8 +24,8 @@ def forbid(path: str, token: str) -> None:
 
 def main() -> int:
     checks = [
-        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b16-C"'),
-        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("Task-030c-b16-C")'),
+        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b16-D"'),
+        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("Task-030c-b16-D")'),
         ("iOS/Hooks/useSessionSummary.swift", "Task-030c-b15-B-3: Summary climb must use the same trusted altitude-source"),
         ("iOS/Hooks/useSessionSummary.swift", "elevationGainMeters: elevationGainMeters ?? persisted.elevationGainMeters"),
         ("iOS/Hooks/useSessionSummary.swift", "displayDiagnosticElevationGainMeters"),

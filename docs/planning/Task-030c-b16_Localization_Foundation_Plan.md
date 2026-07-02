@@ -582,3 +582,9 @@ python3 scripts/verify_task030c_b16a_localization_foundation_plan.py
 ## Task-030c-b16-C Implementation Note
 
 `Task-030c-b16-C` implements passive Wi-Fi RTT / accuracy-source diagnostics as a conservative CoreLocation accuracy-source inference. The implementation records optional `locationAccuracySourceDiagnostics` on `LocationFixDiagnostics`, forces `passiveInferenceOnly` to true, forces `explicitWiFiAPIUsed` and `wifiRTTConfirmed` to false, and keeps route geometry / trusted metrics unchanged. The classifier uses only horizontal accuracy, vertical accuracy, freshness, and route-confidence evidence. It does not use Wi-Fi scanning, Wi-Fi entitlement, explicit Wi-Fi APIs, managed RTT APIs, road snapping, map matching, production route rejection, or estimated route display. `estimatedRouteActive` remains false.
+
+## Task-030c-b16-D Implementation Note
+
+`Task-030c-b16-D` implements magnetometer heading quality consolidation as a replay-readiness diagnostic layer over existing `HeadingDiagnostics`. The implementation adds `HeadingReliability`, `HeadingQualityConfig`, and `HeadingQualityAssessment`, plus an iOS-only `HeadingQualityClassifier` that maps existing course and device-magnetometer evidence into high, moderate, poor, invalid, too-old, or unavailable reliability states.
+
+The milestone intentionally does not persist a new route decision, does not generate production estimated route geometry, does not rewrite GPS samples, and does not change trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain. The classifier is split into new small files so the existing oversized `MotionSample.swift` and `SensorFusionEngine.swift` files do not absorb the new b16-D logic. `estimatedRouteActive` remains false.

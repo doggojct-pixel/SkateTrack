@@ -305,3 +305,13 @@ Boundary: `passiveInferenceOnly` is always true, `explicitWiFiAPIUsed false`, an
 Implementation: The shared diagnostic model lives in `Shared/Models/LocationAccuracySourceDiagnostics.swift`; iOS classification lives in `iOS/Core/SensorEngine/LocationAccuracySourceClassifier.swift`; `LocationFixDiagnostics` stores optional `locationAccuracySourceDiagnostics` so legacy sessions decode without the new field.
 
 Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy source diagnostics, passiveInferenceOnly, explicitWiFiAPIUsed false, wifiRTTConfirmed false, no Wi-Fi entitlement, no Wi-Fi scanning, estimatedRouteActive remains false.
+
+## Task-030c-b16-D — Magnetometer Heading Quality Consolidation
+
+Decision: Task-030c-b16-D consolidates existing course and device-magnetometer heading diagnostics into a formal heading reliability assessment for future replay-only IMU interpolation. The classifier consumes already-persisted `HeadingDiagnostics` and does not introduce a new production route decision.
+
+Boundary: b16-D is replay-readiness diagnostics only. It must not create production estimated route geometry, enable estimated route display, rewrite GPS samples, rewrite route geometry, or change trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain. `estimatedRouteActive` remains false.
+
+Implementation: The shared model lives in `Shared/Models/HeadingQualityDiagnostics.swift`; the iOS-only classifier lives in `iOS/Core/SensorEngine/HeadingQualityClassifier.swift`. The implementation intentionally avoids adding new logic to oversized legacy files beyond DEBUG build identity updates.
+
+Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, HeadingQualityAssessment, HeadingQualityClassifier, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.

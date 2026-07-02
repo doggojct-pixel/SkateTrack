@@ -25,7 +25,7 @@ REQUIRED_FILES = [
 
 REQUIRED_TOKENS = {
     "Shared/Models/SessionData.swift": [
-        "static let currentDebugBuildTaskID = \"Task-030c-b16-C\"",
+        "static let currentDebugBuildTaskID = \"Task-030c-b16-D\"",
         "let diagnosticsStatus: String?",
     ],
     "Shared/Persistence/SessionEntityMapper.swift": [
@@ -58,7 +58,7 @@ REQUIRED_TOKENS = {
         "RecordingDebugDiagnostics(",
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b16-C",
+        "Task-030c-b16-D",
     ],
     "docs/history/DEV_LOG.md": [
         "Task-030c-b11-r3-3",

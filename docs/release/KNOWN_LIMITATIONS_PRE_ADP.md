@@ -451,3 +451,11 @@ Task-030c-b16-B verification token: diagnostics-only barometric GPS cross-valida
 - **Legacy decode:** Sessions without `locationAccuracySourceDiagnostics` continue to decode with a nil optional diagnostic.
 
 Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnostics, does not confirm Wi-Fi RTT, no Wi-Fi scanning, no Wi-Fi entitlement, estimatedRouteActive remains false.
+
+### Task-030c-b16-D — Magnetometer Heading Quality Consolidation
+
+- **Current status:** Task-030c-b16-D classifies existing course / device-magnetometer heading evidence into replay-readiness reliability levels.
+- **Diagnostics-only boundary:** The heading quality assessment can inform future replay-only IMU interpolation, but it does not generate production estimated route geometry or alter route samples.
+- **Legacy oversized files:** New heading quality logic is split into small files instead of expanding existing oversized production files.
+
+Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
