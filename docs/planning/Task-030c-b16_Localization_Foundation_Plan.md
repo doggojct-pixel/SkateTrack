@@ -620,3 +620,13 @@ Small b16 alignment note:
 This milestone remains mathematical, pure, deterministic, and unit-testable. It does not create estimated route geometry, does not alter the route map, does not alter trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, or export metrics, and does not instantiate or configure any CoreLocation manager. `estimatedRouteActive` remains false.
 
 The next v1.2 milestone after b17-A is `Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1`.
+
+## Task-030c-b17-B Implementation Note
+
+`Task-030c-b17-B` implements the `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` replay-only Dead Reckoning Engine v1 milestone. It adds `DeadReckoningReplayEstimate`, `DeadReckoningReplayDiagnostics`, and an iOS-only `DeadReckoningEngine` that estimates candidate positions between trusted pre-gap and post-gap GPS anchors using persisted `timerFusion` samples.
+
+This milestone deliberately remains replay/debug analysis only. It does not write estimated points into `MotionSample`, does not change `SessionData.summaryMetrics`, does not change route map rendering, does not change export trusted metrics, and does not enable `estimatedRouteActive`. The engine uses b17-A `LocalTangentPlane`, `IMUBiasEstimator`, and `GravityCompensatedMotionSample` and records anchor closure error for later b17-C scoring.
+
+The drift model keeps the named `estimatedPositionDriftRateMetersPerSecond` constant at `0.5` as required by v1.2. Activity-profile-specific drift tuning remains deferred until b17-D real-session closure-error data exists.
+
+The next v1.2 milestone after b17-B is `Task-030c-b17-C — Anchor Closure Error and Confidence Scoring`; b17-D real-session replay review pack and b18 display work must not be skipped.

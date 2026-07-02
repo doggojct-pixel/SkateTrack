@@ -1465,3 +1465,14 @@ scripts/verify_task030c_b17a_imu_local_frame_bias_foundation.py # Verifies b17-A
 ```
 
 Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, `LocalTangentPlane`, `IMUBiasEstimator`, `GravityCompensatedMotionSample`, no route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-B replay-only dead reckoning engine
+
+```text
+Shared/Models/DeadReckoningReplayDiagnostics.swift       # Shared replay-only output models for IMU dead-reckoning estimates and diagnostics.
+iOS/Core/SensorEngine/DeadReckoningEngine.swift          # Replay-only IMU dead-reckoning engine over trusted GPS anchors and timerFusion samples.
+Tests/iOSTests/DeadReckoningEngineReplayTests.swift      # Deterministic XCTest coverage for b17-B replay estimates, confidence, blocking, and drift accuracy.
+scripts/verify_task030c_b17b_replay_dead_reckoning_engine.py # Verifies b17-B v1.2 scope and safety boundaries.
+```
+
+Task-030c-b17-B verification token: Replay-Only Dead Reckoning Engine v1, `DeadReckoningReplayEstimate`, `DeadReckoningEngine`, `estimatedPositionDriftRateMetersPerSecond`, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.

@@ -338,3 +338,13 @@ Boundary: The implementation follows `Task-030c_Post-b15_Localization_Completion
 Implementation: The iOS-only foundation lives in `iOS/Core/SensorEngine/LocalTangentPlane.swift`, `iOS/Core/SensorEngine/IMUBiasEstimator.swift`, and `iOS/Core/SensorEngine/GravityCompensatedMotionSample.swift`, with deterministic XCTest coverage in `Tests/iOSTests/IMULocalFrameBiasFoundationTests.swift`.
 
 Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, GravityCompensatedMotionSample, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1
+
+Decision: Task-030c-b17-B implements the v1.2 replay-only dead-reckoning engine after b17-A established the local tangent coordinate frame and sensor-bias foundation. The engine consumes trusted pre-gap and post-gap GPS anchors plus persisted timerFusion IMU samples to produce `DeadReckoningReplayEstimate` diagnostics for analysis only.
+
+Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` b17-B only. No production route geometry is emitted, no route map rendering changes, and no trusted metrics are mutated. `estimatedRouteActive` remains false. The named `estimatedPositionDriftRateMetersPerSecond` constant stays at the conservative initial value of `0.5` until b17-D real-session closure data can calibrate it.
+
+Implementation: Shared replay output models live in `Shared/Models/DeadReckoningReplayDiagnostics.swift`. The iOS-only engine lives in `iOS/Core/SensorEngine/DeadReckoningEngine.swift`, using `LocalTangentPlane`, `IMUBiasEstimator`, and `GravityCompensatedMotionSample`. Deterministic synthetic coverage lives in `Tests/iOSTests/DeadReckoningEngineReplayTests.swift`.
+
+Task-030c-b17-B verification token: Replay-Only Dead Reckoning Engine v1, DeadReckoningReplayEstimate, DeadReckoningEngine, estimatedPositionDriftRateMetersPerSecond, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.

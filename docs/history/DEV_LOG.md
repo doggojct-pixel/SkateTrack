@@ -2212,3 +2212,13 @@ Task-030c-b17-0 verification token: v1.2 alignment checkpoint, b17 preflight onl
 - Advanced the DEBUG build identity to `Task-030c-b17-A` while keeping `estimatedRouteActive` false and preserving trusted metrics.
 
 Task-030c-b17-A verification token: v1.2 b17-A local tangent coordinate frame and sensor bias foundation, no route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1
+
+- Added `DeadReckoningReplayEstimate`, `DeadReckoningReplayDiagnostics`, `DeadReckoningEstimateSource`, and `DeadReckoningConfidence` as replay-only diagnostic outputs.
+- Added `DeadReckoningEngine` to generate candidate IMU replay estimates between trusted GPS anchors using b17-A `LocalTangentPlane`, `IMUBiasEstimator`, and `GravityCompensatedMotionSample`.
+- Added conservative drift growth through the named `estimatedPositionDriftRateMetersPerSecond` constant so b17-D real-session closure data can later calibrate it.
+- Added deterministic XCTest coverage for synthetic acceleration, constant heading velocity, missing heading confidence downgrade, policy gap blocking, anchor closure error, and drift-rate accuracy growth.
+- Advanced the DEBUG build identity to `Task-030c-b17-B` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-B verification token: v1.2 replay-only dead reckoning engine, DeadReckoningReplayEstimate, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.

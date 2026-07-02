@@ -45,7 +45,7 @@ def require_first_line_marker(relative_path: str, marker: str) -> None:
 def main() -> None:
     required_tokens = {
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-A"',
+            'static let currentDebugBuildTaskID = "Task-030c-b17-B"',
         ],
         "Shared/Models/LocalizationDiagnosticsReviewPack.swift": [
             'taskIdentifier: String = "Task-030c-b17-0"',
@@ -56,15 +56,15 @@ def main() -> None:
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-B";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-B";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b17-B";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [
@@ -74,6 +74,7 @@ def main() -> None:
             "Task-030c-b17-B",
             "Task-030c-b17-C",
             "Task-030c-b17-D",
+            "Task-030c-b17-B Implementation Note",
             "Task-030c-b18-C",
             "non-code product decision checkpoint",
         ],
@@ -134,6 +135,16 @@ def main() -> None:
         "IMUBiasEstimator.swift in Sources",
         "GravityCompensatedMotionSample.swift in Sources",
         "IMULocalFrameBiasFoundationTests.swift in Sources",
+        "DeadReckoningReplayDiagnostics.swift in Sources",
+        "DeadReckoningEngine.swift in Sources",
+        "DeadReckoningEngineReplayTests.swift in Sources",
+    ])
+    require_first_line_marker("Shared/Models/DeadReckoningReplayDiagnostics.swift", "// [協作區]")
+    require_first_line_marker("iOS/Core/SensorEngine/DeadReckoningEngine.swift", "// [自主區]")
+    require_first_line_marker("Tests/iOSTests/DeadReckoningEngineReplayTests.swift", "// [自主區]")
+    require_tokens("docs/adr/ADR-INDEX.md", [
+        "Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1",
+        "estimatedPositionDriftRateMetersPerSecond",
     ])
     print("Task-030c Post-b15 v1.2 alignment checks passed.")
 

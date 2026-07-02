@@ -477,3 +477,12 @@ Task-030c-b17-0 verification token: localization diagnostics review pack foundat
 - **Next milestone:** Task-030c-b17-B must add the replay-only dead-reckoning engine before closure scoring or real-session review packs can be produced.
 
 Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias foundation, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1
+
+- **Current status:** Task-030c-b17-B can generate replay-only IMU candidate estimates between trusted GPS anchors for debugging and analysis.
+- **Production boundary:** The generated `DeadReckoningReplayEstimate` values are diagnostics, not production route geometry. They do not change route map rendering, trusted distance, speed, average speed, max speed, total elevation gain, or exported trusted metrics.
+- **Drift disclosure:** The first drift model uses the conservative named `estimatedPositionDriftRateMetersPerSecond = 0.5` constant. This must be recalibrated only after b17-D real-session closure-error measurements exist.
+- **Next milestone:** Task-030c-b17-C must add anchor closure error and confidence scoring before any real-session review pack or display model work.
+
+Task-030c-b17-B verification token: replay-only dead reckoning engine, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
