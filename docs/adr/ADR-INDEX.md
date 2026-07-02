@@ -275,3 +275,13 @@ Task-030c-b15-B-3 verification token: debug mock recording pipeline, main-queue 
 - Decision: simulator/debug recording persistence must tolerate optional diagnostics encoding failures and legacy/corrupt History rows. Motion sample files and Core Data rows must be saved as one verified operation; if the Core Data row fails, the just-written sample file is cleaned up instead of becoming an invisible orphan.
 - The History fetch path is resilient to individual legacy/corrupt rows so one bad row or missing sample file cannot make the whole History screen look empty after a simulator save.
 Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEncodedDebugRecordingDiagnostics, non-conforming float encoding, orphan sample cleanup, resilient History fetch, estimatedRouteActive remains false.
+
+## Task-030c-b16-A — Localization Foundation Audit
+
+Decision: Task-030c-b16-A is a repo-local planning and audit checkpoint before adding new sensor-source diagnostics. It documents the post-b15-B-3 localization foundation, confirms that existing altitude diagnostics, heading diagnostics, route-confidence display semantics, simulator recording persistence, and replay-only dead-reckoning readiness already exist, and defines the b16-B/C/D implementation boundaries.
+
+Boundary: b16-A does not change production route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw sample persistence, or `.skatetrack` schema. The only Swift-side change allowed in this milestone is the DEBUG build identity advancing to `Task-030c-b16-A`.
+
+Future sequence: b16-B is diagnostics-only barometric GPS cross-validation, b16-C is passive Wi-Fi RTT / accuracy-source diagnostics without explicit Wi-Fi APIs, and b16-D is magnetometer heading quality consolidation for future replay readiness. b17 remains replay-only. b18 estimated route display requires a product decision checkpoint after b17-D real-session replay review. Task-031 owns indoor localization.
+
+Task-030c-b16-A verification token: Localization Foundation Audit, Task-030c-b16-A, barometric GPS cross-validation, passive Wi-Fi RTT diagnostics, magnetometer heading quality, IMU replay-only gap interpolation, indoor localization deferred to Task-031, estimatedRouteActive remains false.

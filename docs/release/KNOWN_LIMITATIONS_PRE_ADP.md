@@ -423,3 +423,13 @@ Task-030c-b15-B-3 verification token: simulator recording persistence guard, deb
 - **Current status:** DEBUG simulator recordings use a hardened save path that tolerates optional diagnostics encoding issues, verifies the Core Data session row after save, and avoids orphaned motion sample files.
 - **Boundary:** This is still simulator/debug persistence hardening only. It does not change real-device recording behavior, schemas, distance/speed/total elevation gain semantics, or production route estimation.
 Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safe diagnostics encoding, resilient History fetch, no calculation change, estimatedRouteActive remains false.
+
+### Task-030c-b16-A — Localization Foundation Audit and Sensor-Fusion Plan
+
+- **Current status:** Task-030c-b16-A documents the post-b15-B-3 localization foundation before adding b16-B/C/D sensor-source diagnostics. It does not change recording behavior, route geometry, trusted metrics, raw samples, persistence schema, or production estimated route display.
+- **Still limited:** Small-area GPS geometry cannot be perfectly reconstructed from GPS alone when route radius is comparable to horizontal accuracy. Future IMU work must remain replay-only until the b17-D real-session review pack and product decision checkpoint.
+- **Deferred to later Task-030c stages:** b16-B barometric GPS cross-validation remains diagnostics-only, b16-C Wi-Fi RTT / accuracy-source classification remains passive and inferred, and b16-D heading quality remains replay-readiness metadata.
+- **Deferred outside Task-030c:** indoor localization, indoor mode detector, indoor session-start anchors, and indoor accuracy disclosure are moved to Task-031.
+- **Do not claim:** Do not claim production dead reckoning, estimated route activation, road snapping, fake GPS, camera localization, RTK GPS, UWB anchor dependency, or SnowPrototype integration.
+
+Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fusion Plan, indoor mode detector deferred to Task-031, no camera localization, no road snapping, no fake GPS, no RTK GPS dependency, no UWB anchor dependency, estimatedRouteActive remains false.

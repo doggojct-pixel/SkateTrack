@@ -1381,3 +1381,17 @@ Task-030c-b15-B-3 verification token: debug mock recording pipeline, simulator r
 `Shared/Persistence/MotionSampleFileStore.swift` # Uses matching non-conforming float encode/decode support for persisted motion samples.
 `Shared/Persistence/SessionRepository.swift` # Verifies Core Data row save, cleans up failed sample writes, and keeps History resilient to individual corrupt rows.
 Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEncodedDebugRecordingDiagnostics, orphan sample cleanup, resilient History fetch.
+
+### Task-030c-b16-A localization foundation audit
+
+```text
+docs/planning/Task-030c-b16_Localization_Foundation_Plan.md # Repo-local post-b15-B-3 sensor-fusion plan and implementation boundary for b16-B/C/D.
+docs/adr/ADR-INDEX.md                                      # Records the b16-A planning checkpoint and product-decision boundary.
+docs/history/DEV_LOG.md                                    # Logs b16-A as documentation/verify-only except DEBUG build identity.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                  # Documents remaining localization honesty limits before ADP/release.
+scripts/verify_task030c_b16a_localization_foundation_plan.py # Verifies b16-A docs, build identity, and estimated-route safety guardrails.
+Shared/Models/SessionData.swift                            # Updates DEBUG diagnostics build identity to Task-030c-b16-A.
+iOS/Features/Debug/DebugToolsPanelView.swift               # Shows Task-030c-b16-A in the DEBUG build signature card.
+```
+
+Task-030c-b16-A verification token: localization foundation audit, verify_task030c_b16a_localization_foundation_plan.py, barometric GPS cross-validation, passive Wi-Fi RTT diagnostics, magnetometer heading quality, IMU replay-only gap interpolation, indoor localization deferred to Task-031, estimatedRouteActive remains false.

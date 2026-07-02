@@ -2142,3 +2142,13 @@ Task-030c-b15-B-3 verification token: debug mock recording pipeline, simulator r
 - Verified the Core Data row exists after `saveCompletedSession`; if row persistence fails, the freshly written motion sample file is cleaned up to avoid invisible orphan files.
 - Made recent-history fetch resilient to individual legacy/corrupt rows so valid sessions remain visible.
 Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEncodedDebugRecordingDiagnostics, orphan sample cleanup, resilient History fetch, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b16-A — Localization Foundation Audit and Sensor-Fusion Plan
+
+- Added `docs/planning/Task-030c-b16_Localization_Foundation_Plan.md` as the repo-local post-b15-B-3 localization foundation checkpoint before b16-B/C/D implementation.
+- Documented existing `MotionSample`, `LocationFixDiagnostics`, altitude diagnostics, heading diagnostics, route confidence colors, simulator-only paths, real-device-only validation paths, and replay-only dead-reckoning readiness.
+- Defined b16-B as diagnostics-only barometric GPS cross-validation, b16-C as passive Wi-Fi RTT / accuracy-source diagnostics, and b16-D as magnetometer heading quality consolidation.
+- Reaffirmed that indoor localization is deferred to Task-031 and that camera localization, road snapping, fake GPS, RTK, UWB anchor dependency, and SnowPrototype contamination remain out of Task-030c scope.
+- Advanced the DEBUG build identity to `Task-030c-b16-A` without changing SensorFusionEngine behavior, route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, persistence schema, or production estimated route display.
+
+Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fusion Plan, Task-030c-b16-A, b16-B diagnostics-only, b16-C passive Wi-Fi RTT diagnostics, b16-D heading quality consolidation, indoor localization deferred to Task-031, estimatedRouteActive remains false.
