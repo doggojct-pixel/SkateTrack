@@ -2222,3 +2222,13 @@ Task-030c-b17-A verification token: v1.2 b17-A local tangent coordinate frame an
 - Advanced the DEBUG build identity to `Task-030c-b17-B` while keeping `estimatedRouteActive` false and preserving trusted metrics.
 
 Task-030c-b17-B verification token: v1.2 replay-only dead reckoning engine, DeadReckoningReplayEstimate, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-C — Anchor Closure Error and Confidence Scoring
+
+- Added `DeadReckoningClosureDiagnostics` for b17-C replay-only closure scoring output.
+- Added `DeadReckoningClosureScorer` with conservative v1.2 gates for gap duration, closure error, heading reliability, and IMU sample coverage.
+- Extended b17-B replay diagnostics to attach closure diagnostics without changing production route geometry, route maps, exports, or trusted metrics.
+- Added deterministic XCTest coverage for low closure eligibility, high closure blocking, missing heading blocking, low IMU coverage blocking, very long gap blocking, and replay diagnostics closure attachment.
+- Advanced the DEBUG build identity to `Task-030c-b17-C` while keeping `estimatedRouteActive` false.
+
+Task-030c-b17-C verification token: v1.2 anchor closure error and confidence scoring, DeadReckoningClosureDiagnostics, DeadReckoningClosureScorer, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

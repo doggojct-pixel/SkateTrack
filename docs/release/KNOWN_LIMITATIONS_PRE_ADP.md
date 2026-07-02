@@ -486,3 +486,12 @@ Task-030c-b17-A verification token: local tangent coordinate frame, sensor bias 
 - **Next milestone:** Task-030c-b17-C must add anchor closure error and confidence scoring before any real-session review pack or display model work.
 
 Task-030c-b17-B verification token: replay-only dead reckoning engine, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-C — Anchor Closure Error and Confidence Scoring
+
+- **Current status:** Task-030c-b17-C scores replay-only IMU estimates with closure error, closure-error ratio, heading reliability, IMU coverage, conservative eligibility, and blocking reasons.
+- **Production boundary:** No user-visible estimated route is enabled by this milestone. The closure score does not change route map rendering, trusted distance, speed, average speed, max speed, total elevation gain, or exported trusted metrics.
+- **Data dependency:** These thresholds remain conservative until b17-D real-session replay review packs provide closure-error evidence from walking, electric longboard, motorcycle proxy, and known GPS-gap sessions.
+- **Next milestone:** Task-030c-b17-D must produce the real-session replay review pack before any b18 display or production eligibility gate work begins.
+
+Task-030c-b17-C verification token: anchor closure error and confidence scoring, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

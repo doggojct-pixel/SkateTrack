@@ -146,6 +146,18 @@ enum DeadReckoningEngine {
             postCoordinate: postCoordinate,
             plane: plane
         )
+        let closureDiagnostics = closureError.map { error in
+            DeadReckoningClosureScorer.score(
+                gapDurationSeconds: gapDurationSeconds,
+                estimatedDistanceMeters: pathDistanceMeters(for: estimates),
+                closureErrorMeters: error,
+                headingReliability: headingAssessment.reliability,
+                imuSampleCoverageRatio: imuSampleCoverageRatio(
+                    gapDurationSeconds: gapDurationSeconds,
+                    sampleCount: gapSamples.count
+                )
+            )
+        }
         return DeadReckoningReplayDiagnostics(
             gapStartTimestamp: preGapAnchor.timestamp,
             gapEndTimestamp: postGapAnchor.timestamp,
@@ -154,6 +166,7 @@ enum DeadReckoningEngine {
             preGapAnchorCoordinate: preCoordinate,
             postGapAnchorCoordinate: postCoordinate,
             anchorClosureErrorMeters: closureError,
+            closureDiagnostics: closureDiagnostics,
             estimates: estimates
         )
     }
@@ -201,6 +214,30 @@ enum DeadReckoningEngine {
             eastMeters: sin(headingRadians) * speedMetersPerSecond,
             northMeters: cos(headingRadians) * speedMetersPerSecond
         )
+    }
+
+
+    private static func imuSampleCoverageRatio(
+        gapDurationSeconds: TimeInterval,
+        sampleCount: Int
+    ) -> Double {
+        guard gapDurationSeconds > 0 else { return sampleCount > 0 ? 1 : 0 }
+        let expectedSampleCount = max(1, Int(gapDurationSeconds.rounded(.down)))
+        return min(1, Double(sampleCount) / Double(expectedSampleCount))
+    }
+
+    private static func pathDistanceMeters(for estimates: [DeadReckoningReplayEstimate]) -> Double {
+        var totalDistanceMeters = 0.0
+        var previousEastMeters = 0.0
+        var previousNorthMeters = 0.0
+        for estimate in estimates {
+            let eastDelta = estimate.localEastMeters - previousEastMeters
+            let northDelta = estimate.localNorthMeters - previousNorthMeters
+            totalDistanceMeters += sqrt((eastDelta * eastDelta) + (northDelta * northDelta))
+            previousEastMeters = estimate.localEastMeters
+            previousNorthMeters = estimate.localNorthMeters
+        }
+        return totalDistanceMeters
     }
 
     private static func confidence(for assessment: HeadingQualityAssessment) -> DeadReckoningConfidence {

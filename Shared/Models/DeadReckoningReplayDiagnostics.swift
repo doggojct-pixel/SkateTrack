@@ -68,6 +68,7 @@ struct DeadReckoningReplayDiagnostics: Codable, Sendable, Equatable {
     let preGapAnchorCoordinate: GeoCoordinate?
     let postGapAnchorCoordinate: GeoCoordinate?
     let anchorClosureErrorMeters: Double?
+    let closureDiagnostics: DeadReckoningClosureDiagnostics?
     let estimates: [DeadReckoningReplayEstimate]
 
     init(
@@ -78,6 +79,7 @@ struct DeadReckoningReplayDiagnostics: Codable, Sendable, Equatable {
         preGapAnchorCoordinate: GeoCoordinate? = nil,
         postGapAnchorCoordinate: GeoCoordinate? = nil,
         anchorClosureErrorMeters: Double? = nil,
+        closureDiagnostics: DeadReckoningClosureDiagnostics? = nil,
         estimates: [DeadReckoningReplayEstimate] = []
     ) {
         self.gapStartTimestamp = gapStartTimestamp
@@ -90,6 +92,7 @@ struct DeadReckoningReplayDiagnostics: Codable, Sendable, Equatable {
         self.preGapAnchorCoordinate = preGapAnchorCoordinate
         self.postGapAnchorCoordinate = postGapAnchorCoordinate
         self.anchorClosureErrorMeters = anchorClosureErrorMeters.map { max(0, $0) }
+        self.closureDiagnostics = closureDiagnostics
         self.estimates = estimates
     }
 }

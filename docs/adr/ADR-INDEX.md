@@ -348,3 +348,13 @@ Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Pla
 Implementation: Shared replay output models live in `Shared/Models/DeadReckoningReplayDiagnostics.swift`. The iOS-only engine lives in `iOS/Core/SensorEngine/DeadReckoningEngine.swift`, using `LocalTangentPlane`, `IMUBiasEstimator`, and `GravityCompensatedMotionSample`. Deterministic synthetic coverage lives in `Tests/iOSTests/DeadReckoningEngineReplayTests.swift`.
 
 Task-030c-b17-B verification token: Replay-Only Dead Reckoning Engine v1, DeadReckoningReplayEstimate, DeadReckoningEngine, estimatedPositionDriftRateMetersPerSecond, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b17-C — Anchor Closure Error and Confidence Scoring
+
+Decision: Task-030c-b17-C converts raw b17-B replay-only IMU candidate estimates into explicit closure diagnostics and conservative confidence evidence. It adds a shared `DeadReckoningClosureDiagnostics` model and an iOS-only `DeadReckoningClosureScorer` so every replay estimate set can report gap duration, estimated distance, closure error, closure-error ratio, heading reliability, IMU coverage, user-visible eligibility, and blocking reasons.
+
+Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` b17-C only. No user-visible route display is enabled, no production route geometry is emitted, no route map rendering changes are made, and no trusted metrics are mutated. `estimatedRouteActive` remains false. The scoring output is evidence for b17-D real-session review and a possible later product decision, not production behavior.
+
+Implementation: Shared closure output lives in `Shared/Models/DeadReckoningClosureDiagnostics.swift`. The scorer lives in `iOS/Core/SensorEngine/DeadReckoningClosureScorer.swift`, and b17-B `DeadReckoningEngine` attaches closure diagnostics to successful replay diagnostics. Deterministic XCTest coverage lives in `Tests/iOSTests/DeadReckoningClosureScoringTests.swift`.
+
+Task-030c-b17-C verification token: Anchor Closure Error and Confidence Scoring, DeadReckoningClosureDiagnostics, DeadReckoningClosureScorer, closureErrorRatio, imuSampleCoverageRatio, eligibleForUserVisibleEstimatedRoute, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

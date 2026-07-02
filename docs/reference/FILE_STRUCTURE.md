@@ -1476,3 +1476,14 @@ scripts/verify_task030c_b17b_replay_dead_reckoning_engine.py # Verifies b17-B v1
 ```
 
 Task-030c-b17-B verification token: Replay-Only Dead Reckoning Engine v1, `DeadReckoningReplayEstimate`, `DeadReckoningEngine`, `estimatedPositionDriftRateMetersPerSecond`, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-C anchor closure error and confidence scoring
+
+```text
+Shared/Models/DeadReckoningClosureDiagnostics.swift      # Shared replay-only closure scoring output model.
+iOS/Core/SensorEngine/DeadReckoningClosureScorer.swift   # Conservative b17-C closure error, heading, and IMU coverage scoring gates.
+Tests/iOSTests/DeadReckoningClosureScoringTests.swift    # Deterministic XCTest coverage for b17-C eligibility and blocking cases.
+scripts/verify_task030c_b17c_dead_reckoning_closure_scoring.py # Verifies b17-C v1.2 scope and safety boundaries.
+```
+
+Task-030c-b17-C verification token: Anchor Closure Error and Confidence Scoring, `DeadReckoningClosureDiagnostics`, `DeadReckoningClosureScorer`, `closureErrorRatio`, `imuSampleCoverageRatio`, `eligibleForUserVisibleEstimatedRoute`, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

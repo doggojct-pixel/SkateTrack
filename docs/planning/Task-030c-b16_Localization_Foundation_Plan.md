@@ -630,3 +630,13 @@ This milestone deliberately remains replay/debug analysis only. It does not writ
 The drift model keeps the named `estimatedPositionDriftRateMetersPerSecond` constant at `0.5` as required by v1.2. Activity-profile-specific drift tuning remains deferred until b17-D real-session closure-error data exists.
 
 The next v1.2 milestone after b17-B is `Task-030c-b17-C — Anchor Closure Error and Confidence Scoring`; b17-D real-session replay review pack and b18 display work must not be skipped.
+
+## Task-030c-b17-C Implementation Note
+
+`Task-030c-b17-C` implements the `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` anchor closure error and confidence scoring milestone. It adds `DeadReckoningClosureDiagnostics` and `DeadReckoningClosureScorer` so b17-B replay-only IMU estimates can be scored with explicit closure error, closure-error ratio, heading reliability, IMU sample coverage, conservative user-visible eligibility, and blocking reasons.
+
+This milestone deliberately does not display estimated routes, does not write estimated samples into `MotionSample`, does not modify `SessionData.summaryMetrics`, does not alter route map rendering, does not alter export trusted metrics, and does not enable `estimatedRouteActive`. The scoring output is diagnostic evidence for b17-D real-session replay review packs and for the later non-code product decision checkpoint.
+
+The initial gates match v1.2's conservative intent: short gaps are eligible only when closure error, heading reliability, and IMU coverage are acceptable; 30–60 second gaps require very low closure error; gaps over 60 seconds are blocked from outdoor user-visible estimated routes; high closure error, unreliable heading, or low IMU coverage block eligibility.
+
+The next v1.2 milestone after b17-C is `Task-030c-b17-D — Real-Session Replay Review Pack`; b18 display model work and the product decision checkpoint must not be skipped.
