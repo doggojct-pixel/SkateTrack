@@ -442,3 +442,12 @@ Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fus
 - **Estimated route safety:** `estimatedRouteActive` remains false.
 
 Task-030c-b16-B verification token: diagnostics-only barometric GPS cross-validation, no production route rejection, productionRouteDecisionApplied false, wouldRejectIfGateWereEnabled, estimatedRouteActive remains false.
+
+### Task-030c-b16-C — Passive Wi-Fi RTT / Accuracy Source Diagnostics
+
+- **Current status:** Task-030c-b16-C classifies CoreLocation accuracy evidence passively. It can infer that a fix looks like likely high-precision GPS or possible Wi-Fi RTT assisted positioning, but it does not confirm Wi-Fi RTT.
+- **No explicit Wi-Fi dependency:** This milestone does not add Wi-Fi scanning, Wi-Fi entitlement, explicit Wi-Fi APIs, managed RTT APIs, or router / access-point assumptions.
+- **No route behavior change:** The diagnostic does not change route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, production route acceptance, or estimated route display.
+- **Legacy decode:** Sessions without `locationAccuracySourceDiagnostics` continue to decode with a nil optional diagnostic.
+
+Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnostics, does not confirm Wi-Fi RTT, no Wi-Fi scanning, no Wi-Fi entitlement, estimatedRouteActive remains false.

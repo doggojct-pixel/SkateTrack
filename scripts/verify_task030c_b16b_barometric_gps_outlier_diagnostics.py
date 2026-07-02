@@ -68,10 +68,10 @@ def main() -> int:
             "estimatedRouteActive: false",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b16-B"',
+            'static let currentDebugBuildTaskID = "Task-030c-b16-C"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
-            'Text("Task-030c-b16-B")',
+            'Text("Task-030c-b16-C")',
         ],
         "Tests/iOSTests/BarometricGPSOutlierDiagnosticsTests.swift": [
             "testBarometricConflictIsDiagnosticsOnlyAndWouldRejectIfGateWereEnabled",
@@ -158,8 +158,8 @@ def main() -> int:
         "scripts/verify_task030c_b16b_barometric_gps_outlier_diagnostics.py",
     ]:
         count = line_count(rel)
-        if count > 800:
-            raise AssertionError(f"{rel} exceeds 800 lines: {count}")
+        if count > 500:
+            raise AssertionError(f"{rel} exceeds 500 lines: {count}")
 
     for rel in [
         "Shared/Models/SessionData.swift",

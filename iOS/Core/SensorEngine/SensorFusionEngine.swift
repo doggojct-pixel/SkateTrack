@@ -438,6 +438,7 @@ final class SensorFusionEngine: SensorProvider {
         )
         let freshnessState = locationFreshnessState(for: location, receivedAt: receivedAt)
         let horizontalAccuracy = normalizedAccuracy(location.horizontalAccuracy)
+        let verticalAccuracy = normalizedAccuracy(location.verticalAccuracy)
         let coreLocationSpeedKmh = location.speed >= 0
             ? GPSProvider.kilometersPerHour(fromMetersPerSecond: location.speed)
             : nil
@@ -487,10 +488,16 @@ final class SensorFusionEngine: SensorProvider {
             headingDiagnostics: headingDiagnostics,
             anchorAvailable: confidence != .low && confidence != .unavailable
         )
+        let locationAccuracySourceDiagnostics = LocationAccuracySourceClassifier.classify(
+            horizontalAccuracyMeters: horizontalAccuracy,
+            verticalAccuracyMeters: verticalAccuracy,
+            freshnessState: freshnessState,
+            routeSegmentConfidence: confidence
+        )
 
         return LocationFixDiagnostics(
             horizontalAccuracyMeters: horizontalAccuracy,
-            verticalAccuracyMeters: normalizedAccuracy(location.verticalAccuracy),
+            verticalAccuracyMeters: verticalAccuracy,
             speedAccuracyMetersPerSecond: normalizedAccuracy(location.speedAccuracy),
             courseAccuracyDegrees: courseAccuracyDegrees(for: location),
             rawLocationTimestamp: location.timestamp,
@@ -506,7 +513,8 @@ final class SensorFusionEngine: SensorProvider {
             headingDiagnostics: headingDiagnostics,
             gpsGapDiagnostics: gpsGapDiagnostics,
             deadReckoningDiagnostics: deadReckoningDiagnostics,
-            barometricGPSOutlierDecision: barometricGPSOutlierDecision
+            barometricGPSOutlierDecision: barometricGPSOutlierDecision,
+            locationAccuracySourceDiagnostics: locationAccuracySourceDiagnostics
         )
     }
     private func timerFusionDiagnostics(

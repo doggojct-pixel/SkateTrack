@@ -576,5 +576,9 @@ python3 scripts/verify_task030c_b16a_localization_foundation_plan.py
 
 ## b16-B implementation note
 
-`Task-030c-b16-B` implements the planned barometric GPS outlier cross-validation as diagnostics-only. `productionRouteDecisionApplied` remains false, `wouldRejectIfGateWereEnabled` is diagnostic evidence only, and `estimatedRouteActive` remains false. The implementation is intentionally split into new files so the existing over-800-line production files do not absorb the new logic.
+`Task-030c-b16-B` implements the planned barometric GPS outlier cross-validation as diagnostics-only. `productionRouteDecisionApplied` remains false, `wouldRejectIfGateWereEnabled` is diagnostic evidence only, and `estimatedRouteActive` remains false. The implementation is intentionally split into new files so the existing oversized legacy production files do not absorb the new logic.
 
+
+## Task-030c-b16-C Implementation Note
+
+`Task-030c-b16-C` implements passive Wi-Fi RTT / accuracy-source diagnostics as a conservative CoreLocation accuracy-source inference. The implementation records optional `locationAccuracySourceDiagnostics` on `LocationFixDiagnostics`, forces `passiveInferenceOnly` to true, forces `explicitWiFiAPIUsed` and `wifiRTTConfirmed` to false, and keeps route geometry / trusted metrics unchanged. The classifier uses only horizontal accuracy, vertical accuracy, freshness, and route-confidence evidence. It does not use Wi-Fi scanning, Wi-Fi entitlement, explicit Wi-Fi APIs, managed RTT APIs, road snapping, map matching, production route rejection, or estimated route display. `estimatedRouteActive` remains false.

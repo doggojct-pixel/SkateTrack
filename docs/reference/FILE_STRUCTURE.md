@@ -1402,10 +1402,21 @@ Task-030c-b16-A verification token: localization foundation audit, verify_task03
 Shared/Models/BarometricGPSOutlierDiagnostics.swift          # Shared optional diagnostics model for barometer-vs-GPS cross-validation.
 iOS/Core/SensorEngine/BarometricGPSOutlierGuard.swift        # Diagnostics-only evaluator for suspicious GPS jumps.
 iOS/Core/SensorEngine/SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift
-                                                               # Keeps b16-B wiring outside the over-800-line SensorFusionEngine main file.
+                                                               # Keeps b16-B wiring outside the oversized legacy SensorFusionEngine main file.
 Tests/iOSTests/BarometricGPSOutlierDiagnosticsTests.swift     # XCTest coverage for diagnostics-only behavior and legacy decode.
 scripts/verify_task030c_b16b_barometric_gps_outlier_diagnostics.py
                                                                # Static guard for b16-B safety boundaries.
 ```
 
 Task-030c-b16-B verification token: barometric GPS outlier diagnostics, `barometricGPSOutlierDecision`, `productionRouteDecisionApplied: false`, `wouldRejectIfGateWereEnabled`, no production route rejection, estimatedRouteActive remains false.
+
+### Task-030c-b16-C passive accuracy-source diagnostics
+
+```text
+Shared/Models/LocationAccuracySourceDiagnostics.swift       # Shared passive CoreLocation accuracy-source diagnostic model.
+iOS/Core/SensorEngine/LocationAccuracySourceClassifier.swift # iOS-only heuristic classifier for accuracy / freshness evidence.
+Tests/iOSTests/LocationAccuracySourceDiagnosticsTests.swift  # XCTest coverage for passive inference boundaries and legacy decode.
+scripts/verify_task030c_b16c_location_accuracy_source_diagnostics.py # Static guard for b16-C safety boundaries.
+```
+
+Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy-source diagnostics, `locationAccuracySourceDiagnostics`, `passiveInferenceOnly`, `explicitWiFiAPIUsed false`, `wifiRTTConfirmed false`, no Wi-Fi entitlement, no production route mutation, estimatedRouteActive remains false.

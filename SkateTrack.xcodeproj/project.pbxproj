@@ -31,6 +31,9 @@
 		B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
 		B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
 		B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
+		B16C01000000000000000101 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
+		B16C01000000000000000102 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
+		B16C01000000000000000103 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
 		12A30000000000000000010D /* TrickEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000005 /* TrickEvent.swift */; };
 		12A30000000000000000010E /* TrickEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000005 /* TrickEvent.swift */; };
 		12A30000000000000000010F /* TrickEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000005 /* TrickEvent.swift */; };
@@ -63,6 +66,7 @@
 		12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A900000000000000000002 /* SensorCalibrationEngine.swift */; };
 		B16B02000000000000000101 /* BarometricGPSOutlierGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */; };
 		B16B03000000000000000101 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */; };
+		B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */; };
 		12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA00000000000000000001 /* FallDetectionEngine.swift */; };
 		12AB01000000000000000101 /* SessionStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB01000000000000000001 /* SessionStateMachine.swift */; };
 		12AB02000000000000000101 /* SessionMetricsAccumulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB02000000000000000001 /* SessionMetricsAccumulator.swift */; };
@@ -73,6 +77,7 @@
 		12AB05000000000000000103 /* SessionSummaryMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB05000000000000000001 /* SessionSummaryMetrics.swift */; };
 		12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */; };
 		B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */; };
+		B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */; };
 		12AD01000000000000000101 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD01000000000000000001 /* RootNavigationView.swift */; };
 		12AD02000000000000000101 /* SessionStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD02000000000000000001 /* SessionStartView.swift */; };
 		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
@@ -323,6 +328,7 @@
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnostics.swift; sourceTree = "<group>"; };
+		B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnostics.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
 		12A300000000000000000006 /* FallEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallEvent.swift; sourceTree = "<group>"; };
 		12A300000000000000000007 /* EquipmentProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentProfile.swift; sourceTree = "<group>"; };
@@ -343,6 +349,7 @@
 		12A900000000000000000002 /* SensorCalibrationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorCalibrationEngine.swift; sourceTree = "<group>"; };
 		B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierGuard.swift; sourceTree = "<group>"; };
 		B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift"; sourceTree = "<group>"; };
+		B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceClassifier.swift; sourceTree = "<group>"; };
 		12AA00000000000000000001 /* FallDetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallDetectionEngine.swift; sourceTree = "<group>"; };
 		12AB01000000000000000001 /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		12AB02000000000000000001 /* SessionMetricsAccumulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetricsAccumulator.swift; sourceTree = "<group>"; };
@@ -352,6 +359,7 @@
 		12AC00000000000000000001 /* SkateTrack-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SkateTrack-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordingCoordinatorTests.swift; sourceTree = "<group>"; };
 		B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnosticsTests.swift; sourceTree = "<group>"; };
+		B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnosticsTests.swift; sourceTree = "<group>"; };
 		12AD01000000000000000001 /* RootNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
 		12AD02000000000000000001 /* SessionStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStartView.swift; sourceTree = "<group>"; };
 		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
@@ -615,6 +623,7 @@
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */,
+				B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
@@ -694,6 +703,7 @@
 				12A900000000000000000001 /* SensorFusionEngine.swift */,
 				B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */,
 				B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */,
+				B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -717,6 +727,7 @@
 			children = (
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
 				B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */,
+				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -1336,6 +1347,7 @@
 			files = (
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
 				B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */,
+				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1504,6 +1516,7 @@
 				12A900000000000000000101 /* SensorFusionEngine.swift in Sources */,
 				B16B03000000000000000101 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift in Sources */,
 				B16B02000000000000000101 /* BarometricGPSOutlierGuard.swift in Sources */,
+				B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
@@ -1536,6 +1549,7 @@
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000101 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
@@ -1574,6 +1588,7 @@
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000103 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
@@ -1615,6 +1630,7 @@
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000102 /* LocationAccuracySourceDiagnostics.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,

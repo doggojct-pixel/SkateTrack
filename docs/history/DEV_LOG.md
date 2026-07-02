@@ -2158,7 +2158,17 @@ Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fus
 - Added diagnostics-only barometric GPS outlier cross-validation for suspicious GPS jumps.
 - Added `BarometricGPSOutlierDecision` with `productionRouteDecisionApplied` hard-coded to `false` and `wouldRejectIfGateWereEnabled` as diagnostic evidence only.
 - Added optional `barometricGPSOutlierDecision` to `LocationFixDiagnostics` so legacy `.skatetrack` sessions decode without the new field.
-- Split the implementation into new model / guard / SensorFusionEngine extension files instead of expanding existing over-800-line production files.
+- Split the implementation into new model / guard / SensorFusionEngine extension files instead of expanding existing oversized legacy production files.
 - Advanced the DEBUG build identity to `Task-030c-b16-B` without enabling estimated routes, rejecting production route fixes, mutating raw samples, or changing trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain.
 
 Task-030c-b16-B verification token: barometric GPS outlier cross-validation diagnostics, diagnostics-only, productionRouteDecisionApplied false, wouldRejectIfGateWereEnabled, estimatedRouteActive remains false.
+
+### Task-030c-b16-C — Passive Wi-Fi RTT / Accuracy Source Diagnostics
+
+- Added passive accuracy-source diagnostics that classify CoreLocation accuracy evidence into likely high-precision GPS or possible Wi-Fi RTT assisted categories without using explicit Wi-Fi APIs.
+- Added `LocationAccuracySourceDiagnostics` with `passiveInferenceOnly` forced to true, `explicitWiFiAPIUsed` forced to false, and `wifiRTTConfirmed` forced to false during construction and decoding.
+- Added `LocationAccuracySourceClassifier` to keep heuristic classification outside legacy oversized model files.
+- Added optional `locationAccuracySourceDiagnostics` to `LocationFixDiagnostics` so legacy `.skatetrack` sessions decode without the new field.
+- Advanced the DEBUG build identity to `Task-030c-b16-C` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
+
+Task-030c-b16-C verification token: passive accuracy-source diagnostics, no Wi-Fi entitlement, no Wi-Fi scanning, no confirmed Wi-Fi RTT claim, estimatedRouteActive remains false.

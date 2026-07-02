@@ -295,3 +295,13 @@ Boundary: `productionRouteDecisionApplied` must remain `false`; `wouldRejectIfGa
 Implementation: The shared model lives in `Shared/Models/BarometricGPSOutlierDiagnostics.swift`; iOS evaluation lives in `iOS/Core/SensorEngine/BarometricGPSOutlierGuard.swift` and `SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift`; the existing `LocationFixDiagnostics` model stores the optional `barometricGPSOutlierDecision` so legacy sessions decode without the field.
 
 Task-030c-b16-B verification token: barometric GPS outlier cross-validation diagnostics, `productionRouteDecisionApplied: false`, `wouldRejectIfGateWereEnabled`, optional legacy decode, no production route rejection, estimatedRouteActive remains false.
+
+## Task-030c-b16-C — Passive Wi-Fi RTT / Accuracy Source Diagnostics
+
+Decision: Task-030c-b16-C adds passive accuracy-source diagnostics derived only from CoreLocation-provided accuracy, freshness, and route-confidence evidence. The diagnostic can classify a fix as likely high-precision GPS or possible Wi-Fi RTT assisted, but it remains an inference and does not confirm Wi-Fi RTT.
+
+Boundary: `passiveInferenceOnly` is always true, `explicitWiFiAPIUsed false`, and `wifiRTTConfirmed false`. This milestone does not add Wi-Fi scanning, Wi-Fi entitlement, explicit Wi-Fi APIs, road snapping, map matching, route geometry mutation, trusted metric mutation, production route rejection, or estimated route display. `estimatedRouteActive` remains false.
+
+Implementation: The shared diagnostic model lives in `Shared/Models/LocationAccuracySourceDiagnostics.swift`; iOS classification lives in `iOS/Core/SensorEngine/LocationAccuracySourceClassifier.swift`; `LocationFixDiagnostics` stores optional `locationAccuracySourceDiagnostics` so legacy sessions decode without the new field.
+
+Task-030c-b16-C verification token: passive Wi-Fi RTT / accuracy source diagnostics, passiveInferenceOnly, explicitWiFiAPIUsed false, wifiRTTConfirmed false, no Wi-Fi entitlement, no Wi-Fi scanning, estimatedRouteActive remains false.

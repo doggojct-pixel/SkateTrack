@@ -7,10 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIREMENTS = {
     "Shared/Models/SessionData.swift": [
-        'static let currentDebugBuildTaskID = "Task-030c-b16-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b16-C"',
     ],
     "iOS/Features/Debug/DebugToolsPanelView.swift": [
-        "Task-030c-b16-B",
+        "Task-030c-b16-C",
     ],
     "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": [
         "displaySpeedKilometersPerHour(for:",

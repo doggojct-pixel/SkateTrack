@@ -1790,6 +1790,7 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
     let gpsGapDiagnostics: GPSGapDiagnostics?
     let deadReckoningDiagnostics: DeadReckoningDiagnostics?
     let barometricGPSOutlierDecision: BarometricGPSOutlierDecision?
+    let locationAccuracySourceDiagnostics: LocationAccuracySourceDiagnostics?
 
     init(
         horizontalAccuracyMeters: Double? = nil,
@@ -1809,7 +1810,8 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         headingDiagnostics: HeadingDiagnostics? = nil,
         gpsGapDiagnostics: GPSGapDiagnostics? = nil,
         deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil,
-        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil
+        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil,
+        locationAccuracySourceDiagnostics: LocationAccuracySourceDiagnostics? = nil
     ) {
         self.horizontalAccuracyMeters = horizontalAccuracyMeters
         self.verticalAccuracyMeters = verticalAccuracyMeters
@@ -1829,13 +1831,15 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         self.gpsGapDiagnostics = gpsGapDiagnostics
         self.deadReckoningDiagnostics = deadReckoningDiagnostics
         self.barometricGPSOutlierDecision = barometricGPSOutlierDecision
+        self.locationAccuracySourceDiagnostics = locationAccuracySourceDiagnostics
     }
 
     func replacingR4Diagnostics(
         headingDiagnostics: HeadingDiagnostics? = nil,
         gpsGapDiagnostics: GPSGapDiagnostics? = nil,
         deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil,
-        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil
+        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil,
+        locationAccuracySourceDiagnostics: LocationAccuracySourceDiagnostics? = nil
     ) -> LocationFixDiagnostics {
         LocationFixDiagnostics(
             horizontalAccuracyMeters: horizontalAccuracyMeters,
@@ -1855,7 +1859,8 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
             headingDiagnostics: headingDiagnostics ?? self.headingDiagnostics,
             gpsGapDiagnostics: gpsGapDiagnostics ?? self.gpsGapDiagnostics,
             deadReckoningDiagnostics: deadReckoningDiagnostics ?? self.deadReckoningDiagnostics,
-            barometricGPSOutlierDecision: barometricGPSOutlierDecision ?? self.barometricGPSOutlierDecision
+            barometricGPSOutlierDecision: barometricGPSOutlierDecision ?? self.barometricGPSOutlierDecision,
+            locationAccuracySourceDiagnostics: locationAccuracySourceDiagnostics ?? self.locationAccuracySourceDiagnostics
         )
     }
 }
