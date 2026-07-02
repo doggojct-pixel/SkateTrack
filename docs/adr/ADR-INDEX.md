@@ -368,3 +368,13 @@ Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Pla
 Implementation: Shared review-pack output lives in `Shared/Models/DeadReckoningReplayReviewPack.swift`. The iOS-only builder lives in `iOS/Core/SensorEngine/DeadReckoningReplayReviewPackBuilder.swift`, converting real-session replay diagnostics into JSON, Markdown, and CSV artifacts. Deterministic XCTest coverage lives in `Tests/iOSTests/DeadReckoningReplayReviewPackTests.swift`.
 
 Task-030c-b17-D verification token: Real-Session Replay Review Pack, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b17-D-3 — Real-Session Review Runner / Export Glue
+
+Decision: Task-030c-b17-D-3 adds offline runner/export glue that reads real `.skatetrack` session exports and writes `Task030c_b17D_ReplayReviewPack.zip` review artifacts. The runner produces JSON, Markdown, and CSV outputs containing per-session and per-gap evidence for gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, eligibility, and blocking reasons.
+
+Boundary: This milestone remains b17-D review-only infrastructure. It does not implement b18 display models, route map rendering changes, production estimated route rendering, route geometry mutation, trusted metrics mutation, road snapping, map matching, or CoreLocation manager behavior. `estimatedRouteActive` remains false, and the generated artifacts are evidence for the required product decision checkpoint before b18.
+
+Implementation: The command entry point lives in `scripts/generate_task030c_b17d_real_session_review_pack.py`, with metrics/glue helpers in `scripts/task030c_b17d_real_session_metrics.py`. Safety verification lives in `scripts/verify_task030c_b17d_real_session_runner.py`.
+
+Task-030c-b17-D-3 verification token: Real-Session Review Runner / Export Glue, `.skatetrack` inputs, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

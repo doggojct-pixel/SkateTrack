@@ -504,3 +504,11 @@ Task-030c-b17-C verification token: anchor closure error and confidence scoring,
 - **Decision boundary:** The b17-D review pack is evidence for the required non-code product decision checkpoint. b18 display model work and any production eligibility gate must remain blocked until that decision checkpoint is complete.
 
 Task-030c-b17-D verification token: real-session replay review pack, no user-visible route display, no trusted metric mutation, product decision checkpoint required, estimatedRouteActive remains false.
+
+### Task-030c-b17-D-3 — Real-Session Review Runner / Export Glue
+
+- **Current status:** Task-030c-b17-D-3 can generate `Task030c_b17D_ReplayReviewPack.zip` from real `.skatetrack` exports for review-only product-decision evidence.
+- **Safety boundary:** It does not enable user-visible estimated route display, does not mutate production route geometry, does not modify route maps, and does not change trusted distance, speed, or elevation metrics.
+- **Review limitation:** The runner is an offline diagnostic tool. Its output helps decide whether b18 should display any estimated route segment, but it is not itself a production route correction feature.
+
+Task-030c-b17-D-3 verification token: real-session review runner, `.skatetrack` inputs, no user-visible estimated route display, no trusted metric mutation, product decision checkpoint required, estimatedRouteActive remains false.

@@ -1498,3 +1498,13 @@ scripts/verify_task030c_b17d_replay_review_pack.py      # Verifies b17-D v1.2 sc
 ```
 
 Task-030c-b17-D verification token: Real-Session Replay Review Pack, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D-3 real-session review runner / export glue
+
+```text
+scripts/generate_task030c_b17d_real_session_review_pack.py # Offline command entry point for real `.skatetrack` b17-D review-pack generation.
+scripts/task030c_b17d_real_session_metrics.py              # Review-only gap metrics and conservative blocking/eligibility calculations.
+scripts/verify_task030c_b17d_real_session_runner.py        # Verifies runner/export glue tokens, file-size guard, and safety boundaries.
+```
+
+Task-030c-b17-D-3 verification token: Real-Session Review Runner / Export Glue, `.skatetrack` inputs, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.

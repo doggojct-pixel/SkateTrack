@@ -650,3 +650,9 @@ The review pack must include JSON, Markdown, and CSV artifact contents. Per-gap 
 This milestone deliberately does not display estimated routes, does not write estimated samples into `MotionSample`, does not modify `SessionData.summaryMetrics`, does not alter route map rendering, does not alter export trusted metrics, and does not enable `estimatedRouteActive`.
 
 After b17-D, a non-code product decision checkpoint is required before any b18 display model work or production eligibility gate work begins.
+
+## Task-030c-b17-D-3 Implementation Note
+
+`Task-030c-b17-D-3` adds the real-session review runner / export glue needed to apply b17-D to actual `.skatetrack` exports. It does not change app route rendering or production scoring. The runner reads one or more session files or zip archives and writes `Task030c_b17D_ReplayReviewPack.zip` containing JSON, Markdown, and CSV review artifacts.
+
+The runner is intended for the real-session product-decision review before b18. It records gap duration, IMU sample coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative user-visible eligibility, and blocking reasons. b18 display model work and production eligibility gates remain blocked until this review evidence is interpreted.

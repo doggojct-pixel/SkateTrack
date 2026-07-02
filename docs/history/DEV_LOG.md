@@ -2241,3 +2241,12 @@ Task-030c-b17-C verification token: v1.2 anchor closure error and confidence sco
 - Advanced the DEBUG build identity to `Task-030c-b17-D` while keeping `estimatedRouteActive` false and preserving trusted metrics.
 
 Task-030c-b17-D verification token: v1.2 real-session replay review pack, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D-3 — Real-Session Review Runner / Export Glue
+
+- Added an offline runner for real `.skatetrack` session exports.
+- Added metrics glue to convert location-fix gaps and timer-fusion samples into b17-D review-pack fields: gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative eligibility, and blocking reasons.
+- The runner writes `Task030c_b17D_ReplayReviewPack.zip` with JSON, Markdown, and CSV artifacts for real-session product-decision review.
+- Preserved the b17-D safety boundary: no route map rendering, no production route mutation, no trusted metrics mutation, and no user-visible estimated route display.
+
+Task-030c-b17-D-3 verification token: real-session runner / export glue, `.skatetrack` inputs, review-only artifacts, product decision checkpoint required, estimatedRouteActive remains false.
