@@ -2152,3 +2152,13 @@ Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEnc
 - Advanced the DEBUG build identity to `Task-030c-b16-A` without changing SensorFusionEngine behavior, route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, persistence schema, or production estimated route display.
 
 Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fusion Plan, Task-030c-b16-A, b16-B diagnostics-only, b16-C passive Wi-Fi RTT diagnostics, b16-D heading quality consolidation, indoor localization deferred to Task-031, estimatedRouteActive remains false.
+
+### Task-030c-b16-B — Barometric GPS Outlier Cross-Validation Diagnostics
+
+- Added diagnostics-only barometric GPS outlier cross-validation for suspicious GPS jumps.
+- Added `BarometricGPSOutlierDecision` with `productionRouteDecisionApplied` hard-coded to `false` and `wouldRejectIfGateWereEnabled` as diagnostic evidence only.
+- Added optional `barometricGPSOutlierDecision` to `LocationFixDiagnostics` so legacy `.skatetrack` sessions decode without the new field.
+- Split the implementation into new model / guard / SensorFusionEngine extension files instead of expanding existing over-800-line production files.
+- Advanced the DEBUG build identity to `Task-030c-b16-B` without enabling estimated routes, rejecting production route fixes, mutating raw samples, or changing trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain.
+
+Task-030c-b16-B verification token: barometric GPS outlier cross-validation diagnostics, diagnostics-only, productionRouteDecisionApplied false, wouldRejectIfGateWereEnabled, estimatedRouteActive remains false.

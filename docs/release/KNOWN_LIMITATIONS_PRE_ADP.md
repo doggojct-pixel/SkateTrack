@@ -433,3 +433,12 @@ Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safe di
 - **Do not claim:** Do not claim production dead reckoning, estimated route activation, road snapping, fake GPS, camera localization, RTK GPS, UWB anchor dependency, or SnowPrototype integration.
 
 Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fusion Plan, indoor mode detector deferred to Task-031, no camera localization, no road snapping, no fake GPS, no RTK GPS dependency, no UWB anchor dependency, estimatedRouteActive remains false.
+
+### Task-030c-b16-B — Barometric GPS Outlier Cross-Validation Diagnostics
+
+- **Current status:** b16-B records diagnostics-only evidence when a suspicious GPS jump conflicts with barometer-relative altitude evidence. It does not reject or rewrite production route fixes.
+- **User-facing impact:** no user-facing behavior change yet; the diagnostics prepare later replay review and release-gate decisions.
+- **Metric safety:** trusted distance, speed, average speed, max speed, moving ratio, and total elevation gain continue to ignore estimated positions and are not changed by b16-B.
+- **Estimated route safety:** `estimatedRouteActive` remains false.
+
+Task-030c-b16-B verification token: diagnostics-only barometric GPS cross-validation, no production route rejection, productionRouteDecisionApplied false, wouldRejectIfGateWereEnabled, estimatedRouteActive remains false.

@@ -573,3 +573,8 @@ python3 scripts/verify_task030c_b16a_localization_foundation_plan.py
 - No raw sample mutation.
 - No production estimated route display.
 - Existing simulator recording persistence and localization terminology guards still pass.
+
+## b16-B implementation note
+
+`Task-030c-b16-B` implements the planned barometric GPS outlier cross-validation as diagnostics-only. `productionRouteDecisionApplied` remains false, `wouldRejectIfGateWereEnabled` is diagnostic evidence only, and `estimatedRouteActive` remains false. The implementation is intentionally split into new files so the existing over-800-line production files do not absorb the new logic.
+

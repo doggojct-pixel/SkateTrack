@@ -43,6 +43,7 @@ final class SensorFusionEngine: SensorProvider {
     private var latestPressureDiagnostics: AltitudePressureDiagnostics?
     private var latestLocationDiagnostics: LocationFixDiagnostics?
     private var latestRawLocation: CLLocation?
+    private var latestBarometricGPSOutlierAnchor: BarometricGPSOutlierAnchor?
     private var latestDeviceHeading: CLHeading?
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> {
         motionSampleSubject.eraseToAnyPublisher()
@@ -145,6 +146,7 @@ final class SensorFusionEngine: SensorProvider {
             latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
+            latestBarometricGPSOutlierAnchor = nil
             latestDeviceHeading = nil
             calibrationEngine.reset()
         }
@@ -325,19 +327,31 @@ final class SensorFusionEngine: SensorProvider {
         let stateSnapshot = stateLock.withLock { (
             previousLocation: latestRawLocation,
             sessionStartDate: sessionStartDate,
-            latestDeviceHeading: latestDeviceHeading
+            latestDeviceHeading: latestDeviceHeading,
+            latestBarometerAltitudeMeters: latestAltitudeMeters,
+            barometricGPSOutlierAnchor: latestBarometricGPSOutlierAnchor
         ) }
+        let barometricGPSOutlierDecision = makeBarometricGPSOutlierDecision(
+            previousAnchor: stateSnapshot.barometricGPSOutlierAnchor,
+            candidateLocation: location,
+            candidateBarometerAltitudeMeters: stateSnapshot.latestBarometerAltitudeMeters
+        )
         let diagnostics = makeLocationDiagnostics(
             for: location,
             previousLocation: stateSnapshot.previousLocation,
             sessionStartDate: stateSnapshot.sessionStartDate,
             receivedAt: receivedAt,
-            deviceHeading: stateSnapshot.latestDeviceHeading
+            deviceHeading: stateSnapshot.latestDeviceHeading,
+            barometricGPSOutlierDecision: barometricGPSOutlierDecision
         )
 
         let liveRoutePolicy = ActivityFidelityPolicy(profile: currentActivityFidelityProfile())
         stateLock.withLock {
             latestRawLocation = location
+            latestBarometricGPSOutlierAnchor = BarometricGPSOutlierAnchor(
+                location: location,
+                barometerAltitudeMeters: stateSnapshot.latestBarometerAltitudeMeters
+            )
             latestLocationDiagnostics = diagnostics
 
             if Self.trustsLocationForLiveRoute(diagnostics, policy: liveRoutePolicy) {
@@ -410,7 +424,8 @@ final class SensorFusionEngine: SensorProvider {
         previousLocation: CLLocation?,
         sessionStartDate: Date?,
         receivedAt: Date,
-        deviceHeading: CLHeading?
+        deviceHeading: CLHeading?,
+        barometricGPSOutlierDecision: BarometricGPSOutlierDecision?
     ) -> LocationFixDiagnostics {
         let updateInterval = previousLocation.flatMap { previous -> TimeInterval? in
             let interval = location.timestamp.timeIntervalSince(previous.timestamp)
@@ -490,7 +505,8 @@ final class SensorFusionEngine: SensorProvider {
             routeSegmentConfidence: confidence,
             headingDiagnostics: headingDiagnostics,
             gpsGapDiagnostics: gpsGapDiagnostics,
-            deadReckoningDiagnostics: deadReckoningDiagnostics
+            deadReckoningDiagnostics: deadReckoningDiagnostics,
+            barometricGPSOutlierDecision: barometricGPSOutlierDecision
         )
     }
     private func timerFusionDiagnostics(
@@ -871,6 +887,7 @@ final class SensorFusionEngine: SensorProvider {
             latestPressureDiagnostics = nil
             latestLocationDiagnostics = nil
             latestRawLocation = nil
+            latestBarometricGPSOutlierAnchor = nil
             latestDeviceHeading = nil
         }
     }

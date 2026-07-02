@@ -1395,3 +1395,17 @@ iOS/Features/Debug/DebugToolsPanelView.swift               # Shows Task-030c-b16
 ```
 
 Task-030c-b16-A verification token: localization foundation audit, verify_task030c_b16a_localization_foundation_plan.py, barometric GPS cross-validation, passive Wi-Fi RTT diagnostics, magnetometer heading quality, IMU replay-only gap interpolation, indoor localization deferred to Task-031, estimatedRouteActive remains false.
+
+### Task-030c-b16-B barometric GPS outlier diagnostics
+
+```text
+Shared/Models/BarometricGPSOutlierDiagnostics.swift          # Shared optional diagnostics model for barometer-vs-GPS cross-validation.
+iOS/Core/SensorEngine/BarometricGPSOutlierGuard.swift        # Diagnostics-only evaluator for suspicious GPS jumps.
+iOS/Core/SensorEngine/SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift
+                                                               # Keeps b16-B wiring outside the over-800-line SensorFusionEngine main file.
+Tests/iOSTests/BarometricGPSOutlierDiagnosticsTests.swift     # XCTest coverage for diagnostics-only behavior and legacy decode.
+scripts/verify_task030c_b16b_barometric_gps_outlier_diagnostics.py
+                                                               # Static guard for b16-B safety boundaries.
+```
+
+Task-030c-b16-B verification token: barometric GPS outlier diagnostics, `barometricGPSOutlierDecision`, `productionRouteDecisionApplied: false`, `wouldRejectIfGateWereEnabled`, no production route rejection, estimatedRouteActive remains false.

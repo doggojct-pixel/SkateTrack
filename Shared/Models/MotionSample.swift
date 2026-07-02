@@ -1789,6 +1789,7 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
     let headingDiagnostics: HeadingDiagnostics?
     let gpsGapDiagnostics: GPSGapDiagnostics?
     let deadReckoningDiagnostics: DeadReckoningDiagnostics?
+    let barometricGPSOutlierDecision: BarometricGPSOutlierDecision?
 
     init(
         horizontalAccuracyMeters: Double? = nil,
@@ -1807,7 +1808,8 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         routeSegmentConfidence: RouteSegmentConfidence = .unavailable,
         headingDiagnostics: HeadingDiagnostics? = nil,
         gpsGapDiagnostics: GPSGapDiagnostics? = nil,
-        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil
+        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil,
+        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil
     ) {
         self.horizontalAccuracyMeters = horizontalAccuracyMeters
         self.verticalAccuracyMeters = verticalAccuracyMeters
@@ -1826,12 +1828,14 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
         self.headingDiagnostics = headingDiagnostics
         self.gpsGapDiagnostics = gpsGapDiagnostics
         self.deadReckoningDiagnostics = deadReckoningDiagnostics
+        self.barometricGPSOutlierDecision = barometricGPSOutlierDecision
     }
 
     func replacingR4Diagnostics(
         headingDiagnostics: HeadingDiagnostics? = nil,
         gpsGapDiagnostics: GPSGapDiagnostics? = nil,
-        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil
+        deadReckoningDiagnostics: DeadReckoningDiagnostics? = nil,
+        barometricGPSOutlierDecision: BarometricGPSOutlierDecision? = nil
     ) -> LocationFixDiagnostics {
         LocationFixDiagnostics(
             horizontalAccuracyMeters: horizontalAccuracyMeters,
@@ -1850,7 +1854,8 @@ struct LocationFixDiagnostics: Codable, Sendable, Equatable {
             routeSegmentConfidence: routeSegmentConfidence,
             headingDiagnostics: headingDiagnostics ?? self.headingDiagnostics,
             gpsGapDiagnostics: gpsGapDiagnostics ?? self.gpsGapDiagnostics,
-            deadReckoningDiagnostics: deadReckoningDiagnostics ?? self.deadReckoningDiagnostics
+            deadReckoningDiagnostics: deadReckoningDiagnostics ?? self.deadReckoningDiagnostics,
+            barometricGPSOutlierDecision: barometricGPSOutlierDecision ?? self.barometricGPSOutlierDecision
         )
     }
 }

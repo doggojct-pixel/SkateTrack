@@ -285,3 +285,13 @@ Boundary: b16-A does not change production route geometry, trusted distance, spe
 Future sequence: b16-B is diagnostics-only barometric GPS cross-validation, b16-C is passive Wi-Fi RTT / accuracy-source diagnostics without explicit Wi-Fi APIs, and b16-D is magnetometer heading quality consolidation for future replay readiness. b17 remains replay-only. b18 estimated route display requires a product decision checkpoint after b17-D real-session replay review. Task-031 owns indoor localization.
 
 Task-030c-b16-A verification token: Localization Foundation Audit, Task-030c-b16-A, barometric GPS cross-validation, passive Wi-Fi RTT diagnostics, magnetometer heading quality, IMU replay-only gap interpolation, indoor localization deferred to Task-031, estimatedRouteActive remains false.
+
+## Task-030c-b16-B — Barometric GPS Outlier Cross-Validation Diagnostics
+
+Decision: Task-030c-b16-B adds diagnostics-only cross-validation between suspicious GPS jumps and barometer-relative altitude evidence. The decision model records whether a candidate GPS fix would be rejected if a future production gate were enabled, but production route acceptance is not changed in this milestone.
+
+Boundary: `productionRouteDecisionApplied` must remain `false`; `wouldRejectIfGateWereEnabled` is diagnostic evidence only. b16-B must not mutate raw samples, route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, persistence schema semantics beyond optional Codable diagnostics, or production estimated route display. `estimatedRouteActive` remains false.
+
+Implementation: The shared model lives in `Shared/Models/BarometricGPSOutlierDiagnostics.swift`; iOS evaluation lives in `iOS/Core/SensorEngine/BarometricGPSOutlierGuard.swift` and `SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift`; the existing `LocationFixDiagnostics` model stores the optional `barometricGPSOutlierDecision` so legacy sessions decode without the field.
+
+Task-030c-b16-B verification token: barometric GPS outlier cross-validation diagnostics, `productionRouteDecisionApplied: false`, `wouldRejectIfGateWereEnabled`, optional legacy decode, no production route rejection, estimatedRouteActive remains false.

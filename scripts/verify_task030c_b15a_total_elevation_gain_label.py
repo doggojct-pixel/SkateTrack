@@ -24,8 +24,8 @@ def forbid(path: str, token: str) -> None:
 
 def main() -> int:
     checks = [
-        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b16-A"'),
-        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("Task-030c-b16-A")'),
+        ("Shared/Models/SessionData.swift", 'static let currentDebugBuildTaskID = "Task-030c-b16-B"'),
+        ("iOS/Features/Debug/DebugToolsPanelView.swift", 'Text("Task-030c-b16-B")'),
         ("Shared/Localization/zh-Hant.lproj/Localizable.strings", '"summary.metric.elevationGain" = "總爬升量";'),
         ("Shared/Localization/en.lproj/Localizable.strings", '"summary.metric.elevationGain" = "Total elevation gain";'),
         ("Shared/Localization/ja.lproj/Localizable.strings", '"summary.metric.elevationGain" = "総獲得標高";'),
