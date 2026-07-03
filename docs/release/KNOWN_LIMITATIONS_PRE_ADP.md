@@ -556,3 +556,12 @@ Task-030c-b18-C verification token: DEBUG-only review panel, full `#if DEBUG` bo
 
 Task-030c-b18-D verification token: real-session recheck product decision update, outcome keepDisabled, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+### Task-030c-b19 — Outdoor Localization Release Gate
+
+- **Current status:** Task-030c-b19 adds a conservative outdoor localization release gate for real-GPS release-quality classification.
+- **Product limitation:** The release gate can classify evidence as `releaseReady`, `limitedDisclosure`, or `blocked`, but it does not enable estimated route display or route reconstruction.
+- **Safety boundary:** `generalUserEstimatedRouteDisplayAllowed`, `estimatedRouteDisplayEnabled`, `estimatedRouteActive`, `routeGeometryMutationApplied`, `trustedMetricsMutationApplied`, and `persistenceSchemaMutationApplied` remain false.
+- **Persistence boundary:** b19 introduces no Core Data, `SessionRepository`, `SessionEntityMapper`, export payload, or `.skatetrack` schema change.
+
+Task-030c-b19 verification token: outdoor localization release gate, releaseReady, limitedDisclosure, blocked, realGPSOnly true, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

@@ -421,3 +421,13 @@ Implementation: Shared product-decision output lives in `Shared/Models/Estimated
 
 Task-030c-b18-D verification token: Real-Session Recheck and Product Decision Update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+## Task-030c-b19 — Outdoor Localization Release Gate
+
+Decision: Task-030c-b19 adds a conservative outdoor localization release gate while preserving the b18-D product decision. General-user estimated route display remains disabled, `estimatedRouteActive` remains false, and the gate evaluates only real GPS/localization quality for release-quality presentation.
+
+Boundary: b19 does not render route geometry, add route polylines, mutate the normal Session Summary map, mutate trusted metrics, persist release-gate decisions, update SessionRepository, update SessionEntityMapper, or change the `.skatetrack` schema. `OutdoorLocalizationReleaseGate` is a review/release decision artifact only.
+
+Implementation: Shared release-gate output lives in `Shared/Models/OutdoorLocalizationReleaseGate.swift`. The iOS builder lives in `iOS/Core/SensorEngine/OutdoorLocalizationReleaseGateBuilder.swift`. Deterministic XCTest coverage lives in `Tests/iOSTests/OutdoorLocalizationReleaseGateTests.swift`.
+
+Task-030c-b19 verification token: Outdoor Localization Release Gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, decisions `releaseReady`, `limitedDisclosure`, `blocked`, realGPSOnly true, no user-visible estimated route display, no route geometry mutation, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

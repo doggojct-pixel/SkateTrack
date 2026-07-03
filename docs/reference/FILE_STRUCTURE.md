@@ -1557,3 +1557,13 @@ docs/planning/Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Pla
 
 Task-030c-b18-D verification token: Real-Session Recheck and Product Decision Update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no route geometry, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
 
+
+### Task-030c-b19 outdoor localization release gate
+
+Shared/Models/OutdoorLocalizationReleaseGate.swift              # Shared b19 real-GPS outdoor localization release gate model and policy.
+iOS/Core/SensorEngine/OutdoorLocalizationReleaseGateBuilder.swift # Builds releaseReady / limitedDisclosure / blocked decisions from real-GPS evidence.
+Tests/iOSTests/OutdoorLocalizationReleaseGateTests.swift          # Deterministic tests for release gate decisions and b18-D safety boundaries.
+scripts/verify_task030c_b19_outdoor_localization_release_gate.py  # Verifies b19 release gate boundaries, no estimated route display, no route mutation.
+docs/planning/Task-030c-b19_Outdoor_Localization_Release_Gate_Mini_Plan_EN_v1.0.md # b19 controlling mini implementation note.
+
+Task-030c-b19 verification token: Outdoor Localization Release Gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, decisions `releaseReady`, `limitedDisclosure`, `blocked`, no route geometry mutation, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.

@@ -90,13 +90,13 @@ def main() -> int:
         "motorcyclePressureTest",
         "motorcycleControl",
     ])
-    require("Shared/Models/SessionData.swift", ['static let currentDebugBuildTaskID = "Task-030c-b18-D"'])
+    require("Shared/Models/SessionData.swift", ['static let currentDebugBuildTaskID = "Task-030c-b19"'])
     for loc in [
         "Shared/Localization/en.lproj/Localizable.strings",
         "Shared/Localization/ja.lproj/Localizable.strings",
         "Shared/Localization/zh-Hant.lproj/Localizable.strings",
     ]:
-        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-D";'])
+        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b19";'])
     require("SkateTrack.xcodeproj/project.pbxproj", [
         "EstimatedRouteProductDecisionUpdate.swift in Sources",
         "EstimatedRouteProductDecisionUpdateBuilder.swift in Sources",
@@ -134,7 +134,7 @@ def main() -> int:
         "general-user estimated route display remains disabled",
     ])
     require("docs/planning/Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md", [
-        "Current implementation baseline:** Task-030c-b18-D",
+        "Current implementation baseline:** Task-030c-b19",
         "b18-D implementation note",
         "EstimatedRouteProductDecisionUpdate",
         "General-user estimated route display remains disabled",

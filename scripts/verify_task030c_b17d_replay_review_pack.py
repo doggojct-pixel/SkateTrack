@@ -69,16 +69,16 @@ def main() -> int:
             "Task030c_b17D_ReplayReviewPack.zip",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-D"',
+            'static let currentDebugBuildTaskID = "Task-030c-b19"',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
         ],
         "SkateTrack.xcodeproj/project.pbxproj": [
             "DeadReckoningReplayReviewPack.swift in Sources",

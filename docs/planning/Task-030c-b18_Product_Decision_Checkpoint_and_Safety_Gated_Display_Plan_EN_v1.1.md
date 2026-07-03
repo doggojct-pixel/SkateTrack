@@ -1,12 +1,12 @@
 # Task-030c-b18 Product Decision Checkpoint and Safety-Gated Display Plan
 
-**Document version:** v1.1  
-**Language:** English  
-**Repository branch:** `task-030c-gps-route-fidelity`  
-**Current baseline:** after `859f860 Task-030c-b17-D-3 add real session review runner`  
-**Controlling plan:** `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`  
-**Previous required milestone:** Task-030c-b17-D / b17-D-3 real-session replay review pack  
-**Current implementation baseline:** Task-030c-b18-D, following completed b18-C DEBUG-only review panel  
+**Document version:** v1.1
+**Language:** English
+**Repository branch:** `task-030c-gps-route-fidelity`
+**Current baseline:** after `859f860 Task-030c-b17-D-3 add real session review runner`
+**Controlling plan:** `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`
+**Previous required milestone:** Task-030c-b17-D / b17-D-3 real-session replay review pack
+**Current implementation baseline:** Task-030c-b19, following completed b18-D product decision update
 
 ---
 
@@ -753,3 +753,11 @@ b18-D does not require new real-world sessions for completion. New sessions may 
 b18-D must not render route geometry, connect to the normal Session Summary map, mutate production route data, change trusted metrics, persist decisions, update SessionRepository, update SessionEntityMapper, change `.skatetrack` schema, or set `estimatedRouteActive` to true.
 
 Task-030c-b18-D: Real-session recheck and product decision update. General-user estimated route display remains disabled.
+
+## Task-030c-b19 implementation note
+
+Task-030c-b19 adds an outdoor localization release gate after the completed b18-D product decision update. It uses `Task-030c-b19_Outdoor_Localization_Release_Gate_Mini_Plan_EN_v1.0.md` as the controlling mini implementation note.
+
+The milestone adds `OutdoorLocalizationReleaseGate` and `OutdoorLocalizationReleaseGateBuilder` to evaluate real-GPS outdoor localization quality as `releaseReady`, `limitedDisclosure`, or `blocked`. It does not reopen estimated route display. The b18-D product decision remains unchanged: General-user estimated route display remains disabled, `estimatedRouteDisplayEnabled` remains false, and `estimatedRouteActive` remains false.
+
+Task-030c-b19: Outdoor localization release gate. Real-GPS release-quality classification only; no estimated route display, no route geometry mutation, no trusted metric mutation, no persistence or schema change.

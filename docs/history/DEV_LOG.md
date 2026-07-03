@@ -2299,3 +2299,13 @@ Task-030c-b18-C verification token: DEBUG-only estimated route review panel, ful
 
 Task-030c-b18-D verification token: real-session recheck product decision update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+### Task-030c-b19 — Outdoor Localization Release Gate
+
+- Implements the b19 outdoor localization release gate using `Task-030c-b19_Outdoor_Localization_Release_Gate_Mini_Plan_EN_v1.0.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 product decision plan.
+- Added `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleasePolicy`, and `OutdoorLocalizationReleaseEvidence` as shared review/release gate records for real-GPS outdoor localization quality.
+- Added `OutdoorLocalizationReleaseGateBuilder` to classify deterministic outdoor localization evidence as `releaseReady`, `limitedDisclosure`, or `blocked` without enabling estimated route display.
+- Added deterministic XCTest coverage for high-quality outdoor evidence, limited-disclosure evidence, low-speed trap evidence, sheltered/high-risk evidence, poor coverage, long gap, and empty evidence.
+- Advanced the DEBUG build identity to `Task-030c-b19` while keeping `estimatedRouteActive` false.
+
+Task-030c-b19 verification token: outdoor localization release gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, releaseReady, limitedDisclosure, blocked, realGPSOnly true, no user-visible estimated route display, no route geometry mutation, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

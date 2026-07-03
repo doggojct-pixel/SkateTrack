@@ -45,7 +45,7 @@ def require_first_line_marker(relative_path: str, marker: str) -> None:
 def main() -> None:
     required_tokens = {
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-D"',
+            'static let currentDebugBuildTaskID = "Task-030c-b19"',
         ],
         "Shared/Models/LocalizationDiagnosticsReviewPack.swift": [
             'taskIdentifier: String = "Task-030c-b17-0"',
@@ -56,15 +56,15 @@ def main() -> None:
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b19";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [
@@ -83,6 +83,8 @@ def main() -> None:
             "Task-030c-b18-A Implementation Note",
             "Task-030c-b18-B Implementation Note",
             "Task-030c-b18-C Implementation Note",
+            "Task-030c-b18-D Implementation Note",
+            "Task-030c-b19 Implementation Note",
             "Task030c_b17D_ReplayReviewPack.zip",
             "Task-030c-b18-C",
             "non-code product decision checkpoint",
@@ -167,6 +169,12 @@ def main() -> None:
         "EstimatedRouteReviewOverlayTests.swift in Sources",
         "EstimatedRouteReviewPanel.swift in Sources",
         "EstimatedRouteReviewPanelTests.swift in Sources",
+        "EstimatedRouteProductDecisionUpdate.swift in Sources",
+        "EstimatedRouteProductDecisionUpdateBuilder.swift in Sources",
+        "EstimatedRouteProductDecisionUpdateTests.swift in Sources",
+        "OutdoorLocalizationReleaseGate.swift in Sources",
+        "OutdoorLocalizationReleaseGateBuilder.swift in Sources",
+        "OutdoorLocalizationReleaseGateTests.swift in Sources",
     ])
     require_first_line_marker("Shared/Models/DeadReckoningReplayDiagnostics.swift", "// [協作區]")
     require_first_line_marker("iOS/Core/SensorEngine/DeadReckoningEngine.swift", "// [自主區]")
@@ -197,6 +205,24 @@ def main() -> None:
         "product decision checkpoint",
         "Task-030c-b18-C — DEBUG-Only Estimated Route Review Panel",
         "full `#if DEBUG` type boundary",
+        "Task-030c-b18-D — Real-Session Recheck and Product Decision Update",
+        "Task-030c-b19 — Outdoor Localization Release Gate",
+    ])
+    require_first_line_marker("Shared/Models/EstimatedRouteProductDecisionUpdate.swift", "// [協作區]")
+    require_first_line_marker("iOS/Core/SensorEngine/EstimatedRouteProductDecisionUpdateBuilder.swift", "// [自主區]")
+    require_first_line_marker("Tests/iOSTests/EstimatedRouteProductDecisionUpdateTests.swift", "// [自主區]")
+    require_first_line_marker("Shared/Models/OutdoorLocalizationReleaseGate.swift", "// [協作區]")
+    require_first_line_marker("iOS/Core/SensorEngine/OutdoorLocalizationReleaseGateBuilder.swift", "// [自主區]")
+    require_first_line_marker("Tests/iOSTests/OutdoorLocalizationReleaseGateTests.swift", "// [自主區]")
+    require_tokens("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md", [
+        "Task-030c-b18-D — Real-Session Recheck and Product Decision Update",
+        "Task-030c-b19 — Outdoor Localization Release Gate",
+        "estimatedRouteActive remains false",
+    ])
+    require_tokens("docs/reference/FILE_STRUCTURE.md", [
+        "Task-030c-b18-D real-session recheck and product decision update",
+        "Task-030c-b19 outdoor localization release gate",
+        "verify_task030c_b19_outdoor_localization_release_gate.py",
     ])
     print("Task-030c Post-b15 v1.2 alignment checks passed.")
 
