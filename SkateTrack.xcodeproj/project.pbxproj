@@ -108,6 +108,11 @@
 		14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000005 /* DebugToolsPanelView.swift */; };
 		B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */; };
 		B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */; };
+		B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */; };
+		B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */; };
 		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
 		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
 		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
@@ -620,6 +625,9 @@
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
 		B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanel.swift; sourceTree = "<group>"; };
 		B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanelTests.swift; sourceTree = "<group>"; };
+		B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdate.swift; sourceTree = "<group>"; };
+		B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdateBuilder.swift; sourceTree = "<group>"; };
+		B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdateTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -699,6 +707,7 @@
 				B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */,
 				B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */,
 				B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */,
+				B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
@@ -789,6 +798,7 @@
 				B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */,
 				B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */,
 				B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */,
+				B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -822,6 +832,7 @@
 				B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */,
 				B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */,
 				B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */,
+				B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -1452,6 +1463,7 @@
 				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
 				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
+				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1632,6 +1644,7 @@
 				B17D020000000000000101 /* DeadReckoningReplayReviewPackBuilder.swift in Sources */,
 				B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */,
 				B18B020000000000000101 /* EstimatedRouteReviewOverlayBuilder.swift in Sources */,
+				B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
@@ -1672,6 +1685,7 @@
 				B17D010000000000000101 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				B18A010000000000000101 /* EstimatedRouteDisplayDecision.swift in Sources */,
 				B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
@@ -1718,6 +1732,7 @@
 				B17D010000000000000103 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */,
 				B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
@@ -1767,6 +1782,7 @@
 				B17D010000000000000102 /* DeadReckoningReplayReviewPack.swift in Sources */,
 				B18A010000000000000102 /* EstimatedRouteDisplayDecision.swift in Sources */,
 				B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,

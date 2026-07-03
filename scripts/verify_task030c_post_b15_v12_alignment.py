@@ -45,7 +45,7 @@ def require_first_line_marker(relative_path: str, marker: str) -> None:
 def main() -> None:
     required_tokens = {
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-C"',
+            'static let currentDebugBuildTaskID = "Task-030c-b18-D"',
         ],
         "Shared/Models/LocalizationDiagnosticsReviewPack.swift": [
             'taskIdentifier: String = "Task-030c-b17-0"',
@@ -56,15 +56,15 @@ def main() -> None:
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-D";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [

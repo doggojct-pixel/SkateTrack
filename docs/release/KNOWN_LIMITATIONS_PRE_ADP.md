@@ -544,3 +544,15 @@ Task-030c-b18-B verification token: review-only overlay artifact, five real-sess
 
 Task-030c-b18-C verification token: DEBUG-only review panel, full `#if DEBUG` boundary, localized panel strings, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+### Task-030c-b18-D — Real-Session Recheck and Product Decision Update
+
+- **Current status:** Task-030c-b18-D records the b18 real-session recheck decision using the existing five-session evidence baseline. General-user estimated route display remains disabled.
+- **Evidence boundary:** New real-world sessions are optional for this milestone. The five b17-D-3 roles remain sufficient to complete the b18-D review artifact.
+- **Product limitation:** The decision outcome is `keepDisabled`; DEBUG/review-only inspection remains allowed, but product display remains blocked.
+- **Route limitation:** No route polylines, route coordinates, path shapes, Canvas previews, map overlays, or route-like geometry are introduced.
+- **Safety boundary:** `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, `estimatedRouteDisplayEnabled`, `userVisibleDisplayAllowed`, `generalUserEstimatedRouteDisplayAllowed`, and `estimatedRouteActive` remain false.
+- **Persistence boundary:** No Core Data, SessionRepository, SessionEntityMapper, or `.skatetrack` schema persistence is added.
+
+Task-030c-b18-D verification token: real-session recheck product decision update, outcome keepDisabled, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

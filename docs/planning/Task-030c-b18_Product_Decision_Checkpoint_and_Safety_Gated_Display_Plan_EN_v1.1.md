@@ -6,7 +6,7 @@
 **Current baseline:** after `859f860 Task-030c-b17-D-3 add real session review runner`  
 **Controlling plan:** `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`  
 **Previous required milestone:** Task-030c-b17-D / b17-D-3 real-session replay review pack  
-**Current implementation baseline:** Task-030c-b18-C, following completed b18-B review-only overlay artifact  
+**Current implementation baseline:** Task-030c-b18-D, following completed b18-C DEBUG-only review panel  
 
 ---
 
@@ -740,3 +740,16 @@ Do not implement Core Data persistence, repository persistence, package schema c
 The b17-D real-session evidence is valuable precisely because it advises caution. b18 should not attempt to make the route look better yet. It should make the safety decision visible, testable, in-memory, and hard to bypass. Only after additional real outdoor electric skateboard sessions demonstrate consistently low closure error and stable heading/IMU evidence should a later milestone consider product-facing estimated route display.
 
 v1.1 is therefore the required implementation baseline for b18-A and supersedes v1.0 for execution planning.
+
+
+## Task-030c-b18-D implementation note
+
+Task-030c-b18-D completes the b18 real-session recheck and product decision update. It uses `Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md` as the controlling mini implementation note.
+
+The milestone adds `EstimatedRouteProductDecisionUpdate` and `EstimatedRouteProductDecisionUpdateBuilder` to summarize the existing five b17-D-3 real-session roles from b18-B overlay evidence. The final product decision remains `keepDisabled`: General-user estimated route display remains disabled.
+
+b18-D does not require new real-world sessions for completion. New sessions may be collected later, but the existing five-session evidence remains sufficient for the b18-D product-decision update.
+
+b18-D must not render route geometry, connect to the normal Session Summary map, mutate production route data, change trusted metrics, persist decisions, update SessionRepository, update SessionEntityMapper, change `.skatetrack` schema, or set `estimatedRouteActive` to true.
+
+Task-030c-b18-D: Real-session recheck and product decision update. General-user estimated route display remains disabled.

@@ -2287,3 +2287,15 @@ Task-030c-b18-B verification token: review-only overlay artifact, five real-sess
 
 Task-030c-b18-C verification token: DEBUG-only estimated route review panel, fully wrapped in `#if DEBUG`, localized panel text, no route rendering, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+### Task-030c-b18-D — Real-Session Recheck and Product Decision Update
+
+- Implements the b18-D product decision update using `Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 plan.
+- Added `EstimatedRouteProductDecisionUpdate` and `EstimatedRouteProductDecisionSessionSummary` as shared review-only product-decision records for the b18 real-session recheck.
+- Added `EstimatedRouteProductDecisionUpdateBuilder` to summarize the five b17-D-3 real-session roles from b18-B overlay records and preserve the final `keepDisabled` decision.
+- Added deterministic XCTest coverage confirming the electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, and motorcycle pressure test do not become user-visible display candidates; motorcycle control remains limited hidden candidate evidence only.
+- Advanced the DEBUG build identity to `Task-030c-b18-D` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No route geometry, Session Summary map mutation, trusted metric mutation, Core Data, SessionRepository, SessionEntityMapper, or `.skatetrack` schema change is introduced.
+
+Task-030c-b18-D verification token: real-session recheck product decision update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

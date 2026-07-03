@@ -686,3 +686,14 @@ The DEBUG panel follows the existing localization rule intentionally: panel text
 
 Task-030c-b18-C verification token: DEBUG-only estimated route review panel, full `#if DEBUG` type boundary, localized panel strings, no route rendering, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+## Task-030c-b18-D Implementation Note
+
+`Task-030c-b18-D` implements the real-session recheck and product decision update from `Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md` while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md`.
+
+The milestone adds `EstimatedRouteProductDecisionUpdate` and `EstimatedRouteProductDecisionUpdateBuilder` to record that general-user estimated route display remains disabled after reviewing the existing five real-session roles. New real-world sessions are optional, not required, for b18-D completion.
+
+It does not connect to the normal Session Summary map, render route geometry, mutate route geometry, change trusted distance/speed/elevation metrics, persist decisions to Core Data, update `SessionRepository`, update `SessionEntityMapper`, or alter the `.skatetrack` schema. `estimatedRouteActive` remains false.
+
+Task-030c-b18-D verification token: real-session recheck product decision update, `EstimatedRouteProductDecisionUpdate`, outcome keepDisabled, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

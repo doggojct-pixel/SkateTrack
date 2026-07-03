@@ -410,3 +410,14 @@ Implementation: The DEBUG panel lives in `iOS/Features/Debug/EstimatedRouteRevie
 
 Task-030c-b18-C verification token: DEBUG-Only Estimated Route Review Panel, `EstimatedRouteReviewPanel`, full `#if DEBUG` type boundary, localized DEBUG panel strings, no route rendering, no user-visible estimated route display, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
 
+
+## Task-030c-b18-D — Real-Session Recheck and Product Decision Update
+
+Decision: Task-030c-b18-D completes the b18 product decision update from `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` and `Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md`. General-user estimated route display remains disabled.
+
+Boundary: The milestone records a review-only product decision update. It does not render route geometry, mutate production route data, change trusted metrics, persist decisions, update SessionRepository, update SessionEntityMapper, change `.skatetrack` schema, or alter normal Session Summary map behavior.
+
+Implementation: Shared product-decision output lives in `Shared/Models/EstimatedRouteProductDecisionUpdate.swift`. The iOS-only builder lives in `iOS/Core/SensorEngine/EstimatedRouteProductDecisionUpdateBuilder.swift`. Deterministic XCTest coverage lives in `Tests/iOSTests/EstimatedRouteProductDecisionUpdateTests.swift`.
+
+Task-030c-b18-D verification token: Real-Session Recheck and Product Decision Update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

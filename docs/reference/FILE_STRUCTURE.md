@@ -1544,3 +1544,16 @@ docs/planning/Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md # b18-C co
 
 Task-030c-b18-C verification token: DEBUG-Only Estimated Route Review Panel, `EstimatedRouteReviewPanel`, full `#if DEBUG` type boundary, localized panel text, no route rendering, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
 
+
+### Task-030c-b18-D real-session recheck and product decision update
+
+```text
+Shared/Models/EstimatedRouteProductDecisionUpdate.swift          # Shared review-only b18-D product decision update model; outcome keepDisabled.
+iOS/Core/SensorEngine/EstimatedRouteProductDecisionUpdateBuilder.swift # Summarizes b18-B overlay records into final b18-D product decision evidence.
+Tests/iOSTests/EstimatedRouteProductDecisionUpdateTests.swift    # Deterministic tests for five-session recheck and disabled user-visible display.
+scripts/verify_task030c_b18d_product_decision_update.py          # Verifies b18-D model, builder, five-session evidence, and safety constraints.
+docs/planning/Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md # b18-D controlling mini implementation note.
+```
+
+Task-030c-b18-D verification token: Real-Session Recheck and Product Decision Update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no route geometry, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
+
