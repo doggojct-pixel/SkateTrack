@@ -2263,3 +2263,15 @@ Task-030c-b17-D-3 verification token: real-session runner / export glue, `.skate
 - No general-user estimated route display is enabled. `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, and `estimatedRouteDisplayEnabled` remain false.
 
 Task-030c-b18-A verification token: in-memory product decision gate, named 6s / 30s threshold constants, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no trusted metric mutation, no route map display, estimatedRouteActive remains false.
+
+
+### Task-030c-b18-B — Review-Only Estimated Route Overlay Artifact
+
+- Implements the b18-B review-only overlay artifact using `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` as the controlling implementation baseline.
+- Added `EstimatedRouteReviewOverlay` and `EstimatedRouteReviewOverlayRecord` as shared review-only artifact models for b18-A display decisions.
+- Added `EstimatedRouteReviewOverlayBuilder` to convert b18-A decisions into overlay records carrying session role labels, decision states, blocking reasons, and safety flags without route geometry.
+- Added deterministic XCTest coverage for the five b17-D-3 real-session regression roles: electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, motorcycle pressure test, and motorcycle control sample.
+- Advanced the DEBUG build identity to `Task-030c-b18-B` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No Core Data, SessionRepository, SessionEntityMapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
+
+Task-030c-b18-B verification token: review-only overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

@@ -68,16 +68,16 @@ def main() -> None:
             "testDriftRateProducesNamedAccuracyGrowth",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-A"',
+            'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
         ],
         "SkateTrack.xcodeproj/project.pbxproj": [
             "DeadReckoningReplayDiagnostics.swift in Sources",

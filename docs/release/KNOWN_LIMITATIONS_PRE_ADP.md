@@ -522,3 +522,14 @@ Task-030c-b17-D-3 verification token: real-session review runner, `.skatetrack` 
 - **Threshold boundary:** Candidate consideration is tightened to `maximumCandidateGapDurationSeconds = 6`; gaps up to `maximumReviewOnlyGapDurationSeconds = 30` are review-only or future product-review evidence, not product display.
 
 Task-030c-b18-A verification token: in-memory display gate, no user-visible estimated route display, no trusted metric mutation, no persistence, product decision checkpoint required, estimatedRouteActive remains false.
+
+
+### Task-030c-b18-B — Review-Only Estimated Route Overlay Artifact
+
+- **Current status:** Task-030c-b18-B can convert b18-A in-memory display decisions into review-only overlay artifact records for product-decision inspection.
+- **Product boundary:** The overlay artifact is not a normal route overlay and is not visible to general users. It is review evidence only.
+- **Persistence boundary:** No Core Data attribute, `SessionRepository` persistence, `SessionEntityMapper` mapping, or `.skatetrack` schema change is introduced for estimated route review overlays.
+- **Safety boundary:** `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, `estimatedRouteDisplayEnabled`, `userVisibleDisplayAllowed`, and `estimatedRouteActive` remain false.
+- **Regression boundary:** The electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, and motorcycle pressure test must not be promoted to product display; motorcycle-control candidates remain hidden review evidence only.
+
+Task-030c-b18-B verification token: review-only overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

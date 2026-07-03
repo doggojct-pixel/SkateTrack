@@ -388,3 +388,14 @@ Boundary: This milestone follows `Task-030c_Post-b15_Localization_Completion_Pla
 Implementation: Shared in-memory decision output lives in `Shared/Models/EstimatedRouteDisplayDecision.swift`. The iOS-only gate lives in `iOS/Core/SensorEngine/EstimatedRouteDisplayGate.swift`, with named safety constants in `EstimatedRouteDisplayGatePolicy`. Deterministic XCTest coverage lives in `Tests/iOSTests/EstimatedRouteDisplayGateTests.swift`. The b18 v1.1 plan is stored in `docs/planning/Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md`.
 
 Task-030c-b18-A verification token: Product Decision Gate, In-Memory Estimated Route Display Decision, `EstimatedRouteDisplayDecision`, `EstimatedRouteDisplayGate`, `EstimatedRouteDisplayGatePolicy`, `maximumCandidateGapDurationSeconds = 6`, `maximumReviewOnlyGapDurationSeconds = 30`, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no general-user estimated route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+
+## Task-030c-b18-B — Review-Only Estimated Route Overlay Artifact
+
+Decision: Task-030c-b18-B implements the second b18 milestone from `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md`. The milestone turns b18-A in-memory display decisions into a review-only overlay artifact contract for product-decision inspection.
+
+Boundary: The overlay artifact is not route geometry and is not a product route. It carries review labels, decision states, blocking reasons, and safety flags only. It does not render normal session-summary maps, expose general-user estimated route display, mutate production route geometry, mutate trusted metrics, persist overlay state, update Core Data, update `SessionRepository`, update `SessionEntityMapper`, or change the `.skatetrack` schema. `estimatedRouteActive` remains false.
+
+Implementation: Shared overlay output lives in `Shared/Models/EstimatedRouteReviewOverlay.swift`. The iOS-only builder lives in `iOS/Core/SensorEngine/EstimatedRouteReviewOverlayBuilder.swift`. Deterministic XCTest coverage for the five real-session regression roles lives in `Tests/iOSTests/EstimatedRouteReviewOverlayTests.swift`.
+
+Task-030c-b18-B verification token: Review-Only Estimated Route Overlay Artifact, `EstimatedRouteReviewOverlay`, `EstimatedRouteReviewOverlayBuilder`, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.

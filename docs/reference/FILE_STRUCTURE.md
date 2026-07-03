@@ -1520,3 +1520,15 @@ docs/planning/Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display
 ```
 
 Task-030c-b18-A verification token: Product Decision Gate, In-Memory Estimated Route Display Decision, `EstimatedRouteDisplayDecision`, `EstimatedRouteDisplayGate`, `EstimatedRouteDisplayGatePolicy`, 6s candidate / 30s review-only policy, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
+
+
+### Task-030c-b18-B review-only estimated route overlay artifact
+
+```text
+Shared/Models/EstimatedRouteReviewOverlay.swift          # Shared review-only overlay artifact model; no route geometry or persistence.
+iOS/Core/SensorEngine/EstimatedRouteReviewOverlayBuilder.swift # Converts b18-A decisions into review-only overlay records.
+Tests/iOSTests/EstimatedRouteReviewOverlayTests.swift    # Deterministic tests for five real-session regression traps and hidden candidates.
+scripts/verify_task030c_b18b_review_overlay.py           # Verifies b18-B tokens, review-only boundary, file-size guard, and safety constraints.
+```
+
+Task-030c-b18-B verification token: Review-Only Estimated Route Overlay Artifact, `EstimatedRouteReviewOverlay`, `EstimatedRouteReviewOverlayBuilder`, five real-session regression traps, no route geometry, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.

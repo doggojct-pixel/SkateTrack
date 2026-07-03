@@ -6,7 +6,7 @@
 **Current baseline:** after `859f860 Task-030c-b17-D-3 add real session review runner`  
 **Controlling plan:** `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`  
 **Previous required milestone:** Task-030c-b17-D / b17-D-3 real-session replay review pack  
-**Next implementation milestone:** Task-030c-b18-A, pending approval of this v1.1 plan  
+**Current implementation baseline:** Task-030c-b18-B, following completed b18-A product decision gate  
 
 ---
 
@@ -300,6 +300,9 @@ scripts/verify_task030c_b18b_review_overlay.py
 - No persisted route replacement.
 - No automatic promotion from review overlay to product route.
 
+
+**b18-B implementation note:** Task-030c-b18-B turns the b18-A in-memory decision gate into a review-only overlay artifact contract. The artifact carries session role labels, decision states, blocking reasons, and safety flags so the five real-session regression traps can be inspected without adding route geometry, changing the normal session-summary map, or persisting display decisions. The overlay is review evidence only; it must never be promoted into general-user estimated route display in b18-B.
+
 ---
 
 ### b18-C — Safety-Gated DEBUG-Only Inspection UI / Developer Hook
@@ -590,6 +593,18 @@ The b18-A verifier must confirm:
 - No `.skatetrack` package schema changes are added for display decisions.
 - Thresholds are defined as named policy constants, not inline literals.
 - Hard safety defaults remain false/true as required.
+
+### b18-B verifier requirements
+
+The b18-B verifier must confirm:
+
+- `EstimatedRouteReviewOverlay` exists and is explicitly review-only.
+- `EstimatedRouteReviewOverlayBuilder` consumes b18-A decisions without producing route geometry.
+- The five real-session regression roles are represented in deterministic XCTest coverage.
+- Walking, sheltered surfskate, and motorcycle pressure cases remain blocked.
+- The electric skateboard core candidate is not promoted to general product display.
+- Any motorcycle-control candidate remains `candidateButHidden` or review evidence only, never user-visible.
+- No Core Data, repository, mapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
 
 ### b18-C verifier requirements
 

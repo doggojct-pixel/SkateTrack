@@ -87,14 +87,14 @@ def main() -> int:
         "20260701-204705",
     ])
     require("Shared/Models/SessionData.swift", [
-        'static let currentDebugBuildTaskID = "Task-030c-b18-A"',
+        'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
     ])
     for loc in [
         "Shared/Localization/en.lproj/Localizable.strings",
         "Shared/Localization/zh-Hant.lproj/Localizable.strings",
         "Shared/Localization/ja.lproj/Localizable.strings",
     ]:
-        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-A";'])
+        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-B";'])
 
     require("SkateTrack.xcodeproj/project.pbxproj", [
         "EstimatedRouteDisplayDecision.swift in Sources",
