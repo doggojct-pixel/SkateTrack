@@ -1,14 +1,23 @@
 // [協作區] MacSessionBrowserView.swift
-// 用途：macOS 只讀 Session 瀏覽器 foundation，瀏覽目前已開啟 .skatetrack package 內的 session。
-// 委派至：MacSessionDetailView；不得 import 到資料庫、merge、restore、同步雲端或宣告 document association。
+// 用途：macOS browser-first 只讀 Session 瀏覽器，從瀏覽器內開啟 .skatetrack package 並顯示 session。
+// 委派至：MacSessionDetailView / MacPackageImportViewModel；不得 import 到資料庫、merge、restore、同步雲端或宣告 document association。
 
+import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct MacSessionBrowserView: View {
-    let preview: MacPackageImportPreview?
-    let openImportAction: () -> Void
+    @ObservedObject private var viewModel: MacPackageImportViewModel
 
     @State private var selectedSessionID: UUID?
+
+    init(viewModel: MacPackageImportViewModel) {
+        self.viewModel = viewModel
+    }
+
+    private var preview: MacPackageImportPreview? {
+        viewModel.preview
+    }
 
     private var viewerModels: [MacSessionViewerModel] {
         preview?.payload.sessions.map(MacSessionViewerModel.init) ?? []
@@ -23,12 +32,34 @@ struct MacSessionBrowserView: View {
     }
 
     var body: some View {
-        Group {
-            if let preview {
-                viewerContent(preview: preview)
-            } else {
-                emptyState
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                MacPackageBrowserHeaderView(
+                    preview: preview,
+                    isReading: viewModel.isImporting,
+                    openAction: openPackagePanel,
+                    clearAction: viewModel.clearPreview
+                )
+
+                if let errorMessageKey = viewModel.errorMessageKey {
+                    MacSessionBrowserStatusCard(
+                        titleKey: "mac.viewer.open.error.title",
+                        messageKey: errorMessageKey,
+                        systemImage: "exclamationmark.triangle.fill"
+                    )
+                }
+
+                if let preview {
+                    viewerContent(preview: preview)
+                } else {
+                    emptyState
+                }
             }
+            .padding(.horizontal, 30)
+            .padding(.top, 10)
+            .padding(.bottom, 30)
+            .frame(maxWidth: 1_120, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
         .background(
             LinearGradient(
@@ -45,58 +76,155 @@ struct MacSessionBrowserView: View {
     }
 
     private func viewerContent(preview: MacPackageImportPreview) -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                MacCurrentPackageSessionSummaryView(
-                    preview: preview,
-                    models: viewerModels,
-                    selectedSessionID: $selectedSessionID,
-                    selectedModel: selectedModel
-                )
+        VStack(alignment: .leading, spacing: 18) {
+            MacCurrentPackageSessionSummaryView(
+                preview: preview,
+                models: viewerModels,
+                selectedSessionID: $selectedSessionID,
+                selectedModel: selectedModel
+            )
 
-                if let selectedModel {
-                    MacSessionDetailView(model: selectedModel, packageFileName: preview.fileName)
-                } else {
-                    MacSessionViewerEmptyCard(
-                        titleKey: "mac.viewer.empty.no_session.title",
-                        subtitleKey: "mac.viewer.empty.no_session.subtitle",
-                        systemImage: "tray"
-                    )
-                }
+            if let selectedModel {
+                MacSessionDetailView(model: selectedModel, packageFileName: preview.fileName)
+            } else {
+                MacSessionViewerEmptyCard(
+                    titleKey: "mac.viewer.empty.no_session.title",
+                    subtitleKey: "mac.viewer.empty.no_session.subtitle",
+                    systemImage: "tray"
+                )
             }
-            .padding(.horizontal, 30)
-            .padding(.top, 10)
-            .padding(.bottom, 30)
-            .frame(maxWidth: 1_120, alignment: .topLeading)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
     }
 
     private var emptyState: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                MacSessionViewerEmptyCard(
-                    titleKey: "mac.viewer.empty.title",
-                    subtitleKey: "mac.viewer.empty.subtitle",
-                    systemImage: "list.bullet.rectangle"
-                )
+        MacSessionViewerEmptyCard(
+            titleKey: "mac.viewer.empty.title",
+            subtitleKey: "mac.viewer.empty.subtitle",
+            systemImage: "list.bullet.rectangle"
+        )
+    }
 
-                Button(action: openImportAction) {
-                    Label("mac.viewer.empty.button", systemImage: "square.and.arrow.down")
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .padding(.horizontal, 32)
-            .padding(.top, 8)
-            .padding(.bottom, 32)
-            .frame(maxWidth: 760, alignment: .topLeading)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
-        }
+    private func openPackagePanel() {
+        let panel = NSOpenPanel()
+        panel.title = String(localized: "mac.import.panel.title")
+        panel.prompt = String(localized: "mac.import.panel.prompt")
+        panel.message = String(localized: "mac.import.panel.message")
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.data]
+
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        viewModel.importPackage(from: url)
     }
 
     private func selectDefaultSessionIfNeeded(force: Bool = false) {
         guard force || selectedSessionID == nil || !viewerModels.contains(where: { $0.id == selectedSessionID }) else { return }
         selectedSessionID = viewerModels.first?.id
+    }
+}
+
+private struct MacPackageBrowserHeaderView: View {
+    let preview: MacPackageImportPreview?
+    let isReading: Bool
+    let openAction: () -> Void
+    let clearAction: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .top, spacing: 16) {
+                Image(systemName: "rectangle.stack.badge.play")
+                    .font(.system(size: 38, weight: .semibold))
+                    .foregroundStyle(.cyan)
+                    .frame(width: 60, height: 60)
+                    .background(.cyan.opacity(0.14), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 7) {
+                    Text("mac.viewer.open.title")
+                        .font(.largeTitle.bold())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.72)
+                    Text("mac.viewer.open.subtitle")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Spacer(minLength: 18)
+
+                VStack(alignment: .trailing, spacing: 10) {
+                    Button(action: openAction) {
+                        Label {
+                            Text(LocalizedStringKey(isReading ? "mac.import.button.importing" : "mac.viewer.open.button"))
+                        } icon: {
+                            Image(systemName: "folder")
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(isReading)
+
+                    if preview != nil {
+                        Button(role: .destructive, action: clearAction) {
+                            Label("mac.viewer.open.clear", systemImage: "xmark.circle")
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+
+            if let preview {
+                Label {
+                    Text(String(format: String(localized: "mac.viewer.open.current_file.format"), preview.fileName))
+                        .font(.callout.monospaced())
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                } icon: {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .foregroundStyle(.green)
+                }
+            }
+
+            Label {
+                Text("mac.viewer.open.readonly")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            } icon: {
+                Image(systemName: "lock.shield")
+                    .foregroundStyle(.green)
+            }
+        }
+        .padding(24)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 26, style: .continuous)
+                .stroke(.white.opacity(0.08), lineWidth: 1)
+        )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text("mac.accessibility.browser_header.label"))
+        .accessibilityHint(Text("mac.accessibility.browser_header.hint"))
+    }
+}
+
+private struct MacSessionBrowserStatusCard: View {
+    let titleKey: String
+    let messageKey: String
+    let systemImage: String
+
+    var body: some View {
+        Label {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(LocalizedStringKey(titleKey))
+                    .font(.headline)
+                Text(LocalizedStringKey(messageKey))
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        } icon: {
+            Image(systemName: systemImage)
+                .foregroundStyle(.orange)
+        }
+        .padding(18)
+        .background(.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
 

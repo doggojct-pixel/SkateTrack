@@ -1604,3 +1604,24 @@ docs/reference/FILE_STRUCTURE.md                             # [原則 E] Record
 - No route geometry mutation, no trusted metrics mutation, no estimated route display enablement, no production sync/cloud behavior, no Watch / WatchBridge, no Task-031, and no Task-030e implementation is introduced.
 
 Task-030d-A file-structure token: iOS multi-file .skatetrack import foundation, History import button, staged validation, no silent overwrite, no route geometry mutation, no trusted metrics mutation, no package schema change.
+
+## Task-030e-MacViewer-002 Browser-First IA Shell Addendum
+
+### Updated Source Areas
+
+```text
+macOS/App/MacRootView.swift                         # [協作區] Browser-first macOS shell; Session Browser is the default destination and standalone Import is no longer a primary sidebar destination.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift # [協作區] Session Browser now owns the visible Open Package action, browser header, read-only status, and current package clearing control.
+Shared/Localization/en.lproj/Localizable.strings    # [原則 A] Browser-first Open Package copy and accessibility keys.
+Shared/Localization/zh-Hant.lproj/Localizable.strings # [原則 A] Browser-first Open Package copy and accessibility keys.
+Shared/Localization/ja.lproj/Localizable.strings    # [原則 A] Browser-first Open Package copy and accessibility keys.
+scripts/verify_macos_package_preview.py             # [工程設定] Updated for Task-030e browser-first shell while preserving Task-027b package preview safety boundaries.
+scripts/verify_macos_session_viewer.py              # [工程設定] Updated for in-browser package opening and shared view-model state.
+scripts/verify_task030e_browser_first_ia.py         # [工程設定] Task-030e-MacViewer-002 verifier aligned with Build Plan v1.2.
+```
+
+### Deferred After Task-030e-MacViewer-002
+
+- Multi-package state, multi-file package opening, package cards, selected package list, MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files, bookmarks, database import, merge, restore, cloud sync, Watch, WatchBridge, and Task-031 remain out of this step.
+- `MacPackageImportViewModel` remains the lower-level read-only package reader boundary for now; later Task-030e subtasks may wrap or replace its single-preview state with an in-memory multi-package browser model.
+- Task-030e-MacViewer-002 is aligned with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` and must not be treated as full Task-030e completion.

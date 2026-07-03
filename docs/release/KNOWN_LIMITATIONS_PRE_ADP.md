@@ -591,3 +591,11 @@ Task-030c final closure verification token: Section 5 closure checklist mapped t
 - **Out of scope:** Production sync/cloud import, Watch / WatchBridge, Task-031 indoor localization, and Task-030e macOS multi-package viewer remain separate tasks.
 
 Task-030d-A limitation token: iOS multi-file .skatetrack import, no silent overwrite, no silent merge, no route geometry mutation, no trusted metrics mutation, no package schema change.
+
+### Task-030e-MacViewer-002 — Browser-First macOS Viewer IA Limitation
+
+- **Current status:** The macOS app now treats Session Browser as the primary `.skatetrack` review surface and opens packages from within that browser flow.
+- **Still deferred:** Multi-package in-memory state, true multi-file open, package cards, MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files, bookmarks, database import, merge, restore, and cloud sync remain later Task-030e subtasks.
+- **Safety boundary:** This step is read-only. It does not mutate package schema, route geometry, trusted metrics, Core Data, or local session storage.
+
+Task-030e-MacViewer-002 limitation token: browser-first macOS Session Browser shell, Open Packages copy, Import destination demoted, no multi-package state yet, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.

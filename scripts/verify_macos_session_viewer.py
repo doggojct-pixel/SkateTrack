@@ -94,20 +94,16 @@ def ensure_root_shared_preview_state() -> None:
     root = read("macOS/App/MacRootView.swift")
     for token in [
         "@StateObject private var packageViewModel",
-        "MacImportView(viewModel: packageViewModel)",
-        "MacSessionBrowserView(",
-        "preview: packageViewModel.preview",
-        "openImportAction",
-        "selection = .importPackage",
+        "@State private var selection: MacRootDestination = .sessionBrowser",
+        "MacSessionBrowserView(viewModel: packageViewModel)",
         "NavigationSplitView(columnVisibility:",
     ]:
         if token not in root:
             fail(f"MacRootView missing shared-state/navigation token: {token}")
-    if "MacLockedDestinationView(\n                destination: selection,\n                titleKey: \"mac.import.locked.sessions.title\"" in root:
-        fail("Session Browser should no longer be a locked placeholder in Task-028a")
+    if "case importPackage" in root or "selection = .importPackage" in root:
+        fail("Task-030e browser-first shell must not route package opening through a primary Import destination")
     if "RootNavigationView" in root:
         fail("macOS viewer must not reuse iOS RootNavigationView")
-
 
 def ensure_import_reuses_view_model() -> None:
     import_view = read("macOS/Features/Import/MacImportView.swift")
@@ -132,13 +128,16 @@ def ensure_session_browser() -> None:
     preview = read("macOS/Features/Import/MacPackagePreviewView.swift")
 
     for token in [
-        "MacPackageImportPreview?",
+        "@ObservedObject private var viewModel: MacPackageImportViewModel",
+        "private var preview: MacPackageImportPreview?",
         "preview?.payload.sessions.map(MacSessionViewerModel.init)",
-        "selectedSessionID",
+        "MacPackageBrowserHeaderView",
+        "openPackagePanel",
+        "viewModel.importPackage(from: url)",
         "MacCurrentPackageSessionSummaryView",
         "MacPackageSessionSelectorButton",
         "MacSessionDetailView",
-        "openImportAction",
+        "mac.viewer.open.title",
         "mac.viewer.empty.title",
         "mac.viewer.package.current",
         "mac.viewer.package.single_session",
@@ -148,6 +147,8 @@ def ensure_session_browser() -> None:
     ]:
         if token not in browser:
             fail(f"MacSessionBrowserView missing token: {token}")
+    if "openImportAction" in browser or "Go to Import" in browser:
+        fail("MacSessionBrowserView must open packages in the browser, not route users to Import")
     if ".frame(width: 238)" in browser or "sessionList(preview:" in browser:
         fail("MacSessionBrowserView should no longer use a separate middle session-list column")
     for token in [
@@ -190,7 +191,6 @@ def ensure_session_browser() -> None:
             fail(f"MacRoutePreviewView missing token: {token}")
     if "MacSessionViewerModel" not in preview or "viewer_ready" not in preview:
         fail("MacPackagePreviewView should use Task-028a viewer-derived metrics and no longer advertise viewer as locked")
-
 
 def ensure_boundaries() -> None:
     project = read("SkateTrack.xcodeproj/project.pbxproj")

@@ -88,8 +88,7 @@ def ensure_macos_shell() -> None:
     if "RootNavigationView" in root or "iOS/App" in root:
         fail("macOS shell must not reuse iOS RootNavigationView")
     for token in [
-        "MacImportView(viewModel: packageViewModel)",
-        "MacSessionBrowserView",
+        "MacSessionBrowserView(viewModel: packageViewModel)",
         "MacLockedFeatureCardView",
         "mac.import.sidebar",
         "NavigationSplitView(columnVisibility:",
@@ -97,9 +96,12 @@ def ensure_macos_shell() -> None:
         "MacSidebarView",
         "MacRootDetailView",
         "navigationSplitViewColumnWidth",
+        "@State private var selection: MacRootDestination = .sessionBrowser",
     ]:
         if token not in root:
             fail(f"MacRootView missing stability token: {token}")
+    if "case importPackage" in root:
+        fail("Task-030e browser-first shell must not expose Import as a primary sidebar destination")
     if "List(selection:" in root:
         fail("MacRootView should use a stable custom sidebar instead of List(selection:) for Task-027b")
     if "@State private var selection: MacRootDestination?" in root:

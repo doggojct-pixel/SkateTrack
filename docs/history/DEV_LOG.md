@@ -2335,3 +2335,13 @@ Task-030c final closure verification token: Section 5 closure checklist mapped t
 - Preserved Task-030c safety boundaries: no general-user estimated route display, no route geometry mutation, no trusted metrics mutation, and no route reconstruction.
 
 Task-030d-A verification token: iOS multi-file .skatetrack import foundation, History import button, staged validation, partial success preview, no silent overwrite, no package schema change, no route geometry mutation, no trusted metrics mutation, no Watch / Task-031 / Task-030e scope.
+
+### Task-030e-MacViewer-002 — Browser-First IA Shell
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Made the macOS `Session Browser` the default browser-first destination for opening and reviewing `.skatetrack` packages.
+- Moved the package open action into `MacSessionBrowserView` header / empty state flow while retaining `MacPackageImportViewModel` as the lower-level read-only package reader boundary.
+- Demoted the standalone Import destination from the primary sidebar; macOS user-facing copy now uses Open Packages / Open Package language rather than implying database import.
+- Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
+
+Task-030e-MacViewer-002 verification token: browser-first Session Browser IA, Open Packages action in browser header, Import destination not primary sidebar, read-only package opening, `MacPackageBrowserHeaderView`, aligned Build Plan v1.2, no multi-package state yet, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
