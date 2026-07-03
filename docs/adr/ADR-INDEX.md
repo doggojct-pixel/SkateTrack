@@ -1,7 +1,7 @@
 # SkateTrack ADR Index
 
-**Status:** Active index — Task-030b consolidation  
-**Last Updated:** 2026-06-13  
+**Status:** Active index — Task-030b consolidation
+**Last Updated:** 2026-06-13
 **Purpose:** Preserve the historical meaning of old ADRs while moving daily rules and Pre-ADP limitations into consolidated documents.
 
 Task-030b removes the old ADR single files from the active docs tree to reduce fragmentation. Their decisions remain summarized here. Use this index to understand where a decision now lives.
@@ -431,3 +431,42 @@ Boundary: b19 does not render route geometry, add route polylines, mutate the no
 Implementation: Shared release-gate output lives in `Shared/Models/OutdoorLocalizationReleaseGate.swift`. The iOS builder lives in `iOS/Core/SensorEngine/OutdoorLocalizationReleaseGateBuilder.swift`. Deterministic XCTest coverage lives in `Tests/iOSTests/OutdoorLocalizationReleaseGateTests.swift`.
 
 Task-030c-b19 verification token: Outdoor Localization Release Gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, decisions `releaseReady`, `limitedDisclosure`, `blocked`, realGPSOnly true, no user-visible estimated route display, no route geometry mutation, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c Final Closure Audit — Section 5 DoD Mapping
+
+Decision: Task-030c may close at b19 with a docs-only final closure audit rather than opening a new b20 milestone. The active branch has completed the v1.2 sequence through `2cc0550 Task-030c-b19 add outdoor localization release gate`, and the remaining closure work is documentation, audit traceability, and merge hygiene only.
+
+Boundary: This closure audit is not a feature milestone. It must not add Swift production logic, estimated route display, route reconstruction, route map rendering, route geometry mutation, trusted metric mutation, Core Data persistence, `SessionRepository` persistence, `SessionEntityMapper` mapping, `.skatetrack` schema changes, road snapping, fake GPS, camera localization, RTK, UWB consumer-flow dependency, or indoor estimated route geometry.
+
+Section 5 mapping:
+
+| v1.2 DoD area | Closure evidence |
+|---|---|
+| Outdoor GPS fidelity | b13–b16 and b19 preserve visual honesty, low-confidence / warm-up distinction, bad-GPS diagnostics, small-area disclosure, stable trusted metrics, and outdoor release classification. |
+| Locked-screen / pocket continuity | b17-A/B/C/D and b17-D-3 provide replay-only IMU estimates, closure-error scoring, real-session review artifacts, and ineligible-gap disclosure. |
+| Estimated route display condition | b18-A/B/C/D implements in-memory gates, review-only artifacts, DEBUG-only inspection, and final `keepDisabled`; general-user display is not enabled. |
+| Indoor localization | Indoor product work is explicitly deferred to Task-031; Task-030c only contributes passive accuracy-source and heading-quality scaffolding. |
+| Honesty and non-goals | Camera localization, RTK, UWB consumer dependency, road snapping, fake GPS, and perfect small-area reconstruction remain rejected. |
+| Engineering quality | b19 final verification passed verify/build/XCTest/status; docs are updated; Task-031 handoff remains the next scope. |
+
+Commit trace:
+
+```text
+0cfe8e1 Task-030c-b16-A add localization foundation plan
+c3a57dd Task-030c-b16-B add barometric GPS outlier diagnostics
+505a1eb Task-030c-b16-C add passive accuracy source diagnostics
+87aabef Task-030c-b16-D add heading quality diagnostics
+1a5f264 Task-030c-b17-0 align localization diagnostics review foundation
+d7412ff Task-030c-b17-A add IMU local frame and bias foundation
+6596231 Task-030c-b17-B add replay-only dead reckoning engine
+b8037ba Task-030c-b17-C add dead reckoning closure scoring
+5dea284 Task-030c-b17-D add replay review pack
+859f860 Task-030c-b17-D-3 add real session review runner
+93ae35e Task-030c-b18-A add product decision display gate
+db8f42b Task-030c-b18-B add review-only estimated route overlay
+8d39e18 Task-030c-b18-C add DEBUG estimated route review panel
+9d7db70 Task-030c-b18-D add product decision update
+2cc0550 Task-030c-b19 add outdoor localization release gate
+```
+
+Task-030c final closure verification token: docs-only closure audit, Section 5 DoD mapping, commit trace through `2cc0550`, b18-D `keepDisabled`, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.

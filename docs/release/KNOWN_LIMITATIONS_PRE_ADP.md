@@ -1,7 +1,7 @@
 # Known Limitations Before Apple Developer Program / External Credentials
 
-**Status:** Active source of truth — Task-030b consolidation  
-**Last Updated:** 2026-06-13  
+**Status:** Active source of truth — Task-030b consolidation
+**Last Updated:** 2026-06-13
 **Scope:** Features intentionally blocked until Apple Developer Program enrollment, App Store Connect setup, Google Cloud credentials, production provider configuration, or additional release validation is available.
 
 This file replaces scattered pre-ADP limitation notes from older ADRs. Each item states current status, why it is blocked, the current safe substitute, the unlock condition, the suggested future task, and what must not be claimed.
@@ -565,3 +565,17 @@ Task-030c-b18-D verification token: real-session recheck product decision update
 - **Persistence boundary:** b19 introduces no Core Data, `SessionRepository`, `SessionEntityMapper`, export payload, or `.skatetrack` schema change.
 
 Task-030c-b19 verification token: outdoor localization release gate, releaseReady, limitedDisclosure, blocked, realGPSOnly true, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c Final Closure Audit — Post-b19 Outdoor Localization Baseline
+
+- **Current status:** Task-030c is ready for final closure after `2cc0550 Task-030c-b19 add outdoor localization release gate`, pending the dedicated docs-only closure commit and merge back to `develop`.
+- **Section 5 coverage:** The Task-030c v1.2 Final Definition of Done is covered by the completed b13–b19 chain: honest startup / warm-up visuals, distinct low-confidence route styling, conservative bad-GPS diagnostics, stable trusted metrics, replay-only IMU gap estimates, closure-error scoring, real-session review artifacts, conservative b18-D product decision, and b19 outdoor localization release gate.
+- **Estimated route product decision:** The final b18-D decision remains `keepDisabled`. General-user estimated route display is not enabled by Task-030c closure. DEBUG/review-only inspection artifacts may remain, but they must not be represented as normal product route correction.
+- **Outdoor release gate:** b19 classifies real-GPS outdoor localization evidence as `releaseReady`, `limitedDisclosure`, or `blocked`. This is a release-quality classification over real localization evidence, not estimated-route reconstruction.
+- **Still limited:** Small-area GPS loops, sheltered environments, startup warm-up, low-speed localization traps, and long GPS gaps must still be disclosed or blocked when evidence quality requires it. Task-030c does not claim perfect reconstruction of small-area routes.
+- **Indoor scope:** Indoor localization remains outside Task-030c and is tracked under Task-031. Task-030c only provides passive accuracy-source diagnostics, heading quality diagnostics, and honesty scaffolding that Task-031 can reuse.
+- **Persistence boundary:** Task-030c final closure adds no Core Data schema, `SessionRepository`, `SessionEntityMapper`, export payload, or `.skatetrack` schema persistence for estimated route decisions, review overlays, product decisions, or b19 release gates.
+- **Safety boundary:** `generalUserEstimatedRouteDisplayAllowed`, `estimatedRouteDisplayEnabled`, `estimatedRouteActive`, `routeGeometryMutationApplied`, `trustedMetricsMutationApplied`, and persistence/schema mutation remain false.
+- **Do not claim:** Do not claim production estimated route display, route reconstruction, map matching, road snapping, fake GPS, camera localization, RTK, UWB consumer-flow dependency, indoor estimated route geometry, or trusted metrics derived from estimated geometry.
+
+Task-030c final closure verification token: Section 5 closure checklist mapped to commits, `2cc0550`, b18-D outcome `keepDisabled`, b19 outdoor localization release gate, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.
