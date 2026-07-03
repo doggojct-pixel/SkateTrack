@@ -45,7 +45,7 @@ def require_first_line_marker(relative_path: str, marker: str) -> None:
 def main() -> None:
     required_tokens = {
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b17-D"',
+            'static let currentDebugBuildTaskID = "Task-030c-b18-A"',
         ],
         "Shared/Models/LocalizationDiagnosticsReviewPack.swift": [
             'taskIdentifier: String = "Task-030c-b17-0"',
@@ -56,15 +56,15 @@ def main() -> None:
             'Text("debug.build.badge")',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b17-D";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-A";',
             '"debug.build.badge" = "DEBUG";',
         ],
         "docs/planning/Task-030c-b16_Localization_Foundation_Plan.md": [
@@ -74,9 +74,11 @@ def main() -> None:
             "Task-030c-b17-B",
             "Task-030c-b17-C",
             "Task-030c-b17-D",
+            "Task-030c-b18-A",
             "Task-030c-b17-B Implementation Note",
             "Task-030c-b17-C Implementation Note",
             "Task-030c-b17-D Implementation Note",
+            "Task-030c-b18-A Implementation Note",
             "Task030c_b17D_ReplayReviewPack.zip",
             "Task-030c-b18-C",
             "non-code product decision checkpoint",
@@ -153,6 +155,9 @@ def main() -> None:
         "DeadReckoningReplayReviewPack.swift in Sources",
         "DeadReckoningReplayReviewPackBuilder.swift in Sources",
         "DeadReckoningReplayReviewPackTests.swift in Sources",
+        "EstimatedRouteDisplayDecision.swift in Sources",
+        "EstimatedRouteDisplayGate.swift in Sources",
+        "EstimatedRouteDisplayGateTests.swift in Sources",
     ])
     require_first_line_marker("Shared/Models/DeadReckoningReplayDiagnostics.swift", "// [協作區]")
     require_first_line_marker("iOS/Core/SensorEngine/DeadReckoningEngine.swift", "// [自主區]")
@@ -169,6 +174,9 @@ def main() -> None:
     require_first_line_marker("Shared/Models/DeadReckoningReplayReviewPack.swift", "// [協作區]")
     require_first_line_marker("iOS/Core/SensorEngine/DeadReckoningReplayReviewPackBuilder.swift", "// [自主區]")
     require_first_line_marker("Tests/iOSTests/DeadReckoningReplayReviewPackTests.swift", "// [自主區]")
+    require_first_line_marker("Shared/Models/EstimatedRouteDisplayDecision.swift", "// [協作區]")
+    require_first_line_marker("iOS/Core/SensorEngine/EstimatedRouteDisplayGate.swift", "// [自主區]")
+    require_first_line_marker("Tests/iOSTests/EstimatedRouteDisplayGateTests.swift", "// [自主區]")
     require_tokens("docs/adr/ADR-INDEX.md", [
         "Task-030c-b17-D — Real-Session Replay Review Pack",
         "Task030c_b17D_ReplayReviewPack.zip",

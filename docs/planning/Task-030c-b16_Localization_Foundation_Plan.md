@@ -656,3 +656,11 @@ After b17-D, a non-code product decision checkpoint is required before any b18 d
 `Task-030c-b17-D-3` adds the real-session review runner / export glue needed to apply b17-D to actual `.skatetrack` exports. It does not change app route rendering or production scoring. The runner reads one or more session files or zip archives and writes `Task030c_b17D_ReplayReviewPack.zip` containing JSON, Markdown, and CSV review artifacts.
 
 The runner is intended for the real-session product-decision review before b18. It records gap duration, IMU sample coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative user-visible eligibility, and blocking reasons. b18 display model work and production eligibility gates remain blocked until this review evidence is interpreted.
+
+## Task-030c-b18-A Implementation Note
+
+`Task-030c-b18-A` implements the first b18 milestone after the b17-D / b17-D-3 product decision checkpoint. It follows `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` and remains aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`.
+
+The implementation adds an in-memory-only estimated route display decision model and safety gate. It does not persist decisions to Core Data, `SessionRepository`, `SessionEntityMapper`, or `.skatetrack` package schema. It does not add route map rendering, product UI, production estimated route geometry, trusted metric mutation, road snapping, or map matching.
+
+The b18-A product decision tightens the v1.2 candidate threshold into a two-tier policy: `maximumCandidateGapDurationSeconds = 6` for hidden candidate consideration and `maximumReviewOnlyGapDurationSeconds = 30` for review-only or future product-review evidence. This conservative split is documented because b17-D-3 real-session review found 0 eligible gaps for the core electric-skateboard session.

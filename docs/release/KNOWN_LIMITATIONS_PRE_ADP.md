@@ -512,3 +512,13 @@ Task-030c-b17-D verification token: real-session replay review pack, no user-vis
 - **Review limitation:** The runner is an offline diagnostic tool. Its output helps decide whether b18 should display any estimated route segment, but it is not itself a production route correction feature.
 
 Task-030c-b17-D-3 verification token: real-session review runner, `.skatetrack` inputs, no user-visible estimated route display, no trusted metric mutation, product decision checkpoint required, estimatedRouteActive remains false.
+
+### Task-030c-b18-A — Product Decision Gate and In-Memory Estimated Route Display Decision
+
+- **Current status:** Task-030c-b18-A can classify b17-D replay review gap records into in-memory display decision states for product review.
+- **Product boundary:** This is not general-user estimated route display. All b18-A decisions are hidden/review-only and are not persisted.
+- **Persistence boundary:** No Core Data attribute, `SessionRepository` persistence, `SessionEntityMapper` mapping, or `.skatetrack` package schema change is introduced for estimated route display decisions.
+- **Safety boundary:** `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, `estimatedRouteDisplayEnabled`, and `estimatedRouteActive` remain false.
+- **Threshold boundary:** Candidate consideration is tightened to `maximumCandidateGapDurationSeconds = 6`; gaps up to `maximumReviewOnlyGapDurationSeconds = 30` are review-only or future product-review evidence, not product display.
+
+Task-030c-b18-A verification token: in-memory display gate, no user-visible estimated route display, no trusted metric mutation, no persistence, product decision checkpoint required, estimatedRouteActive remains false.

@@ -2250,3 +2250,16 @@ Task-030c-b17-D verification token: v1.2 real-session replay review pack, JSON /
 - Preserved the b17-D safety boundary: no route map rendering, no production route mutation, no trusted metrics mutation, and no user-visible estimated route display.
 
 Task-030c-b17-D-3 verification token: real-session runner / export glue, `.skatetrack` inputs, review-only artifacts, product decision checkpoint required, estimatedRouteActive remains false.
+
+### Task-030c-b18-A — Product Decision Gate and In-Memory Estimated Route Display Decision
+
+- Implements the b18-A product decision gate using `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` as the controlling implementation baseline.
+- Added `EstimatedRouteDisplayDecision` and `EstimatedRouteDisplayDecisionState` as shared, in-memory-only review decision outputs for b17-D gap records.
+- Added `EstimatedRouteDisplayGate` and `EstimatedRouteDisplayGatePolicy` to classify b17-D replay review gaps into `blocked`, `reviewOnly`, `candidateButHidden`, or `eligibleForFutureProductReview` without enabling product UI.
+- Keeps estimated route display decisions in memory only. No Core Data attribute, SessionRepository persistence, SessionEntityMapper mapping, or `.skatetrack` package schema change is introduced.
+- Records the b18 product-decision refinement from the v1.2 plan: candidate user-visible estimated-route consideration is tightened to very short gaps, with `maximumCandidateGapDurationSeconds = 6`, while gaps up to `maximumReviewOnlyGapDurationSeconds = 30` remain review-only evidence only.
+- This two-tier 6s / 30s policy is intentionally more conservative than the original v1.2 candidate threshold because the b17-D-3 real-session review pack found 0 eligible gaps for the core electric-skateboard session and large closure errors in several real sessions.
+- Advanced the DEBUG build identity to `Task-030c-b18-A` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, and `estimatedRouteDisplayEnabled` remain false.
+
+Task-030c-b18-A verification token: in-memory product decision gate, named 6s / 30s threshold constants, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no trusted metric mutation, no route map display, estimatedRouteActive remains false.

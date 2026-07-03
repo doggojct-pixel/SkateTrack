@@ -1508,3 +1508,15 @@ scripts/verify_task030c_b17d_real_session_runner.py        # Verifies runner/exp
 ```
 
 Task-030c-b17-D-3 verification token: Real-Session Review Runner / Export Glue, `.skatetrack` inputs, `Task030c_b17D_ReplayReviewPack.zip`, JSON / Markdown / CSV artifacts, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b18-A product decision gate and in-memory estimated route display decision
+
+```text
+Shared/Models/EstimatedRouteDisplayDecision.swift          # Shared in-memory estimated route display decision model and b18 safety flags.
+iOS/Core/SensorEngine/EstimatedRouteDisplayGate.swift      # In-memory gate using named 6s / 30s safety constants; no production display.
+Tests/iOSTests/EstimatedRouteDisplayGateTests.swift        # Deterministic tests for b18-A gate states and safety boundaries.
+scripts/verify_task030c_b18a_product_decision_gate.py      # Verifies b18-A tokens, in-memory-only boundary, named constants, and no display activation.
+docs/planning/Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md # Controlling b18 plan.
+```
+
+Task-030c-b18-A verification token: Product Decision Gate, In-Memory Estimated Route Display Decision, `EstimatedRouteDisplayDecision`, `EstimatedRouteDisplayGate`, `EstimatedRouteDisplayGatePolicy`, 6s candidate / 30s review-only policy, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
