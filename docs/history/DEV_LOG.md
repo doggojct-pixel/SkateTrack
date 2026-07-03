@@ -2323,3 +2323,15 @@ Task-030c-b19 verification token: outdoor localization release gate, `OutdoorLoc
 - Closure scope is docs-only. It does not add Swift files, product logic, persistence, route geometry, route rendering, trusted metric mutation, or schema changes.
 
 Task-030c final closure verification token: Section 5 closure checklist mapped to commits, `2cc0550`, b18-D `keepDisabled`, b19 outdoor localization release gate, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.
+
+### Task-030d-A — iOS Multi-File `.skatetrack` Import Foundation
+
+- Started Task-030d after Task-030c final closure and develop merge verification.
+- Added an iOS multi-file `.skatetrack` import entry from History beside the existing selection action.
+- Added a staged import coordinator that uses security-scoped access, copies selected files into temporary staging, validates each package independently, and classifies duplicates / already-imported sessions before commit.
+- Added localized dark import preview UI with per-file status cards, partial success handling, user confirmation, and selected-valid-package commit.
+- Preserved no silent overwrite: already-imported sessions and duplicate candidates are not auto-merged or overwritten.
+- Kept the existing `.skatetrack` package schema unchanged and did not add custom UTType declarations, document associations, cloud sync, Watch / WatchBridge, Task-031, or Task-030e behavior.
+- Preserved Task-030c safety boundaries: no general-user estimated route display, no route geometry mutation, no trusted metrics mutation, and no route reconstruction.
+
+Task-030d-A verification token: iOS multi-file .skatetrack import foundation, History import button, staged validation, partial success preview, no silent overwrite, no package schema change, no route geometry mutation, no trusted metrics mutation, no Watch / Task-031 / Task-030e scope.

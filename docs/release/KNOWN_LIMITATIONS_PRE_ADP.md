@@ -579,3 +579,15 @@ Task-030c-b19 verification token: outdoor localization release gate, releaseRead
 - **Do not claim:** Do not claim production estimated route display, route reconstruction, map matching, road snapping, fake GPS, camera localization, RTK, UWB consumer-flow dependency, indoor estimated route geometry, or trusted metrics derived from estimated geometry.
 
 Task-030c final closure verification token: Section 5 closure checklist mapped to commits, `2cc0550`, b18-D outcome `keepDisabled`, b19 outdoor localization release gate, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.
+
+### Task-030d-A iOS `.skatetrack` Import Limitations
+
+- **Current status:** iOS can select multiple `.skatetrack` files, stage them temporarily, validate each package independently, preview per-file status, and import selected valid packages after confirmation.
+- **No silent overwrite:** Existing session IDs are classified as already imported and are skipped. Duplicate candidates are surfaced for review rather than merged or overwritten.
+- **No silent merge:** Multiple packages are never merged automatically. Duplicate package/session candidates stay blocked in the first import foundation.
+- **Schema boundary:** Task-030d-A does not change `.skatetrack` package schema, manifest format, checksum behavior, Core Data schema, signing, entitlements, or document associations.
+- **Safety boundary:** Import stores exported session payloads as-is; it does not reconstruct route geometry, mutate trusted metrics, enable estimated-route display, road-snap, map-match, or fabricate GPS samples.
+- **Still limited:** Package checksum validation is not added because the current portable `.skatetrack` payload has no checksum field. Conflict-resolution UI beyond conservative duplicate blocking remains future work.
+- **Out of scope:** Production sync/cloud import, Watch / WatchBridge, Task-031 indoor localization, and Task-030e macOS multi-package viewer remain separate tasks.
+
+Task-030d-A limitation token: iOS multi-file .skatetrack import, no silent overwrite, no silent merge, no route geometry mutation, no trusted metrics mutation, no package schema change.

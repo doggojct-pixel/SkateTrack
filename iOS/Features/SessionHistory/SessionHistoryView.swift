@@ -137,20 +137,28 @@ struct SessionHistoryView: View {
 
                 Spacer()
 
-                if history.filteredSessionCount > 0 {
-                    Button {
-                        toggleSelectionMode()
-                    } label: {
-                        Text(LocalizedStringKey(isSelectionMode ? "history.selection.cancel" : "history.selection.start"))
-                            .font(.system(size: 12, weight: .black, design: .rounded))
-                            .foregroundStyle(isSelectionMode ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.white.opacity(0.06))
-                            .clipShape(Capsule())
+                HStack(spacing: 8) {
+                    if !isSelectionMode {
+                        SessionHistoryImportEntryView(isDisabled: history.viewState == .loading) {
+                            Task { await history.reload() }
+                        }
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("history-selection-toggle")
+
+                    if history.filteredSessionCount > 0 {
+                        Button {
+                            toggleSelectionMode()
+                        } label: {
+                            Text(LocalizedStringKey(isSelectionMode ? "history.selection.cancel" : "history.selection.start"))
+                                .font(.system(size: 12, weight: .black, design: .rounded))
+                                .foregroundStyle(isSelectionMode ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.teal)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color.white.opacity(0.06))
+                                .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("history-selection-toggle")
+                    }
                 }
             }
 

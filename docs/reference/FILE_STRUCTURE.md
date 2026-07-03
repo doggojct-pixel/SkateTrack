@@ -1567,3 +1567,40 @@ scripts/verify_task030c_b19_outdoor_localization_release_gate.py  # Verifies b19
 docs/planning/Task-030c-b19_Outdoor_Localization_Release_Gate_Mini_Plan_EN_v1.0.md # b19 controlling mini implementation note.
 
 Task-030c-b19 verification token: Outdoor Localization Release Gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, decisions `releaseReady`, `limitedDisclosure`, `blocked`, no route geometry mutation, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
+
+## Task-030d-A iOS Multi-File `.skatetrack` Import Foundation Addendum
+
+### Added Source Areas
+
+```text
+iOS/Core/Import/SkateTrackPackageImportModels.swift          # [協作區] Task-030d import candidate, validation status, batch summary, and commit result models.
+iOS/Core/Import/SkateTrackPackageImportCoordinator.swift     # [自主區] Security-scoped staging, package validation, duplicate detection, and safe selected-package commit.
+iOS/Hooks/useSkateTrackPackageImport.swift                   # [協作區 — 邊界適配層] SwiftUI-facing import state, selection, commit, and cleanup boundary.
+iOS/Features/SessionHistory/SessionHistoryImportEntryView.swift # [協作區] History header import pill and multi-file document picker entry.
+iOS/Features/SessionImport/SessionImportPreviewView.swift    # [協作區] Localized dark import preview, partial success, confirmation, and result summary UI.
+iOS/Features/SessionImport/SessionImportCandidateRowView.swift # [協作區] Per-file validation / selection / commit-result card.
+Tests/iOSTests/SkateTrackPackageImportTests.swift            # [工程設定] Deterministic tests for valid multi-file import, invalid extension, duplicates, already-imported sessions, and safe commit.
+scripts/verify_task030d_ios_multifile_import.py              # [工程設定] Task-030d scope verifier for files, localization, project membership, line counts, and safety boundaries.
+```
+
+### Updated Areas
+
+```text
+iOS/Features/SessionHistory/SessionHistoryView.swift         # [協作區] Adds the History import entry beside the existing selection action.
+Shared/Localization/en.lproj/Localizable.strings             # [原則 A] Adds Task-030d import UI/status/error strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings        # [原則 A] Adds Traditional Chinese Task-030d import localization.
+Shared/Localization/ja.lproj/Localizable.strings             # [原則 A] Adds Japanese Task-030d import localization.
+SkateTrack.xcodeproj/project.pbxproj                         # [工程設定] Adds Task-030d source and test file membership.
+docs/history/DEV_LOG.md                                      # [原則 E] Records Task-030d-A implementation progress.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                    # [原則 E] Records conservative import limitations and safety boundaries.
+docs/reference/FILE_STRUCTURE.md                             # [原則 E] Records new import source structure.
+```
+
+### Task-030d-A Boundaries
+
+- iOS multi-file `.skatetrack` import uses staged validation and explicit user confirmation.
+- Already-imported sessions and duplicate candidates are not silently overwritten or merged.
+- Existing `.skatetrack` package schema is unchanged.
+- No route geometry mutation, no trusted metrics mutation, no estimated route display enablement, no production sync/cloud behavior, no Watch / WatchBridge, no Task-031, and no Task-030e implementation is introduced.
+
+Task-030d-A file-structure token: iOS multi-file .skatetrack import foundation, History import button, staged validation, no silent overwrite, no route geometry mutation, no trusted metrics mutation, no package schema change.

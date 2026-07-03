@@ -356,6 +356,13 @@
 		B18B020000000000000101 /* EstimatedRouteReviewOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */; };
 		B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+		30D100000000000000000101 /* SkateTrackPackageImportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000001 /* SkateTrackPackageImportModels.swift */; };
+		30D100000000000000000102 /* SkateTrackPackageImportCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */; };
+		30D200000000000000000101 /* useSkateTrackPackageImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D200000000000000000001 /* useSkateTrackPackageImport.swift */; };
+		30D300000000000000000101 /* SessionHistoryImportEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D300000000000000000001 /* SessionHistoryImportEntryView.swift */; };
+		30D400000000000000000101 /* SessionImportPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000001 /* SessionImportPreviewView.swift */; };
+		30D400000000000000000102 /* SessionImportCandidateRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000002 /* SessionImportCandidateRowView.swift */; };
+		30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D500000000000000000001 /* SkateTrackPackageImportTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -638,6 +645,13 @@
 		B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGateTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D100000000000000000001 /* SkateTrackPackageImportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportModels.swift; sourceTree = "<group>"; };
+		30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportCoordinator.swift; sourceTree = "<group>"; };
+		30D200000000000000000001 /* useSkateTrackPackageImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageImport.swift; sourceTree = "<group>"; };
+		30D300000000000000000001 /* SessionHistoryImportEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryImportEntryView.swift; sourceTree = "<group>"; };
+		30D400000000000000000001 /* SessionImportPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportPreviewView.swift; sourceTree = "<group>"; };
+		30D400000000000000000002 /* SessionImportCandidateRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportCandidateRowView.swift; sourceTree = "<group>"; };
+		30D500000000000000000001 /* SkateTrackPackageImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -776,6 +790,7 @@
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				23A200000000000000000001 /* useSessionShareCard.swift */,
 				27A400000000000000000001 /* useSkateTrackPackageExport.swift */,
+				30D200000000000000000001 /* useSkateTrackPackageImport.swift */,
 				24A300000000000000000001 /* useAchievements.swift */,
 				24B300000000000000000001 /* useAchievementDashboard.swift */,
 				19A100000000000000000003 /* useHealthReminders.swift */,
@@ -845,6 +860,7 @@
 				B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */,
 				B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
+				30D500000000000000000001 /* SkateTrackPackageImportTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -945,8 +961,18 @@
 				17A100000000000000000005 /* HistoryLimitPaywallBanner.swift */,
 				17A100000000000000000007 /* SessionHistoryBulkActionBarView.swift */,
 				17B200000000000000000001 /* SessionSummaryHandoffView.swift */,
+				30D300000000000000000001 /* SessionHistoryImportEntryView.swift */,
 			);
 			path = iOS/Features/SessionHistory;
+			sourceTree = SOURCE_ROOT;
+		};
+		30D400000000000000000000 /* iOS/Features/SessionImport */ = {
+			isa = PBXGroup;
+			children = (
+				30D400000000000000000001 /* SessionImportPreviewView.swift */,
+				30D400000000000000000002 /* SessionImportCandidateRowView.swift */,
+			);
+			path = iOS/Features/SessionImport;
 			sourceTree = SOURCE_ROOT;
 		};
 		18A100000000000000000000 /* iOS/Features/SessionSummary */ = {
@@ -1139,6 +1165,15 @@
 			path = iOS/Core/Export;
 			sourceTree = SOURCE_ROOT;
 		};
+		30D100000000000000000000 /* iOS/Core/Import */ = {
+			isa = PBXGroup;
+			children = (
+				30D100000000000000000001 /* SkateTrackPackageImportModels.swift */,
+				30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */,
+			);
+			path = iOS/Core/Import;
+			sourceTree = SOURCE_ROOT;
+		};
 		27B000000000000000000000 /* macOS/Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1211,12 +1246,14 @@
 				21A200000000000000000000 /* iOS/Core/Spots */,
 				23B100000000000000000000 /* iOS/Core/SessionSharing */,
 				27A300000000000000000000 /* iOS/Core/Export */,
+				30D100000000000000000000 /* iOS/Core/Import */,
 				24A200000000000000000000 /* iOS/Core/Achievements */,
 				12A400000000000000000005 /* iOS/Hooks */,
 				12AD00000000000000000011 /* iOS/Features/SessionRecording */,
 				14A300000000000000000000 /* iOS/Features/FallDetection */,
 				16B200000000000000000000 /* iOS/Features/Subscription */,
 				17A100000000000000000000 /* iOS/Features/SessionHistory */,
+				30D400000000000000000000 /* iOS/Features/SessionImport */,
 				18A100000000000000000000 /* iOS/Features/SessionSummary */,
 				19A200000000000000000000 /* iOS/Features/HealthReminders */,
 				20A200000000000000000000 /* iOS/Features/EquipmentManager */,
@@ -1477,6 +1514,7 @@
 				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
 				B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
+				30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1520,6 +1558,9 @@
 				17A100000000000000000106 /* useSessionHistory.swift in Sources */,
 				17A100000000000000000107 /* SessionHistoryBulkActionBarView.swift in Sources */,
 				17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */,
+				30D300000000000000000101 /* SessionHistoryImportEntryView.swift in Sources */,
+				30D400000000000000000101 /* SessionImportPreviewView.swift in Sources */,
+				30D400000000000000000102 /* SessionImportCandidateRowView.swift in Sources */,
 				18A100000000000000000101 /* SessionSummaryView.swift in Sources */,
 				18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */,
 				18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */,
@@ -1637,6 +1678,9 @@
 				27A200000000000000000104 /* SkateTrackPackageReader.swift in Sources */,
 				27A300000000000000000101 /* SkateTrackPackageExportProvider.swift in Sources */,
 				27A400000000000000000101 /* useSkateTrackPackageExport.swift in Sources */,
+				30D100000000000000000101 /* SkateTrackPackageImportModels.swift in Sources */,
+				30D100000000000000000102 /* SkateTrackPackageImportCoordinator.swift in Sources */,
+				30D200000000000000000101 /* useSkateTrackPackageImport.swift in Sources */,
 				27A500000000000000000101 /* SessionPackageExportActionView.swift in Sources */,
 				12A600000000000000000101 /* GPSProvider.swift in Sources */,
 				12A600000000000000000102 /* GPSAuthorizationHandler.swift in Sources */,
