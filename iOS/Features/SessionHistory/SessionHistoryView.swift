@@ -61,7 +61,12 @@ struct SessionHistoryView: View {
         .background(SkateTrackSessionStartColors.navy)
         .preferredColorScheme(.dark)
         .task {
-            await history.loadIfNeeded()
+            // Task-030c-b15-B-3: always refresh when History becomes visible so a
+            // just-saved simulator/debug recording is not hidden by a stale cached list.
+            await history.reload()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .skateTrackSessionDidSave)) { _ in
+            Task { await history.reload() }
         }
         .sheet(isPresented: $isPaywallPresented) {
             SubscriptionPaywallView(

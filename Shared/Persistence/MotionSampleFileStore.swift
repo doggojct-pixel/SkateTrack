@@ -18,8 +18,18 @@ final class MotionSampleFileStore {
         self.fileManager = fileManager
         encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(
+            positiveInfinity: "Infinity",
+            negativeInfinity: "-Infinity",
+            nan: "NaN"
+        )
         decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(
+            positiveInfinity: "Infinity",
+            negativeInfinity: "-Infinity",
+            nan: "NaN"
+        )
     }
 
     static func defaultRootDirectory() -> URL {

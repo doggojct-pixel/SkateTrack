@@ -106,6 +106,18 @@
 		14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000003 /* DebugRuntimeOptions.swift */; };
 		14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000004 /* DebugMockSessionFactory.swift */; };
 		14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000005 /* DebugToolsPanelView.swift */; };
+		B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */; };
+		B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */; };
+		B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */; };
+		B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */; };
+		B190100000000000000101 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190100000000000000102 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190100000000000000103 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190200000000000000101 /* OutdoorLocalizationReleaseGateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */; };
+		B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */; };
 		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
 		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
 		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
@@ -293,6 +305,56 @@
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991274AD53212097B6F7721 /* SkateTrackApp.swift */; };
+		B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
+		B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
+		B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */; };
+		B16B02000000000000000101 /* BarometricGPSOutlierGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */; };
+		B16B03000000000000000101 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */; };
+		B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */; };
+		B16C01000000000000000101 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
+		B16C01000000000000000102 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
+		B16C01000000000000000103 /* LocationAccuracySourceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */; };
+		B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */; };
+		B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */; };
+		B16D01000000000000000101 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
+		B16D01000000000000000102 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
+		B16D01000000000000000103 /* HeadingQualityDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */; };
+		B16D02000000000000000101 /* HeadingQualityClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D02000000000000000001 /* HeadingQualityClassifier.swift */; };
+		B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */; };
+		B1701000000000000000101 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
+		B1701000000000000000102 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
+		B1701000000000000000103 /* LocalizationDiagnosticsReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */; };
+		B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */; };
+		B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */; };
+		B17A010000000000000101 /* LocalTangentPlane.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A010000000000000001 /* LocalTangentPlane.swift */; };
+		B17A020000000000000101 /* IMUBiasEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A020000000000000001 /* IMUBiasEstimator.swift */; };
+		B17A030000000000000101 /* GravityCompensatedMotionSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A030000000000000001 /* GravityCompensatedMotionSample.swift */; };
+		B17A040000000000000101 /* IMULocalFrameBiasFoundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */; };
+		B17B010000000000000101 /* DeadReckoningReplayDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */; };
+		B17B010000000000000102 /* DeadReckoningReplayDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */; };
+		B17B010000000000000103 /* DeadReckoningReplayDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */; };
+		B17B020000000000000101 /* DeadReckoningEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B020000000000000001 /* DeadReckoningEngine.swift */; };
+		B17B030000000000000101 /* DeadReckoningEngineReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B030000000000000001 /* DeadReckoningEngineReplayTests.swift */; };
+		B17C010000000000000101 /* DeadReckoningClosureDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */; };
+		B17C010000000000000102 /* DeadReckoningClosureDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */; };
+		B17C010000000000000103 /* DeadReckoningClosureDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */; };
+		B17C020000000000000101 /* DeadReckoningClosureScorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C020000000000000001 /* DeadReckoningClosureScorer.swift */; };
+		B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */; };
+		B17D010000000000000101 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D010000000000000102 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D010000000000000103 /* DeadReckoningReplayReviewPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */; };
+		B17D020000000000000101 /* DeadReckoningReplayReviewPackBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */; };
+		B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */; };
+		B18A010000000000000101 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
+		B18A010000000000000102 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
+		B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
+		B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */; };
+		B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */; };
+		B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
+		B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
+		B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
+		B18B020000000000000101 /* EstimatedRouteReviewOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */; };
+		B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 /* End PBXBuildFile section */
 
@@ -520,8 +582,6 @@
 		27A300000000000000000001 /* SkateTrackPackageExportProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageExportProvider.swift; sourceTree = "<group>"; };
 		27A400000000000000000001 /* useSkateTrackPackageExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageExport.swift; sourceTree = "<group>"; };
 		27A500000000000000000001 /* SessionPackageExportActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPackageExportActionView.swift; sourceTree = "<group>"; };
-		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
-		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		27B100000000000000000001 /* MacRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRootView.swift; sourceTree = "<group>"; };
 		27B200000000000000000001 /* MacImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacImportView.swift; sourceTree = "<group>"; };
 		27B200000000000000000002 /* MacPackagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackagePreviewView.swift; sourceTree = "<group>"; };
@@ -532,8 +592,50 @@
 		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
 		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
 		28B100000000000000000001 /* MacRoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRoutePreviewView.swift; sourceTree = "<group>"; };
+		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
+		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		A991274AD53212097B6F7721 /* SkateTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackApp.swift; sourceTree = "<group>"; };
+		B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnostics.swift; sourceTree = "<group>"; };
+		B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierGuard.swift; sourceTree = "<group>"; };
+		B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift"; sourceTree = "<group>"; };
+		B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarometricGPSOutlierDiagnosticsTests.swift; sourceTree = "<group>"; };
+		B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnostics.swift; sourceTree = "<group>"; };
+		B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceClassifier.swift; sourceTree = "<group>"; };
+		B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccuracySourceDiagnosticsTests.swift; sourceTree = "<group>"; };
+		B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityDiagnostics.swift; sourceTree = "<group>"; };
+		B16D02000000000000000001 /* HeadingQualityClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityClassifier.swift; sourceTree = "<group>"; };
+		B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingQualityClassifierTests.swift; sourceTree = "<group>"; };
+		B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewPack.swift; sourceTree = "<group>"; };
+		B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewBuilder.swift; sourceTree = "<group>"; };
+		B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationDiagnosticsReviewPackTests.swift; sourceTree = "<group>"; };
+		B17A010000000000000001 /* LocalTangentPlane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTangentPlane.swift; sourceTree = "<group>"; };
+		B17A020000000000000001 /* IMUBiasEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMUBiasEstimator.swift; sourceTree = "<group>"; };
+		B17A030000000000000001 /* GravityCompensatedMotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravityCompensatedMotionSample.swift; sourceTree = "<group>"; };
+		B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMULocalFrameBiasFoundationTests.swift; sourceTree = "<group>"; };
+		B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayDiagnostics.swift; sourceTree = "<group>"; };
+		B17B020000000000000001 /* DeadReckoningEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningEngine.swift; sourceTree = "<group>"; };
+		B17B030000000000000001 /* DeadReckoningEngineReplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningEngineReplayTests.swift; sourceTree = "<group>"; };
+		B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureDiagnostics.swift; sourceTree = "<group>"; };
+		B17C020000000000000001 /* DeadReckoningClosureScorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureScorer.swift; sourceTree = "<group>"; };
+		B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningClosureScoringTests.swift; sourceTree = "<group>"; };
+		B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPack.swift; sourceTree = "<group>"; };
+		B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPackBuilder.swift; sourceTree = "<group>"; };
+		B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadReckoningReplayReviewPackTests.swift; sourceTree = "<group>"; };
+		B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayDecision.swift; sourceTree = "<group>"; };
+		B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGate.swift; sourceTree = "<group>"; };
+		B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGateTests.swift; sourceTree = "<group>"; };
+		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
+		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
+		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
+		B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanel.swift; sourceTree = "<group>"; };
+		B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanelTests.swift; sourceTree = "<group>"; };
+		B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdate.swift; sourceTree = "<group>"; };
+		B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdateBuilder.swift; sourceTree = "<group>"; };
+		B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteProductDecisionUpdateTests.swift; sourceTree = "<group>"; };
+		B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGate.swift; sourceTree = "<group>"; };
+		B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGateBuilder.swift; sourceTree = "<group>"; };
+		B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGateTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -604,6 +706,17 @@
 				12A300000000000000000002 /* SportMode.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
+				B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */,
+				B16C01000000000000000001 /* LocationAccuracySourceDiagnostics.swift */,
+				B16D01000000000000000001 /* HeadingQualityDiagnostics.swift */,
+				B1701000000000000000001 /* LocalizationDiagnosticsReviewPack.swift */,
+				B17B010000000000000001 /* DeadReckoningReplayDiagnostics.swift */,
+				B17C010000000000000001 /* DeadReckoningClosureDiagnostics.swift */,
+				B17D010000000000000001 /* DeadReckoningReplayReviewPack.swift */,
+				B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */,
+				B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */,
+				B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */,
+				B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */,
 				12A300000000000000000005 /* TrickEvent.swift */,
 				12A300000000000000000006 /* FallEvent.swift */,
 				14A000000000000000000001 /* SOSTriggerEvent.swift */,
@@ -681,6 +794,21 @@
 				12A700000000000000000001 /* IMUProvider.swift */,
 				12A800000000000000000001 /* BarometerProvider.swift */,
 				12A900000000000000000001 /* SensorFusionEngine.swift */,
+				B16B03000000000000000001 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift */,
+				B16B02000000000000000001 /* BarometricGPSOutlierGuard.swift */,
+				B16C02000000000000000001 /* LocationAccuracySourceClassifier.swift */,
+				B16D02000000000000000001 /* HeadingQualityClassifier.swift */,
+				B1702000000000000000001 /* LocalizationDiagnosticsReviewBuilder.swift */,
+				B17A010000000000000001 /* LocalTangentPlane.swift */,
+				B17A020000000000000001 /* IMUBiasEstimator.swift */,
+				B17A030000000000000001 /* GravityCompensatedMotionSample.swift */,
+				B17B020000000000000001 /* DeadReckoningEngine.swift */,
+				B17C020000000000000001 /* DeadReckoningClosureScorer.swift */,
+				B17D020000000000000001 /* DeadReckoningReplayReviewPackBuilder.swift */,
+				B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */,
+				B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */,
+				B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */,
+				B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */,
 				12A900000000000000000002 /* SensorCalibrationEngine.swift */,
 				12AA00000000000000000001 /* FallDetectionEngine.swift */,
 			);
@@ -703,6 +831,19 @@
 			isa = PBXGroup;
 			children = (
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
+				B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */,
+				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
+				B16D03000000000000000001 /* HeadingQualityClassifierTests.swift */,
+				B1703000000000000000001 /* LocalizationDiagnosticsReviewPackTests.swift */,
+				B17A040000000000000001 /* IMULocalFrameBiasFoundationTests.swift */,
+				B17B030000000000000001 /* DeadReckoningEngineReplayTests.swift */,
+				B17C030000000000000001 /* DeadReckoningClosureScoringTests.swift */,
+				B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */,
+				B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */,
+				B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */,
+				B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */,
+				B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */,
+				B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -764,6 +905,7 @@
 				14D000000000000000000003 /* DebugRuntimeOptions.swift */,
 				14D000000000000000000004 /* DebugMockSessionFactory.swift */,
 				14D000000000000000000005 /* DebugToolsPanelView.swift */,
+				B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */,
 			);
 			path = iOS/Features/Debug;
 			sourceTree = SOURCE_ROOT;
@@ -997,6 +1139,46 @@
 			path = iOS/Core/Export;
 			sourceTree = SOURCE_ROOT;
 		};
+		27B000000000000000000000 /* macOS/Features */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000000 /* Import */,
+				28A100000000000000000000 /* SessionBrowser */,
+				27B300000000000000000000 /* Shared */,
+			);
+			path = macOS/Features;
+			sourceTree = SOURCE_ROOT;
+		};
+		27B200000000000000000000 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				27B200000000000000000001 /* MacImportView.swift */,
+				27B200000000000000000002 /* MacPackagePreviewView.swift */,
+				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		27B300000000000000000000 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				27B300000000000000000001 /* MacLockedFeatureCardView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		28A100000000000000000000 /* SessionBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				28A100000000000000000001 /* MacSessionBrowserView.swift */,
+				28A100000000000000000002 /* MacSessionDetailView.swift */,
+				28A100000000000000000003 /* MacSessionViewerModel.swift */,
+				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
+				28B100000000000000000001 /* MacRoutePreviewView.swift */,
+			);
+			path = SessionBrowser;
+			sourceTree = "<group>";
+		};
 		3963F8F31F93F511E309A0BF /* scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1050,46 +1232,6 @@
 				3963F8F31F93F511E309A0BF /* scripts */,
 				DB0FE2794C17B0CCB9393690 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		27B000000000000000000000 /* macOS/Features */ = {
-			isa = PBXGroup;
-			children = (
-				27B200000000000000000000 /* Import */,
-				28A100000000000000000000 /* SessionBrowser */,
-				27B300000000000000000000 /* Shared */,
-			);
-			path = macOS/Features;
-			sourceTree = SOURCE_ROOT;
-		};
-		27B200000000000000000000 /* Import */ = {
-			isa = PBXGroup;
-			children = (
-				27B200000000000000000001 /* MacImportView.swift */,
-				27B200000000000000000002 /* MacPackagePreviewView.swift */,
-				27B200000000000000000003 /* MacPackageImportViewModel.swift */,
-			);
-			path = Import;
-			sourceTree = "<group>";
-		};
-		28A100000000000000000000 /* SessionBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				28A100000000000000000001 /* MacSessionBrowserView.swift */,
-				28A100000000000000000002 /* MacSessionDetailView.swift */,
-				28A100000000000000000003 /* MacSessionViewerModel.swift */,
-				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
-				28B100000000000000000001 /* MacRoutePreviewView.swift */,
-			);
-			path = SessionBrowser;
-			sourceTree = "<group>";
-		};
-		27B300000000000000000000 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				27B300000000000000000001 /* MacLockedFeatureCardView.swift */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		BB66BE6E71B096E496503051 /* macOS/App */ = {
@@ -1321,6 +1463,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
+				B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */,
+				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
+				B16D03000000000000000101 /* HeadingQualityClassifierTests.swift in Sources */,
+				B1703000000000000000101 /* LocalizationDiagnosticsReviewPackTests.swift in Sources */,
+				B17A040000000000000101 /* IMULocalFrameBiasFoundationTests.swift in Sources */,
+				B17B030000000000000101 /* DeadReckoningEngineReplayTests.swift in Sources */,
+				B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */,
+				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
+				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
+				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
+				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
+				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
+				B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1352,6 +1507,7 @@
 				14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */,
 				14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */,
 				14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */,
+				B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */,
 				16B200000000000000000101 /* SubscriptionPaywallView.swift in Sources */,
 				16B200000000000000000102 /* SubscriberBenefitsListView.swift in Sources */,
 				16B200000000000000000103 /* RestorePurchaseButton.swift in Sources */,
@@ -1487,6 +1643,21 @@
 				12A700000000000000000101 /* IMUProvider.swift in Sources */,
 				12A800000000000000000101 /* BarometerProvider.swift in Sources */,
 				12A900000000000000000101 /* SensorFusionEngine.swift in Sources */,
+				B16B03000000000000000101 /* SensorFusionEngine+BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16B02000000000000000101 /* BarometricGPSOutlierGuard.swift in Sources */,
+				B16C02000000000000000101 /* LocationAccuracySourceClassifier.swift in Sources */,
+				B16D02000000000000000101 /* HeadingQualityClassifier.swift in Sources */,
+				B1702000000000000000101 /* LocalizationDiagnosticsReviewBuilder.swift in Sources */,
+				B17A010000000000000101 /* LocalTangentPlane.swift in Sources */,
+				B17A020000000000000101 /* IMUBiasEstimator.swift in Sources */,
+				B17A030000000000000101 /* GravityCompensatedMotionSample.swift in Sources */,
+				B17B020000000000000101 /* DeadReckoningEngine.swift in Sources */,
+				B17C020000000000000101 /* DeadReckoningClosureScorer.swift in Sources */,
+				B17D020000000000000101 /* DeadReckoningReplayReviewPackBuilder.swift in Sources */,
+				B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */,
+				B18B020000000000000101 /* EstimatedRouteReviewOverlayBuilder.swift in Sources */,
+				B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */,
+				B190200000000000000101 /* OutdoorLocalizationReleaseGateBuilder.swift in Sources */,
 				12A900000000000000000102 /* SensorCalibrationEngine.swift in Sources */,
 				12AA00000000000000000101 /* FallDetectionEngine.swift in Sources */,
 				12AB01000000000000000101 /* SessionStateMachine.swift in Sources */,
@@ -1518,6 +1689,17 @@
 				12A300000000000000000104 /* SportMode.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
+				B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000101 /* LocationAccuracySourceDiagnostics.swift in Sources */,
+				B16D01000000000000000101 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000101 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
+				B17B010000000000000101 /* DeadReckoningReplayDiagnostics.swift in Sources */,
+				B17C010000000000000101 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000101 /* DeadReckoningReplayReviewPack.swift in Sources */,
+				B18A010000000000000101 /* EstimatedRouteDisplayDecision.swift in Sources */,
+				B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
+				B190100000000000000101 /* OutdoorLocalizationReleaseGate.swift in Sources */,
 				12A30000000000000000010D /* TrickEvent.swift in Sources */,
 				12A300000000000000000110 /* FallEvent.swift in Sources */,
 				14A000000000000000000101 /* SOSTriggerEvent.swift in Sources */,
@@ -1555,6 +1737,17 @@
 				12A300000000000000000106 /* SportMode.swift in Sources */,
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
+				B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000103 /* LocationAccuracySourceDiagnostics.swift in Sources */,
+				B16D01000000000000000103 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000103 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
+				B17B010000000000000103 /* DeadReckoningReplayDiagnostics.swift in Sources */,
+				B17C010000000000000103 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000103 /* DeadReckoningReplayReviewPack.swift in Sources */,
+				B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */,
+				B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
+				B190100000000000000103 /* OutdoorLocalizationReleaseGate.swift in Sources */,
 				12A30000000000000000010F /* TrickEvent.swift in Sources */,
 				12A300000000000000000112 /* FallEvent.swift in Sources */,
 				14A000000000000000000103 /* SOSTriggerEvent.swift in Sources */,
@@ -1595,6 +1788,17 @@
 				12A300000000000000000105 /* SportMode.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
+				B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
+				B16C01000000000000000102 /* LocationAccuracySourceDiagnostics.swift in Sources */,
+				B16D01000000000000000102 /* HeadingQualityDiagnostics.swift in Sources */,
+				B1701000000000000000102 /* LocalizationDiagnosticsReviewPack.swift in Sources */,
+				B17B010000000000000102 /* DeadReckoningReplayDiagnostics.swift in Sources */,
+				B17C010000000000000102 /* DeadReckoningClosureDiagnostics.swift in Sources */,
+				B17D010000000000000102 /* DeadReckoningReplayReviewPack.swift in Sources */,
+				B18A010000000000000102 /* EstimatedRouteDisplayDecision.swift in Sources */,
+				B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */,
+				B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */,
+				B190100000000000000102 /* OutdoorLocalizationReleaseGate.swift in Sources */,
 				12A30000000000000000010E /* TrickEvent.swift in Sources */,
 				12A300000000000000000111 /* FallEvent.swift in Sources */,
 				14A000000000000000000102 /* SOSTriggerEvent.swift in Sources */,
@@ -1849,9 +2053,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 822YF6NJF6;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";
@@ -1943,9 +2148,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 822YF6NJF6;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_CFBundleIconName = AppIcon;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Background location access lets SkateTrack keep recording routes when the screen is off.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SkateTrack needs location access to record your riding route.";

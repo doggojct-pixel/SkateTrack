@@ -8,6 +8,6 @@ import Foundation
 protocol SensorProvider: AnyObject {
     var motionSamplePublisher: AnyPublisher<MotionSample, Never> { get }
 
-    func startRecording(mode: SportMode) async throws
+    func startRecording(mode: SportMode, powerType: PowerType, fidelityProfile: ActivityFidelityProfile?) async throws
     func stopRecording() async -> SessionData
 }

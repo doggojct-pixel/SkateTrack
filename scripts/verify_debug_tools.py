@@ -68,9 +68,12 @@ for token in [
     "debugDemoSpeedSessionEnabled",
     "setDebugDemoSpeedSessionEnabled",
     "coordinator.setDataSource(isEnabled ? .mock : .live)",
+    "SessionRecordingPreviewPanel",
+    "debug.status.title",
+    "metricTile(",
 ]:
     if token not in session_hook_text:
-        sys.exit(f"useSessionRecording.swift missing debug demo speed token: {token}")
+        sys.exit(f"useSessionRecording.swift missing debug demo/status token: {token}")
 
 coordinator_text = (ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift").read_text()
 debug_extension_path = ROOT / "iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift"
@@ -79,7 +82,9 @@ combined_debug_text = coordinator_text + "\n" + debug_extension_text
 for token in [
     "var debugDataSource: SessionRecordingDataSource",
     "static func makeMockCoordinator()",
-    "let speedKmh = 12 + Double(mockSampleIndex % 5)",
+    "DebugOutdoorRouteSimulator",
+    "speedSource: .debugSimulated",
+    "simulatedAltitudeMeters",
 ]:
     if token not in combined_debug_text:
         sys.exit(f"SessionRecordingCoordinator debug support missing expected token: {token}")
@@ -91,6 +96,11 @@ for token in [
     "SubscriptionDebugPanel(subscriptionStatus:",
     "emergencyContactStore.clearContacts()",
     "debug-tools-panel",
+    "debugBuildSignatureCard",
+    "Task-030c-b11-r3-3",
+    "debug-build-signature-card",
+    "recordingDiagnosticsContextSection",
+    "debug-recording-context-picker",
 ]:
     if token not in panel_text:
         sys.exit(f"DebugToolsPanelView.swift missing token: {token}")
@@ -112,8 +122,11 @@ for loc in localization_files:
         "debug.tools.simulateFall.button",
         "debug.tools.demoSpeed.toggle",
         "debug.tools.resetContacts.button",
+        "debug.status.title",
+        "debug.build.title",
+        "debug.tools.recordingContext.title",
     ]:
         if key not in text:
             sys.exit(f"{loc.relative_to(ROOT)} missing localization key: {key}")
 
-print("Debug tools check passed: centralized debug entry, explicit demo speed mode, and app runtime real-speed default")
+print("Debug tools check passed: centralized debug entry, explicit simulated route mode, and app runtime real-sensor default")

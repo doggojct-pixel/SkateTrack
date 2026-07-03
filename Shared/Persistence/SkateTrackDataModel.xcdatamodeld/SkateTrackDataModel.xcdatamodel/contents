@@ -16,6 +16,7 @@
         <attribute name="sportModeData" optional="NO" attributeType="Binary"/>
         <attribute name="spotID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="spotSnapshotData" optional="YES" attributeType="Binary"/>
+        <attribute name="debugRecordingDiagnosticsData" optional="YES" attributeType="Binary"/>
         <attribute name="startDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="trickEventsData" optional="NO" attributeType="Binary"/>
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>

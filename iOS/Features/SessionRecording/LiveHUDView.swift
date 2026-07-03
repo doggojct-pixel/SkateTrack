@@ -13,6 +13,7 @@ struct LiveHUDView: View {
     @StateObject private var emergencyContactStore = EmergencyContactStore.shared
     @State private var isShowingEmergencyContactsSettings = false
     @State private var speedTraceSamples: [LiveSpeedTraceSample] = []
+    @State private var speedTraceStartedAt: Date?
 
     private let onOpenDebugTools: (() -> Void)?
     private let speedTraceTimer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
@@ -105,6 +106,10 @@ struct LiveHUDView: View {
         .sheet(isPresented: $isShowingEmergencyContactsSettings) {
             EmergencyContactsSettingsView(store: emergencyContactStore)
         }
+        .onAppear {
+            appendSpeedTraceSampleIfNeeded(force: true)
+            healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
         .onReceive(speedTraceTimer) { _ in
             appendSpeedTraceSampleIfNeeded()
             healthReminders.updateSessionReminderState(sessionRecording.state)
@@ -112,13 +117,21 @@ struct LiveHUDView: View {
         .onChange(of: sessionRecording.state.status) { _, status in
             if status == .idle || status == .failed {
                 speedTraceSamples.removeAll(keepingCapacity: true)
+                speedTraceStartedAt = nil
+            } else if status == .preparing {
+                speedTraceStartedAt = Date()
             } else if status == .recording {
-                appendSpeedTraceSampleIfNeeded()
+                if speedTraceStartedAt == nil { speedTraceStartedAt = Date() }
+                appendSpeedTraceSampleIfNeeded(force: true)
             }
             healthReminders.updateSessionReminderState(sessionRecording.state)
         }
         .onChange(of: sessionRecording.state.elapsedTime) { _, _ in
+            appendSpeedTraceSampleIfNeeded()
             healthReminders.updateSessionReminderState(sessionRecording.state)
+        }
+        .onChange(of: sessionRecording.state.currentSpeedKilometersPerHour) { _, _ in
+            appendSpeedTraceSampleIfNeeded()
         }
         .onChange(of: subscriptionStatus.isSubscriber) { _, _ in
             healthReminders.syncAccess()
@@ -459,14 +472,33 @@ struct LiveHUDView: View {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
-    private func appendSpeedTraceSampleIfNeeded() {
+    private func appendSpeedTraceSampleIfNeeded(force: Bool = false) {
         guard sessionRecording.state.status == .recording else { return }
 
-        let elapsedTime = max(0, sessionRecording.state.elapsedTime)
-        let speed = max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+        // Task-030c-b15-B-3: Simulator / DEBUG mock samples can update speed before
+        // the accumulated sample timestamp advances enough for the trace. Use a
+        // wall-clock fallback so the Live HUD speed curve visibly progresses while
+        // preserving the real accumulated elapsed time when it is available.
+        if speedTraceStartedAt == nil { speedTraceStartedAt = Date() }
+        let wallClockElapsed = speedTraceStartedAt.map { Date().timeIntervalSince($0) } ?? 0
+        let previousElapsedTime = speedTraceSamples.last?.elapsedTime ?? 0
+        let elapsedTime = max(0, sessionRecording.state.elapsedTime, wallClockElapsed, previousElapsedTime + (force ? 0 : 0.01))
+        let rawSpeed = max(0, sessionRecording.state.currentSpeedKilometersPerHour)
+        let speed: Double
+        if sessionRecording.state.latestMotionSample?.sampleSource == .debugSimulated {
+            // Task-030c-b15-B-3: DEBUG simulated speed should drive the trace directly;
+            // otherwise the smoothing window can make simulator validation look flat.
+            speed = rawSpeed
+        } else {
+            speed = smoothedDisplaySpeedKilometersPerHour(rawSpeedKilometersPerHour: rawSpeed)
+        }
 
-        if let last = speedTraceSamples.last, elapsedTime <= last.elapsedTime + 0.25 {
-            return
+        if let last = speedTraceSamples.last {
+            let isDuplicateSample = abs(elapsedTime - last.elapsedTime) < 0.001
+                && abs(speed - last.speedKilometersPerHour) < 0.01
+            if isDuplicateSample || (!force && elapsedTime <= last.elapsedTime + 0.25) {
+                return
+            }
         }
 
         speedTraceSamples.append(
@@ -479,6 +511,19 @@ struct LiveHUDView: View {
         if speedTraceSamples.count > 90 {
             speedTraceSamples.removeFirst(speedTraceSamples.count - 90)
         }
+    }
+
+
+    private func smoothedDisplaySpeedKilometersPerHour(rawSpeedKilometersPerHour: Double) -> Double {
+        guard rawSpeedKilometersPerHour.isFinite else { return 0 }
+        let previousSpeeds = speedTraceSamples.suffix(3).map(\.speedKilometersPerHour)
+        guard !previousSpeeds.isEmpty else { return rawSpeedKilometersPerHour }
+
+        let medianWindow = (previousSpeeds + [rawSpeedKilometersPerHour]).sorted()
+        let median = medianWindow[medianWindow.count / 2]
+        let lastSpeed = previousSpeeds.last ?? median
+        let maximumDisplayStepKmh = 2.2
+        return min(max(median, lastSpeed - maximumDisplayStepKmh), lastSpeed + maximumDisplayStepKmh)
     }
 
     private func pauseOrResume() {

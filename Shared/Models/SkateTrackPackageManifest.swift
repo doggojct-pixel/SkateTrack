@@ -22,6 +22,7 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
     let includesAccountData: Bool
     let includesAchievements: Bool
     let formatDescription: String
+    let formatCapabilities: [String]?
 
     init(
         packageType: SkateTrackPackageType = .export,
@@ -34,7 +35,8 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         includesMotionSamples: Bool,
         includesAccountData: Bool = false,
         includesAchievements: Bool = false,
-        formatDescription: String = "portable-session-export"
+        formatDescription: String = "portable-session-export",
+        formatCapabilities: [String]? = nil
     ) {
         self.packageType = packageType
         self.schemaVersion = schemaVersion
@@ -47,6 +49,7 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         self.includesAccountData = includesAccountData
         self.includesAchievements = includesAchievements
         self.formatDescription = formatDescription
+        self.formatCapabilities = formatCapabilities
     }
 
     static func decode(from data: Data) throws -> SkateTrackPackageManifest {

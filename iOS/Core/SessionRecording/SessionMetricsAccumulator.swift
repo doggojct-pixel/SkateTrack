@@ -1,12 +1,12 @@
 // [自主區] iOS/Core/SessionRecording/SessionMetricsAccumulator.swift
-// 用途：依 MotionSample 即時累積速度、距離、爬升、傾角與滑行比例。
+// 用途：依 MotionSample 即時累積速度、距離、總爬升量、傾角與滑行比例。
 // 委派至：SessionRecordingCoordinator、Live HUD（Task-013）與 Session summary。
 
 import Foundation
 
 struct SessionMetricsAccumulator: Equatable, Sendable {
     private static let movingSpeedThresholdKmh = 1.0
-    private static let maximumSegmentSpeedKmh = 150.0
+    private static let maximumSegmentSpeedKmh = ActivityFidelityPolicy.maximumGlobalPlausibleSpeedKmh
     private static let minimumSegmentDistanceKilometers = 0.003
     private static let maximumSegmentDistanceKilometers = 2.0
     private static let earthRadiusKilometers = 6_371.0
@@ -27,13 +27,20 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
     private var lastCoordinate: GeoCoordinate?
     private var lastCoordinateTimestamp: Date?
     private var lastAltitudeMeters: Double?
+    private var lastBarometerAltitudeMeters: Double?
+    private var lastCoreLocationAltitudeMeters: Double?
     private var speedSampleCount: Int = 0
     private var speedSampleSum: Double = 0
     private var movingElapsedTime: TimeInterval = 0
     private var isPaused = false
+    private var activePolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
 
-    mutating func beginSession(at startDate: Date = Date()) {
+    mutating func beginSession(
+        at startDate: Date = Date(),
+        policy: ActivityFidelityPolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
+    ) {
         reset()
+        activePolicy = policy
         sessionStartDate = startDate
         lastProcessedTimestamp = startDate
     }
@@ -50,7 +57,8 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         if sample.gpsCoordinate != nil {
             gpsSampleCount += 1
         }
-        currentSpeedKilometersPerHour = max(sample.speedKmh, 0)
+        let trustedForSummary = trustsSampleForSummaryMetrics(sample)
+        currentSpeedKilometersPerHour = trustedForSummary ? max(sample.speedKmh, 0) : 0
         maxSpeedKilometersPerHour = max(maxSpeedKilometersPerHour, currentSpeedKilometersPerHour)
 
         speedSampleCount += 1
@@ -78,11 +86,14 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         lastProcessedTimestamp = nil
         lastCoordinate = nil
         lastAltitudeMeters = nil
+        lastBarometerAltitudeMeters = nil
+        lastCoreLocationAltitudeMeters = nil
         lastCoordinateTimestamp = nil
         speedSampleCount = 0
         speedSampleSum = 0
         movingElapsedTime = 0
         isPaused = false
+        activePolicy = ActivityFidelityPolicy(profile: .standardSkateboard)
     }
 
     func makeSummaryMetrics() -> SessionSummaryMetrics {
@@ -134,6 +145,12 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
 
         let coordinateTimestamp = sample.timestamp
 
+        guard trustsSampleForRouteDistance(sample) else {
+            lastCoordinate = nil
+            lastCoordinateTimestamp = nil
+            return
+        }
+
         guard let previousCoordinate = lastCoordinate else {
             lastCoordinate = coordinate
             lastCoordinateTimestamp = coordinateTimestamp
@@ -160,16 +177,108 @@ struct SessionMetricsAccumulator: Equatable, Sendable {
         lastCoordinateTimestamp = coordinateTimestamp
     }
 
+    private func trustsSampleForSummaryMetrics(_ sample: MotionSample) -> Bool {
+        guard let diagnostics = sample.locationDiagnostics else { return true }
+        if sample.sampleSource == .debugSimulated { return true }
+        guard diagnostics.routeSegmentConfidence != .low,
+              diagnostics.routeSegmentConfidence != .unavailable else { return false }
+        let policy = activePolicy
+        guard policy.acceptsLowSpeedMetricSample(
+            speedKmh: sample.speedKmh,
+            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
+            speedAccuracyMetersPerSecond: diagnostics.speedAccuracyMetersPerSecond,
+            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh,
+            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters
+        ) else { return false }
+        return policy.trustsRouteSegment(
+            horizontalAccuracyMeters: diagnostics.horizontalAccuracyMeters,
+            freshnessState: diagnostics.freshnessState,
+            updateIntervalSeconds: diagnostics.gpsUpdateIntervalSeconds,
+            segmentDistanceMeters: diagnostics.gpsSegmentDistanceMeters,
+            coordinateDerivedSpeedKmh: diagnostics.coordinateDerivedSpeedKmh
+        )
+    }
+
+    private func trustsSampleForRouteDistance(_ sample: MotionSample) -> Bool {
+        guard let diagnostics = sample.locationDiagnostics else { return true }
+        guard diagnostics.routeSegmentConfidence != .low,
+              diagnostics.routeSegmentConfidence != .unavailable else { return false }
+        return trustsSampleForSummaryMetrics(sample)
+    }
+
     private mutating func accumulateElevation(from sample: MotionSample) {
-        guard let altitude = sample.altitudeMeters else { return }
+        if let diagnostics = sample.altitudeDiagnostics {
+            accumulateTrustedElevation(from: diagnostics)
+            return
+        }
 
-        defer { lastAltitudeMeters = altitude }
+        guard let altitude = sample.altitudeMeters, altitude.isFinite else { return }
+        let policy = activePolicy
 
-        guard let previousAltitude = lastAltitudeMeters else { return }
-
-        let delta = altitude - previousAltitude
-        if delta > 0 {
+        switch sample.altitudeSource {
+        case .barometerRelative:
+            defer { lastBarometerAltitudeMeters = altitude }
+            guard let previousAltitude = lastBarometerAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0.03, delta <= min(policy.maximumElevationStepMeters, 1.0) else { return }
             elevationGainMeters += delta
+        case .coreLocationAbsolute:
+            // Task-030c-b10-r4: once barometer-relative altitude is present, Core Location
+            // absolute altitude is retained as raw diagnostics only and must not inflate
+            // low-speed / short-distance elevation gain.
+            guard lastBarometerAltitudeMeters == nil else { return }
+            let verticalAccuracy = sample.locationDiagnostics?.verticalAccuracyMeters
+            defer { lastCoreLocationAltitudeMeters = altitude }
+            guard let previousAltitude = lastCoreLocationAltitudeMeters else { return }
+            guard sample.timestamp.timeIntervalSince(sessionStartDate ?? sample.timestamp) > 30 else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0 else { return }
+            let strictVerticalAccuracy = min(policy.maximumVerticalAccuracyMeters, 5)
+            if let verticalAccuracy, verticalAccuracy <= strictVerticalAccuracy,
+               delta <= min(policy.maximumElevationStepMeters, 1.0) {
+                elevationGainMeters += delta
+            }
+        case .debugSimulated:
+            defer { lastAltitudeMeters = altitude }
+            guard let previousAltitude = lastAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            if delta > 0, delta <= policy.maximumElevationStepMeters {
+                elevationGainMeters += delta
+            }
+        case .unavailable, .none:
+            return
+        }
+    }
+
+    private mutating func accumulateTrustedElevation(from diagnostics: AltitudeDiagnostics) {
+        guard diagnostics.isTrustedForElevationGain,
+              let altitude = diagnostics.trustedAltitudeMeters,
+              altitude.isFinite else { return }
+        let policy = activePolicy
+
+        switch diagnostics.source {
+        case .barometerRelative:
+            defer { lastBarometerAltitudeMeters = altitude }
+            guard let previousAltitude = lastBarometerAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0.03, delta <= min(policy.maximumElevationStepMeters, 1.0) else { return }
+            elevationGainMeters += delta
+        case .coreLocationAbsolute:
+            guard lastBarometerAltitudeMeters == nil else { return }
+            defer { lastCoreLocationAltitudeMeters = altitude }
+            guard let previousAltitude = lastCoreLocationAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            guard delta > 0, delta <= min(policy.maximumElevationStepMeters, 1.0) else { return }
+            elevationGainMeters += delta
+        case .debugSimulated:
+            defer { lastAltitudeMeters = altitude }
+            guard let previousAltitude = lastAltitudeMeters else { return }
+            let delta = altitude - previousAltitude
+            if delta > 0, delta <= policy.maximumElevationStepMeters {
+                elevationGainMeters += delta
+            }
+        case .unavailable:
+            return
         }
     }
 

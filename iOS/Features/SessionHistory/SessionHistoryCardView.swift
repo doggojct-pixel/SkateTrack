@@ -12,7 +12,7 @@ struct SessionHistoryCardView: View {
     var onToggleSelection: (() -> Void)?
 
     private var session: SessionData { entry.session }
-    private var metrics: SessionSummaryMetrics { session.summaryMetrics ?? .zero }
+    private var metrics: SessionSummaryMetrics { SessionSummaryDisplayMetrics.make(session: session, samples: session.motionSamples) }
     private var accentColor: Color {
         switch session.sportMode {
         case .skateboard:

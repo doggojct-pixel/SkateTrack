@@ -94,6 +94,9 @@ final class FallDetectionEngine {
         mode: SportMode
     ) {
         stopMonitoring()
+        detectedFallEvents = []
+        pendingFallEvent = nil
+        latestCoordinate = nil
         activeMode = mode
         stateSubject.send(.monitoring)
 

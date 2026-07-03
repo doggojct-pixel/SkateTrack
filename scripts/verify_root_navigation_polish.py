@@ -14,8 +14,8 @@ REQUIRED_FILES = [
     "iOS/Features/SessionRecording/SessionStartView.swift",
     "iOS/Features/SessionRecording/SessionStartHeaderMetricsView.swift",
     "iOS/Features/SessionRecording/SessionStartStickyRootNavigationView.swift",
-    "docs/DEV_LOG.md",
-    "docs/FILE_STRUCTURE.md",
+    "docs/history/DEV_LOG.md",
+    "docs/reference/FILE_STRUCTURE.md",
 ]
 
 
@@ -125,8 +125,8 @@ def verify_scope_boundaries() -> None:
 
 def verify_docs() -> None:
     docs = "\n".join([
-        read("docs/DEV_LOG.md"),
-        read("docs/FILE_STRUCTURE.md"),
+        read("docs/history/DEV_LOG.md"),
+        read("docs/reference/FILE_STRUCTURE.md"),
     ])
     for token in [
         "Task-025c",

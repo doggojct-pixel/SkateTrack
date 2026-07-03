@@ -59,6 +59,7 @@ final class SessionRecordingViewModel: ObservableObject {
     @Published private(set) var lastCompletedSession: SessionData?
     #if DEBUG
     @Published private(set) var debugDemoSpeedSessionEnabled: Bool
+    @Published var debugRecordingTestContext: DebugRecordingTestContextLabel = .unspecified
     #endif
 
     private let coordinator: SessionRecordingCoordinator
@@ -68,6 +69,7 @@ final class SessionRecordingViewModel: ObservableObject {
         self.coordinator = coordinator
         #if DEBUG
         self.debugDemoSpeedSessionEnabled = coordinator.debugDataSource == .mock
+        self.debugRecordingTestContext = .unspecified
         #endif
         bindCoordinator()
     }
@@ -176,6 +178,9 @@ final class SessionRecordingViewModel: ObservableObject {
         }
 
         do {
+            #if DEBUG
+            coordinator.setDebugRecordingTestContext(debugRecordingTestContext)
+            #endif
             try await coordinator.startSession(
                 mode: mode,
                 powerType: powerType,
@@ -230,6 +235,11 @@ final class SessionRecordingViewModel: ObservableObject {
         coordinator.setDataSource(isEnabled ? .mock : .live)
         debugDemoSpeedSessionEnabled = isEnabled
     }
+
+    func setDebugRecordingTestContext(_ context: DebugRecordingTestContextLabel) {
+        debugRecordingTestContext = context
+        coordinator.setDebugRecordingTestContext(context)
+    }
     #endif
 
     private func updateState(_ mutation: (inout SessionRecordingState) -> Void) {
@@ -248,30 +258,274 @@ func useSessionRecording(coordinator: SessionRecordingCoordinator = .shared) -> 
 struct SessionRecordingPreviewPanel: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
 
+    private var state: SessionRecordingState { sessionRecording.state }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(LocalizedStringKey(sessionRecording.state.status.localizationKey))
-                .font(.caption.bold())
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .center, spacing: 10) {
+                ZStack {
+                    Circle()
+                        .fill(statusColor.opacity(0.18))
+                        .frame(width: 42, height: 42)
+                    Image(systemName: statusIconName)
+                        .font(.system(size: 17, weight: .black, design: .rounded))
+                        .foregroundStyle(statusColor)
+                }
 
-            Text("\(sessionRecording.state.currentSpeedKilometersPerHour, format: .number.precision(.fractionLength(1)))")
-                .font(.caption2)
-            Text("\(sessionRecording.state.distanceKilometers, format: .number.precision(.fractionLength(2)))")
-                .font(.caption2)
-            Text("\(sessionRecording.state.elapsedTime, format: .number.precision(.fractionLength(0)))")
-                .font(.caption2)
-            Text("samples \(sessionRecording.state.motionSampleCount) / gps \(sessionRecording.state.gpsSampleCount)")
-                .font(.caption2)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("debug.status.title")
+                        .font(.system(size: 11, weight: .black, design: .rounded))
+                        .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
+                        .textCase(.uppercase)
+                    Text(LocalizedStringKey(state.status.localizationKey))
+                        .font(.system(size: 19, weight: .black, design: .rounded))
+                        .foregroundStyle(.white)
+                }
 
-            if let errorKey = sessionRecording.state.errorMessageKey {
-                Text(LocalizedStringKey(errorKey))
-                    .font(.caption2)
-                    .foregroundStyle(.red)
+                Spacer()
+
+                Text(latestSampleSourceLabel)
+                    .font(.system(size: 11, weight: .black, design: .rounded))
+                    .foregroundStyle(latestSampleSourceColor)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .background(latestSampleSourceColor.opacity(0.14))
+                    .clipShape(Capsule())
+                    .accessibilityIdentifier("session-recording-preview-source-chip")
+            }
+
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 10),
+                    GridItem(.flexible(), spacing: 10)
+                ],
+                spacing: 10
+            ) {
+                metricTile(
+                    titleKey: "debug.status.speed",
+                    value: formattedSpeed,
+                    systemImage: "speedometer",
+                    accent: SkateTrackSessionStartColors.teal
+                )
+                metricTile(
+                    titleKey: "debug.status.distance",
+                    value: formattedDistance,
+                    systemImage: "point.topleft.down.curvedto.point.bottomright.up",
+                    accent: SkateTrackSessionStartColors.blueCold
+                )
+                metricTile(
+                    titleKey: "debug.status.elapsed",
+                    value: formattedElapsedTime,
+                    systemImage: "timer",
+                    accent: SkateTrackSessionStartColors.purple
+                )
+                metricTile(
+                    titleKey: "debug.status.gps",
+                    value: "\(state.gpsSampleCount)",
+                    systemImage: "location.fill",
+                    accent: SkateTrackSessionStartColors.amber
+                )
+            }
+
+            VStack(spacing: 8) {
+                diagnosticRow(
+                    titleKey: "debug.status.samples",
+                    value: "\(state.motionSampleCount)"
+                )
+                diagnosticRow(
+                    titleKey: "debug.status.latestAccuracy",
+                    value: latestAccuracyText
+                )
+                diagnosticRow(
+                    titleKey: "debug.status.latestFreshness",
+                    value: latestFreshnessLabel
+                )
+            }
+            .padding(12)
+            .background(Color.white.opacity(0.045))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+            if let errorKey = state.errorMessageKey {
+                Label(LocalizedStringKey(errorKey), systemImage: "exclamationmark.triangle.fill")
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.accent2)
+                    .padding(.top, 2)
+                    .accessibilityIdentifier("session-recording-preview-error")
             }
         }
-        .padding(12)
-        .background(.thinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            LinearGradient(
+                colors: [
+                    SkateTrackSessionStartColors.card.opacity(0.96),
+                    SkateTrackSessionStartColors.navy3.opacity(0.82)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.10), lineWidth: 1)
+        )
+        .shadow(color: SkateTrackSessionStartColors.teal.opacity(0.10), radius: 18, x: 0, y: 10)
         .accessibilityIdentifier("session-recording-preview-panel")
+    }
+
+    private var formattedSpeed: String {
+        "\(state.currentSpeedKilometersPerHour.formatted(.number.precision(.fractionLength(1)))) km/h"
+    }
+
+    private var formattedDistance: String {
+        "\(state.distanceKilometers.formatted(.number.precision(.fractionLength(2)))) km"
+    }
+
+    private var formattedElapsedTime: String {
+        let totalSeconds = max(Int(state.elapsedTime.rounded()), 0)
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        return "\(minutes):\(seconds < 10 ? "0" : "")\(seconds)"
+    }
+
+    private var statusIconName: String {
+        switch state.status {
+        case .idle:
+            return "circle.dashed"
+        case .preparing:
+            return "sensor.tag.radiowaves.forward.fill"
+        case .recording:
+            return "record.circle.fill"
+        case .paused:
+            return "pause.circle.fill"
+        case .ending, .saving:
+            return "tray.and.arrow.down.fill"
+        case .failed:
+            return "exclamationmark.triangle.fill"
+        }
+    }
+
+    private var statusColor: Color {
+        switch state.status {
+        case .idle:
+            return SkateTrackSessionStartColors.textSecondary
+        case .preparing:
+            return SkateTrackSessionStartColors.amber
+        case .recording:
+            return SkateTrackSessionStartColors.teal
+        case .paused:
+            return SkateTrackSessionStartColors.purple
+        case .ending, .saving:
+            return SkateTrackSessionStartColors.blueCold
+        case .failed:
+            return SkateTrackSessionStartColors.accent2
+        }
+    }
+
+    private var latestSampleSourceLabel: LocalizedStringKey {
+        switch state.latestMotionSample?.sampleSource {
+        case .some(.locationFix):
+            return "debug.status.source.locationFix"
+        case .some(.timerFusion):
+            return "debug.status.source.timerFusion"
+        case .some(.debugSimulated):
+            return "debug.status.source.debugSimulated"
+        case .none:
+            return "debug.status.source.none"
+        }
+    }
+
+    private var latestSampleSourceColor: Color {
+        switch state.latestMotionSample?.sampleSource {
+        case .some(.locationFix):
+            return SkateTrackSessionStartColors.teal
+        case .some(.timerFusion):
+            return SkateTrackSessionStartColors.blueCold
+        case .some(.debugSimulated):
+            return SkateTrackSessionStartColors.amber
+        case .none:
+            return SkateTrackSessionStartColors.textTertiary
+        }
+    }
+
+    private var latestAccuracyText: String {
+        guard let accuracy = state.latestMotionSample?.locationDiagnostics?.horizontalAccuracyMeters else {
+            return "—"
+        }
+        return "\(accuracy.formatted(.number.precision(.fractionLength(1)))) m"
+    }
+
+    private var latestFreshnessLabel: LocalizedStringKey {
+        guard let freshness = state.latestMotionSample?.locationDiagnostics?.freshnessState else {
+            return "debug.status.freshness.none"
+        }
+        switch freshness {
+        case .fresh:
+            return "debug.status.freshness.fresh"
+        case .recent:
+            return "debug.status.freshness.recent"
+        case .stale:
+            return "debug.status.freshness.stale"
+        case .unavailable:
+            return "debug.status.freshness.unavailable"
+        }
+    }
+
+    private func metricTile(
+        titleKey: LocalizedStringKey,
+        value: String,
+        systemImage: String,
+        accent: Color
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 11, weight: .heavy, design: .rounded))
+                    .foregroundStyle(accent)
+                Text(titleKey)
+                    .font(.system(size: 10, weight: .black, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
+                    .textCase(.uppercase)
+            }
+            Text(value)
+                .font(.system(size: 18, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+                .monospacedDigit()
+                .minimumScaleFactor(0.76)
+                .lineLimit(1)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(accent.opacity(0.10))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    private func diagnosticRow(titleKey: LocalizedStringKey, value: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(titleKey)
+                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+            Spacer()
+            Text(value)
+                .font(.system(size: 12, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+                .monospacedDigit()
+                .multilineTextAlignment(.trailing)
+        }
+    }
+
+    private func diagnosticRow(titleKey: LocalizedStringKey, value: LocalizedStringKey) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(titleKey)
+                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+            Spacer()
+            Text(value)
+                .font(.system(size: 12, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.trailing)
+        }
     }
 }
 

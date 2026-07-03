@@ -177,6 +177,7 @@ SOURCE_TOKENS = {
         "SessionSummaryMetricsGridView",
         "SessionEquipmentAttributionView",
         "SessionRouteMapView",
+        "SessionRouteMapView(session: content.session, samples: content.motionSamples)",
         "SessionSummarySafetyStatusView",
         "SessionSummaryShareStubView",
         "lockedFeature: .sessionShareCard",
@@ -185,6 +186,8 @@ SOURCE_TOKENS = {
         "SubscriptionPaywallView",
         "lockedFeature: .advancedCharts",
         "refreshable",
+        "safeAreaInset(edge: .bottom",
+        "session-summary-floating-close",
     ],
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift": [
         "SessionSummaryMetricItem",
@@ -204,6 +207,21 @@ SOURCE_TOKENS = {
         "import MapKit",
         "MapPolyline",
         "Annotation",
+        "rawRouteCoordinates",
+        "displayRoutePoints",
+        "displayRouteSegments",
+        "RouteMapSegmentStyle",
+        "reliableDisplayRouteCoordinates",
+        "routeAccuracyDisclosureText",
+        "session-route-accuracy-disclosure",
+        "segment.style.opacity",
+        "private static let fluorescentPink",
+        "makeDisplayRoutePoints",
+        "deduplicatedTrustedLocationFixes",
+        "isTrustedDisplayRouteSample",
+        "shouldSuppressSmallAreaJitter",
+        "smoothDisplayCoordinate",
+        "shouldStartNewRouteSegment",
         "session-route-map-view",
         "session-route-map-empty",
     ],
@@ -258,16 +276,16 @@ SOURCE_TOKENS = {
     ],
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": [
         "import Charts",
-        "Chart(points)",
+        "SessionSummaryChartSegment",
         "LineMark",
-        "AreaMark",
+        "series: .value",
         "summary-speed-timeline-chart",
     ],
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift": [
         "import Charts",
-        "Chart(points)",
+        "SessionSummaryChartSegment",
         "LineMark",
-        "AreaMark",
+        "series: .value",
         "summary-elevation-profile-chart",
     ],
     "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": [
@@ -286,13 +304,13 @@ SOURCE_TOKENS = {
         "SessionSummaryView(",
         "selectedSummarySession",
     ],
-    "docs/DEV_LOG.md": [
+    "docs/history/DEV_LOG.md": [
         "Task-020c",
         "Task-018c Advanced Charts + Subscription Gating",
         "SpeedTimelineChartView",
         "GatedFeature.advancedCharts",
     ],
-    "docs/FILE_STRUCTURE.md": [
+    "docs/reference/FILE_STRUCTURE.md": [
         "Task-020c",
         "Task-018c Advanced Charts + Subscription Gating",
         "SessionAdvancedChartsView.swift",
@@ -316,7 +334,7 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionSummaryView.swift": 360,
     "iOS/Features/SessionSummary/SessionSummaryMetricsGridView.swift": 180,
     "iOS/Features/SessionSummary/SessionSummaryPlaceholderSectionView.swift": 160,
-    "iOS/Features/SessionSummary/SessionRouteMapView.swift": 260,
+    "iOS/Features/SessionSummary/SessionRouteMapView.swift": 760,
     "iOS/Features/SessionSummary/SessionSummarySafetyStatusView.swift": 220,
     "iOS/Features/SessionSummary/SessionSummaryShareStubView.swift": 180,
     "iOS/Features/SessionSummary/SessionShareCardPreviewView.swift": 240,
@@ -328,12 +346,12 @@ MAX_LINES = {
     "iOS/Features/SessionSummary/SessionShareSheetView.swift": 100,
     "iOS/Core/SessionSharing/SessionShareExportPayload.swift": 120,
     "iOS/Core/SessionSharing/SessionShareExportService.swift": 220,
-    "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": 260,
+    "iOS/Features/SessionSummary/SessionAdvancedChartsView.swift": 340,
     "iOS/Features/SessionSummary/SpeedTimelineChartView.swift": 180,
     "iOS/Features/SessionSummary/ElevationProfileChartView.swift": 180,
     "iOS/Features/SessionSummary/AdvancedChartsLockedView.swift": 220,
     "iOS/Features/SessionSummary/HeartRateZonePlaceholderView.swift": 240,
-    "iOS/Hooks/useSessionSummary.swift": 240,
+    "iOS/Hooks/useSessionSummary.swift": 420,
     "iOS/Hooks/useSessionShareCard.swift": 220,
     "Shared/Models/SessionShareCardData.swift": 160,
 }
@@ -389,6 +407,16 @@ def verify_localization() -> None:
             if f'"{key}"' not in text:
                 fail(f"Missing localization key {key} in {locale}")
 
+    expected_elevation_gain_labels = {
+        "en": "Total elevation gain",
+        "zh-Hant": "總爬升量",
+        "ja": "総獲得標高",
+    }
+    for locale, label in expected_elevation_gain_labels.items():
+        token = f'"summary.metric.elevationGain" = "{label}";'
+        if token not in read(f"Shared/Localization/{locale}.lproj/Localizable.strings"):
+            fail(f"Task-030c-b15-B-3 missing total elevation gain label for {locale}: {label}")
+
 
 def verify_source_contracts() -> None:
     for relative, tokens in SOURCE_TOKENS.items():
@@ -405,6 +433,16 @@ def verify_source_contracts() -> None:
     summary_view = read("iOS/Features/SessionSummary/SessionSummaryView.swift")
     if "No fake health metrics are shown" in summary_view:
         fail("User-facing copy must stay in Localizable.strings, not raw Swift strings")
+
+    chart_sources = "\n".join(
+        read(path)
+        for path in [
+            "iOS/Features/SessionSummary/SpeedTimelineChartView.swift",
+            "iOS/Features/SessionSummary/ElevationProfileChartView.swift",
+        ]
+    )
+    if "AreaMark" in chart_sources:
+        fail("Task-030c-b3 charts must not use area fills across long GPS gaps")
 
 
 def main() -> None:

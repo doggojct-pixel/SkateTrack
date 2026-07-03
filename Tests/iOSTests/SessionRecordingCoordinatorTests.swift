@@ -56,6 +56,231 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertEqual(liveMetrics.elapsedTime, 10, accuracy: 0.001)
     }
 
+    func testAltitudeOutlierGuardRejectsImplausibleJumpAndKeepsTrustedAnchorStable() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3,
+            hardCoreLocationJumpRejectMeters: 30
+        )
+        let start = Date(timeIntervalSince1970: 10_000)
+        let diagnostics = LocationFixDiagnostics(
+            verticalAccuracyMeters: 8,
+            freshnessState: .fresh,
+            routeSegmentConfidence: .high
+        )
+
+        let first = guardEngine.evaluate(
+            altitudeMeters: 10,
+            source: .coreLocationAbsolute,
+            timestamp: start,
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        let spike = guardEngine.evaluate(
+            altitudeMeters: 110,
+            source: .coreLocationAbsolute,
+            timestamp: start.addingTimeInterval(2),
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        let recovery = guardEngine.evaluate(
+            altitudeMeters: 11,
+            source: .coreLocationAbsolute,
+            timestamp: start.addingTimeInterval(20),
+            verticalAccuracyMeters: 8,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: start,
+            config: config
+        )
+
+        XCTAssertEqual(first.trustClassification, .trusted)
+        XCTAssertEqual(first.reason, .firstTrustedAnchor)
+        XCTAssertEqual(spike.trustClassification, .rejectedOutlier)
+        XCTAssertEqual(spike.reason, .hardAltitudeJump)
+        XCTAssertEqual(spike.trustedAltitudeMeters!, 10, accuracy: 0.001)
+        XCTAssertFalse(spike.updatesTrustedAltitudeAnchor)
+        XCTAssertEqual(recovery.trustClassification, .trusted)
+        XCTAssertEqual(recovery.previousTrustedAltitudeMeters!, 10, accuracy: 0.001)
+        XCTAssertEqual(recovery.trustedAltitudeMeters!, 11, accuracy: 0.001)
+    }
+
+    func testAltitudeOutlierGuardClassifiesPoorVerticalAccuracyWithoutDroppingHorizontalSample() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3
+        )
+        let timestamp = Date(timeIntervalSince1970: 20_000)
+        let diagnostics = LocationFixDiagnostics(
+            horizontalAccuracyMeters: 5,
+            verticalAccuracyMeters: 45,
+            freshnessState: .fresh,
+            routeSegmentConfidence: .high
+        )
+
+        let altitudeDiagnostics = guardEngine.evaluate(
+            altitudeMeters: 42,
+            source: .coreLocationAbsolute,
+            timestamp: timestamp,
+            verticalAccuracyMeters: 45,
+            locationDiagnostics: diagnostics,
+            sessionStartDate: timestamp,
+            config: config
+        )
+        let sample = MotionSample(
+            timestamp: timestamp,
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 6,
+            accelerometerG: .zero,
+            gyroscopeRadPS: .zero,
+            altitudeMeters: 42,
+            altitudeSource: .coreLocationAbsolute,
+            altitudeDiagnostics: altitudeDiagnostics,
+            locationDiagnostics: diagnostics,
+            sampleSource: .locationFix
+        )
+
+        XCTAssertEqual(sample.altitudeDiagnostics?.trustClassification, .lowConfidence)
+        XCTAssertEqual(sample.altitudeDiagnostics?.reason, .verticalAccuracyTooPoor)
+        XCTAssertNotNil(sample.gpsCoordinate, "b12-A must isolate only altitude; horizontal coordinates remain available.")
+    }
+
+    func testMetricsAccumulatorIgnoresRejectedAltitudeOutlierButPreservesDistance() {
+        var accumulator = SessionMetricsAccumulator()
+        let start = Date(timeIntervalSince1970: 30_000)
+        accumulator.beginSession(at: start)
+
+        let samples = [
+            MotionSample(
+                timestamp: start.addingTimeInterval(1),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0330, longitude: 121.5650),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 10,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .firstTrustedAnchor,
+                    rawAltitudeMeters: 10,
+                    trustedAltitudeMeters: 10,
+                    updatesTrustedAltitudeAnchor: true
+                )
+            ),
+            MotionSample(
+                timestamp: start.addingTimeInterval(2),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0331, longitude: 121.5651),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 110,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .rejectedOutlier,
+                    reason: .hardAltitudeJump,
+                    rawAltitudeMeters: 110,
+                    trustedAltitudeMeters: 10,
+                    previousTrustedAltitudeMeters: 10,
+                    altitudeDeltaMeters: 100,
+                    timeDeltaSeconds: 1,
+                    verticalSpeedMetersPerSecond: 100,
+                    rejectedByOutlierGuard: true,
+                    updatesTrustedAltitudeAnchor: false
+                )
+            ),
+            MotionSample(
+                timestamp: start.addingTimeInterval(20),
+                gpsCoordinate: GeoCoordinate(latitude: 25.0332, longitude: 121.5652),
+                speedKmh: 8,
+                accelerometerG: .zero,
+                gyroscopeRadPS: .zero,
+                altitudeMeters: 11,
+                altitudeSource: .coreLocationAbsolute,
+                altitudeDiagnostics: AltitudeDiagnostics(
+                    source: .coreLocationAbsolute,
+                    trustClassification: .trusted,
+                    reason: .coreLocationAbsoluteAccepted,
+                    rawAltitudeMeters: 11,
+                    trustedAltitudeMeters: 11,
+                    previousTrustedAltitudeMeters: 10,
+                    altitudeDeltaMeters: 1,
+                    timeDeltaSeconds: 19,
+                    verticalSpeedMetersPerSecond: 1.0 / 19.0,
+                    updatesTrustedAltitudeAnchor: true
+                )
+            )
+        ]
+
+        samples.forEach { accumulator.process($0) }
+
+        XCTAssertEqual(accumulator.elevationGainMeters, 1, accuracy: 0.001)
+        XCTAssertGreaterThan(accumulator.distanceKilometers, 0, "Altitude rejection must not fracture horizontal distance accumulation.")
+    }
+
+    func testAltitudePressureFilterSuppressesPressureSpike() {
+        var filter = AltitudePressureFilter()
+        let config = AltitudePressureFilterConfig(
+            smoothingAlpha: 0.20,
+            maxRawPressureStepKilopascals: 0.10
+        )
+
+        let first = filter.evaluate(rawPressureKilopascals: 101.30, config: config)
+        let spike = filter.evaluate(rawPressureKilopascals: 102.30, config: config)
+
+        XCTAssertEqual(first?.rawPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(first?.smoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(first?.spikeSuppressed, false)
+        XCTAssertEqual(spike?.spikeSuppressed, true)
+        XCTAssertEqual(spike?.previousSmoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(spike?.pressureDeltaKilopascals ?? .nan, 1.0, accuracy: 0.0001)
+        XCTAssertEqual(spike?.smoothedPressureKilopascals ?? .nan, 101.32, accuracy: 0.0001)
+    }
+
+    func testAltitudeOutlierGuardCarriesPressureDiagnosticsWithoutChangingAltitude() {
+        var guardEngine = AltitudeOutlierGuard()
+        let config = AltitudeOutlierGuardConfig(
+            maxCoreLocationVerticalAccuracyMeters: 15,
+            maxCoreLocationVerticalSpeedMetersPerSecond: 3,
+            maxBarometerVerticalSpeedMetersPerSecond: 40,
+            hardBarometerJumpRejectMeters: 30
+        )
+        let timestamp = Date(timeIntervalSince1970: 40_000)
+        let pressureDiagnostics = AltitudePressureDiagnostics(
+            rawPressureKilopascals: 101.30,
+            smoothedPressureKilopascals: 101.30,
+            filterAlpha: 0.20,
+            spikeSuppressed: false
+        )
+
+        let altitudeDiagnostics = guardEngine.evaluate(
+            altitudeMeters: 3.25,
+            source: .barometerRelative,
+            timestamp: timestamp,
+            verticalAccuracyMeters: nil,
+            locationDiagnostics: nil,
+            sessionStartDate: timestamp,
+            config: config,
+            pressureDiagnostics: pressureDiagnostics
+        )
+
+        XCTAssertEqual(altitudeDiagnostics.source, .barometerRelative)
+        XCTAssertEqual(altitudeDiagnostics.trustClassification, .trusted)
+        XCTAssertEqual(altitudeDiagnostics.reason, .barometerRelativeAccepted)
+        XCTAssertEqual(altitudeDiagnostics.rawAltitudeMeters!, 3.25, accuracy: 0.001)
+        XCTAssertEqual(altitudeDiagnostics.trustedAltitudeMeters!, 3.25, accuracy: 0.001)
+        XCTAssertEqual(altitudeDiagnostics.pressureDiagnostics?.rawPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+        XCTAssertEqual(altitudeDiagnostics.pressureDiagnostics?.smoothedPressureKilopascals ?? .nan, 101.30, accuracy: 0.0001)
+    }
+
     func testStartSessionRejectsElectricInlinePowerType() async {
         let coordinator = SessionRecordingCoordinator(
             sensorEngine: MockSessionSensorEngine(),
@@ -105,6 +330,94 @@ final class SessionRecordingCoordinatorTests: XCTestCase {
         XCTAssertNotNil(sessionData.summaryMetrics)
         XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
         XCTAssertTrue(sensorEngine.stopCalled)
+    }
+
+    func testB15BSimulatorPersistenceRecoversCoordinatorObservedSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+
+        let sample = MotionSample(
+            timestamp: Date(),
+            gpsCoordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+            speedKmh: 9,
+            accelerometerG: ThreeAxisValue(x: 0, y: 0, z: 1),
+            gyroscopeRadPS: .zero,
+            sampleSource: .timerFusion
+        )
+        sensorEngine.emit(sample)
+
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertEqual(sessionData.motionSamples.map(\.id), [sample.id])
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.map(\.id), [sample.id])
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
+    }
+
+    func testB15BSimulatorPersistenceCreatesDebugFallbackWhenLiveHasNoSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.longboard), powerType: .humanPowered)
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertGreaterThanOrEqual(sessionData.motionSamples.count, 4)
+        XCTAssertTrue(sessionData.motionSamples.allSatisfy { $0.sampleSource == .debugSimulated })
+        XCTAssertFalse(sessionData.motionSamples.compactMap(\.gpsCoordinate).isEmpty)
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.count, sessionData.motionSamples.count)
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
+        XCTAssertEqual(repository.savedSessions.map(\.id), [sessionData.id])
+    }
+
+    func testB15B1SimulatorPersistenceReplacesCoordinateLessTimerFusionSamples() async throws {
+        let sensorEngine = MockSessionSensorEngine()
+        let repository = MockSessionRepository()
+        let coordinator = SessionRecordingCoordinator(
+            sensorEngine: sensorEngine,
+            fallDetectionEngine: MockFallDetectionEngine(),
+            sessionRepository: repository
+        )
+
+        try await coordinator.startSession(mode: .skateboard(.streetPark), powerType: .humanPowered)
+        sensorEngine.emit(
+            MotionSample(
+                timestamp: Date(),
+                gpsCoordinate: nil,
+                speedKmh: 7.5,
+                accelerometerG: ThreeAxisValue(x: 0.02, y: 0.04, z: 0.98),
+                gyroscopeRadPS: .zero,
+                sampleSource: .timerFusion
+            )
+        )
+
+        let sessionData = try await coordinator.requestEndSession()
+
+        #if targetEnvironment(simulator)
+        XCTAssertGreaterThanOrEqual(sessionData.motionSamples.count, 4)
+        XCTAssertFalse(sessionData.motionSamples.compactMap(\.gpsCoordinate).isEmpty)
+        XCTAssertTrue(sessionData.motionSamples.allSatisfy { $0.sampleSource == .debugSimulated })
+        XCTAssertEqual(repository.savedSessions.first?.motionSamples.count, sessionData.motionSamples.count)
+        #else
+        XCTAssertTrue(sessionData.motionSamples.isEmpty)
+        #endif
     }
 
 
@@ -231,7 +544,7 @@ private final class MockSessionSensorEngine: SessionSensorProviding {
         motionSampleSubject.eraseToAnyPublisher()
     }
 
-    func startRecording(mode: SportMode) async throws {}
+    func startRecording(mode: SportMode, powerType: PowerType, fidelityProfile: ActivityFidelityProfile?) async throws {}
 
     func stopRecording() async -> SessionData {
         stopCalled = true

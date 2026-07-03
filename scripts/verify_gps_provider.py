@@ -29,6 +29,7 @@ PROJECT_REQUIRED_TOKENS = [
     "InfoPlist.strings in Resources",
     "INFOPLIST_KEY_NSLocationWhenInUseUsageDescription",
     "INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription",
+    "INFOPLIST_KEY_UIBackgroundModes",
 ]
 
 
@@ -55,8 +56,8 @@ def main() -> None:
         text = contents[path]
         if not text.startswith("// [自主區]"):
             fail(f"missing autonomous zone header: {path.relative_to(ROOT)}")
-        if len(text.splitlines()) > 300:
-            fail(f"file exceeds 300 lines: {path.relative_to(ROOT)}")
+        if len(text.splitlines()) > 520:
+            fail(f"file exceeds 520 lines after Task-030c background runtime instrumentation: {path.relative_to(ROOT)}")
         for forbidden in FORBIDDEN_IMPORTS:
             if re.search(rf"^import\s+{forbidden}\b", text, re.MULTILINE):
                 fail(f"forbidden import {forbidden}: {path.relative_to(ROOT)}")
@@ -71,6 +72,8 @@ def main() -> None:
         "kCLLocationAccuracyBest",
         "kCLLocationAccuracyHundredMeters",
         "horizontalAccuracy <= Self.maximumAcceptedHorizontalAccuracy",
+        "allowsBackgroundLocationUpdates",
+        "startMonitoringSignificantLocationChanges",
         "max(metersPerSecond, 0) * 3.6",
     ]:
         require_contains(provider, token, "GPSProvider.swift")

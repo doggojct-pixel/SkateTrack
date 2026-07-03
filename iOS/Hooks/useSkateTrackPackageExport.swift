@@ -25,7 +25,9 @@ final class SkateTrackPackageExportViewModel: ObservableObject {
         errorKey = nil
 
         do {
-            let payload = try provider.createExport(content: content)
+            let payload = try await Task.detached(priority: .userInitiated) {
+                try SkateTrackPackageExportProvider().createExport(content: content)
+            }.value
             activePayload = payload
             statusKey = "skatetrack.package.export.ready"
         } catch let error as SkateTrackPackageError {

@@ -8,7 +8,7 @@ struct SessionSummaryHandoffView: View {
     let session: SessionData
     let onClose: () -> Void
 
-    private var metrics: SessionSummaryMetrics { session.summaryMetrics ?? .zero }
+    private var metrics: SessionSummaryMetrics { SessionSummaryDisplayMetrics.make(session: session, samples: session.motionSamples) }
 
     var body: some View {
         GeometryReader { proxy in

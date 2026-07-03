@@ -1582,3 +1582,744 @@ This log is append-only. Do not delete or overwrite old entries.
 - Run `python3 scripts/verify_task030_release_readiness.py` first.
 - Then run the standard localization, privacy, macOS viewer, package, backup, account, GPS, and shared-model verify scripts.
 - `docs/history/DEV_LOG.md` may contain historical mentions of old paths, but active docs and scripts must not depend on retired paths.
+
+## 2026-06-13 — Task-030c-a Core Location Diagnostics Package Extension
+
+### Completed
+- Added optional `LocationFixDiagnostics` metadata to `MotionSample` so future `.skatetrack` exports can carry Core Location accuracy, raw location timestamp, millisecond timestamp, update interval, segment distance, coordinate-derived speed, speed source, freshness state, and route segment confidence.
+- Added optional `RouteQualitySummary` support for completed sessions and portable package sessions, including `uniqueCoordinateCount`, `lowConfidenceSegmentCount`, stale-location sample count, average / max GPS update interval, and total GPS-derived distance.
+- Kept `.skatetrack` `schemaVersion = 1` and added optional `formatCapabilities` values `location-diagnostics-v1` and `route-quality-summary-v1`; old packages without the new fields should remain decode-compatible.
+- Bridged accepted Core Location updates through `SensorFusionEngine` diagnostics without changing `GPSProvider` high-accuracy policy yet.
+- Added `scripts/verify_task030c_gps_diagnostics_package.py` to guard the diagnostics schema, package capabilities, route-quality summary, documentation alignment, and Task-030c-a scope boundaries.
+
+### Evidence Handling
+- `SkateTrack-Session-20260613-110119.skatetrack` is the real-device evidence for the route / speed fidelity mismatch: many motion samples, very few unique coordinates, and route reconstruction from sparse location fixes.
+- `SkateTrack-Session-20260612-180037.skatetrack` is treated as a simulator / compatibility reference only. It must not be cited as real-device GPS evidence.
+
+### Scope Boundary
+- Task-030c-a is diagnostics and package compatibility only. It does not change `GPSProvider` desired accuracy, distance filter, background behavior, signing, capabilities, entitlements, road snapping, map matching, route replay, Snow Mode, Watch Phase 1b, StoreKit production, Google production services, CloudKit / iCloud, or WeatherKit production.
+- Low-confidence route segments are recorded as data, but route rendering changes are deferred to Task-030c-d.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_gps_diagnostics_package.py` after applying this task.
+- Also run `python3 scripts/verify_shared_models.py`, `python3 scripts/verify_sensor_fusion_engine.py`, `python3 scripts/verify_skatetrack_package.py`, and platform builds because this task changes shared models and iOS runtime sample creation.
+- Next real-device package export should be inspected for `locationDiagnostics`, `timestampMillisecondsSince1970`, `routeQualitySummary`, `location-diagnostics-v1`, and `route-quality-summary-v1`.
+
+## 2026-06-13 — Task-030c-b High-Accuracy Outdoor Recording + DEBUG Simulated Route
+
+### Completed
+- Updated `GPSProvider` active ride policy to request `kCLLocationAccuracyBestForNavigation`, a 1-meter `distanceFilter`, `.fitness` activity type, and no automatic pausing while recording an active ride.
+- Updated `SensorFusionEngine` so any mode whose primary, secondary, or supplemental priority plan includes GPS uses the active ride location policy instead of falling back to stationary power saving when GPS is not primary.
+- Reworked the DEBUG mock session feed into a simulated outdoor route feed with skating-like coordinate movement, speed variation, small altitude changes, route accuracy diagnostics, and occasional low-confidence route fixes.
+- Marked DEBUG simulated samples with `LocationSpeedSource.debugSimulated` and package capability `debug-simulated-route-v1` so simulator packages are not confused with real-device GPS evidence.
+- Persisted DEBUG simulated route samples into completed mock sessions instead of saving only the latest mock sample.
+- Fixed the same-stage compile-risk duplication of the `motionSamples:` argument in `SessionRecordingCoordinator.enrich`.
+- Updated the DEBUG tools copy in `en`, `zh-Hant`, and `ja` so the toggle now describes simulated route diagnostics rather than speed-only demo data.
+- Added `scripts/verify_task030c_high_accuracy_debug_route.py` and updated related verify gates for the Task-030c-b scope.
+
+### Scope Boundary
+- Task-030c-b changes Core Location recording policy and DEBUG-only simulator route data. It does not add road snapping, map matching, route replay, Snow Mode, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, signing, capabilities, entitlements, Launch Screen, AppIcon, or bottom dock changes.
+- DEBUG simulated route data is explicitly marked and remains unavailable as a production fallback.
+- Real-device route / speed fidelity still requires outdoor iPhone validation after this task; simulator packages remain diagnostics / compatibility references only.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_high_accuracy_debug_route.py` after applying this task.
+- Also run `python3 scripts/verify_task030c_gps_diagnostics_package.py`, `python3 scripts/verify_gps_provider.py`, `python3 scripts/verify_sensor_fusion_engine.py`, `python3 scripts/verify_debug_tools.py`, `python3 scripts/verify_localization_keys.py`, `python3 scripts/verify_skatetrack_package.py`, and platform builds.
+- In DEBUG simulator, enable the simulated route toggle before starting a session, record at least 60 seconds, and export `.skatetrack`; the package should include moving coordinates, altitude changes, `debugSimulated` speed source values, and `debug-simulated-route-v1`.
+
+Task-030c-b verification token: High-accuracy outdoor recording policy, DEBUG simulated route, debug-simulated-route-v1, road snapping deferred.
+
+## 2026-06-13 — Task-030c-b Live HUD Speed Trace Visibility Fix
+
+### Completed
+- Rechecked the Live HUD speed trace after real-device and simulator observations suggested the background speed line could appear missing even before the high-accuracy GPS change.
+- Kept the existing `LiveSpeedTraceView` architecture but made trace collection more robust by appending samples on recording start, elapsed-time updates, speed updates, and the existing timer path.
+- Added a visible waiting trace baseline so the speed hero no longer looks empty while fewer than two speed samples have accumulated.
+- Increased speed trace contrast slightly while preserving the dark neon HUD style.
+- Updated `scripts/verify_live_hud.py` so the gate explicitly checks the speed trace component, robust fallback trace, current full-screen HUD layout, and current file line budget.
+
+### Scope Boundary
+- This is a Task-030c-b same-stage UI reliability fix. It does not change `GPSProvider`, sensor fusion policy, DEBUG simulated route generation, road snapping, map matching, route replay, Snow Mode, Watch Phase 1b, signing, capabilities, entitlements, Launch Screen, AppIcon, or bottom dock behavior.
+- It does not invent speed data. The trace only visualizes existing live speed metrics and shows a low-emphasis baseline before enough samples exist.
+
+### Validation Notes
+- Run `python3 scripts/verify_live_hud.py` in addition to the Task-030c-b verify scripts.
+- In iPhone 17 Pro simulator, start a DEBUG simulated route session and confirm the speed trace is visible behind the main Live HUD speed value within the first few seconds.
+- On real iPhone, confirm the speed trace is visible during outdoor recording even before route fidelity is judged.
+
+## 2026-06-13 — Task-030c-b2 Navigation-grade Location Continuity
+
+### Completed
+- Treated the 2026-06-13 screen-off pocket motorcycle validation as a failed Task-030c-b real-device result: route samples were still sparse, distance was severely under-recorded, and large location / motion gaps appeared after the screen was locked.
+- Formalized active ride recording as a navigation-style background location session for the iOS target by keeping generated Info.plist `UIBackgroundModes = location`, `NSLocationWhenInUseUsageDescription`, and `NSLocationAlwaysAndWhenInUseUsageDescription` aligned with the runtime policy.
+- Kept `GPSProvider` active ride policy on `kCLLocationAccuracyBestForNavigation`, 1 m distance filter, `.fitness`, and no automatic pausing, while adding significant-location-change backup for long screen-off pocket sessions.
+- Changed `GPSProvider` from dropping every fix over 35 m horizontal accuracy to accepting lower-confidence-but-valid fixes up to 250 m, so pocket / urban-canyon updates can be recorded and marked low confidence instead of silently creating multi-minute route gaps.
+- Added received-at timestamps to `LocationFixDiagnostics` so future package analysis can compare Core Location raw timestamps with app receive time.
+- Added continuity gap diagnostics to `RouteQualitySummary`: max motion sample interval, long location update gap count, and long motion sample gap count.
+- Added `navigation-continuity-diagnostics-v1` package capability for exports carrying the new continuity diagnostics.
+- Added `scripts/verify_task030c_navigation_continuity.py` and updated related GPS / diagnostics verify gates.
+
+### Real-device Evidence Handling
+- `SkateTrack-Session-20260613-155800.skatetrack` and `SkateTrack-Session-20260613-160652.skatetrack` are real-device failed validation packages for the pre-b2 state. They show that foreground high-accuracy settings alone are not sufficient for screen-off pocket recording.
+- The next validation package must be produced with DEBUG simulated route disabled, iPhone screen locked, phone in pocket, and a known outdoor route long enough to test background continuity.
+
+### Scope Boundary
+- Task-030c-b2 intentionally touches iOS background location generated Info.plist settings and Core Location background runtime behavior for active ride recording.
+- It does not add road snapping, map matching, route replay, Snow Mode, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, Launch Screen, AppIcon, bottom dock, or Apple Developer Program production integrations.
+- It still does not claim fully validated navigation-grade route reliability; real-device screen-off pocket validation must pass first.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_navigation_continuity.py` after applying this task.
+- Also run the Task-030c-b, GPS diagnostics, GPS provider, sensor fusion, debug tools, localization, package, Live HUD, and release-readiness verify scripts.
+- On the real iPhone, grant precise location and Always location access when prompted or via Settings before judging screen-off recording behavior.
+- Real-device validation should compare new packages against the failed 2026-06-13 screen-off packages using unique coordinate count, average / max location update gap, long location gap count, long motion sample gap count, total GPS distance, and route map continuity.
+
+Task-030c-b2 verification token: Navigation-grade Location Continuity, screen-off pocket, background location mode, navigation-continuity-diagnostics-v1, road snapping deferred.
+
+## 2026-06-13 — Task-030c-b3 Navigation-grade Route Recording Recovery
+
+### Completed
+- Treated the 2026-06-13 windshield / car validation packages as a failed Task-030c-b2 result: real-world distance, speed summary, chart continuity, fall-event safety, and route rendering still need recovery before commit.
+- Reconciled saved `SessionSummaryMetrics` with `RouteQualitySummary.totalGPSDistanceMeters` so completed sessions no longer under-report distance when the raw route stream records more distance than the live foreground accumulator.
+- Added same-session fall-event scoping and reset `FallDetectionEngine.detectedFallEvents` at the start of each monitoring session so stale or DEBUG-origin fall events cannot leak into new real sessions.
+- Added a high-speed guard for fall alerts during current skateboard / inline recording so car / motorcycle validation does not keep triggering fall warnings from vibration-like motion.
+- Reduced speed outlier propagation by preferring Core Location speed when available and rejecting coordinate-derived speeds above the current pre-Snow-mode plausible range.
+- Reworked speed and elevation charts to be gap-aware: long gaps, stale fixes, and low-confidence fixes start a new chart segment, and the area fills were removed so charts do not draw pale triangular blocks across missing data.
+- Reworked the summary route preview into segmented raw route polylines so long gaps or low-confidence segments are not drawn as one continuous precise line.
+- Replaced the content-bottom return button with a persistent floating bottom return CTA using `safeAreaInset(edge: .bottom)`, keeping the large SkateTrack CTA style while allowing return from any scroll position.
+- Added `route-recording-recovery-v1` to package capabilities and added `scripts/verify_task030c_route_recording_recovery.py`.
+
+### Scope Boundary
+- Task-030c-b3 is still raw Core Location route recording recovery. It does not implement road snapping, map matching, route replay, speed smoothing, Snow Mode, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, Launch Screen, AppIcon, or bottom dock changes.
+- The segmented route map is not a road-matched navigation route. It only avoids presenting long gaps as precise continuous road travel.
+- The speed outlier cap is a current pre-Snow-mode guard for skateboard / inline validation and should be revisited when Snow Mode / skiing speeds are formally added.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_route_recording_recovery.py` after applying this task.
+- Also run the Task-030c-b2 navigation continuity, Task-030c-b simulated route, GPS diagnostics, GPS provider, sensor fusion, Live HUD, session summary, localization, package, and release-readiness verify scripts.
+- Real-device validation must still be repeated with DEBUG simulated route off. Use known outdoor routes, record screen-off / pocket and windshield scenarios separately, and compare summary distance, route-quality distance, long gap counts, fall-event counts, speed outliers, chart rendering, and floating return UX.
+
+Task-030c-b3 verification token: Navigation-grade Route Recording Recovery, route-recording-recovery-v1, gap-aware charts, floating bottom return, road snapping deferred.
+
+## 2026-06-13 — Task-030c-b4 Raw CLLocation Stream Persistence
+
+### Completed
+- Promoted active ride route recording from throttled location-driven timer samples to explicit raw Core Location fix persistence inside `SensorFusionEngine`.
+- Added `MotionSampleSource` so exported / persisted samples can distinguish timer-fusion samples, raw location-fix samples, and DEBUG simulated route samples without breaking old `.skatetrack` decode.
+- Every accepted `CLLocation` now creates a dedicated `.locationFix` `MotionSample` using the raw Core Location timestamp, accuracy diagnostics, speed source, and available altitude before being appended to the session sample stream.
+- Kept timer-fusion samples for IMU / barometer continuity, but route / package diagnostics can now deduplicate raw location fixes instead of relying on repeated last-coordinate timer samples.
+- Updated route-quality aggregation to sort by raw route timestamp and deduplicate unique location-fix keys so raw location fixes and timer-fusion duplicates do not double-count route distance.
+- Reconciled summary distance using a trusted route-distance helper that rejects long-gap / low-confidence / implausible segments instead of blindly adopting every route-quality distance across missing data.
+- Marked DEBUG simulated route samples as `.debugSimulated` and added `raw-location-stream-v1` package capability.
+- Fixed route map annotation titles to use localized start / finish strings instead of showing localization keys on the map.
+- Added `scripts/verify_task030c_raw_location_stream.py` for the new raw stream persistence guard.
+
+### Scope Boundary
+- Task-030c-b4 is still raw Core Location persistence and honesty work. It does not add road snapping, map matching, route replay, speed smoothing, Snow Mode, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, Launch Screen, AppIcon, or bottom dock changes.
+- It cannot repair historical packages where raw location fixes were never saved. It only improves future recordings made after this hotfix.
+- The app still does not infer the exact road taken; it records raw location fixes and marks low-confidence / long-gap data honestly.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_raw_location_stream.py` after applying this task.
+- Also run the Task-030c-b3 route recovery, Task-030c-b2 navigation continuity, Task-030c-b simulated route, GPS diagnostics, GPS provider, sensor fusion, Live HUD, session summary, localization, package, and release-readiness verify scripts.
+- Real-device validation must use new recordings only. DEBUG simulated route must be off, precise + Always location should be enabled, and screen-off / pocket plus windshield scenarios should be tested separately.
+- Compare new packages using raw `.locationFix` sample count, unique coordinate count, long gap counts, trusted summary distance, route-quality distance, route map continuity, chart continuity, and fall-event count.
+
+Task-030c-b4 verification token: Raw CLLocation Stream Persistence, raw-location-stream-v1, raw location fix stream, road snapping deferred.
+
+## 2026-06-14 — Task-030c-b5 Activity-Aware Location, Speed & Altitude Fidelity
+
+### Completed
+- Reframed Task-030c after real-device walking, windshield, motorcycle, and car validation showed that SkateTrack cannot assume a single normal skateboard speed range.
+- Added activity-aware fidelity profiles for technical skateboard, standard skateboard, electric skateboard, recreational inline, speed inline, snow-reserved future use, and vehicle validation.
+- Replaced fixed global speed caps with `ActivityFidelityPolicy`, allowing electric skateboard, speed inline, future snow / ski, and vehicle validation packages to preserve broader speed ranges while still rejecting impossible values.
+- Added altitude source metadata so Core Location absolute altitude, barometer relative altitude, and DEBUG simulated altitude are no longer mixed silently in samples.
+- Stabilized elevation gain by using trusted Core Location absolute altitude or DEBUG simulated altitude only, with vertical accuracy and per-step altitude jump guards to prevent walking sessions from showing impossible 100 m jumps or multi-kilometer climb totals.
+- Updated fall alert gating to use activity-aware policy rather than a single hard-coded skateboard speed threshold, reducing vehicle / high-speed validation false positives while keeping low-speed ride fall checks available.
+- Updated speed / elevation chart filtering to use activity-aware speed policy and altitude-source policy instead of a fixed 90 km/h chart cutoff or mixed altitude sources.
+- Added `activity-aware-fidelity-v1` and `altitude-source-stabilization-v1` package capabilities, plus `scripts/verify_task030c_activity_aware_fidelity.py`.
+
+### Scope Boundary
+- Task-030c-b5 does not add road snapping, map matching, route replay, Snow Mode UI, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, Launch Screen, AppIcon, bottom dock changes, or required Apple Intelligence / Core ML runtime.
+- Core ML / Apple on-device AI remains optional future enhancement. The current implementation is deterministic and works on devices without Apple Intelligence.
+- Low-speed technical S-curve tracing is recognized as a separate relative technique-trace problem; GPS route preview remains a geographic route and must not pretend to draw sub-meter surfskate carving shapes.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_activity_aware_fidelity.py` after applying this task.
+- Also run raw location stream, route recovery, navigation continuity, GPS diagnostics, GPS provider, sensor fusion, debug tools, Live HUD, session summary, localization, package, and release-readiness verify scripts.
+- Real-device validation should include walking, windshield / vehicle validation, screen-off pocket, and later real skateboard / inline scenarios. Compare speed range preservation, long gap counts, summary distance, route continuity, chart stability, altitude gain sanity, and fall-event count.
+
+Task-030c-b5 verification token: Activity-Aware Location, Speed & Altitude Fidelity, activity-aware-fidelity-v1, altitude-source-stabilization-v1, Core ML optional, road snapping deferred.
+
+
+## 2026-06-14 — Task-030c-b6 Debug Tools Status Panel Polish
+
+### Completed
+- Replaced the old unlabeled grey `SessionRecordingPreviewPanel` with a polished DEBUG-only diagnostics card.
+- The diagnostics card now labels session state, current speed, distance, elapsed time, GPS count, total samples, latest horizontal accuracy, latest freshness state, and latest sample source.
+- Added a polished build-signature card to the Debug Tools page that displays `Task-030c-b6` so real-device testers can confirm the installed build contains the latest GPS fidelity test package.
+- Added three-language localization keys for the debug diagnostics card and build-signature copy.
+- Added `scripts/verify_task030c_debug_panel_polish.py` and extended `scripts/verify_debug_tools.py` to guard the new debug UI tokens.
+
+### Scope Boundary
+- Task-030c-b6 does not change GPS, background location, raw location stream persistence, activity-aware fidelity policy, altitude policy, fall detection, route rendering, speed charts, StoreKit, Google, CloudKit, WeatherKit, signing, capabilities, Launch Screen, AppIcon, bottom dock, Watch Phase 1b, or Task-031.
+- `Task-030c-b6` is intentionally a tester-facing DEBUG build label, not an App Store marketing version or production release claim.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_debug_panel_polish.py`.
+- Also run `python3 scripts/verify_debug_tools.py` and `python3 scripts/verify_localization_keys.py`.
+- Xcode iOS build should be verified on `iPhone 17 Pro` simulator and real-device install before continuing GPS fidelity testing.
+
+Task-030c-b6 verification token: Debug Tools Status Panel Polish, Task-030c-b6, debug-build-signature-card, session-recording-preview-panel.
+
+## 2026-06-14 — Task-030c-b7 Background Recording Gap Diagnostics
+
+### Completed
+- Added optional DEBUG-only `debugRecordingDiagnostics` metadata to `SessionData` so future `.skatetrack` packages can include internal diagnostics without changing the production package schema version.
+- Added `RecordingDebugDiagnostics` event blocks for build identity, test context, app lifecycle, protected data lock/unlock signals, recording heartbeats, authorization snapshots, location manager snapshots, Core Location callback events, gap events, recovery events, filter decision summaries, and altitude diagnostics.
+- Instrumented `SessionRecordingCoordinator` to start a per-session diagnostics collector, record session lifecycle events, capture recording heartbeat gaps, and attach the final debug diagnostics block when the session is enriched.
+- Instrumented `GPSProvider` to record location manager configuration, authorization state, `didUpdateLocations`, `didFailWithError`, `didPauseLocationUpdates`, `didResumeLocationUpdates`, accepted/rejected location fix counts, and significant-location-change backup start events.
+- Added a DEBUG-only recording test context picker to Debug Tools so real-device packages can be tagged as handheld screen-on, handheld auto-lock, locked pocket walk, windshield drive, or vehicle screen-off before recording.
+- Updated the DEBUG build signature from `Task-030c-b6` to `Task-030c-b7` and added `debug-recording-diagnostics-v1` plus `background-gap-diagnostics-v1` package capabilities when a debug diagnostics block exists.
+- Added `scripts/verify_task030c_background_gap_diagnostics.py` for the new internal diagnostics guard.
+
+### Scope Boundary
+- Task-030c-b7 is diagnostics-first. It does not perform road snapping, map matching, route replay, route reconstruction, Snow Mode work, Watch Phase 1b, production StoreKit, Google production services, CloudKit / iCloud, WeatherKit production, HealthKit production, signing, Bundle ID, entitlements, Launch Screen, AppIcon, bottom dock, or broad GPS algorithm changes.
+- The new diagnostics are temporary DEBUG-only internal recording metadata. They are intended to help diagnose lock-screen / background / pocket recording gaps during Pre-ADP testing and may be removed or collapsed into cleaner developer diagnostics after the GPS fidelity branch stabilizes.
+- The diagnostics block does not duplicate the full raw coordinate log beyond the existing motion samples; it records event-based state needed to distinguish iOS callback gaps, app recording-loop gaps, and SkateTrack filter decisions.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_background_gap_diagnostics.py` after applying this task.
+- Also run debug tools, localization, package, raw location stream, route recovery, activity-aware fidelity, GPS provider, sensor fusion, session summary, and release-readiness verify scripts.
+- Real-device validation should repeat locked pocket walking, handheld auto-lock walking, and windshield drive scenarios with DEBUG simulated route off. Before each run, choose the matching Debug Tools recording test context so uploaded packages can be compared against app lifecycle, protected data, heartbeat, authorization, location callback, filter, and gap event diagnostics.
+
+Task-030c-b7 verification token: Background Recording Gap Diagnostics, debug-recording-diagnostics-v1, background-gap-diagnostics-v1, DEBUG-only, protected data.
+
+
+## Task-030c-b8 — Debug Recording Context Labels
+
+- Refined DEBUG recording test context labels so real-device diagnostics can distinguish auto-lock, manual lock, pocket, windshield, electric longboard, and scooter validation scenarios.
+- Added concise human-readable descriptions under the context picker; these labels are saved only in DEBUG diagnostics and do not change GPS, route, altitude, or fall-detection behavior.
+- Updated the DEBUG build identity to `Task-030c-b8` for easier real-device build confirmation.
+- Deferred: no background recording algorithm change, no road snapping, no production UI exposure, and no SnowPrototype changes.
+
+## Task-030c-b9 — Ensure Background Diagnostics Export
+
+### Completed
+- Updated the internal recording diagnostics build identity to `Task-030c-b9` so real-device exports can prove which GPS fidelity build created the `.skatetrack` package.
+- Added `diagnosticsStatus` to `RecordingDebugDiagnostics` so exported packages can distinguish `enabled`, `enabledButNoEventsRecorded`, and `disabledByBuildConfiguration` states.
+- Changed DEBUG diagnostics finalization to export a non-nil diagnostics block even if no lifecycle, heartbeat, location callback, gap, or filter events were collected.
+- Added a non-DEBUG build-configuration placeholder diagnostics block so accidental Release / non-DEBUG real-device installs can still be identified from exported packages instead of looking identical to older b5 packages.
+- Added package capabilities `debug-build-identity-v1` and `diagnostics-export-status-v1` whenever a diagnostics block is present, alongside `debug-recording-diagnostics-v1` and `background-gap-diagnostics-v1`.
+- Updated the Debug Tools build signature to `Task-030c-b9` and added `scripts/verify_task030c_diagnostics_export.py`.
+
+### Scope Boundary
+- Task-030c-b9 does not change GPS algorithms, Core Location background policy, restart / retry behavior, route reconstruction, altitude filtering, fall detection, SnowPrototype, Watch Phase 1b, signing, Bundle ID, entitlements, App Store capabilities, StoreKit, Google, CloudKit, WeatherKit, HealthKit, road snapping, or map matching.
+- The non-DEBUG placeholder is temporary Pre-ADP internal diagnostics metadata. It is intended only to prove whether diagnostics were disabled by build configuration during GPS branch testing and should be removed or reworked before production release.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_diagnostics_export.py` after applying this task.
+- Also run background gap diagnostics, debug tools, debug recording context labels, localization, package, GPS provider, sensor fusion, raw location stream, route recovery, activity-aware fidelity, session summary, and release-readiness verify scripts.
+- Real-device validation should confirm exported packages include `debugRecordingDiagnostics.buildIdentity.debugBuildTaskID == Task-030c-b9` and a meaningful `diagnosticsStatus` before using the package to diagnose lock-screen / pocket recording gaps.
+
+Task-030c-b9 verification token: Ensure Background Diagnostics Export, Task-030c-b9, debug-build-identity-v1, diagnostics-export-status-v1, disabledByBuildConfiguration.
+
+## Task-030c-b9-r1 — Persist Diagnostics Through Session Export
+
+### Completed
+- Updated the internal recording diagnostics build identity to `Task-030c-b9-r1` and kept the Debug Tools build signature aligned.
+- Persisted `debugRecordingDiagnostics` through the Core Data save / fetch round trip by adding optional `debugRecordingDiagnosticsData` to persisted sessions and encoding / decoding `RecordingDebugDiagnostics` in `SessionEntityMapper`.
+- Added an export-time fallback that injects a minimal diagnostics block with `diagnosticsStatus == "missingFromPersistedSession"` when an older persisted session is exported without recording diagnostics.
+- Ensured package capabilities are evaluated against the final export session so `debug-build-identity-v1`, `debug-recording-diagnostics-v1`, `background-gap-diagnostics-v1`, and `diagnostics-export-status-v1` match the actual payload.
+- Extended the existing repository round-trip test so saved / fetched sessions preserve `debugRecordingDiagnostics.buildIdentity.debugBuildTaskID == Task-030c-b9-r1`.
+- Added `scripts/verify_task030c_diagnostics_persistence.py` to guard the persistence model, mapper, fallback export path, and documentation.
+
+### Scope Boundary
+- Task-030c-b9-r1 does not change GPS algorithms, Core Location background policy, restart / retry behavior, route reconstruction, startup stabilization, implied-speed filtering, altitude filtering, fall detection, SnowPrototype, Watch Phase 1b, signing, Bundle ID, entitlements, App Store capabilities, StoreKit, Google, CloudKit, WeatherKit, HealthKit, road snapping, or map matching.
+- The new Core Data attribute is an optional local persistence field for temporary Pre-ADP diagnostics only. It is not a production service integration and does not change `.skatetrack` schema version.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_diagnostics_persistence.py` and `python3 scripts/verify_task030c_diagnostics_export.py` after applying this task.
+- Real-device validation should first perform a 10–20 second stationary export and confirm `debugRecordingDiagnostics.buildIdentity.debugBuildTaskID == Task-030c-b9-r1` plus a meaningful `diagnosticsStatus` before repeating long lock-screen / pocket tests.
+
+Task-030c-b9-r1 verification token: Persist Diagnostics Through Session Export, Ensure Background Diagnostics Export, Debug Recording Context Labels, Task-030c-b9-r1, debugRecordingDiagnosticsData, debug-build-identity-v1, diagnostics-export-status-v1, missingFromPersistedSession.
+
+## Task-030c-b10 — Effective Background Location Runtime + Gap Recovery Quality Gate
+
+### Completed
+- Updated the internal recording diagnostics build identity and Debug Tools build signature to `Task-030c-b10`.
+- Added an explicit iOS app `Info.plist` with `UIBackgroundModes` declared as an array containing `location`, and wired only the SkateTrack-iOS Debug / Release configurations to that plist so the existing background-location declaration is visible in the built app bundle.
+- Added `RecordingDebugBundleInfoSnapshot` and attached it to location manager diagnostics so real-device packages can show the app bundle identifier, bundle path marker, raw `UIBackgroundModes` value, resolved modes, and whether `location` was detected at runtime.
+- Hardened runtime background-mode detection in `GPSProvider` by reading `Bundle.main.object(forInfoDictionaryKey:)`, `infoDictionary`, `localizedInfoDictionary`, and the built `Info.plist`, then normalizing array / string / punctuation-separated values before setting `allowsBackgroundLocationUpdates`.
+- Added a DEBUG recovery event when active recording wants background updates but the runtime bundle declaration still cannot be resolved.
+- Added a conservative gap-recovery quality gate so stale, low-confidence, low-accuracy, overlong-gap, or implausible implied-speed fixes can remain in diagnostics / raw samples but no longer update trusted live route anchors, summary speed, summary distance, or trusted `RouteQualitySummary.totalGPSDistanceMeters`.
+- Added `scripts/verify_task030c_background_runtime_quality_gate.py` to guard the Info.plist wiring, runtime diagnostics snapshot, background enablement path, and trusted-distance quality gate.
+
+### Scope Boundary
+- Task-030c-b10 does not add new entitlements, change signing, change Bundle ID, add production services, perform road snapping, perform map matching, or fabricate route points.
+- The explicit iOS `Info.plist` is limited to making the already-intended `UIBackgroundModes/location` declaration effective in the app bundle. Watch, macOS, tests, SnowPrototype, Watch Phase 1b, StoreKit, Google, CloudKit, WeatherKit, and HealthKit production integrations remain untouched.
+- Gap-recovery quality gating is conservative: low-quality fixes are still exported for diagnostics, but trusted metrics avoid counting them as reliable movement.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_background_runtime_quality_gate.py` after applying this task, followed by the existing diagnostics persistence / export / background gap / GPS / sensor fusion / summary verify scripts.
+- Real-device validation should first repeat a 30–60 second `步行・鎖螢幕口袋` test and confirm `debugRecordingDiagnostics.buildIdentity.debugBuildTaskID == Task-030c-b10`, `bundleInfo.hasLocationBackgroundMode == true`, `hasBackgroundLocationModeDeclared == true`, and `allowsBackgroundLocationUpdates == true` in location manager snapshots.
+- If background snapshots become true but gaps still occur, compare `locationCallbackEvents`, `gapEvents`, and trusted distance against the b9-r1 walking baseline before moving to motorcycle / electric longboard tests.
+
+Task-030c-b10 verification token: Effective Background Location Runtime + Gap Recovery Quality Gate, Task-030c-b10, UIBackgroundModes, background runtime, gap recovery, stale / low-accuracy quality gate.
+
+## Task-030c-b10-r2 — Startup Speed Spike + Fall Handling Guard
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b10-r2`.
+- Added a startup stabilization guard so coordinate-derived GPS speed spikes during the first seconds of recording are marked as low-confidence diagnostics and do not update live trusted speed, max speed, trusted route distance, or timer-fusion samples.
+- Added a startup fall handling guard so IMU impacts caused by locking the screen / putting the phone into a pocket during the first seconds of a session are suppressed from the persisted session and do not keep the SOS countdown active.
+- Raw GPS fixes and raw IMU samples remain preserved for diagnostics; this task does not smooth, snap, map-match, or fabricate route geometry.
+
+Task-030c-b10-r2 verification token: Startup Speed Spike + Fall Handling Guard, Task-030c-b10-r2, startupCoordinateDerivedSpeedSpikeKmh, startupFallHandlingSuppressionSeconds, coordinate-derived startup guard.
+
+## Task-030c-b10-r3 — Low-Speed Metrics Gate + UI Responsiveness
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b10-r3`.
+- Added a low-speed metric gate so short residential / small-area GPS jumps with poor horizontal accuracy, suspicious Core Location speed, mismatched coordinate-implied speed, or poor speed accuracy no longer inflate trusted max speed, average speed, or distance.
+- Tightened live and summary metric trust so low-confidence route diagnostics are preserved as raw samples but excluded from trusted speed / distance metrics.
+- Added elevation-gain stabilization that prefers barometer-relative altitude for short low-speed sessions and rejects startup / poor-vertical-accuracy Core Location altitude jumps from summary climb.
+- Improved perceived responsiveness by yielding after the preparing transition before heavier sensor startup work and by moving `.skatetrack` package creation to a user-initiated detached task.
+- Task-030c-b10-r3 does not perform route smoothing, road snapping, map matching, S-curve presentation, SnowPrototype work, Watch Phase 1b work, signing changes, Bundle ID changes, entitlement changes, or production service integrations.
+
+Task-030c-b10-r3 verification token: Low-Speed Metrics Gate + UI Responsiveness, Task-030c-b10-r3, low-speed metrics gate, barometer-relative elevation, export responsiveness.
+
+
+## Task-030c-b10-r4 — Strict Low-Speed Metrics + Altitude Source Isolation
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b10-r4`.
+- Tightened the low-speed metrics gate so Core Location speed is not trusted by itself when horizontal accuracy, small-area segment size, speed accuracy, or coordinate-implied speed suggest a low-speed GPS artifact.
+- Isolated altitude sources for short low-speed sessions: barometer-relative altitude is preferred whenever present, while Core Location absolute altitude remains raw diagnostics unless barometer data is unavailable and the fix is sufficiently stable.
+- Continued to preserve raw GPS, raw altitude, and diagnostics samples while excluding untrusted low-speed / altitude artifacts from trusted max speed, distance, and elevation gain.
+- Task-030c-b10-r4 does not perform route smoothing, road snapping, map matching, S-curve presentation, SnowPrototype work, Watch Phase 1b work, signing changes, Bundle ID changes, entitlement changes, or production service integrations.
+
+Task-030c-b10-r4 verification token: Strict Low-Speed Metrics + Altitude Source Isolation, Task-030c-b10-r4, strict low-speed metrics, altitude source isolation, barometer-relative elevation, verify_task030c_strict_low_speed_altitude.py.
+Task-030c-b10-r4 compatibility token: Background Location Runtime + Gap Recovery Quality Gate, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard, low-speed metrics gate, startup guard, diagnostics persistence, diagnostics export.
+
+## Task-030c-b10-r5 — Trusted Chart Metrics + Display Source Alignment
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b10-r5`.
+- Aligned Session Summary speed charts with trusted display speed rather than raw Core Location instantaneous speed, including median smoothing and display-step limiting so short one-off pulses do not dominate the chart.
+- Aligned elevation charts with trusted altitude source selection. When barometer-relative altitude exists, charts normalize and display the barometer-relative series instead of raw Core Location absolute altitude startup drift.
+- - Smoothed the Live HUD trace display so user-visible trace motion is calmer without altering raw samples or diagnostics.
+- Task-030c-b10-r5 does not implement route geometry stabilization, small-area loop smoothing, skateboard S-curve presentation, map matching, road snapping, SnowPrototype work, Watch Phase 1b work, signing changes, Bundle ID changes, entitlement changes, or production service integrations.
+
+Task-030c-b10-r5 verification token: Trusted Chart Metrics + Display Source Alignment, Task-030c-b10-r5, trusted chart metrics, display source alignment, verify_task030c_trusted_chart_metrics.py.
+Task-030c-b10-r5 compatibility token: Strict Low-Speed Metrics + Altitude Source Isolation, Low-Speed Metrics Gate + UI Responsiveness, Startup Speed Spike + Fall Handling Guard, Background Location Runtime + Gap Recovery Quality Gate.
+
+## Task-030c-b11 — Small-Area Route Geometry Stabilization
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11`.
+- Introduced a Summary map display-route pipeline that separates raw GPS samples from user-facing route geometry.
+- Added `rawRoute`, `trustedRoute`, and `displayRoute` terminology for the GPS fidelity branch:
+  - `rawRoute` remains the unmodified Core Location / motion-sample coordinate stream preserved in diagnostics and exports.
+  - `trustedRoute` is the route subset whose samples pass freshness, confidence, accuracy, and gap checks.
+  - `displayRoute` is the Summary map rendering path built from trusted location fixes with small-area jitter suppression and light smoothing.
+- Updated `SessionRouteMapView` so the map no longer draws timer-fusion coordinate repeats directly and no longer treats low-confidence / stale route segments as normal continuous path geometry.
+- Added small-area jitter suppression for low-speed movement so sub-meter / short-range GPS noise is not drawn as real movement when the phone is stationary or moving slowly in a small residential area.
+- Preserved start / finish annotations on the display route while keeping raw GPS samples available in diagnostics and `.skatetrack` exports.
+- Added `scripts/verify_task030c_small_area_route_geometry.py` and extended the Session Summary verifier to guard the display-route pipeline.
+
+### Scope Boundary
+- Task-030c-b11 does not create skateboard S-curve sensor-fusion presentation, does not use road snapping, does not use map matching, and does not fabricate route points.
+- This task does not delete raw GPS, raw IMU, raw altitude, or diagnostics data.
+- Motorcycle validation remains a background / high-speed stress test only and does not define standard skateboard display geometry.
+- SnowPrototype, Watch Phase 1b, signing, Bundle ID, entitlements, StoreKit, Google, CloudKit, WeatherKit, HealthKit, and production services remain untouched.
+
+### Validation Notes
+- Run `python3 scripts/verify_task030c_small_area_route_geometry.py` after applying this task, followed by the existing Session Summary, GPS, diagnostics, and trusted metric verify scripts.
+- Real-device validation should use a small residential open area /巷口繞圈 test for 1–2 minutes. The expected result is not 1m absolute positioning, but a less jittery Summary map display path that no longer draws obvious raw GPS drift or timer-fusion repeats as the primary visible route.
+- If small-area display geometry is acceptable, continue to Task-030c-b12 for skateboard S-curve sensor-fusion presentation.
+
+Task-030c-b11 verification token: Small-Area Route Geometry Stabilization, Task-030c-b11, rawRoute, trustedRoute, displayRoute, small-area jitter suppression, verify_task030c_small_area_route_geometry.py.
+Task-030c-b11 compatibility token: Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation, Background Location Runtime + Gap Recovery Quality Gate.
+
+## Task-030c-b11-r1 — Route Confidence Display Continuity
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r1`.
+- Refined the Summary map route renderer so low-confidence / uncertain route fixes are not treated as missing data or immediate route breaks.
+- Added secondary display styling for uncertain route segments using reduced opacity and a dashed line style while preserving trusted segments as the primary route line.
+- Kept true route discontinuities limited to actual time gaps or large coordinate jumps, so high-speed validation sessions do not visually resemble recording dropouts merely because part of the route is low-confidence for the selected activity profile.
+- Raw GPS, trusted metrics, diagnostics, and `.skatetrack` exports remain unchanged. This task does not claim small-area loops are accurate and does not implement IMU reconstruction, skateboard S-curve presentation, road snapping, map matching, or fabricated route points.
+
+Task-030c-b11-r1 verification token: Route Confidence Display Continuity, Task-030c-b11-r1, low-confidence route display, uncertain route segment, verify_task030c_route_confidence_display.py.
+Task-030c-b11-r1 compatibility token: Small-Area Route Geometry Stabilization, Trusted Chart Metrics + Display Source Alignment, Strict Low-Speed Metrics + Altitude Source Isolation.
+
+## Task-030c-b11-r2 — Activity-Aware Route Confidence + Small-Area Display Gate
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r2`.
+- Aligned live SensorFusion route confidence with the active activity profile, including electric skateboard / electric longboard, vehicle-validation, and future snow-proxy testing paths, instead of letting standard-skateboard thresholds mark high-speed proxy routes as low confidence.
+- Passed the selected power type and resolved fidelity profile into the live sensor engine so electric and validation sessions preserve plausible route, speed, and altitude display continuity.
+- Kept strict small-area low-speed filtering for human-powered walking / skateboard-like profiles while using broader activity-aware gates for electric, snow-reserved, speed, and vehicle-validation profiles.
+- Updated Summary map and chart display gates so low-confidence fresh segments remain uncertain rather than missing, while stale fixes and true long gaps still break the visible route / chart.
+
+Task-030c-b11-r2 verification token: Activity-Aware Route Confidence + Small-Area Display Gate, Task-030c-b11-r2, verify_task030c_activity_aware_route_confidence.py.
+Task-030c-b11-r2 compatibility token: Route Confidence Display Continuity, Small-Area Route Geometry Stabilization, Activity-Aware Location Fidelity.
+
+
+
+## Task-030c-b11-r3-3 — Post-Record GPS Lock Guard + Approximate Start Semantics
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r3-3`.
+- Separated Summary Map start marker semantics from the GPS lock route anchor: the start marker now represents an approximate recording-start candidate when GPS is still converging, while trusted route geometry begins from the first confirmed GPS-lock cluster.
+- Extended startup stable-anchor guarding to electric skateboard / electric longboard sessions so post-record medium-confidence convergence fixes are kept as red warm-up context instead of becoming the green route start.
+- Added approximate start marker / approximate start semantics styling using a visually distinct hollow `play.circle` marker when the recording-start fix is low confidence, outside preferred accuracy, or when GPS lock is delayed after recording starts.
+- Anchored the primary map region to post-GPS-lock route coordinates when available, preventing early convergence points from pulling the Summary Map away from the trusted route.
+- Preserved red low-quality / startup dashed segments, warm-up segment isolation, and route accuracy disclosure without changing raw GPS storage, trusted metrics, exports, or `.skatetrack` schema.
+- Deferred `.skatetrack` package-size optimization, IMU / gyro / heading-aided dead reckoning, Wi-Fi RTT diagnostics, and barometric outlier rejection to follow-up tasks.
+
+Task-030c-b11-r3-3 verification token: Post-Record GPS Lock Guard + Approximate Start Semantics, Task-030c-b11-r3-3, GPS lock route anchor, approximate start marker / approximate start semantics, startup convergence warm-up, session-route-accuracy-disclosure, verify_task030c_startup_anchor_semantics.py.
+Task-030c-b11-r3-3 deferred package-size token: `.skatetrack` export compression / thinning remains deferred and must preserve legacy plaintext package compatibility.
+
+## Task-030c-b11-r4-1 — Heading Availability + GPS Gap Diagnostics + Dead Reckoning Readiness
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b11-r4-1`.
+- Added optional `HeadingDiagnostics`, `GPSGapDiagnostics`, and `DeadReckoningDiagnostics` metadata under `LocationFixDiagnostics` so new sessions can describe route-continuity readiness without breaking legacy plaintext `.skatetrack` compatibility.
+- Classified GPS update continuity as `normalCadence`, `shortGap`, `backgroundLocationGap`, or `extendedSignalLoss` from raw Core Location timestamp spacing and timer-fusion repeats.
+- Recorded conservative course-over-ground heading availability from Core Location while explicitly deferring device magnetometer heading integration to a later task.
+- Added dead-reckoning readiness diagnostics that mark whether a gap has a trusted anchor and heading signal, while keeping `estimatedRouteActive` false in r4.
+- This task does not reconstruct route geometry, does not fabricate estimated route points, does not change distance / speed / altitude accumulators, and does not implement road snapping, map matching, Wi-Fi RTT, barometric GPS outlier rejection, or `.skatetrack` package-size optimization.
+
+Task-030c-b11-r4-1 verification token: Heading Availability + GPS Gap Diagnostics + Dead Reckoning Readiness, Task-030c-b11-r4-1, HeadingDiagnostics, GPSGapDiagnostics, DeadReckoningDiagnostics, verify_task030c_r4_diagnostics_foundation.py.
+Task-030c-b11-r4-1 compatibility token: legacy plaintext `.skatetrack` compatibility, diagnostics-only foundation, does not reconstruct route geometry.
+
+
+### Task-030c-b11-r4-1 XCTest regression stabilization
+- Task-030c-b11-r4-1 keeps the r4 diagnostics-only route-continuity foundation unchanged while stabilizing XCTest coverage after the r4 schema expansion.
+- It removes UI-framework imports from the core SessionRecording coordinator boundary and keeps r4 diagnostics persistence covered by repository tests.
+
+
+## Task-030c-b12-A — Altitude Outlier Guard + Per-Sample Diagnostics
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b12`.
+- Added optional per-sample `AltitudeDiagnostics` metadata on `MotionSample` so new `.skatetrack` payloads can preserve raw altitude, trusted altitude, vertical accuracy, altitude delta, vertical speed, trust classification, and the reason for each altitude trust decision.
+- Added `AltitudeOutlierGuardConfig` and a deterministic `AltitudeOutlierGuard` that keeps CoreLocation absolute altitude, barometer-relative altitude, and DEBUG-simulated altitude anchors source-isolated.
+- Integrated altitude guard evaluation into `SensorFusionEngine` for raw location-fix samples and timer-fusion barometer-relative samples without generating fake barometer values or changing horizontal route geometry.
+- Updated live and final elevation-gain calculation to prefer trusted b12 altitude diagnostics when present; rejected altitude outliers do not update trusted altitude anchors and do not inflate `elevationGainMeters`.
+- Updated advanced elevation chart selection to prefer trusted altitude diagnostics, preserving raw altitude for diagnostics/export while avoiding obvious 100m-class spikes in trusted display paths.
+- Added XCTest coverage for legacy sample decoding, diagnostics persistence/export, 100m spike rejection, poor vertical accuracy classification, and component-level isolation where altitude rejection does not drop horizontal coordinates or distance accumulation.
+
+Task-030c-b12 verification token: AltitudeDiagnostics, AltitudeOutlierGuardConfig, AltitudeOutlierGuard, per-sample altitude diagnostics, component-level altitude isolation, source-isolated altitude anchors, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b12 limitation token: improves altitude robustness and elevation-gain honesty; does not guarantee survey-grade elevation precision; barometric pressure LPF and long-term atmospheric drift correction remain deferred.
+
+Task-030c-b12 package capability token: altitude-diagnostics-v1.
+
+## Task-030c-b12-B — Pressure smoothing diagnostics foundation
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b12-B`.
+- Added `AltitudePressureDiagnostics`, `AltitudePressureFilterConfig`, and `AltitudePressureFilter` as a diagnostics-only pressure smoothing layer for barometer-relative altitude samples.
+- Recorded raw pressure, smoothed pressure, previous smoothed pressure, pressure delta, filter alpha, and spike-suppression state inside optional per-sample `AltitudeDiagnostics.pressureDiagnostics`.
+- Wired `BarometerProvider.pressureKilopascalsPublisher` into `SensorFusionEngine` so timer-fusion barometer-relative samples can carry pressure smoothing diagnostics without changing altitude, speed, distance, or route geometry.
+- Preserved Task-030c-b12-A component-level altitude isolation and source-isolated altitude anchors. Pressure smoothing diagnostics are not used for atmospheric drift correction and do not blend CoreLocation absolute altitude with barometer-relative altitude.
+- Added XCTest coverage for pressure spike suppression and Codable round-trip persistence of pressure diagnostics.
+
+Task-030c-b12-B verification token: AltitudePressureDiagnostics, AltitudePressureFilterConfig, AltitudePressureFilter, pressureDiagnostics, pressure spike suppression, diagnostics-only pressure smoothing, no estimated route geometry, no SnowPrototype changes.
+Task-030c-b12-B limitation token: Pressure LPF diagnostics are recorded, but long-term atmospheric drift correction, pressure-to-absolute-altitude conversion, full barometer fusion, IMU dead reckoning, Wi-Fi RTT, and indoor localization remain deferred.
+
+
+## Task-030c-b13-A-4 — Route Confidence Visual + Freebord Confidence Calibration
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-A-4`.
+- Changed low-confidence route rendering from semi-transparent dashed red to solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments with the same line weight and opacity as trusted teal/green segments.
+- Preserved startup warm-up as a separate dashed style so GPS warm-up remains visually distinct from low-confidence-but-present route fixes.
+- Calibrated the low-speed local metric outlier gate so the suspicious CoreLocation-speed rule only runs when CoreLocation actually reports a valid speed. Coordinate-derived speed no longer substitutes into that CoreLocation-specific gate, which prevents low-speed freebord carving under tree canopy from being over-penalized when `CLLocation.speed` is unavailable.
+- Kept the coordinate-derived local-jump gate intact for genuinely implausible GPS teleports; no estimated route geometry, dead reckoning, map matching, road snapping, altitude, pressure, or summary metric logic changed.
+
+Task-030c-b13-A-4 verification token: solid bright-orange low-confidence route segments and solid fluorescent-pink startup/warm-up segments, CoreLocation speed availability, coordinate-derived local jump gate unchanged, freebord confidence calibration, no estimated route geometry, no SnowPrototype changes.
+
+
+### Task-030c-b13-A-4 — Display Metrics + Altitude Anchor + Route Color Semantics
+
+- Added display-derived summary metrics so low-confidence-but-metric-eligible route samples can contribute to displayed distance and speed without rewriting recorded `.skatetrack` data.
+- Updated speed charts to fall back to persisted diagnostics speed when `sample.speedKmh` is zero but CoreLocation or coordinate-derived diagnostics are metric-eligible.
+- Updated elevation charts to display stable barometer-relative profiles against the first trusted absolute CoreLocation anchor when available.
+- Updated route color semantics: trusted remains teal, low-confidence/uncertain is solid bright orange, and startup/warm-up/approximate-start is solid fluorescent pink.
+- No recording, SensorFusionEngine, altitude/pressure guard, schema, or SnowPrototype changes.
+
+Task-030c-b13-A-4 verification token: display-derived metrics, absolute elevation display anchor, diagnostics speed fallback, solid bright-orange low-confidence route segments, solid fluorescent-pink startup warm-up segments.
+
+## Task-030c-b13-B-1 — Magnetometer Heading Diagnostics Foundation
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b13-B-1`.
+- Added device magnetometer heading support to `GPSProvider` by starting/stopping CoreLocation heading updates alongside active ride location updates when heading is available.
+- Extended optional `HeadingDiagnostics` with device heading degrees, heading accuracy, timestamp, age, course/device heading delta, agreement, and device-heading reliability fields while preserving legacy `.skatetrack` compatibility.
+- Wired device heading into `SensorFusionEngine` location-fix and timer-fusion diagnostics so future dead-reckoning readiness can distinguish CoreLocation course-over-ground from device magnetometer heading.
+- Kept `DeadReckoningDiagnostics.estimatedRouteActive` false. b13-B records readiness metadata only and does not reconstruct route geometry, estimate missing coordinates, map match, road snap, or alter distance/speed/altitude/summary metrics.
+
+Task-030c-b13-B-1 verification token: magnetometer heading diagnostics foundation, deviceHeadingDegrees, deviceHeadingAccuracyDegrees, courseDeviceHeadingDeltaDegrees, courseDeviceHeadingAgreement, startUpdatingHeading, estimatedRouteActive false, no estimated route geometry, no SnowPrototype changes.
+
+
+### Task-030c-b13-B-1 — Heading Diagnostics Legacy Decode Guard
+- Added a custom `HeadingDiagnostics` decoder so sessions recorded before magnetometer heading diagnostics can still be read when newer b13-B fields are absent.
+- Preserved `estimatedRouteActive == false`; this remains diagnostics-only and does not alter distance, speed, altitude, route confidence, or estimated route geometry.
+- Verification token: Task-030c-b13-B-1, heading diagnostics legacy decode guard, `testB13B1HeadingDiagnosticsDecodesLegacyB13BPayload`.
+
+## Task-030c-b15-B-3 — Replay-Only Dead-Reckoning Readiness Diagnostics
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b15-B-3`.
+- Added `DeadReckoningReadinessAnalyzer`, `DeadReckoningReadinessConfig`, `DeadReckoningReadinessSummary`, and per-gap `DeadReckoningReadinessGapCandidate` diagnostics as a pure replay-only analysis layer over persisted `MotionSample` data.
+- Classified GPS gap candidates by pre-gap anchor availability, post-gap anchor availability, timer-fusion IMU cadence, heading availability, heading age, and heading accuracy so future b14 phases can decide whether offline interpolation is even safe to prototype.
+- Preserved b13-A-4 distance/altitude behavior and b13-B-1 legacy heading diagnostics decoding. The analyzer does not write estimated route points, does not mutate `MotionSample`, and does not alter route geometry, distance, speed, altitude, confidence colors, or summary metrics.
+- Added XCTest coverage for replay-eligible gap classification, missing-heading blocking, and no-mutation / no-`estimatedRouteActive` behavior.
+- Added `verify_task030c_b14a_dead_reckoning_readiness.py` to guard the replay-only scope and prevent estimated route geometry, map matching, road snapping, or SnowPrototype creep.
+
+Task-030c-b15-B-3 verification token: replay-only dead-reckoning readiness diagnostics, DeadReckoningReadinessAnalyzer, DeadReckoningReadinessConfig, eligibleForReplay, blockingReasonCounts, preserves b13-A-4 distance/altitude behavior, preserves b13-B-1 legacy heading diagnostics decoding, estimatedRouteActive remains false, no estimated route geometry, no SnowPrototype changes.
+
+
+## Task-030c-b15-B-3 — Altitude Chart Source Guard
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b15-B-3`.
+- Added a display-only altitude chart source guard in `SessionAdvancedChartsView`: when barometer-relative samples are available, the elevation profile now stays altitude-source aware and no longer creates visual breaks from unrelated GPS stale/gap diagnostics.
+- Tightened trusted altitude display extraction so sessions with altitude diagnostics do not fall back to raw rejected samples; raw altitude fallback remains available only for legacy packages without altitude diagnostics.
+- Preserved stored motion samples, route geometry, distance, speed, elevation gain summaries, b14-A replay-only readiness diagnostics, and b13-B-1 legacy heading diagnostics decoding.
+
+Task-030c-b15-B-3 verification token: altitude chart source guard, barometer-relative altitude profile, display-only, does not rewrite stored samples, route geometry unchanged, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Altitude Chart Micro-Dip Display Guard
+
+- Added a display-only micro-dip guard to the iOS advanced elevation chart.
+- The guard is applied only after the b14-A-1 barometer-relative source guard selects the barometer profile.
+- It only suppresses very short local notches where the left and right local baselines agree and the center point drops sharply below both sides.
+- It does not rewrite stored samples, does not change elevation gain summaries, does not change route geometry, and does not enable dead reckoning.
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b15-B-3`.
+
+Task-030c-b15-B-3 verification token: altitude micro-dip display guard, display-only micro-dip guard, barometer-relative chart profile, no stored sample rewrite, no elevation summary mutation, route geometry unchanged, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Startup Route Visual Suppression
+
+- Updated the internal diagnostics build identity and Debug Tools build signature to `Task-030c-b15-B-3`.
+- Restored startup / GPS warm-up route drawing to solid fluorescent-pink route context while keeping early low-confidence or convergence geometry separated from confirmed route.
+- Preserved trusted teal route and bright-orange uncertain route semantics while preventing startup context from bridging into the first trusted GPS-lock segment.
+- This is display-only: it does not delete raw GPS samples, does not rewrite stored samples, does not change distance, speed, altitude, elevation gain, route geometry, exports, or diagnostics, and does not enable dead reckoning.
+
+Task-030c-b15-B-3 verification token: startup route visual suppression, solid fluorescent-pink route context, display-only, no stored sample rewrite, route geometry unchanged, estimatedRouteActive remains false.
+
+Task-030c-b15-B-3 display token: solid fluorescent-pink startup/warm-up context.
+
+## Task-030c-b15-B-3 — Replay-Only Candidate Gap Interpolation Prototype
+- Added `DeadReckoningCandidateInterpolationAnalyzer`, `DeadReckoningCandidateInterpolationConfig`, `DeadReckoningCandidateInterpolationSummary`, and debug-only interpolation result models on top of b14-A readiness diagnostics.
+- The analyzer creates candidate points only for replay/debug diagnostics when readiness, anchor closure, IMU cadence, and heading diagnostics are conservative enough.
+- Restored startup / GPS warm-up route visual semantics to solid fluorescent-pink route context with full route-line weight while preserving A-2 segment separation from trusted teal GPS-lock geometry.
+- Preserved `estimatedRouteActive == false`; candidate interpolation does not mutate `MotionSample`, does not rewrite `.skatetrack`, and does not change route geometry, distance, speed, altitude, or summaries.
+
+Task-030c-b15-B-3 verification token: replay-only candidate gap interpolation, DeadReckoningCandidateInterpolationAnalyzer, debugCandidateOnly, anchorClosureTooLarge, solid fluorescent-pink startup/warm-up route context, no production estimated route geometry, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Summary Elevation Gain Source Guard
+- Fixed the Summary climb card so display-derived `elevationGainMeters` prefers trusted barometer-relative altitude whenever that stream is present, matching the advanced elevation chart source guard.
+- Prevented Core Location absolute altitude jitter from contributing to the user-facing climb total in sessions that already contain trusted barometer-relative altitude.
+- Preserved raw altitude diagnostics, persisted samples, route geometry, distance, speed, altitude charts, b14-B replay-only candidate interpolation, and `estimatedRouteActive == false`.
+Task-030c-b15-B-3 verification token: summary elevation gain source guard, trusted barometer-relative climb, no Core Location absolute altitude jitter accumulation, no stored sample rewrite, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Total Elevation Gain Terminology
+- Renamed the user-facing Summary / share-card elevation-gain metric from the shorter Traditional Chinese label `爬升` to `總爬升量` so the UI describes the cumulative positive-gain metric more explicitly.
+- Updated localization consistently across supported summary locales: Traditional Chinese `總爬升量`, English `Total elevation gain`, and Japanese `総獲得標高`.
+- Preserved the b14-B-1 trusted altitude-source calculation: the metric is still cumulative positive elevation gain from trusted altitude sources, not max altitude minus start altitude.
+- This task is terminology-only: it does not change raw samples, `.skatetrack` schema, route geometry, distance, speed, altitude charts, summary calculation logic, replay-only candidate interpolation, or `estimatedRouteActive`.
+
+Task-030c-b15-B-3 verification token: total elevation gain terminology, summary.metric.elevationGain, 總爬升量, Total elevation gain, 総獲得標高, no calculation change, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Simulator Recording Persistence Guard
+- Added a DEBUG / iOS Simulator persistence guard so simulator live recordings no longer disappear silently when the underlying sensor stop snapshot contains no `MotionSample` entries.
+- The coordinator now retains live samples observed through `handleMotionSample` and can recover them into the persisted session when the simulator stop snapshot is empty.
+- If a DEBUG simulator session ends before any live sample arrives, the coordinator creates a small debug-simulated route sample set using the existing `DebugOutdoorRouteSimulator`, ensuring the session can be saved and inspected in History.
+- Preserved production behavior: this fallback is gated to DEBUG iOS Simulator live sessions only and does not modify real-device recording, `.skatetrack` schema, distance/speed/elevation calculations, or production route estimation.
+
+Task-030c-b15-B-3 verification token: simulator recording persistence guard, debugSimulatorPersistenceSessionIfNeeded, liveSessionSamples, debugSimulatorPersistenceFallback, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Debug Mock Recording Pipeline Hardening
+- Moved DEBUG mock route sample delivery onto the main queue so the coordinator, Live HUD, and save path observe one deterministic sample stream.
+- Appends every `debugSimulated` sample to the mock recording buffer, including simulator fallback samples that are not created by an explicitly toggled demo-speed session.
+- Broadcasts a local session-save notification and reloads History when a simulator/debug session is saved, preventing a stale list from looking like persistence failed.
+- Lets DEBUG simulated speed drive the Live HUD trace directly so simulator validation shows a changing curve instead of a flat line.
+Task-030c-b15-B-3 verification token: debug mock recording pipeline, simulator recording persistence guard, history save notification, Live HUD trace update, no production estimated route geometry, estimatedRouteActive remains false.
+
+## Task-030c-b15-B-3 — Simulator Save Pipeline Hardening
+- Hardened `SessionEntityMapper` so optional DEBUG recording diagnostics cannot block saving a valid simulator session when the diagnostics payload contains non-conforming floating-point values.
+- Added non-conforming float encode/decode support to the motion-sample store and Core Data mapper encoding helpers.
+- Verified the Core Data row exists after `saveCompletedSession`; if row persistence fails, the freshly written motion sample file is cleaned up to avoid invisible orphan files.
+- Made recent-history fetch resilient to individual legacy/corrupt rows so valid sessions remain visible.
+Task-030c-b15-B-3 verification token: simulator save pipeline hardening, safeEncodedDebugRecordingDiagnostics, orphan sample cleanup, resilient History fetch, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b16-A — Localization Foundation Audit and Sensor-Fusion Plan
+
+- Added `docs/planning/Task-030c-b16_Localization_Foundation_Plan.md` as the repo-local post-b15-B-3 localization foundation checkpoint before b16-B/C/D implementation.
+- Documented existing `MotionSample`, `LocationFixDiagnostics`, altitude diagnostics, heading diagnostics, route confidence colors, simulator-only paths, real-device-only validation paths, and replay-only dead-reckoning readiness.
+- Defined b16-B as diagnostics-only barometric GPS cross-validation, b16-C as passive Wi-Fi RTT / accuracy-source diagnostics, and b16-D as magnetometer heading quality consolidation.
+- Reaffirmed that indoor localization is deferred to Task-031 and that camera localization, road snapping, fake GPS, RTK, UWB anchor dependency, and SnowPrototype contamination remain out of Task-030c scope.
+- Advanced the DEBUG build identity to `Task-030c-b16-A` without changing SensorFusionEngine behavior, route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, persistence schema, or production estimated route display.
+
+Task-030c-b16-A verification token: Localization Foundation Audit and Sensor-Fusion Plan, Task-030c-b16-A, b16-B diagnostics-only, b16-C passive Wi-Fi RTT diagnostics, b16-D heading quality consolidation, indoor localization deferred to Task-031, estimatedRouteActive remains false.
+
+### Task-030c-b16-B — Barometric GPS Outlier Cross-Validation Diagnostics
+
+- Added diagnostics-only barometric GPS outlier cross-validation for suspicious GPS jumps.
+- Added `BarometricGPSOutlierDecision` with `productionRouteDecisionApplied` hard-coded to `false` and `wouldRejectIfGateWereEnabled` as diagnostic evidence only.
+- Added optional `barometricGPSOutlierDecision` to `LocationFixDiagnostics` so legacy `.skatetrack` sessions decode without the new field.
+- Split the implementation into new model / guard / SensorFusionEngine extension files instead of expanding existing oversized legacy production files.
+- Advanced the DEBUG build identity to `Task-030c-b16-B` without enabling estimated routes, rejecting production route fixes, mutating raw samples, or changing trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain.
+
+Task-030c-b16-B verification token: barometric GPS outlier cross-validation diagnostics, diagnostics-only, productionRouteDecisionApplied false, wouldRejectIfGateWereEnabled, estimatedRouteActive remains false.
+
+### Task-030c-b16-C — Passive Wi-Fi RTT / Accuracy Source Diagnostics
+
+- Added passive accuracy-source diagnostics that classify CoreLocation accuracy evidence into likely high-precision GPS or possible Wi-Fi RTT assisted categories without using explicit Wi-Fi APIs.
+- Added `LocationAccuracySourceDiagnostics` with `passiveInferenceOnly` forced to true, `explicitWiFiAPIUsed` forced to false, and `wifiRTTConfirmed` forced to false during construction and decoding.
+- Added `LocationAccuracySourceClassifier` to keep heuristic classification outside legacy oversized model files.
+- Added optional `locationAccuracySourceDiagnostics` to `LocationFixDiagnostics` so legacy `.skatetrack` sessions decode without the new field.
+- Advanced the DEBUG build identity to `Task-030c-b16-C` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
+
+Task-030c-b16-C verification token: passive accuracy-source diagnostics, no Wi-Fi entitlement, no Wi-Fi scanning, no confirmed Wi-Fi RTT claim, estimatedRouteActive remains false.
+
+### Task-030c-b16-D — Magnetometer Heading Quality Consolidation
+
+- Added `HeadingReliability`, `HeadingQualityConfig`, and `HeadingQualityAssessment` as small shared diagnostics models for replay-readiness classification.
+- Added `HeadingQualityClassifier` so existing `HeadingDiagnostics` can be classified without expanding legacy oversized model or sensor-fusion files.
+- Added XCTest coverage for high, moderate, too-old, invalid, unavailable, and Codable round-trip heading quality boundaries.
+- Advanced the DEBUG build identity to `Task-030c-b16-D` without changing route geometry, trusted distance, speed, average speed, max speed, moving ratio, total elevation gain, raw samples, production route acceptance, or estimated route display.
+
+Task-030c-b16-D verification token: magnetometer heading quality consolidation, HeadingReliability, HeadingQualityAssessment, HeadingQualityClassifier, replay-readiness only, no production estimated route geometry, estimatedRouteActive remains false.
+
+### Task-030c-b17 — Localization Diagnostics Review Pack
+
+- Added `LocalizationDiagnosticsReviewPack`, `LocalizationDiagnosticsReviewSummary`, and `LocalizationDiagnosticsReviewSample` to consolidate b16-B/C/D diagnostics for replay-only review.
+- Added `LocalizationDiagnosticsReviewBuilder` so session samples can be summarized without expanding oversized legacy model or sensor-fusion files.
+- Added XCTest coverage for barometric outlier summary counts, passive accuracy-source counts, heading replay-readiness counts, safety flags, and empty-diagnostics behavior.
+- Advanced the DEBUG build identity to `Task-030c-b17` and moved the visible DEBUG task token / badge through `Localizable.strings`.
+- Kept b17 diagnostics-only and replay-review-only: no route geometry mutation, trusted metric mutation, production route rejection, Wi-Fi entitlement, Wi-Fi scan, road snapping, map matching, raw sample mutation, or production estimated route display.
+
+Task-030c-b17 verification token: localization diagnostics review pack, diagnosticsOnly true, replayReviewOnly true, productionRouteMutationApplied false, localized DEBUG build signature, estimatedRouteActive remains false.
+
+### Task-030c-b17-0 — Localization Diagnostics Review Pack Foundation
+
+- v1.2 alignment checkpoint for `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`.
+- Reclassified the already-pushed `Task-030c-b17` localization diagnostics review pack as `Task-030c-b17-0` / preflight foundation because `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` defines b17 as the replay-only IMU gap interpolation engine.
+- Added a v1.2 alignment verify guard so future Task-030c hotfixes must check the plan before continuing.
+- Added the v1.2-named b16-C verifier alias `verify_task030c_b16c_wifi_rtt_accuracy_source_diagnostics.py` while keeping the implemented passive accuracy-source verifier name honest and non-RTT-confirming.
+- Preserved the existing diagnostics-only boundary: no route geometry mutation, no trusted metrics mutation, no production estimated route display, and `estimatedRouteActive` remains false.
+
+Task-030c-b17-0 verification token: v1.2 alignment checkpoint, b17 preflight only, next milestone is Task-030c-b17-A local tangent coordinate frame and sensor bias foundation, estimatedRouteActive remains false.
+
+
+### Task-030c-b17-A — Local Tangent Coordinate Frame and Sensor Bias Foundation
+
+- Added `LocalTangentPlane` and `LocalTangentMeters` for deterministic ENU conversion around a GPS anchor without storing production route geometry.
+- Added `IMUBiasEstimator`, `IMUBiasEstimatorConfig`, and `IMUBiasEstimate` for low-motion accelerometer bias estimation over replay/debug samples.
+- Added `GravityCompensatedMotionSample` to remove the estimated accelerometer bias and gravity axis before future b17-B replay-only integration.
+- Added `IMULocalFrameBiasFoundationTests` covering Taipei-latitude ENU round trip, synthetic bias convergence, high-motion refusal, and gravity compensation.
+- Advanced the DEBUG build identity to `Task-030c-b17-A` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-A verification token: v1.2 b17-A local tangent coordinate frame and sensor bias foundation, no route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-B — Replay-Only Dead Reckoning Engine v1
+
+- Added `DeadReckoningReplayEstimate`, `DeadReckoningReplayDiagnostics`, `DeadReckoningEstimateSource`, and `DeadReckoningConfidence` as replay-only diagnostic outputs.
+- Added `DeadReckoningEngine` to generate candidate IMU replay estimates between trusted GPS anchors using b17-A `LocalTangentPlane`, `IMUBiasEstimator`, and `GravityCompensatedMotionSample`.
+- Added conservative drift growth through the named `estimatedPositionDriftRateMetersPerSecond` constant so b17-D real-session closure data can later calibrate it.
+- Added deterministic XCTest coverage for synthetic acceleration, constant heading velocity, missing heading confidence downgrade, policy gap blocking, anchor closure error, and drift-rate accuracy growth.
+- Advanced the DEBUG build identity to `Task-030c-b17-B` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-B verification token: v1.2 replay-only dead reckoning engine, DeadReckoningReplayEstimate, anchor closure error, no production route geometry, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-C — Anchor Closure Error and Confidence Scoring
+
+- Added `DeadReckoningClosureDiagnostics` for b17-C replay-only closure scoring output.
+- Added `DeadReckoningClosureScorer` with conservative v1.2 gates for gap duration, closure error, heading reliability, and IMU sample coverage.
+- Extended b17-B replay diagnostics to attach closure diagnostics without changing production route geometry, route maps, exports, or trusted metrics.
+- Added deterministic XCTest coverage for low closure eligibility, high closure blocking, missing heading blocking, low IMU coverage blocking, very long gap blocking, and replay diagnostics closure attachment.
+- Advanced the DEBUG build identity to `Task-030c-b17-C` while keeping `estimatedRouteActive` false.
+
+Task-030c-b17-C verification token: v1.2 anchor closure error and confidence scoring, DeadReckoningClosureDiagnostics, DeadReckoningClosureScorer, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D — Real-Session Replay Review Pack
+
+- Added `DeadReckoningReplayReviewPack`, `DeadReckoningReplayReviewSessionSummary`, and `DeadReckoningReplayReviewGapRecord` as shared b17-D review-pack models.
+- Added `DeadReckoningReplayReviewPackBuilder` to convert real-session replay diagnostics into JSON, Markdown, and CSV artifact contents for `Task030c_b17D_ReplayReviewPack.zip`.
+- Added deterministic XCTest coverage for eligible gaps, blocked gaps, artifact rendering, replay-only safety flags, and blocking-reason preservation.
+- Advanced the DEBUG build identity to `Task-030c-b17-D` while keeping `estimatedRouteActive` false and preserving trusted metrics.
+
+Task-030c-b17-D verification token: v1.2 real-session replay review pack, JSON / Markdown / CSV artifacts, gap duration, IMU coverage, heading reliability, estimated displacement, closure error, eligibility, blocking reasons, product decision checkpoint required, no user-visible route display, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b17-D-3 — Real-Session Review Runner / Export Glue
+
+- Added an offline runner for real `.skatetrack` session exports.
+- Added metrics glue to convert location-fix gaps and timer-fusion samples into b17-D review-pack fields: gap duration, IMU coverage, heading reliability, estimated displacement, anchor closure error, closure-error ratio, conservative eligibility, and blocking reasons.
+- The runner writes `Task030c_b17D_ReplayReviewPack.zip` with JSON, Markdown, and CSV artifacts for real-session product-decision review.
+- Preserved the b17-D safety boundary: no route map rendering, no production route mutation, no trusted metrics mutation, and no user-visible estimated route display.
+
+Task-030c-b17-D-3 verification token: real-session runner / export glue, `.skatetrack` inputs, review-only artifacts, product decision checkpoint required, estimatedRouteActive remains false.
+
+### Task-030c-b18-A — Product Decision Gate and In-Memory Estimated Route Display Decision
+
+- Implements the b18-A product decision gate using `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` as the controlling implementation baseline.
+- Added `EstimatedRouteDisplayDecision` and `EstimatedRouteDisplayDecisionState` as shared, in-memory-only review decision outputs for b17-D gap records.
+- Added `EstimatedRouteDisplayGate` and `EstimatedRouteDisplayGatePolicy` to classify b17-D replay review gaps into `blocked`, `reviewOnly`, `candidateButHidden`, or `eligibleForFutureProductReview` without enabling product UI.
+- Keeps estimated route display decisions in memory only. No Core Data attribute, SessionRepository persistence, SessionEntityMapper mapping, or `.skatetrack` package schema change is introduced.
+- Records the b18 product-decision refinement from the v1.2 plan: candidate user-visible estimated-route consideration is tightened to very short gaps, with `maximumCandidateGapDurationSeconds = 6`, while gaps up to `maximumReviewOnlyGapDurationSeconds = 30` remain review-only evidence only.
+- This two-tier 6s / 30s policy is intentionally more conservative than the original v1.2 candidate threshold because the b17-D-3 real-session review pack found 0 eligible gaps for the core electric-skateboard session and large closure errors in several real sessions.
+- Advanced the DEBUG build identity to `Task-030c-b18-A` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, and `estimatedRouteDisplayEnabled` remain false.
+
+Task-030c-b18-A verification token: in-memory product decision gate, named 6s / 30s threshold constants, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no trusted metric mutation, no route map display, estimatedRouteActive remains false.
+
+
+### Task-030c-b18-B — Review-Only Estimated Route Overlay Artifact
+
+- Implements the b18-B review-only overlay artifact using `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` as the controlling implementation baseline.
+- Added `EstimatedRouteReviewOverlay` and `EstimatedRouteReviewOverlayRecord` as shared review-only artifact models for b18-A display decisions.
+- Added `EstimatedRouteReviewOverlayBuilder` to convert b18-A decisions into overlay records carrying session role labels, decision states, blocking reasons, and safety flags without route geometry.
+- Added deterministic XCTest coverage for the five b17-D-3 real-session regression roles: electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, motorcycle pressure test, and motorcycle control sample.
+- Advanced the DEBUG build identity to `Task-030c-b18-B` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No Core Data, SessionRepository, SessionEntityMapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
+
+Task-030c-b18-B verification token: review-only overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b18-C — DEBUG-Only Estimated Route Review Panel
+
+- Implements the b18-C DEBUG-only review panel using `Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 plan.
+- Added `EstimatedRouteReviewPanel` as a fully `#if DEBUG`-wrapped SwiftUI review panel for b18-B overlay records.
+- Added deterministic DEBUG XCTest coverage confirming the panel can be created with the five real-session regression roles while keeping all user-visible display, route-geometry, persistence, and trusted-metric safety flags disabled.
+- Preserved the localization rule for DEBUG UI by adding `debug.estimatedRouteReview.*` keys to English, Traditional Chinese, and Japanese localization files.
+- Advanced the DEBUG build identity to `Task-030c-b18-C` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No route polyline, path shape, map overlay, Core Data, SessionRepository, SessionEntityMapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
+
+Task-030c-b18-C verification token: DEBUG-only estimated route review panel, fully wrapped in `#if DEBUG`, localized panel text, no route rendering, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+
+### Task-030c-b18-D — Real-Session Recheck and Product Decision Update
+
+- Implements the b18-D product decision update using `Task-030c-b18-D_Real_Session_Recheck_and_Product_Decision_Mini_Plan_EN_v1.0.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 plan.
+- Added `EstimatedRouteProductDecisionUpdate` and `EstimatedRouteProductDecisionSessionSummary` as shared review-only product-decision records for the b18 real-session recheck.
+- Added `EstimatedRouteProductDecisionUpdateBuilder` to summarize the five b17-D-3 real-session roles from b18-B overlay records and preserve the final `keepDisabled` decision.
+- Added deterministic XCTest coverage confirming the electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, and motorcycle pressure test do not become user-visible display candidates; motorcycle control remains limited hidden candidate evidence only.
+- Advanced the DEBUG build identity to `Task-030c-b18-D` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No route geometry, Session Summary map mutation, trusted metric mutation, Core Data, SessionRepository, SessionEntityMapper, or `.skatetrack` schema change is introduced.
+
+Task-030c-b18-D verification token: real-session recheck product decision update, `EstimatedRouteProductDecisionUpdate`, `EstimatedRouteProductDecisionUpdateBuilder`, outcome `keepDisabled`, five real-session roles, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+
+### Task-030c-b19 — Outdoor Localization Release Gate
+
+- Implements the b19 outdoor localization release gate using `Task-030c-b19_Outdoor_Localization_Release_Gate_Mini_Plan_EN_v1.0.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 product decision plan.
+- Added `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleasePolicy`, and `OutdoorLocalizationReleaseEvidence` as shared review/release gate records for real-GPS outdoor localization quality.
+- Added `OutdoorLocalizationReleaseGateBuilder` to classify deterministic outdoor localization evidence as `releaseReady`, `limitedDisclosure`, or `blocked` without enabling estimated route display.
+- Added deterministic XCTest coverage for high-quality outdoor evidence, limited-disclosure evidence, low-speed trap evidence, sheltered/high-risk evidence, poor coverage, long gap, and empty evidence.
+- Advanced the DEBUG build identity to `Task-030c-b19` while keeping `estimatedRouteActive` false.
+
+Task-030c-b19 verification token: outdoor localization release gate, `OutdoorLocalizationReleaseGate`, `OutdoorLocalizationReleaseGateBuilder`, releaseReady, limitedDisclosure, blocked, realGPSOnly true, no user-visible estimated route display, no route geometry mutation, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c Final Closure Audit — Post-b19 Documentation and Merge Readiness
+
+- Prepared Task-030c for final closure after `2cc0550 Task-030c-b19 add outdoor localization release gate` rather than opening a new b20 milestone.
+- Mapped the `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` Section 5 Final Definition of Done to the completed b13–b19 implementation chain.
+- Confirmed the outdoor GPS fidelity scope is covered by the existing startup / warm-up honesty, low-confidence and warm-up route styling, small-area limitations disclosure, bad-GPS diagnostics, stable trusted metrics, freebord / low-speed calibration, and b19 outdoor localization release gate.
+- Confirmed locked-screen / pocket continuity evidence is covered by GPS-gap detection, replay-only IMU estimates, anchor closure scoring, b17-D real-session review artifacts, and ineligible-gap disclosure.
+- Confirmed the b18-D product decision remains `keepDisabled`; general-user estimated route display is not enabled in Task-030c closure.
+- Confirmed indoor localization remains explicitly out of scope for Task-030c and is handed off to Task-031.
+- Preserved all non-goals: no camera localization, no RTK dependency, no UWB consumer-flow dependency, no road snapping, no fake GPS, and no claim that small-area GPS can be perfectly reconstructed.
+- Preserved trusted-metric honesty: no estimated geometry silently affects trusted distance, speed, average speed, max speed, moving ratio, or total elevation gain.
+- Closure scope is docs-only. It does not add Swift files, product logic, persistence, route geometry, route rendering, trusted metric mutation, or schema changes.
+
+Task-030c final closure verification token: Section 5 closure checklist mapped to commits, `2cc0550`, b18-D `keepDisabled`, b19 outdoor localization release gate, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.

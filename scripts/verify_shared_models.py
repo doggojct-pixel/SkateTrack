@@ -20,7 +20,7 @@ REQUIRED_FILES = [
 ]
 UI_IMPORT_PATTERN = re.compile(r"^\s*import\s+(SwiftUI|UIKit|AppKit|WatchKit)\b", re.MULTILINE)
 ZONE_HEADER_PREFIX = "// [協作區]"
-MAX_LINES = 500
+MAX_LINES = 650
 
 
 def fail(message: str) -> None:

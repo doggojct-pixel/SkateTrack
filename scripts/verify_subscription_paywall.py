@@ -135,8 +135,8 @@ def verify_locked_flow() -> None:
 
 
 def verify_docs() -> None:
-    dev_log = read("docs/DEV_LOG.md")
-    structure = read("docs/FILE_STRUCTURE.md")
+    dev_log = read("docs/history/DEV_LOG.md")
+    structure = read("docs/reference/FILE_STRUCTURE.md")
     for token in ["Task-016b Paywall UI + Locked Feature Flow", "DEBUG-only Paywall simulation controls"]:
         if token not in dev_log:
             fail(f"DEV_LOG missing Task-016b token: {token}")

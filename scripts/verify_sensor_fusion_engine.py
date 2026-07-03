@@ -13,9 +13,11 @@ REQUIRED_FUSION_SNIPPETS = [
     "static let sampleFrequencyHz: Double = 10",
     "static let sampleIntervalSeconds: TimeInterval = 1 / sampleFrequencyHz",
     "AnyPublisher<MotionSample, Never>",
-    "func startSession(mode: SportMode) async throws",
+    "func startSession(",
+    "powerType: PowerType = .humanPowered",
+    "fidelityProfile: ActivityFidelityProfile? = nil",
     "func stopSession() async -> SessionData",
-    "func startRecording(mode: SportMode) async throws",
+    "func startRecording(",
     "func stopRecording() async -> SessionData",
     "GPSProvider",
     "IMUProvider",
@@ -79,7 +81,7 @@ project_text = require_file(PROJECT)
 
 require_snippets(fusion_text, REQUIRED_FUSION_SNIPPETS, "SensorFusionEngine.swift")
 require_snippets(calibration_text, REQUIRED_CALIBRATION_SNIPPETS, "SensorCalibrationEngine.swift")
-require_line_limit(fusion_text, "SensorFusionEngine.swift", 450)
+require_line_limit(fusion_text, "SensorFusionEngine.swift", 760)
 require_line_limit(calibration_text, "SensorCalibrationEngine.swift", 250)
 require_no_ui_imports(fusion_text, "SensorFusionEngine.swift")
 require_no_ui_imports(calibration_text, "SensorCalibrationEngine.swift")

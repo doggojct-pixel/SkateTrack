@@ -24,6 +24,7 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
     let id: UUID
     let session: SessionData
     let motionSamples: [MotionSample]
+    let routeQualitySummary: RouteQualitySummary?
     let exportedAt: Date
     let privacyNotes: [String]
 
@@ -31,6 +32,7 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
         id: UUID = UUID(),
         session: SessionData,
         motionSamples: [MotionSample],
+        routeQualitySummary: RouteQualitySummary? = nil,
         exportedAt: Date = Date(),
         privacyNotes: [String] = [
             "No account session, Google token, Drive state, achievements, or weekly challenge records are included."
@@ -39,6 +41,7 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
         self.id = id
         self.session = session
         self.motionSamples = motionSamples
+        self.routeQualitySummary = routeQualitySummary ?? session.routeQualitySummary ?? RouteQualitySummary.make(from: motionSamples)
         self.exportedAt = exportedAt
         self.privacyNotes = privacyNotes
     }

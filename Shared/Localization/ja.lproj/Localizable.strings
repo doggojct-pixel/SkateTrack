@@ -169,11 +169,11 @@
 "debug.tools.simulateFall.title" = "転倒アラート";
 "debug.tools.simulateFall.description" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
 "debug.tools.simulateFall.button" = "転倒アラートをシミュレート";
-"debug.tools.demoSpeed.title" = "デモ速度セッション";
-"debug.tools.demoSpeed.description" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
-"debug.tools.demoSpeed.toggle" = "次のセッションでデモ速度を有効化";
-"debug.tools.demoSpeed.idleHint" = "通常の Debug 実行では実際の GPS / センサーデータを使用します。UI デモ時のみオンにしてください。";
-"debug.tools.demoSpeed.activeHint" = "デモ速度モードを変更する前に現在のセッションを終了してください。";
+"debug.tools.demoSpeed.title" = "DEBUG 模擬ルート";
+"debug.tools.demoSpeed.description" = "シミュレータ確認用に、DEBUG 限定のスケート風ルート、速度、高度、精度サンプルを生成します。";
+"debug.tools.demoSpeed.toggle" = "次のセッションで模擬ルートを有効化";
+"debug.tools.demoSpeed.idleHint" = "通常の Debug 実行では実際の GPS / センサーデータを使用します。シミュレータのルート診断時のみオンにしてください。";
+"debug.tools.demoSpeed.activeHint" = "模擬ルートモードを変更する前に現在のセッションを終了してください。";
 "debug.tools.subscription.description" = "この機能は SkateTrack Pro 向けに準備されています。現在はローカルまたは DEBUG シミュレーションで検証します。";
 "debug.tools.resetContacts.title" = "緊急連絡先";
 "debug.tools.resetContacts.description" = "この情報はローカルで処理され、現在のビルドでは外部サービスへ同期されません。";
@@ -278,7 +278,7 @@
 "summary.metric.duration" = "時間";
 "summary.metric.maxSpeed" = "最高速度";
 "summary.metric.avgSpeed" = "平均速度";
-"summary.metric.elevationGain" = "獲得標高";
+"summary.metric.elevationGain" = "総獲得標高";
 "summary.metric.movingRatio" = "移動割合";
 "summary.metric.falls" = "転倒";
 "summary.metric.tricks" = "トリック";
@@ -297,6 +297,8 @@
 "summary.route.start" = "開始";
 "summary.route.finish" = "終了";
 "summary.route.sampleCountFormat" = "値： %d";
+"summary.route.accuracy.startup" = "GPS調整中・開始位置はおおよそです";
+"summary.route.accuracy.approxFormat" = "GPS ±%dm・小範囲ルートは概算です";
 "summary.safety.clear.title" = "転倒は検知されませんでした";
 "summary.safety.clear.subtitle" = "この項目は現在のビルドで安全に確認できるよう準備されています。";
 "summary.safety.falls.title" = "安全イベントを記録しました";
@@ -1020,3 +1022,63 @@
 "mac.accessibility.route_preview.value.format" = "ルートサンプル %d 件、変化のあるルートポイント %d 件、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度チャート";
 "mac.accessibility.speed_chart.hint" = "選択したパッケージセッションのサンプルから軽量の速度推移を表示します。";
+
+/* Task-030c-b6 Debug status panel polish */
+"debug.status.title" = "ライブ診断";
+"debug.status.speed" = "速度";
+"debug.status.distance" = "距離";
+"debug.status.elapsed" = "時間";
+"debug.status.gps" = "GPS";
+"debug.status.samples" = "総サンプル";
+"debug.status.latestAccuracy" = "最新精度";
+"debug.status.latestFreshness" = "鮮度";
+"debug.status.source.locationFix" = "位置更新";
+"debug.status.source.timerFusion" = "タイマー融合";
+"debug.status.source.debugSimulated" = "シミュレート";
+"debug.status.source.none" = "サンプルなし";
+"debug.status.freshness.fresh" = "新鮮";
+"debug.status.freshness.recent" = "最近";
+"debug.status.freshness.stale" = "古い";
+"debug.status.freshness.unavailable" = "利用不可";
+"debug.status.freshness.none" = "位置なし";
+"debug.build.title" = "テストビルド識別";
+"debug.build.currentTaskID" = "Task-030c-b19";
+"debug.build.badge" = "DEBUG";
+"debug.build.subtitle" = "このバッジで、端末に最新の GPS fidelity テストビルドが入っていることを確認します。";
+
+/* Task-030c-b7 Background recording gap diagnostics */
+"debug.tools.recordingContext.title" = "記録テスト条件";
+"debug.tools.recordingContext.description" = "次の DEBUG 記録に条件ラベルを付け、端末の持ち方、ロック方法、置き場所を .skatetrack 診断で識別します。";
+"debug.tools.recordingContext.picker" = "記録テスト条件";
+"debug.tools.recordingContext.hint" = "このラベルは DEBUG 診断にのみ保存され、通常のセッション UI には表示されません。";
+"debug.recordingContext.unspecified" = "未指定";
+"debug.recordingContext.unspecified.description" = "テスト条件は選択されていません。";
+"debug.recordingContext.handheldScreenOn" = "手持ち・画面オン";
+"debug.recordingContext.handheldScreenOn.description" = "開始後も手に持ち、画面をオンのままにします。";
+"debug.recordingContext.handheldAutoLock" = "手持ち・自動ロック";
+"debug.recordingContext.handheldAutoLock.description" = "画面オンで開始し、手に持ったまま iPhone の自動ロックを待ちます。";
+"debug.recordingContext.lockedPocketWalk" = "歩行・ロック中ポケット";
+"debug.recordingContext.lockedPocketWalk.description" = "開始後数秒以内に手動ロックし、ポケットに入れて歩きます。";
+"debug.recordingContext.windshieldDrive" = "運転・フロントガラス自動ロック";
+"debug.recordingContext.windshieldDrive.description" = "フロントガラス下に置き、画面オンで開始して自動ロックを待ちます。";
+"debug.recordingContext.vehicleScreenOff" = "車内・手動ロック";
+"debug.recordingContext.vehicleScreenOff.description" = "開始後に手動ロックし、車内の任意の場所に置きます。";
+"debug.recordingContext.electricLongboardLockedPocket" = "電動ロングボード・ロック中ポケット";
+"debug.recordingContext.electricLongboardLockedPocket.description" = "実使用テスト：開始後に画面をロックし、ポケットに入れて電動ロングボードに乗ります。";
+"debug.recordingContext.scooterLockedPocket" = "スクーター・ロック中ポケット";
+"debug.recordingContext.scooterLockedPocket.description" = "検証テスト：開始後に画面をロックし、ポケットに入れてスクーターに乗ります。";
+
+/* Task-030c-b18-C DEBUG estimated route review panel */
+"debug.estimatedRouteReview.title" = "Estimated Route レビュー";
+"debug.estimatedRouteReview.subtitle" = "DEBUG 専用レビュー画面です。ルート形状や一般ユーザー表示は有効化されません。";
+"debug.estimatedRouteReview.safetyFlags" = "安全フラグ";
+"debug.estimatedRouteReview.routeGeometryDisabled" = "ルート形状は無効";
+"debug.estimatedRouteReview.userVisibleDisplayDisabled" = "一般ユーザー表示は無効";
+"debug.estimatedRouteReview.trustedMetricsDisabled" = "信頼指標の変更は無効";
+"debug.estimatedRouteReview.persistenceDisabled" = "永続化は無効";
+"debug.estimatedRouteReview.records" = "レビュー記録";
+"debug.estimatedRouteReview.empty" = "レビュー記録はありません。";
+"debug.estimatedRouteReview.disposition" = "判定";
+"debug.estimatedRouteReview.gapDuration" = "ギャップ時間";
+"debug.estimatedRouteReview.blockingReasons" = "ブロック理由";
+"debug.estimatedRouteReview.recordUserVisibleDisabled" = "この記録の一般ユーザー表示は無効";

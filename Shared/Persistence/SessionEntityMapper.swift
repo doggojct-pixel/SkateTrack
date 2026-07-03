@@ -33,6 +33,10 @@ enum SessionEntityMapper {
         object.setValue(try session.equipmentSnapshot.map { try encode($0) }, forKey: "equipmentSnapshotData")
         object.setValue(session.spotID, forKey: "spotID")
         object.setValue(try session.spotSnapshot.map { try encode($0) }, forKey: "spotSnapshotData")
+        object.setValue(
+            try safeEncodedDebugRecordingDiagnostics(session.debugRecordingDiagnostics),
+            forKey: "debugRecordingDiagnosticsData"
+        )
         object.setValue(sampleFileName, forKey: "sampleFileName")
         object.setValue(try encode(session.trickEvents), forKey: "trickEventsData")
         object.setValue(object.value(forKey: "createdAt") as? Date ?? now, forKey: "createdAt")
@@ -75,6 +79,9 @@ enum SessionEntityMapper {
             trickEvents: decode([TrickEvent].self, from: trickEventsData),
             fallEvents: fallEvents,
             summaryMetrics: summary,
+            debugRecordingDiagnostics: try (object.value(forKey: "debugRecordingDiagnosticsData") as? Data).map {
+                try decode(RecordingDebugDiagnostics.self, from: $0)
+            },
             equipmentID: object.value(forKey: "equipmentID") as? UUID,
             equipmentSnapshot: try (object.value(forKey: "equipmentSnapshotData") as? Data).map {
                 try decode(EquipmentSessionSnapshot.self, from: $0)
@@ -165,10 +172,28 @@ enum SessionEntityMapper {
         return NSManagedObject(entity: entity, insertInto: context)
     }
 
+    private static func safeEncodedDebugRecordingDiagnostics(_ diagnostics: RecordingDebugDiagnostics?) throws -> Data? {
+        guard let diagnostics else { return nil }
+        do {
+            return try encode(diagnostics)
+        } catch {
+            // Task-030c-b15-B-3: simulator save must not orphan motion samples merely
+            // because an optional DEBUG diagnostics payload contains a non-conforming
+            // floating-point value or another encoding-only issue. The session row and
+            // motion samples remain the source of truth; diagnostics can be absent.
+            return nil
+        }
+    }
+
     private static func encode<T: Encodable>(_ value: T) throws -> Data {
         do {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601
+            encoder.nonConformingFloatEncodingStrategy = .convertToString(
+                positiveInfinity: "Infinity",
+                negativeInfinity: "-Infinity",
+                nan: "NaN"
+            )
             return try encoder.encode(value)
         } catch {
             throw RepositoryError.encodingFailed
@@ -179,6 +204,11 @@ enum SessionEntityMapper {
         do {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
+            decoder.nonConformingFloatDecodingStrategy = .convertFromString(
+                positiveInfinity: "Infinity",
+                negativeInfinity: "-Infinity",
+                nan: "NaN"
+            )
             return try decoder.decode(type, from: data)
         } catch {
             throw RepositoryError.decodingFailed
