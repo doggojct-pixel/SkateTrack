@@ -70,16 +70,16 @@ def main() -> int:
             "testGravityCompensatedMotionSampleRemovesBiasAndGravity",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
+            'static let currentDebugBuildTaskID = "Task-030c-b18-C"',
         ],
         "Shared/Localization/en.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
         ],
         "Shared/Localization/zh-Hant.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
         ],
         "Shared/Localization/ja.lproj/Localizable.strings": [
-            '"debug.build.currentTaskID" = "Task-030c-b18-B";',
+            '"debug.build.currentTaskID" = "Task-030c-b18-C";',
         ],
         "SkateTrack.xcodeproj/project.pbxproj": [
             "LocalTangentPlane.swift in Sources",

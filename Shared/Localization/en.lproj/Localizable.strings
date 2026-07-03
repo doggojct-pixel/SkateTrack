@@ -1042,7 +1042,7 @@
 "debug.status.freshness.unavailable" = "Unavailable";
 "debug.status.freshness.none" = "No fix";
 "debug.build.title" = "Test build signature";
-"debug.build.currentTaskID" = "Task-030c-b18-B";
+"debug.build.currentTaskID" = "Task-030c-b18-C";
 "debug.build.badge" = "DEBUG";
 "debug.build.subtitle" = "Use this badge to confirm the installed app includes the latest GPS fidelity test build.";
 
@@ -1067,3 +1067,18 @@
 "debug.recordingContext.electricLongboardLockedPocket.description" = "Real riding test: start recording, lock the screen, and ride an electric longboard with the phone in a pocket.";
 "debug.recordingContext.scooterLockedPocket" = "Scooter · locked pocket";
 "debug.recordingContext.scooterLockedPocket.description" = "Validation ride: start recording, lock the screen, and ride a scooter with the phone in a pocket.";
+
+/* Task-030c-b18-C DEBUG estimated route review panel */
+"debug.estimatedRouteReview.title" = "Estimated Route Review";
+"debug.estimatedRouteReview.subtitle" = "DEBUG-only review panel. No route geometry or user-visible display is enabled.";
+"debug.estimatedRouteReview.safetyFlags" = "Safety flags";
+"debug.estimatedRouteReview.routeGeometryDisabled" = "Route geometry disabled";
+"debug.estimatedRouteReview.userVisibleDisplayDisabled" = "User-visible display disabled";
+"debug.estimatedRouteReview.trustedMetricsDisabled" = "Trusted metrics mutation disabled";
+"debug.estimatedRouteReview.persistenceDisabled" = "Persistence disabled";
+"debug.estimatedRouteReview.records" = "Review records";
+"debug.estimatedRouteReview.empty" = "No review records available.";
+"debug.estimatedRouteReview.disposition" = "Disposition";
+"debug.estimatedRouteReview.gapDuration" = "Gap duration";
+"debug.estimatedRouteReview.blockingReasons" = "Blocking reasons";
+"debug.estimatedRouteReview.recordUserVisibleDisabled" = "Record user-visible display disabled";

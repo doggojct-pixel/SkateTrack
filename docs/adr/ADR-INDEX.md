@@ -399,3 +399,14 @@ Boundary: The overlay artifact is not route geometry and is not a product route.
 Implementation: Shared overlay output lives in `Shared/Models/EstimatedRouteReviewOverlay.swift`. The iOS-only builder lives in `iOS/Core/SensorEngine/EstimatedRouteReviewOverlayBuilder.swift`. Deterministic XCTest coverage for the five real-session regression roles lives in `Tests/iOSTests/EstimatedRouteReviewOverlayTests.swift`.
 
 Task-030c-b18-B verification token: Review-Only Estimated Route Overlay Artifact, `EstimatedRouteReviewOverlay`, `EstimatedRouteReviewOverlayBuilder`, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b18-C — DEBUG-Only Estimated Route Review Panel
+
+Decision: Task-030c-b18-C implements the third b18 milestone from `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md` and the `Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md` implementation note. The milestone adds a DEBUG-only review panel for inspecting b18-B review overlay records without enabling product UI.
+
+Boundary: The entire `EstimatedRouteReviewPanel` type is wrapped in `#if DEBUG`. The milestone does not render route polylines, path shapes, Canvas previews, map overlays, or route-like geometry. It does not mutate production route geometry, trusted metrics, persistence, SessionRepository, SessionEntityMapper, `.skatetrack` schema, or normal Session Summary map behavior.
+
+Implementation: The DEBUG panel lives in `iOS/Features/Debug/EstimatedRouteReviewPanel.swift`. Deterministic DEBUG XCTest coverage lives in `Tests/iOSTests/EstimatedRouteReviewPanelTests.swift`. Panel text uses `debug.estimatedRouteReview.*` Localizable keys in English, Traditional Chinese, and Japanese.
+
+Task-030c-b18-C verification token: DEBUG-Only Estimated Route Review Panel, `EstimatedRouteReviewPanel`, full `#if DEBUG` type boundary, localized DEBUG panel strings, no route rendering, no user-visible estimated route display, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

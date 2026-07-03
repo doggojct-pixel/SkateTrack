@@ -87,14 +87,14 @@ def main() -> int:
         "20260701-204705",
     ])
     require("Shared/Models/SessionData.swift", [
-        'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b18-C"',
     ])
     for loc in [
         "Shared/Localization/en.lproj/Localizable.strings",
         "Shared/Localization/zh-Hant.lproj/Localizable.strings",
         "Shared/Localization/ja.lproj/Localizable.strings",
     ]:
-        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-B";'])
+        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-C";'])
 
     require("SkateTrack.xcodeproj/project.pbxproj", [
         "EstimatedRouteDisplayDecision.swift in Sources",
@@ -195,8 +195,10 @@ def main() -> int:
     panel_path = ROOT / "iOS/Features/Debug/EstimatedRouteReviewPanel.swift"
     if panel_path.exists():
         panel_text = panel_path.read_text(encoding="utf-8")
-        stripped = panel_text.lstrip()
-        if not stripped.startswith("#if DEBUG"):
+        debug_index = panel_text.find("#if DEBUG")
+        type_index = panel_text.find("struct EstimatedRouteReviewPanel")
+        endif_index = panel_text.rfind("#endif")
+        if not (0 <= debug_index < type_index < endif_index):
             raise AssertionError("EstimatedRouteReviewPanel.swift must wrap the entire type in #if DEBUG")
 
     print("Task-030c-b18-A product decision gate checks passed.")

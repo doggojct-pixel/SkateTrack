@@ -1042,7 +1042,7 @@
 "debug.status.freshness.unavailable" = "不可用";
 "debug.status.freshness.none" = "無定位";
 "debug.build.title" = "測試版本標籤";
-"debug.build.currentTaskID" = "Task-030c-b18-B";
+"debug.build.currentTaskID" = "Task-030c-b18-C";
 "debug.build.badge" = "DEBUG";
 "debug.build.subtitle" = "用這個標籤確認手機內已安裝最新 GPS fidelity 測試版本。";
 
@@ -1067,3 +1067,18 @@
 "debug.recordingContext.electricLongboardLockedPocket.description" = "真實使用測試：開始後鎖螢幕，手機放口袋滑電動長版。";
 "debug.recordingContext.scooterLockedPocket" = "機車・鎖螢幕口袋";
 "debug.recordingContext.scooterLockedPocket.description" = "驗證測試：開始後鎖螢幕，手機放口袋騎機車。";
+
+/* Task-030c-b18-C DEBUG estimated route review panel */
+"debug.estimatedRouteReview.title" = "Estimated Route 檢查";
+"debug.estimatedRouteReview.subtitle" = "僅限 DEBUG 的檢查面板；未啟用路線幾何或一般使用者顯示。";
+"debug.estimatedRouteReview.safetyFlags" = "安全旗標";
+"debug.estimatedRouteReview.routeGeometryDisabled" = "路線幾何已停用";
+"debug.estimatedRouteReview.userVisibleDisplayDisabled" = "一般使用者顯示已停用";
+"debug.estimatedRouteReview.trustedMetricsDisabled" = "可信指標變更已停用";
+"debug.estimatedRouteReview.persistenceDisabled" = "持久化已停用";
+"debug.estimatedRouteReview.records" = "檢查紀錄";
+"debug.estimatedRouteReview.empty" = "目前沒有檢查紀錄。";
+"debug.estimatedRouteReview.disposition" = "處置";
+"debug.estimatedRouteReview.gapDuration" = "GPS gap 時長";
+"debug.estimatedRouteReview.blockingReasons" = "封鎖原因";
+"debug.estimatedRouteReview.recordUserVisibleDisabled" = "此紀錄的一般使用者顯示已停用";

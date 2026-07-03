@@ -89,7 +89,7 @@ def main() -> int:
             "estimatedRouteActive remains false",
         ],
         "Shared/Models/SessionData.swift": [
-            'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
+            'static let currentDebugBuildTaskID = "Task-030c-b18-C"',
         ],
         "iOS/Features/Debug/DebugToolsPanelView.swift": [
             'Text("debug.build.currentTaskID")',

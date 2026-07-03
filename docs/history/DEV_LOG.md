@@ -2275,3 +2275,15 @@ Task-030c-b18-A verification token: in-memory product decision gate, named 6s / 
 - No general-user estimated route display is enabled. No Core Data, SessionRepository, SessionEntityMapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
 
 Task-030c-b18-B verification token: review-only overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b18-C — DEBUG-Only Estimated Route Review Panel
+
+- Implements the b18-C DEBUG-only review panel using `Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md` as the controlling implementation note while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and the b18 v1.1 plan.
+- Added `EstimatedRouteReviewPanel` as a fully `#if DEBUG`-wrapped SwiftUI review panel for b18-B overlay records.
+- Added deterministic DEBUG XCTest coverage confirming the panel can be created with the five real-session regression roles while keeping all user-visible display, route-geometry, persistence, and trusted-metric safety flags disabled.
+- Preserved the localization rule for DEBUG UI by adding `debug.estimatedRouteReview.*` keys to English, Traditional Chinese, and Japanese localization files.
+- Advanced the DEBUG build identity to `Task-030c-b18-C` while keeping `estimatedRouteActive` false.
+- No general-user estimated route display is enabled. No route polyline, path shape, map overlay, Core Data, SessionRepository, SessionEntityMapper, `.skatetrack` schema, route map, or trusted metric mutation is introduced.
+
+Task-030c-b18-C verification token: DEBUG-only estimated route review panel, fully wrapped in `#if DEBUG`, localized panel text, no route rendering, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

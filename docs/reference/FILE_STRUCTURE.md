@@ -1532,3 +1532,15 @@ scripts/verify_task030c_b18b_review_overlay.py           # Verifies b18-B tokens
 ```
 
 Task-030c-b18-B verification token: Review-Only Estimated Route Overlay Artifact, `EstimatedRouteReviewOverlay`, `EstimatedRouteReviewOverlayBuilder`, five real-session regression traps, no route geometry, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
+
+### Task-030c-b18-C DEBUG-only estimated route review panel
+
+```text
+app/iOS/Features/Debug/EstimatedRouteReviewPanel.swift   # DEBUG-only localized review panel; full #if DEBUG type boundary, no route rendering.
+Tests/iOSTests/EstimatedRouteReviewPanelTests.swift       # Deterministic DEBUG tests for panel creation and safety flags.
+scripts/verify_task030c_b18c_debug_review_panel.py        # Verifies DEBUG boundary, localization, no route rendering, no persistence, and safety constraints.
+docs/planning/Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md # b18-C controlling mini implementation note.
+```
+
+Task-030c-b18-C verification token: DEBUG-Only Estimated Route Review Panel, `EstimatedRouteReviewPanel`, full `#if DEBUG` type boundary, localized panel text, no route rendering, no Core Data persistence, no SessionRepository persistence, no SessionEntityMapper mapping, no `.skatetrack` schema change, no user-visible estimated route display, estimatedRouteActive remains false.
+

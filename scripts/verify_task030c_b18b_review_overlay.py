@@ -97,14 +97,14 @@ def main() -> int:
         "XCTAssertFalse(record.userVisibleDisplayAllowed)",
     ])
     require("Shared/Models/SessionData.swift", [
-        'static let currentDebugBuildTaskID = "Task-030c-b18-B"',
+        'static let currentDebugBuildTaskID = "Task-030c-b18-C"',
     ])
     for loc in [
         "Shared/Localization/en.lproj/Localizable.strings",
         "Shared/Localization/zh-Hant.lproj/Localizable.strings",
         "Shared/Localization/ja.lproj/Localizable.strings",
     ]:
-        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-B";'])
+        require(loc, ['"debug.build.currentTaskID" = "Task-030c-b18-C";'])
 
     require("SkateTrack.xcodeproj/project.pbxproj", [
         "EstimatedRouteReviewOverlay.swift in Sources",

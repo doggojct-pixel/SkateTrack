@@ -84,4 +84,4 @@ for loc in localizations:
         if f'"{key}"' not in text:
             sys.exit(f"{loc.relative_to(ROOT)} missing b6 localization key: {key}")
 
-print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b18-B build signature are present.")
+print("Task-030c-b6/b7 check passed: polished debug status panel and current Task-030c-b18-C build signature are present.")

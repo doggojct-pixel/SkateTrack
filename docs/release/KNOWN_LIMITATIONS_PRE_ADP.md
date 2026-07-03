@@ -533,3 +533,14 @@ Task-030c-b18-A verification token: in-memory display gate, no user-visible esti
 - **Regression boundary:** The electric skateboard core candidate, walking low-speed trap, sheltered surfskate high-risk case, and motorcycle pressure test must not be promoted to product display; motorcycle-control candidates remain hidden review evidence only.
 
 Task-030c-b18-B verification token: review-only overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+### Task-030c-b18-C — DEBUG-Only Estimated Route Review Panel
+
+- **Current status:** Task-030c-b18-C can show b18-B review-only overlay records in a DEBUG-only panel for developer inspection.
+- **Product limitation:** The panel is not general-user UI and is not reachable in release builds.
+- **Route limitation:** The panel does not render route polylines, path shapes, Canvas previews, map overlays, or route-like geometry of any kind.
+- **Safety boundary:** `productionRouteMutationApplied`, `trustedMetricsMutationApplied`, `estimatedRouteDisplayEnabled`, `userVisibleDisplayAllowed`, and `estimatedRouteActive` remain false.
+- **Persistence boundary:** No Core Data, SessionRepository, SessionEntityMapper, or `.skatetrack` schema persistence is added.
+
+Task-030c-b18-C verification token: DEBUG-only review panel, full `#if DEBUG` boundary, localized panel strings, no user-visible estimated route display, no route rendering, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

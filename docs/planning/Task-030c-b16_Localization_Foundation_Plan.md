@@ -675,3 +675,14 @@ The milestone converts b18-A in-memory decisions into `EstimatedRouteReviewOverl
 The b18-B regression baseline keeps the five b17-D-3 real-session roles explicit: `electricSkateboardCoreCandidate`, `walkingLowSpeedTrap`, `surfskateShelteredHighRisk`, `motorcyclePressureTest`, and `motorcycleControl`. The first four must remain blocked in deterministic tests, while the motorcycle-control candidate may remain hidden review evidence but must not become user-visible display.
 
 Task-030c-b18-B verification token: review-only estimated route overlay artifact, five real-session regression traps, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+
+## Task-030c-b18-C Implementation Note
+
+`Task-030c-b18-C` implements the DEBUG-only estimated route review panel from `Task-030c-b18-C_DEBUG_Review_Panel_Mini_Plan_EN_v1.1.md` while remaining aligned with `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2` and `Task-030c-b18_Product_Decision_Checkpoint_and_Safety_Gated_Display_Plan_EN_v1.1.md`.
+
+The milestone adds a fully `#if DEBUG`-wrapped `EstimatedRouteReviewPanel` that reads b18-B `EstimatedRouteReviewOverlay` records for developer inspection only. It does not connect to the normal Session Summary map, render route geometry, draw route polylines, draw Canvas route previews, mutate route geometry, change trusted distance/speed/elevation metrics, persist decisions to Core Data, update `SessionRepository`, update `SessionEntityMapper`, or alter the `.skatetrack` schema.
+
+The DEBUG panel follows the existing localization rule intentionally: panel text uses `Localizable.strings` keys in English, Traditional Chinese, and Japanese even though the panel is not part of general-user UI.
+
+Task-030c-b18-C verification token: DEBUG-only estimated route review panel, full `#if DEBUG` type boundary, localized panel strings, no route rendering, no user-visible estimated route display, no route geometry, no persistence, no trusted metric mutation, estimatedRouteActive remains false.
+

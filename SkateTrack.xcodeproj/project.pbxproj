@@ -106,6 +106,8 @@
 		14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000003 /* DebugRuntimeOptions.swift */; };
 		14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000004 /* DebugMockSessionFactory.swift */; };
 		14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000005 /* DebugToolsPanelView.swift */; };
+		B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */; };
+		B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */; };
 		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
 		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
 		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
@@ -616,6 +618,8 @@
 		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
 		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
+		B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanel.swift; sourceTree = "<group>"; };
+		B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewPanelTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -817,6 +821,7 @@
 				B17D030000000000000001 /* DeadReckoningReplayReviewPackTests.swift */,
 				B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */,
 				B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */,
+				B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 			);
 			path = iOSTests;
@@ -878,6 +883,7 @@
 				14D000000000000000000003 /* DebugRuntimeOptions.swift */,
 				14D000000000000000000004 /* DebugMockSessionFactory.swift */,
 				14D000000000000000000005 /* DebugToolsPanelView.swift */,
+				B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */,
 			);
 			path = iOS/Features/Debug;
 			sourceTree = SOURCE_ROOT;
@@ -1445,6 +1451,7 @@
 				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
 				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
+				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1476,6 +1483,7 @@
 				14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */,
 				14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */,
 				14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */,
+				B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */,
 				16B200000000000000000101 /* SubscriptionPaywallView.swift in Sources */,
 				16B200000000000000000102 /* SubscriberBenefitsListView.swift in Sources */,
 				16B200000000000000000103 /* RestorePurchaseButton.swift in Sources */,

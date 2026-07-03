@@ -6,7 +6,7 @@
 **Current baseline:** after `859f860 Task-030c-b17-D-3 add real session review runner`  
 **Controlling plan:** `Task-030c_Post-b15_Localization_Completion_Plan_EN_v1.2`  
 **Previous required milestone:** Task-030c-b17-D / b17-D-3 real-session replay review pack  
-**Current implementation baseline:** Task-030c-b18-B, following completed b18-A product decision gate  
+**Current implementation baseline:** Task-030c-b18-C, following completed b18-B review-only overlay artifact  
 
 ---
 
@@ -302,6 +302,8 @@ scripts/verify_task030c_b18b_review_overlay.py
 
 
 **b18-B implementation note:** Task-030c-b18-B turns the b18-A in-memory decision gate into a review-only overlay artifact contract. The artifact carries session role labels, decision states, blocking reasons, and safety flags so the five real-session regression traps can be inspected without adding route geometry, changing the normal session-summary map, or persisting display decisions. The overlay is review evidence only; it must never be promoted into general-user estimated route display in b18-B.
+
+**b18-C implementation note:** Task-030c-b18-C turns the b18-B review-only overlay artifact into a DEBUG-only review panel. The panel is fully wrapped in `#if DEBUG`, uses localized `debug.estimatedRouteReview.*` keys, and displays only textual review information. It must not render route polylines, path shapes, Canvas previews, map overlays, or route-like geometry, and it must not be reachable from release builds or general-user UI.
 
 ---
 
@@ -722,6 +724,7 @@ Proceed with b18 only under this scope:
 ```text
 Task-030c-b18-A: Product decision checkpoint record and in-memory safety gate model.
 Task-030c-b18-B: Review-only estimated route overlay artifact.
+Task-030c-b18-C: DEBUG-only estimated route review panel.
 Task-030c-b18-C: DEBUG-only inspection UI or export hook.
 Task-030c-b18-D: Real-session recheck and updated product decision note.
 ```
