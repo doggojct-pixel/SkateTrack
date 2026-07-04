@@ -87,6 +87,11 @@ struct MacSessionBrowserView: View {
             MacCurrentPackageSessionSummaryView(
                 preview: preview,
                 models: viewerModels,
+                selectedModel: selectedModel
+            )
+
+            MacPackageSessionListView(
+                models: viewerModels,
                 selectedSessionID: viewModel.selectedSessionID,
                 selectedModel: selectedModel,
                 selectSessionAction: viewModel.selectSession
@@ -246,9 +251,7 @@ private struct MacSessionBrowserStatusCard: View {
 private struct MacCurrentPackageSessionSummaryView: View {
     let preview: MacPackageImportPreview
     let models: [MacSessionViewerModel]
-    let selectedSessionID: UUID?
     let selectedModel: MacSessionViewerModel?
-    let selectSessionAction: (UUID?) -> Void
 
     private var currentModel: MacSessionViewerModel? {
         selectedModel ?? models.first
@@ -306,23 +309,6 @@ private struct MacCurrentPackageSessionSummaryView: View {
                 }
                 MacPackageSessionSummaryPill(text: "mac.viewer.readonly.badge", systemImage: "lock")
             }
-
-            if models.count > 1 {
-                Divider().opacity(0.24)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
-                        ForEach(models) { model in
-                            MacPackageSessionSelectorButton(
-                                model: model,
-                                isSelected: model.id == currentModel?.id
-                            ) {
-                                selectSessionAction(model.id)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 2)
-                }
-            }
         }
         .padding(.horizontal, 22)
         .padding(.vertical, 18)
@@ -342,36 +328,6 @@ private struct MacCurrentPackageSessionSummaryView: View {
             return String(localized: "mac.viewer.package.single_session")
         }
         return String(format: String(localized: "mac.viewer.package.session_count.format"), models.count)
-    }
-}
-
-private struct MacPackageSessionSelectorButton: View {
-    let model: MacSessionViewerModel
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 5) {
-                Text(model.title)
-                    .font(.caption.weight(.semibold))
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                HStack(spacing: 8) {
-                    Text(String(format: String(localized: "mac.package.preview.distance.format"), model.displayMetrics.distanceKilometers))
-                    Text(String(format: String(localized: "mac.package.preview.speed.format"), model.displayMetrics.maxSpeedKilometersPerHour))
-                }
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(isSelected ? .white.opacity(0.86) : .secondary)
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 9)
-            .frame(width: 190, alignment: .leading)
-            .background(isSelected ? Color.accentColor : Color.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(model.title))
-        .accessibilityHint(Text("mac.viewer.list.row.hint"))
     }
 }
 

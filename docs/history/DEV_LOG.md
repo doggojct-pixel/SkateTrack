@@ -2377,3 +2377,13 @@ Task-030e-MacViewer-004 verification token: Multi-File Open Foundation, `MacPack
 - Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
 
 Task-030e-MacViewer-005 verification token: package cards and batch summary, `MacPackageCardListView`, selected package switching, package removal, read-only multi-package UI, aligned Build Plan v1.2, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+
+### Task-030e-MacViewer-006 — Selected Package Sessions List
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Added `MacPackageSessionListView` to show the sessions inside the currently selected opened package and switch the selected session for the read-only detail view.
+- Updated `MacSessionBrowserView` so package selection from Task-030e-MacViewer-005 is followed by an explicit selected-package session list before the detail dashboard.
+- Kept session selection in `MacPackageImportViewModel` / `MacMultiPackageViewerState`; the list is a read-only UI over already opened package payloads and does not write, merge, restore, sync, or persist packages.
+- Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
+
+Task-030e-MacViewer-006 verification token: selected package sessions list, `MacPackageSessionListView`, selected session switching, read-only detail update, aligned Build Plan v1.2, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.

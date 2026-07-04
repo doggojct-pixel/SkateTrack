@@ -1029,6 +1029,17 @@
 "mac.viewer.package.current" = "Current package session";
 "mac.viewer.package.single_session" = "1 session in this package";
 "mac.viewer.package.session_count.format" = "%d sessions in this package";
+
+"mac.viewer.sessions.title" = "Sessions in selected package";
+"mac.viewer.sessions.subtitle" = "Choose a session to inspect below.";
+"mac.viewer.sessions.single_count" = "1 session";
+"mac.viewer.sessions.count.format" = "%d sessions";
+"mac.viewer.sessions.sample_count.format" = "%d motion · %d route";
+"mac.viewer.sessions.card.selected" = "Selected session";
+"mac.viewer.sessions.card.not_selected" = "Not selected";
+"mac.viewer.sessions.card.hint" = "Selects this session for the read-only detail view.";
+"mac.accessibility.session_list.label" = "Selected package session list";
+"mac.accessibility.session_list.hint" = "Shows sessions inside the currently selected package without importing or modifying data.";
 "mac.viewer.detail.title" = "Session details";
 
 "mac.viewer.chart.speed.title" = "Speed chart";

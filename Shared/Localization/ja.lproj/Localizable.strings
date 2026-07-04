@@ -1029,6 +1029,17 @@
 "mac.viewer.package.current" = "現在のパッケージセッション";
 "mac.viewer.package.single_session" = "このパッケージには1件のセッションがあります";
 "mac.viewer.package.session_count.format" = "このパッケージには%d件のセッションがあります";
+
+"mac.viewer.sessions.title" = "選択中 package の Sessions";
+"mac.viewer.sessions.subtitle" = "下に表示する Session を選択します。";
+"mac.viewer.sessions.single_count" = "1 件の Session";
+"mac.viewer.sessions.count.format" = "%d 件の Session";
+"mac.viewer.sessions.sample_count.format" = "%d motion · %d route";
+"mac.viewer.sessions.card.selected" = "選択中の Session";
+"mac.viewer.sessions.card.not_selected" = "未選択";
+"mac.viewer.sessions.card.hint" = "この Session を読み取り専用の詳細表示に切り替えます。";
+"mac.accessibility.session_list.label" = "選択中 package の Session 一覧";
+"mac.accessibility.session_list.hint" = "現在選択している package 内の Sessions を表示します。データの読み込みや変更は行いません。";
 "mac.viewer.detail.title" = "セッション詳細";
 
 "mac.viewer.chart.speed.title" = "速度チャート";

@@ -1029,6 +1029,17 @@
 "mac.viewer.package.current" = "目前開啟的 package session";
 "mac.viewer.package.single_session" = "此 package 內 1 個 Session";
 "mac.viewer.package.session_count.format" = "此 package 內 %d 個 Session";
+
+"mac.viewer.sessions.title" = "所選 package 內的 Sessions";
+"mac.viewer.sessions.subtitle" = "選擇要在下方檢視的 Session。";
+"mac.viewer.sessions.single_count" = "1 筆 Session";
+"mac.viewer.sessions.count.format" = "%d 筆 Session";
+"mac.viewer.sessions.sample_count.format" = "%d 動作 · %d 路線";
+"mac.viewer.sessions.card.selected" = "已選取的 Session";
+"mac.viewer.sessions.card.not_selected" = "尚未選取";
+"mac.viewer.sessions.card.hint" = "切換到此 Session 的只讀詳細檢視。";
+"mac.accessibility.session_list.label" = "所選 package 的 Session 清單";
+"mac.accessibility.session_list.hint" = "顯示目前選取 package 內的 Sessions，不會匯入或修改資料。";
 "mac.viewer.detail.title" = "Session 詳情";
 
 "mac.viewer.chart.speed.title" = "速度圖表";

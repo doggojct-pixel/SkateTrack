@@ -15,6 +15,7 @@ REQUIRED_FILES = [
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "macOS/Features/Import/MacPackageImportViewModel.swift",
     "macOS/Features/SessionBrowser/MacSessionBrowserView.swift",
+    "macOS/Features/SessionBrowser/MacPackageSessionListView.swift",
     "macOS/Features/SessionBrowser/MacSessionDetailView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
@@ -27,6 +28,7 @@ REQUIRED_FILES = [
 
 PROJECT_MEMBERSHIP = [
     "MacSessionBrowserView.swift",
+    "MacPackageSessionListView.swift",
     "MacSessionDetailView.swift",
     "MacSessionViewerModel.swift",
     "MacSpeedSparklineView.swift",
@@ -135,7 +137,7 @@ def ensure_session_browser() -> None:
         "openPackagePanel",
         "viewModel.openPackages(from: panel.urls)",
         "MacCurrentPackageSessionSummaryView",
-        "MacPackageSessionSelectorButton",
+        "MacPackageSessionListView",
         "MacSessionDetailView",
         "mac.viewer.open.title",
         "mac.viewer.empty.title",
@@ -147,6 +149,11 @@ def ensure_session_browser() -> None:
     ]:
         if token not in browser:
             fail(f"MacSessionBrowserView missing token: {token}")
+    session_list = read("macOS/Features/SessionBrowser/MacPackageSessionListView.swift")
+    for token in ["struct MacPackageSessionListView: View", "selectSessionAction(model.id)", "MacPackageSessionListRow"]:
+        if token not in session_list:
+            fail(f"MacPackageSessionListView missing token: {token}")
+
     if "openImportAction" in browser or "Go to Import" in browser:
         fail("MacSessionBrowserView must open packages in the browser, not route users to Import")
     if ".frame(width: 238)" in browser or "sessionList(preview:" in browser:
