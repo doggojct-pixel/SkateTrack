@@ -1209,3 +1209,20 @@
 "mac.viewer.route.visual_parity.note" = "色は iOS のルート表示意味に合わせています。緑は高信頼区間、明るいオレンジは低信頼区間、蛍光ピンクは開始時ウォームアップ区間です。表示は読み取り専用で、道路照合やルート補正は行いません。";
 "mac.accessibility.route_inspection.label" = "ルート確認";
 "mac.accessibility.route_inspection.hint" = "大きな読み取り専用ルートマップ、凡例、情報を表示します。位置情報要求、道路照合、ルート編集、指標変更は行いません。";
+
+/* Task-030e-MacViewer-009 Duplicate and Attention States */
+"mac.viewer.attention.title" = "確認が必要";
+"mac.viewer.attention.message.format" = "%d 件の開いたパッケージに重複または注意警告があります。";
+"mac.viewer.attention.readonly" = "安全な範囲で読み取り専用の閲覧は続行できます。SkateTrack は結合、削除、勝者選択、ローカル履歴への読み込み、パッケージ変更を行いません。";
+"mac.viewer.attention.summary.duplicate_file.format" = "%d 件のパッケージカードに完全一致のファイルパス重複警告があります。";
+"mac.viewer.attention.summary.duplicate_package.format" = "%d 件のパッケージカードに重複 package identifier 警告があります。";
+"mac.viewer.attention.summary.duplicate_session.format" = "%d 件のパッケージカードに重複 session identifier 警告があります。";
+"mac.viewer.attention.card.badge" = "注意";
+"mac.viewer.attention.duplicate_file.title" = "重複ファイルパス";
+"mac.viewer.attention.duplicate_file.detail" = "まったく同じファイルパスが複数回選択されました。混乱を避けるため、読み取り専用カードは1つだけ保持されます。";
+"mac.viewer.attention.duplicate_package.title" = "重複 package identifier";
+"mac.viewer.attention.duplicate_package.detail" = "別の開いたパッケージが同じ package identifier を報告しています。読み取り専用で確認してください。SkateTrack は結合や勝者選択を行いません。";
+"mac.viewer.attention.duplicate_session.title" = "重複 session identifier";
+"mac.viewer.attention.duplicate_session.detail" = "別の開いたパッケージに同じ session identifier が含まれています。読み取り専用で確認してください。SkateTrack はセッションを結合または上書きしません。";
+"mac.accessibility.attention_summary.label" = "パッケージ注意サマリー";
+"mac.accessibility.attention_summary.hint" = "現在の読み取り専用ブラウザーセッションにある重複ファイル、パッケージ、セッションの警告を表示します。";

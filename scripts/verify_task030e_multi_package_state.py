@@ -94,7 +94,7 @@ def ensure_view_model_boundary() -> None:
         "var selectedSessionID: UUID?",
         "var selectedViewerModels: [MacSessionViewerModel]",
         "var selectedViewerModel: MacSessionViewerModel?",
-        "nextState.replace(with: result.previews)",
+        "nextState.mergeOpenedPreviews(result.previews)",
         "appendPackagePreviewForFutureBatch",
         "func selectPackage(id: UUID?)",
         "func selectSession(id: UUID?)",

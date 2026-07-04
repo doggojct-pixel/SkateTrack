@@ -2422,3 +2422,14 @@ Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `Ma
 - No route geometry mutation, no trusted metrics mutation, no route correction, no road matching, no snap-to-road, no location permission, no user-location display, no package schema change, and no Core Data write were introduced.
 
 Task-030e-MacViewer-008-1 verification token: Elevation Profile + Total Ascent Display Alignment, `MacElevationDisplayPipeline`, `MacElevationProfileView`, `summary.metric.elevationGain`, existing package motion samples only, display-only elevation profile, no trusted metrics mutation, no package schema change, no Core Data write, Task-031-prep shared activity visualization deferred.
+
+## 2026-07-04 — Task-030e-MacViewer-009 Duplicate and Attention States
+
+- Aligned the macOS multi-package viewer with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` duplicate / attention scope.
+- Added `MacPackageAttentionState` to classify exact duplicate file paths and duplicate session identifiers in the current read-only viewer session while leaving a package-identifier hook disabled until package metadata exposes a real stable package ID.
+- Added `MacPackageAttentionSummaryView` so duplicate / attention warnings are visible as warnings, not destructive blockers, and read-only browsing remains available where safe.
+- Updated package cards to surface attention badges and warning titles without adding merge, delete, winner selection, local-history import, persistence, or package mutation behavior.
+- Added `scripts/verify_task030e_duplicate_attention.py` for 009 source checks, project membership, localization, docs, line/header rules, and no-mutation safety boundaries.
+- No package merge, duplicate deletion, winner selection, local history import, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, road matching, snap-to-road, route reconstruction, location permission, or user-location display was introduced.
+
+Task-030e-MacViewer-009 verification token: Duplicate and Attention States, `MacPackageAttentionState`, `MacPackageAttentionSummaryView`, exact duplicate file path warnings, duplicate session identifier warnings, read-only browsing remains available where safe, no merge, no delete, no winner selection, no local history import, no package schema change, no Core Data write, aligned Build Plan v1.2.

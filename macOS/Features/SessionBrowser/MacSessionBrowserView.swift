@@ -48,6 +48,8 @@ struct MacSessionBrowserView: View {
                     )
                 }
 
+                MacPackageAttentionSummaryView(summary: viewModel.attentionSummary)
+
                 MacPackageCardListView(
                     packages: viewModel.openedPackages,
                     selectedPackageID: viewModel.selectedPackageID,

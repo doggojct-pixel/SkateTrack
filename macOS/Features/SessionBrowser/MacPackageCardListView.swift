@@ -131,6 +131,9 @@ private struct MacPackageSelectionCard: View {
                 .padding(.trailing, 24)
             Divider().opacity(0.18)
             metricsSection
+            if package.hasAttentionWarnings {
+                attentionSection
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -170,6 +173,24 @@ private struct MacPackageSelectionCard: View {
         }
     }
 
+    private var attentionSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("mac.viewer.attention.card.badge", systemImage: "exclamationmark.triangle.fill")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(.orange)
+
+            ForEach(package.attentionWarnings.prefix(2)) { warning in
+                Text(LocalizedStringKey(warning.titleKey))
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
     private var cardBackground: some View {
         RoundedRectangle(cornerRadius: 18, style: .continuous)
             .fill(cardFill)
@@ -181,19 +202,27 @@ private struct MacPackageSelectionCard: View {
     }
 
     private var cardFill: Color {
-        isSelected ? Color.cyan.opacity(0.16) : Color.white.opacity(0.055)
+        if package.hasAttentionWarnings {
+            return isSelected ? Color.orange.opacity(0.18) : Color.orange.opacity(0.10)
+        }
+        return isSelected ? Color.cyan.opacity(0.16) : Color.white.opacity(0.055)
     }
 
     private var cardStroke: Color {
-        isSelected ? Color.cyan.opacity(0.56) : Color.white.opacity(0.08)
+        if package.hasAttentionWarnings {
+            return Color.orange.opacity(isSelected ? 0.62 : 0.28)
+        }
+        return isSelected ? Color.cyan.opacity(0.56) : Color.white.opacity(0.08)
     }
 
     private var positionForegroundStyle: Color {
-        isSelected ? .cyan : .secondary
+        if package.hasAttentionWarnings { return .orange }
+        return isSelected ? .cyan : .secondary
     }
 
     private var metricIconColor: Color {
-        isSelected ? .cyan : .secondary
+        if package.hasAttentionWarnings { return .orange }
+        return isSelected ? .cyan : .secondary
     }
 
     private var positionText: String {

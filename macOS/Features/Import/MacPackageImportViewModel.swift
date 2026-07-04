@@ -5,9 +5,10 @@
 import Foundation
 
 struct MacPackageImportPreview: Identifiable, Equatable {
-    let id = UUID()
+    let id: UUID
     let fileURL: URL
     let payload: SkateTrackPackagePayload
+    let attentionWarnings: [MacPackageAttentionWarning]
 
     var manifest: SkateTrackPackageManifest {
         payload.manifest
@@ -53,6 +54,18 @@ struct MacPackageImportPreview: Identifiable, Equatable {
     var privacyNotes: [String] {
         primaryPackageSession?.privacyNotes ?? []
     }
+
+    init(
+        id: UUID = UUID(),
+        fileURL: URL,
+        payload: SkateTrackPackagePayload,
+        attentionWarnings: [MacPackageAttentionWarning] = []
+    ) {
+        self.id = id
+        self.fileURL = fileURL
+        self.payload = payload
+        self.attentionWarnings = attentionWarnings
+    }
 }
 
 @MainActor
@@ -79,6 +92,10 @@ final class MacPackageImportViewModel: ObservableObject {
 
     var batchSummary: MacPackageOpenBatchSummary {
         viewerState.batchSummary
+    }
+
+    var attentionSummary: MacPackageAttentionSummary {
+        viewerState.attentionSummary
     }
 
     var selectedPackageID: UUID? {
@@ -124,11 +141,13 @@ final class MacPackageImportViewModel: ObservableObject {
 
         if result.hasAnySuccess {
             var nextState = viewerState
-            nextState.replace(with: result.previews)
+            nextState.mergeOpenedPreviews(result.previews)
             viewerState = nextState
             errorMessageKey = nil
-        } else {
+        } else if viewerState.packages.isEmpty {
             clearPackagesForReadFailure(errorMessageKey: result.primaryErrorMessageKey ?? "mac.import.error.generic")
+        } else {
+            errorMessageKey = result.primaryErrorMessageKey ?? "mac.import.error.generic"
         }
     }
 

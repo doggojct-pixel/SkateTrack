@@ -1754,3 +1754,27 @@ scripts/verify_task030e_elevation_profile.py                          # [工程�
 - Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
 - Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
 - Task-030e-MacViewer-008-1 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+## Task-030e-MacViewer-009 Duplicate and Attention States Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageAttentionState.swift        # [協作區] Classifies read-only duplicate / attention warnings for exact duplicate file paths and duplicate session identifiers; keeps package identifier hook nil until package metadata adds a stable ID.
+macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Displays localized duplicate / attention warning summary without merge/delete/winner-selection actions.
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Shows attention badges and warning titles on package cards while preserving read-only package switching/removal.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageAttentionSummaryView` after open-result status and before package cards.
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift      # [協作區] Reclassifies attention states when packages are replaced, appended, or removed while keeping selection in memory only.
+macOS/Features/Import/MacPackageImportViewModel.swift               # [協作區] Carries display-only `attentionWarnings` on package previews and exposes `attentionSummary` to the browser.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Adds duplicate / attention state copy in all supported languages.
+SkateTrack.xcodeproj/project.pbxproj                                # [工程設定] Adds 009 attention files to the macOS Sources build phase.
+scripts/verify_task030e_duplicate_attention.py                      # [工程設定] Task-030e-MacViewer-009 verifier for duplicate / attention state scope, localization, docs, project membership, and no-mutation safety boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-009
+
+- Broader localization / accessibility pass remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
+- Task-030e-MacViewer-009 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.

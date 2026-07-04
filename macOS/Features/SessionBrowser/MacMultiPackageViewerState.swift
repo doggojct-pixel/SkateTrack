@@ -33,7 +33,7 @@ struct MacMultiPackageViewerState: Equatable {
         packages: [MacPackageImportPreview] = [],
         selection: MacMultiPackageViewerSelection = .empty
     ) {
-        self.packages = packages
+        self.packages = MacPackageAttentionClassifier.classifiedPreviews(from: packages)
         self.selection = selection
         ensureValidSelection()
     }
@@ -68,25 +68,43 @@ struct MacMultiPackageViewerState: Equatable {
         )
     }
 
+    var attentionSummary: MacPackageAttentionSummary {
+        MacPackageAttentionSummary.make(from: packages)
+    }
+
     mutating func replace(with preview: MacPackageImportPreview) {
         replace(with: [preview])
     }
 
     mutating func replace(with previews: [MacPackageImportPreview]) {
-        packages = uniquePreviews(from: previews)
+        packages = MacPackageAttentionClassifier.classifiedPreviews(from: previews)
         selection = .empty
         ensureValidSelection()
     }
 
-    mutating func appendOrReplacePackage(_ preview: MacPackageImportPreview) {
-        if let existingIndex = packages.firstIndex(where: { $0.fileURL.path == preview.fileURL.path }) {
-            packages[existingIndex] = preview
-        } else {
-            packages.append(preview)
+    mutating func mergeOpenedPreviews(_ previews: [MacPackageImportPreview]) {
+        guard !previews.isEmpty else {
+            ensureValidSelection()
+            return
         }
-        selection.selectedPackageID = preview.id
-        selection.selectedSessionID = preview.primaryPackageSession?.id ?? preview.payload.sessions.first?.id
+
+        let currentSelection = selection
+        let firstOpenedPath = normalizedPath(for: previews[0].fileURL)
+        let combinedPreviews = packages + previews
+        packages = MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)
+
+        if let selectedPackage = packages.first(where: { normalizedPath(for: $0.fileURL) == firstOpenedPath }) {
+            selection.selectedPackageID = selectedPackage.id
+            selection.selectedSessionID = selectedPackage.primaryPackageSession?.id ?? selectedPackage.payload.sessions.first?.id
+        } else {
+            selection = currentSelection
+        }
+
         ensureValidSelection()
+    }
+
+    mutating func appendOrReplacePackage(_ preview: MacPackageImportPreview) {
+        mergeOpenedPreviews([preview])
     }
 
     mutating func selectPackage(id: UUID?) {
@@ -102,6 +120,7 @@ struct MacMultiPackageViewerState: Equatable {
 
     mutating func removePackage(id: UUID) {
         packages.removeAll { $0.id == id }
+        packages = MacPackageAttentionClassifier.classifiedPreviews(from: packages)
         if selection.selectedPackageID == id {
             selection.selectedPackageID = nil
             selection.selectedSessionID = nil
@@ -112,18 +131,6 @@ struct MacMultiPackageViewerState: Equatable {
     mutating func clear() {
         packages.removeAll()
         selection = .empty
-    }
-
-    private func uniquePreviews(from previews: [MacPackageImportPreview]) -> [MacPackageImportPreview] {
-        var seenPaths: Set<String> = []
-        var unique: [MacPackageImportPreview] = []
-        for preview in previews {
-            let path = preview.fileURL.standardizedFileURL.path
-            guard !seenPaths.contains(path) else { continue }
-            seenPaths.insert(path)
-            unique.append(preview)
-        }
-        return unique
     }
 
     mutating func ensureValidSelection() {
@@ -150,5 +157,9 @@ struct MacMultiPackageViewerState: Equatable {
         }
 
         selection.selectedSessionID = selectedPackage.payload.sessions.first?.id
+    }
+
+    private func normalizedPath(for url: URL) -> String {
+        url.standardizedFileURL.path
     }
 }

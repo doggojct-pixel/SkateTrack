@@ -312,6 +312,8 @@
 		30EB00000000000000000101 /* MacRouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EB00000000000000000001 /* MacRouteDisplayPipeline.swift */; };
 		30EC00000000000000000101 /* MacRouteInspectionWindowPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EC00000000000000000001 /* MacRouteInspectionWindowPresenter.swift */; };
 		30ED00000000000000000101 /* MacElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ED00000000000000000001 /* MacElevationDisplayPipeline.swift */; };
+		30EE00000000000000000101 /* MacPackageAttentionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EE00000000000000000001 /* MacPackageAttentionState.swift */; };
+		30EF00000000000000000101 /* MacPackageAttentionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EF00000000000000000001 /* MacPackageAttentionSummaryView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -621,6 +623,8 @@
 		30EB00000000000000000001 /* MacRouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteDisplayPipeline.swift; sourceTree = "<group>"; };
 		30EC00000000000000000001 /* MacRouteInspectionWindowPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteInspectionWindowPresenter.swift; sourceTree = "<group>"; };
 		30ED00000000000000000001 /* MacElevationDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacElevationDisplayPipeline.swift; sourceTree = "<group>"; };
+		30EE00000000000000000001 /* MacPackageAttentionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageAttentionState.swift; sourceTree = "<group>"; };
+		30EF00000000000000000001 /* MacPackageAttentionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageAttentionSummaryView.swift; sourceTree = "<group>"; };
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
 		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -1231,6 +1235,8 @@
 				30E300000000000000000001 /* MacMultiPackageViewerState.swift */,
 				30E400000000000000000001 /* MacPackageOpenCoordinator.swift */,
 				30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */,
+				30EE00000000000000000001 /* MacPackageAttentionState.swift */,
+				30EF00000000000000000001 /* MacPackageAttentionSummaryView.swift */,
 				30E600000000000000000001 /* MacPackageCardListView.swift */,
 				30E700000000000000000001 /* MacPackageSessionListView.swift */,
 				28A100000000000000000002 /* MacSessionDetailView.swift */,
@@ -1805,6 +1811,8 @@
 				30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */,
 				30E400000000000000000101 /* MacPackageOpenCoordinator.swift in Sources */,
 				30E500000000000000000101 /* MacPackageOpenResultStatusView.swift in Sources */,
+				30EE00000000000000000101 /* MacPackageAttentionState.swift in Sources */,
+				30EF00000000000000000101 /* MacPackageAttentionSummaryView.swift in Sources */,
 				30E600000000000000000101 /* MacPackageCardListView.swift in Sources */,
 				30E700000000000000000101 /* MacPackageSessionListView.swift in Sources */,
 				28A100000000000000000102 /* MacSessionDetailView.swift in Sources */,

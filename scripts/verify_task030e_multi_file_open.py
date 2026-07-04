@@ -113,7 +113,7 @@ def ensure_view_model_batch_boundary() -> None:
         "let result = openCoordinator.openPackages(from: urls)",
         "lastOpenResult = result",
         "if result.hasAnySuccess",
-        "nextState.replace(with: result.previews)",
+        "nextState.mergeOpenedPreviews(result.previews)",
         "clearPackagesForReadFailure(errorMessageKey: result.primaryErrorMessageKey ?? \"mac.import.error.generic\")",
     ]:
         if token not in view_model:
@@ -149,13 +149,21 @@ def ensure_state_supports_batch_replace() -> None:
     state = read("macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift")
     for token in [
         "mutating func replace(with previews: [MacPackageImportPreview])",
-        "packages = uniquePreviews(from: previews)",
-        "private func uniquePreviews(from previews: [MacPackageImportPreview])",
-        "preview.fileURL.standardizedFileURL.path",
+        "mutating func mergeOpenedPreviews(_ previews: [MacPackageImportPreview])",
+        "let combinedPreviews = packages + previews",
         "ensureValidSelection()",
     ]:
         if token not in state:
-            fail(f"MacMultiPackageViewerState missing batch replace token: {token}")
+            fail(f"MacMultiPackageViewerState missing batch/merge token: {token}")
+    legacy_unique_batch = "packages = uniquePreviews(from: previews)" in state
+    attention_classified_batch = "packages = MacPackageAttentionClassifier.classifiedPreviews(from: previews)" in state
+    attention_classified_merge = "packages = MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)" in state
+    if not (legacy_unique_batch or attention_classified_batch):
+        fail("MacMultiPackageViewerState must either de-duplicate paths directly or classify duplicate/attention states")
+    if "MacPackageAttentionClassifier.classifiedPreviews(from: packages)" not in state:
+        fail("MacMultiPackageViewerState must reclassify duplicate/attention states after append/remove changes")
+    if "MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)" not in state:
+        fail("MacMultiPackageViewerState must classify duplicate/attention states when merging reopened packages")
 
 
 def ensure_result_status_view() -> None:

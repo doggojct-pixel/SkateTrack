@@ -1209,3 +1209,20 @@
 "mac.viewer.route.visual_parity.note" = "Colors follow the iOS route semantics: green marks high-confidence route segments, bright orange marks low-confidence segments, and fluorescent pink marks startup warm-up segments. This remains read-only and does not imply road matching or route correction.";
 "mac.accessibility.route_inspection.label" = "Route inspection";
 "mac.accessibility.route_inspection.hint" = "Shows a larger read-only route map with visual legend and metadata. It does not request location, match roads, edit routes, or mutate metrics.";
+
+/* Task-030e-MacViewer-009 Duplicate and Attention States */
+"mac.viewer.attention.title" = "Needs attention";
+"mac.viewer.attention.message.format" = "%d opened package(s) have duplicate or attention warnings.";
+"mac.viewer.attention.readonly" = "Read-only browsing remains available where safe. SkateTrack will not merge, delete, pick a winner, import to local history, or modify packages.";
+"mac.viewer.attention.summary.duplicate_file.format" = "%d package card(s) include an exact duplicate file path warning.";
+"mac.viewer.attention.summary.duplicate_package.format" = "%d package card(s) include a duplicate package identifier warning.";
+"mac.viewer.attention.summary.duplicate_session.format" = "%d package card(s) include duplicate session identifier warnings.";
+"mac.viewer.attention.card.badge" = "Attention";
+"mac.viewer.attention.duplicate_file.title" = "Duplicate file path";
+"mac.viewer.attention.duplicate_file.detail" = "This exact file path was selected more than once. One read-only card is kept so the browser does not show confusing full duplicates.";
+"mac.viewer.attention.duplicate_package.title" = "Duplicate package identifier";
+"mac.viewer.attention.duplicate_package.detail" = "Another opened package reports the same package identifier. Review it read-only; SkateTrack will not merge or choose a winner.";
+"mac.viewer.attention.duplicate_session.title" = "Duplicate session identifier";
+"mac.viewer.attention.duplicate_session.detail" = "Another opened package contains the same session identifier. Review it read-only; SkateTrack will not merge or overwrite sessions.";
+"mac.accessibility.attention_summary.label" = "Package attention summary";
+"mac.accessibility.attention_summary.hint" = "Shows duplicate file, package, or session warnings for the current read-only browser session.";
