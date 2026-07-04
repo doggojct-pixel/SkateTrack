@@ -1014,6 +1014,18 @@
 "mac.viewer.route.map_deferred" = "MapKit 地圖渲染、道路貼合、熱力圖與路線編輯延後到後續任務。";
 "mac.viewer.privacy.readonly" = "此 viewer 只讀取所選 package，不會匯入、合併、還原、同步或上傳資料。";
 
+"mac.viewer.packages.title" = "已開啟的 packages";
+"mac.viewer.packages.summary.format" = "%d 個 package · %d 筆 session · %d 個含路線";
+"mac.viewer.packages.card.position.format" = "Package %d";
+"mac.viewer.packages.card.session_count.format" = "%d 筆 Session";
+"mac.viewer.packages.card.route_count.format" = "%d 筆路線樣本";
+"mac.viewer.packages.card.motion_count.format" = "%d 筆動作樣本";
+"mac.viewer.packages.card.remove" = "移除此 package";
+"mac.viewer.packages.card.selected" = "已選取的 package";
+"mac.viewer.packages.card.not_selected" = "尚未選取";
+"mac.viewer.packages.card.hint" = "切換到這個已開啟的 package，進行只讀 Session 檢視。";
+"mac.accessibility.package_cards.label" = "已開啟 package 卡片";
+"mac.accessibility.package_cards.hint" = "在已開啟的 .skatetrack packages 之間切換，不會匯入或修改資料。";
 "mac.viewer.package.current" = "目前開啟的 package session";
 "mac.viewer.package.single_session" = "此 package 內 1 個 Session";
 "mac.viewer.package.session_count.format" = "此 package 內 %d 個 Session";

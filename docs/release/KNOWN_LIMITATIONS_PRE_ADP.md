@@ -616,3 +616,12 @@ Task-030e-MacViewer-003 limitation token: in-memory package collection state, se
 - **Do not claim:** Do not claim Finder document handling, persistent library import, package merge, restore, automatic sync, route correction, map matching, or route geometry mutation.
 
 Task-030e-MacViewer-004 limitation token: multi-file open foundation, `MacPackageOpenCoordinator`, partial success, read-only, no custom UTType, no document association, package cards deferred, MapKit deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-005 — Package Cards and Batch Summary Limitation
+
+- **Current status:** macOS Session Browser now shows opened package cards and a batch summary so users can switch between packages opened in Task-030e-MacViewer-004.
+- **Implemented boundary:** Package cards select an in-memory package preview and can remove a package from the current viewer state. This is a read-only browsing affordance, not a database import or persistent library.
+- **Still deferred:** selected package session list refinement, persistent recent files/bookmarks, drag-and-drop, Finder open-with, custom UTType/document association, MapKit route context, iOS route visual parity, expanded route inspection, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim persistent package library management, Finder document handling, automatic package merge, restore, route correction, map matching, route geometry mutation, or trusted metrics mutation.
+
+Task-030e-MacViewer-005 limitation token: package cards and batch summary, `MacPackageCardListView`, package switching, package removal, read-only in-memory UI, selected package session list deferred, MapKit deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.

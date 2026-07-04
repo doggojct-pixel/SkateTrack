@@ -1014,6 +1014,18 @@
 "mac.viewer.route.map_deferred" = "MapKit rendering, road matching, heat maps, and route editing remain deferred to a later task.";
 "mac.viewer.privacy.readonly" = "This viewer reads the selected package only. It does not import, merge, restore, sync, or upload data.";
 
+"mac.viewer.packages.title" = "Opened packages";
+"mac.viewer.packages.summary.format" = "%d packages · %d sessions · %d with routes";
+"mac.viewer.packages.card.position.format" = "Package %d";
+"mac.viewer.packages.card.session_count.format" = "%d sessions";
+"mac.viewer.packages.card.route_count.format" = "%d route samples";
+"mac.viewer.packages.card.motion_count.format" = "%d motion samples";
+"mac.viewer.packages.card.remove" = "Remove package";
+"mac.viewer.packages.card.selected" = "Selected package";
+"mac.viewer.packages.card.not_selected" = "Not selected";
+"mac.viewer.packages.card.hint" = "Selects this opened package for read-only session review.";
+"mac.accessibility.package_cards.label" = "Opened package cards";
+"mac.accessibility.package_cards.hint" = "Switches between opened .skatetrack packages without importing or modifying data.";
 "mac.viewer.package.current" = "Current package session";
 "mac.viewer.package.single_session" = "1 session in this package";
 "mac.viewer.package.session_count.format" = "%d sessions in this package";

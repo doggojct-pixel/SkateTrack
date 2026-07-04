@@ -300,6 +300,7 @@
 		30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E300000000000000000001 /* MacMultiPackageViewerState.swift */; };
 		30E400000000000000000101 /* MacPackageOpenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E400000000000000000001 /* MacPackageOpenCoordinator.swift */; };
 		30E500000000000000000101 /* MacPackageOpenResultStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */; };
+		30E600000000000000000101 /* MacPackageCardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E600000000000000000001 /* MacPackageCardListView.swift */; };
 		28A100000000000000000102 /* MacSessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000002 /* MacSessionDetailView.swift */; };
 		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
 		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
@@ -601,6 +602,7 @@
 		30E300000000000000000001 /* MacMultiPackageViewerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMultiPackageViewerState.swift; sourceTree = "<group>"; };
 		30E400000000000000000001 /* MacPackageOpenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageOpenCoordinator.swift; sourceTree = "<group>"; };
 		30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageOpenResultStatusView.swift; sourceTree = "<group>"; };
+		30E600000000000000000001 /* MacPackageCardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageCardListView.swift; sourceTree = "<group>"; };
 		28A100000000000000000002 /* MacSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionDetailView.swift; sourceTree = "<group>"; };
 		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
 		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
@@ -1215,6 +1217,7 @@
 				30E300000000000000000001 /* MacMultiPackageViewerState.swift */,
 				30E400000000000000000001 /* MacPackageOpenCoordinator.swift */,
 				30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */,
+				30E600000000000000000001 /* MacPackageCardListView.swift */,
 				28A100000000000000000002 /* MacSessionDetailView.swift */,
 				28A100000000000000000003 /* MacSessionViewerModel.swift */,
 				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
@@ -1781,6 +1784,7 @@
 				30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */,
 				30E400000000000000000101 /* MacPackageOpenCoordinator.swift in Sources */,
 				30E500000000000000000101 /* MacPackageOpenResultStatusView.swift in Sources */,
+				30E600000000000000000101 /* MacPackageCardListView.swift in Sources */,
 				28A100000000000000000102 /* MacSessionDetailView.swift in Sources */,
 				28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */,
 				28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */,

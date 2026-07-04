@@ -48,6 +48,14 @@ struct MacSessionBrowserView: View {
                     )
                 }
 
+                MacPackageCardListView(
+                    packages: viewModel.openedPackages,
+                    selectedPackageID: viewModel.selectedPackageID,
+                    batchSummary: viewModel.batchSummary,
+                    selectPackageAction: { viewModel.selectPackage(id: $0) },
+                    removePackageAction: viewModel.removePackage
+                )
+
                 if let preview {
                     viewerContent(preview: preview)
                 } else {

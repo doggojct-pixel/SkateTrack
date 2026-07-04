@@ -2367,3 +2367,13 @@ Task-030e-MacViewer-003 verification token: in-memory multi-package viewer state
 - Preserved strict read-only behavior: no custom UTType, no document association, no Core Data write, no persistent recent files/bookmarks, no merge/restore/sync, no MapKit stage yet, and no route correction.
 
 Task-030e-MacViewer-004 verification token: Multi-File Open Foundation, `MacPackageOpenCoordinator`, `MacPackageOpenResultStatusView`, `allowsMultipleSelection = true`, independent package validation, partial success, read-only, no custom UTType, no document association, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+
+### Task-030e-MacViewer-005 — Package Cards and Batch Summary
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Added `MacPackageCardListView` to surface opened package cards, read-only batch summary, selected package state, package switching, and package removal from the macOS Session Browser.
+- Updated `MacSessionBrowserView` to show package cards after multi-file open results and before the currently selected package session summary, resolving the Task-030e-004 limitation where multiple packages could be opened but not selected from the UI.
+- Preserved Task-030e-MacViewer-004 multi-file open behavior and Task-030e-MacViewer-003 in-memory state without adding persistent recent files, bookmarks, drag-and-drop, Finder document association, or custom UTType declarations.
+- Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
+
+Task-030e-MacViewer-005 verification token: package cards and batch summary, `MacPackageCardListView`, selected package switching, package removal, read-only multi-package UI, aligned Build Plan v1.2, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.

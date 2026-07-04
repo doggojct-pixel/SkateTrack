@@ -1014,6 +1014,18 @@
 "mac.viewer.route.map_deferred" = "MapKit 表示、道路マッチング、ヒートマップ、ルート編集は後続タスクまで延期されています。";
 "mac.viewer.privacy.readonly" = "このビューアーは選択したパッケージを読み取るだけです。読み込み、マージ、復元、同期、アップロードは行いません。";
 
+"mac.viewer.packages.title" = "開いている packages";
+"mac.viewer.packages.summary.format" = "%d packages・%d sessions・ルートあり %d";
+"mac.viewer.packages.card.position.format" = "Package %d";
+"mac.viewer.packages.card.session_count.format" = "%d 件のセッション";
+"mac.viewer.packages.card.route_count.format" = "%d 件のルートサンプル";
+"mac.viewer.packages.card.motion_count.format" = "%d 件のモーションサンプル";
+"mac.viewer.packages.card.remove" = "この package を削除";
+"mac.viewer.packages.card.selected" = "選択中の package";
+"mac.viewer.packages.card.not_selected" = "未選択";
+"mac.viewer.packages.card.hint" = "この開いている package を選択し、読み取り専用でセッションを確認します。";
+"mac.accessibility.package_cards.label" = "開いている package カード";
+"mac.accessibility.package_cards.hint" = "開いている .skatetrack packages を切り替えます。データは読み込み・変更しません。";
 "mac.viewer.package.current" = "現在のパッケージセッション";
 "mac.viewer.package.single_session" = "このパッケージには1件のセッションがあります";
 "mac.viewer.package.session_count.format" = "このパッケージには%d件のセッションがあります";

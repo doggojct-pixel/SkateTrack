@@ -1657,3 +1657,18 @@ scripts/verify_task030e_multi_file_open.py                          # [工程設
 ```
 
 Task-030e-MacViewer-004 does not add Finder document association, custom UTType, persistent recent-file storage, package cards UI, MapKit route context, route inspection window, Core Data writes, merge/restore/sync, route geometry mutation, or trusted metrics mutation.
+
+## Task-030e-MacViewer-005 Package Cards and Batch Summary Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Read-only package cards, batch summary, selected package switching, and package removal for opened .skatetrack packages.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageCardListView` between open-result status and the selected package session summary.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Adds package-card and batch-summary copy in all supported languages.
+scripts/verify_task030e_package_cards.py                            # [工程設定] Task-030e-MacViewer-005 verifier aligned with Build Plan v1.2.
+
+### Deferred After Task-030e-MacViewer-005
+
+- Selected package session list refinement remains deferred to Task-030e-MacViewer-006.
+- MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
+- Task-030e-MacViewer-005 is read-only UI over already opened in-memory packages and must not mutate `.skatetrack` package payloads, route geometry, trusted metrics, Core Data, or schema.
