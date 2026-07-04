@@ -8,8 +8,6 @@ struct MacRoutePreviewView: View {
     let points: [MacRoutePoint]
     let summary: MacRouteSummary
 
-    @State private var isRouteInspectorPresented = false
-
     private var canDrawRoute: Bool {
         points.count >= 2 && summary.quality != .unavailable
     }
@@ -25,9 +23,6 @@ struct MacRoutePreviewView: View {
         .padding(16)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(.white.opacity(0.08), lineWidth: 1))
-        .sheet(isPresented: $isRouteInspectorPresented) {
-            MacRouteInspectionView(points: points, summary: summary)
-        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("mac.accessibility.route_preview.label"))
         .accessibilityValue(Text(routeAccessibilityValue))
@@ -41,7 +36,7 @@ struct MacRoutePreviewView: View {
             Spacer(minLength: 12)
             if canDrawRoute {
                 Button {
-                    isRouteInspectorPresented = true
+                    openRouteInspectorWindow()
                 } label: {
                     Label("mac.viewer.route.inspect.open", systemImage: "arrow.up.left.and.arrow.down.right")
                         .labelStyle(.titleAndIcon)
@@ -96,7 +91,7 @@ struct MacRoutePreviewView: View {
 
     private var expandedInspectionButton: some View {
         Button {
-            isRouteInspectorPresented = true
+            openRouteInspectorWindow()
         } label: {
             Label("mac.viewer.route.inspect.open", systemImage: "arrow.up.left.and.arrow.down.right")
                 .font(.caption.weight(.semibold))
@@ -139,6 +134,11 @@ struct MacRoutePreviewView: View {
         Label("mac.viewer.route.preview.not_mapmatched", systemImage: "exclamationmark.triangle")
             .font(.caption)
             .foregroundStyle(.secondary)
+    }
+
+
+    private func openRouteInspectorWindow() {
+        MacRouteInspectionWindowPresenter.shared.open(points: points, summary: summary)
     }
 
     private var routeAccessibilityValue: String {

@@ -1,14 +1,19 @@
 // [協作區] macOS/Features/SessionBrowser/MacRouteInspectionView.swift
-// 用途：提供 Task-030e-007B macOS read-only expanded route inspection sheet 與 iOS route visual parity legend。
-// 委派至：MacRoutePreviewView / MacRouteMapContextView；只檢視既有 route samples，不做路線修正、定位請求或資料寫入。
+// 用途：提供 Task-030e-008 macOS read-only expanded route inspection content 與 iOS route visual parity legend。
+// 委派至：MacRouteInspectionWindowPresenter / MacRouteMapContextView；只檢視既有 route samples，不做路線修正、定位請求或資料寫入。
 
 import SwiftUI
 
 struct MacRouteInspectionView: View {
     let points: [MacRoutePoint]
     let summary: MacRouteSummary
+    private let closeAction: () -> Void
 
-    @Environment(\.dismiss) private var dismiss
+    init(points: [MacRoutePoint], summary: MacRouteSummary, closeAction: @escaping () -> Void = {}) {
+        self.points = points
+        self.summary = summary
+        self.closeAction = closeAction
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -16,7 +21,7 @@ struct MacRouteInspectionView: View {
             Divider().opacity(0.2)
             content
         }
-        .frame(minWidth: 860, minHeight: 680)
+        .frame(minWidth: 860, idealWidth: 1120, minHeight: 680, idealHeight: 780)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("mac.accessibility.route_inspection.label"))
         .accessibilityHint(Text("mac.accessibility.route_inspection.hint"))
@@ -30,10 +35,13 @@ struct MacRouteInspectionView: View {
                 Text("mac.viewer.route.inspect.subtitle")
                     .font(.callout)
                     .foregroundStyle(.secondary)
+                Text("mac.viewer.route.inspect.resizable_note")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
             Spacer(minLength: 16)
             Button("mac.viewer.route.inspect.close") {
-                dismiss()
+                closeAction()
             }
             .keyboardShortcut(.cancelAction)
         }
@@ -41,21 +49,24 @@ struct MacRouteInspectionView: View {
     }
 
     private var content: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                mapPanel
-                MacRouteVisualLegendView(isCompact: false)
-                metadataPanel
-                readOnlyPanel
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    mapPanel(height: mapHeight(for: proxy.size.height))
+                    MacRouteVisualLegendView(isCompact: false)
+                    metadataPanel
+                    readOnlyPanel
+                }
+                .padding(22)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
-            .padding(22)
         }
     }
 
-    private var mapPanel: some View {
+    private func mapPanel(height: CGFloat) -> some View {
         ZStack(alignment: .topLeading) {
             MacRouteMapContextView(points: points, summary: summary)
-                .frame(minHeight: 430)
+                .frame(minHeight: height)
                 .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .overlay(mapBorder)
             VStack(alignment: .leading, spacing: 8) {
@@ -109,6 +120,10 @@ struct MacRouteInspectionView: View {
 
     private var metadataColumns: [GridItem] {
         [GridItem(.adaptive(minimum: 148), spacing: 12)]
+    }
+
+    private func mapHeight(for availableHeight: CGFloat) -> CGFloat {
+        max(430, availableHeight - 270)
     }
 
     private func formattedDistance(_ distance: Double) -> String {

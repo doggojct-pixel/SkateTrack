@@ -30,6 +30,7 @@ def reject(name: str, text: str, tokens: list[str]) -> None:
 REQUIRED_FILES = [
     "macOS/Features/SessionBrowser/MacRouteVisualStyle.swift",
     "macOS/Features/SessionBrowser/MacRouteInspectionView.swift",
+    "macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift",
     "macOS/Features/SessionBrowser/MacRouteMapContextView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
@@ -74,14 +75,24 @@ INSPECTION_TOKENS = [
     "struct MacRouteInspectionView: View",
     "MacRouteMapContextView(points: points, summary: summary)",
     "mac.viewer.route.inspect.fit_bounds",
+    "mac.viewer.route.inspect.resizable_note",
     "MacRouteVisualLegendView(isCompact: false)",
     "MacRouteInspectionMetricView",
     "mac.viewer.route.inspect.readonly",
 ]
 
+WINDOW_PRESENTER_TOKENS = [
+    "// [協作區] macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift",
+    "final class MacRouteInspectionWindowPresenter",
+    "styleMask: [.titled, .closable, .miniaturizable, .resizable]",
+    "window.minSize = NSSize(width: 860, height: 680)",
+    "NSHostingView(rootView: contentView)",
+    "openWindows.append(window)",
+]
+
 PREVIEW_TOKENS = [
-    "@State private var isRouteInspectorPresented",
-    "MacRouteInspectionView(points: points, summary: summary)",
+    "openRouteInspectorWindow",
+    "MacRouteInspectionWindowPresenter.shared.open(points: points, summary: summary)",
     "MacRouteVisualLegendView(isCompact: true)",
     "expandedInspectionButton",
     "mac.viewer.route.inspect.open",
@@ -101,11 +112,14 @@ MAP_TOKENS = [
 PROJECT_TOKENS = [
     "30E900000000000000000001 /* MacRouteVisualStyle.swift */ = {isa = PBXFileReference;",
     "30EA00000000000000000001 /* MacRouteInspectionView.swift */ = {isa = PBXFileReference;",
+    "30EC00000000000000000001 /* MacRouteInspectionWindowPresenter.swift */ = {isa = PBXFileReference;",
     "30E900000000000000000101 /* MacRouteVisualStyle.swift in Sources */ = {isa = PBXBuildFile;",
     "30EA00000000000000000101 /* MacRouteInspectionView.swift in Sources */ = {isa = PBXBuildFile;",
+    "30EC00000000000000000101 /* MacRouteInspectionWindowPresenter.swift in Sources */ = {isa = PBXBuildFile;",
     "30EB00000000000000000101 /* MacRouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile;",
     "30E900000000000000000001 /* MacRouteVisualStyle.swift */,",
     "30EA00000000000000000001 /* MacRouteInspectionView.swift */,",
+    "30EC00000000000000000001 /* MacRouteInspectionWindowPresenter.swift */,",
     "30EB00000000000000000001 /* MacRouteDisplayPipeline.swift */,",
 ]
 
@@ -113,6 +127,7 @@ LOCALIZATION_KEYS = [
     "mac.viewer.route.inspect.open",
     "mac.viewer.route.inspect.title",
     "mac.viewer.route.inspect.subtitle",
+    "mac.viewer.route.inspect.resizable_note",
     "mac.viewer.route.inspect.close",
     "mac.viewer.route.inspect.fit_bounds",
     "mac.viewer.route.inspect.metadata.title",
@@ -137,6 +152,8 @@ DOC_TOKENS = [
     "iOS Route Visual Parity + Expanded Route Inspection",
     "MacRouteVisualStyle",
     "MacRouteInspectionView",
+    "MacRouteInspectionWindowPresenter",
+    "resizable route inspection window",
     "fluorescent pink",
     "bright orange",
     "green route line",
@@ -165,6 +182,7 @@ FORBIDDEN = [
 CHECKED_SOURCE_FILES = [
     "macOS/Features/SessionBrowser/MacRouteVisualStyle.swift",
     "macOS/Features/SessionBrowser/MacRouteInspectionView.swift",
+    "macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift",
     "macOS/Features/SessionBrowser/MacRouteMapContextView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
@@ -179,6 +197,7 @@ def main() -> int:
 
     style = read("macOS/Features/SessionBrowser/MacRouteVisualStyle.swift")
     inspection = read("macOS/Features/SessionBrowser/MacRouteInspectionView.swift")
+    window_presenter = read("macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift")
     preview = read("macOS/Features/SessionBrowser/MacRoutePreviewView.swift")
     map_context = read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift")
     model = read("macOS/Features/SessionBrowser/MacSessionViewerModel.swift")
@@ -187,6 +206,7 @@ def main() -> int:
 
     require("MacRouteVisualStyle.swift", style, STYLE_TOKENS)
     require("MacRouteInspectionView.swift", inspection, INSPECTION_TOKENS)
+    require("MacRouteInspectionWindowPresenter.swift", window_presenter, WINDOW_PRESENTER_TOKENS)
     require("MacRoutePreviewView.swift", preview, PREVIEW_TOKENS)
     require("MacRouteMapContextView.swift", map_context, MAP_TOKENS)
     require("MacSessionViewerModel.swift", model, MODEL_TOKENS)
@@ -197,7 +217,7 @@ def main() -> int:
     if not mac_sources:
         fail("could not locate macOS sources build phase")
     sources_text = mac_sources.group(1)
-    for token in ["MacRouteVisualStyle.swift in Sources", "MacRouteInspectionView.swift in Sources", "MacRouteDisplayPipeline.swift in Sources"]:
+    for token in ["MacRouteVisualStyle.swift in Sources", "MacRouteInspectionView.swift in Sources", "MacRouteInspectionWindowPresenter.swift in Sources", "MacRouteDisplayPipeline.swift in Sources"]:
         if token not in sources_text:
             fail(f"macOS sources phase missing {token}")
 

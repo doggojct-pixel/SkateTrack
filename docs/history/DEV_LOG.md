@@ -2400,5 +2400,14 @@ Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `Ma
 
 ## Task-030e-MacViewer-007B — iOS Route Visual Parity + Expanded Route Inspection
 - Added macOS read-only route visual parity colors using green route line, bright orange accent, and fluorescent pink glow to echo the iOS route language without representing correction, confidence, or matching state.
-- Added expanded route inspection sheet for larger route review, fit-to-route-bounds MapKit context, route metadata, and visual legend.
+- Added expanded route inspection surface for larger route review, fit-to-route-bounds MapKit context, route metadata, and visual legend.
 - Preserved Task-030e safety boundaries: no location permission, no user-location display, no road matching, no snapping, no route reconstruction, no route geometry mutation, no trusted metrics mutation, and no package/schema/database writes.
+
+## 2026-07-04 — Task-030e-MacViewer-008 Selected Session Detail Layout Alignment
+
+- Aligned the selected session detail dashboard with the Task-030e v1.2 macOS multi-package viewer plan.
+- `MacSessionDetailView` now keeps metrics at the top and uses a `ViewThatFits` desktop layout so the route map remains the primary visual area while speed chart, route metadata, and privacy/read-only notes stay grouped nearby.
+- Added `MacRouteInspectionWindowPresenter` so the expanded route inspector opens in a separate resizable route inspection window instead of a fixed sheet.
+- `MacRouteInspectionView` keeps the same read-only MapKit route content and iOS route visual parity legend while explaining that the window can be resized and the map can be panned / zoomed normally.
+- Added `scripts/verify_task030e_selected_session_detail_layout.py` and updated the 007B route visual inspection verifier for the window presenter architecture.
+- No route geometry mutation, no trusted metrics mutation, no route correction, no road matching, no snap-to-road, no location permission, no user-location display, no package schema change, and no Core Data write were introduced.

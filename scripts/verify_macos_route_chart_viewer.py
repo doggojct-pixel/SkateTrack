@@ -24,7 +24,7 @@ def ensure_project_membership():
         if t not in m.group(1): fail(f"macOS sources phase missing {t}")
 def ensure_route_foundation():
     detail=read("macOS/Features/SessionBrowser/MacSessionDetailView.swift"); model=read("macOS/Features/SessionBrowser/MacSessionViewerModel.swift"); route_preview=read("macOS/Features/SessionBrowser/MacRoutePreviewView.swift"); route_map=read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift"); speed=read("macOS/Features/SessionBrowser/MacSpeedSparklineView.swift")
-    for t in ["visualizationSection","MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)","MacSpeedSparklineView(points: model.speedPoints)","mac.viewer.route.data.title","mac.viewer.route.unique_points","LazyVGrid(columns: visualizationColumns"]:
+    for t in ["visualizationSection","ViewThatFits(in: .horizontal)","routeColumn","sessionSideColumn","MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)","MacSpeedSparklineView(points: model.speedPoints)","mac.viewer.route.data.title","mac.viewer.route.unique_points"]:
         if t not in detail: fail(f"MacSessionDetailView missing visualization token: {t}")
     pipeline=read("macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift")
     for t in ["MacRoutePoint","MacRouteVisualizationQuality","routePoints","uniqueRoutePointCount"]:

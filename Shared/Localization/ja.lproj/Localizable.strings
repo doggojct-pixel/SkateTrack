@@ -1185,6 +1185,7 @@
 "mac.viewer.route.preview.readonly_mapkit" = "読み取り専用 MapKit コンテキスト";
 "mac.viewer.route.inspect.open" = "ルートを拡大";
 "mac.viewer.route.inspect.title" = "ルート確認";
+"mac.viewer.route.inspect.resizable_note" = "個別のサイズ変更可能な macOS ウィンドウで開きます。ウィンドウ端をドラッグしてサイズを変え、通常の地図操作でパンやズームができます。";
 "mac.viewer.route.inspect.subtitle" = "選択中のパッケージのルートを大きな読み取り専用マップで確認します。";
 "mac.viewer.route.inspect.close" = "閉じる";
 "mac.viewer.route.inspect.fit_bounds" = "ルート範囲に合わせる";

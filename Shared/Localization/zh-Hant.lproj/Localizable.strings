@@ -1185,6 +1185,7 @@
 "mac.viewer.route.preview.readonly_mapkit" = "唯讀 MapKit 脈絡";
 "mac.viewer.route.inspect.open" = "檢視大圖";
 "mac.viewer.route.inspect.title" = "路線檢視";
+"mac.viewer.route.inspect.resizable_note" = "這會開啟獨立且可調整大小的 macOS 視窗；可拖拉視窗邊緣改變大小，再用一般地圖手勢平移或縮放。";
 "mac.viewer.route.inspect.subtitle" = "用較大的唯讀地圖檢視目前 package 的路線。";
 "mac.viewer.route.inspect.close" = "關閉";
 "mac.viewer.route.inspect.fit_bounds" = "符合路線範圍";

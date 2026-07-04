@@ -1185,6 +1185,7 @@
 "mac.viewer.route.preview.readonly_mapkit" = "Read-only MapKit context";
 "mac.viewer.route.inspect.open" = "Inspect route";
 "mac.viewer.route.inspect.title" = "Route inspection";
+"mac.viewer.route.inspect.resizable_note" = "This opens in a separate resizable macOS window. Use the window edges to resize, then pan or zoom the map normally.";
 "mac.viewer.route.inspect.subtitle" = "Review the selected package route in a larger read-only map.";
 "mac.viewer.route.inspect.close" = "Close";
 "mac.viewer.route.inspect.fit_bounds" = "Fit to route bounds";

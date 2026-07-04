@@ -1708,6 +1708,28 @@ Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區
 
 ### Task-030e-MacViewer-007B route visual inspection
 - `macOS/Features/SessionBrowser/MacRouteVisualStyle.swift` — shared macOS route visual parity colors for green route line, bright orange accent, fluorescent pink glow, and start/finish markers.
-- `macOS/Features/SessionBrowser/MacRouteInspectionView.swift` — expanded read-only route inspection sheet with MapKit context, fit-to-route-bounds presentation, metadata, and legend.
-- `macOS/Features/SessionBrowser/MacRoutePreviewView.swift` — compact route preview entry point that opens the expanded inspection sheet.
+- `macOS/Features/SessionBrowser/MacRouteInspectionView.swift` — expanded read-only route inspection surface with MapKit context, fit-to-route-bounds presentation, metadata, and legend.
+- `macOS/Features/SessionBrowser/MacRoutePreviewView.swift` — compact route preview entry point that opens the expanded inspection surface.
 - `macOS/Features/SessionBrowser/MacRouteMapContextView.swift` — read-only MapKit bridge for existing route samples only; it remains the only MapKit route view and must not request location or mutate route geometry.
+
+## Task-030e-MacViewer-008 Selected Session Detail Layout Alignment Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacSessionDetailView.swift              # [協作區] Selected-session detail dashboard alignment; keeps metrics, route map, speed chart, route metadata, and privacy/read-only notes grouped with `ViewThatFits` desktop layout.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift               # [協作區] Opens expanded route inspection through a resizable route inspection window presenter instead of a fixed sheet.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift            # [協作區] Read-only expanded route inspection content; adapts map height to the resizable window while preserving route visual parity and existing samples only.
+macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift # [協作區] AppKit window presenter for the resizable route inspection window; no location permission, no user location, no route mutation.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings         # [協作區] Adds the resizable route inspection window note across supported languages.
+scripts/verify_task030e_selected_session_detail_layout.py             # [工程設定] Task-030e-MacViewer-008 verifier for selected-session layout, resizable inspector window, localization, project membership, headers, and route safety boundaries.
+scripts/verify_task030e_route_visual_inspection.py                    # [工程設定] Updated so the 007B route visual inspection verifier recognizes the resizable window presenter architecture.
+```
+
+### Deferred After Task-030e-MacViewer-008
+
+- Duplicate / attention states remain deferred to Task-030e-MacViewer-009.
+- Localization / accessibility pass beyond strings directly needed by 008 remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Shared route display pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-008 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.

@@ -1,6 +1,6 @@
 // [協作區] MacSessionDetailView.swift
 // 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度預覽與 route summary。
-// 委派至：Task-028b Route / Chart Visualization；本檔不寫入資料庫、不執行 merge / restore。
+// 委派至：Task-030e-MacViewer-008 selected-session detail layout alignment；本檔不寫入資料庫、不執行 merge / restore。
 
 import SwiftUI
 
@@ -21,8 +21,6 @@ struct MacSessionDetailView: View {
             detailTitleBar
             metricsSection
             visualizationSection
-            routeDataSection
-            privacySection
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .contain)
@@ -44,8 +42,37 @@ struct MacSessionDetailView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private var visualizationColumns: [GridItem] {
-        [GridItem(.adaptive(minimum: 360), spacing: 16)]
+    private var visualizationSection: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .top, spacing: 16) {
+                routeColumn
+                    .frame(minWidth: 540, maxWidth: .infinity, alignment: .topLeading)
+                sessionSideColumn
+                    .frame(width: 360, alignment: .topLeading)
+            }
+            VStack(alignment: .leading, spacing: 16) {
+                routeColumn
+                sessionSideColumn
+            }
+        }
+    }
+
+    private var routeColumn: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)
+                .frame(minHeight: 300)
+            routeDataSection
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private var sessionSideColumn: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            MacSpeedSparklineView(points: model.speedPoints)
+            privacySection
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .contain)
     }
 
     private var metricsSection: some View {
@@ -66,13 +93,6 @@ struct MacSessionDetailView: View {
                     .font(.caption)
                     .foregroundStyle(.cyan)
             }
-        }
-    }
-
-    private var visualizationSection: some View {
-        LazyVGrid(columns: visualizationColumns, alignment: .leading, spacing: 16) {
-            MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)
-            MacSpeedSparklineView(points: model.speedPoints)
         }
     }
 
