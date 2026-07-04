@@ -2459,3 +2459,13 @@ Task-030e-MacViewer-009 verification token: Duplicate and Attention States, `Mac
 - No package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema change, or Core Data write was introduced.
 
 Task-030e-MacViewer-010 verification token: Localization / Accessibility Pass, mac.accessibility.open_packages.button.label, mac.accessibility.acknowledge_duplicate_files.button.label, mac.accessibility.route_inspect_open.button.label, mac.accessibility.elevation_chart.label, accessibilityIdentifier, Text(verbatim: "• \\(note)"), no merge, no delete, no winner selection, no Core Data write.
+
+## 2026-07-04 — Task-030e-MacViewer-011 Verifier / Test Foundation
+
+- Aligned the macOS multi-package Session Browser with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` verifier / test foundation scope.
+- Added `scripts/verify_task030e_macos_multi_package_viewer.py` as the consolidated Task-030e source verifier covering browser-first IA, multi-file open support, in-memory multi-package state, duplicate attention acknowledgement, route MapKit boundaries, localization parity, Swift collaboration headers, line counts, documentation tokens, and no runtime-scope expansion.
+- Added `scripts/run_task030e_macos_multi_package_viewer_oneclick.sh` as the source-controlled Task-030e one-click verification runner.
+- The one-click runner packages verifier, build, line, diff, and status logs into `task030e_011_oneclick_*.zip`, then removes the temporary run directory and records `ONECLICK_RUN_DIR_REMOVED=YES` in the postpack log.
+- The 011 verifier/test foundation remains source-level and build-log based; it does not add screenshot dependency, UI automation, package merge, duplicate deletion, winner selection, local-history import, package schema change, Core Data write, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-011 verification token: Verifier / Test Foundation, verify_task030e_macos_multi_package_viewer.py, run_task030e_macos_multi_package_viewer_oneclick.sh, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
