@@ -1,6 +1,7 @@
 // [協作區] MacSessionViewerModel.swift
 // 用途：將 .skatetrack package session 轉成 macOS 只讀 Session Viewer 可顯示的 derived view model。
 // 委派至：MacSessionBrowserView / MacSessionDetailView / MacRoutePreviewView；不得寫入資料庫、merge、restore 或同步雲端。
+// Task-030e-008-1: exposes display-only elevation profile points for the macOS selected-session detail view.
 
 import Foundation
 
@@ -18,6 +19,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
     let routeSampleCount: Int
     let privacyNotes: [String]
     let speedPoints: [MacSpeedPoint]
+    let elevationPoints: [MacElevationPoint]
     let routePoints: [MacRoutePoint]
     let routeSummary: MacRouteSummary
     let displayMetrics: SessionSummaryMetrics
@@ -43,6 +45,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
         routeSampleCount = samples.filter { $0.gpsCoordinate != nil }.count
         privacyNotes = packageSession.privacyNotes
         speedPoints = MacSessionMetricsDeriver.speedPoints(from: samples)
+        elevationPoints = MacElevationDisplayPipeline.elevationPoints(session: session, samples: samples)
         routePoints = derived.routePoints
         routeSummary = derived.routeSummary
         self.displayMetrics = displayMetrics
@@ -97,6 +100,14 @@ struct MacSpeedPoint: Identifiable, Equatable {
     let timestamp: Date
     let elapsedSeconds: TimeInterval
     let speedKmh: Double
+}
+
+struct MacElevationPoint: Identifiable, Equatable {
+    let id: Int
+    let timestamp: Date
+    let elapsedSeconds: TimeInterval
+    let elevationMeters: Double
+    let segmentID: Int
 }
 
 struct MacRoutePoint: Identifiable, Equatable {

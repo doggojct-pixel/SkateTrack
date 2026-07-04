@@ -1043,6 +1043,11 @@
 "mac.viewer.detail.title" = "Session details";
 
 "mac.viewer.chart.speed.title" = "Speed chart";
+
+"mac.viewer.chart.elevation.title" = "Elevation profile";
+"mac.viewer.chart.elevation.empty" = "Altitude samples are not available for this session.";
+"mac.viewer.chart.elevation.hint" = "Shows a lightweight elevation profile from the selected package session samples.";
+"mac.viewer.chart.elevation.range.format" = "%@ – %@";
 "mac.viewer.route.data.title" = "Route data";
 "mac.viewer.route.unique_points" = "Unique route points";
 "mac.viewer.route.preview.title" = "Route preview";

@@ -1043,6 +1043,11 @@
 "mac.viewer.detail.title" = "セッション詳細";
 
 "mac.viewer.chart.speed.title" = "速度チャート";
+
+"mac.viewer.chart.elevation.title" = "標高プロファイル";
+"mac.viewer.chart.elevation.empty" = "このセッションには利用できる標高サンプルがありません。";
+"mac.viewer.chart.elevation.hint" = "選択したパッケージセッションのサンプルから軽量の標高プロファイルを表示します。";
+"mac.viewer.chart.elevation.range.format" = "%@ – %@";
 "mac.viewer.route.data.title" = "ルートデータ";
 "mac.viewer.route.unique_points" = "一意のルートポイント";
 "mac.viewer.route.preview.title" = "ルートプレビュー";

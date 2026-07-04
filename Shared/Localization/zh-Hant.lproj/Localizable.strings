@@ -1043,6 +1043,11 @@
 "mac.viewer.detail.title" = "Session 詳情";
 
 "mac.viewer.chart.speed.title" = "速度圖表";
+
+"mac.viewer.chart.elevation.title" = "海拔剖面";
+"mac.viewer.chart.elevation.empty" = "這筆 Session 沒有可用海拔樣本。";
+"mac.viewer.chart.elevation.hint" = "根據選取 package session 的樣本顯示輕量海拔剖面。";
+"mac.viewer.chart.elevation.range.format" = "%@ – %@";
 "mac.viewer.route.data.title" = "路線資料";
 "mac.viewer.route.unique_points" = "有效路線點";
 "mac.viewer.route.preview.title" = "路線預覽";

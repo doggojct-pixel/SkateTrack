@@ -1,6 +1,6 @@
 // [協作區] MacSessionDetailView.swift
-// 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度預覽與 route summary。
-// 委派至：Task-030e-MacViewer-008 selected-session detail layout alignment；本檔不寫入資料庫、不執行 merge / restore。
+// 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度 / 海拔預覽與 route summary。
+// 委派至：Task-030e-MacViewer-008 selected-session detail layout alignment；008-1 adds elevation display without database writes, merge, or restore。
 
 import SwiftUI
 
@@ -69,6 +69,7 @@ struct MacSessionDetailView: View {
     private var sessionSideColumn: some View {
         VStack(alignment: .leading, spacing: 14) {
             MacSpeedSparklineView(points: model.speedPoints)
+            MacElevationProfileView(points: model.elevationPoints)
             privacySection
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -82,6 +83,7 @@ struct MacSessionDetailView: View {
                 MacSessionViewerMetric(titleKey: "mac.package.preview.distance", value: formattedDistance(model.displayMetrics.distanceKilometers))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.max_speed", value: formattedSpeed(model.displayMetrics.maxSpeedKilometersPerHour))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.average_speed", value: formattedSpeed(model.displayMetrics.averageSpeedKilometersPerHour))
+                MacSessionViewerMetric(titleKey: "summary.metric.elevationGain", value: formattedElevation(model.displayMetrics.elevationGainMeters))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.moving_ratio", value: formattedPercent(model.displayMetrics.movingRatio))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.motion_samples", value: "\(model.motionSampleCount)")
                 MacSessionViewerMetric(titleKey: "mac.package.preview.route_samples", value: "\(model.routeSampleCount)")
@@ -153,6 +155,11 @@ struct MacSessionDetailView: View {
 
     private func formattedSpeed(_ speed: Double) -> String {
         String(format: String(localized: "mac.package.preview.speed.format"), speed)
+    }
+
+    private func formattedElevation(_ meters: Double) -> String {
+        guard meters.isFinite else { return String(localized: "mac.package.preview.value.none") }
+        return String(format: String(localized: "unit.length.meter.valueFormat"), meters)
     }
 
     private func formattedPercent(_ ratio: Double) -> String {

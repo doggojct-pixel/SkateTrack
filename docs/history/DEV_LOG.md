@@ -2411,3 +2411,14 @@ Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `Ma
 - `MacRouteInspectionView` keeps the same read-only MapKit route content and iOS route visual parity legend while explaining that the window can be resized and the map can be panned / zoomed normally.
 - Added `scripts/verify_task030e_selected_session_detail_layout.py` and updated the 007B route visual inspection verifier for the window presenter architecture.
 - No route geometry mutation, no trusted metrics mutation, no route correction, no road matching, no snap-to-road, no location permission, no user-location display, no package schema change, and no Core Data write were introduced.
+
+## 2026-07-04 — Task-030e-MacViewer-008-1 Elevation Profile + Total Ascent Display Alignment
+
+- Aligned the macOS selected-session detail dashboard with the iOS Summary metric set by adding the localized `summary.metric.elevationGain` total elevation gain card.
+- Added `MacElevationDisplayPipeline` to produce display-only elevation profile points from existing package motion samples, preferring trusted altitude diagnostics and preserving barometer-relative/source-isolated behavior where available.
+- Added `MacElevationProfileView` as a lightweight SwiftUI Path chart beside the existing macOS speed chart so the Session Browser can show both speed and elevation trends without adding Swift Charts or shared cross-platform pipeline scope yet.
+- Updated `MacSessionViewerModel` to expose elevation profile points to the view layer while keeping package parsing, Core Data, route geometry, trusted metrics, and schema untouched.
+- Added `scripts/verify_task030e_elevation_profile.py` for 008-1 source checks, project membership, line/header rules, docs coverage, localization key reuse, and no-mutation safety boundaries.
+- No route geometry mutation, no trusted metrics mutation, no route correction, no road matching, no snap-to-road, no location permission, no user-location display, no package schema change, and no Core Data write were introduced.
+
+Task-030e-MacViewer-008-1 verification token: Elevation Profile + Total Ascent Display Alignment, `MacElevationDisplayPipeline`, `MacElevationProfileView`, `summary.metric.elevationGain`, existing package motion samples only, display-only elevation profile, no trusted metrics mutation, no package schema change, no Core Data write, Task-031-prep shared activity visualization deferred.

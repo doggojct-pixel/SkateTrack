@@ -1733,3 +1733,24 @@ scripts/verify_task030e_route_visual_inspection.py                    # [工程�
 - Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
 - Shared route display pipeline extraction remains deferred to independent `Task-031-prep`.
 - Task-030e-MacViewer-008 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+## Task-030e-MacViewer-008-1 Elevation Profile + Total Ascent Display Alignment Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacSessionDetailView.swift              # [協作區] Adds total elevation gain to the selected-session metrics grid and places the elevation profile next to the existing speed chart in the read-only dashboard.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift             # [協作區] Exposes display-only macOS elevation profile points alongside speed and route preview data.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift             # [協作區] Hosts lightweight SwiftUI Path chart cards for speed and elevation profile previews without introducing Swift Charts on macOS.
+macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift       # [協作區] Builds display-only elevation profile points from existing package motion samples; uses trusted altitude diagnostics when present and never mutates stored samples or trusted metrics.
+SkateTrack.xcodeproj/project.pbxproj                                  # [工程設定] Adds `MacElevationDisplayPipeline.swift` to the macOS Sources build phase.
+scripts/verify_task030e_elevation_profile.py                          # [工程設定] Task-030e-MacViewer-008-1 verifier for total ascent metric, elevation profile UI, project membership, line/header rules, docs, and no-mutation safety boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-008-1
+
+- Duplicate / attention states remain deferred to Task-030e-MacViewer-009.
+- Broader localization / accessibility pass remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
+- Task-030e-MacViewer-008-1 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
