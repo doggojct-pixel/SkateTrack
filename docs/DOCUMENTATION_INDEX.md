@@ -1,6 +1,6 @@
 # SkateTrack Documentation Index
 
-**Status:** Active — Task-030e documentation sync for macOS multi-package viewer
+**Status:** Active — Task-030e documentation sync and manual QA gate for macOS multi-package viewer
 **Last Updated:** 2026-07-04
 **Purpose:** First documentation entry point for future ChatGPT / Cursor / human handoff.
 
@@ -66,8 +66,16 @@ Task-030e documentation is split by purpose rather than by temporary hotfix pack
 | Current macOS viewer capability and non-goals | `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
 | Release-readiness verification commands and boundary checks | `docs/release/RELEASE_READINESS_PRE_ADP.md` |
 | Manual macOS package-viewer QA steps | `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` |
+| Task-030e manual QA signoff checklist | `docs/release/TASK030E_MANUAL_QA_GATE.md` |
 | File inventory and verifier / one-click runner map | `docs/reference/FILE_STRUCTURE.md` |
 | Chronological implementation history | `docs/history/DEV_LOG.md` |
 | Consolidated architectural decision snapshot | `docs/adr/ADR-INDEX.md` |
 
 Task-030e-MacViewer-012 verification token: documentation sync routing, macOS multi-package viewer, one-click cleanup rule, read-only package boundary.
+
+
+## 7. Task-030e manual QA gate
+
+`docs/release/TASK030E_MANUAL_QA_GATE.md` is the operator-run gate for Task-030e-MacViewer-013. It requires automated precondition logs, package-category coverage, manual signoff, and explicit no-scope-expansion checks before the final merge gate.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate routing, operator signoff required, read-only no-import manual QA boundary.

@@ -478,3 +478,12 @@ Decision: Task-030e-MacViewer-012 makes the macOS multi-package viewer documenta
 Boundary: The documentation sync does not add Swift UI behavior, package schema fields, Core Data writes, local-history import, route geometry mutation, trusted metric mutation, location permission, user-location display, Watch / WatchBridge work, or Task-031 shared visualization pipeline work. The one-click runner is documented as responsible for deleting its temporary output directory after zip packaging and recording `ONECLICK_RUN_DIR_REMOVED=YES`.
 
 Task-030e-MacViewer-012 ADR token: Documentation Sync, read-only macOS multi-package viewer, one-click cleanup rule, no import / merge / route mutation.
+
+
+## Task-030e macOS multi-package viewer manual QA gate
+
+Decision: Task-030e-MacViewer-013 makes manual QA an explicit source-controlled gate before the final merge gate. The gate records required automated evidence, operator-run package scenarios, route/duplicate/localization/accessibility checks, one-click cleanup confirmation, and no-scope-expansion checks.
+
+Boundary: The manual QA gate does not add product UI behavior, package import, package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metric mutation, package schema mutation, Core Data writes, Watch / WatchBridge work, or Task-031 shared visualization pipeline work.
+
+Task-030e-MacViewer-013 ADR token: Manual QA Gate, operator signoff required, task030e_013_oneclick, read-only no-import boundary, no route / metric / schema mutation.

@@ -659,3 +659,13 @@ Task-030e-MacViewer-007A limitation token: read-only MapKit route context, `MacR
 - **Verification boundary:** `scripts/run_task030e_macos_multi_package_viewer_oneclick.sh` is the source-controlled Task-030e one-click runner. It must zip logs, delete the temporary run directory, and record `ONECLICK_RUN_DIR_REMOVED=YES` after packaging.
 
 Task-030e-MacViewer-012 limitation token: Documentation Sync, current macOS multi-package viewer boundary, read-only package review, ONECLICK_RUN_DIR_REMOVED=YES, no import, no merge, no route mutation, no Core Data write.
+
+
+## Task-030e-MacViewer-013 — Manual QA Gate and Final-Merge Preconditions
+
+- **Status:** Manual QA gate checklist and verifier only.
+- **Manual evidence required:** Task-030e-MacViewer-013 requires uploaded apply / one-click logs and explicit operator signoff before commit / push.
+- **Scope boundary:** This gate does not add product UI behavior, package import, package merge, duplicate deletion, winner selection, local-history import, Finder open-with, custom UTType, drag-and-drop, recent files, bookmarks, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, Watch, WatchBridge, cloud sync, or Task-031 shared visualization pipeline work.
+- **Final merge dependency:** Task-030e-MacViewer-014 may start only after the manual QA gate is green and the branch remains clean after commit / push.
+
+Task-030e-MacViewer-013 limitation token: Manual QA Gate, operator signoff required, no import / merge / route mutation, no Core Data write, no location permission, no user-location display.

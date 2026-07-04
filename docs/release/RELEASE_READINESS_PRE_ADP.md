@@ -1,6 +1,6 @@
 # SkateTrack Pre-ADP Release Readiness Report
 
-**Status:** Task-030e macOS package-viewer documentation sync
+**Status:** Task-030e macOS package-viewer manual QA gate sync
 **Last Updated:** 2026-07-04
 **Scope:** iOS, macOS, shared models, localization, local backup / package export, Task-030e macOS multi-package viewer, pre-Apple-Developer-Program service boundaries
 
@@ -63,6 +63,7 @@ python3 scripts/verify_shared_models.py
 python3 scripts/verify_macos_appiconset.py
 python3 scripts/verify_task030e_macos_multi_package_viewer.py
 python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
 bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
 ```
 
@@ -169,7 +170,7 @@ Fall Detection remains a safety-sensitive feature. Do not use unsafe human impac
 
 ## 8. macOS viewer gate
 
-The macOS app is a read-only `.skatetrack` package viewer. After Task-030e-MacViewer-012, the release-readiness documentation reflects the completed Task-030e chain through verifier / documentation sync while preserving remaining Pre-ADP limitations.
+The macOS app is a read-only `.skatetrack` package viewer. After Task-030e-MacViewer-013, the release-readiness documentation and manual QA gate describe the completed Task-030e chain through verifier / documentation sync / manual signoff while preserving remaining Pre-ADP limitations.
 
 Required layout rule:
 
@@ -194,6 +195,7 @@ The viewer currently supports:
 - Transient duplicate-file-path warning acknowledgement without delete / merge / winner selection.
 - English, Traditional Chinese, and Japanese localization plus focused accessibility labels / hints / identifiers.
 - Source-controlled consolidated verifier and one-click verification runner.
+- Source-controlled manual QA gate checklist for Task-030e final-merge readiness.
 
 The viewer does not support:
 
@@ -213,12 +215,26 @@ Task-030e verification commands before closing a Task-030e stage:
 ```bash
 python3 scripts/verify_task030e_macos_multi_package_viewer.py
 python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
 bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
 ```
 
 The one-click runner must package logs into a zip, delete its temporary run directory after zip creation, and record `ONECLICK_RUN_DIR_REMOVED=YES` in the postpack log.
 
+Task-030e-MacViewer-013 manual QA closure additionally requires:
+
+- `docs/release/TASK030E_MANUAL_QA_GATE.md` checklist coverage.
+- 013 apply log and one-click zip uploaded for review.
+- Explicit operator confirmation that manual QA passed.
+- Confirmation that `ONECLICK_RUN_DIR_REMOVED=YES` is present after postpack cleanup.
+- No UI behavior, package import, merge, duplicate deletion, route mutation, trusted metric mutation, schema change, Core Data write, location permission, user-location display, Watch / WatchBridge, or Task-031 change in the diff.
+
+
+Task-030e macOS package-viewer documentation sync remains the 012 documentation baseline.
+
 Task-030e-MacViewer-012 release-readiness token: macOS multi-package viewer gate, read-only `.skatetrack` review, documentation sync, one-click cleanup, no import / merge / route mutation.
+
+Task-030e-MacViewer-013 release-readiness token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, operator signoff required, task030e_013_oneclick, no UI / schema / route mutation.
 
 ## 9. Task-030a pass condition
 

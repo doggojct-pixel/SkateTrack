@@ -2479,3 +2479,14 @@ Task-030e-MacViewer-011 verification token: Verifier / Test Foundation, verify_t
 - No UI behavior, package opening behavior, package schema, Core Data write, local-history import, merge, duplicate deletion, winner selection, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch / WatchBridge, or Task-031 shared visualization pipeline work was introduced.
 
 Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_documentation_sync.py, documentation index, release readiness, manual QA matrix, known limitations, ADR index, one-click cleanup rule, no route / metric / package mutation.
+
+
+## 2026-07-04 — Task-030e-MacViewer-013 Manual QA Gate
+
+- Added `docs/release/TASK030E_MANUAL_QA_GATE.md` as the source-controlled manual QA signoff checklist for the macOS multi-package viewer before final merge.
+- Added `scripts/verify_task030e_manual_qa_gate.py` to verify manual-gate documentation, one-click runner inclusion, consolidated verifier inclusion, and no-scope-expansion boundaries.
+- Updated release readiness, manual QA matrix, documentation index, development rules, known limitations, ADR index, file structure, consolidated verifier, and source-controlled one-click runner for the 013 gate.
+- Manual QA remains operator-run and must be explicitly confirmed in the conversation before commit / push.
+- No product UI behavior, package opening behavior, package schema, Core Data write, local-history import, merge, duplicate deletion, winner selection, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch / WatchBridge, or Task-031 shared visualization pipeline work was introduced.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, verify_task030e_manual_qa_gate.py, operator signoff required, task030e_013_oneclick, no route / metric / package mutation.

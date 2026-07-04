@@ -1872,3 +1872,37 @@ scripts/run_task030e_macos_multi_package_viewer_oneclick.sh      # [工程設定
 - Task-030e-MacViewer-012 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
 
 Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_documentation_sync.py, docs source-of-truth alignment, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
+
+
+## Task-030e-MacViewer-013 Manual QA Gate Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+docs/release/TASK030E_MANUAL_QA_GATE.md                       # [原則 E] Source-controlled Task-030e manual QA signoff checklist and pass-condition record.
+docs/DOCUMENTATION_INDEX.md                                    # [原則 E] Routes Task-030e manual QA gate documentation.
+docs/process/DEVELOPMENT_RULES.md                              # [原則 E] Records explicit operator signoff requirement for Task-030e manual closure.
+docs/release/RELEASE_READINESS_PRE_ADP.md                      # [原則 E] Adds Task-030e-MacViewer-013 manual gate criteria before final merge.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md                       # [原則 E] Adds 013-specific manual QA evidence and no-scope-expansion checks.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                      # [原則 E] States the manual QA gate is not product behavior and preserves deferred limitations.
+docs/adr/ADR-INDEX.md                                          # [原則 E] Records the Task-030e manual QA gate decision.
+docs/history/DEV_LOG.md                                        # [原則 E] Records Task-030e-MacViewer-013 manual QA gate completion scope.
+scripts/verify_task030e_manual_qa_gate.py                      # [工程設定] Verifies 013 manual gate docs, one-click runner inclusion, consolidated verifier inclusion, and read-only no-import boundaries.
+scripts/verify_task030e_macos_multi_package_viewer.py          # [工程設定] Consolidated verifier now includes the manual QA gate verifier.
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh    # [工程設定] Source-controlled one-click runner now includes the manual QA gate verifier.
+```
+
+### Task-030e-MacViewer-013 manual gate coverage
+
+- Requires apply log, one-click zip, macOS build, line check, diff check, status, and postpack cleanup evidence before manual signoff.
+- Requires operator-run package scenarios for valid, multi-session, mixed valid/invalid, duplicate, route, elevation, localization, and accessibility cases.
+- Requires explicit no-import, no-merge, no-duplicate-deletion, no-winner-selection, no-local-history-import, no-route-correction, no-location-prompt, no-user-location-blue-dot, no-schema-change, no-Core-Data-write boundary checks.
+- Records that manual QA failure blocks commit / push even if automated one-click verification is green.
+
+### Deferred After Task-030e-MacViewer-013
+
+- Final merge gate remains deferred to Task-030e-MacViewer-014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-013 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, verify_task030e_manual_qa_gate.py, operator signoff required, task030e_013_oneclick, no package schema change, no Core Data write.

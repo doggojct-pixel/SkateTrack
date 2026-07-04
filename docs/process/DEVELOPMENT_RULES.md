@@ -1,6 +1,6 @@
 # SkateTrack Development Rules
 
-**Status:** Active source of truth — Task-030e documentation sync
+**Status:** Active source of truth — Task-030e documentation sync and manual QA gate
 **Last Updated:** 2026-07-04
 **Scope:** Human / ChatGPT / Cursor collaboration rules for SkateTrack development.
 
@@ -95,6 +95,7 @@ When providing manual QA steps:
 - Keep file names, commands, scheme names, and technical identifiers in English when appropriate.
 - Explicitly list expected behavior and non-goals.
 - Treat Xcode warnings as actionable unless they are clearly simulator / system console noise.
+- For Task-030e manual closure, use `docs/release/TASK030E_MANUAL_QA_GATE.md` as the source-controlled checklist and require explicit operator signoff before commit/push.
 
 ## 7. Runtime scope boundaries
 
@@ -165,6 +166,7 @@ When a task includes a verify script, run it before build / commit. When a task 
 
 ```bash
 python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
 python3 scripts/verify_task030_release_readiness.py
 ```
 
@@ -177,3 +179,5 @@ bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
 Task-030b verification token: consolidated development rules.
 
 Task-030e-MacViewer-012 verification token: one-click temporary output directory cleanup, documentation sync gate, Task-030e docs verifier.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate, source-controlled checklist, operator signoff required, no UI / schema / route mutation.

@@ -1,6 +1,6 @@
 # SkateTrack Manual QA Matrix — Pre-ADP
 
-**Status:** Task-030e macOS package-viewer QA matrix sync
+**Status:** Task-030e macOS package-viewer QA matrix and manual gate sync
 **Last Updated:** 2026-07-04
 **Scope:** Local development builds before Apple Developer Program enrollment and production external-service setup
 
@@ -67,6 +67,22 @@ Task-030e macOS package viewer QA must cover read-only multi-package browsing an
 | Accessibility | Use VoiceOver / Accessibility Inspector spot checks | Open, clear, acknowledge, package card, session card, route inspection, speed chart, and elevation chart expose meaningful labels / hints / identifiers. |
 | One-click logs | Run Task-030e one-click verification | Summary, verifier, build, line, diff, status, and postpack cleanup logs are included in the zip. |
 | One-click cleanup | Inspect upload folder after one-click | The temporary `task030e_*_oneclick_<timestamp>/` run directory is gone and the postpack log records `ONECLICK_RUN_DIR_REMOVED=YES`. |
+
+
+### Task-030e-MacViewer-013 manual QA gate
+
+Before Task-030e final merge, run the dedicated gate in `docs/release/TASK030E_MANUAL_QA_GATE.md`.
+
+Additional 013-specific requirements:
+
+- Attach the 013 apply log and 013 one-click zip to the review conversation.
+- Confirm the one-click postpack log records `ONECLICK_RUN_DIR_REMOVED=YES`.
+- Confirm the temporary one-click run directory was removed after zip packaging.
+- Explicitly state in the conversation whether manual QA passed.
+- Treat any manual failure as a blocker even if automated verification is green.
+- Keep the gate read-only: no import, no merge, no duplicate deletion, no winner selection, no local-history import, no route geometry mutation, no trusted metrics mutation, no package schema change, no Core Data write, no location permission, and no user-location blue dot.
+
+Task-030e-MacViewer-013 manual QA token: operator signoff required, task030e_013_oneclick, read-only no-import boundary, ONECLICK_RUN_DIR_REMOVED=YES.
 
 ## 5. Accessibility spot checks
 
