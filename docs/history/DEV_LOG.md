@@ -2345,3 +2345,14 @@ Task-030d-A verification token: iOS multi-file .skatetrack import foundation, Hi
 - Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
 
 Task-030e-MacViewer-002 verification token: browser-first Session Browser IA, Open Packages action in browser header, Import destination not primary sidebar, read-only package opening, `MacPackageBrowserHeaderView`, aligned Build Plan v1.2, no multi-package state yet, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+
+### Task-030e-MacViewer-003 — In-Memory Multi-Package Preview State
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Added `MacMultiPackageViewerState`, `MacMultiPackageViewerSelection`, and `MacPackageOpenBatchSummary` as the read-only in-memory state foundation for future multi-package browsing.
+- Updated `MacPackageImportViewModel` to own package collection state, selected package state, selected session state, and future append / remove hooks while preserving the current single-file open behavior.
+- Moved Session Browser selection ownership from view-local state into the view model boundary so later package cards and multi-file open can reuse the same model without Views owning package internals.
+- Preserved browser-first behavior from Task-030e-MacViewer-002 and kept `NSOpenPanel.allowsMultipleSelection = false`; true multi-file open and package cards remain deferred to later Task-030e subtasks.
+- Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
+
+Task-030e-MacViewer-003 verification token: in-memory multi-package viewer state, `MacMultiPackageViewerState`, `MacMultiPackageViewerSelection`, `MacPackageOpenBatchSummary`, view-model owned package/session selection, single-file open retained, no true multi-file open yet, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.

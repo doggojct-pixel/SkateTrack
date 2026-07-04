@@ -599,3 +599,11 @@ Task-030d-A limitation token: iOS multi-file .skatetrack import, no silent overw
 - **Safety boundary:** This step is read-only. It does not mutate package schema, route geometry, trusted metrics, Core Data, or local session storage.
 
 Task-030e-MacViewer-002 limitation token: browser-first macOS Session Browser shell, Open Packages copy, Import destination demoted, no multi-package state yet, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-003 — Multi-Package State Foundation Limitation
+
+- **Current status:** macOS now has an in-memory multi-package viewer state foundation aligned with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- **User-visible behavior:** The visible file picker still opens one `.skatetrack` package at a time in this subtask. Multi-package cards, true multi-file open, partial-success package cards, and expanded map inspection remain later Task-030e subtasks.
+- **Read-only guarantee:** The state layer is memory-only and performs no database import, merge, restore, cloud sync, package schema mutation, route geometry mutation, trusted metrics mutation, or route correction.
+
+Task-030e-MacViewer-003 limitation token: in-memory package collection state, selected package/session state, single-file open retained, multi-file open deferred, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.

@@ -130,7 +130,7 @@ def ensure_session_browser() -> None:
     for token in [
         "@ObservedObject private var viewModel: MacPackageImportViewModel",
         "private var preview: MacPackageImportPreview?",
-        "preview?.payload.sessions.map(MacSessionViewerModel.init)",
+        "viewModel.selectedViewerModels",
         "MacPackageBrowserHeaderView",
         "openPackagePanel",
         "viewModel.importPackage(from: url)",

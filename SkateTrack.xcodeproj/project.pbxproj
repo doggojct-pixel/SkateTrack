@@ -297,6 +297,7 @@
 		27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000003 /* MacPackageImportViewModel.swift */; };
 		27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B300000000000000000001 /* MacLockedFeatureCardView.swift */; };
 		28A100000000000000000101 /* MacSessionBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000001 /* MacSessionBrowserView.swift */; };
+		30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E300000000000000000001 /* MacMultiPackageViewerState.swift */; };
 		28A100000000000000000102 /* MacSessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000002 /* MacSessionDetailView.swift */; };
 		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
 		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
@@ -595,6 +596,7 @@
 		27B200000000000000000003 /* MacPackageImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageImportViewModel.swift; sourceTree = "<group>"; };
 		27B300000000000000000001 /* MacLockedFeatureCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacLockedFeatureCardView.swift; sourceTree = "<group>"; };
 		28A100000000000000000001 /* MacSessionBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionBrowserView.swift; sourceTree = "<group>"; };
+		30E300000000000000000001 /* MacMultiPackageViewerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMultiPackageViewerState.swift; sourceTree = "<group>"; };
 		28A100000000000000000002 /* MacSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionDetailView.swift; sourceTree = "<group>"; };
 		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
 		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
@@ -1206,6 +1208,7 @@
 			isa = PBXGroup;
 			children = (
 				28A100000000000000000001 /* MacSessionBrowserView.swift */,
+				30E300000000000000000001 /* MacMultiPackageViewerState.swift */,
 				28A100000000000000000002 /* MacSessionDetailView.swift */,
 				28A100000000000000000003 /* MacSessionViewerModel.swift */,
 				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
@@ -1769,6 +1772,7 @@
 				27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */,
 				27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */,
 				28A100000000000000000101 /* MacSessionBrowserView.swift in Sources */,
+				30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */,
 				28A100000000000000000102 /* MacSessionDetailView.swift in Sources */,
 				28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */,
 				28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */,

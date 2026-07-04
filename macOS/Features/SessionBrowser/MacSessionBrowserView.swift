@@ -9,8 +9,6 @@ import UniformTypeIdentifiers
 struct MacSessionBrowserView: View {
     @ObservedObject private var viewModel: MacPackageImportViewModel
 
-    @State private var selectedSessionID: UUID?
-
     init(viewModel: MacPackageImportViewModel) {
         self.viewModel = viewModel
     }
@@ -20,15 +18,11 @@ struct MacSessionBrowserView: View {
     }
 
     private var viewerModels: [MacSessionViewerModel] {
-        preview?.payload.sessions.map(MacSessionViewerModel.init) ?? []
+        viewModel.selectedViewerModels
     }
 
     private var selectedModel: MacSessionViewerModel? {
-        if let selectedSessionID,
-           let selected = viewerModels.first(where: { $0.id == selectedSessionID }) {
-            return selected
-        }
-        return viewerModels.first
+        viewModel.selectedViewerModel
     }
 
     var body: some View {
@@ -69,9 +63,9 @@ struct MacSessionBrowserView: View {
             )
         )
         .navigationTitle("mac.viewer.title")
-        .onAppear { selectDefaultSessionIfNeeded() }
+        .onAppear { viewModel.ensureDefaultSelection() }
         .onChange(of: preview?.id) { _, _ in
-            selectDefaultSessionIfNeeded(force: true)
+            viewModel.ensureDefaultSelection()
         }
     }
 
@@ -80,8 +74,9 @@ struct MacSessionBrowserView: View {
             MacCurrentPackageSessionSummaryView(
                 preview: preview,
                 models: viewerModels,
-                selectedSessionID: $selectedSessionID,
-                selectedModel: selectedModel
+                selectedSessionID: viewModel.selectedSessionID,
+                selectedModel: selectedModel,
+                selectSessionAction: viewModel.selectSession
             )
 
             if let selectedModel {
@@ -118,10 +113,6 @@ struct MacSessionBrowserView: View {
         viewModel.importPackage(from: url)
     }
 
-    private func selectDefaultSessionIfNeeded(force: Bool = false) {
-        guard force || selectedSessionID == nil || !viewerModels.contains(where: { $0.id == selectedSessionID }) else { return }
-        selectedSessionID = viewerModels.first?.id
-    }
 }
 
 private struct MacPackageBrowserHeaderView: View {
@@ -231,8 +222,9 @@ private struct MacSessionBrowserStatusCard: View {
 private struct MacCurrentPackageSessionSummaryView: View {
     let preview: MacPackageImportPreview
     let models: [MacSessionViewerModel]
-    @Binding var selectedSessionID: UUID?
+    let selectedSessionID: UUID?
     let selectedModel: MacSessionViewerModel?
+    let selectSessionAction: (UUID?) -> Void
 
     private var currentModel: MacSessionViewerModel? {
         selectedModel ?? models.first
@@ -300,7 +292,7 @@ private struct MacCurrentPackageSessionSummaryView: View {
                                 model: model,
                                 isSelected: model.id == currentModel?.id
                             ) {
-                                selectedSessionID = model.id
+                                selectSessionAction(model.id)
                             }
                         }
                     }

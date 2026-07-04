@@ -1625,3 +1625,20 @@ scripts/verify_task030e_browser_first_ia.py         # [工程設定] Task-030e-M
 - Multi-package state, multi-file package opening, package cards, selected package list, MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files, bookmarks, database import, merge, restore, cloud sync, Watch, WatchBridge, and Task-031 remain out of this step.
 - `MacPackageImportViewModel` remains the lower-level read-only package reader boundary for now; later Task-030e subtasks may wrap or replace its single-preview state with an in-memory multi-package browser model.
 - Task-030e-MacViewer-002 is aligned with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` and must not be treated as full Task-030e completion.
+
+## Task-030e-MacViewer-003 In-Memory Multi-Package Preview State Addendum
+
+### New / Updated Source Areas
+
+```text
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift # [協作區] In-memory package collection, selected package, selected session, and batch-summary state for the read-only macOS viewer.
+macOS/Features/Import/MacPackageImportViewModel.swift          # [協作區] Now owns `MacMultiPackageViewerState` and exposes selected package/session state while retaining single-file open for this subtask.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift      # [協作區] Reads selected session state from the view-model boundary instead of owning package/session selection locally.
+scripts/verify_task030e_multi_package_state.py                 # [工程設定] Task-030e-MacViewer-003 verifier aligned with Build Plan v1.2.
+```
+
+### Deferred After Task-030e-MacViewer-003
+
+- True multi-file open remains deferred to a later Task-030e subtask; `NSOpenPanel.allowsMultipleSelection` intentionally remains `false` for now.
+- Package cards, partial-success package card UI, drag-and-drop, persistent recent files/bookmarks, MapKit route context, iOS route visual parity, and expanded route inspection remain deferred to later Task-030e subtasks.
+- The macOS viewer remains read-only: no Core Data write, no package schema mutation, no route geometry mutation, no trusted metrics mutation, no merge/restore/sync, no Watch / WatchBridge, and no Task-031 work.

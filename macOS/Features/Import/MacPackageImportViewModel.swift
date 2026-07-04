@@ -1,6 +1,6 @@
 // [協作區] MacPackageImportViewModel.swift
-// 用途：macOS .skatetrack 匯入預覽狀態管理；只讀檔案並驗證 package，不寫入資料庫。
-// 委派至：MacImportView / MacPackagePreviewView；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
+// 用途：macOS .skatetrack read-only package preview state；Task-030e 擴充為 in-memory multi-package viewer state。
+// 委派至：MacImportView / MacSessionBrowserView / MacMultiPackageViewerState；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
 
 import Foundation
 
@@ -57,7 +57,7 @@ struct MacPackageImportPreview: Identifiable, Equatable {
 
 @MainActor
 final class MacPackageImportViewModel: ObservableObject {
-    @Published private(set) var preview: MacPackageImportPreview?
+    @Published private(set) var viewerState = MacMultiPackageViewerState()
     @Published private(set) var isImporting = false
     @Published private(set) var errorMessageKey: String?
     @Published private(set) var lastReadFileName: String?
@@ -68,6 +68,43 @@ final class MacPackageImportViewModel: ObservableObject {
         self.reader = reader
     }
 
+    var preview: MacPackageImportPreview? {
+        viewerState.selectedPackage
+    }
+
+    var openedPackages: [MacPackageImportPreview] {
+        viewerState.packages
+    }
+
+    var batchSummary: MacPackageOpenBatchSummary {
+        viewerState.batchSummary
+    }
+
+    var selectedPackageID: UUID? {
+        viewerState.selection.selectedPackageID
+    }
+
+    var selectedSessionID: UUID? {
+        viewerState.selection.selectedSessionID
+    }
+
+    var selectedPackageSession: SkateTrackPackageSession? {
+        viewerState.selectedPackageSession
+    }
+
+    var selectedViewerModels: [MacSessionViewerModel] {
+        preview?.payload.sessions.map(MacSessionViewerModel.init) ?? []
+    }
+
+    var selectedViewerModel: MacSessionViewerModel? {
+        let models = selectedViewerModels
+        if let selectedSessionID,
+           let selected = models.first(where: { $0.id == selectedSessionID }) {
+            return selected
+        }
+        return models.first
+    }
+
     func importPackage(from url: URL) {
         isImporting = true
         errorMessageKey = nil
@@ -75,8 +112,7 @@ final class MacPackageImportViewModel: ObservableObject {
         defer { isImporting = false }
 
         guard url.pathExtension.lowercased() == "skatetrack" else {
-            preview = nil
-            errorMessageKey = "mac.import.error.extension"
+            clearPackagesForReadFailure(errorMessageKey: "mac.import.error.extension")
             return
         }
 
@@ -89,19 +125,59 @@ final class MacPackageImportViewModel: ObservableObject {
 
         do {
             let payload = try reader.readPackage(from: url)
-            preview = MacPackageImportPreview(fileURL: url, payload: payload)
+            let preview = MacPackageImportPreview(fileURL: url, payload: payload)
+            var nextState = viewerState
+            nextState.replace(with: preview)
+            viewerState = nextState
         } catch let packageError as SkateTrackPackageError {
-            preview = nil
-            errorMessageKey = packageError.localizationKey
+            clearPackagesForReadFailure(errorMessageKey: packageError.localizationKey)
         } catch {
-            preview = nil
-            errorMessageKey = "mac.import.error.generic"
+            clearPackagesForReadFailure(errorMessageKey: "mac.import.error.generic")
         }
     }
 
+    func appendPackagePreviewForFutureBatch(_ preview: MacPackageImportPreview) {
+        var nextState = viewerState
+        nextState.appendOrReplacePackage(preview)
+        viewerState = nextState
+    }
+
+    func selectPackage(id: UUID?) {
+        var nextState = viewerState
+        nextState.selectPackage(id: id)
+        viewerState = nextState
+    }
+
+    func selectSession(id: UUID?) {
+        var nextState = viewerState
+        nextState.selectSession(id: id)
+        viewerState = nextState
+    }
+
+    func removePackage(id: UUID) {
+        var nextState = viewerState
+        nextState.removePackage(id: id)
+        viewerState = nextState
+    }
+
+    func ensureDefaultSelection() {
+        var nextState = viewerState
+        nextState.ensureValidSelection()
+        viewerState = nextState
+    }
+
     func clearPreview() {
-        preview = nil
+        var nextState = viewerState
+        nextState.clear()
+        viewerState = nextState
         errorMessageKey = nil
         lastReadFileName = nil
+    }
+
+    private func clearPackagesForReadFailure(errorMessageKey: String) {
+        var nextState = viewerState
+        nextState.clear()
+        viewerState = nextState
+        self.errorMessageKey = errorMessageKey
     }
 }
