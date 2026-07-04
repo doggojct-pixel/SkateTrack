@@ -1838,3 +1838,37 @@ docs/reference/FILE_STRUCTURE.md                                  # [原則 E] R
 - Task-030e-MacViewer-011 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
 
 Task-030e-MacViewer-011 verification token: Verifier / Test Foundation, verify_task030e_macos_multi_package_viewer.py, run_task030e_macos_multi_package_viewer_oneclick.sh, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
+
+## Task-030e-MacViewer-012 Documentation Sync Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+docs/DOCUMENTATION_INDEX.md                                      # [原則 E] Routes Task-030e documentation by source-of-truth document and records current documentation-sync status.
+docs/process/DEVELOPMENT_RULES.md                                # [原則 E] Records the recurring one-click cleanup rule: zip logs, delete the temporary run directory, and record `ONECLICK_RUN_DIR_REMOVED=YES`.
+docs/release/RELEASE_READINESS_PRE_ADP.md                        # [原則 E] Updates the macOS viewer gate to the current Task-030e state and required verifier / one-click commands.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md                         # [原則 E] Adds Task-030e multi-package viewer manual QA, duplicate acknowledgement, route inspection, localization/accessibility, and one-click cleanup checks.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                        # [原則 E] Adds the current Task-030e macOS viewer boundary and remaining deferred features.
+docs/adr/ADR-INDEX.md                                            # [原則 E] Records the Task-030e documentation-sync decision and read-only viewer boundary.
+docs/history/DEV_LOG.md                                          # [原則 E] Records Task-030e-MacViewer-012 documentation sync completion.
+scripts/verify_task030e_documentation_sync.py                    # [工程設定] Verifies Task-030e documentation synchronization tokens, docs whitespace hygiene, one-click cleanup tokens, and no-scope-expansion boundaries.
+scripts/verify_task030e_macos_multi_package_viewer.py            # [工程設定] Consolidated verifier now includes the Task-030e documentation-sync verifier in its required verifier inventory.
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh      # [工程設定] Source-controlled one-click runner now includes `verify_task030e_documentation_sync.py` and continues deleting its temporary run directory after zip packaging.
+```
+
+### Task-030e-MacViewer-012 documentation coverage
+
+- Documentation index now routes Task-030e documentation by use case.
+- Development rules now capture one-click post-zip temporary directory cleanup as a recurring rule.
+- Release readiness now describes the current macOS multi-package viewer capabilities and remaining Pre-ADP limitations.
+- Manual QA matrix now includes the Task-030e package-viewer flows, duplicate acknowledgement, route inspection, localization/accessibility, and one-click cleanup checks.
+- Known limitations and ADR index now state the read-only package review boundary and remaining deferred work.
+
+### Deferred After Task-030e-MacViewer-012
+
+- Manual QA screenshot gate remains deferred to Task-030e-MacViewer-013.
+- Final merge gate remains deferred to Task-030e-MacViewer-014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-012 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_documentation_sync.py, docs source-of-truth alignment, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.

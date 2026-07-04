@@ -649,3 +649,13 @@ Task-030e-MacViewer-007A limitation token: read-only MapKit route context, `MacR
 - macOS expanded route inspection is read-only and displays existing `.skatetrack` route samples only.
 - iOS-style route colors are visual continuity cues only; they do not indicate route correction, confidence scoring, road matching, snapping, or reconstructed geometry.
 - The viewer still does not write to Core Data, mutate packages, request location permission, show current user location, or change trusted metrics.
+
+### Task-030e-MacViewer-012 — Documentation Sync and Current macOS Viewer Boundary
+
+- **Current status:** Documentation now reflects the Task-030e macOS multi-package viewer state through verifier / documentation sync. The viewer supports browser-first multi-file open, in-memory package cards, selected package sessions, read-only MapKit route context, iOS route visual parity, expanded route inspection, display-only speed/elevation/total-ascent views, duplicate attention warnings, duplicate-file acknowledgement, localization/accessibility polish, and consolidated verification.
+- **Read-only boundary:** This remains a read-only `.skatetrack` review surface. It does not import packages into local history, merge packages, delete duplicates, choose a winner, restore data, or persist a package library.
+- **Route boundary:** Route display uses existing package route samples. It does not request location permission, show user location, perform road matching, snap to road, reconstruct route geometry, mutate trusted metrics, or rewrite package data.
+- **Platform boundary:** Finder open-with, custom UTType/document association, drag-and-drop, persistent recent files/bookmarks, Watch / WatchBridge, cloud sync, and Task-031 shared visualization pipeline work remain deferred.
+- **Verification boundary:** `scripts/run_task030e_macos_multi_package_viewer_oneclick.sh` is the source-controlled Task-030e one-click runner. It must zip logs, delete the temporary run directory, and record `ONECLICK_RUN_DIR_REMOVED=YES` after packaging.
+
+Task-030e-MacViewer-012 limitation token: Documentation Sync, current macOS multi-package viewer boundary, read-only package review, ONECLICK_RUN_DIR_REMOVED=YES, no import, no merge, no route mutation, no Core Data write.

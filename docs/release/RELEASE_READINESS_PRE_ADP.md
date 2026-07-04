@@ -1,8 +1,8 @@
 # SkateTrack Pre-ADP Release Readiness Report
 
-**Status:** Task-030b consolidated release-readiness gate  
-**Last Updated:** 2026-06-13  
-**Scope:** iOS, macOS, shared models, localization, local backup / package export, pre-Apple-Developer-Program service boundaries
+**Status:** Task-030e macOS package-viewer documentation sync
+**Last Updated:** 2026-07-04
+**Scope:** iOS, macOS, shared models, localization, local backup / package export, Task-030e macOS multi-package viewer, pre-Apple-Developer-Program service boundaries
 
 This report is the Task-030b consolidated release-readiness source of truth. It does not claim App Store readiness, TestFlight readiness, production subscription readiness, Google Drive readiness, or production cloud readiness. It records what can be verified before Apple Developer Program enrollment and external production credentials are available.
 
@@ -61,6 +61,9 @@ python3 scripts/verify_account_provider.py
 python3 scripts/verify_gps_background_recording.py
 python3 scripts/verify_shared_models.py
 python3 scripts/verify_macos_appiconset.py
+python3 scripts/verify_task030e_macos_multi_package_viewer.py
+python3 scripts/verify_task030e_documentation_sync.py
+bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
 ```
 
 If any script fails, do not proceed to Task-030b handoff or a release-candidate branch.
@@ -166,7 +169,7 @@ Fall Detection remains a safety-sensitive feature. Do not use unsafe human impac
 
 ## 8. macOS viewer gate
 
-The macOS app is a read-only `.skatetrack` package viewer.
+The macOS app is a read-only `.skatetrack` package viewer. After Task-030e-MacViewer-012, the release-readiness documentation reflects the completed Task-030e chain through verifier / documentation sync while preserving remaining Pre-ADP limitations.
 
 Required layout rule:
 
@@ -178,24 +181,44 @@ Required layout rule:
 
 The viewer currently supports:
 
-- NSOpenPanel selection of `.skatetrack` files.
-- Package manifest preview.
-- Read-only Session Viewer.
-- Lightweight SwiftUI Path route preview.
-- Lightweight SwiftUI Path speed chart.
-- Route quality / empty-state handling.
+- Browser-first package opening from Session Browser.
+- Multi-file `.skatetrack` selection through `NSOpenPanel`.
+- Independent package validation with partial-success reporting.
+- In-memory multi-package package cards and batch summary.
+- Selected package session list and selected session detail layout.
+- Read-only MapKit route context using existing package route samples.
+- iOS route visual parity for route-quality segment colors.
+- Expanded route inspection in a resizable macOS window.
+- Display-only speed chart, elevation profile, and total ascent display.
+- Duplicate / attention warnings for duplicate file paths and duplicate session identifiers.
+- Transient duplicate-file-path warning acknowledgement without delete / merge / winner selection.
+- English, Traditional Chinese, and Japanese localization plus focused accessibility labels / hints / identifiers.
+- Source-controlled consolidated verifier and one-click verification runner.
 
 The viewer does not support:
 
-- Database import.
-- Merge / restore.
-- Package library.
-- Finder open-with.
-- Custom UTType / document association.
-- MapKit map rendering.
-- Road matching / heat maps.
-- Swift Charts dashboards.
-- Report export.
+- Database import or local-history import.
+- Merge / restore / winner selection.
+- Package library persistence, recent-file persistence, or bookmarks.
+- Drag-and-drop package opening.
+- Finder open-with, custom UTType, or document association.
+- Cloud sync or Google Drive sync.
+- Road matching, snap-to-road, route reconstruction, route correction, or heat maps.
+- Route geometry mutation, trusted metric mutation, package schema changes, or Core Data writes.
+- Location permission prompts or user-location blue-dot display.
+- Watch, WatchBridge, or Task-031 shared visualization pipeline work.
+
+Task-030e verification commands before closing a Task-030e stage:
+
+```bash
+python3 scripts/verify_task030e_macos_multi_package_viewer.py
+python3 scripts/verify_task030e_documentation_sync.py
+bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
+```
+
+The one-click runner must package logs into a zip, delete its temporary run directory after zip creation, and record `ONECLICK_RUN_DIR_REMOVED=YES` in the postpack log.
+
+Task-030e-MacViewer-012 release-readiness token: macOS multi-package viewer gate, read-only `.skatetrack` review, documentation sync, one-click cleanup, no import / merge / route mutation.
 
 ## 9. Task-030a pass condition
 

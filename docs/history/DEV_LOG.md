@@ -2469,3 +2469,13 @@ Task-030e-MacViewer-010 verification token: Localization / Accessibility Pass, m
 - The 011 verifier/test foundation remains source-level and build-log based; it does not add screenshot dependency, UI automation, package merge, duplicate deletion, winner selection, local-history import, package schema change, Core Data write, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch, WatchBridge, or Task-031 work.
 
 Task-030e-MacViewer-011 verification token: Verifier / Test Foundation, verify_task030e_macos_multi_package_viewer.py, run_task030e_macos_multi_package_viewer_oneclick.sh, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
+
+## 2026-07-04 — Task-030e-MacViewer-012 Documentation Sync
+
+- Aligned the Task-030e macOS multi-package viewer documentation across the documentation index, development rules, release readiness, manual QA matrix, known limitations, ADR index, file structure, and development log.
+- Documented the current macOS viewer state through Task-030e-MacViewer-011: browser-first multi-file `.skatetrack` open, in-memory package cards, selected sessions, read-only MapKit route context, route visual parity, expanded route inspection, display-only speed/elevation/total-ascent views, duplicate attention warnings, duplicate-file acknowledgement, localization/accessibility pass, and consolidated verification.
+- Promoted one-click cleanup to a recurring docs rule: one-click verification packages logs into a zip, deletes the temporary run directory, and records `ONECLICK_RUN_DIR_REMOVED=YES` after packaging.
+- Added `scripts/verify_task030e_documentation_sync.py` and included it in the Task-030e source-controlled one-click verification runner.
+- No UI behavior, package opening behavior, package schema, Core Data write, local-history import, merge, duplicate deletion, winner selection, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch / WatchBridge, or Task-031 shared visualization pipeline work was introduced.
+
+Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_documentation_sync.py, documentation index, release readiness, manual QA matrix, known limitations, ADR index, one-click cleanup rule, no route / metric / package mutation.

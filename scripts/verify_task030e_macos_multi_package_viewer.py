@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Task-030e macOS multi-package viewer foundation after 011."""
+"""Verify Task-030e macOS multi-package viewer foundation after 012."""
 from __future__ import annotations
 
 import re
@@ -22,6 +22,7 @@ TASK030E_VERIFIERS = [
     "scripts/verify_task030e_duplicate_acknowledgement.py",
     "scripts/verify_task030e_localization_accessibility.py",
     "scripts/verify_task030e_macos_multi_package_viewer.py",
+    "scripts/verify_task030e_documentation_sync.py",
 ]
 
 REQUIRED_FILES = [
@@ -49,6 +50,11 @@ REQUIRED_FILES = [
     "docs/history/DEV_LOG.md",
     "docs/reference/FILE_STRUCTURE.md",
     "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "docs/release/RELEASE_READINESS_PRE_ADP.md",
+    "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+    "docs/DOCUMENTATION_INDEX.md",
+    "docs/process/DEVELOPMENT_RULES.md",
+    "docs/adr/ADR-INDEX.md",
 ]
 
 REQUIRED_LOCALIZATION_KEYS = [
@@ -277,6 +283,7 @@ def ensure_oneclick_foundation() -> None:
     oneclick = read("scripts/run_task030e_macos_multi_package_viewer_oneclick.sh")
     for token in [
         "verify_task030e_macos_multi_package_viewer.py",
+        "verify_task030e_documentation_sync.py",
         "verify_task030e_localization_accessibility.py",
         "xcodebuild",
         "LINE_CHECK_RESULT",
@@ -300,16 +307,32 @@ def ensure_docs() -> None:
     file_structure = read("docs/reference/FILE_STRUCTURE.md")
     for token in [
         "Task-030e-MacViewer-011 Verifier / Test Foundation",
+        "Task-030e-MacViewer-012 Documentation Sync",
         "verify_task030e_macos_multi_package_viewer.py",
+        "verify_task030e_documentation_sync.py",
         "run_task030e_macos_multi_package_viewer_oneclick.sh",
         "ONECLICK_RUN_DIR_REMOVED=YES",
         "no package schema change",
     ]:
         if token not in dev_log + file_structure:
             fail(f"documentation missing token: {token}")
-    limitations = read("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md")
-    if "Task-030e" not in limitations:
-        fail("known limitations must preserve Task-030e context")
+    docs_text = "\n".join([
+        read("docs/release/KNOWN_LIMITATIONS_PRE_ADP.md"),
+        read("docs/release/RELEASE_READINESS_PRE_ADP.md"),
+        read("docs/release/MANUAL_QA_MATRIX_PRE_ADP.md"),
+        read("docs/DOCUMENTATION_INDEX.md"),
+        read("docs/process/DEVELOPMENT_RULES.md"),
+        read("docs/adr/ADR-INDEX.md"),
+    ])
+    for token in [
+        "Task-030e-MacViewer-012",
+        "Documentation Sync",
+        "read-only `.skatetrack` review surface",
+        "one-click cleanup",
+        "no import / merge / route mutation",
+    ]:
+        if token not in docs_text:
+            fail(f"documentation sync missing token: {token}")
 
 
 def main() -> None:

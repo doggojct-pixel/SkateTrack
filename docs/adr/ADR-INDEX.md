@@ -470,3 +470,11 @@ db8f42b Task-030c-b18-B add review-only estimated route overlay
 ```
 
 Task-030c final closure verification token: docs-only closure audit, Section 5 DoD mapping, commit trace through `2cc0550`, b18-D `keepDisabled`, Task-031 indoor handoff, no user-visible estimated route display, no route geometry mutation, no trusted metric mutation, no persistence/schema mutation.
+
+## Task-030e macOS multi-package viewer documentation sync
+
+Decision: Task-030e-MacViewer-012 makes the macOS multi-package viewer documentation consistent across the documentation index, development rules, release readiness, manual QA matrix, known limitations, file structure, and development log. The Task-030e viewer is documented as a read-only `.skatetrack` review surface through verifier / docs sync, not as an import, merge, restore, sync, or route-correction feature.
+
+Boundary: The documentation sync does not add Swift UI behavior, package schema fields, Core Data writes, local-history import, route geometry mutation, trusted metric mutation, location permission, user-location display, Watch / WatchBridge work, or Task-031 shared visualization pipeline work. The one-click runner is documented as responsible for deleting its temporary output directory after zip packaging and recording `ONECLICK_RUN_DIR_REMOVED=YES`.
+
+Task-030e-MacViewer-012 ADR token: Documentation Sync, read-only macOS multi-package viewer, one-click cleanup rule, no import / merge / route mutation.
