@@ -963,12 +963,12 @@
 "mac.package.preview.route_unavailable" = "このパッケージにはルートサンプルがありません。";
 "mac.package.preview.privacy.boundary" = "ポータブル書き出しパッケージには、アカウントセッション、Google トークン、Drive 状態、実績、週間チャレンジ記録を含めてはいけません。";
 "mac.package.preview.locked.viewer.title" = "セッションブラウザーはサイドバーへ移動しました";
-"mac.package.preview.locked.viewer.subtitle" = "この機能は現在のビルドでは有効化されておらず、後続タスクまで延期されています。";
+"mac.package.preview.locked.viewer.subtitle" = "Task-028a で選択中パッケージの読み取り専用セッションブラウザーが有効になりました。フルマップ、高度なチャート、レポート書き出し、ドラッグ＆ドロップ読み込み、ストレージ読み込みはまだ延期されています。";
 "mac.package.preview.value.none" = "—";
 "mac.package.preview.duration.format" = "%d分%02d秒";
-"mac.package.preview.distance.format" = "距離： %.2f";
-"mac.package.preview.speed.format" = "速度： %.1f";
-"mac.package.preview.percent.format" = "値： %.0f";
+"mac.package.preview.distance.format" = "%.2f km";
+"mac.package.preview.speed.format" = "%.1f km/h";
+"mac.package.preview.percent.format" = "%.0f%%";
 "mac.package.preview.viewer_ready.title" = "セッションブラウザーを利用できます";
 "mac.package.preview.viewer_ready.subtitle" = "このパッケージのセッションを確認するには、サイドバーの Session Browser を使用してください。ビューアーは読み取り専用で、ローカルストレージへ書き込みません。";
 "mac.viewer.title" = "セッションブラウザー";
@@ -979,15 +979,15 @@
 "mac.viewer.empty.button" = "パッケージを開く";
 "mac.viewer.open.title" = "セッションブラウザー";
 "mac.viewer.open.subtitle" = ".skatetrack パッケージを開き、Mac の大きな画面でセッションを確認します。";
-"mac.viewer.open.button" = "Packages を開く";
-"mac.viewer.open.clear" = "Packages をクリア";
+"mac.viewer.open.button" = "パッケージを開く";
+"mac.viewer.open.clear" = "パッケージをクリア";
 "mac.viewer.open.readonly" = "読み取り専用ブラウザーです。読み込み、マージ、復元、ルート修正、クラウド同期は行いません。";
 "mac.viewer.open.error.title" = "パッケージを開けません";
 "mac.viewer.open.current_file.format" = "開いているファイル：%@";
-"mac.viewer.open.panel.title" = "SkateTrack packages を開く";
-"mac.viewer.open.panel.prompt" = "Packages を開く";
-"mac.viewer.open.panel.message" = "iOS から書き出した 1 つ以上の .skatetrack packages を選択します。ファイルは読み取り専用で開かれ、ローカルストレージには読み込まれません。";
-"mac.viewer.open.current_batch.format" = "開いた packages：%d packages、%d sessions";
+"mac.viewer.open.panel.title" = "SkateTrack パッケージを開く";
+"mac.viewer.open.panel.prompt" = "パッケージを開く";
+"mac.viewer.open.panel.message" = "iOS から書き出した 1 つ以上の .skatetrack パッケージを選択します。ファイルは読み取り専用で開かれ、ローカルストレージには読み込まれません。";
+"mac.viewer.open.current_batch.format" = "開いたパッケージ：%d 個の package、%d 件の session";
 "mac.viewer.open.partial_failure.title" = "一部の packages を開けませんでした";
 "mac.viewer.open.partial_failure.message.format" = "%d / %d 個の選択 packages を開きました。失敗したファイルはスキップされ、データは書き込まれていません。";
 "mac.viewer.open.failed.title" = "選択した packages を開けませんでした";
@@ -998,7 +998,7 @@
 "mac.accessibility.browser_header.label" = "セッションブラウザーのパッケージ操作";
 "mac.accessibility.browser_header.hint" = "SkateTrack packages を開くか、現在の読み取り専用プレビューをクリアします。";
 "mac.viewer.empty.no_session.title" = "セッションが見つかりません";
-"mac.viewer.empty.no_session.subtitle" = "処理を完了できませんでした。もう一度確認してください。";
+"mac.viewer.empty.no_session.subtitle" = "このパッケージは検証に成功しましたが、ビューアーで表示できるセッションペイロードが見つかりませんでした。";
 "mac.viewer.session.default_title" = "SkateTrack セッション";
 "mac.viewer.session.no_equipment" = "装備スナップショットなし";
 "mac.viewer.readonly.badge" = "読み取り専用パッケージビューアー";
@@ -1227,3 +1227,27 @@
 "mac.viewer.attention.duplicate_session.detail" = "別の開いたパッケージに同じ session identifier が含まれています。読み取り専用で確認してください。SkateTrack はセッションを結合または上書きしません。";
 "mac.accessibility.attention_summary.label" = "パッケージ注意サマリー";
 "mac.accessibility.attention_summary.hint" = "現在の読み取り専用ブラウザーセッションにある重複ファイル、パッケージ、セッションの警告を表示します。";
+
+"mac.accessibility.open_packages.button.label" = "パッケージを開く";
+
+"mac.accessibility.open_packages.button.hint" = "読み取り専用の macOS セッションブラウザーで、1つ以上の .skatetrack パッケージを開きます。";
+
+"mac.accessibility.clear_packages.button.label" = "開いているパッケージをクリア";
+
+"mac.accessibility.clear_packages.button.hint" = "現在の読み取り専用パッケージプレビューをブラウザーからクリアします。ファイルは削除しません。";
+
+"mac.accessibility.acknowledge_duplicate_files.button.label" = "重複ファイル警告を確認";
+
+"mac.accessibility.acknowledge_duplicate_files.button.hint" = "現在の重複ファイルパス警告の表示だけを消します。同じ重複ファイルを再度開くと、警告は再び表示されます。";
+
+"mac.accessibility.route_inspect_open.button.label" = "大きなルートマップを開く";
+
+"mac.accessibility.route_inspect_open.button.hint" = "サイズ変更できる読み取り専用のルート確認ウィンドウを開きます。位置情報の要求やルート編集は行いません。";
+
+"mac.accessibility.route_inspect_close.button.label" = "ルート確認を閉じる";
+
+"mac.accessibility.route_inspect_close.button.hint" = "拡大したルート確認ウィンドウを閉じます。";
+
+"mac.accessibility.elevation_chart.label" = "標高プロファイルチャート";
+
+"mac.accessibility.package_card.remove.hint" = "このパッケージを読み取り専用ブラウザーセッションから外します。パッケージファイルは削除しません。";

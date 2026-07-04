@@ -48,7 +48,10 @@ struct MacPackageAttentionSummaryView: View {
                             .shadow(color: .orange.opacity(0.18), radius: 4, x: 0, y: 2)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(Text("mac.accessibility.acknowledge_duplicate_files.button.label"))
+                        .accessibilityHint(Text("mac.accessibility.acknowledge_duplicate_files.button.hint"))
                         .accessibilityIdentifier("mac-attention-acknowledge-duplicate-files-button")
+                        .help(Text("mac.accessibility.acknowledge_duplicate_files.button.hint"))
                     }
                 }
 

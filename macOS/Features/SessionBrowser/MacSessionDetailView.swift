@@ -128,7 +128,7 @@ struct MacSessionDetailView: View {
             if !model.privacyNotes.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(model.privacyNotes, id: \.self) { note in
-                        Text("• \(note)")
+                        Text(verbatim: "• \(note)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -233,5 +233,7 @@ private struct MacSessionViewerMetric: View {
         .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
         .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(LocalizedStringKey(titleKey)))
+        .accessibilityValue(Text(value))
     }
 }

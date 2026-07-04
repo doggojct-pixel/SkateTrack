@@ -46,6 +46,7 @@ struct MacSpeedSparklineView: View {
         .accessibilityLabel(Text("mac.accessibility.speed_chart.label"))
         .accessibilityValue(Text(maxSpeedLabel))
         .accessibilityHint(Text("mac.accessibility.speed_chart.hint"))
+        .accessibilityIdentifier("mac-speed-chart")
     }
 
     private var maxSpeedLabel: String {
@@ -136,9 +137,10 @@ struct MacElevationProfileView: View {
                 .stroke(.white.opacity(0.08), lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text("mac.viewer.chart.elevation.title"))
+        .accessibilityLabel(Text("mac.accessibility.elevation_chart.label"))
         .accessibilityValue(Text(elevationRangeLabel))
         .accessibilityHint(Text("mac.viewer.chart.elevation.hint"))
+        .accessibilityIdentifier("mac-elevation-chart")
     }
 
     private var elevationRangeLabel: String {

@@ -1780,3 +1780,30 @@ scripts/verify_task030e_duplicate_attention.py                      # [工程設
 - Task-030e-MacViewer-009 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
 
 Task-030e-MacViewer-009-1 verification token: Duplicate Attention Acknowledgement, acknowledgeDuplicateFilePathWarnings, acknowledgedDuplicateFilePaths, mac.viewer.attention.acknowledge_duplicate_files, no merge, no delete, no winner selection, no local history import.
+
+## Task-030e-MacViewer-010 Localization / Accessibility Pass Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Adds localized accessibility label / hint / help for the duplicate-file acknowledgement button.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Adds localized accessibility label / hint / identifiers for open / clear package controls.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift             # [協作區] Adds localized accessibility labels / hints / identifiers for expanded route inspection entry points.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift          # [協作區] Adds localized accessibility label / hint / identifier for the route inspection close control.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift           # [協作區] Adds speed / elevation chart accessibility identifiers and a dedicated elevation chart accessibility label.
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Adds localized accessibility help for read-only package-card removal and testable card control identifiers.
+macOS/Features/SessionBrowser/MacPackageSessionListView.swift       # [協作區] Adds session-card accessibility identifier and localized help.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift            # [協作區] Treats exported privacy-note text as verbatim content and exposes metric label/value pairs to accessibility.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [原則 A] Adds 010 accessibility copy in all supported languages and tightens Japanese macOS viewer unit / empty-state wording.
+scripts/verify_task030e_localization_accessibility.py               # [工程設定] Task-030e-MacViewer-010 verifier for localization parity, accessibility tokens, line/header rules, and no-mutation boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-010
+
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
+- Manual QA gate and final merge gate remain deferred to Task-030e-MacViewer-013 / 014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-010 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-010 verification token: Localization / Accessibility Pass, accessibility labels / hints / identifiers, mac.accessibility.elevation_chart.label, Japanese unit wording alignment, no route / metric / package mutation.

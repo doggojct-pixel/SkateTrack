@@ -1227,3 +1227,27 @@
 "mac.viewer.attention.duplicate_session.detail" = "另一個已開啟 package 包含相同 session identifier。請以唯讀方式檢查；SkateTrack 不會合併或覆寫 Session。";
 "mac.accessibility.attention_summary.label" = "Package 注意摘要";
 "mac.accessibility.attention_summary.hint" = "顯示目前唯讀瀏覽階段的重複檔案、package 或 session 警示。";
+
+"mac.accessibility.open_packages.button.label" = "開啟 packages";
+
+"mac.accessibility.open_packages.button.hint" = "在 macOS 只讀 Session 瀏覽器中開啟一個或多個 .skatetrack packages。";
+
+"mac.accessibility.clear_packages.button.label" = "清除已開啟 packages";
+
+"mac.accessibility.clear_packages.button.hint" = "清除目前瀏覽器中的只讀 package 預覽；不會刪除任何檔案。";
+
+"mac.accessibility.acknowledge_duplicate_files.button.label" = "確認重複檔案警示";
+
+"mac.accessibility.acknowledge_duplicate_files.button.hint" = "清除目前這次重複檔案路徑的警示視覺狀態；再次重複開啟同一檔案時仍會重新顯示警示。";
+
+"mac.accessibility.route_inspect_open.button.label" = "開啟較大的路線地圖";
+
+"mac.accessibility.route_inspect_open.button.hint" = "開啟可調整大小的只讀路線檢視視窗；不會請求定位，也不會編輯路線。";
+
+"mac.accessibility.route_inspect_close.button.label" = "關閉路線檢視";
+
+"mac.accessibility.route_inspect_close.button.hint" = "關閉放大的路線檢視視窗。";
+
+"mac.accessibility.elevation_chart.label" = "海拔剖面圖";
+
+"mac.accessibility.package_card.remove.hint" = "從只讀瀏覽器階段移除此 package；不會刪除 package 檔案。";

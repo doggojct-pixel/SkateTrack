@@ -43,6 +43,10 @@ struct MacRoutePreviewView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .accessibilityLabel(Text("mac.accessibility.route_inspect_open.button.label"))
+                .accessibilityHint(Text("mac.accessibility.route_inspect_open.button.hint"))
+                .accessibilityIdentifier("mac-route-inspect-open-titlebar-button")
+                .help(Text("mac.accessibility.route_inspect_open.button.hint"))
             }
             Text(LocalizedStringKey(summary.quality.localizationKey))
                 .font(.caption.weight(.semibold))
@@ -98,6 +102,10 @@ struct MacRoutePreviewView: View {
         }
         .buttonStyle(.borderedProminent)
         .controlSize(.small)
+        .accessibilityLabel(Text("mac.accessibility.route_inspect_open.button.label"))
+        .accessibilityHint(Text("mac.accessibility.route_inspect_open.button.hint"))
+        .accessibilityIdentifier("mac-route-inspect-open-overlay-button")
+        .help(Text("mac.accessibility.route_inspect_open.button.hint"))
         .padding(12)
     }
 

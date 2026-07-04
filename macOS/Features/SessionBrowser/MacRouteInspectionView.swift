@@ -44,6 +44,10 @@ struct MacRouteInspectionView: View {
                 closeAction()
             }
             .keyboardShortcut(.cancelAction)
+            .accessibilityLabel(Text("mac.accessibility.route_inspect_close.button.label"))
+            .accessibilityHint(Text("mac.accessibility.route_inspect_close.button.hint"))
+            .accessibilityIdentifier("mac-route-inspect-close-button")
+            .help(Text("mac.accessibility.route_inspect_close.button.hint"))
         }
         .padding(22)
     }

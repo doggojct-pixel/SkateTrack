@@ -178,12 +178,20 @@ private struct MacPackageBrowserHeaderView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(isReading)
+                    .accessibilityLabel(Text("mac.accessibility.open_packages.button.label"))
+                    .accessibilityHint(Text("mac.accessibility.open_packages.button.hint"))
+                    .accessibilityIdentifier("mac-open-packages-button")
+                    .help(Text("mac.accessibility.open_packages.button.hint"))
 
                     if preview != nil {
                         Button(role: .destructive, action: clearAction) {
                             Label("mac.viewer.open.clear", systemImage: "xmark.circle")
                         }
                         .buttonStyle(.bordered)
+                        .accessibilityLabel(Text("mac.accessibility.clear_packages.button.label"))
+                        .accessibilityHint(Text("mac.accessibility.clear_packages.button.hint"))
+                        .accessibilityIdentifier("mac-clear-packages-button")
+                        .help(Text("mac.accessibility.clear_packages.button.hint"))
                     }
                 }
             }

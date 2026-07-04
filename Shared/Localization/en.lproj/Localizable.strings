@@ -1227,3 +1227,27 @@
 "mac.viewer.attention.duplicate_session.detail" = "Another opened package contains the same session identifier. Review it read-only; SkateTrack will not merge or overwrite sessions.";
 "mac.accessibility.attention_summary.label" = "Package attention summary";
 "mac.accessibility.attention_summary.hint" = "Shows duplicate file, package, or session warnings for the current read-only browser session.";
+
+"mac.accessibility.open_packages.button.label" = "Open packages";
+
+"mac.accessibility.open_packages.button.hint" = "Opens one or more .skatetrack packages in the read-only macOS Session Browser.";
+
+"mac.accessibility.clear_packages.button.label" = "Clear opened packages";
+
+"mac.accessibility.clear_packages.button.hint" = "Clears the current read-only package previews from the browser. It does not delete any files.";
+
+"mac.accessibility.acknowledge_duplicate_files.button.label" = "Acknowledge duplicate file warning";
+
+"mac.accessibility.acknowledge_duplicate_files.button.hint" = "Clears the current duplicate file path warning visuals. Reopening the same duplicate file will show the warning again.";
+
+"mac.accessibility.route_inspect_open.button.label" = "Open larger route map";
+
+"mac.accessibility.route_inspect_open.button.hint" = "Opens a resizable read-only route inspection window. It does not request location or edit the route.";
+
+"mac.accessibility.route_inspect_close.button.label" = "Close route inspection";
+
+"mac.accessibility.route_inspect_close.button.hint" = "Closes the expanded route inspection window.";
+
+"mac.accessibility.elevation_chart.label" = "Elevation profile chart";
+
+"mac.accessibility.package_card.remove.hint" = "Removes this package from the read-only browser session. It does not delete the package file.";

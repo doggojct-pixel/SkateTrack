@@ -123,6 +123,7 @@ private struct MacPackageSelectionCard: View {
         .buttonStyle(.plain)
         .background(cardBackground)
         .overlay(cardBorder)
+        .accessibilityIdentifier("mac-package-card-select-button")
     }
 
     private var cardContent: some View {
@@ -163,6 +164,9 @@ private struct MacPackageSelectionCard: View {
         .buttonStyle(.plain)
         .foregroundStyle(.secondary)
         .accessibilityLabel(Text("mac.viewer.packages.card.remove"))
+        .accessibilityHint(Text("mac.accessibility.package_card.remove.hint"))
+        .accessibilityIdentifier("mac-package-card-remove-button")
+        .help(Text("mac.accessibility.package_card.remove.hint"))
     }
 
     private var metricsSection: some View {

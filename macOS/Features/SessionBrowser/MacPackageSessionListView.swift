@@ -105,6 +105,8 @@ private struct MacPackageSessionListRow: View {
         .accessibilityLabel(Text(model.title))
         .accessibilityValue(Text(selectionText))
         .accessibilityHint(Text("mac.viewer.sessions.card.hint"))
+        .accessibilityIdentifier("mac-session-list-card")
+        .help(Text("mac.viewer.sessions.card.hint"))
     }
 
     private var rowContent: some View {

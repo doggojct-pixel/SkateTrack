@@ -2447,3 +2447,15 @@ Task-030e-MacViewer-009 verification token: Duplicate and Attention States, `Mac
 - Strengthened the macOS duplicate attention acknowledgement control so `已了解` reads as a clear button instead of a low-contrast text-like control.
 - Kept acknowledgement behavior unchanged: only transient duplicate-file-path warnings are cleared, packages remain in memory, and reopening the same duplicate file path surfaces the warning again.
 - Did not add merge, deletion, winner selection, local-history import, package mutation, route correction, road matching, snap-to-road, route reconstruction, Core Data writes, location permission, or user-location display.
+
+## 2026-07-04 — Task-030e-MacViewer-010 Localization / Accessibility Pass
+
+- Aligned the macOS multi-package Session Browser with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` localization / accessibility scope.
+- Added focused accessibility labels, hints, identifiers, and help text for package open / clear controls, duplicate attention acknowledgement, route inspection open / close controls, package card removal, session list cards, speed chart, and elevation chart.
+- Added `mac.accessibility.*` localization keys in English, Traditional Chinese, and Japanese for the new accessibility copy.
+- Tightened Japanese macOS viewer strings that were still generic or missing unit context, including package distance / speed / percent formats, empty-session copy, locked-viewer copy, and package-open copy.
+- Treated package privacy-note text as verbatim exported package content rather than a localization key.
+- Added `scripts/verify_task030e_localization_accessibility.py` for Task-030e-010 source-level checks.
+- No package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema change, or Core Data write was introduced.
+
+Task-030e-MacViewer-010 verification token: Localization / Accessibility Pass, mac.accessibility.open_packages.button.label, mac.accessibility.acknowledge_duplicate_files.button.label, mac.accessibility.route_inspect_open.button.label, mac.accessibility.elevation_chart.label, accessibilityIdentifier, Text(verbatim: "• \\(note)"), no merge, no delete, no winner selection, no Core Data write.
