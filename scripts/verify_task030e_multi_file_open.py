@@ -156,13 +156,14 @@ def ensure_state_supports_batch_replace() -> None:
         if token not in state:
             fail(f"MacMultiPackageViewerState missing batch/merge token: {token}")
     legacy_unique_batch = "packages = uniquePreviews(from: previews)" in state
-    attention_classified_batch = "packages = MacPackageAttentionClassifier.classifiedPreviews(from: previews)" in state
-    attention_classified_merge = "packages = MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)" in state
+    attention_classified_batch = "from: previews" in state and "MacPackageAttentionClassifier.classifiedPreviews(" in state
+    attention_classified_merge = "from: combinedPreviews" in state and "MacPackageAttentionClassifier.classifiedPreviews(" in state
+    attention_classified_packages = "from: packages" in state and "MacPackageAttentionClassifier.classifiedPreviews(" in state
     if not (legacy_unique_batch or attention_classified_batch):
         fail("MacMultiPackageViewerState must either de-duplicate paths directly or classify duplicate/attention states")
-    if "MacPackageAttentionClassifier.classifiedPreviews(from: packages)" not in state:
+    if not attention_classified_packages:
         fail("MacMultiPackageViewerState must reclassify duplicate/attention states after append/remove changes")
-    if "MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)" not in state:
+    if not attention_classified_merge:
         fail("MacMultiPackageViewerState must classify duplicate/attention states when merging reopened packages")
 
 

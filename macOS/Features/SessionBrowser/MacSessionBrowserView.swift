@@ -48,7 +48,11 @@ struct MacSessionBrowserView: View {
                     )
                 }
 
-                MacPackageAttentionSummaryView(summary: viewModel.attentionSummary)
+                MacPackageAttentionSummaryView(
+                    summary: viewModel.attentionSummary,
+                    canAcknowledgeDuplicateFiles: viewModel.hasAcknowledgeableDuplicateFilePathWarnings,
+                    acknowledgeDuplicateFilesAction: viewModel.acknowledgeDuplicateFilePathWarnings
+                )
 
                 MacPackageCardListView(
                     packages: viewModel.openedPackages,

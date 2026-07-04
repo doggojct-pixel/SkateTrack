@@ -40,7 +40,8 @@ ATTENTION_STATE_TOKENS = [
     "case duplicateSessionIdentifier",
     "struct MacPackageAttentionSummary: Equatable",
     "enum MacPackageAttentionClassifier",
-    "classifiedPreviews(from previews: [MacPackageImportPreview])",
+    "static func classifiedPreviews(",
+    "acknowledgedDuplicateFilePaths: Set<String> = []",
     "uniquePreviewsByPath",
     "duplicateSessionIdentifiers(in:",
     "packageIdentifierCandidate(for preview: MacPackageImportPreview) -> String?",
@@ -68,22 +69,26 @@ CARD_TOKENS = [
 ]
 
 BROWSER_TOKENS = [
-    "MacPackageAttentionSummaryView(summary: viewModel.attentionSummary)",
+    "MacPackageAttentionSummaryView(",
+    "summary: viewModel.attentionSummary",
 ]
 
 STATE_TOKENS = [
     "var attentionSummary: MacPackageAttentionSummary",
-    "MacPackageAttentionClassifier.classifiedPreviews(from: packages)",
-    "MacPackageAttentionClassifier.classifiedPreviews(from: previews)",
+    "MacPackageAttentionClassifier.classifiedPreviews(",
+    "from: packages",
+    "from: previews",
     "mutating func mergeOpenedPreviews(_ previews: [MacPackageImportPreview])",
     "let combinedPreviews = packages + previews",
     "normalizedPath(for: previews[0].fileURL)",
+    "acknowledgedDuplicateFilePaths.subtract(reopenedPaths)",
 ]
 
 VIEW_MODEL_TOKENS = [
     "let attentionWarnings: [MacPackageAttentionWarning]",
     "attentionWarnings: [MacPackageAttentionWarning] = []",
     "var attentionSummary: MacPackageAttentionSummary",
+    "var hasAcknowledgeableDuplicateFilePathWarnings: Bool",
     "nextState.mergeOpenedPreviews(result.previews)",
 ]
 
@@ -106,6 +111,7 @@ LOCALIZATION_KEYS = [
     "mac.viewer.attention.summary.duplicate_package.format",
     "mac.viewer.attention.summary.duplicate_session.format",
     "mac.viewer.attention.card.badge",
+    "mac.viewer.attention.acknowledge_duplicate_files",
     "mac.viewer.attention.duplicate_file.title",
     "mac.viewer.attention.duplicate_file.detail",
     "mac.viewer.attention.duplicate_package.title",

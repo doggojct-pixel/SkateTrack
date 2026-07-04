@@ -1213,6 +1213,7 @@
 /* Task-030e-MacViewer-009 Duplicate and Attention States */
 "mac.viewer.attention.title" = "需要注意";
 "mac.viewer.attention.message.format" = "%d 個已開啟 package 有重複或注意警示。";
+"mac.viewer.attention.acknowledge_duplicate_files" = "已了解";
 "mac.viewer.attention.readonly" = "安全時仍可唯讀瀏覽。SkateTrack 不會合併、刪除、挑選勝出版本、匯入本機歷史，也不會修改 package。";
 "mac.viewer.attention.summary.duplicate_file.format" = "%d 個 package card 有完全相同檔案路徑警示。";
 "mac.viewer.attention.summary.duplicate_package.format" = "%d 個 package card 有重複 package identifier 警示。";

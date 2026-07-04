@@ -2423,6 +2423,14 @@ Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `Ma
 
 Task-030e-MacViewer-008-1 verification token: Elevation Profile + Total Ascent Display Alignment, `MacElevationDisplayPipeline`, `MacElevationProfileView`, `summary.metric.elevationGain`, existing package motion samples only, display-only elevation profile, no trusted metrics mutation, no package schema change, no Core Data write, Task-031-prep shared activity visualization deferred.
 
+## 2026-07-04 — Task-030e-MacViewer-009-1 Duplicate Attention Acknowledgement
+
+- Added a read-only acknowledgement action for transient duplicate file path warnings in the macOS multi-package Session Browser.
+- Acknowledging duplicate file path warnings clears the current visual warning state without removing packages, merging packages, choosing a winner, importing to local history, mutating schema, writing Core Data, or changing route geometry / trusted metrics.
+- Reopening the same already-open package path removes the acknowledgement for that path and surfaces the duplicate attention warning again.
+
+Task-030e-MacViewer-009-1 verification token: Duplicate Attention Acknowledgement, acknowledgeDuplicateFilePathWarnings, acknowledgedDuplicateFilePaths, mac.viewer.attention.acknowledge_duplicate_files, transient duplicate file path warning acknowledgement, no merge, no delete, no winner selection, no local history import.
+
 ## 2026-07-04 — Task-030e-MacViewer-009 Duplicate and Attention States
 
 - Aligned the macOS multi-package viewer with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` duplicate / attention scope.
@@ -2433,3 +2441,9 @@ Task-030e-MacViewer-008-1 verification token: Elevation Profile + Total Ascent D
 - No package merge, duplicate deletion, winner selection, local history import, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, road matching, snap-to-road, route reconstruction, location permission, or user-location display was introduced.
 
 Task-030e-MacViewer-009 verification token: Duplicate and Attention States, `MacPackageAttentionState`, `MacPackageAttentionSummaryView`, exact duplicate file path warnings, duplicate session identifier warnings, read-only browsing remains available where safe, no merge, no delete, no winner selection, no local history import, no package schema change, no Core Data write, aligned Build Plan v1.2.
+
+## 2026-07-04 — Task-030e-MacViewer-009-1 duplicate acknowledgement button affordance hotfix
+
+- Strengthened the macOS duplicate attention acknowledgement control so `已了解` reads as a clear button instead of a low-contrast text-like control.
+- Kept acknowledgement behavior unchanged: only transient duplicate-file-path warnings are cleared, packages remain in memory, and reopening the same duplicate file path surfaces the warning again.
+- Did not add merge, deletion, winner selection, local-history import, package mutation, route correction, road matching, snap-to-road, route reconstruction, Core Data writes, location permission, or user-location display.

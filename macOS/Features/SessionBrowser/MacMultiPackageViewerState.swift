@@ -28,12 +28,18 @@ struct MacPackageOpenBatchSummary: Equatable {
 struct MacMultiPackageViewerState: Equatable {
     private(set) var packages: [MacPackageImportPreview]
     private(set) var selection: MacMultiPackageViewerSelection
+    private(set) var acknowledgedDuplicateFilePaths: Set<String>
 
     init(
         packages: [MacPackageImportPreview] = [],
-        selection: MacMultiPackageViewerSelection = .empty
+        selection: MacMultiPackageViewerSelection = .empty,
+        acknowledgedDuplicateFilePaths: Set<String> = []
     ) {
-        self.packages = MacPackageAttentionClassifier.classifiedPreviews(from: packages)
+        self.acknowledgedDuplicateFilePaths = acknowledgedDuplicateFilePaths
+        self.packages = MacPackageAttentionClassifier.classifiedPreviews(
+            from: packages,
+            acknowledgedDuplicateFilePaths: acknowledgedDuplicateFilePaths
+        )
         self.selection = selection
         ensureValidSelection()
     }
@@ -72,11 +78,16 @@ struct MacMultiPackageViewerState: Equatable {
         MacPackageAttentionSummary.make(from: packages)
     }
 
+    var hasAcknowledgeableDuplicateFilePathWarnings: Bool {
+        packages.contains { $0.hasAttentionReason(.duplicateFilePath) }
+    }
+
     mutating func replace(with preview: MacPackageImportPreview) {
         replace(with: [preview])
     }
 
     mutating func replace(with previews: [MacPackageImportPreview]) {
+        acknowledgedDuplicateFilePaths.removeAll()
         packages = MacPackageAttentionClassifier.classifiedPreviews(from: previews)
         selection = .empty
         ensureValidSelection()
@@ -90,8 +101,13 @@ struct MacMultiPackageViewerState: Equatable {
 
         let currentSelection = selection
         let firstOpenedPath = normalizedPath(for: previews[0].fileURL)
+        let reopenedPaths = Set(previews.map { normalizedPath(for: $0.fileURL) })
+        acknowledgedDuplicateFilePaths.subtract(reopenedPaths)
         let combinedPreviews = packages + previews
-        packages = MacPackageAttentionClassifier.classifiedPreviews(from: combinedPreviews)
+        packages = MacPackageAttentionClassifier.classifiedPreviews(
+            from: combinedPreviews,
+            acknowledgedDuplicateFilePaths: acknowledgedDuplicateFilePaths
+        )
 
         if let selectedPackage = packages.first(where: { normalizedPath(for: $0.fileURL) == firstOpenedPath }) {
             selection.selectedPackageID = selectedPackage.id
@@ -120,7 +136,11 @@ struct MacMultiPackageViewerState: Equatable {
 
     mutating func removePackage(id: UUID) {
         packages.removeAll { $0.id == id }
-        packages = MacPackageAttentionClassifier.classifiedPreviews(from: packages)
+        pruneAcknowledgedDuplicateFilePaths()
+        packages = MacPackageAttentionClassifier.classifiedPreviews(
+            from: packages,
+            acknowledgedDuplicateFilePaths: acknowledgedDuplicateFilePaths
+        )
         if selection.selectedPackageID == id {
             selection.selectedPackageID = nil
             selection.selectedSessionID = nil
@@ -128,8 +148,23 @@ struct MacMultiPackageViewerState: Equatable {
         ensureValidSelection()
     }
 
+    mutating func acknowledgeDuplicateFilePathWarnings() {
+        let duplicatePaths = packages
+            .filter { $0.hasAttentionReason(.duplicateFilePath) }
+            .map { normalizedPath(for: $0.fileURL) }
+        guard !duplicatePaths.isEmpty else { return }
+
+        acknowledgedDuplicateFilePaths.formUnion(duplicatePaths)
+        packages = MacPackageAttentionClassifier.classifiedPreviews(
+            from: packages,
+            acknowledgedDuplicateFilePaths: acknowledgedDuplicateFilePaths
+        )
+        ensureValidSelection()
+    }
+
     mutating func clear() {
         packages.removeAll()
+        acknowledgedDuplicateFilePaths.removeAll()
         selection = .empty
     }
 
@@ -157,6 +192,11 @@ struct MacMultiPackageViewerState: Equatable {
         }
 
         selection.selectedSessionID = selectedPackage.payload.sessions.first?.id
+    }
+
+    private mutating func pruneAcknowledgedDuplicateFilePaths() {
+        let activePaths = Set(packages.map { normalizedPath(for: $0.fileURL) })
+        acknowledgedDuplicateFilePaths = acknowledgedDuplicateFilePaths.intersection(activePaths)
     }
 
     private func normalizedPath(for url: URL) -> String {

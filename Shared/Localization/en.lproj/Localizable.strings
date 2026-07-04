@@ -1213,6 +1213,7 @@
 /* Task-030e-MacViewer-009 Duplicate and Attention States */
 "mac.viewer.attention.title" = "Needs attention";
 "mac.viewer.attention.message.format" = "%d opened package(s) have duplicate or attention warnings.";
+"mac.viewer.attention.acknowledge_duplicate_files" = "I understand";
 "mac.viewer.attention.readonly" = "Read-only browsing remains available where safe. SkateTrack will not merge, delete, pick a winner, import to local history, or modify packages.";
 "mac.viewer.attention.summary.duplicate_file.format" = "%d package card(s) include an exact duplicate file path warning.";
 "mac.viewer.attention.summary.duplicate_package.format" = "%d package card(s) include a duplicate package identifier warning.";

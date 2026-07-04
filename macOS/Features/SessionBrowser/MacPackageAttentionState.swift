@@ -84,7 +84,10 @@ extension MacPackageImportPreview {
 }
 
 enum MacPackageAttentionClassifier {
-    static func classifiedPreviews(from previews: [MacPackageImportPreview]) -> [MacPackageImportPreview] {
+    static func classifiedPreviews(
+        from previews: [MacPackageImportPreview],
+        acknowledgedDuplicateFilePaths: Set<String> = []
+    ) -> [MacPackageImportPreview] {
         let duplicatePathCounts = occurrenceCounts(
             previews.map { normalizedPath(for: $0.fileURL) }
         )
@@ -95,7 +98,8 @@ enum MacPackageAttentionClassifier {
         return uniquePreviews.map { preview in
             var warnings: [MacPackageAttentionWarning] = []
             let normalizedPath = normalizedPath(for: preview.fileURL)
-            if (duplicatePathCounts[normalizedPath] ?? 0) > 1 {
+            if (duplicatePathCounts[normalizedPath] ?? 0) > 1,
+               !acknowledgedDuplicateFilePaths.contains(normalizedPath) {
                 warnings.append(
                     MacPackageAttentionWarning(
                         reason: .duplicateFilePath,

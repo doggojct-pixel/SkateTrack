@@ -6,21 +6,50 @@ import SwiftUI
 
 struct MacPackageAttentionSummaryView: View {
     let summary: MacPackageAttentionSummary
+    let canAcknowledgeDuplicateFiles: Bool
+    let acknowledgeDuplicateFilesAction: () -> Void
 
     var body: some View {
         if summary.hasAttention {
             VStack(alignment: .leading, spacing: 12) {
-                Label {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("mac.viewer.attention.title")
-                            .font(.headline)
-                        Text(messageText)
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                HStack(alignment: .top, spacing: 12) {
+                    Label {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("mac.viewer.attention.title")
+                                .font(.headline)
+                            Text(messageText)
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
                     }
-                } icon: {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
+
+                    Spacer(minLength: 12)
+
+                    if canAcknowledgeDuplicateFiles {
+                        Button(action: acknowledgeDuplicateFilesAction) {
+                            Label {
+                                Text("mac.viewer.attention.acknowledge_duplicate_files")
+                                    .font(.callout.weight(.bold))
+                            } icon: {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .imageScale(.medium)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 9)
+                            .foregroundStyle(.orange)
+                            .background(.orange.opacity(0.24), in: Capsule())
+                            .overlay(
+                                Capsule()
+                                    .stroke(.orange.opacity(0.58), lineWidth: 1)
+                            )
+                            .shadow(color: .orange.opacity(0.18), radius: 4, x: 0, y: 2)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("mac-attention-acknowledge-duplicate-files-button")
+                    }
                 }
 
                 attentionRows

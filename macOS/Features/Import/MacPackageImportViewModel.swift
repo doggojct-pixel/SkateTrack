@@ -98,6 +98,10 @@ final class MacPackageImportViewModel: ObservableObject {
         viewerState.attentionSummary
     }
 
+    var hasAcknowledgeableDuplicateFilePathWarnings: Bool {
+        viewerState.hasAcknowledgeableDuplicateFilePathWarnings
+    }
+
     var selectedPackageID: UUID? {
         viewerState.selection.selectedPackageID
     }
@@ -172,6 +176,12 @@ final class MacPackageImportViewModel: ObservableObject {
     func removePackage(id: UUID) {
         var nextState = viewerState
         nextState.removePackage(id: id)
+        viewerState = nextState
+    }
+
+    func acknowledgeDuplicateFilePathWarnings() {
+        var nextState = viewerState
+        nextState.acknowledgeDuplicateFilePathWarnings()
         viewerState = nextState
     }
 

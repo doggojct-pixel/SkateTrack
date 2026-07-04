@@ -1760,8 +1760,8 @@ scripts/verify_task030e_elevation_profile.py                          # [工程�
 Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
 
 ```text
-macOS/Features/SessionBrowser/MacPackageAttentionState.swift        # [協作區] Classifies read-only duplicate / attention warnings for exact duplicate file paths and duplicate session identifiers; keeps package identifier hook nil until package metadata adds a stable ID.
-macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Displays localized duplicate / attention warning summary without merge/delete/winner-selection actions.
+macOS/Features/SessionBrowser/MacPackageAttentionState.swift        # [協作區] Classifies read-only duplicate / attention warnings for exact duplicate file paths and duplicate session identifiers; supports transient duplicate file path acknowledgement without hiding future reopens; keeps package identifier hook nil until package metadata adds a stable ID.
+macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Displays localized duplicate / attention warning summary and the duplicate-file acknowledgement action without merge/delete/winner-selection actions.
 macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Shows attention badges and warning titles on package cards while preserving read-only package switching/removal.
 macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageAttentionSummaryView` after open-result status and before package cards.
 macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift      # [協作區] Reclassifies attention states when packages are replaced, appended, or removed while keeping selection in memory only.
@@ -1778,3 +1778,5 @@ scripts/verify_task030e_duplicate_attention.py                      # [工程設
 - Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
 - Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
 - Task-030e-MacViewer-009 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-009-1 verification token: Duplicate Attention Acknowledgement, acknowledgeDuplicateFilePathWarnings, acknowledgedDuplicateFilePaths, mac.viewer.attention.acknowledge_duplicate_files, no merge, no delete, no winner selection, no local history import.
