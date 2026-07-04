@@ -1688,3 +1688,20 @@ scripts/verify_task030e_selected_package_sessions.py                # [工程設
 - iOS route visual parity and expanded route inspection remain deferred to Task-030e-MacViewer-007B.
 - Drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
 - Task-030e-MacViewer-006 is read-only UI over already opened in-memory packages and must not mutate `.skatetrack` package payloads, route geometry, trusted metrics, Core Data, or schema.
+
+
+## Task-030e-MacViewer-007A Read-Only MapKit Route Context Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+macOS/Features/SessionBrowser/MacRouteMapContextView.swift         # [協作區] Read-only MapKit route context view using existing .skatetrack route samples only; no location permission, road matching, route editing, or trusted metric mutation.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift            # [協作區] Hosts `MacRouteMapContextView` inside the existing route preview card and keeps read-only route summary pills.
+scripts/verify_task030e_mapkit_route_context.py                    # [工程設定] Task-030e-MacViewer-007A verifier aligned with Build Plan v1.2.
+scripts/verify_macos_route_chart_viewer.py                         # [工程設定] Updated to allow the specific 007A read-only MapKit context while preserving route/chart guardrails.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Updates read-only MapKit route-context copy in all supported languages.
+
+### Deferred After Task-030e-MacViewer-007A
+
+- iOS route visual parity and expanded route inspection remain deferred to Task-030e-MacViewer-007B.
+- Drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
+- Task-030e-MacViewer-007A is a read-only map context over already opened in-memory packages and must not request location permission, show user location, map-match, snap-to-road, reconstruct route geometry, mutate trusted metrics, Core Data, or schema.

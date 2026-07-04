@@ -634,3 +634,13 @@ Task-030e-MacViewer-005 limitation token: package cards and batch summary, `MacP
 - **Do not claim:** Do not claim persistent package library management, automatic package merge, restore, route correction, map matching, route geometry mutation, or trusted metrics mutation.
 
 Task-030e-MacViewer-006 limitation token: selected package sessions list, `MacPackageSessionListView`, selected session switching, read-only in-memory UI, MapKit deferred, route inspection deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+
+### Task-030e-MacViewer-007A — Read-Only MapKit Route Context Limitation
+
+- **Current status:** macOS Session Browser route preview now uses a read-only MapKit context for existing `.skatetrack` route samples.
+- **Implemented boundary:** `MacRouteMapContextView` uses opened package route samples to draw the visible route on `MKMapView`; it does not request current location, show user location, road-match, snap-to-road, reconstruct route geometry, edit samples, or mutate trusted metrics.
+- **Still deferred:** iOS route visual parity, expanded route inspection, route-detail sheet/window, drag-and-drop, Finder open-with, custom UTType/document association, persistent recent files/bookmarks, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim route correction, map matching, road snapping, route reconstruction, current-location tracking, persistent package library management, trusted metric mutation, or production route editing.
+
+Task-030e-MacViewer-007A limitation token: read-only MapKit route context, `MacRouteMapContextView`, existing route samples only, no current location, no road matching, no snap-to-road, no route geometry mutation, no trusted metrics mutation, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.

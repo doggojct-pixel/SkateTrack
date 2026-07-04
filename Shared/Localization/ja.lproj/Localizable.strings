@@ -1011,7 +1011,7 @@
 "mac.viewer.route.derived_distance" = "推算ルート距離";
 "mac.viewer.route.start" = "開始";
 "mac.viewer.route.finish" = "終了";
-"mac.viewer.route.map_deferred" = "MapKit 表示、道路マッチング、ヒートマップ、ルート編集は後続タスクまで延期されています。";
+"mac.viewer.route.map_deferred" = "MapKit コンテキストは読み取り専用で、package 内の既存ルートサンプルのみを使用します。";
 "mac.viewer.privacy.readonly" = "このビューアーは選択したパッケージを読み取るだけです。読み込み、マージ、復元、同期、アップロードは行いません。";
 
 "mac.viewer.packages.title" = "開いている packages";
@@ -1050,7 +1050,7 @@
 "mac.viewer.route.preview.finish" = "終了";
 "mac.viewer.route.preview.empty" = "ルート形状を利用できません";
 "mac.viewer.route.preview.empty.subtitle" = "ルート形状を描画するには、このパッケージ内の変化するGPSポイントが少なすぎます。";
-"mac.viewer.route.preview.not_mapmatched" = "これは軽量パッケージプレビューです。道路マッチングは行わず、まだ MapKit も使用していません。";
+"mac.viewer.route.preview.not_mapmatched" = "既存ルートサンプルから表示する読み取り専用の MapKit コンテキストです。道路照合、道路スナップ、ルート編集、信頼済み指標の変更は行いません。";
 "mac.viewer.route.quality.unavailable" = "利用不可";
 "mac.viewer.route.quality.limited" = "限定的なGPS形状";
 "mac.viewer.route.quality.usable" = "描画可能なルート";
@@ -1061,7 +1061,7 @@
 "mac.accessibility.package_summary.hint" = "開いている .skatetrack パッケージと選択中のセッションを要約します。データは読み込みません。";
 "mac.accessibility.session_detail.label" = "読み取り専用セッション詳細ダッシュボード";
 "mac.accessibility.route_preview.label" = "ルートプレビュー";
-"mac.accessibility.route_preview.hint" = "パッケージ内の GPS サンプルから軽量のルート形状を表示します。道路マッチングは行わず、まだ MapKit も使用していません。";
+"mac.accessibility.route_preview.hint" = "package 内の GPS サンプルから読み取り専用の MapKit ルートコンテキストを表示します。現在地の要求、道路照合、道路スナップ、ルート編集、信頼済み指標の変更は行いません。";
 "mac.accessibility.route_preview.value.format" = "ルートサンプル %d 件、変化のあるルートポイント %d 件、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度チャート";
 "mac.accessibility.speed_chart.hint" = "選択したパッケージセッションのサンプルから軽量の速度推移を表示します。";
@@ -1181,3 +1181,5 @@
 "import.commit.imported" = "読み込みが完了しました。セッションは履歴で確認できます。";
 "import.commit.skippedDuplicate" = "このセッションはすでに存在するためスキップされました。";
 "import.accessibility.fileRowFormat" = "ファイル：%@。状態：%@。";
+
+"mac.viewer.route.preview.readonly_mapkit" = "読み取り専用 MapKit コンテキスト";

@@ -1011,7 +1011,7 @@
 "mac.viewer.route.derived_distance" = "推算路線距離";
 "mac.viewer.route.start" = "起點";
 "mac.viewer.route.finish" = "終點";
-"mac.viewer.route.map_deferred" = "MapKit 地圖渲染、道路貼合、熱力圖與路線編輯延後到後續任務。";
+"mac.viewer.route.map_deferred" = "MapKit 脈絡僅以唯讀方式使用 package 內既有路線樣本。";
 "mac.viewer.privacy.readonly" = "此 viewer 只讀取所選 package，不會匯入、合併、還原、同步或上傳資料。";
 
 "mac.viewer.packages.title" = "已開啟的 packages";
@@ -1050,7 +1050,7 @@
 "mac.viewer.route.preview.finish" = "終點";
 "mac.viewer.route.preview.empty" = "無法繪製路線形狀";
 "mac.viewer.route.preview.empty.subtitle" = "這個 package 的 GPS 座標變化太少，無法形成可視化路線。";
-"mac.viewer.route.preview.not_mapmatched" = "這是輕量 package 預覽，尚未進行道路貼合，也尚未使用 MapKit。";
+"mac.viewer.route.preview.not_mapmatched" = "這是根據既有路線樣本顯示的唯讀 MapKit 脈絡；不道路貼合、不吸附道路、不編輯路線，也不改動可信指標。";
 "mac.viewer.route.quality.unavailable" = "無法顯示";
 "mac.viewer.route.quality.limited" = "GPS 形狀有限";
 "mac.viewer.route.quality.usable" = "可繪製路線";
@@ -1061,7 +1061,7 @@
 "mac.accessibility.package_summary.hint" = "摘要目前開啟的 .skatetrack package 與選取的 Session，不會匯入資料。";
 "mac.accessibility.session_detail.label" = "只讀 Session 詳細儀表板";
 "mac.accessibility.route_preview.label" = "路線預覽";
-"mac.accessibility.route_preview.hint" = "根據 package 內 GPS 樣本顯示輕量路線形狀，尚未道路貼合，也尚未使用 MapKit。";
+"mac.accessibility.route_preview.hint" = "根據 package 內 GPS 樣本顯示唯讀 MapKit 路線脈絡；不請求目前位置、不道路貼合、不吸附道路、不編輯路線，也不改動可信指標。";
 "mac.accessibility.route_preview.value.format" = "%d 筆路線樣本、%d 個有效路線點、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度圖表";
 "mac.accessibility.speed_chart.hint" = "根據選取 package session 的樣本顯示輕量速度趨勢。";
@@ -1181,3 +1181,5 @@
 "import.commit.imported" = "已成功匯入，Session 現在可在歷史紀錄查看。";
 "import.commit.skippedDuplicate" = "因為此 Session 已存在，所以已略過。";
 "import.accessibility.fileRowFormat" = "檔案：%@。狀態：%@。";
+
+"mac.viewer.route.preview.readonly_mapkit" = "唯讀 MapKit 脈絡";

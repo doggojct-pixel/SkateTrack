@@ -306,6 +306,7 @@
 		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
 		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
 		28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B100000000000000000001 /* MacRoutePreviewView.swift */; };
+		30E800000000000000000101 /* MacRouteMapContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E800000000000000000001 /* MacRouteMapContextView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -609,6 +610,7 @@
 		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
 		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
 		28B100000000000000000001 /* MacRoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRoutePreviewView.swift; sourceTree = "<group>"; };
+		30E800000000000000000001 /* MacRouteMapContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteMapContextView.swift; sourceTree = "<group>"; };
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
 		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -1225,6 +1227,7 @@
 				28A100000000000000000003 /* MacSessionViewerModel.swift */,
 				28A100000000000000000004 /* MacSpeedSparklineView.swift */,
 				28B100000000000000000001 /* MacRoutePreviewView.swift */,
+				30E800000000000000000001 /* MacRouteMapContextView.swift */,
 			);
 			path = SessionBrowser;
 			sourceTree = "<group>";
@@ -1793,6 +1796,7 @@
 				28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */,
 				28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */,
 				28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */,
+				30E800000000000000000101 /* MacRouteMapContextView.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,

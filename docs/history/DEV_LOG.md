@@ -2387,3 +2387,13 @@ Task-030e-MacViewer-005 verification token: package cards and batch summary, `Ma
 - Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
 
 Task-030e-MacViewer-006 verification token: selected package sessions list, `MacPackageSessionListView`, selected session switching, read-only detail update, aligned Build Plan v1.2, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+
+
+### Task-030e-MacViewer-007A — Read-Only MapKit Route Context
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Added `MacRouteMapContextView` as a read-only `MKMapView` bridge for macOS route previews, using only the existing route samples already present in opened `.skatetrack` packages.
+- Updated `MacRoutePreviewView` to place the existing route preview on a MapKit context while preserving the route sample counts, unique point count, derived distance, start / finish markers, and read-only disclosure.
+- Preserved strict safety boundaries: no current-location permission, no user-location display, no road matching, no snap-to-road, no route reconstruction, no route geometry mutation, no trusted metrics mutation, no package schema change, no Core Data write, no persistent recent files, and no expanded route inspection yet.
+
+Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `MacRouteMapContextView`, `MKMapView`, existing route samples only, no current location, no road matching, no snap-to-road, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation, 007B deferred.

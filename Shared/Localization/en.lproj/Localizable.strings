@@ -1011,7 +1011,7 @@
 "mac.viewer.route.derived_distance" = "Derived route distance";
 "mac.viewer.route.start" = "Start";
 "mac.viewer.route.finish" = "Finish";
-"mac.viewer.route.map_deferred" = "MapKit rendering, road matching, heat maps, and route editing remain deferred to a later task.";
+"mac.viewer.route.map_deferred" = "MapKit context is read-only and uses existing package route samples only.";
 "mac.viewer.privacy.readonly" = "This viewer reads the selected package only. It does not import, merge, restore, sync, or upload data.";
 
 "mac.viewer.packages.title" = "Opened packages";
@@ -1050,7 +1050,7 @@
 "mac.viewer.route.preview.finish" = "Finish";
 "mac.viewer.route.preview.empty" = "Route shape unavailable";
 "mac.viewer.route.preview.empty.subtitle" = "This package has too few changing GPS points to draw a route shape.";
-"mac.viewer.route.preview.not_mapmatched" = "This is a lightweight package preview. It is not road-matched and does not use MapKit yet.";
+"mac.viewer.route.preview.not_mapmatched" = "Read-only MapKit context from existing route samples. No road matching, snapping, route editing, or trusted metric mutation is applied.";
 "mac.viewer.route.quality.unavailable" = "Unavailable";
 "mac.viewer.route.quality.limited" = "Limited GPS shape";
 "mac.viewer.route.quality.usable" = "Drawable route";
@@ -1061,7 +1061,7 @@
 "mac.accessibility.package_summary.hint" = "Summarizes the open .skatetrack package and the selected session without importing data.";
 "mac.accessibility.session_detail.label" = "Read-only session detail dashboard";
 "mac.accessibility.route_preview.label" = "Route preview";
-"mac.accessibility.route_preview.hint" = "Shows a lightweight route shape from package GPS samples. It is not road-matched and does not use MapKit.";
+"mac.accessibility.route_preview.hint" = "Shows a read-only MapKit route context from package GPS samples. It does not request your location, road-match, snap, edit routes, or mutate trusted metrics.";
 "mac.accessibility.route_preview.value.format" = "%d route samples, %d changing route points, %@ derived distance";
 "mac.accessibility.speed_chart.label" = "Speed chart";
 "mac.accessibility.speed_chart.hint" = "Shows a lightweight speed trend from the selected package session samples.";
@@ -1181,3 +1181,5 @@
 "import.commit.imported" = "Imported successfully. The session is now available in History.";
 "import.commit.skippedDuplicate" = "Skipped because this session already exists.";
 "import.accessibility.fileRowFormat" = "File: %@. Status: %@.";
+
+"mac.viewer.route.preview.readonly_mapkit" = "Read-only MapKit context";

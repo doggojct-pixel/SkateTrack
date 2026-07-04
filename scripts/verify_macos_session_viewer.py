@@ -20,6 +20,7 @@ REQUIRED_FILES = [
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
+    "macOS/Features/SessionBrowser/MacRouteMapContextView.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_session_viewer.py",
@@ -33,6 +34,7 @@ PROJECT_MEMBERSHIP = [
     "MacSessionViewerModel.swift",
     "MacSpeedSparklineView.swift",
     "MacRoutePreviewView.swift",
+    "MacRouteMapContextView.swift",
 ]
 
 LOCALIZATION_KEYS = [
@@ -62,8 +64,8 @@ FORBIDDEN_PROJECT_TOKENS = [
 FORBIDDEN_VIEWER_TOKENS = [
     "UIKit",
     "UIDocumentPickerViewController",
-    "MKMapView",
-    "MapKit",
+    "import MapKit",
+    "MKMapView(",
     "Charts",
     "Chart(",
     "FileDocument",
@@ -193,9 +195,19 @@ def ensure_session_browser() -> None:
     for token in ["Path", "speedPath", "gridLines", "mac.viewer.sparkline.empty", ".frame(height: 132)"]:
         if token not in sparkline:
             fail(f"MacSpeedSparklineView missing token: {token}")
-    for token in ["MacRoutePreviewView", "routePath", "routeGrid", "MacRoutePreviewPill", "mac.viewer.route.preview.title", "mac.viewer.route.preview.not_mapmatched"]:
+    for token in [
+        "MacRoutePreviewView",
+        "MacRouteMapContextView(points: points, summary: summary)",
+        "MacRoutePreviewPill",
+        "mac.viewer.route.preview.title",
+        "mac.viewer.route.preview.not_mapmatched",
+    ]:
         if token not in route_preview:
             fail(f"MacRoutePreviewView missing token: {token}")
+    map_context = read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift")
+    for token in ["struct MacRouteMapContextView: NSViewRepresentable", "MKMapView", "showsUserLocation = false", "MKPolylineRenderer"]:
+        if token not in map_context:
+            fail(f"MacRouteMapContextView missing token: {token}")
     if "MacSessionViewerModel" not in preview or "viewer_ready" not in preview:
         fail("MacPackagePreviewView should use Task-028a viewer-derived metrics and no longer advertise viewer as locked")
 
@@ -216,6 +228,10 @@ def ensure_boundaries() -> None:
         for token in FORBIDDEN_VIEWER_TOKENS:
             if token in text:
                 fail(f"forbidden token {token!r} found in {path}")
+
+    map_context = read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift")
+    if "import MapKit" not in map_context or "MKMapView" not in map_context:
+        fail("MacRouteMapContextView must be the only read-only MapKit bridge for route preview context")
 
 
 def ensure_project_membership() -> None:
