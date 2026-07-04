@@ -2490,3 +2490,13 @@ Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_
 - No product UI behavior, package opening behavior, package schema, Core Data write, local-history import, merge, duplicate deletion, winner selection, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch / WatchBridge, or Task-031 shared visualization pipeline work was introduced.
 
 Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, verify_task030e_manual_qa_gate.py, operator signoff required, task030e_013_oneclick, no route / metric / package mutation.
+
+
+## Task-030e-MacViewer-014 Final Merge Gate
+
+- Added `docs/release/TASK030E_FINAL_MERGE_GATE.md` as the source-controlled final merge gate checklist for the macOS multi-package viewer branch.
+- Added `scripts/verify_task030e_final_merge_gate.py` and wired it into the consolidated Task-030e verifier and one-click runner.
+- Documented develop merge readiness, 014 one-click evidence, manual QA carry-forward, and final no-scope-expansion review.
+- Preserved scope boundaries: no route / metric / package mutation, no package schema change, no Core Data write, no location permission, no user-location display, no Watch behavior, and no Task-031-prep implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, develop merge readiness.

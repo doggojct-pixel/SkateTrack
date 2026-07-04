@@ -1906,3 +1906,32 @@ scripts/run_task030e_macos_multi_package_viewer_oneclick.sh    # [工程設定] 
 - Task-030e-MacViewer-013 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
 
 Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, verify_task030e_manual_qa_gate.py, operator signoff required, task030e_013_oneclick, no package schema change, no Core Data write.
+
+
+## Task-030e-MacViewer-014 Final Merge Gate Addendum
+
+Added final merge gate files:
+
+```text
+docs/release/TASK030E_FINAL_MERGE_GATE.md
+scripts/verify_task030e_final_merge_gate.py
+```
+
+Updated existing Task-030e gate files:
+
+```text
+scripts/verify_task030e_macos_multi_package_viewer.py
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
+docs/DOCUMENTATION_INDEX.md
+docs/process/DEVELOPMENT_RULES.md
+docs/release/RELEASE_READINESS_PRE_ADP.md
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+docs/adr/ADR-INDEX.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+```
+
+Task-030e-MacViewer-014 remains docs/tooling/merge-readiness only. It adds the final merge gate checklist and verifier, but no product UI, package open behavior, package schema, Core Data write, route geometry, trusted metrics, location permission, user-location display, Watch behavior, or Task-031 implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate Addendum, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, final merge gate checklist.

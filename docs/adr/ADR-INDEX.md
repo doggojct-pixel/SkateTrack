@@ -487,3 +487,12 @@ Decision: Task-030e-MacViewer-013 makes manual QA an explicit source-controlled 
 Boundary: The manual QA gate does not add product UI behavior, package import, package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metric mutation, package schema mutation, Core Data writes, Watch / WatchBridge work, or Task-031 shared visualization pipeline work.
 
 Task-030e-MacViewer-013 ADR token: Manual QA Gate, operator signoff required, task030e_013_oneclick, read-only no-import boundary, no route / metric / schema mutation.
+
+
+## Task-030e macOS multi-package viewer final merge gate
+
+Decision: Task-030e-MacViewer-014 is a final merge-readiness gate for the macOS multi-package viewer branch. It records develop merge readiness, manual QA carry-forward, automated one-click evidence, and final no-scope-expansion review before merging `task-030e-macos-multi-package-viewer` back to `develop`.
+
+Boundary: This milestone is docs/tooling/merge-readiness only. It must not add product UI, local-history import, package merge, duplicate deletion, winner selection, route correction, road matching, snap-to-road, route reconstruction, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, location permission, user-location display, Watch / WatchBridge behavior, or Task-031 implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e macOS multi-package viewer final merge gate, develop merge readiness, final no-scope-expansion review, no schema / Core Data mutation.

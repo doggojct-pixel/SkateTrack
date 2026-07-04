@@ -669,3 +669,12 @@ Task-030e-MacViewer-012 limitation token: Documentation Sync, current macOS mult
 - **Final merge dependency:** Task-030e-MacViewer-014 may start only after the manual QA gate is green and the branch remains clean after commit / push.
 
 Task-030e-MacViewer-013 limitation token: Manual QA Gate, operator signoff required, no import / merge / route mutation, no Core Data write, no location permission, no user-location display.
+
+
+## Task-030e-MacViewer-014 — Final Merge Gate
+
+Task-030e-MacViewer-014 is a merge-readiness checklist and verifier only. It does not add runtime product behavior and does not unlock local-history import, package merge, duplicate deletion, winner selection, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, package schema changes, trusted metrics mutation, Core Data writes, Watch behavior, or Task-031-prep shared activity visualization pipeline implementation.
+
+Task-031-prep remains deferred until after Task-030e final merge gate completes.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 — Final Merge Gate, merge-readiness checklist and verifier only, no import / merge / route mutation, Task-031-prep remains deferred.

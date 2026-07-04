@@ -128,3 +128,12 @@ Task-030a verification token: manual QA matrix pre-ADP.
 Task-030b verification token: consolidated manual QA matrix.
 
 Task-030e-MacViewer-012 manual QA token: multi-package viewer manual QA, duplicate acknowledgement, route inspection, one-click cleanup, read-only no-import boundary.
+
+
+## Task-030e-MacViewer-014 final merge gate
+
+The Task-030e final merge gate is documented in `docs/release/TASK030E_FINAL_MERGE_GATE.md`. The Task-030e-MacViewer-013 manual QA gate remains a merge blocker: a green 014 one-click run does not override failed or missing operator signoff.
+
+Final merge QA evidence must include `task030e_014_oneclick`, `ONECLICK_RUN_DIR_REMOVED=YES`, clean diff/status review, develop merge readiness, and confirmation that the macOS package viewer remains read-only with no import / merge / route mutation, no schema / Core Data mutation, no location permission, and no user-location display.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, manual QA gate remains a merge blocker, task030e_014_oneclick.

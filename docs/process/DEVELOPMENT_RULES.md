@@ -1,6 +1,6 @@
 # SkateTrack Development Rules
 
-**Status:** Active source of truth — Task-030e documentation sync and manual QA gate
+**Status:** Active source of truth — Task-030e final merge gate
 **Last Updated:** 2026-07-04
 **Scope:** Human / ChatGPT / Cursor collaboration rules for SkateTrack development.
 
@@ -181,3 +181,12 @@ Task-030b verification token: consolidated development rules.
 Task-030e-MacViewer-012 verification token: one-click temporary output directory cleanup, documentation sync gate, Task-030e docs verifier.
 
 Task-030e-MacViewer-013 verification token: Manual QA Gate, source-controlled checklist, operator signoff required, no UI / schema / route mutation.
+
+
+## Task-030e final merge gate rule
+
+Task-030e final merge gate work is governed by `docs/release/TASK030E_FINAL_MERGE_GATE.md` and `scripts/verify_task030e_final_merge_gate.py`. The gate is docs/tooling/merge-readiness only and must not add product UI, package schema changes, Core Data writes, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch behavior, or Task-031 implementation.
+
+Before any merge back to `develop`, the assistant must review 014 apply / one-click logs, confirm manual QA carry-forward, confirm `origin/develop` ancestry or request rebase/merge-from-develop and reverification, and leave `main` untouched unless the user explicitly requests a release.
+
+Task-030e-MacViewer-014 verification token: Task-030e final merge gate, docs/release/TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, leave `main` untouched.

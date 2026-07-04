@@ -248,3 +248,12 @@ Task-030a passes only when:
 
 Task-030a verification token: pre-ADP release readiness gate
 Task-030b verification token: consolidated release readiness documentation..
+
+
+## Task-030e-MacViewer-014 final merge gate
+
+Task-030e may be considered ready for merge back to `develop` only after `docs/release/TASK030E_FINAL_MERGE_GATE.md` and `scripts/verify_task030e_final_merge_gate.py` pass. The 014 gate requires `task030e_014_oneclick`, manual QA carry-forward from Task-030e-MacViewer-013, develop merge readiness, branch ancestry checks, clean working tree review, and final no-scope-expansion review.
+
+The 014 final merge gate is a merge-readiness checklist and verifier only. It does not implement product behavior and must preserve no import / merge / route mutation, no package schema change, no Core Data write, no location permission, no user-location display, and no Task-031-prep implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, develop merge readiness.

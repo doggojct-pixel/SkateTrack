@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Verify Task-030e macOS multi-package viewer foundation after 013."""
+"""Verify Task-030e macOS multi-package viewer foundation after 014.
+
+Compatibility token: after 013.
+"""
 from __future__ import annotations
 
 import re
@@ -24,6 +27,7 @@ TASK030E_VERIFIERS = [
     "scripts/verify_task030e_macos_multi_package_viewer.py",
     "scripts/verify_task030e_documentation_sync.py",
     "scripts/verify_task030e_manual_qa_gate.py",
+    "scripts/verify_task030e_final_merge_gate.py",
 ]
 
 REQUIRED_FILES = [
@@ -54,6 +58,7 @@ REQUIRED_FILES = [
     "docs/release/RELEASE_READINESS_PRE_ADP.md",
     "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
     "docs/release/TASK030E_MANUAL_QA_GATE.md",
+    "docs/release/TASK030E_FINAL_MERGE_GATE.md",
     "docs/DOCUMENTATION_INDEX.md",
     "docs/process/DEVELOPMENT_RULES.md",
     "docs/adr/ADR-INDEX.md",
@@ -287,6 +292,7 @@ def ensure_oneclick_foundation() -> None:
         "verify_task030e_macos_multi_package_viewer.py",
         "verify_task030e_documentation_sync.py",
         "verify_task030e_manual_qa_gate.py",
+        "verify_task030e_final_merge_gate.py",
         "verify_task030e_localization_accessibility.py",
         "xcodebuild",
         "LINE_CHECK_RESULT",
@@ -312,11 +318,14 @@ def ensure_docs() -> None:
         "Task-030e-MacViewer-011 Verifier / Test Foundation",
         "Task-030e-MacViewer-012 Documentation Sync",
         "Task-030e-MacViewer-013 Manual QA Gate",
+        "Task-030e-MacViewer-014 Final Merge Gate",
         "verify_task030e_macos_multi_package_viewer.py",
         "verify_task030e_documentation_sync.py",
         "verify_task030e_manual_qa_gate.py",
+        "verify_task030e_final_merge_gate.py",
         "run_task030e_macos_multi_package_viewer_oneclick.sh",
         "TASK030E_MANUAL_QA_GATE.md",
+        "TASK030E_FINAL_MERGE_GATE.md",
         "ONECLICK_RUN_DIR_REMOVED=YES",
         "no package schema change",
     ]:
@@ -333,12 +342,15 @@ def ensure_docs() -> None:
     for token in [
         "Task-030e-MacViewer-012",
         "Task-030e-MacViewer-013",
+        "Task-030e-MacViewer-014",
         "Documentation Sync",
         "Manual QA Gate",
+        "Final Merge Gate",
         "read-only `.skatetrack` review surface",
         "operator signoff required",
         "one-click cleanup",
         "no import / merge / route mutation",
+        "develop merge readiness",
     ]:
         if token not in docs_text:
             fail(f"documentation sync missing token: {token}")
