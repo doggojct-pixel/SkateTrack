@@ -1042,7 +1042,7 @@
 "debug.status.freshness.unavailable" = "利用不可";
 "debug.status.freshness.none" = "位置なし";
 "debug.build.title" = "テストビルド識別";
-"debug.build.currentTaskID" = "Task-030c-b19";
+"debug.build.currentTaskID" = "Task-030d Multi-file Import";
 "debug.build.badge" = "DEBUG";
 "debug.build.subtitle" = "このバッジで、端末に最新の GPS fidelity テストビルドが入っていることを確認します。";
 
