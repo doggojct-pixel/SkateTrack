@@ -70,6 +70,7 @@ def ensure_state_model() -> None:
         "var selectedPackageSession: SkateTrackPackageSession?",
         "var batchSummary: MacPackageOpenBatchSummary",
         "mutating func replace(with preview: MacPackageImportPreview)",
+        "mutating func replace(with previews: [MacPackageImportPreview])",
         "mutating func appendOrReplacePackage",
         "mutating func selectPackage(id: UUID?)",
         "mutating func selectSession(id: UUID?)",
@@ -93,7 +94,7 @@ def ensure_view_model_boundary() -> None:
         "var selectedSessionID: UUID?",
         "var selectedViewerModels: [MacSessionViewerModel]",
         "var selectedViewerModel: MacSessionViewerModel?",
-        "nextState.replace(with: preview)",
+        "nextState.replace(with: result.previews)",
         "appendPackagePreviewForFutureBatch",
         "func selectPackage(id: UUID?)",
         "func selectSession(id: UUID?)",
@@ -101,13 +102,16 @@ def ensure_view_model_boundary() -> None:
         "func ensureDefaultSelection()",
         "clearPackagesForReadFailure",
         "SkateTrackPackageReader",
-        "startAccessingSecurityScopedResource",
-        "readPackage(from: url)",
+        "MacPackageOpenCoordinator",
+        "func openPackages(from urls: [URL])",
     ]:
         if token not in view_model:
             fail(f"MacPackageImportViewModel missing multi-package state token: {token}")
-    if "allowsMultipleSelection = true" in view_model:
-        fail("Task-030e-003 must not implement true multi-file picker")
+    coordinator = read("macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift")
+    for token in ["startAccessingSecurityScopedResource", "readPackage(from: url)"]:
+        if token not in coordinator:
+            fail(f"MacPackageOpenCoordinator missing read boundary token: {token}")
+    # Later Task-030e stages may enable true multi-file opening at the browser boundary.
 
 
 def ensure_browser_uses_boundary() -> None:
@@ -118,15 +122,14 @@ def ensure_browser_uses_boundary() -> None:
         "selectedSessionID: viewModel.selectedSessionID",
         "selectSessionAction: viewModel.selectSession",
         ".onAppear { viewModel.ensureDefaultSelection() }",
-        "viewModel.importPackage(from: url)",
-        "allowsMultipleSelection = false",
+        "viewModel.openPackages(from: panel.urls)",
+        "panel.allowsMultipleSelection = true",
     ]:
         if token not in browser:
             fail(f"MacSessionBrowserView missing view-model selection boundary token: {token}")
     if "@State private var selectedSessionID" in browser:
         fail("Session Browser must not own selected session state locally after Task-030e-003")
-    if "allowsMultipleSelection = true" in browser:
-        fail("Task-030e-003 must not implement true multi-file open yet")
+    # Task-030e-004 intentionally enables multi-file open while retaining 003 state ownership.
 
 
 def ensure_project_membership() -> None:
@@ -159,8 +162,8 @@ def ensure_docs() -> None:
         "MacMultiPackageViewerState",
         "MacMultiPackageViewerSelection",
         "MacPackageOpenBatchSummary",
-        "single-file open retained",
-        "multi-file open deferred",
+        "single-file compatibility retained",
+        "multi-file open foundation",
         "read-only",
     ]:
         if token not in docs:

@@ -1,6 +1,6 @@
 // [協作區] MacPackageImportViewModel.swift
-// 用途：macOS .skatetrack read-only package preview state；Task-030e 擴充為 in-memory multi-package viewer state。
-// 委派至：MacImportView / MacSessionBrowserView / MacMultiPackageViewerState；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
+// 用途：macOS .skatetrack read-only package preview state；Task-030e 擴充為 in-memory multi-package viewer state 與多檔開啟結果。
+// 委派至：MacImportView / MacSessionBrowserView / MacPackageOpenCoordinator / MacMultiPackageViewerState；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
 
 import Foundation
 
@@ -61,11 +61,12 @@ final class MacPackageImportViewModel: ObservableObject {
     @Published private(set) var isImporting = false
     @Published private(set) var errorMessageKey: String?
     @Published private(set) var lastReadFileName: String?
+    @Published private(set) var lastOpenResult: MacPackageOpenResult?
 
-    private let reader: SkateTrackPackageReader
+    private let openCoordinator: MacPackageOpenCoordinator
 
     init(reader: SkateTrackPackageReader = SkateTrackPackageReader()) {
-        self.reader = reader
+        self.openCoordinator = MacPackageOpenCoordinator(reader: reader)
     }
 
     var preview: MacPackageImportPreview? {
@@ -106,33 +107,28 @@ final class MacPackageImportViewModel: ObservableObject {
     }
 
     func importPackage(from url: URL) {
+        openPackages(from: [url])
+    }
+
+    func openPackages(from urls: [URL]) {
+        guard !urls.isEmpty else { return }
+
         isImporting = true
         errorMessageKey = nil
-        lastReadFileName = url.lastPathComponent
+        lastOpenResult = nil
+        lastReadFileName = urls.count == 1 ? urls.first?.lastPathComponent : nil
         defer { isImporting = false }
 
-        guard url.pathExtension.lowercased() == "skatetrack" else {
-            clearPackagesForReadFailure(errorMessageKey: "mac.import.error.extension")
-            return
-        }
+        let result = openCoordinator.openPackages(from: urls)
+        lastOpenResult = result
 
-        let didAccessSecurityScopedResource = url.startAccessingSecurityScopedResource()
-        defer {
-            if didAccessSecurityScopedResource {
-                url.stopAccessingSecurityScopedResource()
-            }
-        }
-
-        do {
-            let payload = try reader.readPackage(from: url)
-            let preview = MacPackageImportPreview(fileURL: url, payload: payload)
+        if result.hasAnySuccess {
             var nextState = viewerState
-            nextState.replace(with: preview)
+            nextState.replace(with: result.previews)
             viewerState = nextState
-        } catch let packageError as SkateTrackPackageError {
-            clearPackagesForReadFailure(errorMessageKey: packageError.localizationKey)
-        } catch {
-            clearPackagesForReadFailure(errorMessageKey: "mac.import.error.generic")
+            errorMessageKey = nil
+        } else {
+            clearPackagesForReadFailure(errorMessageKey: result.primaryErrorMessageKey ?? "mac.import.error.generic")
         }
     }
 
@@ -172,6 +168,7 @@ final class MacPackageImportViewModel: ObservableObject {
         viewerState = nextState
         errorMessageKey = nil
         lastReadFileName = nil
+        lastOpenResult = nil
     }
 
     private func clearPackagesForReadFailure(errorMessageKey: String) {

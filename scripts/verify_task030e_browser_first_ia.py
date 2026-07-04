@@ -93,9 +93,8 @@ def ensure_browser_open_action() -> None:
         "MacPackageBrowserHeaderView",
         "openPackagePanel",
         "NSOpenPanel",
-        "allowsMultipleSelection = false",
         "allowedContentTypes = [.data]",
-        "viewModel.importPackage(from: url)",
+        "viewModel.openPackages(from: panel.urls)",
         "viewModel.clearPreview",
         "mac.viewer.open.title",
         "mac.viewer.open.button",
@@ -106,8 +105,7 @@ def ensure_browser_open_action() -> None:
     for forbidden in ["openImportAction", "Go to Import", "MacImportView("]:
         if forbidden in browser:
             fail(f"MacSessionBrowserView still contains disconnected Import flow token: {forbidden}")
-    if "allowsMultipleSelection = true" in browser:
-        fail("Task-030e-002 must not implement multi-file open yet")
+    # Later Task-030e stages may enable multi-file open while preserving browser-first IA.
 
 
 def ensure_localization() -> None:

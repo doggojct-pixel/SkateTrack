@@ -1642,3 +1642,18 @@ scripts/verify_task030e_multi_package_state.py                 # [工程設定] 
 - True multi-file open remains deferred to a later Task-030e subtask; `NSOpenPanel.allowsMultipleSelection` intentionally remains `false` for now.
 - Package cards, partial-success package card UI, drag-and-drop, persistent recent files/bookmarks, MapKit route context, iOS route visual parity, and expanded route inspection remain deferred to later Task-030e subtasks.
 - The macOS viewer remains read-only: no Core Data write, no package schema mutation, no route geometry mutation, no trusted metrics mutation, no merge/restore/sync, no Watch / WatchBridge, and no Task-031 work.
+
+## Task-030e-MacViewer-004 Multi-File Open Foundation Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift       # [協作區] Read-only multi-file .skatetrack open coordinator; validates extension, uses security-scoped access, reads independently, classifies failures.
+macOS/Features/SessionBrowser/MacPackageOpenResultStatusView.swift  # [協作區] Read-only partial-success / failed-file status surface for multi-file open.
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift      # [協作區] Adds batch replace / duplicate path de-duplication for opened package previews.
+macOS/Features/Import/MacPackageImportViewModel.swift               # [協作區] Owns openPackages(from:) and in-memory open result state; no persistence/import/merge/restore/sync.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Browser NSOpenPanel now supports allowsMultipleSelection = true and calls openPackages(from:).
+scripts/verify_task030e_multi_file_open.py                          # [工程設定] Task-030e-MacViewer-004 verifier aligned with Build Plan v1.2.
+```
+
+Task-030e-MacViewer-004 does not add Finder document association, custom UTType, persistent recent-file storage, package cards UI, MapKit route context, route inspection window, Core Data writes, merge/restore/sync, route geometry mutation, or trusted metrics mutation.

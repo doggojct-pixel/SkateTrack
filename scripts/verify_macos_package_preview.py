@@ -15,6 +15,8 @@ REQUIRED_FILES = [
     "macOS/Features/Import/MacImportView.swift",
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "macOS/Features/Import/MacPackageImportViewModel.swift",
+    "macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift",
+    "macOS/Features/SessionBrowser/MacPackageOpenResultStatusView.swift",
     "macOS/Features/Shared/MacLockedFeatureCardView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
@@ -122,12 +124,15 @@ def ensure_import_boundary() -> None:
             fail(f"MacImportView missing titlebar-safe layout token: {token}")
     if "allowedContentTypes = [.skatetrack]" in import_view or "UTType(exportedAs" in import_view:
         fail("Task-027b must not declare/use a custom .skatetrack UTType")
+    coordinator = read("macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift")
     for token in ["SkateTrackPackageReader", "readPackage(from: url)", "startAccessingSecurityScopedResource", "pathExtension.lowercased() == \"skatetrack\""]:
-        if token not in view_model:
-            fail(f"view model missing token: {token}")
-    for token in ["packageError.localizationKey", "clearPreview", "MacPackageImportPreview"]:
-        if token not in view_model:
-            fail(f"view model missing state/error token: {token}")
+        if token not in view_model and token not in coordinator:
+            fail(f"package open boundary missing token: {token}")
+    for token in ["packageError.localizationKey", "MacPackageImportPreview", "openPackages(from urls: [URL])"]:
+        if token not in view_model and token not in coordinator:
+            fail(f"view model/coordinator missing state/error token: {token}")
+    if "clearPreview" not in view_model:
+        fail("view model missing clearPreview")
     for token in ["schemaVersion", "packageType", "motionSampleCount", "routeSampleCount", "summaryMetrics", "privacyNotes", "MacLockedFeatureCardView", "MacSessionViewerModel"]:
         if token not in preview:
             fail(f"preview view missing token: {token}")

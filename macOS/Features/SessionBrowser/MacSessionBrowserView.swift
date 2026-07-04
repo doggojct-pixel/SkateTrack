@@ -30,12 +30,17 @@ struct MacSessionBrowserView: View {
             VStack(alignment: .leading, spacing: 18) {
                 MacPackageBrowserHeaderView(
                     preview: preview,
+                    batchSummary: viewModel.batchSummary,
                     isReading: viewModel.isImporting,
                     openAction: openPackagePanel,
                     clearAction: viewModel.clearPreview
                 )
 
-                if let errorMessageKey = viewModel.errorMessageKey {
+                if let lastOpenResult = viewModel.lastOpenResult {
+                    MacPackageOpenResultStatusView(result: lastOpenResult)
+                }
+
+                if let errorMessageKey = viewModel.errorMessageKey, viewModel.lastOpenResult == nil {
                     MacSessionBrowserStatusCard(
                         titleKey: "mac.viewer.open.error.title",
                         messageKey: errorMessageKey,
@@ -101,22 +106,23 @@ struct MacSessionBrowserView: View {
 
     private func openPackagePanel() {
         let panel = NSOpenPanel()
-        panel.title = String(localized: "mac.import.panel.title")
-        panel.prompt = String(localized: "mac.import.panel.prompt")
-        panel.message = String(localized: "mac.import.panel.message")
+        panel.title = String(localized: "mac.viewer.open.panel.title")
+        panel.prompt = String(localized: "mac.viewer.open.panel.prompt")
+        panel.message = String(localized: "mac.viewer.open.panel.message")
         panel.canChooseDirectories = false
         panel.canChooseFiles = true
-        panel.allowsMultipleSelection = false
+        panel.allowsMultipleSelection = true
         panel.allowedContentTypes = [.data]
 
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-        viewModel.importPackage(from: url)
+        guard panel.runModal() == .OK, !panel.urls.isEmpty else { return }
+        viewModel.openPackages(from: panel.urls)
     }
 
 }
 
 private struct MacPackageBrowserHeaderView: View {
     let preview: MacPackageImportPreview?
+    let batchSummary: MacPackageOpenBatchSummary
     let isReading: Bool
     let openAction: () -> Void
     let clearAction: () -> Void
@@ -163,7 +169,17 @@ private struct MacPackageBrowserHeaderView: View {
                 }
             }
 
-            if let preview {
+            if batchSummary.totalPackageCount > 1 {
+                Label {
+                    Text(String(format: String(localized: "mac.viewer.open.current_batch.format"), batchSummary.totalPackageCount, batchSummary.totalSessionCount))
+                        .font(.callout.monospaced())
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                } icon: {
+                    Image(systemName: "rectangle.stack.badge.play")
+                        .foregroundStyle(.green)
+                }
+            } else if let preview {
                 Label {
                     Text(String(format: String(localized: "mac.viewer.open.current_file.format"), preview.fileName))
                         .font(.callout.monospaced())

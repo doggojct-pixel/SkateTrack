@@ -69,11 +69,12 @@ struct MacMultiPackageViewerState: Equatable {
     }
 
     mutating func replace(with preview: MacPackageImportPreview) {
-        packages = [preview]
-        selection = MacMultiPackageViewerSelection(
-            selectedPackageID: preview.id,
-            selectedSessionID: preview.primaryPackageSession?.id ?? preview.payload.sessions.first?.id
-        )
+        replace(with: [preview])
+    }
+
+    mutating func replace(with previews: [MacPackageImportPreview]) {
+        packages = uniquePreviews(from: previews)
+        selection = .empty
         ensureValidSelection()
     }
 
@@ -111,6 +112,18 @@ struct MacMultiPackageViewerState: Equatable {
     mutating func clear() {
         packages.removeAll()
         selection = .empty
+    }
+
+    private func uniquePreviews(from previews: [MacPackageImportPreview]) -> [MacPackageImportPreview] {
+        var seenPaths: Set<String> = []
+        var unique: [MacPackageImportPreview] = []
+        for preview in previews {
+            let path = preview.fileURL.standardizedFileURL.path
+            guard !seenPaths.contains(path) else { continue }
+            seenPaths.insert(path)
+            unique.append(preview)
+        }
+        return unique
     }
 
     mutating func ensureValidSelection() {

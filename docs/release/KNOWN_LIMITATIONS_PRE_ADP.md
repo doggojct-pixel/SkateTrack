@@ -606,4 +606,13 @@ Task-030e-MacViewer-002 limitation token: browser-first macOS Session Browser sh
 - **User-visible behavior:** The visible file picker still opens one `.skatetrack` package at a time in this subtask. Multi-package cards, true multi-file open, partial-success package cards, and expanded map inspection remain later Task-030e subtasks.
 - **Read-only guarantee:** The state layer is memory-only and performs no database import, merge, restore, cloud sync, package schema mutation, route geometry mutation, trusted metrics mutation, or route correction.
 
-Task-030e-MacViewer-003 limitation token: in-memory package collection state, selected package/session state, single-file open retained, multi-file open deferred, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+Task-030e-MacViewer-003 limitation token: in-memory package collection state, selected package/session state, single-file compatibility retained, multi-file open foundation implemented, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-004 — Multi-File Open Foundation Limitation
+
+- **Current status:** macOS Session Browser can select multiple `.skatetrack` files through `NSOpenPanel.allowsMultipleSelection = true` and read valid packages independently in memory.
+- **Implemented boundary:** `MacPackageOpenCoordinator` validates extensions, uses security-scoped access per URL, reads packages through `SkateTrackPackageReader`, and records per-file failures so partial success is preserved.
+- **Still deferred:** package cards, rich batch summary UI, persistent recent files/bookmarks, drag-and-drop, Finder open-with, custom UTType/document association, MapKit route context, expanded route inspection, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim Finder document handling, persistent library import, package merge, restore, automatic sync, route correction, map matching, or route geometry mutation.
+
+Task-030e-MacViewer-004 limitation token: multi-file open foundation, `MacPackageOpenCoordinator`, partial success, read-only, no custom UTType, no document association, package cards deferred, MapKit deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.

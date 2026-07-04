@@ -2355,4 +2355,15 @@ Task-030e-MacViewer-002 verification token: browser-first Session Browser IA, Op
 - Preserved browser-first behavior from Task-030e-MacViewer-002 and kept `NSOpenPanel.allowsMultipleSelection = false`; true multi-file open and package cards remain deferred to later Task-030e subtasks.
 - Preserved strict read-only behavior: no Core Data writes, no package schema changes, no merge/restore/sync, no route correction, no MapKit stage yet, and no Task-031 / Watch work.
 
-Task-030e-MacViewer-003 verification token: in-memory multi-package viewer state, `MacMultiPackageViewerState`, `MacMultiPackageViewerSelection`, `MacPackageOpenBatchSummary`, view-model owned package/session selection, single-file open retained, no true multi-file open yet, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+Task-030e-MacViewer-003 verification token: in-memory multi-package viewer state, `MacMultiPackageViewerState`, `MacMultiPackageViewerSelection`, `MacPackageOpenBatchSummary`, view-model owned package/session selection, single-file compatibility retained, multi-file open foundation added in Task-030e-MacViewer-004, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.
+
+### Task-030e-MacViewer-004 — Multi-File Open Foundation
+
+- Aligned implementation scope with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- Added `MacPackageOpenCoordinator` to read multiple selected `.skatetrack` files independently through `SkateTrackPackageReader` with per-file extension validation, security-scoped access, and failure classification.
+- Added `MacPackageOpenResult` / `MacPackageOpenFailure` and `MacPackageOpenResultStatusView` so partial success can be surfaced without hiding invalid package results.
+- Updated `MacSessionBrowserView` to use `NSOpenPanel.allowsMultipleSelection = true` and call the view-model `openPackages(from:)` boundary from the browser.
+- Updated `MacMultiPackageViewerState` with deterministic batch replacement and duplicate path de-duplication while keeping selection in memory only.
+- Preserved strict read-only behavior: no custom UTType, no document association, no Core Data write, no persistent recent files/bookmarks, no merge/restore/sync, no MapKit stage yet, and no route correction.
+
+Task-030e-MacViewer-004 verification token: Multi-File Open Foundation, `MacPackageOpenCoordinator`, `MacPackageOpenResultStatusView`, `allowsMultipleSelection = true`, independent package validation, partial success, read-only, no custom UTType, no document association, no MapKit yet, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation.

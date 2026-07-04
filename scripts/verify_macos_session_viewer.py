@@ -133,7 +133,7 @@ def ensure_session_browser() -> None:
         "viewModel.selectedViewerModels",
         "MacPackageBrowserHeaderView",
         "openPackagePanel",
-        "viewModel.importPackage(from: url)",
+        "viewModel.openPackages(from: panel.urls)",
         "MacCurrentPackageSessionSummaryView",
         "MacPackageSessionSelectorButton",
         "MacSessionDetailView",
