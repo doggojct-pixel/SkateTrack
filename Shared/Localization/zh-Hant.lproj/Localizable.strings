@@ -903,26 +903,26 @@
 
 // Task-027b macOS import preview
 "mac.import.title" = "匯入 SkateTrack 檔案";
-"mac.import.sidebar.section" = "SkateTrack 資料庫";
+"mac.import.sidebar.section" = "SkateTrack 瀏覽器";
 "mac.import.sidebar.import" = "匯入";
 "mac.import.sidebar.import.subtitle" = "開啟可攜式 .skatetrack 檔案。";
 "mac.import.sidebar.sessions" = "Session 瀏覽器";
-"mac.import.sidebar.sessions.subtitle" = "瀏覽目前已開啟 package 內的 Session。";
+"mac.import.sidebar.sessions.subtitle" = "開啟 package，並在只讀桌面瀏覽器中檢視 Session。";
 "mac.import.sidebar.analytics" = "數據分析";
-"mac.import.sidebar.analytics.subtitle" = "進階圖表會在 macOS viewer 階段接上。";
+"mac.import.sidebar.analytics.subtitle" = "進階圖表會等多 package 瀏覽器穩定後再接上。";
 "mac.import.sidebar.video" = "影片疊加";
-"mac.import.sidebar.video.subtitle" = "後續任務再將滑行資料與影片同步。";
+"mac.import.sidebar.video.subtitle" = "影片同步仍延後處理，不會在這個只讀瀏覽器中啟用。";
 "mac.import.sidebar.cloud" = "雲端同步";
 "mac.import.sidebar.cloud.subtitle" = "Google Drive 與雲端同步仍為 blocked。";
 "mac.import.hero.title" = "開啟 .skatetrack package";
 "mac.import.hero.subtitle" = "在 macOS 預覽由 iOS 匯出的 SkateTrack Session，不匯入、不合併，也不同步資料。";
 "mac.import.hero.boundary" = "Task-027b 是只讀匯入 stub，只驗證 schemaVersion 1 的 export package。備份還原、資料合併、文件關聯、拖放匯入與雲端同步都延後處理。";
-"mac.import.button.choose" = "選擇 .skatetrack 檔案";
+"mac.import.button.choose" = "開啟 .skatetrack package";
 "mac.import.button.importing" = "讀取中…";
-"mac.import.button.clear" = "清除預覽";
-"mac.import.panel.title" = "選擇 SkateTrack 檔案";
-"mac.import.panel.prompt" = "預覽";
-"mac.import.panel.message" = "請選擇從 iOS Session 摘要分享功能匯出的 .skatetrack 檔。";
+"mac.import.button.clear" = "清除 package";
+"mac.import.panel.title" = "開啟 SkateTrack package";
+"mac.import.panel.prompt" = "開啟";
+"mac.import.panel.message" = "請選擇從 iOS 匯出的 .skatetrack package。檔案只會以唯讀方式開啟，不會匯入本機資料庫。";
 "mac.import.error.title" = "無法預覽檔案";
 "mac.import.error.extension" = "請選擇副檔名為 .skatetrack 的檔案。";
 "mac.import.error.generic" = "無法預覽選擇的檔案。";
@@ -974,9 +974,29 @@
 "mac.viewer.title" = "Session 瀏覽器";
 "mac.viewer.list.title" = "Package Sessions";
 "mac.viewer.list.row.hint" = "在只讀詳細頁顯示此 Session。";
-"mac.viewer.empty.title" = "請先開啟 package";
-"mac.viewer.empty.subtitle" = "請先到「匯入」選擇 .skatetrack 檔案，再回到這裡瀏覽其中的 Session。Package 資料不會寫入本機資料庫。";
-"mac.viewer.empty.button" = "前往匯入";
+"mac.viewer.empty.title" = "開啟 package 來瀏覽 Session";
+"mac.viewer.empty.subtitle" = "在這個 Session 瀏覽器中使用「開啟 Package」檢視 iOS 匯出的 .skatetrack 檔案。SkateTrack 不會匯入、合併、還原或同步 package。";
+"mac.viewer.empty.button" = "開啟 Package";
+"mac.viewer.open.title" = "Session 瀏覽器";
+"mac.viewer.open.subtitle" = "開啟 .skatetrack package，在更大的 Mac 螢幕上檢視 Session。";
+"mac.viewer.open.button" = "開啟 Packages";
+"mac.viewer.open.clear" = "清除 Packages";
+"mac.viewer.open.readonly" = "只讀瀏覽器：不匯入、不合併、不還原、不修正路線，也不同步雲端。";
+"mac.viewer.open.error.title" = "無法開啟 package";
+"mac.viewer.open.current_file.format" = "已開啟：%@";
+"mac.viewer.open.panel.title" = "開啟 SkateTrack packages";
+"mac.viewer.open.panel.prompt" = "開啟 Packages";
+"mac.viewer.open.panel.message" = "選擇一個或多個從 iOS 匯出的 .skatetrack packages。檔案只會以唯讀方式開啟，不會匯入本機儲存空間。";
+"mac.viewer.open.current_batch.format" = "已開啟 packages：%d 個 package、%d 筆 session";
+"mac.viewer.open.partial_failure.title" = "部分 packages 無法開啟";
+"mac.viewer.open.partial_failure.message.format" = "已開啟 %d / %d 個選取的 packages。失敗檔案已略過，沒有寫入任何資料。";
+"mac.viewer.open.failed.title" = "選取的 packages 都無法開啟";
+"mac.viewer.open.failed.message.format" = "%d 個選取檔案無法開啟。請選擇從 iOS 匯出的有效 .skatetrack packages。";
+"mac.viewer.open.failure.overflow.format" = "另有 %d 個失敗檔案";
+"mac.accessibility.open_result.label" = "Package 開啟結果";
+"mac.accessibility.open_result.hint" = "顯示哪些選取的 packages 無法開啟，同時保留成功的唯讀 packages。";
+"mac.accessibility.browser_header.label" = "Session 瀏覽器 package 控制項";
+"mac.accessibility.browser_header.hint" = "開啟 SkateTrack packages，或清除目前的只讀 package 預覽。";
 "mac.viewer.empty.no_session.title" = "找不到 Session";
 "mac.viewer.empty.no_session.subtitle" = "此 package 已通過驗證，但 viewer 找不到可顯示的 Session payload。";
 "mac.viewer.session.default_title" = "SkateTrack Session";
@@ -991,15 +1011,43 @@
 "mac.viewer.route.derived_distance" = "推算路線距離";
 "mac.viewer.route.start" = "起點";
 "mac.viewer.route.finish" = "終點";
-"mac.viewer.route.map_deferred" = "MapKit 地圖渲染、道路貼合、熱力圖與路線編輯延後到後續任務。";
+"mac.viewer.route.map_deferred" = "MapKit 脈絡僅以唯讀方式使用 package 內既有路線樣本。";
 "mac.viewer.privacy.readonly" = "此 viewer 只讀取所選 package，不會匯入、合併、還原、同步或上傳資料。";
 
+"mac.viewer.packages.title" = "已開啟的 packages";
+"mac.viewer.packages.summary.format" = "%d 個 package · %d 筆 session · %d 個含路線";
+"mac.viewer.packages.card.position.format" = "Package %d";
+"mac.viewer.packages.card.session_count.format" = "%d 筆 Session";
+"mac.viewer.packages.card.route_count.format" = "%d 筆路線樣本";
+"mac.viewer.packages.card.motion_count.format" = "%d 筆動作樣本";
+"mac.viewer.packages.card.remove" = "移除此 package";
+"mac.viewer.packages.card.selected" = "已選取的 package";
+"mac.viewer.packages.card.not_selected" = "尚未選取";
+"mac.viewer.packages.card.hint" = "切換到這個已開啟的 package，進行只讀 Session 檢視。";
+"mac.accessibility.package_cards.label" = "已開啟 package 卡片";
+"mac.accessibility.package_cards.hint" = "在已開啟的 .skatetrack packages 之間切換，不會匯入或修改資料。";
 "mac.viewer.package.current" = "目前開啟的 package session";
 "mac.viewer.package.single_session" = "此 package 內 1 個 Session";
 "mac.viewer.package.session_count.format" = "此 package 內 %d 個 Session";
+
+"mac.viewer.sessions.title" = "所選 package 內的 Sessions";
+"mac.viewer.sessions.subtitle" = "選擇要在下方檢視的 Session。";
+"mac.viewer.sessions.single_count" = "1 筆 Session";
+"mac.viewer.sessions.count.format" = "%d 筆 Session";
+"mac.viewer.sessions.sample_count.format" = "%d 動作 · %d 路線";
+"mac.viewer.sessions.card.selected" = "已選取的 Session";
+"mac.viewer.sessions.card.not_selected" = "尚未選取";
+"mac.viewer.sessions.card.hint" = "切換到此 Session 的只讀詳細檢視。";
+"mac.accessibility.session_list.label" = "所選 package 的 Session 清單";
+"mac.accessibility.session_list.hint" = "顯示目前選取 package 內的 Sessions，不會匯入或修改資料。";
 "mac.viewer.detail.title" = "Session 詳情";
 
 "mac.viewer.chart.speed.title" = "速度圖表";
+
+"mac.viewer.chart.elevation.title" = "海拔剖面";
+"mac.viewer.chart.elevation.empty" = "這筆 Session 沒有可用海拔樣本。";
+"mac.viewer.chart.elevation.hint" = "根據選取 package session 的樣本顯示輕量海拔剖面。";
+"mac.viewer.chart.elevation.range.format" = "%@ – %@";
 "mac.viewer.route.data.title" = "路線資料";
 "mac.viewer.route.unique_points" = "有效路線點";
 "mac.viewer.route.preview.title" = "路線預覽";
@@ -1007,7 +1055,7 @@
 "mac.viewer.route.preview.finish" = "終點";
 "mac.viewer.route.preview.empty" = "無法繪製路線形狀";
 "mac.viewer.route.preview.empty.subtitle" = "這個 package 的 GPS 座標變化太少，無法形成可視化路線。";
-"mac.viewer.route.preview.not_mapmatched" = "這是輕量 package 預覽，尚未進行道路貼合，也尚未使用 MapKit。";
+"mac.viewer.route.preview.not_mapmatched" = "這是根據既有路線樣本顯示的唯讀 MapKit 脈絡；不道路貼合、不吸附道路、不編輯路線，也不改動可信指標。";
 "mac.viewer.route.quality.unavailable" = "無法顯示";
 "mac.viewer.route.quality.limited" = "GPS 形狀有限";
 "mac.viewer.route.quality.usable" = "可繪製路線";
@@ -1018,7 +1066,7 @@
 "mac.accessibility.package_summary.hint" = "摘要目前開啟的 .skatetrack package 與選取的 Session，不會匯入資料。";
 "mac.accessibility.session_detail.label" = "只讀 Session 詳細儀表板";
 "mac.accessibility.route_preview.label" = "路線預覽";
-"mac.accessibility.route_preview.hint" = "根據 package 內 GPS 樣本顯示輕量路線形狀，尚未道路貼合，也尚未使用 MapKit。";
+"mac.accessibility.route_preview.hint" = "根據 package 內 GPS 樣本顯示唯讀 MapKit 路線脈絡；不請求目前位置、不道路貼合、不吸附道路、不編輯路線，也不改動可信指標。";
 "mac.accessibility.route_preview.value.format" = "%d 筆路線樣本、%d 個有效路線點、推算距離 %@";
 "mac.accessibility.speed_chart.label" = "速度圖表";
 "mac.accessibility.speed_chart.hint" = "根據選取 package session 的樣本顯示輕量速度趨勢。";
@@ -1138,3 +1186,68 @@
 "import.commit.imported" = "已成功匯入，Session 現在可在歷史紀錄查看。";
 "import.commit.skippedDuplicate" = "因為此 Session 已存在，所以已略過。";
 "import.accessibility.fileRowFormat" = "檔案：%@。狀態：%@。";
+
+"mac.viewer.route.preview.readonly_mapkit" = "唯讀 MapKit 脈絡";
+"mac.viewer.route.inspect.open" = "檢視大圖";
+"mac.viewer.route.inspect.title" = "路線檢視";
+"mac.viewer.route.inspect.resizable_note" = "這會開啟獨立且可調整大小的 macOS 視窗；可拖拉視窗邊緣改變大小，再用一般地圖手勢平移或縮放。";
+"mac.viewer.route.inspect.subtitle" = "用較大的唯讀地圖檢視目前 package 的路線。";
+"mac.viewer.route.inspect.close" = "關閉";
+"mac.viewer.route.inspect.fit_bounds" = "符合路線範圍";
+"mac.viewer.route.inspect.metadata.title" = "路線資料";
+"mac.viewer.route.inspect.metadata.samples" = "路線樣本";
+"mac.viewer.route.inspect.metadata.unique" = "變動點";
+"mac.viewer.route.inspect.metadata.distance" = "推算距離";
+"mac.viewer.route.inspect.metadata.quality" = "視覺化品質";
+"mac.viewer.route.inspect.readonly" = "僅以既有 .skatetrack 路線樣本進行唯讀檢視。不請求定位權限、不顯示目前位置、不進行道路比對、吸附、路線編輯、trusted metric mutation 或 package 寫入。";
+"mac.viewer.route.legend.title" = "路線視覺圖例";
+"mac.viewer.route.legend.green" = "綠色＝高信心路段";
+"mac.viewer.route.legend.orange" = "亮橘＝低信心路段";
+"mac.viewer.route.legend.pink" = "螢光粉紅＝起始校正／暖機路段";
+"mac.viewer.route.legend.start" = "起點";
+"mac.viewer.route.legend.finish" = "終點";
+"mac.viewer.route.visual_parity.note" = "顏色對應 iOS 路線語義：綠色為高信心路段、亮橘為低信心路段、螢光粉紅為起始校正／暖機路段；僅供唯讀檢視，不代表道路比對或路線修正。";
+"mac.accessibility.route_inspection.label" = "路線檢視";
+"mac.accessibility.route_inspection.hint" = "顯示較大的唯讀路線地圖、視覺圖例與資料。不請求定位、不比對道路、不編輯路線，也不改動指標。";
+
+/* Task-030e-MacViewer-009 Duplicate and Attention States */
+"mac.viewer.attention.title" = "需要注意";
+"mac.viewer.attention.message.format" = "%d 個已開啟 package 有重複或注意警示。";
+"mac.viewer.attention.acknowledge_duplicate_files" = "已了解";
+"mac.viewer.attention.readonly" = "安全時仍可唯讀瀏覽。SkateTrack 不會合併、刪除、挑選勝出版本、匯入本機歷史，也不會修改 package。";
+"mac.viewer.attention.summary.duplicate_file.format" = "%d 個 package card 有完全相同檔案路徑警示。";
+"mac.viewer.attention.summary.duplicate_package.format" = "%d 個 package card 有重複 package identifier 警示。";
+"mac.viewer.attention.summary.duplicate_session.format" = "%d 個 package card 有重複 session identifier 警示。";
+"mac.viewer.attention.card.badge" = "注意";
+"mac.viewer.attention.duplicate_file.title" = "重複檔案路徑";
+"mac.viewer.attention.duplicate_file.detail" = "這個完全相同的檔案路徑被選取超過一次。瀏覽器只保留一張唯讀卡片，避免出現混淆的完整重複項目。";
+"mac.viewer.attention.duplicate_package.title" = "重複 package identifier";
+"mac.viewer.attention.duplicate_package.detail" = "另一個已開啟 package 回報相同 package identifier。請以唯讀方式檢查；SkateTrack 不會合併或挑選勝出版本。";
+"mac.viewer.attention.duplicate_session.title" = "重複 session identifier";
+"mac.viewer.attention.duplicate_session.detail" = "另一個已開啟 package 包含相同 session identifier。請以唯讀方式檢查；SkateTrack 不會合併或覆寫 Session。";
+"mac.accessibility.attention_summary.label" = "Package 注意摘要";
+"mac.accessibility.attention_summary.hint" = "顯示目前唯讀瀏覽階段的重複檔案、package 或 session 警示。";
+
+"mac.accessibility.open_packages.button.label" = "開啟 packages";
+
+"mac.accessibility.open_packages.button.hint" = "在 macOS 只讀 Session 瀏覽器中開啟一個或多個 .skatetrack packages。";
+
+"mac.accessibility.clear_packages.button.label" = "清除已開啟 packages";
+
+"mac.accessibility.clear_packages.button.hint" = "清除目前瀏覽器中的只讀 package 預覽；不會刪除任何檔案。";
+
+"mac.accessibility.acknowledge_duplicate_files.button.label" = "確認重複檔案警示";
+
+"mac.accessibility.acknowledge_duplicate_files.button.hint" = "清除目前這次重複檔案路徑的警示視覺狀態；再次重複開啟同一檔案時仍會重新顯示警示。";
+
+"mac.accessibility.route_inspect_open.button.label" = "開啟較大的路線地圖";
+
+"mac.accessibility.route_inspect_open.button.hint" = "開啟可調整大小的只讀路線檢視視窗；不會請求定位，也不會編輯路線。";
+
+"mac.accessibility.route_inspect_close.button.label" = "關閉路線檢視";
+
+"mac.accessibility.route_inspect_close.button.hint" = "關閉放大的路線檢視視窗。";
+
+"mac.accessibility.elevation_chart.label" = "海拔剖面圖";
+
+"mac.accessibility.package_card.remove.hint" = "從只讀瀏覽器階段移除此 package；不會刪除 package 檔案。";

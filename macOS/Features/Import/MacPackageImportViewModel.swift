@@ -1,13 +1,14 @@
 // [協作區] MacPackageImportViewModel.swift
-// 用途：macOS .skatetrack 匯入預覽狀態管理；只讀檔案並驗證 package，不寫入資料庫。
-// 委派至：MacImportView / MacPackagePreviewView；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
+// 用途：macOS .skatetrack read-only package preview state；Task-030e 擴充為 in-memory multi-package viewer state 與多檔開啟結果。
+// 委派至：MacImportView / MacSessionBrowserView / MacPackageOpenCoordinator / MacMultiPackageViewerState；不得進行 restore、merge、cloud sync 或 iOS DocumentPicker 行為。
 
 import Foundation
 
 struct MacPackageImportPreview: Identifiable, Equatable {
-    let id = UUID()
+    let id: UUID
     let fileURL: URL
     let payload: SkateTrackPackagePayload
+    let attentionWarnings: [MacPackageAttentionWarning]
 
     var manifest: SkateTrackPackageManifest {
         payload.manifest
@@ -53,55 +54,156 @@ struct MacPackageImportPreview: Identifiable, Equatable {
     var privacyNotes: [String] {
         primaryPackageSession?.privacyNotes ?? []
     }
+
+    init(
+        id: UUID = UUID(),
+        fileURL: URL,
+        payload: SkateTrackPackagePayload,
+        attentionWarnings: [MacPackageAttentionWarning] = []
+    ) {
+        self.id = id
+        self.fileURL = fileURL
+        self.payload = payload
+        self.attentionWarnings = attentionWarnings
+    }
 }
 
 @MainActor
 final class MacPackageImportViewModel: ObservableObject {
-    @Published private(set) var preview: MacPackageImportPreview?
+    @Published private(set) var viewerState = MacMultiPackageViewerState()
     @Published private(set) var isImporting = false
     @Published private(set) var errorMessageKey: String?
     @Published private(set) var lastReadFileName: String?
+    @Published private(set) var lastOpenResult: MacPackageOpenResult?
 
-    private let reader: SkateTrackPackageReader
+    private let openCoordinator: MacPackageOpenCoordinator
 
     init(reader: SkateTrackPackageReader = SkateTrackPackageReader()) {
-        self.reader = reader
+        self.openCoordinator = MacPackageOpenCoordinator(reader: reader)
+    }
+
+    var preview: MacPackageImportPreview? {
+        viewerState.selectedPackage
+    }
+
+    var openedPackages: [MacPackageImportPreview] {
+        viewerState.packages
+    }
+
+    var batchSummary: MacPackageOpenBatchSummary {
+        viewerState.batchSummary
+    }
+
+    var attentionSummary: MacPackageAttentionSummary {
+        viewerState.attentionSummary
+    }
+
+    var hasAcknowledgeableDuplicateFilePathWarnings: Bool {
+        viewerState.hasAcknowledgeableDuplicateFilePathWarnings
+    }
+
+    var selectedPackageID: UUID? {
+        viewerState.selection.selectedPackageID
+    }
+
+    var selectedSessionID: UUID? {
+        viewerState.selection.selectedSessionID
+    }
+
+    var selectedPackageSession: SkateTrackPackageSession? {
+        viewerState.selectedPackageSession
+    }
+
+    var selectedViewerModels: [MacSessionViewerModel] {
+        preview?.payload.sessions.map(MacSessionViewerModel.init) ?? []
+    }
+
+    var selectedViewerModel: MacSessionViewerModel? {
+        let models = selectedViewerModels
+        if let selectedSessionID,
+           let selected = models.first(where: { $0.id == selectedSessionID }) {
+            return selected
+        }
+        return models.first
     }
 
     func importPackage(from url: URL) {
+        openPackages(from: [url])
+    }
+
+    func openPackages(from urls: [URL]) {
+        guard !urls.isEmpty else { return }
+
         isImporting = true
         errorMessageKey = nil
-        lastReadFileName = url.lastPathComponent
+        lastOpenResult = nil
+        lastReadFileName = urls.count == 1 ? urls.first?.lastPathComponent : nil
         defer { isImporting = false }
 
-        guard url.pathExtension.lowercased() == "skatetrack" else {
-            preview = nil
-            errorMessageKey = "mac.import.error.extension"
-            return
-        }
+        let result = openCoordinator.openPackages(from: urls)
+        lastOpenResult = result
 
-        let didAccessSecurityScopedResource = url.startAccessingSecurityScopedResource()
-        defer {
-            if didAccessSecurityScopedResource {
-                url.stopAccessingSecurityScopedResource()
-            }
-        }
-
-        do {
-            let payload = try reader.readPackage(from: url)
-            preview = MacPackageImportPreview(fileURL: url, payload: payload)
-        } catch let packageError as SkateTrackPackageError {
-            preview = nil
-            errorMessageKey = packageError.localizationKey
-        } catch {
-            preview = nil
-            errorMessageKey = "mac.import.error.generic"
+        if result.hasAnySuccess {
+            var nextState = viewerState
+            nextState.mergeOpenedPreviews(result.previews)
+            viewerState = nextState
+            errorMessageKey = nil
+        } else if viewerState.packages.isEmpty {
+            clearPackagesForReadFailure(errorMessageKey: result.primaryErrorMessageKey ?? "mac.import.error.generic")
+        } else {
+            errorMessageKey = result.primaryErrorMessageKey ?? "mac.import.error.generic"
         }
     }
 
+    func appendPackagePreviewForFutureBatch(_ preview: MacPackageImportPreview) {
+        var nextState = viewerState
+        nextState.appendOrReplacePackage(preview)
+        viewerState = nextState
+    }
+
+    func selectPackage(id: UUID?) {
+        var nextState = viewerState
+        nextState.selectPackage(id: id)
+        viewerState = nextState
+    }
+
+    func selectSession(id: UUID?) {
+        var nextState = viewerState
+        nextState.selectSession(id: id)
+        viewerState = nextState
+    }
+
+    func removePackage(id: UUID) {
+        var nextState = viewerState
+        nextState.removePackage(id: id)
+        viewerState = nextState
+    }
+
+    func acknowledgeDuplicateFilePathWarnings() {
+        var nextState = viewerState
+        nextState.acknowledgeDuplicateFilePathWarnings()
+        viewerState = nextState
+    }
+
+    func ensureDefaultSelection() {
+        var nextState = viewerState
+        nextState.ensureValidSelection()
+        viewerState = nextState
+    }
+
     func clearPreview() {
-        preview = nil
+        var nextState = viewerState
+        nextState.clear()
+        viewerState = nextState
         errorMessageKey = nil
         lastReadFileName = nil
+        lastOpenResult = nil
+    }
+
+    private func clearPackagesForReadFailure(errorMessageKey: String) {
+        var nextState = viewerState
+        nextState.clear()
+        viewerState = nextState
+        self.errorMessageKey = errorMessageKey
     }
 }

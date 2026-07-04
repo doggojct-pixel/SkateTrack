@@ -1604,3 +1604,334 @@ docs/reference/FILE_STRUCTURE.md                             # [原則 E] Record
 - No route geometry mutation, no trusted metrics mutation, no estimated route display enablement, no production sync/cloud behavior, no Watch / WatchBridge, no Task-031, and no Task-030e implementation is introduced.
 
 Task-030d-A file-structure token: iOS multi-file .skatetrack import foundation, History import button, staged validation, no silent overwrite, no route geometry mutation, no trusted metrics mutation, no package schema change.
+
+## Task-030e-MacViewer-002 Browser-First IA Shell Addendum
+
+### Updated Source Areas
+
+```text
+macOS/App/MacRootView.swift                         # [協作區] Browser-first macOS shell; Session Browser is the default destination and standalone Import is no longer a primary sidebar destination.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift # [協作區] Session Browser now owns the visible Open Package action, browser header, read-only status, and current package clearing control.
+Shared/Localization/en.lproj/Localizable.strings    # [原則 A] Browser-first Open Package copy and accessibility keys.
+Shared/Localization/zh-Hant.lproj/Localizable.strings # [原則 A] Browser-first Open Package copy and accessibility keys.
+Shared/Localization/ja.lproj/Localizable.strings    # [原則 A] Browser-first Open Package copy and accessibility keys.
+scripts/verify_macos_package_preview.py             # [工程設定] Updated for Task-030e browser-first shell while preserving Task-027b package preview safety boundaries.
+scripts/verify_macos_session_viewer.py              # [工程設定] Updated for in-browser package opening and shared view-model state.
+scripts/verify_task030e_browser_first_ia.py         # [工程設定] Task-030e-MacViewer-002 verifier aligned with Build Plan v1.2.
+```
+
+### Deferred After Task-030e-MacViewer-002
+
+- Multi-package state, multi-file package opening, package cards, selected package list, MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files, bookmarks, database import, merge, restore, cloud sync, Watch, WatchBridge, and Task-031 remain out of this step.
+- `MacPackageImportViewModel` remains the lower-level read-only package reader boundary for now; later Task-030e subtasks may wrap or replace its single-preview state with an in-memory multi-package browser model.
+- Task-030e-MacViewer-002 is aligned with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2` and must not be treated as full Task-030e completion.
+
+## Task-030e-MacViewer-003 In-Memory Multi-Package Preview State Addendum
+
+### New / Updated Source Areas
+
+```text
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift # [協作區] In-memory package collection, selected package, selected session, and batch-summary state for the read-only macOS viewer.
+macOS/Features/Import/MacPackageImportViewModel.swift          # [協作區] Now owns `MacMultiPackageViewerState` and exposes selected package/session state while retaining single-file open for this subtask.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift      # [協作區] Reads selected session state from the view-model boundary instead of owning package/session selection locally.
+scripts/verify_task030e_multi_package_state.py                 # [工程設定] Task-030e-MacViewer-003 verifier aligned with Build Plan v1.2.
+```
+
+### Deferred After Task-030e-MacViewer-003
+
+- True multi-file open remains deferred to a later Task-030e subtask; `NSOpenPanel.allowsMultipleSelection` intentionally remains `false` for now.
+- Package cards, partial-success package card UI, drag-and-drop, persistent recent files/bookmarks, MapKit route context, iOS route visual parity, and expanded route inspection remain deferred to later Task-030e subtasks.
+- The macOS viewer remains read-only: no Core Data write, no package schema mutation, no route geometry mutation, no trusted metrics mutation, no merge/restore/sync, no Watch / WatchBridge, and no Task-031 work.
+
+## Task-030e-MacViewer-004 Multi-File Open Foundation Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift       # [協作區] Read-only multi-file .skatetrack open coordinator; validates extension, uses security-scoped access, reads independently, classifies failures.
+macOS/Features/SessionBrowser/MacPackageOpenResultStatusView.swift  # [協作區] Read-only partial-success / failed-file status surface for multi-file open.
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift      # [協作區] Adds batch replace / duplicate path de-duplication for opened package previews.
+macOS/Features/Import/MacPackageImportViewModel.swift               # [協作區] Owns openPackages(from:) and in-memory open result state; no persistence/import/merge/restore/sync.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Browser NSOpenPanel now supports allowsMultipleSelection = true and calls openPackages(from:).
+scripts/verify_task030e_multi_file_open.py                          # [工程設定] Task-030e-MacViewer-004 verifier aligned with Build Plan v1.2.
+```
+
+Task-030e-MacViewer-004 does not add Finder document association, custom UTType, persistent recent-file storage, package cards UI, MapKit route context, route inspection window, Core Data writes, merge/restore/sync, route geometry mutation, or trusted metrics mutation.
+
+## Task-030e-MacViewer-005 Package Cards and Batch Summary Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Read-only package cards, batch summary, selected package switching, and package removal for opened .skatetrack packages.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageCardListView` between open-result status and the selected package session summary.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Adds package-card and batch-summary copy in all supported languages.
+scripts/verify_task030e_package_cards.py                            # [工程設定] Task-030e-MacViewer-005 verifier aligned with Build Plan v1.2.
+
+### Deferred After Task-030e-MacViewer-005
+
+- Selected package session list refinement remains deferred to Task-030e-MacViewer-006.
+- MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
+- Task-030e-MacViewer-005 is read-only UI over already opened in-memory packages and must not mutate `.skatetrack` package payloads, route geometry, trusted metrics, Core Data, or schema.
+
+## Task-030e-MacViewer-006 Selected Package Sessions List Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+macOS/Features/SessionBrowser/MacPackageSessionListView.swift       # [協作區] Read-only selected-package session list and selected session switching for opened .skatetrack packages.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageSessionListView` between selected package summary and session detail dashboard.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Adds selected-package session-list copy in all supported languages.
+scripts/verify_task030e_selected_package_sessions.py                # [工程設定] Task-030e-MacViewer-006 verifier aligned with Build Plan v1.2.
+
+### Deferred After Task-030e-MacViewer-006
+
+- MapKit route context remains deferred to Task-030e-MacViewer-007A.
+- iOS route visual parity and expanded route inspection remain deferred to Task-030e-MacViewer-007B.
+- Drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
+- Task-030e-MacViewer-006 is read-only UI over already opened in-memory packages and must not mutate `.skatetrack` package payloads, route geometry, trusted metrics, Core Data, or schema.
+
+
+## Task-030e-MacViewer-007A Read-Only MapKit Route Context Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+macOS/Features/SessionBrowser/MacRouteMapContextView.swift         # [協作區] Read-only MapKit route context view using existing .skatetrack route samples only; no location permission, road matching, route editing, or trusted metric mutation.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift            # [協作區] Hosts `MacRouteMapContextView` inside the existing route preview card and keeps read-only route summary pills.
+scripts/verify_task030e_mapkit_route_context.py                    # [工程設定] Task-030e-MacViewer-007A verifier aligned with Build Plan v1.2.
+scripts/verify_macos_route_chart_viewer.py                         # [工程設定] Updated to allow the specific 007A read-only MapKit context while preserving route/chart guardrails.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Updates read-only MapKit route-context copy in all supported languages.
+
+### Deferred After Task-030e-MacViewer-007A
+
+- iOS route visual parity and expanded route inspection remain deferred to Task-030e-MacViewer-007B.
+- Drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
+- Task-030e-MacViewer-007A is a read-only map context over already opened in-memory packages and must not request location permission, show user location, map-match, snap-to-road, reconstruct route geometry, mutate trusted metrics, Core Data, or schema.
+
+### Task-030e-MacViewer-007B route visual inspection
+- `macOS/Features/SessionBrowser/MacRouteVisualStyle.swift` — shared macOS route visual parity colors for green route line, bright orange accent, fluorescent pink glow, and start/finish markers.
+- `macOS/Features/SessionBrowser/MacRouteInspectionView.swift` — expanded read-only route inspection surface with MapKit context, fit-to-route-bounds presentation, metadata, and legend.
+- `macOS/Features/SessionBrowser/MacRoutePreviewView.swift` — compact route preview entry point that opens the expanded inspection surface.
+- `macOS/Features/SessionBrowser/MacRouteMapContextView.swift` — read-only MapKit bridge for existing route samples only; it remains the only MapKit route view and must not request location or mutate route geometry.
+
+## Task-030e-MacViewer-008 Selected Session Detail Layout Alignment Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacSessionDetailView.swift              # [協作區] Selected-session detail dashboard alignment; keeps metrics, route map, speed chart, route metadata, and privacy/read-only notes grouped with `ViewThatFits` desktop layout.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift               # [協作區] Opens expanded route inspection through a resizable route inspection window presenter instead of a fixed sheet.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift            # [協作區] Read-only expanded route inspection content; adapts map height to the resizable window while preserving route visual parity and existing samples only.
+macOS/Features/SessionBrowser/MacRouteInspectionWindowPresenter.swift # [協作區] AppKit window presenter for the resizable route inspection window; no location permission, no user location, no route mutation.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings         # [協作區] Adds the resizable route inspection window note across supported languages.
+scripts/verify_task030e_selected_session_detail_layout.py             # [工程設定] Task-030e-MacViewer-008 verifier for selected-session layout, resizable inspector window, localization, project membership, headers, and route safety boundaries.
+scripts/verify_task030e_route_visual_inspection.py                    # [工程設定] Updated so the 007B route visual inspection verifier recognizes the resizable window presenter architecture.
+```
+
+### Deferred After Task-030e-MacViewer-008
+
+- Duplicate / attention states remain deferred to Task-030e-MacViewer-009.
+- Localization / accessibility pass beyond strings directly needed by 008 remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Shared route display pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-008 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+## Task-030e-MacViewer-008-1 Elevation Profile + Total Ascent Display Alignment Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacSessionDetailView.swift              # [協作區] Adds total elevation gain to the selected-session metrics grid and places the elevation profile next to the existing speed chart in the read-only dashboard.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift             # [協作區] Exposes display-only macOS elevation profile points alongside speed and route preview data.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift             # [協作區] Hosts lightweight SwiftUI Path chart cards for speed and elevation profile previews without introducing Swift Charts on macOS.
+macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift       # [協作區] Builds display-only elevation profile points from existing package motion samples; uses trusted altitude diagnostics when present and never mutates stored samples or trusted metrics.
+SkateTrack.xcodeproj/project.pbxproj                                  # [工程設定] Adds `MacElevationDisplayPipeline.swift` to the macOS Sources build phase.
+scripts/verify_task030e_elevation_profile.py                          # [工程設定] Task-030e-MacViewer-008-1 verifier for total ascent metric, elevation profile UI, project membership, line/header rules, docs, and no-mutation safety boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-008-1
+
+- Duplicate / attention states remain deferred to Task-030e-MacViewer-009.
+- Broader localization / accessibility pass remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
+- Task-030e-MacViewer-008-1 does not implement route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+## Task-030e-MacViewer-009 Duplicate and Attention States Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageAttentionState.swift        # [協作區] Classifies read-only duplicate / attention warnings for exact duplicate file paths and duplicate session identifiers; supports transient duplicate file path acknowledgement without hiding future reopens; keeps package identifier hook nil until package metadata adds a stable ID.
+macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Displays localized duplicate / attention warning summary and the duplicate-file acknowledgement action without merge/delete/winner-selection actions.
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Shows attention badges and warning titles on package cards while preserving read-only package switching/removal.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Hosts `MacPackageAttentionSummaryView` after open-result status and before package cards.
+macOS/Features/SessionBrowser/MacMultiPackageViewerState.swift      # [協作區] Reclassifies attention states when packages are replaced, appended, or removed while keeping selection in memory only.
+macOS/Features/Import/MacPackageImportViewModel.swift               # [協作區] Carries display-only `attentionWarnings` on package previews and exposes `attentionSummary` to the browser.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區] Adds duplicate / attention state copy in all supported languages.
+SkateTrack.xcodeproj/project.pbxproj                                # [工程設定] Adds 009 attention files to the macOS Sources build phase.
+scripts/verify_task030e_duplicate_attention.py                      # [工程設定] Task-030e-MacViewer-009 verifier for duplicate / attention state scope, localization, docs, project membership, and no-mutation safety boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-009
+
+- Broader localization / accessibility pass remains deferred to Task-030e-MacViewer-010.
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep` after Task-030e.
+- Task-030e-MacViewer-009 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-009-1 verification token: Duplicate Attention Acknowledgement, acknowledgeDuplicateFilePathWarnings, acknowledgedDuplicateFilePaths, mac.viewer.attention.acknowledge_duplicate_files, no merge, no delete, no winner selection, no local history import.
+
+## Task-030e-MacViewer-010 Localization / Accessibility Pass Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+macOS/Features/SessionBrowser/MacPackageAttentionSummaryView.swift  # [協作區] Adds localized accessibility label / hint / help for the duplicate-file acknowledgement button.
+macOS/Features/SessionBrowser/MacSessionBrowserView.swift           # [協作區] Adds localized accessibility label / hint / identifiers for open / clear package controls.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift             # [協作區] Adds localized accessibility labels / hints / identifiers for expanded route inspection entry points.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift          # [協作區] Adds localized accessibility label / hint / identifier for the route inspection close control.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift           # [協作區] Adds speed / elevation chart accessibility identifiers and a dedicated elevation chart accessibility label.
+macOS/Features/SessionBrowser/MacPackageCardListView.swift          # [協作區] Adds localized accessibility help for read-only package-card removal and testable card control identifiers.
+macOS/Features/SessionBrowser/MacPackageSessionListView.swift       # [協作區] Adds session-card accessibility identifier and localized help.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift            # [協作區] Treats exported privacy-note text as verbatim content and exposes metric label/value pairs to accessibility.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [原則 A] Adds 010 accessibility copy in all supported languages and tightens Japanese macOS viewer unit / empty-state wording.
+scripts/verify_task030e_localization_accessibility.py               # [工程設定] Task-030e-MacViewer-010 verifier for localization parity, accessibility tokens, line/header rules, and no-mutation boundaries.
+```
+
+### Deferred After Task-030e-MacViewer-010
+
+- Broader verifier / test foundation remains deferred to Task-030e-MacViewer-011.
+- Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
+- Manual QA gate and final merge gate remain deferred to Task-030e-MacViewer-013 / 014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-010 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, merge/restore/sync, drag-and-drop, recent files, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-010 verification token: Localization / Accessibility Pass, accessibility labels / hints / identifiers, mac.accessibility.elevation_chart.label, Japanese unit wording alignment, no route / metric / package mutation.
+
+## Task-030e-MacViewer-011 Verifier / Test Foundation Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+scripts/verify_task030e_macos_multi_package_viewer.py             # [工程設定] Consolidated Task-030e verifier covering browser-first IA, multi-file open, in-memory package state, duplicate attention acknowledgement, MapKit read-only boundaries, localization parity, Swift headers / line limits, one-click cleanup behavior, and no-scope-expansion guarantees.
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh       # [工程設定] Source-controlled one-click verifier / build runner; packages logs, checks diff / status / focused Swift line counts, and removes the temporary run directory after zip creation.
+docs/history/DEV_LOG.md                                           # [原則 E] Records Task-030e-MacViewer-011 verifier / test foundation completion.
+docs/reference/FILE_STRUCTURE.md                                  # [原則 E] Records Task-030e-MacViewer-011 verifier and one-click runner inventory.
+```
+
+### Task-030e-MacViewer-011 verifier coverage
+
+- Browser-first macOS Session Browser IA remains the entry point for opening `.skatetrack` packages.
+- Multi-file open, partial success, and in-memory multi-package state are verified through source tokens.
+- Duplicate file path, duplicate package identifier hook, duplicate session identifier, and duplicate acknowledgement behavior remain warning / attention states only.
+- MapKit route context remains read-only, uses existing package route samples, keeps user-location display off, and does not add location permission keys.
+- Localization key parity across `en`, `zh-Hant`, and `ja` remains verified.
+- Swift collaboration-zone headers and focused Task-030e macOS line limits remain checked.
+- `scripts/run_task030e_macos_multi_package_viewer_oneclick.sh` records `ONECLICK_RUN_DIR_REMOVED=YES` after zipping logs and deleting its temporary output directory.
+
+### Deferred After Task-030e-MacViewer-011
+
+- Documentation synchronization beyond necessary `DEV_LOG` / `FILE_STRUCTURE` updates remains deferred to Task-030e-MacViewer-012.
+- Manual QA screenshot gate remains deferred to Task-030e-MacViewer-013.
+- Final merge gate remains deferred to Task-030e-MacViewer-014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-011 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-011 verification token: Verifier / Test Foundation, verify_task030e_macos_multi_package_viewer.py, run_task030e_macos_multi_package_viewer_oneclick.sh, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
+
+## Task-030e-MacViewer-012 Documentation Sync Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+docs/DOCUMENTATION_INDEX.md                                      # [原則 E] Routes Task-030e documentation by source-of-truth document and records current documentation-sync status.
+docs/process/DEVELOPMENT_RULES.md                                # [原則 E] Records the recurring one-click cleanup rule: zip logs, delete the temporary run directory, and record `ONECLICK_RUN_DIR_REMOVED=YES`.
+docs/release/RELEASE_READINESS_PRE_ADP.md                        # [原則 E] Updates the macOS viewer gate to the current Task-030e state and required verifier / one-click commands.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md                         # [原則 E] Adds Task-030e multi-package viewer manual QA, duplicate acknowledgement, route inspection, localization/accessibility, and one-click cleanup checks.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                        # [原則 E] Adds the current Task-030e macOS viewer boundary and remaining deferred features.
+docs/adr/ADR-INDEX.md                                            # [原則 E] Records the Task-030e documentation-sync decision and read-only viewer boundary.
+docs/history/DEV_LOG.md                                          # [原則 E] Records Task-030e-MacViewer-012 documentation sync completion.
+scripts/verify_task030e_documentation_sync.py                    # [工程設定] Verifies Task-030e documentation synchronization tokens, docs whitespace hygiene, one-click cleanup tokens, and no-scope-expansion boundaries.
+scripts/verify_task030e_macos_multi_package_viewer.py            # [工程設定] Consolidated verifier now includes the Task-030e documentation-sync verifier in its required verifier inventory.
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh      # [工程設定] Source-controlled one-click runner now includes `verify_task030e_documentation_sync.py` and continues deleting its temporary run directory after zip packaging.
+```
+
+### Task-030e-MacViewer-012 documentation coverage
+
+- Documentation index now routes Task-030e documentation by use case.
+- Development rules now capture one-click post-zip temporary directory cleanup as a recurring rule.
+- Release readiness now describes the current macOS multi-package viewer capabilities and remaining Pre-ADP limitations.
+- Manual QA matrix now includes the Task-030e package-viewer flows, duplicate acknowledgement, route inspection, localization/accessibility, and one-click cleanup checks.
+- Known limitations and ADR index now state the read-only package review boundary and remaining deferred work.
+
+### Deferred After Task-030e-MacViewer-012
+
+- Manual QA screenshot gate remains deferred to Task-030e-MacViewer-013.
+- Final merge gate remains deferred to Task-030e-MacViewer-014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-012 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-012 verification token: Documentation Sync, verify_task030e_documentation_sync.py, docs source-of-truth alignment, ONECLICK_RUN_DIR_REMOVED=YES, no package schema change, no Core Data write.
+
+
+## Task-030e-MacViewer-013 Manual QA Gate Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`
+
+```text
+docs/release/TASK030E_MANUAL_QA_GATE.md                       # [原則 E] Source-controlled Task-030e manual QA signoff checklist and pass-condition record.
+docs/DOCUMENTATION_INDEX.md                                    # [原則 E] Routes Task-030e manual QA gate documentation.
+docs/process/DEVELOPMENT_RULES.md                              # [原則 E] Records explicit operator signoff requirement for Task-030e manual closure.
+docs/release/RELEASE_READINESS_PRE_ADP.md                      # [原則 E] Adds Task-030e-MacViewer-013 manual gate criteria before final merge.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md                       # [原則 E] Adds 013-specific manual QA evidence and no-scope-expansion checks.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                      # [原則 E] States the manual QA gate is not product behavior and preserves deferred limitations.
+docs/adr/ADR-INDEX.md                                          # [原則 E] Records the Task-030e manual QA gate decision.
+docs/history/DEV_LOG.md                                        # [原則 E] Records Task-030e-MacViewer-013 manual QA gate completion scope.
+scripts/verify_task030e_manual_qa_gate.py                      # [工程設定] Verifies 013 manual gate docs, one-click runner inclusion, consolidated verifier inclusion, and read-only no-import boundaries.
+scripts/verify_task030e_macos_multi_package_viewer.py          # [工程設定] Consolidated verifier now includes the manual QA gate verifier.
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh    # [工程設定] Source-controlled one-click runner now includes the manual QA gate verifier.
+```
+
+### Task-030e-MacViewer-013 manual gate coverage
+
+- Requires apply log, one-click zip, macOS build, line check, diff check, status, and postpack cleanup evidence before manual signoff.
+- Requires operator-run package scenarios for valid, multi-session, mixed valid/invalid, duplicate, route, elevation, localization, and accessibility cases.
+- Requires explicit no-import, no-merge, no-duplicate-deletion, no-winner-selection, no-local-history-import, no-route-correction, no-location-prompt, no-user-location-blue-dot, no-schema-change, no-Core-Data-write boundary checks.
+- Records that manual QA failure blocks commit / push even if automated one-click verification is green.
+
+### Deferred After Task-030e-MacViewer-013
+
+- Final merge gate remains deferred to Task-030e-MacViewer-014.
+- Shared Activity Visualization Pipeline extraction remains deferred to independent `Task-031-prep`.
+- Task-030e-MacViewer-013 does not implement package merge, duplicate deletion, winner selection, local-history import, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema changes, Core Data writes, Watch, WatchBridge, or Task-031 work.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, verify_task030e_manual_qa_gate.py, operator signoff required, task030e_013_oneclick, no package schema change, no Core Data write.
+
+
+## Task-030e-MacViewer-014 Final Merge Gate Addendum
+
+Added final merge gate files:
+
+```text
+docs/release/TASK030E_FINAL_MERGE_GATE.md
+scripts/verify_task030e_final_merge_gate.py
+```
+
+Updated existing Task-030e gate files:
+
+```text
+scripts/verify_task030e_macos_multi_package_viewer.py
+scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
+docs/DOCUMENTATION_INDEX.md
+docs/process/DEVELOPMENT_RULES.md
+docs/release/RELEASE_READINESS_PRE_ADP.md
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+docs/adr/ADR-INDEX.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+```
+
+Task-030e-MacViewer-014 remains docs/tooling/merge-readiness only. It adds the final merge gate checklist and verifier, but no product UI, package open behavior, package schema, Core Data write, route geometry, trusted metrics, location permission, user-location display, Watch behavior, or Task-031 implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate Addendum, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, final merge gate checklist.

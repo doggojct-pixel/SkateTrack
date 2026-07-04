@@ -1,7 +1,7 @@
 # SkateTrack Documentation Index
 
-**Status:** Active — Task-030b documentation consolidation and directory cleanup  
-**Last Updated:** 2026-06-13  
+**Status:** Active — Task-030e final merge gate for macOS multi-package viewer
+**Last Updated:** 2026-07-04
 **Purpose:** First documentation entry point for future ChatGPT / Cursor / human handoff.
 
 SkateTrack documentation is intentionally organized into a small set of active source-of-truth files. Historical ADR single files were consolidated into one ADR index so daily workflow does not require reading scattered decision files.
@@ -33,10 +33,10 @@ SkateTrack documentation is intentionally organized into a small set of active s
 
 | File | Owns |
 |---|---|
-| `docs/process/DEVELOPMENT_RULES.md` | Development workflow, hotfix handling, commit / push policy, file-size rules, localization rules, macOS layout principles, documentation update requirements, and prohibited scope creep. |
+| `docs/process/DEVELOPMENT_RULES.md` | Development workflow, hotfix handling, commit / push policy, one-click cleanup behavior, file-size rules, localization rules, macOS layout principles, documentation update requirements, and prohibited scope creep. |
 | `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` | StoreKit, Google Sign-In, Google Drive, CloudKit / iCloud, WeatherKit, TestFlight, custom UTType / document association, real-device GPS validation, Fall Detection diagnostics, Japanese review, and future localization roadmap. |
-| `docs/release/RELEASE_READINESS_PRE_ADP.md` | The verification gate before treating `develop` as a Pre-ADP release-readiness checkpoint. |
-| `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` | Manual QA checklist by platform / feature / language / privacy boundary. |
+| `docs/release/RELEASE_READINESS_PRE_ADP.md` | The verification gate before treating `develop` as a Pre-ADP release-readiness checkpoint, including the Task-030e macOS package-viewer gate. |
+| `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` | Manual QA checklist by platform / feature / language / privacy boundary, including Task-030e multi-package viewer checks. |
 | `docs/adr/ADR-INDEX.md` | Historical decision inventory after ADR consolidation. |
 
 ## 4. Consolidated / retired documents
@@ -56,3 +56,36 @@ Historical facts remain available in `docs/history/DEV_LOG.md`, but `DEV_LOG.md`
 - If a future architectural decision is large enough to require its own ADR, add it under `docs/adr/` and update `docs/adr/ADR-INDEX.md`.
 
 Task-030b verification token: documentation index consolidated.
+
+## 6. Task-030e macOS multi-package viewer documentation routing
+
+Task-030e documentation is split by purpose rather than by temporary hotfix package:
+
+| Need | Read / update |
+|---|---|
+| Current macOS viewer capability and non-goals | `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+| Release-readiness verification commands and boundary checks | `docs/release/RELEASE_READINESS_PRE_ADP.md` |
+| Manual macOS package-viewer QA steps | `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md` |
+| Task-030e manual QA signoff checklist | `docs/release/TASK030E_MANUAL_QA_GATE.md` |
+| Task-030e final merge checklist | `docs/release/TASK030E_FINAL_MERGE_GATE.md` |
+| File inventory and verifier / one-click runner map | `docs/reference/FILE_STRUCTURE.md` |
+| Chronological implementation history | `docs/history/DEV_LOG.md` |
+| Consolidated architectural decision snapshot | `docs/adr/ADR-INDEX.md` |
+
+Task-030e-MacViewer-012 verification token: documentation sync routing, macOS multi-package viewer, one-click cleanup rule, read-only package boundary.
+
+
+## 7. Task-030e manual QA gate
+
+`docs/release/TASK030E_MANUAL_QA_GATE.md` is the operator-run gate for Task-030e-MacViewer-013. It requires automated precondition logs, package-category coverage, manual signoff, and explicit no-scope-expansion checks before the final merge gate.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate routing, operator signoff required, read-only no-import manual QA boundary.
+
+
+## 8. Task-030e final merge gate
+
+`docs/release/TASK030E_FINAL_MERGE_GATE.md` is the final merge-readiness checklist for Task-030e-MacViewer-014. It records develop merge readiness, 014 one-click evidence, manual QA carry-forward, and final no-scope-expansion review before any merge back to `develop`.
+
+Task-030e-MacViewer-014 verification token: Final Merge Gate routing, develop merge readiness, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py.
+
+Task-030e documentation sync remains the routing foundation for final merge readiness.

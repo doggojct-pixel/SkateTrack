@@ -15,10 +15,13 @@ REQUIRED_FILES = [
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "macOS/Features/Import/MacPackageImportViewModel.swift",
     "macOS/Features/SessionBrowser/MacSessionBrowserView.swift",
+    "macOS/Features/SessionBrowser/MacPackageSessionListView.swift",
     "macOS/Features/SessionBrowser/MacSessionDetailView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
+    "macOS/Features/SessionBrowser/MacRouteMapContextView.swift",
+    "macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_session_viewer.py",
@@ -27,10 +30,13 @@ REQUIRED_FILES = [
 
 PROJECT_MEMBERSHIP = [
     "MacSessionBrowserView.swift",
+    "MacPackageSessionListView.swift",
     "MacSessionDetailView.swift",
     "MacSessionViewerModel.swift",
     "MacSpeedSparklineView.swift",
     "MacRoutePreviewView.swift",
+    "MacRouteMapContextView.swift",
+    "MacRouteDisplayPipeline.swift",
 ]
 
 LOCALIZATION_KEYS = [
@@ -60,8 +66,8 @@ FORBIDDEN_PROJECT_TOKENS = [
 FORBIDDEN_VIEWER_TOKENS = [
     "UIKit",
     "UIDocumentPickerViewController",
-    "MKMapView",
-    "MapKit",
+    "import MapKit",
+    "MKMapView(",
     "Charts",
     "Chart(",
     "FileDocument",
@@ -94,20 +100,16 @@ def ensure_root_shared_preview_state() -> None:
     root = read("macOS/App/MacRootView.swift")
     for token in [
         "@StateObject private var packageViewModel",
-        "MacImportView(viewModel: packageViewModel)",
-        "MacSessionBrowserView(",
-        "preview: packageViewModel.preview",
-        "openImportAction",
-        "selection = .importPackage",
+        "@State private var selection: MacRootDestination = .sessionBrowser",
+        "MacSessionBrowserView(viewModel: packageViewModel)",
         "NavigationSplitView(columnVisibility:",
     ]:
         if token not in root:
             fail(f"MacRootView missing shared-state/navigation token: {token}")
-    if "MacLockedDestinationView(\n                destination: selection,\n                titleKey: \"mac.import.locked.sessions.title\"" in root:
-        fail("Session Browser should no longer be a locked placeholder in Task-028a")
+    if "case importPackage" in root or "selection = .importPackage" in root:
+        fail("Task-030e browser-first shell must not route package opening through a primary Import destination")
     if "RootNavigationView" in root:
         fail("macOS viewer must not reuse iOS RootNavigationView")
-
 
 def ensure_import_reuses_view_model() -> None:
     import_view = read("macOS/Features/Import/MacImportView.swift")
@@ -132,13 +134,16 @@ def ensure_session_browser() -> None:
     preview = read("macOS/Features/Import/MacPackagePreviewView.swift")
 
     for token in [
-        "MacPackageImportPreview?",
-        "preview?.payload.sessions.map(MacSessionViewerModel.init)",
-        "selectedSessionID",
+        "@ObservedObject private var viewModel: MacPackageImportViewModel",
+        "private var preview: MacPackageImportPreview?",
+        "viewModel.selectedViewerModels",
+        "MacPackageBrowserHeaderView",
+        "openPackagePanel",
+        "viewModel.openPackages(from: panel.urls)",
         "MacCurrentPackageSessionSummaryView",
-        "MacPackageSessionSelectorButton",
+        "MacPackageSessionListView",
         "MacSessionDetailView",
-        "openImportAction",
+        "mac.viewer.open.title",
         "mac.viewer.empty.title",
         "mac.viewer.package.current",
         "mac.viewer.package.single_session",
@@ -148,6 +153,13 @@ def ensure_session_browser() -> None:
     ]:
         if token not in browser:
             fail(f"MacSessionBrowserView missing token: {token}")
+    session_list = read("macOS/Features/SessionBrowser/MacPackageSessionListView.swift")
+    for token in ["struct MacPackageSessionListView: View", "selectSessionAction(model.id)", "MacPackageSessionListRow"]:
+        if token not in session_list:
+            fail(f"MacPackageSessionListView missing token: {token}")
+
+    if "openImportAction" in browser or "Go to Import" in browser:
+        fail("MacSessionBrowserView must open packages in the browser, not route users to Import")
     if ".frame(width: 238)" in browser or "sessionList(preview:" in browser:
         fail("MacSessionBrowserView should no longer use a separate middle session-list column")
     for token in [
@@ -169,28 +181,45 @@ def ensure_session_browser() -> None:
             fail(f"MacSessionDetailView missing token: {token}")
     if ".font(.largeTitle.bold())" in detail or "private var header" in detail:
         fail("MacSessionDetailView should not duplicate the package-session hero; the top summary belongs in MacSessionBrowserView")
+    pipeline = read("macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift")
     for token in [
         "MacSessionViewerModel",
         "MacRoutePoint",
         "MacRouteVisualizationQuality",
         "deriveMetrics",
-        "deriveDistanceKilometers",
         "motionSamples.isEmpty ? session.motionSamples : motionSamples",
         "shouldUseDerivedMetrics",
-        "distanceMetersBetween",
-        "downsample(points:",
     ]:
         if token not in model:
             fail(f"MacSessionViewerModel missing derived metric token: {token}")
+    for token in [
+        "enum MacSessionMetricsDeriver",
+        "deriveDistanceKilometers",
+        "private static func routePoints(session: SessionData, from samples: [MotionSample]) -> [MacRoutePoint]",
+        "routeQuality(",
+        "distanceMetersBetween",
+        "downsample(points:",
+    ]:
+        if token not in pipeline:
+            fail(f"MacRouteDisplayPipeline missing derived metric token: {token}")
     for token in ["Path", "speedPath", "gridLines", "mac.viewer.sparkline.empty", ".frame(height: 132)"]:
         if token not in sparkline:
             fail(f"MacSpeedSparklineView missing token: {token}")
-    for token in ["MacRoutePreviewView", "routePath", "routeGrid", "MacRoutePreviewPill", "mac.viewer.route.preview.title", "mac.viewer.route.preview.not_mapmatched"]:
+    for token in [
+        "MacRoutePreviewView",
+        "MacRouteMapContextView(points: points, summary: summary)",
+        "MacRoutePreviewPill",
+        "mac.viewer.route.preview.title",
+        "mac.viewer.route.preview.not_mapmatched",
+    ]:
         if token not in route_preview:
             fail(f"MacRoutePreviewView missing token: {token}")
+    map_context = read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift")
+    for token in ["struct MacRouteMapContextView: NSViewRepresentable", "MKMapView", "showsUserLocation = false", "MKPolylineRenderer"]:
+        if token not in map_context:
+            fail(f"MacRouteMapContextView missing token: {token}")
     if "MacSessionViewerModel" not in preview or "viewer_ready" not in preview:
         fail("MacPackagePreviewView should use Task-028a viewer-derived metrics and no longer advertise viewer as locked")
-
 
 def ensure_boundaries() -> None:
     project = read("SkateTrack.xcodeproj/project.pbxproj")
@@ -209,6 +238,10 @@ def ensure_boundaries() -> None:
         for token in FORBIDDEN_VIEWER_TOKENS:
             if token in text:
                 fail(f"forbidden token {token!r} found in {path}")
+
+    map_context = read("macOS/Features/SessionBrowser/MacRouteMapContextView.swift")
+    if "import MapKit" not in map_context or "MKMapView" not in map_context:
+        fail("MacRouteMapContextView must be the only read-only MapKit bridge for route preview context")
 
 
 def ensure_project_membership() -> None:

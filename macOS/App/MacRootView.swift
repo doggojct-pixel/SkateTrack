@@ -1,11 +1,10 @@
 // [協作區] MacRootView.swift
-// 用途：定義 SkateTrack macOS 獨立 sidebar shell，承接 Task-027b .skatetrack 匯入預覽。
-// 委派至：macOS/Features/Import 與後續 Task-028 macOS viewer；macOS 導覽結構需獨立於 iOS。
+// 用途：Task-030e-MacViewer-002 定義 SkateTrack macOS browser-first shell，讓 Session Browser 成為 .skatetrack 檢視主流程。
+// 委派至：macOS/Features/SessionBrowser 與 Import lower-level reader；macOS 導覽結構需獨立於 iOS。
 
 import SwiftUI
 
 private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
-    case importPackage
     case sessionBrowser
     case analytics
     case videoOverlay
@@ -15,8 +14,6 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
 
     var titleKey: String {
         switch self {
-        case .importPackage:
-            return "mac.import.sidebar.import"
         case .sessionBrowser:
             return "mac.import.sidebar.sessions"
         case .analytics:
@@ -30,8 +27,6 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
 
     var subtitleKey: String {
         switch self {
-        case .importPackage:
-            return "mac.import.sidebar.import.subtitle"
         case .sessionBrowser:
             return "mac.import.sidebar.sessions.subtitle"
         case .analytics:
@@ -45,8 +40,6 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
 
     var systemImage: String {
         switch self {
-        case .importPackage:
-            return "square.and.arrow.down"
         case .sessionBrowser:
             return "list.bullet.rectangle"
         case .analytics:
@@ -62,7 +55,7 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
 struct MacRootView: View {
     @StateObject private var packageViewModel = MacPackageImportViewModel()
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
-    @State private var selection: MacRootDestination = .importPackage
+    @State private var selection: MacRootDestination = .sessionBrowser
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -71,8 +64,7 @@ struct MacRootView: View {
         } detail: {
             MacRootDetailView(
                 selection: selection,
-                packageViewModel: packageViewModel,
-                openImportAction: { selection = .importPackage }
+                packageViewModel: packageViewModel
             )
         }
         .navigationSplitViewStyle(.balanced)
@@ -118,17 +110,11 @@ private struct MacSidebarView: View {
 private struct MacRootDetailView: View {
     let selection: MacRootDestination
     @ObservedObject var packageViewModel: MacPackageImportViewModel
-    let openImportAction: () -> Void
 
     var body: some View {
         switch selection {
-        case .importPackage:
-            MacImportView(viewModel: packageViewModel)
         case .sessionBrowser:
-            MacSessionBrowserView(
-                preview: packageViewModel.preview,
-                openImportAction: openImportAction
-            )
+            MacSessionBrowserView(viewModel: packageViewModel)
         case .analytics:
             MacLockedDestinationView(
                 destination: selection,
@@ -219,8 +205,4 @@ private struct MacSidebarRow: View {
     private var rowBackground: Color {
         isSelected ? Color.accentColor : Color.clear
     }
-}
-
-#Preview {
-    MacRootView()
 }

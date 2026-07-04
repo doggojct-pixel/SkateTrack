@@ -1,7 +1,7 @@
 # SkateTrack Development Rules
 
-**Status:** Active source of truth — Task-030b consolidation  
-**Last Updated:** 2026-06-13  
+**Status:** Active source of truth — Task-030e final merge gate
+**Last Updated:** 2026-07-04
 **Scope:** Human / ChatGPT / Cursor collaboration rules for SkateTrack development.
 
 This document consolidates recurring development rules that were previously scattered across ADRs, DevProcess notes, build-plan discussions, and task handoffs. Use this file before starting any new task.
@@ -39,6 +39,7 @@ git --no-pager diff -- SkateTrack.xcodeproj/project.pbxproj | grep -n "UTExporte
 
 - Hotfix zip files must contain only files added or modified by that hotfix.
 - Do not package the whole repository.
+- One-click verification scripts must zip their generated logs and then delete the temporary output directory, leaving the uploadable zip as the durable artifact. Record `ONECLICK_CLEANUP_EXIT=0` and `ONECLICK_RUN_DIR_REMOVED=YES` when cleanup succeeds.
 - If files must be removed, provide explicit `git rm` commands in the handoff rather than relying on zip extraction.
 - Do not ask the user to manually add Swift files to Xcode unless there is no safe alternative.
 - New Swift files must be added to `SkateTrack.xcodeproj/project.pbxproj` for the correct target membership.
@@ -94,6 +95,7 @@ When providing manual QA steps:
 - Keep file names, commands, scheme names, and technical identifiers in English when appropriate.
 - Explicitly list expected behavior and non-goals.
 - Treat Xcode warnings as actionable unless they are clearly simulator / system console noise.
+- For Task-030e manual closure, use `docs/release/TASK030E_MANUAL_QA_GATE.md` as the source-controlled checklist and require explicit operator signoff before commit/push.
 
 ## 7. Runtime scope boundaries
 
@@ -160,10 +162,31 @@ The macOS layout principle established during Task-028a / Task-028b is active:
 
 ## 12. Verification gate rule
 
-When a task includes a verify script, run it before build / commit. When a task changes release readiness or documentation structure, run:
+When a task includes a verify script, run it before build / commit. When a task changes release readiness or documentation structure, run the task-specific docs verifier when available and the release-readiness verifier:
 
 ```bash
+python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
 python3 scripts/verify_task030_release_readiness.py
 ```
 
+For Task-030e macOS package-viewer work, also run:
+
+```bash
+bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
+```
+
 Task-030b verification token: consolidated development rules.
+
+Task-030e-MacViewer-012 verification token: one-click temporary output directory cleanup, documentation sync gate, Task-030e docs verifier.
+
+Task-030e-MacViewer-013 verification token: Manual QA Gate, source-controlled checklist, operator signoff required, no UI / schema / route mutation.
+
+
+## Task-030e final merge gate rule
+
+Task-030e final merge gate work is governed by `docs/release/TASK030E_FINAL_MERGE_GATE.md` and `scripts/verify_task030e_final_merge_gate.py`. The gate is docs/tooling/merge-readiness only and must not add product UI, package schema changes, Core Data writes, route geometry mutation, trusted metrics mutation, location permission, user-location display, Watch behavior, or Task-031 implementation.
+
+Before any merge back to `develop`, the assistant must review 014 apply / one-click logs, confirm manual QA carry-forward, confirm `origin/develop` ancestry or request rebase/merge-from-develop and reverification, and leave `main` untouched unless the user explicitly requests a release.
+
+Task-030e-MacViewer-014 verification token: Task-030e final merge gate, docs/release/TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, leave `main` untouched.

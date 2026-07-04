@@ -1,6 +1,6 @@
 // [協作區] MacSessionDetailView.swift
-// 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度預覽與 route summary。
-// 委派至：Task-028b Route / Chart Visualization；本檔不寫入資料庫、不執行 merge / restore。
+// 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度 / 海拔預覽與 route summary。
+// 委派至：Task-030e-MacViewer-008 selected-session detail layout alignment；008-1 adds elevation display without database writes, merge, or restore。
 
 import SwiftUI
 
@@ -21,8 +21,6 @@ struct MacSessionDetailView: View {
             detailTitleBar
             metricsSection
             visualizationSection
-            routeDataSection
-            privacySection
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .contain)
@@ -44,8 +42,38 @@ struct MacSessionDetailView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private var visualizationColumns: [GridItem] {
-        [GridItem(.adaptive(minimum: 360), spacing: 16)]
+    private var visualizationSection: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .top, spacing: 16) {
+                routeColumn
+                    .frame(minWidth: 540, maxWidth: .infinity, alignment: .topLeading)
+                sessionSideColumn
+                    .frame(width: 360, alignment: .topLeading)
+            }
+            VStack(alignment: .leading, spacing: 16) {
+                routeColumn
+                sessionSideColumn
+            }
+        }
+    }
+
+    private var routeColumn: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)
+                .frame(minHeight: 300)
+            routeDataSection
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private var sessionSideColumn: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            MacSpeedSparklineView(points: model.speedPoints)
+            MacElevationProfileView(points: model.elevationPoints)
+            privacySection
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .contain)
     }
 
     private var metricsSection: some View {
@@ -55,6 +83,7 @@ struct MacSessionDetailView: View {
                 MacSessionViewerMetric(titleKey: "mac.package.preview.distance", value: formattedDistance(model.displayMetrics.distanceKilometers))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.max_speed", value: formattedSpeed(model.displayMetrics.maxSpeedKilometersPerHour))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.average_speed", value: formattedSpeed(model.displayMetrics.averageSpeedKilometersPerHour))
+                MacSessionViewerMetric(titleKey: "summary.metric.elevationGain", value: formattedElevation(model.displayMetrics.elevationGainMeters))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.moving_ratio", value: formattedPercent(model.displayMetrics.movingRatio))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.motion_samples", value: "\(model.motionSampleCount)")
                 MacSessionViewerMetric(titleKey: "mac.package.preview.route_samples", value: "\(model.routeSampleCount)")
@@ -66,13 +95,6 @@ struct MacSessionDetailView: View {
                     .font(.caption)
                     .foregroundStyle(.cyan)
             }
-        }
-    }
-
-    private var visualizationSection: some View {
-        LazyVGrid(columns: visualizationColumns, alignment: .leading, spacing: 16) {
-            MacRoutePreviewView(points: model.routePoints, summary: model.routeSummary)
-            MacSpeedSparklineView(points: model.speedPoints)
         }
     }
 
@@ -106,7 +128,7 @@ struct MacSessionDetailView: View {
             if !model.privacyNotes.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(model.privacyNotes, id: \.self) { note in
-                        Text("• \(note)")
+                        Text(verbatim: "• \(note)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -133,6 +155,11 @@ struct MacSessionDetailView: View {
 
     private func formattedSpeed(_ speed: Double) -> String {
         String(format: String(localized: "mac.package.preview.speed.format"), speed)
+    }
+
+    private func formattedElevation(_ meters: Double) -> String {
+        guard meters.isFinite else { return String(localized: "mac.package.preview.value.none") }
+        return String(format: String(localized: "unit.length.meter.valueFormat"), meters)
     }
 
     private func formattedPercent(_ ratio: Double) -> String {
@@ -206,5 +233,7 @@ private struct MacSessionViewerMetric: View {
         .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
         .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text(LocalizedStringKey(titleKey)))
+        .accessibilityValue(Text(value))
     }
 }

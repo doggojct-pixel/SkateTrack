@@ -591,3 +591,90 @@ Task-030c final closure verification token: Section 5 closure checklist mapped t
 - **Out of scope:** Production sync/cloud import, Watch / WatchBridge, Task-031 indoor localization, and Task-030e macOS multi-package viewer remain separate tasks.
 
 Task-030d-A limitation token: iOS multi-file .skatetrack import, no silent overwrite, no silent merge, no route geometry mutation, no trusted metrics mutation, no package schema change.
+
+### Task-030e-MacViewer-002 — Browser-First macOS Viewer IA Limitation
+
+- **Current status:** The macOS app now treats Session Browser as the primary `.skatetrack` review surface and opens packages from within that browser flow.
+- **Still deferred:** Multi-package in-memory state, true multi-file open, package cards, MapKit route context, iOS route visual parity, expanded route inspection, drag-and-drop, persistent recent files, bookmarks, database import, merge, restore, and cloud sync remain later Task-030e subtasks.
+- **Safety boundary:** This step is read-only. It does not mutate package schema, route geometry, trusted metrics, Core Data, or local session storage.
+
+Task-030e-MacViewer-002 limitation token: browser-first macOS Session Browser shell, Open Packages copy, Import destination demoted, no multi-package state yet, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-003 — Multi-Package State Foundation Limitation
+
+- **Current status:** macOS now has an in-memory multi-package viewer state foundation aligned with `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+- **User-visible behavior:** The visible file picker still opens one `.skatetrack` package at a time in this subtask. Multi-package cards, true multi-file open, partial-success package cards, and expanded map inspection remain later Task-030e subtasks.
+- **Read-only guarantee:** The state layer is memory-only and performs no database import, merge, restore, cloud sync, package schema mutation, route geometry mutation, trusted metrics mutation, or route correction.
+
+Task-030e-MacViewer-003 limitation token: in-memory package collection state, selected package/session state, single-file compatibility retained, multi-file open foundation implemented, no MapKit yet, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-004 — Multi-File Open Foundation Limitation
+
+- **Current status:** macOS Session Browser can select multiple `.skatetrack` files through `NSOpenPanel.allowsMultipleSelection = true` and read valid packages independently in memory.
+- **Implemented boundary:** `MacPackageOpenCoordinator` validates extensions, uses security-scoped access per URL, reads packages through `SkateTrackPackageReader`, and records per-file failures so partial success is preserved.
+- **Still deferred:** package cards, rich batch summary UI, persistent recent files/bookmarks, drag-and-drop, Finder open-with, custom UTType/document association, MapKit route context, expanded route inspection, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim Finder document handling, persistent library import, package merge, restore, automatic sync, route correction, map matching, or route geometry mutation.
+
+Task-030e-MacViewer-004 limitation token: multi-file open foundation, `MacPackageOpenCoordinator`, partial success, read-only, no custom UTType, no document association, package cards deferred, MapKit deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-005 — Package Cards and Batch Summary Limitation
+
+- **Current status:** macOS Session Browser now shows opened package cards and a batch summary so users can switch between packages opened in Task-030e-MacViewer-004.
+- **Implemented boundary:** Package cards select an in-memory package preview and can remove a package from the current viewer state. This is a read-only browsing affordance, not a database import or persistent library.
+- **Still deferred:** selected package session list refinement, persistent recent files/bookmarks, drag-and-drop, Finder open-with, custom UTType/document association, MapKit route context, iOS route visual parity, expanded route inspection, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim persistent package library management, Finder document handling, automatic package merge, restore, route correction, map matching, route geometry mutation, or trusted metrics mutation.
+
+Task-030e-MacViewer-005 limitation token: package cards and batch summary, `MacPackageCardListView`, package switching, package removal, read-only in-memory UI, selected package session list deferred, MapKit deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+### Task-030e-MacViewer-006 — Selected Package Sessions List Limitation
+
+- **Current status:** macOS Session Browser now shows an explicit session list for the currently selected opened package so users can switch the selected session before reading the detail dashboard.
+- **Implemented boundary:** Session rows update only the in-memory selected session state. They do not import packages into local storage, persist bookmarks, merge packages, restore backups, sync cloud data, or modify package payloads.
+- **Still deferred:** MapKit route context, iOS route visual parity, expanded route inspection, persistent recent files/bookmarks, drag-and-drop, Finder open-with, custom UTType/document association, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim persistent package library management, automatic package merge, restore, route correction, map matching, route geometry mutation, or trusted metrics mutation.
+
+Task-030e-MacViewer-006 limitation token: selected package sessions list, `MacPackageSessionListView`, selected session switching, read-only in-memory UI, MapKit deferred, route inspection deferred, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+
+### Task-030e-MacViewer-007A — Read-Only MapKit Route Context Limitation
+
+- **Current status:** macOS Session Browser route preview now uses a read-only MapKit context for existing `.skatetrack` route samples.
+- **Implemented boundary:** `MacRouteMapContextView` uses opened package route samples to draw the visible route on `MKMapView`; it does not request current location, show user location, road-match, snap-to-road, reconstruct route geometry, edit samples, or mutate trusted metrics.
+- **Still deferred:** iOS route visual parity, expanded route inspection, route-detail sheet/window, drag-and-drop, Finder open-with, custom UTType/document association, persistent recent files/bookmarks, database import/merge/restore/sync, and cloud sync.
+- **Do not claim:** Do not claim route correction, map matching, road snapping, route reconstruction, current-location tracking, persistent package library management, trusted metric mutation, or production route editing.
+
+Task-030e-MacViewer-007A limitation token: read-only MapKit route context, `MacRouteMapContextView`, existing route samples only, no current location, no road matching, no snap-to-road, no route geometry mutation, no trusted metrics mutation, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+## Task-030e-MacViewer-007B route inspection boundaries
+- macOS expanded route inspection is read-only and displays existing `.skatetrack` route samples only.
+- iOS-style route colors are visual continuity cues only; they do not indicate route correction, confidence scoring, road matching, snapping, or reconstructed geometry.
+- The viewer still does not write to Core Data, mutate packages, request location permission, show current user location, or change trusted metrics.
+
+### Task-030e-MacViewer-012 — Documentation Sync and Current macOS Viewer Boundary
+
+- **Current status:** Documentation now reflects the Task-030e macOS multi-package viewer state through verifier / documentation sync. The viewer supports browser-first multi-file open, in-memory package cards, selected package sessions, read-only MapKit route context, iOS route visual parity, expanded route inspection, display-only speed/elevation/total-ascent views, duplicate attention warnings, duplicate-file acknowledgement, localization/accessibility polish, and consolidated verification.
+- **Read-only boundary:** This remains a read-only `.skatetrack` review surface. It does not import packages into local history, merge packages, delete duplicates, choose a winner, restore data, or persist a package library.
+- **Route boundary:** Route display uses existing package route samples. It does not request location permission, show user location, perform road matching, snap to road, reconstruct route geometry, mutate trusted metrics, or rewrite package data.
+- **Platform boundary:** Finder open-with, custom UTType/document association, drag-and-drop, persistent recent files/bookmarks, Watch / WatchBridge, cloud sync, and Task-031 shared visualization pipeline work remain deferred.
+- **Verification boundary:** `scripts/run_task030e_macos_multi_package_viewer_oneclick.sh` is the source-controlled Task-030e one-click runner. It must zip logs, delete the temporary run directory, and record `ONECLICK_RUN_DIR_REMOVED=YES` after packaging.
+
+Task-030e-MacViewer-012 limitation token: Documentation Sync, current macOS multi-package viewer boundary, read-only package review, ONECLICK_RUN_DIR_REMOVED=YES, no import, no merge, no route mutation, no Core Data write.
+
+
+## Task-030e-MacViewer-013 — Manual QA Gate and Final-Merge Preconditions
+
+- **Status:** Manual QA gate checklist and verifier only.
+- **Manual evidence required:** Task-030e-MacViewer-013 requires uploaded apply / one-click logs and explicit operator signoff before commit / push.
+- **Scope boundary:** This gate does not add product UI behavior, package import, package merge, duplicate deletion, winner selection, local-history import, Finder open-with, custom UTType, drag-and-drop, recent files, bookmarks, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, Watch, WatchBridge, cloud sync, or Task-031 shared visualization pipeline work.
+- **Final merge dependency:** Task-030e-MacViewer-014 may start only after the manual QA gate is green and the branch remains clean after commit / push.
+
+Task-030e-MacViewer-013 limitation token: Manual QA Gate, operator signoff required, no import / merge / route mutation, no Core Data write, no location permission, no user-location display.
+
+
+## Task-030e-MacViewer-014 — Final Merge Gate
+
+Task-030e-MacViewer-014 is a merge-readiness checklist and verifier only. It does not add runtime product behavior and does not unlock local-history import, package merge, duplicate deletion, winner selection, route correction, road matching, snap-to-road, route reconstruction, location permission, user-location display, package schema changes, trusted metrics mutation, Core Data writes, Watch behavior, or Task-031-prep shared activity visualization pipeline implementation.
+
+Task-031-prep remains deferred until after Task-030e final merge gate completes.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 — Final Merge Gate, merge-readiness checklist and verifier only, no import / merge / route mutation, Task-031-prep remains deferred.

@@ -1,7 +1,7 @@
 # SkateTrack Manual QA Matrix — Pre-ADP
 
-**Status:** Task-030b consolidated QA matrix  
-**Last Updated:** 2026-06-13  
+**Status:** Task-030e macOS package-viewer QA matrix and manual gate sync
+**Last Updated:** 2026-07-04
 **Scope:** Local development builds before Apple Developer Program enrollment and production external-service setup
 
 This matrix describes manual testing required before treating the current `develop` branch as a Pre-ADP release-readiness checkpoint. It does not replace App Store / TestFlight QA after Apple Developer Program enrollment.
@@ -48,15 +48,41 @@ Checks:
 
 ## 4. macOS package viewer
 
+Task-030e macOS package viewer QA must cover read-only multi-package browsing and the documentation/verifier foundation. These checks do not approve import, merge, restore, route correction, road matching, or Finder document association.
+
 | Flow | Steps | Expected result |
 |---|---|---|
 | Launch macOS app | Run `SkateTrack-macOS` | Sidebar appears and does not cover red/yellow/green window buttons. |
-| Import package | Select a `.skatetrack` file from NSOpenPanel | Package preview displays manifest and validation. |
-| Session Browser | Open `Session 瀏覽器` after import | Right side shows compact package summary above dashboard. |
-| Route preview | Open moving package | Lightweight route shape appears with start/end markers. |
-| Speed chart | Open moving package | Lightweight speed chart appears. |
-| Empty / stationary package | Open old zero-distance package | Viewer shows limited / unavailable route state without crashing. |
-| Locked areas | Open analytics / video overlay / cloud sync | Coming-soon cards remain locked and non-misleading. |
+| Browser-first open | Open `Session Browser`, use `Open Packages` | Package opening starts from the browser header, not from a primary Import destination. |
+| Multi-file open | Select 3–5 `.skatetrack` files from `NSOpenPanel` | Valid packages appear as cards; invalid files surface partial-success failure messages without blocking valid packages. |
+| Package cards | Switch between package cards and remove one package card | Selection and removal are in-memory only; no database import, delete, merge, or local-history write occurs. |
+| Selected sessions | Select sessions inside an opened package | Right-side detail updates and keeps the macOS layout: compact summary above dashboard/details. |
+| Route map context | Open a moving package | Read-only MapKit route context uses package route samples only; no location prompt appears and no user-location blue dot appears. |
+| Expanded route inspection | Use `View Larger Route` / equivalent control | Resizable route inspection window opens, pans / zooms, and closes without mutating package data. |
+| Route visual parity | Inspect route quality segments | High-confidence, low-confidence, and startup warm-up segments match iOS semantic colors. |
+| Speed / elevation | Inspect speed chart, elevation profile, and total ascent | Charts render display-only data without changing trusted metrics or package payloads. |
+| Duplicate warning | Reopen an already opened file | Duplicate warning appears as an attention state, not as a destructive blocker. |
+| Acknowledge duplicate | Click `已了解` / Acknowledge | Only the transient duplicate-file-path warning visual state clears; packages remain loaded. Reopening the same duplicate file surfaces the warning again. |
+| Localization | Check English, Traditional Chinese, and Japanese | No missing keys, placeholder strings, or unit-format mismatch are visible. |
+| Accessibility | Use VoiceOver / Accessibility Inspector spot checks | Open, clear, acknowledge, package card, session card, route inspection, speed chart, and elevation chart expose meaningful labels / hints / identifiers. |
+| One-click logs | Run Task-030e one-click verification | Summary, verifier, build, line, diff, status, and postpack cleanup logs are included in the zip. |
+| One-click cleanup | Inspect upload folder after one-click | The temporary `task030e_*_oneclick_<timestamp>/` run directory is gone and the postpack log records `ONECLICK_RUN_DIR_REMOVED=YES`. |
+
+
+### Task-030e-MacViewer-013 manual QA gate
+
+Before Task-030e final merge, run the dedicated gate in `docs/release/TASK030E_MANUAL_QA_GATE.md`.
+
+Additional 013-specific requirements:
+
+- Attach the 013 apply log and 013 one-click zip to the review conversation.
+- Confirm the one-click postpack log records `ONECLICK_RUN_DIR_REMOVED=YES`.
+- Confirm the temporary one-click run directory was removed after zip packaging.
+- Explicitly state in the conversation whether manual QA passed.
+- Treat any manual failure as a blocker even if automated verification is green.
+- Keep the gate read-only: no import, no merge, no duplicate deletion, no winner selection, no local-history import, no route geometry mutation, no trusted metrics mutation, no package schema change, no Core Data write, no location permission, and no user-location blue dot.
+
+Task-030e-MacViewer-013 manual QA token: operator signoff required, task030e_013_oneclick, read-only no-import boundary, ONECLICK_RUN_DIR_REMOVED=YES.
 
 ## 5. Accessibility spot checks
 
@@ -74,7 +100,7 @@ Checks:
 | Google Drive | Backup UI says Drive sync is blocked / deferred, not active. |
 | StoreKit | Paid features continue using DEBUG / local entitlement simulation only. |
 | CloudKit / iCloud | No UI claims Apple cloud sync is active. |
-| `.skatetrack` | macOS viewer is read-only; no import / merge / restore claims. |
+| `.skatetrack` | macOS viewer is read-only; no import / merge / restore / winner-selection / local-history claims. |
 | GPS | Background GPS copy is careful and still requires real-device validation. |
 | Fall Detection | Do not use unsafe human-fall testing; record diagnostics need as deferred. |
 
@@ -100,3 +126,14 @@ The following block public release claims until completed or explicitly scoped o
 
 Task-030a verification token: manual QA matrix pre-ADP.
 Task-030b verification token: consolidated manual QA matrix.
+
+Task-030e-MacViewer-012 manual QA token: multi-package viewer manual QA, duplicate acknowledgement, route inspection, one-click cleanup, read-only no-import boundary.
+
+
+## Task-030e-MacViewer-014 final merge gate
+
+The Task-030e final merge gate is documented in `docs/release/TASK030E_FINAL_MERGE_GATE.md`. The Task-030e-MacViewer-013 manual QA gate remains a merge blocker: a green 014 one-click run does not override failed or missing operator signoff.
+
+Final merge QA evidence must include `task030e_014_oneclick`, `ONECLICK_RUN_DIR_REMOVED=YES`, clean diff/status review, develop merge readiness, and confirmation that the macOS package viewer remains read-only with no import / merge / route mutation, no schema / Core Data mutation, no location permission, and no user-location display.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, manual QA gate remains a merge blocker, task030e_014_oneclick.

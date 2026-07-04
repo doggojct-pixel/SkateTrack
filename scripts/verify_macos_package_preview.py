@@ -15,6 +15,8 @@ REQUIRED_FILES = [
     "macOS/Features/Import/MacImportView.swift",
     "macOS/Features/Import/MacPackagePreviewView.swift",
     "macOS/Features/Import/MacPackageImportViewModel.swift",
+    "macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift",
+    "macOS/Features/SessionBrowser/MacPackageOpenResultStatusView.swift",
     "macOS/Features/Shared/MacLockedFeatureCardView.swift",
     "macOS/Features/SessionBrowser/MacSessionViewerModel.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
@@ -88,8 +90,7 @@ def ensure_macos_shell() -> None:
     if "RootNavigationView" in root or "iOS/App" in root:
         fail("macOS shell must not reuse iOS RootNavigationView")
     for token in [
-        "MacImportView(viewModel: packageViewModel)",
-        "MacSessionBrowserView",
+        "MacSessionBrowserView(viewModel: packageViewModel)",
         "MacLockedFeatureCardView",
         "mac.import.sidebar",
         "NavigationSplitView(columnVisibility:",
@@ -97,9 +98,12 @@ def ensure_macos_shell() -> None:
         "MacSidebarView",
         "MacRootDetailView",
         "navigationSplitViewColumnWidth",
+        "@State private var selection: MacRootDestination = .sessionBrowser",
     ]:
         if token not in root:
             fail(f"MacRootView missing stability token: {token}")
+    if "case importPackage" in root:
+        fail("Task-030e browser-first shell must not expose Import as a primary sidebar destination")
     if "List(selection:" in root:
         fail("MacRootView should use a stable custom sidebar instead of List(selection:) for Task-027b")
     if "@State private var selection: MacRootDestination?" in root:
@@ -120,12 +124,15 @@ def ensure_import_boundary() -> None:
             fail(f"MacImportView missing titlebar-safe layout token: {token}")
     if "allowedContentTypes = [.skatetrack]" in import_view or "UTType(exportedAs" in import_view:
         fail("Task-027b must not declare/use a custom .skatetrack UTType")
+    coordinator = read("macOS/Features/SessionBrowser/MacPackageOpenCoordinator.swift")
     for token in ["SkateTrackPackageReader", "readPackage(from: url)", "startAccessingSecurityScopedResource", "pathExtension.lowercased() == \"skatetrack\""]:
-        if token not in view_model:
-            fail(f"view model missing token: {token}")
-    for token in ["packageError.localizationKey", "clearPreview", "MacPackageImportPreview"]:
-        if token not in view_model:
-            fail(f"view model missing state/error token: {token}")
+        if token not in view_model and token not in coordinator:
+            fail(f"package open boundary missing token: {token}")
+    for token in ["packageError.localizationKey", "MacPackageImportPreview", "openPackages(from urls: [URL])"]:
+        if token not in view_model and token not in coordinator:
+            fail(f"view model/coordinator missing state/error token: {token}")
+    if "clearPreview" not in view_model:
+        fail("view model missing clearPreview")
     for token in ["schemaVersion", "packageType", "motionSampleCount", "routeSampleCount", "summaryMetrics", "privacyNotes", "MacLockedFeatureCardView", "MacSessionViewerModel"]:
         if token not in preview:
             fail(f"preview view missing token: {token}")

@@ -1,8 +1,8 @@
 # SkateTrack Pre-ADP Release Readiness Report
 
-**Status:** Task-030b consolidated release-readiness gate  
-**Last Updated:** 2026-06-13  
-**Scope:** iOS, macOS, shared models, localization, local backup / package export, pre-Apple-Developer-Program service boundaries
+**Status:** Task-030e macOS package-viewer manual QA gate sync
+**Last Updated:** 2026-07-04
+**Scope:** iOS, macOS, shared models, localization, local backup / package export, Task-030e macOS multi-package viewer, pre-Apple-Developer-Program service boundaries
 
 This report is the Task-030b consolidated release-readiness source of truth. It does not claim App Store readiness, TestFlight readiness, production subscription readiness, Google Drive readiness, or production cloud readiness. It records what can be verified before Apple Developer Program enrollment and external production credentials are available.
 
@@ -61,6 +61,10 @@ python3 scripts/verify_account_provider.py
 python3 scripts/verify_gps_background_recording.py
 python3 scripts/verify_shared_models.py
 python3 scripts/verify_macos_appiconset.py
+python3 scripts/verify_task030e_macos_multi_package_viewer.py
+python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
+bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
 ```
 
 If any script fails, do not proceed to Task-030b handoff or a release-candidate branch.
@@ -166,7 +170,7 @@ Fall Detection remains a safety-sensitive feature. Do not use unsafe human impac
 
 ## 8. macOS viewer gate
 
-The macOS app is a read-only `.skatetrack` package viewer.
+The macOS app is a read-only `.skatetrack` package viewer. After Task-030e-MacViewer-013, the release-readiness documentation and manual QA gate describe the completed Task-030e chain through verifier / documentation sync / manual signoff while preserving remaining Pre-ADP limitations.
 
 Required layout rule:
 
@@ -178,24 +182,59 @@ Required layout rule:
 
 The viewer currently supports:
 
-- NSOpenPanel selection of `.skatetrack` files.
-- Package manifest preview.
-- Read-only Session Viewer.
-- Lightweight SwiftUI Path route preview.
-- Lightweight SwiftUI Path speed chart.
-- Route quality / empty-state handling.
+- Browser-first package opening from Session Browser.
+- Multi-file `.skatetrack` selection through `NSOpenPanel`.
+- Independent package validation with partial-success reporting.
+- In-memory multi-package package cards and batch summary.
+- Selected package session list and selected session detail layout.
+- Read-only MapKit route context using existing package route samples.
+- iOS route visual parity for route-quality segment colors.
+- Expanded route inspection in a resizable macOS window.
+- Display-only speed chart, elevation profile, and total ascent display.
+- Duplicate / attention warnings for duplicate file paths and duplicate session identifiers.
+- Transient duplicate-file-path warning acknowledgement without delete / merge / winner selection.
+- English, Traditional Chinese, and Japanese localization plus focused accessibility labels / hints / identifiers.
+- Source-controlled consolidated verifier and one-click verification runner.
+- Source-controlled manual QA gate checklist for Task-030e final-merge readiness.
 
 The viewer does not support:
 
-- Database import.
-- Merge / restore.
-- Package library.
-- Finder open-with.
-- Custom UTType / document association.
-- MapKit map rendering.
-- Road matching / heat maps.
-- Swift Charts dashboards.
-- Report export.
+- Database import or local-history import.
+- Merge / restore / winner selection.
+- Package library persistence, recent-file persistence, or bookmarks.
+- Drag-and-drop package opening.
+- Finder open-with, custom UTType, or document association.
+- Cloud sync or Google Drive sync.
+- Road matching, snap-to-road, route reconstruction, route correction, or heat maps.
+- Route geometry mutation, trusted metric mutation, package schema changes, or Core Data writes.
+- Location permission prompts or user-location blue-dot display.
+- Watch, WatchBridge, or Task-031 shared visualization pipeline work.
+
+Task-030e verification commands before closing a Task-030e stage:
+
+```bash
+python3 scripts/verify_task030e_macos_multi_package_viewer.py
+python3 scripts/verify_task030e_documentation_sync.py
+python3 scripts/verify_task030e_manual_qa_gate.py
+bash scripts/run_task030e_macos_multi_package_viewer_oneclick.sh
+```
+
+The one-click runner must package logs into a zip, delete its temporary run directory after zip creation, and record `ONECLICK_RUN_DIR_REMOVED=YES` in the postpack log.
+
+Task-030e-MacViewer-013 manual QA closure additionally requires:
+
+- `docs/release/TASK030E_MANUAL_QA_GATE.md` checklist coverage.
+- 013 apply log and one-click zip uploaded for review.
+- Explicit operator confirmation that manual QA passed.
+- Confirmation that `ONECLICK_RUN_DIR_REMOVED=YES` is present after postpack cleanup.
+- No UI behavior, package import, merge, duplicate deletion, route mutation, trusted metric mutation, schema change, Core Data write, location permission, user-location display, Watch / WatchBridge, or Task-031 change in the diff.
+
+
+Task-030e macOS package-viewer documentation sync remains the 012 documentation baseline.
+
+Task-030e-MacViewer-012 release-readiness token: macOS multi-package viewer gate, read-only `.skatetrack` review, documentation sync, one-click cleanup, no import / merge / route mutation.
+
+Task-030e-MacViewer-013 release-readiness token: Manual QA Gate, TASK030E_MANUAL_QA_GATE.md, operator signoff required, task030e_013_oneclick, no UI / schema / route mutation.
 
 ## 9. Task-030a pass condition
 
@@ -209,3 +248,12 @@ Task-030a passes only when:
 
 Task-030a verification token: pre-ADP release readiness gate
 Task-030b verification token: consolidated release readiness documentation..
+
+
+## Task-030e-MacViewer-014 final merge gate
+
+Task-030e may be considered ready for merge back to `develop` only after `docs/release/TASK030E_FINAL_MERGE_GATE.md` and `scripts/verify_task030e_final_merge_gate.py` pass. The 014 gate requires `task030e_014_oneclick`, manual QA carry-forward from Task-030e-MacViewer-013, develop merge readiness, branch ancestry checks, clean working tree review, and final no-scope-expansion review.
+
+The 014 final merge gate is a merge-readiness checklist and verifier only. It does not implement product behavior and must preserve no import / merge / route mutation, no package schema change, no Core Data write, no location permission, no user-location display, and no Task-031-prep implementation.
+
+Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, develop merge readiness.
