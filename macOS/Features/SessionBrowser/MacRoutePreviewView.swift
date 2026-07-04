@@ -8,6 +8,8 @@ struct MacRoutePreviewView: View {
     let points: [MacRoutePoint]
     let summary: MacRouteSummary
 
+    @State private var isRouteInspectorPresented = false
+
     private var canDrawRoute: Bool {
         points.count >= 2 && summary.quality != .unavailable
     }
@@ -17,14 +19,15 @@ struct MacRoutePreviewView: View {
             titleBar
             routeCanvas
             routePills
+            MacRouteVisualLegendView(isCompact: true)
             readOnlyNotice
         }
         .padding(16)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(.white.opacity(0.08), lineWidth: 1)
-        )
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(.white.opacity(0.08), lineWidth: 1))
+        .sheet(isPresented: $isRouteInspectorPresented) {
+            MacRouteInspectionView(points: points, summary: summary)
+        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("mac.accessibility.route_preview.label"))
         .accessibilityValue(Text(routeAccessibilityValue))
@@ -36,6 +39,16 @@ struct MacRoutePreviewView: View {
             Label("mac.viewer.route.preview.title", systemImage: "map")
                 .font(.headline.bold())
             Spacer(minLength: 12)
+            if canDrawRoute {
+                Button {
+                    isRouteInspectorPresented = true
+                } label: {
+                    Label("mac.viewer.route.inspect.open", systemImage: "arrow.up.left.and.arrow.down.right")
+                        .labelStyle(.titleAndIcon)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
             Text(LocalizedStringKey(summary.quality.localizationKey))
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(summary.quality.tint)
@@ -51,6 +64,7 @@ struct MacRoutePreviewView: View {
                 MacRouteMapContextView(points: points, summary: summary)
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                     .overlay(readOnlyMapBadge, alignment: .topLeading)
+                    .overlay(expandedInspectionButton, alignment: .bottomTrailing)
                     .overlay(mapBoundaryOverlay)
             } else {
                 emptyRouteState
@@ -60,13 +74,36 @@ struct MacRoutePreviewView: View {
     }
 
     private var readOnlyMapBadge: some View {
-        Label("mac.viewer.route.preview.readonly_mapkit", systemImage: "lock")
-            .font(.caption.weight(.semibold))
-            .padding(.horizontal, 9)
-            .padding(.vertical, 6)
-            .background(.black.opacity(0.52), in: Capsule())
-            .foregroundStyle(.white)
-            .padding(12)
+        VStack(alignment: .leading, spacing: 8) {
+            Label("mac.viewer.route.preview.readonly_mapkit", systemImage: "lock")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 9)
+                .padding(.vertical, 6)
+                .background(.black.opacity(0.52), in: Capsule())
+                .foregroundStyle(.white)
+
+            if summary.hasStartupWarmup {
+                Label("summary.route.accuracy.startup", systemImage: "scope")
+                    .font(.caption.weight(.semibold))
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 6)
+                    .background(Color.orange.opacity(0.22), in: Capsule())
+                    .foregroundStyle(Color.orange)
+            }
+        }
+        .padding(12)
+    }
+
+    private var expandedInspectionButton: some View {
+        Button {
+            isRouteInspectorPresented = true
+        } label: {
+            Label("mac.viewer.route.inspect.open", systemImage: "arrow.up.left.and.arrow.down.right")
+                .font(.caption.weight(.semibold))
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.small)
+        .padding(12)
     }
 
     private var mapBoundaryOverlay: some View {
@@ -106,12 +143,7 @@ struct MacRoutePreviewView: View {
 
     private var routeAccessibilityValue: String {
         let distance = formattedDistance(summary.derivedDistanceKilometers)
-        return String(
-            format: String(localized: "mac.accessibility.route_preview.value.format"),
-            summary.routePointCount,
-            summary.uniqueRoutePointCount,
-            distance
-        )
+        return String(format: String(localized: "mac.accessibility.route_preview.value.format"), summary.routePointCount, summary.uniqueRoutePointCount, distance)
     }
 
     private func formattedDistance(_ distance: Double) -> String {

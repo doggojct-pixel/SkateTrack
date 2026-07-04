@@ -21,6 +21,7 @@ REQUIRED_FILES = [
     "macOS/Features/SessionBrowser/MacSpeedSparklineView.swift",
     "macOS/Features/SessionBrowser/MacRoutePreviewView.swift",
     "macOS/Features/SessionBrowser/MacRouteMapContextView.swift",
+    "macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift",
     "Shared/Export/SkateTrackPackageReader.swift",
     "Shared/Models/SkateTrackPackagePayload.swift",
     "scripts/verify_macos_session_viewer.py",
@@ -35,6 +36,7 @@ PROJECT_MEMBERSHIP = [
     "MacSpeedSparklineView.swift",
     "MacRoutePreviewView.swift",
     "MacRouteMapContextView.swift",
+    "MacRouteDisplayPipeline.swift",
 ]
 
 LOCALIZATION_KEYS = [
@@ -179,19 +181,27 @@ def ensure_session_browser() -> None:
             fail(f"MacSessionDetailView missing token: {token}")
     if ".font(.largeTitle.bold())" in detail or "private var header" in detail:
         fail("MacSessionDetailView should not duplicate the package-session hero; the top summary belongs in MacSessionBrowserView")
+    pipeline = read("macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift")
     for token in [
         "MacSessionViewerModel",
         "MacRoutePoint",
         "MacRouteVisualizationQuality",
         "deriveMetrics",
-        "deriveDistanceKilometers",
         "motionSamples.isEmpty ? session.motionSamples : motionSamples",
         "shouldUseDerivedMetrics",
-        "distanceMetersBetween",
-        "downsample(points:",
     ]:
         if token not in model:
             fail(f"MacSessionViewerModel missing derived metric token: {token}")
+    for token in [
+        "enum MacSessionMetricsDeriver",
+        "deriveDistanceKilometers",
+        "private static func routePoints(session: SessionData, from samples: [MotionSample]) -> [MacRoutePoint]",
+        "routeQuality(",
+        "distanceMetersBetween",
+        "downsample(points:",
+    ]:
+        if token not in pipeline:
+            fail(f"MacRouteDisplayPipeline missing derived metric token: {token}")
     for token in ["Path", "speedPath", "gridLines", "mac.viewer.sparkline.empty", ".frame(height: 132)"]:
         if token not in sparkline:
             fail(f"MacSpeedSparklineView missing token: {token}")

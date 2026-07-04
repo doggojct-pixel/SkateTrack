@@ -644,3 +644,8 @@ Task-030e-MacViewer-006 limitation token: selected package sessions list, `MacPa
 - **Do not claim:** Do not claim route correction, map matching, road snapping, route reconstruction, current-location tracking, persistent package library management, trusted metric mutation, or production route editing.
 
 Task-030e-MacViewer-007A limitation token: read-only MapKit route context, `MacRouteMapContextView`, existing route samples only, no current location, no road matching, no snap-to-road, no route geometry mutation, no trusted metrics mutation, no import/merge/restore/sync, aligned `SkateTrack_BuildPlan_Task-030e_MacOS_MultiPackage_Viewer_EN_v1.2`.
+
+## Task-030e-MacViewer-007B route inspection boundaries
+- macOS expanded route inspection is read-only and displays existing `.skatetrack` route samples only.
+- iOS-style route colors are visual continuity cues only; they do not indicate route correction, confidence scoring, road matching, snapping, or reconstructed geometry.
+- The viewer still does not write to Core Data, mutate packages, request location permission, show current user location, or change trusted metrics.

@@ -1183,3 +1183,23 @@
 "import.accessibility.fileRowFormat" = "檔案：%@。狀態：%@。";
 
 "mac.viewer.route.preview.readonly_mapkit" = "唯讀 MapKit 脈絡";
+"mac.viewer.route.inspect.open" = "檢視大圖";
+"mac.viewer.route.inspect.title" = "路線檢視";
+"mac.viewer.route.inspect.subtitle" = "用較大的唯讀地圖檢視目前 package 的路線。";
+"mac.viewer.route.inspect.close" = "關閉";
+"mac.viewer.route.inspect.fit_bounds" = "符合路線範圍";
+"mac.viewer.route.inspect.metadata.title" = "路線資料";
+"mac.viewer.route.inspect.metadata.samples" = "路線樣本";
+"mac.viewer.route.inspect.metadata.unique" = "變動點";
+"mac.viewer.route.inspect.metadata.distance" = "推算距離";
+"mac.viewer.route.inspect.metadata.quality" = "視覺化品質";
+"mac.viewer.route.inspect.readonly" = "僅以既有 .skatetrack 路線樣本進行唯讀檢視。不請求定位權限、不顯示目前位置、不進行道路比對、吸附、路線編輯、trusted metric mutation 或 package 寫入。";
+"mac.viewer.route.legend.title" = "路線視覺圖例";
+"mac.viewer.route.legend.green" = "綠色＝高信心路段";
+"mac.viewer.route.legend.orange" = "亮橘＝低信心路段";
+"mac.viewer.route.legend.pink" = "螢光粉紅＝起始校正／暖機路段";
+"mac.viewer.route.legend.start" = "起點";
+"mac.viewer.route.legend.finish" = "終點";
+"mac.viewer.route.visual_parity.note" = "顏色對應 iOS 路線語義：綠色為高信心路段、亮橘為低信心路段、螢光粉紅為起始校正／暖機路段；僅供唯讀檢視，不代表道路比對或路線修正。";
+"mac.accessibility.route_inspection.label" = "路線檢視";
+"mac.accessibility.route_inspection.hint" = "顯示較大的唯讀路線地圖、視覺圖例與資料。不請求定位、不比對道路、不編輯路線，也不改動指標。";

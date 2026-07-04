@@ -1183,3 +1183,23 @@
 "import.accessibility.fileRowFormat" = "ファイル：%@。状態：%@。";
 
 "mac.viewer.route.preview.readonly_mapkit" = "読み取り専用 MapKit コンテキスト";
+"mac.viewer.route.inspect.open" = "ルートを拡大";
+"mac.viewer.route.inspect.title" = "ルート確認";
+"mac.viewer.route.inspect.subtitle" = "選択中のパッケージのルートを大きな読み取り専用マップで確認します。";
+"mac.viewer.route.inspect.close" = "閉じる";
+"mac.viewer.route.inspect.fit_bounds" = "ルート範囲に合わせる";
+"mac.viewer.route.inspect.metadata.title" = "ルート情報";
+"mac.viewer.route.inspect.metadata.samples" = "ルートサンプル";
+"mac.viewer.route.inspect.metadata.unique" = "変化点";
+"mac.viewer.route.inspect.metadata.distance" = "推定距離";
+"mac.viewer.route.inspect.metadata.quality" = "表示品質";
+"mac.viewer.route.inspect.readonly" = "既存の .skatetrack ルートサンプルから読み取り専用で表示します。位置情報権限、現在地表示、道路照合、スナップ、ルート編集、trusted metric mutation、パッケージ書き込みは行いません。";
+"mac.viewer.route.legend.title" = "ルート表示凡例";
+"mac.viewer.route.legend.green" = "緑＝高信頼区間";
+"mac.viewer.route.legend.orange" = "明るいオレンジ＝低信頼区間";
+"mac.viewer.route.legend.pink" = "蛍光ピンク＝開始時ウォームアップ区間";
+"mac.viewer.route.legend.start" = "開始";
+"mac.viewer.route.legend.finish" = "終了";
+"mac.viewer.route.visual_parity.note" = "色は iOS のルート表示意味に合わせています。緑は高信頼区間、明るいオレンジは低信頼区間、蛍光ピンクは開始時ウォームアップ区間です。表示は読み取り専用で、道路照合やルート補正は行いません。";
+"mac.accessibility.route_inspection.label" = "ルート確認";
+"mac.accessibility.route_inspection.hint" = "大きな読み取り専用ルートマップ、凡例、情報を表示します。位置情報要求、道路照合、ルート編集、指標変更は行いません。";

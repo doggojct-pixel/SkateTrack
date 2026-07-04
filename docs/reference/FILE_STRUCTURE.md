@@ -1705,3 +1705,9 @@ Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings       # [協作區
 - iOS route visual parity and expanded route inspection remain deferred to Task-030e-MacViewer-007B.
 - Drag-and-drop, persistent recent files/bookmarks, Finder document association, custom UTType, database import/merge/restore/sync, Watch / WatchBridge, and Task-031 remain deferred.
 - Task-030e-MacViewer-007A is a read-only map context over already opened in-memory packages and must not request location permission, show user location, map-match, snap-to-road, reconstruct route geometry, mutate trusted metrics, Core Data, or schema.
+
+### Task-030e-MacViewer-007B route visual inspection
+- `macOS/Features/SessionBrowser/MacRouteVisualStyle.swift` — shared macOS route visual parity colors for green route line, bright orange accent, fluorescent pink glow, and start/finish markers.
+- `macOS/Features/SessionBrowser/MacRouteInspectionView.swift` — expanded read-only route inspection sheet with MapKit context, fit-to-route-bounds presentation, metadata, and legend.
+- `macOS/Features/SessionBrowser/MacRoutePreviewView.swift` — compact route preview entry point that opens the expanded inspection sheet.
+- `macOS/Features/SessionBrowser/MacRouteMapContextView.swift` — read-only MapKit bridge for existing route samples only; it remains the only MapKit route view and must not request location or mutate route geometry.

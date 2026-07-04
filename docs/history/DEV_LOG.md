@@ -2397,3 +2397,8 @@ Task-030e-MacViewer-006 verification token: selected package sessions list, `Mac
 - Preserved strict safety boundaries: no current-location permission, no user-location display, no road matching, no snap-to-road, no route reconstruction, no route geometry mutation, no trusted metrics mutation, no package schema change, no Core Data write, no persistent recent files, and no expanded route inspection yet.
 
 Task-030e-MacViewer-007A verification token: Read-Only MapKit Route Context, `MacRouteMapContextView`, `MKMapView`, existing route samples only, no current location, no road matching, no snap-to-road, no route geometry mutation, no trusted metrics mutation, no persistence/schema mutation, 007B deferred.
+
+## Task-030e-MacViewer-007B — iOS Route Visual Parity + Expanded Route Inspection
+- Added macOS read-only route visual parity colors using green route line, bright orange accent, and fluorescent pink glow to echo the iOS route language without representing correction, confidence, or matching state.
+- Added expanded route inspection sheet for larger route review, fit-to-route-bounds MapKit context, route metadata, and visual legend.
+- Preserved Task-030e safety boundaries: no location permission, no user-location display, no road matching, no snapping, no route reconstruction, no route geometry mutation, no trusted metrics mutation, and no package/schema/database writes.

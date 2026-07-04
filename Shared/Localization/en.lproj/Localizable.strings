@@ -1183,3 +1183,23 @@
 "import.accessibility.fileRowFormat" = "File: %@. Status: %@.";
 
 "mac.viewer.route.preview.readonly_mapkit" = "Read-only MapKit context";
+"mac.viewer.route.inspect.open" = "Inspect route";
+"mac.viewer.route.inspect.title" = "Route inspection";
+"mac.viewer.route.inspect.subtitle" = "Review the selected package route in a larger read-only map.";
+"mac.viewer.route.inspect.close" = "Close";
+"mac.viewer.route.inspect.fit_bounds" = "Fit to route bounds";
+"mac.viewer.route.inspect.metadata.title" = "Route metadata";
+"mac.viewer.route.inspect.metadata.samples" = "Route samples";
+"mac.viewer.route.inspect.metadata.unique" = "Changing points";
+"mac.viewer.route.inspect.metadata.distance" = "Derived distance";
+"mac.viewer.route.inspect.metadata.quality" = "Visualization quality";
+"mac.viewer.route.inspect.readonly" = "Read-only inspection from existing .skatetrack route samples. No location permission, user-location display, road matching, snapping, route editing, trusted metric mutation, or package writes are performed.";
+"mac.viewer.route.legend.title" = "Route visual legend";
+"mac.viewer.route.legend.green" = "Green = high-confidence segment";
+"mac.viewer.route.legend.orange" = "Bright orange = low-confidence segment";
+"mac.viewer.route.legend.pink" = "Fluorescent pink = startup warm-up segment";
+"mac.viewer.route.legend.start" = "Start";
+"mac.viewer.route.legend.finish" = "Finish";
+"mac.viewer.route.visual_parity.note" = "Colors follow the iOS route semantics: green marks high-confidence route segments, bright orange marks low-confidence segments, and fluorescent pink marks startup warm-up segments. This remains read-only and does not imply road matching or route correction.";
+"mac.accessibility.route_inspection.label" = "Route inspection";
+"mac.accessibility.route_inspection.hint" = "Shows a larger read-only route map with visual legend and metadata. It does not request location, match roads, edit routes, or mutate metrics.";
