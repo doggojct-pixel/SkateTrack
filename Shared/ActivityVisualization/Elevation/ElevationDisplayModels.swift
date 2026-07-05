@@ -6,6 +6,9 @@ import Foundation
 
 enum ElevationDisplaySource: String, Codable, Sendable, Equatable {
     case motionSample
+    case barometerRelative
+    case coreLocationAbsolute
+    case debugSimulated
     case displayDerived
 }
 
@@ -15,19 +18,22 @@ struct ElevationDisplayPoint: Identifiable, Equatable, Sendable {
     let elapsedSeconds: TimeInterval
     let elevationMeters: Double
     let source: ElevationDisplaySource
+    let segmentID: Int
 
     init(
         id: Int,
         timestamp: Date,
         elapsedSeconds: TimeInterval,
         elevationMeters: Double,
-        source: ElevationDisplaySource
+        source: ElevationDisplaySource,
+        segmentID: Int = 0
     ) {
         self.id = id
         self.timestamp = timestamp
         self.elapsedSeconds = elapsedSeconds
         self.elevationMeters = elevationMeters
         self.source = source
+        self.segmentID = segmentID
     }
 }
 
@@ -47,6 +53,9 @@ struct ElevationDisplaySummary: Equatable, Sendable {
     let displayPointCount: Int
     let elevationRange: ElevationDisplayRange?
     let displayDerivedTotalAscentMeters: Double?
+    let selectedSource: ElevationDisplaySource
+    let segmentCount: Int
+    let hasAbsoluteAnchor: Bool
     let hasSparseData: Bool
 
     init(
@@ -55,6 +64,9 @@ struct ElevationDisplaySummary: Equatable, Sendable {
         displayPointCount: Int,
         elevationRange: ElevationDisplayRange? = nil,
         displayDerivedTotalAscentMeters: Double? = nil,
+        selectedSource: ElevationDisplaySource = .motionSample,
+        segmentCount: Int = 0,
+        hasAbsoluteAnchor: Bool = false,
         hasSparseData: Bool = false
     ) {
         self.quality = quality
@@ -62,6 +74,9 @@ struct ElevationDisplaySummary: Equatable, Sendable {
         self.displayPointCount = displayPointCount
         self.elevationRange = elevationRange
         self.displayDerivedTotalAscentMeters = displayDerivedTotalAscentMeters
+        self.selectedSource = selectedSource
+        self.segmentCount = segmentCount
+        self.hasAbsoluteAnchor = hasAbsoluteAnchor
         self.hasSparseData = hasSparseData
     }
 }

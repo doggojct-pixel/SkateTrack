@@ -2043,3 +2043,18 @@ scripts/verify_task031_prep_008_macos_speed_chart_migration.py   # [工程設定
 ```
 
 ActivityViz-008 intentionally does not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display.
+
+### Task-031-prep ActivityViz-009 Shared Elevation Display Pipeline Shell
+
+`Shared/ActivityVisualization/Elevation/ElevationDisplayPipeline.swift` prepares display-only elevation profile points, segment IDs, selected source, range, display-derived total ascent, summaries, and diagnostics from `MotionSample` source-of-truth altitude data. ActivityViz-009 keeps SwiftUI/AppKit/Charts rendering on iOS/macOS and does not migrate platform elevation chart adapters yet.
+
+```text
+Shared/ActivityVisualization/Elevation/
+├── ElevationDisplayModels.swift                    # [協作區] Elevation profile display points, selected source, segment IDs, range, summary, diagnostics, result, and configuration shells.
+└── ElevationDisplayPipeline.swift                  # [協作區] Display-only Shared elevation profile preparation shell.
+
+Tests/ActivityVisualizationTests/ElevationDisplayPipelineTests.swift # [協作區] Shared elevation pipeline shell tests for ActivityViz-009.
+scripts/verify_task031_prep_009_elevation_pipeline.py               # [工程設定] Verifies ActivityViz-009 elevation pipeline shell, project membership, renderer untouched guards, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-009 intentionally does not modify `iOS/Features/SessionSummary/ElevationProfileChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, current user location display, Watch UI, or Watch recording. iOS elevation profile migration remains deferred to ActivityViz-010; macOS elevation profile migration remains deferred to ActivityViz-011.
