@@ -38,6 +38,9 @@
 		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
 		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
 		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
 		31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
 		31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
 		31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
@@ -398,6 +401,7 @@
 		B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */; };
 		B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */; };
 		31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B200000000000000000001 /* RouteDisplayFixtureTests.swift */; };
+		31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */; };
 		B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
@@ -435,6 +439,7 @@
 		31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Segmentation.swift"; sourceTree = "<group>"; };
 		31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Bounds.swift"; sourceTree = "<group>"; };
 		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
+		31A310000000000000000001 /* SpeedDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipeline.swift; sourceTree = "<group>"; };
 		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
@@ -706,6 +711,7 @@
 		B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGate.swift; sourceTree = "<group>"; };
 		B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGateTests.swift; sourceTree = "<group>"; };
 		31B200000000000000000001 /* RouteDisplayFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayFixtureTests.swift; sourceTree = "<group>"; };
+		31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipelineTests.swift; sourceTree = "<group>"; };
 		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
 		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
@@ -791,6 +797,7 @@
 			isa = PBXGroup;
 			children = (
 				31A300000000000000000001 /* SpeedDisplayModels.swift */,
+				31A310000000000000000001 /* SpeedDisplayPipeline.swift */,
 			);
 			path = Speed;
 			sourceTree = "<group>";
@@ -963,6 +970,7 @@
 			isa = PBXGroup;
 			children = (
 				31B200000000000000000001 /* RouteDisplayFixtureTests.swift */,
+				31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */,
 			);
 			path = ActivityVisualizationTests;
 			sourceTree = "<group>";
@@ -1650,6 +1658,7 @@
 				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
 				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
 				31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */,
+				31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
 				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
 				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
@@ -1872,6 +1881,7 @@
 				31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
 				31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */,
 				31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
@@ -1950,6 +1960,7 @@
 				31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
 				31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */,
 				31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */,
@@ -2012,6 +2023,7 @@
 				31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
 				31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */,
 				31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000A /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */,

@@ -2572,3 +2572,13 @@ Task-031-prep-ActivityViz-004 verification token: iOS Route Migration, `SessionR
 - No route correction, road matching, map matching, snap-to-road, route reconstruction, stored route geometry mutation, trusted metrics mutation, persistence/export/package schema change, Core Data write/import/merge/restore, location permission request, or current user location display was introduced.
 
 Task-031-prep-ActivityViz-005 verification token: macOS Route Migration, `MacRouteDisplayPipeline`, `RouteDisplayPipeline().makeDisplayRoute`, `RouteDisplayResult`, `ActivityRouteDisplayPoint`, macOS renderer remains macOS-owned, `SessionRouteMapView.swift` untouched, no persistence/export/package schema change, no route correction.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-006 Shared Speed Display Pipeline Shell
+
+- Added `Shared/ActivityVisualization/Speed/SpeedDisplayPipeline.swift` as a display-only Shared speed chart preparation shell from `MotionSample` source-of-truth speed data.
+- Extended the speed display model shell with `segmentID` on `SpeedDisplayPoint` and `segmentCount` on `SpeedDisplaySummary` so later iOS/macOS chart adapters can preserve chart segmentation without moving renderer logic into Shared.
+- Added `Tests/ActivityVisualizationTests/SpeedDisplayPipelineTests.swift` to verify speed point creation, display-only invalid/out-of-range speed dropping, gap segmentation, downsampling, and that stored sample speed metrics are not mutated.
+- Added `scripts/verify_task031_prep_006_speed_pipeline.py` for ActivityViz-006 source checks, iOS/macOS speed chart untouched guards, route migration stability guards, Shared UI-import guard, and no persistence/export/package mutation guard.
+- Did not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, `MacSpeedSparklineView.swift`, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, or current user location display.
+
+Task-031-prep-ActivityViz-006 verification token: Shared Speed Display Pipeline Shell, `SpeedDisplayPipeline`, `makeDisplaySpeed`, `SpeedDisplayPoint.segmentID`, `SpeedDisplaySummary.segmentCount`, `SpeedDisplayPipelineTests`, speed charts untouched, no persistence/export/package schema change, no speed metric mutation.

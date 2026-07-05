@@ -16,19 +16,22 @@ struct SpeedDisplayPoint: Identifiable, Equatable, Sendable {
     let elapsedSeconds: TimeInterval
     let speedKilometersPerHour: Double
     let source: SpeedDisplaySource
+    let segmentID: Int
 
     init(
         id: Int,
         timestamp: Date,
         elapsedSeconds: TimeInterval,
         speedKilometersPerHour: Double,
-        source: SpeedDisplaySource
+        source: SpeedDisplaySource,
+        segmentID: Int = 0
     ) {
         self.id = id
         self.timestamp = timestamp
         self.elapsedSeconds = elapsedSeconds
         self.speedKilometersPerHour = speedKilometersPerHour
         self.source = source
+        self.segmentID = segmentID
     }
 }
 
@@ -39,6 +42,7 @@ struct SpeedDisplaySummary: Equatable, Sendable {
     let minimumSpeedKilometersPerHour: Double?
     let maximumSpeedKilometersPerHour: Double?
     let averageDisplaySpeedKilometersPerHour: Double?
+    let segmentCount: Int
     let hasSparseData: Bool
 
     init(
@@ -48,6 +52,7 @@ struct SpeedDisplaySummary: Equatable, Sendable {
         minimumSpeedKilometersPerHour: Double? = nil,
         maximumSpeedKilometersPerHour: Double? = nil,
         averageDisplaySpeedKilometersPerHour: Double? = nil,
+        segmentCount: Int = 0,
         hasSparseData: Bool = false
     ) {
         self.quality = quality
@@ -56,6 +61,7 @@ struct SpeedDisplaySummary: Equatable, Sendable {
         self.minimumSpeedKilometersPerHour = minimumSpeedKilometersPerHour
         self.maximumSpeedKilometersPerHour = maximumSpeedKilometersPerHour
         self.averageDisplaySpeedKilometersPerHour = averageDisplaySpeedKilometersPerHour
+        self.segmentCount = segmentCount
         self.hasSparseData = hasSparseData
     }
 }

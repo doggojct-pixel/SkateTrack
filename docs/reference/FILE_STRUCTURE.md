@@ -1958,7 +1958,8 @@ Shared/ActivityVisualization/
 │   ├── RouteDisplayPipeline+Segmentation.swift     # [協作區] Route segment splitting, smoothing, and small-area jitter suppression helpers.
 │   └── RouteDisplayPipeline+Bounds.swift           # [協作區] Route bounds, quality, diagnostics, and empty-result helpers.
 ├── Speed/
-│   └── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
+│   ├── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
+│   └── SpeedDisplayPipeline.swift                  # [協作區] Display-only Shared speed chart preparation shell from MotionSample source-of-truth data.
 └── Elevation/
     └── ElevationDisplayModels.swift                # [協作區] Elevation profile display points, range, summary, diagnostics, result, and configuration shells.
 ```
@@ -1998,3 +1999,16 @@ scripts/verify_task031_prep_005_macos_route_migration.py          # [工程設�
 ```
 
 ActivityViz-005 intentionally does not modify `iOS/Features/SessionSummary/SessionRouteMapView.swift`, Shared route pipeline behavior, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display.
+
+
+### Task-031-prep ActivityViz-006 Shared Speed Display Pipeline Shell
+
+`Shared/ActivityVisualization/Speed/SpeedDisplayPipeline.swift` prepares display-only speed chart points, segment IDs, summaries, and diagnostics from `MotionSample` source-of-truth speed data. `SpeedDisplayPoint` now carries `segmentID` and `SpeedDisplaySummary` carries `segmentCount` so ActivityViz-007/008 can migrate platform chart data adapters without moving SwiftUI/AppKit chart rendering into Shared. `Tests/ActivityVisualizationTests/SpeedDisplayPipelineTests.swift` verifies point creation, display-only invalid/out-of-range speed dropping, segmentation, downsampling, and no metric mutation before any platform chart migration.
+
+```text
+Shared/ActivityVisualization/Speed/SpeedDisplayPipeline.swift   # [協作區] Display-only Shared speed chart preparation shell.
+Tests/ActivityVisualizationTests/SpeedDisplayPipelineTests.swift # [協作區] Shared speed pipeline shell tests for ActivityViz-006.
+scripts/verify_task031_prep_006_speed_pipeline.py               # [工程設定] Verifies ActivityViz-006 speed pipeline shell, project membership, tests, route stability, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-006 intentionally does not modify `iOS/Features/SessionSummary/SpeedTimelineChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacSpeedSparklineView.swift`, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. iOS speed chart migration remains deferred to ActivityViz-007; macOS speed chart migration remains deferred to ActivityViz-008.
