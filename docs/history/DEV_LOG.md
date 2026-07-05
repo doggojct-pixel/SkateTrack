@@ -10,6 +10,17 @@
 This log is append-only. Do not delete or overwrite old entries.
 
 
+## 2026-07-05 — Task-031-prep-ActivityViz-003-1 Shared Route Pipeline Split Alignment
+
+### Completed
+- Split `RouteDisplayPipeline` helpers into `RouteDisplayPipeline+Filtering.swift`, `RouteDisplayPipeline+Startup.swift`, `RouteDisplayPipeline+Segmentation.swift`, and `RouteDisplayPipeline+Bounds.swift` to realign ActivityViz-003 with the v1.1 build-plan file layout before ActivityViz-004.
+- Kept the split behavior-preserving: existing ActivityViz-002 fixture baselines and ActivityViz-003 Shared pipeline parity tests remain the verification source of truth.
+- Updated Xcode project membership so the split files are grouped under `Shared/ActivityVisualization/Route/` and compiled by iOS, macOS, and watchOS app targets.
+- Updated the ActivityViz-003 verifier to validate the split file inventory, group-relative project paths, and line limits for each split file.
+
+### Validation Notes
+- This alignment stage does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, renderer behavior, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.
+
 ## 2026-07-05 — Task-031-prep-ActivityViz-003 Shared Route Pipeline Extraction
 
 ### Completed

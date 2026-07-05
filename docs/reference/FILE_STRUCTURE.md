@@ -1952,7 +1952,11 @@ Shared/ActivityVisualization/
 ├── ActivityVisualizationConfiguration.swift        # [協作區] Model-only route/speed/elevation visualization configuration and prepared summary shell.
 ├── Route/
 │   ├── RouteDisplayModels.swift                    # [協作區] Route display points, segments, semantics, bounds, summary, diagnostics, and result shells.
-│   └── RouteDisplayPipeline.swift                  # [協作區] Display-only Shared route preparation extracted from existing iOS route semantics.
+│   ├── RouteDisplayPipeline.swift                  # [協作區] Display-only Shared route preparation orchestration extracted from existing iOS route semantics.
+│   ├── RouteDisplayPipeline+Filtering.swift        # [協作區] Display-only sample filtering, timer-fusion fallback, and de-duplication helpers.
+│   ├── RouteDisplayPipeline+Startup.swift          # [協作區] Startup GPS lock anchor and warmup semantic classification helpers.
+│   ├── RouteDisplayPipeline+Segmentation.swift     # [協作區] Route segment splitting, smoothing, and small-area jitter suppression helpers.
+│   └── RouteDisplayPipeline+Bounds.swift           # [協作區] Route bounds, quality, diagnostics, and empty-result helpers.
 ├── Speed/
 │   └── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
 └── Elevation/
@@ -1968,4 +1972,4 @@ ActivityViz-001 does not add `Shared/ActivityVisualization/*Pipeline.swift`, doe
 
 ### Task-031-prep ActivityViz-003 Shared route pipeline extraction
 
-`Shared/ActivityVisualization/Route/RouteDisplayPipeline.swift` prepares display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data. `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` now checks the Shared pipeline against the ActivityViz-002 fixture baselines before any renderer migration. This stage intentionally does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.
+`Shared/ActivityVisualization/Route/RouteDisplayPipeline.swift` prepares display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data. ActivityViz-003-1 splits helper logic into `RouteDisplayPipeline+Filtering.swift`, `RouteDisplayPipeline+Startup.swift`, `RouteDisplayPipeline+Segmentation.swift`, and `RouteDisplayPipeline+Bounds.swift` before ActivityViz-004 so the Shared route pipeline stays maintainable and aligned with the build plan. `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` checks the Shared pipeline against the ActivityViz-002 fixture baselines before any renderer migration. This stage intentionally does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.

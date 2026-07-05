@@ -23,6 +23,18 @@
 		31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
 		31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
 		31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
 		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
 		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
 		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
@@ -418,6 +430,10 @@
 		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
 		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
 		31A250000000000000000001 /* RouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Filtering.swift"; sourceTree = "<group>"; };
+		31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Startup.swift"; sourceTree = "<group>"; };
+		31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Segmentation.swift"; sourceTree = "<group>"; };
+		31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Bounds.swift"; sourceTree = "<group>"; };
 		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
 		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
@@ -763,6 +779,10 @@
 			children = (
 				31A200000000000000000001 /* RouteDisplayModels.swift */,
 				31A250000000000000000001 /* RouteDisplayPipeline.swift */,
+				31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */,
+				31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */,
+				31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */,
+				31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */,
 			);
 			path = Route;
 			sourceTree = "<group>";
@@ -1847,6 +1867,10 @@
 				31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A200000000000000000101 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */,
 				31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
@@ -1921,6 +1945,10 @@
 				31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A200000000000000000103 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */,
 				31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,
@@ -1979,6 +2007,10 @@
 				31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A200000000000000000102 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */,
 				31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */,
 				31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000A /* UnitFormatter.swift in Sources */,
