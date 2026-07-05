@@ -496,3 +496,12 @@ Decision: Task-030e-MacViewer-014 is a final merge-readiness gate for the macOS 
 Boundary: This milestone is docs/tooling/merge-readiness only. It must not add product UI, local-history import, package merge, duplicate deletion, winner selection, route correction, road matching, snap-to-road, route reconstruction, route geometry mutation, trusted metrics mutation, package schema change, Core Data write, location permission, user-location display, Watch / WatchBridge behavior, or Task-031 implementation.
 
 Task-030e-MacViewer-014 verification token: Task-030e macOS multi-package viewer final merge gate, develop merge readiness, final no-scope-expansion review, no schema / Core Data mutation.
+## Task-031-prep shared activity visualization ownership
+
+Decision: Task-031-prep establishes `Shared/ActivityVisualization` as a display-only preparation layer for route, speed, elevation, unified visualization results, and compact visualization summaries. Shared decides visualization data semantics; platforms decide rendering.
+
+Boundary: The Shared visualization stack may filter, segment, downsample, summarize, and expose diagnostics for display, but it must not mutate source route geometry, trusted metrics, stored session values, Core Data, `.skatetrack` package schema, export payloads, Watch recording, location permission, current-user-location behavior, cloud sync, import, merge, or restore flows.
+
+Implementation: ActivityViz-001 through ActivityViz-014 add the route/speed/elevation focused pipelines, `ActivityVisualizationPipeline`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, `CompactElevationProfile`, deterministic ActivityVisualization tests, and `verify_task031_prep_014_cross_platform_visualization.py`. Platform renderers remain in iOS/macOS/watchOS surfaces and may keep focused sub-pipeline adapters where that is cleaner than forcing umbrella API adoption.
+
+Task-031-prep-ActivityViz-015 ADR token: Shared decides visualization data semantics; platforms decide rendering, display-only ActivityVisualization, focused pipelines, unified pipeline, compact adapter contract, cross-platform verifier, no Watch UI, no Watch recording, no persistence/export/package schema mutation, ActivityViz-016 final parity gate remains.

@@ -2671,3 +2671,13 @@ Task-031-prep-ActivityViz-012 verification token: Unified ActivityVisualizationP
 - ActivityViz-014 intentionally does not change production visualization behavior, platform renderers, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission, or current user location display.
 
 Task-031-prep-ActivityViz-014 verification token: Cross-platform Visualization Verifier, `verify_task031_prep_014_cross_platform_visualization.py`, Shared ActivityVisualization source membership, iOS/macOS/watchOS membership, Shared UI-import guard, platform renderer ownership, compact/displayDerived persistence/export/package guard, no Watch UI, no Watch recording, no persistence/export/package schema change.
+## 2026-07-05 — Task-031-prep-ActivityViz-015 Docs / ADR Final Sync
+
+- Synchronized Task-031-prep documentation across `DEV_LOG.md`, `FILE_STRUCTURE.md`, `ADR-INDEX.md`, and `KNOWN_LIMITATIONS_PRE_ADP.md` for ActivityViz-001 through ActivityViz-014.
+- Re-stated the Task-031-prep ownership principle: Shared decides visualization data semantics; platforms decide rendering.
+- Documented the completed Shared display stack: route/speed/elevation focused pipelines, the ActivityViz-012 `ActivityVisualizationPipeline` umbrella entry point, the ActivityViz-013 compact route/speed/elevation adapter contract, and the ActivityViz-014 cross-platform visualization verifier.
+- Preserved the boundary that platform views may keep focused sub-pipeline usage when cleaner; ActivityViz-012/013 do not force every iOS/macOS/watchOS consumer onto the umbrella API.
+- Added ADR and limitation notes that ActivityViz display data is display-only and must not write compact/displayDerived values into persistence, export, package schema, Core Data, trusted metrics, Watch recording, location permission, or current-user-location behavior.
+- ActivityViz-015 intentionally does not modify production Swift source, Xcode project membership, tests, iOS/macOS renderers, Watch UI, Watch recording, route/speed/elevation behavior, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission, or current user location display.
+
+Task-031-prep-ActivityViz-015 verification token: Docs / ADR Final Sync, Shared decides visualization data semantics; platforms decide rendering, focused pipelines documented, `ActivityVisualizationPipeline`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, `CompactElevationProfile`, Cross-platform Visualization Verifier documented, ActivityViz-016 remains final parity gate, no Watch UI, no Watch recording, no persistence/export/package schema change.
