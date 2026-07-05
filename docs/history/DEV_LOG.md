@@ -2549,3 +2549,14 @@ Task-030e-MacViewer-013 verification token: Manual QA Gate, TASK030E_MANUAL_QA_G
 - Preserved scope boundaries: no route / metric / package mutation, no package schema change, no Core Data write, no location permission, no user-location display, no Watch behavior, and no Task-031-prep implementation.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, develop merge readiness.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-004 iOS Route Migration
+
+- Migrated `SessionRouteMapView` to consume the Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only route points and segments.
+- Preserved iOS renderer responsibilities in `SessionRouteMapView`: MapKit rendering, route colors, line width, start / finish annotations, empty state, SwiftUI layout, localized disclosure text, and map region selection.
+- Removed duplicated iOS route preparation helpers for filtering, timer-fusion fallback, startup warmup classification, GPS-lock clustering, small-area jitter suppression, smoothing, segmentation, location-fix keys, and distance calculation from `SessionRouteMapView`.
+- Added `scripts/verify_task031_prep_004_ios_route_migration.py` for ActivityViz-004 source checks, iOS migration boundaries, renderer ownership, Shared UI-import guard, and no persistence/export/package mutation guard.
+- Did not modify `MacRouteDisplayPipeline.swift`; macOS route migration remains deferred to ActivityViz-005.
+- No route correction, road matching, map matching, snap-to-road, route reconstruction, stored route geometry mutation, trusted metrics mutation, persistence/export/package schema change, Core Data write/import/merge/restore, location permission request, or current user location display was introduced.
+
+Task-031-prep-ActivityViz-004 verification token: iOS Route Migration, `SessionRouteMapView`, `RouteDisplayPipeline().makeDisplayRoute`, `RouteDisplayResult`, `RouteDisplaySemantic`, renderer remains iOS-owned, `MacRouteDisplayPipeline.swift` untouched, no persistence/export/package schema change, no route correction.

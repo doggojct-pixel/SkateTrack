@@ -1973,3 +1973,14 @@ ActivityViz-001 does not add `Shared/ActivityVisualization/*Pipeline.swift`, doe
 ### Task-031-prep ActivityViz-003 Shared route pipeline extraction
 
 `Shared/ActivityVisualization/Route/RouteDisplayPipeline.swift` prepares display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data. ActivityViz-003-1 splits helper logic into `RouteDisplayPipeline+Filtering.swift`, `RouteDisplayPipeline+Startup.swift`, `RouteDisplayPipeline+Segmentation.swift`, and `RouteDisplayPipeline+Bounds.swift` before ActivityViz-004 so the Shared route pipeline stays maintainable and aligned with the build plan. `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` checks the Shared pipeline against the ActivityViz-002 fixture baselines before any renderer migration. This stage intentionally does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.
+
+### Task-031-prep ActivityViz-004 iOS Route Migration
+
+`iOS/Features/SessionSummary/SessionRouteMapView.swift` now consumes Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only route points and segments while preserving iOS renderer ownership of MapKit, colors, polylines, start / finish annotations, empty state, localized disclosure text, and SwiftUI layout.
+
+```text
+iOS/Features/SessionSummary/SessionRouteMapView.swift          # [協作區] iOS route map renderer migrated to Shared route display data while keeping MapKit rendering behavior local to iOS.
+scripts/verify_task031_prep_004_ios_route_migration.py         # [工程設定] Verifies ActivityViz-004 iOS route migration, renderer boundaries, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-004 intentionally does not modify `macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display. macOS route migration remains deferred to ActivityViz-005.
