@@ -2111,3 +2111,15 @@ ActivityViz-012 intentionally does not modify `SessionAdvancedChartsView.swift`,
 - `Tests/ActivityVisualizationTests/CompactActivityVisualizationTests.swift` verifies compact output, standalone compact route initialization, and normalized/downsampled compact sparkline data.
 - `scripts/verify_task031_prep_013_compact_adapter.py` checks compact contract scope, target membership, line limits, UI-import boundaries, and persistence/export/package safety.
 - ActivityViz-013 remains display-data only: no Watch UI, no Watch recording, trusted metric mutation, persistence/export/package schema change, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+## Task-031-prep ActivityViz-014 Cross-platform Visualization Verifier
+
+ActivityViz-014 adds a cross-platform static verification layer over the completed route, speed, elevation, unified, and compact visualization pipeline work. It is a verifier/docs-only step and does not change Shared visualization semantics or platform rendering.
+
+ActivityViz-014 files:
+
+```text
+scripts/verify_task031_prep_014_cross_platform_visualization.py  # [工程設定] Cross-platform verifier for Shared ActivityVisualization route/speed/elevation/unified/compact invariants, iOS/macOS/watchOS source membership, UI-import boundaries, platform renderer ownership, and compact/displayDerived persistence/export/package safety.
+```
+
+ActivityViz-014 intentionally does not modify `Shared/ActivityVisualization` production models/pipelines, `SessionAdvancedChartsView.swift`, `SessionRouteMapView.swift`, `SpeedTimelineChartView.swift`, `ElevationProfileChartView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display. ActivityViz-015 remains responsible for docs/ADR final sync.

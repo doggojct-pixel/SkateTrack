@@ -2662,3 +2662,12 @@ Task-031-prep-ActivityViz-012 verification token: Unified ActivityVisualizationP
 - Not implementing ActivityViz-014 cross-platform verifier, Watch UI, Watch recording, route/speed/elevation behavior rewrites, stored/trusted metric mutation, persistence/export/package schema change, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
 
 - ActivityViz-013 verification note: no Watch UI, no Watch recording, and no current-user-location behavior are introduced.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-014 Cross-platform Visualization Verifier
+
+- Added `scripts/verify_task031_prep_014_cross_platform_visualization.py` as the cross-platform static verifier for the Shared ActivityVisualization stack.
+- The verifier checks route/speed/elevation focused pipelines, the ActivityViz-012 umbrella pipeline, and the ActivityViz-013 compact adapter contract together.
+- Added guards for iOS/macOS/watchOS Shared source membership, ActivityVisualization test target membership, 500-line Swift limits, Shared UI-import boundaries, compact/displayDerived persistence/export/package safety, and platform renderer ownership.
+- ActivityViz-014 intentionally does not change production visualization behavior, platform renderers, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission, or current user location display.
+
+Task-031-prep-ActivityViz-014 verification token: Cross-platform Visualization Verifier, `verify_task031_prep_014_cross_platform_visualization.py`, Shared ActivityVisualization source membership, iOS/macOS/watchOS membership, Shared UI-import guard, platform renderer ownership, compact/displayDerived persistence/export/package guard, no Watch UI, no Watch recording, no persistence/export/package schema change.
