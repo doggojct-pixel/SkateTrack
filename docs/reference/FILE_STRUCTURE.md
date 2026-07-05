@@ -2088,3 +2088,18 @@ scripts/verify_task031_prep_011_macos_elevation_migration.py         # [工程�
 ```
 
 ActivityViz-011 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, Shared elevation pipeline behavior, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. `MacElevationProfileView` remains the SwiftUI/Path renderer; Shared owns display data preparation only.
+
+### Task-031-prep ActivityViz-012 Unified ActivityVisualizationPipeline Entry Point
+
+`Shared/ActivityVisualization/ActivityVisualizationPipeline.swift` provides a display-only umbrella entry point for consumers that want route, speed, elevation, aggregate diagnostics, and a compact summary shell at once. ActivityViz-012 composes the already-verified focused sub-pipelines and intentionally does not force platform views to switch away from focused adapters when those are cleaner.
+
+ActivityViz-012 files:
+
+```text
+Shared/ActivityVisualization/ActivityVisualizationConfiguration.swift    # [協作區] Configuration plus ActivityVisualizationResult / ActivityVisualizationCompactSummary umbrella shells.
+Shared/ActivityVisualization/ActivityVisualizationPipeline.swift         # [協作區] Umbrella makeVisualization(...) entry point composing route/speed/elevation display pipelines.
+Tests/ActivityVisualizationTests/ActivityVisualizationPipelineTests.swift # [協作區] Verifies umbrella pipeline composition, diagnostics, and compact summary shell behavior.
+scripts/verify_task031_prep_012_unified_pipeline.py                      # [工程設定] Verifies ActivityViz-012 umbrella pipeline, project membership, committed invariants, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-012 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, `SpeedTimelineChartView.swift`, `SessionRouteMapView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, focused route/speed/elevation pipeline behavior, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. ActivityViz-013 remains responsible for the Watch-ready compact adapter contract.

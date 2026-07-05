@@ -2640,3 +2640,14 @@ Task-031-prep-ActivityViz-010 verification token: iOS Elevation Profile Migratio
 - Did not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, Shared elevation pipeline behavior, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording.
 
 Task-031-prep-ActivityViz-011 verification token: macOS Elevation Profile Migration, `MacElevationDisplayPipeline.elevationResult`, `ElevationDisplayPipeline(configuration: ElevationDisplayConfiguration(maximumDisplayPointCount: 180))`, `MacElevationProfileView(points: model.elevationPoints)`, `displayElevationGainMeters`, macOS renderer remains SwiftUI-owned, `SessionAdvancedChartsView.swift` untouched, no persistence/export/package schema change, no elevation metric mutation.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-012 Unified ActivityVisualizationPipeline Entry Point
+
+- Added `Shared/ActivityVisualization/ActivityVisualizationPipeline.swift` as a display-only umbrella entry point that composes `RouteDisplayPipeline`, `SpeedDisplayPipeline`, and `ElevationDisplayPipeline` without rewriting their semantics.
+- Added `ActivityVisualizationResult` and `ActivityVisualizationCompactSummary` so consumers that want all visualization data at once can receive route, speed, elevation, aggregate diagnostics, and a compact summary shell from one call.
+- Kept iOS and macOS screen adapters on focused sub-pipelines for now; ActivityViz-012 does not force `SessionAdvancedChartsView`, `MacSessionViewerModel`, or renderer views to consume the umbrella API.
+- Added `Tests/ActivityVisualizationTests/ActivityVisualizationPipelineTests.swift` to verify umbrella output matches the focused sub-pipelines and that diagnostics / compact summary aggregation remains display-only.
+- Added `scripts/verify_task031_prep_012_unified_pipeline.py` for ActivityViz-012 source checks, project membership, committed platform invariant guards, Shared UI-import guard, and no persistence/export/package mutation guard.
+- Did not implement ActivityViz-013 Watch-ready compact route/speed/elevation adapters, Watch UI, Watch recording, route/speed/elevation behavior rewrites, stored/trusted metric mutation, persistence/export/package schema changes, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+Task-031-prep-ActivityViz-012 verification token: Unified ActivityVisualizationPipeline Entry Point, `ActivityVisualizationPipeline.makeVisualization`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, focused sub-pipelines preserved, no forced platform view migration, no persistence/export/package schema change, no trusted metric mutation.
