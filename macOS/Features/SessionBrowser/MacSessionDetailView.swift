@@ -1,6 +1,6 @@
 // [協作區] MacSessionDetailView.swift
 // 用途：顯示 macOS 只讀 Session viewer 的 session detail、derived metrics、速度 / 海拔預覽與 route summary。
-// 委派至：Task-030e-MacViewer-008 selected-session detail layout alignment；008-1 adds elevation display without database writes, merge, or restore。
+// 委派至：Task-031-prep-ActivityViz-011 macOS Elevation Profile Migration；macOS keeps SwiftUI rendering while consuming Shared elevation display data。
 
 import SwiftUI
 
@@ -83,7 +83,7 @@ struct MacSessionDetailView: View {
                 MacSessionViewerMetric(titleKey: "mac.package.preview.distance", value: formattedDistance(model.displayMetrics.distanceKilometers))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.max_speed", value: formattedSpeed(model.displayMetrics.maxSpeedKilometersPerHour))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.average_speed", value: formattedSpeed(model.displayMetrics.averageSpeedKilometersPerHour))
-                MacSessionViewerMetric(titleKey: "summary.metric.elevationGain", value: formattedElevation(model.displayMetrics.elevationGainMeters))
+                MacSessionViewerMetric(titleKey: "summary.metric.elevationGain", value: formattedElevation(model.displayElevationGainMeters))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.moving_ratio", value: formattedPercent(model.displayMetrics.movingRatio))
                 MacSessionViewerMetric(titleKey: "mac.package.preview.motion_samples", value: "\(model.motionSampleCount)")
                 MacSessionViewerMetric(titleKey: "mac.package.preview.route_samples", value: "\(model.routeSampleCount)")

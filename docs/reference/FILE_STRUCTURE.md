@@ -2072,3 +2072,19 @@ scripts/verify_task031_prep_010_ios_elevation_migration.py           # [工程�
 ```
 
 ActivityViz-010 intentionally does not modify `MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. macOS elevation migration remains deferred to ActivityViz-011.
+
+### Task-031-prep ActivityViz-011 macOS Elevation Profile Migration
+
+`macOS/Features/SessionBrowser/MacSessionViewerModel.swift` now adapts macOS elevation profile and total-ascent display data through the Shared `ElevationDisplayPipeline` / `ElevationDisplayResult` from ActivityViz-009 while preserving macOS SwiftUI renderer ownership. `MacElevationDisplayPipeline.swift` is demoted to a thin adapter that creates Shared elevation results and maps Shared points into existing macOS renderer point models.
+
+ActivityViz-011 files:
+
+```text
+macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift      # [協作區] macOS adapter around Shared ElevationDisplayPipeline / ElevationDisplayResult.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift            # [協作區] Builds Shared elevation result and display-only total-ascent value for macOS session viewer.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift             # [協作區] Displays Shared-derived elevation gain while keeping macOS renderer ownership.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift            # [協作區] MacElevationProfileView remains the SwiftUI Path renderer and is intentionally not migrated into Shared.
+scripts/verify_task031_prep_011_macos_elevation_migration.py         # [工程設定] Verifies ActivityViz-011 macOS elevation migration, iOS elevation committed invariant, Shared elevation untouched guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-011 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, Shared elevation pipeline behavior, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. `MacElevationProfileView` remains the SwiftUI/Path renderer; Shared owns display data preparation only.
