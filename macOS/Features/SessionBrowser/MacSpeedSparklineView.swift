@@ -5,7 +5,18 @@
 import SwiftUI
 
 struct MacSpeedSparklineView: View {
-    let points: [MacSpeedPoint]
+    let result: SpeedDisplayResult
+
+    private var points: [MacSpeedSparklinePoint] {
+        sparklinePoints(from: result)
+    }
+
+    private var segments: [MacSpeedSparklineSegment] {
+        Dictionary(grouping: points, by: \.segmentID)
+            .map { MacSpeedSparklineSegment(id: $0.key, points: $0.value.sorted { $0.elapsedSeconds < $1.elapsedSeconds }) }
+            .filter { $0.points.count >= 2 }
+            .sorted { $0.id < $1.id }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -23,14 +34,16 @@ struct MacSpeedSparklineView: View {
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .fill(.white.opacity(0.055))
                     gridLines(in: geometry.size)
-                    if points.count >= 2 {
-                        speedPath(in: geometry.size)
-                            .stroke(.cyan, style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
-                    } else {
+                    if segments.isEmpty {
                         Text("mac.viewer.sparkline.empty")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        ForEach(segments) { segment in
+                            speedPath(points: segment.points, in: geometry.size)
+                                .stroke(.cyan, style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+                        }
                     }
                 }
             }
@@ -50,22 +63,34 @@ struct MacSpeedSparklineView: View {
     }
 
     private var maxSpeedLabel: String {
-        let maxSpeed = points.map(\.speedKmh).max() ?? 0
+        let maxSpeed = points.map(\.speedKilometersPerHour).max() ?? 0
         return String(format: String(localized: "mac.package.preview.speed.format"), maxSpeed)
     }
 
-    private func speedPath(in size: CGSize) -> Path {
+    private func sparklinePoints(from result: SpeedDisplayResult) -> [MacSpeedSparklinePoint] {
+        result.points.map { point in
+            MacSpeedSparklinePoint(
+                id: point.id,
+                timestamp: point.timestamp,
+                elapsedSeconds: point.elapsedSeconds,
+                speedKilometersPerHour: point.speedKilometersPerHour,
+                segmentID: point.segmentID
+            )
+        }
+    }
+
+    private func speedPath(points segmentPoints: [MacSpeedSparklinePoint], in size: CGSize) -> Path {
         let horizontalInset = 14.0
         let verticalInset = 14.0
         let drawingWidth = max(size.width - horizontalInset * 2, 1)
         let drawingHeight = max(size.height - verticalInset * 2, 1)
         let maxElapsed = max(points.last?.elapsedSeconds ?? 0, 1)
-        let maxSpeed = max(points.map(\.speedKmh).max() ?? 0, 1)
+        let maxSpeed = max(points.map(\.speedKilometersPerHour).max() ?? 0, 1)
 
         var path = Path()
-        for (index, point) in points.enumerated() {
+        for (index, point) in segmentPoints.enumerated() {
             let x = horizontalInset + (point.elapsedSeconds / maxElapsed) * drawingWidth
-            let y = verticalInset + drawingHeight - (point.speedKmh / maxSpeed) * drawingHeight
+            let y = verticalInset + drawingHeight - (point.speedKilometersPerHour / maxSpeed) * drawingHeight
             let cgPoint = CGPoint(x: x, y: y)
             if index == 0 {
                 path.move(to: cgPoint)
@@ -87,6 +112,19 @@ struct MacSpeedSparklineView: View {
         }
         .stroke(.white.opacity(0.08), style: StrokeStyle(lineWidth: 1, dash: [6, 6]))
     }
+}
+
+private struct MacSpeedSparklinePoint: Identifiable, Equatable {
+    let id: Int
+    let timestamp: Date
+    let elapsedSeconds: TimeInterval
+    let speedKilometersPerHour: Double
+    let segmentID: Int
+}
+
+private struct MacSpeedSparklineSegment: Identifiable, Equatable {
+    let id: Int
+    let points: [MacSpeedSparklinePoint]
 }
 
 struct MacElevationProfileView: View {

@@ -1,7 +1,7 @@
 // [協作區] MacSessionViewerModel.swift
 // 用途：將 .skatetrack package session 轉成 macOS 只讀 Session Viewer 可顯示的 derived view model。
 // 委派至：MacSessionBrowserView / MacSessionDetailView / MacRoutePreviewView；不得寫入資料庫、merge、restore 或同步雲端。
-// Task-030e-008-1: exposes display-only elevation profile points for the macOS selected-session detail view.
+// Task-031-prep-011: consumes Shared ElevationDisplayPipeline for display-only macOS elevation profile and total-ascent display.
 
 import Foundation
 
@@ -18,11 +18,13 @@ struct MacSessionViewerModel: Identifiable, Equatable {
     let motionSampleCount: Int
     let routeSampleCount: Int
     let privacyNotes: [String]
-    let speedPoints: [MacSpeedPoint]
+    let speedResult: SpeedDisplayResult
+    let elevationResult: ElevationDisplayResult
     let elevationPoints: [MacElevationPoint]
     let routePoints: [MacRoutePoint]
     let routeSummary: MacRouteSummary
     let displayMetrics: SessionSummaryMetrics
+    let displayElevationGainMeters: Double
     let usesDerivedMetrics: Bool
 
     init(packageSession: SkateTrackPackageSession) {
@@ -31,6 +33,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
         let derived = MacSessionMetricsDeriver.deriveMetrics(session: session, samples: samples)
         let storedMetrics = session.summaryMetrics
         let displayMetrics = MacSessionViewerModel.preferredMetrics(stored: storedMetrics, derived: derived.metrics)
+        let elevationResult = MacSessionViewerModel.elevationDisplayResult(session: session, samples: samples)
 
         id = packageSession.id
         self.packageSession = packageSession
@@ -44,11 +47,16 @@ struct MacSessionViewerModel: Identifiable, Equatable {
         motionSampleCount = samples.count
         routeSampleCount = samples.filter { $0.gpsCoordinate != nil }.count
         privacyNotes = packageSession.privacyNotes
-        speedPoints = MacSessionMetricsDeriver.speedPoints(from: samples)
-        elevationPoints = MacElevationDisplayPipeline.elevationPoints(session: session, samples: samples)
+        speedResult = MacSessionViewerModel.speedDisplayResult(session: session, samples: samples)
+        self.elevationResult = elevationResult
+        elevationPoints = MacElevationDisplayPipeline.elevationPoints(from: elevationResult)
         routePoints = derived.routePoints
         routeSummary = derived.routeSummary
         self.displayMetrics = displayMetrics
+        displayElevationGainMeters = MacElevationDisplayPipeline.displayDerivedTotalAscentMeters(
+            from: elevationResult,
+            fallback: displayMetrics.elevationGainMeters
+        )
         usesDerivedMetrics = MacSessionViewerModel.shouldUseDerivedMetrics(stored: storedMetrics, derived: derived.metrics)
     }
 
@@ -76,6 +84,23 @@ struct MacSessionViewerModel: Identifiable, Equatable {
             return equipmentName
         }
         return String(localized: "mac.viewer.session.no_equipment")
+    }
+
+    private static func speedDisplayResult(session: SessionData, samples: [MotionSample]) -> SpeedDisplayResult {
+        let policy = ActivityFidelityPolicy(
+            profile: session.fidelityProfile ?? ActivityFidelityProfile.defaultProfile(for: session.sportMode, powerType: session.powerType)
+        )
+        return SpeedDisplayPipeline(
+            configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 180)
+        ).makeDisplaySpeed(
+            samples: samples,
+            startDate: session.startDate,
+            fidelityPolicy: policy
+        )
+    }
+
+    private static func elevationDisplayResult(session: SessionData, samples: [MotionSample]) -> ElevationDisplayResult {
+        MacElevationDisplayPipeline.elevationResult(session: session, samples: samples)
     }
 
     private static func preferredMetrics(stored: SessionSummaryMetrics?, derived: SessionSummaryMetrics) -> SessionSummaryMetrics {

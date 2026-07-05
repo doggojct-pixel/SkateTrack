@@ -1,0 +1,101 @@
+{
+  "id": "startup-drift",
+  "fileName": "startup_drift.json",
+  "taskIdentifier": "task-031-prep-ActivityViz-002",
+  "fixtureVersion": 2,
+  "scenario": "startupDrift",
+  "displayOnly": true,
+  "mutatesStoredRoute": false,
+  "mutatesTrustedMetrics": false,
+  "mutatesPackageSchema": false,
+  "rawSampleCount": 5,
+  "expectedDisplayPointCount": 5,
+  "expectedSegmentCount": 2,
+  "expectedQuality": "limited",
+  "expectedSemanticDistribution": {
+    "highConfidence": 3,
+    "lowConfidence": 0,
+    "startupWarmup": 2
+  },
+  "expectedRouteQuality": {
+    "sampleCount": 5,
+    "gpsSampleCount": 5,
+    "uniqueCoordinateCount": 5,
+    "lowConfidenceSegmentCount": 2,
+    "staleLocationSampleCount": 0,
+    "longLocationUpdateGapCount": 0,
+    "longMotionSampleGapCount": 0
+  },
+  "samples": [
+    {
+      "id": 0,
+      "elapsedSeconds": 0,
+      "latitude": 25.033,
+      "longitude": 121.565,
+      "speedKilometersPerHour": 2,
+      "horizontalAccuracyMeters": 21,
+      "gpsUpdateIntervalSeconds": null,
+      "coordinateDerivedSpeedKmh": 2,
+      "routeSegmentConfidence": "low",
+      "freshnessState": "fresh",
+      "includedInDisplayBaseline": true,
+      "expectedSemantic": "startupWarmup"
+    },
+    {
+      "id": 1,
+      "elapsedSeconds": 4,
+      "latitude": 25.03302,
+      "longitude": 121.56502,
+      "speedKilometersPerHour": 2,
+      "horizontalAccuracyMeters": 22,
+      "gpsUpdateIntervalSeconds": 4,
+      "coordinateDerivedSpeedKmh": 2,
+      "routeSegmentConfidence": "low",
+      "freshnessState": "fresh",
+      "includedInDisplayBaseline": true,
+      "expectedSemantic": "startupWarmup"
+    },
+    {
+      "id": 2,
+      "elapsedSeconds": 8,
+      "latitude": 25.03312,
+      "longitude": 121.56512,
+      "speedKilometersPerHour": 8,
+      "horizontalAccuracyMeters": 5,
+      "gpsUpdateIntervalSeconds": 4,
+      "coordinateDerivedSpeedKmh": 8,
+      "routeSegmentConfidence": "high",
+      "freshnessState": "fresh",
+      "includedInDisplayBaseline": true,
+      "expectedSemantic": "highConfidence"
+    },
+    {
+      "id": 3,
+      "elapsedSeconds": 11,
+      "latitude": 25.03318,
+      "longitude": 121.56519,
+      "speedKilometersPerHour": 9,
+      "horizontalAccuracyMeters": 5,
+      "gpsUpdateIntervalSeconds": 3,
+      "coordinateDerivedSpeedKmh": 9,
+      "routeSegmentConfidence": "high",
+      "freshnessState": "fresh",
+      "includedInDisplayBaseline": true,
+      "expectedSemantic": "highConfidence"
+    },
+    {
+      "id": 4,
+      "elapsedSeconds": 14,
+      "latitude": 25.03325,
+      "longitude": 121.56527,
+      "speedKilometersPerHour": 10,
+      "horizontalAccuracyMeters": 5,
+      "gpsUpdateIntervalSeconds": 3,
+      "coordinateDerivedSpeedKmh": 10,
+      "routeSegmentConfidence": "high",
+      "freshnessState": "fresh",
+      "includedInDisplayBaseline": true,
+      "expectedSemantic": "highConfidence"
+    }
+  ]
+}

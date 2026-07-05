@@ -7,6 +7,54 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+
+		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A500000000000000000101 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */; };
+		31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B600000000000000000001 /* CompactActivityVisualizationTests.swift */; };
+		31A200000000000000000101 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000102 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000103 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A410000000000000000101 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
+		31A410000000000000000102 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
+		31A410000000000000000103 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -363,6 +411,9 @@
 		B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
 		B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */; };
 		B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */; };
+		31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B200000000000000000001 /* RouteDisplayFixtureTests.swift */; };
+		31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */; };
+		31B400000000000000000101 /* ElevationDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */; };
 		B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
@@ -389,6 +440,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+
+		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
+		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
+		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
+		31A500000000000000000001 /* ActivityVisualizationPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipeline.swift; sourceTree = "<group>"; };
+		31A600000000000000000001 /* CompactActivityVisualizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationModels.swift; sourceTree = "<group>"; };
+		31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipelineTests.swift; sourceTree = "<group>"; };
+		31B600000000000000000001 /* CompactActivityVisualizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationTests.swift; sourceTree = "<group>"; };
+		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
+		31A250000000000000000001 /* RouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Filtering.swift"; sourceTree = "<group>"; };
+		31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Startup.swift"; sourceTree = "<group>"; };
+		31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Segmentation.swift"; sourceTree = "<group>"; };
+		31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Bounds.swift"; sourceTree = "<group>"; };
+		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
+		31A310000000000000000001 /* SpeedDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
+		31A410000000000000000001 /* ElevationDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipeline.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -658,6 +727,9 @@
 		B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayDecision.swift; sourceTree = "<group>"; };
 		B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGate.swift; sourceTree = "<group>"; };
 		B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGateTests.swift; sourceTree = "<group>"; };
+		31B200000000000000000001 /* RouteDisplayFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayFixtureTests.swift; sourceTree = "<group>"; };
+		31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipelineTests.swift; sourceTree = "<group>"; };
+		31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipelineTests.swift; sourceTree = "<group>"; };
 		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
 		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
@@ -712,6 +784,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+
+		31A000000000000000000000 /* ActivityVisualization */ = {
+			isa = PBXGroup;
+			children = (
+				31A100000000000000000001 /* ActivityVisualizationQuality.swift */,
+				31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */,
+				31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */,
+				31A500000000000000000001 /* ActivityVisualizationPipeline.swift */,
+				31A600000000000000000000 /* Compact */,
+				31A200000000000000000000 /* Route */,
+				31A300000000000000000000 /* Speed */,
+				31A400000000000000000000 /* Elevation */,
+			);
+			path = ActivityVisualization;
+			sourceTree = "<group>";
+		};
+		31A600000000000000000000 /* Compact */ = {
+			isa = PBXGroup;
+			children = (
+				31A600000000000000000001 /* CompactActivityVisualizationModels.swift */,
+			);
+			path = Compact;
+			sourceTree = "<group>";
+		};
+		31A200000000000000000000 /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				31A200000000000000000001 /* RouteDisplayModels.swift */,
+				31A250000000000000000001 /* RouteDisplayPipeline.swift */,
+				31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */,
+				31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */,
+				31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */,
+				31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */,
+			);
+			path = Route;
+			sourceTree = "<group>";
+		};
+		31A300000000000000000000 /* Speed */ = {
+			isa = PBXGroup;
+			children = (
+				31A300000000000000000001 /* SpeedDisplayModels.swift */,
+				31A310000000000000000001 /* SpeedDisplayPipeline.swift */,
+			);
+			path = Speed;
+			sourceTree = "<group>";
+		};
+		31A400000000000000000000 /* Elevation */ = {
+			isa = PBXGroup;
+			children = (
+				31A400000000000000000001 /* ElevationDisplayModels.swift */,
+				31A410000000000000000001 /* ElevationDisplayPipeline.swift */,
+			);
+			path = Elevation;
+			sourceTree = "<group>";
+		};
 		12A200000000000000000006 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -867,6 +994,18 @@
 			);
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
+		};
+		31B200000000000000000000 /* ActivityVisualizationTests */ = {
+			isa = PBXGroup;
+			children = (
+				31B200000000000000000001 /* RouteDisplayFixtureTests.swift */,
+				31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */,
+				31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */,
+				31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */,
+				31B600000000000000000001 /* CompactActivityVisualizationTests.swift */,
+			);
+			path = ActivityVisualizationTests;
+			sourceTree = "<group>";
 		};
 		12AC02000000000000000001 /* iOSTests */ = {
 			isa = PBXGroup;
@@ -1352,6 +1491,7 @@
 		E1B7981D5F0CC62B8BC6C4A0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				31B200000000000000000000 /* ActivityVisualizationTests */,
 				12AC02000000000000000001 /* iOSTests */,
 			);
 			path = Tests;
@@ -1364,6 +1504,7 @@
 				12A30000000000000000000B /* Models */,
 				27A200000000000000000000 /* Export */,
 				15A100000000000000000000 /* Persistence */,
+				31A000000000000000000000 /* ActivityVisualization */,
 				12A30000000000000000000C /* Protocols */,
 				12A200000000000000000007 /* Localization */,
 				12A200000000000000000008 /* Utilities */,
@@ -1548,6 +1689,11 @@
 				B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */,
 				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
 				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
+				31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */,
+				31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */,
+				31B400000000000000000101 /* ElevationDisplayPipelineTests.swift in Sources */,
+				31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */,
+				31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
 				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
 				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
@@ -1760,6 +1906,21 @@
 				23A100000000000000000101 /* SessionShareCardData.swift in Sources */,
 				24A100000000000000000101 /* Achievement.swift in Sources */,
 				24A100000000000000000104 /* WeeklyChallenge.swift in Sources */,
+				31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A500000000000000000101 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */,
+				31A200000000000000000101 /* RouteDisplayModels.swift in Sources */,
+				31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */,
+				31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */,
+				31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */,
+				31A410000000000000000101 /* ElevationDisplayPipeline.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				15A100000000000000000101 /* PersistenceController.swift in Sources */,
@@ -1827,6 +1988,21 @@
 				30ED00000000000000000101 /* MacElevationDisplayPipeline.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
+				31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */,
+				31A200000000000000000103 /* RouteDisplayModels.swift in Sources */,
+				31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */,
+				31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */,
+				31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */,
+				31A410000000000000000103 /* ElevationDisplayPipeline.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000103 /* SessionData.swift in Sources */,
@@ -1878,6 +2054,21 @@
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,
+				31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */,
+				31A200000000000000000102 /* RouteDisplayModels.swift in Sources */,
+				31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */,
+				31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */,
+				31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */,
+				31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */,
+				31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */,
+				31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */,
+				31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */,
+				31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */,
+				31A410000000000000000102 /* ElevationDisplayPipeline.swift in Sources */,
 				12A20000000000000000000A /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000102 /* SessionData.swift in Sources */,

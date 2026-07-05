@@ -1,0 +1,59 @@
+{
+  "id": "too-few-points",
+  "fileName": "too_few_points.json",
+  "taskIdentifier": "task-031-prep-ActivityViz-002",
+  "fixtureVersion": 2,
+  "scenario": "tooFewPoints",
+  "displayOnly": true,
+  "mutatesStoredRoute": false,
+  "mutatesTrustedMetrics": false,
+  "mutatesPackageSchema": false,
+  "rawSampleCount": 2,
+  "expectedDisplayPointCount": 0,
+  "expectedSegmentCount": 0,
+  "expectedQuality": "unavailable",
+  "expectedSemanticDistribution": {
+    "highConfidence": 0,
+    "lowConfidence": 0,
+    "startupWarmup": 0
+  },
+  "expectedRouteQuality": {
+    "sampleCount": 2,
+    "gpsSampleCount": 0,
+    "uniqueCoordinateCount": 0,
+    "lowConfidenceSegmentCount": 0,
+    "staleLocationSampleCount": 0,
+    "longLocationUpdateGapCount": 0,
+    "longMotionSampleGapCount": 0
+  },
+  "samples": [
+    {
+      "id": 0,
+      "elapsedSeconds": 0,
+      "latitude": null,
+      "longitude": null,
+      "speedKilometersPerHour": 0,
+      "horizontalAccuracyMeters": null,
+      "gpsUpdateIntervalSeconds": null,
+      "coordinateDerivedSpeedKmh": null,
+      "routeSegmentConfidence": "unavailable",
+      "freshnessState": "unavailable",
+      "includedInDisplayBaseline": false,
+      "expectedSemantic": null
+    },
+    {
+      "id": 1,
+      "elapsedSeconds": 2,
+      "latitude": null,
+      "longitude": null,
+      "speedKilometersPerHour": 0,
+      "horizontalAccuracyMeters": null,
+      "gpsUpdateIntervalSeconds": 2,
+      "coordinateDerivedSpeedKmh": null,
+      "routeSegmentConfidence": "unavailable",
+      "freshnessState": "unavailable",
+      "includedInDisplayBaseline": false,
+      "expectedSemantic": null
+    }
+  ]
+}

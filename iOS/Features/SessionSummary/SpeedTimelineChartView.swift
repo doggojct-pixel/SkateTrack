@@ -1,12 +1,16 @@
 // [協作區] SpeedTimelineChartView.swift
 // 用途：呈現 Task-018c 訂閱者可見的速度時間軸圖表。
-// 委派至：SessionAdvancedChartsView 提供已降採樣且 gap-aware 的速度點，不直接查詢 Repository。
+// 委派至：SessionAdvancedChartsView 提供 Shared SpeedDisplayResult，不直接查詢 Repository。
 
 import Charts
 import SwiftUI
 
 struct SpeedTimelineChartView: View {
-    let points: [SessionSummaryChartPoint]
+    let result: SpeedDisplayResult
+
+    private var points: [SessionSummaryChartPoint] {
+        chartPoints(from: result)
+    }
 
     private var segments: [SessionSummaryChartSegment] {
         makeSegments(from: points)
@@ -46,6 +50,17 @@ struct SpeedTimelineChartView: View {
             }
         }
         .accessibilityIdentifier("speed-timeline-chart-view")
+    }
+
+    private func chartPoints(from result: SpeedDisplayResult) -> [SessionSummaryChartPoint] {
+        result.points.map { point in
+            SessionSummaryChartPoint(
+                id: point.id,
+                elapsedSeconds: point.elapsedSeconds,
+                value: point.speedKilometersPerHour,
+                segmentID: point.segmentID
+            )
+        }
     }
 
     private func makeSegments(from points: [SessionSummaryChartPoint]) -> [SessionSummaryChartSegment] {

@@ -678,3 +678,21 @@ Task-030e-MacViewer-014 is a merge-readiness checklist and verifier only. It doe
 Task-031-prep remains deferred until after Task-030e final merge gate completes.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 — Final Merge Gate, merge-readiness checklist and verifier only, no import / merge / route mutation, Task-031-prep remains deferred.
+## Task-031-prep Activity Visualization Display Boundary
+
+- **Current status:** Task-031-prep has extracted and documented a Shared display-only visualization preparation layer for route, speed, elevation, unified results, compact summaries, and cross-platform static verification.
+- **Ownership rule:** Shared decides visualization data semantics; platforms decide rendering. iOS/macOS/watchOS views own drawing surfaces, colors, fonts, layout, MapKit/Charts/SwiftUI/AppKit usage, localization, and accessibility identifiers.
+- **Display-only boundary:** `ActivityVisualizationPipeline`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, and `CompactElevationProfile` are display-preparation contracts only. They must not be treated as persistence models, export schema, package payloads, trusted metrics, route correction, or recording state.
+- **Still deferred / not unlocked:** ActivityViz work does not enable Watch UI, Watch recording, compact watchOS consumption, current-user-location display, location permission prompts, road matching, map matching, snap-to-road, route reconstruction, route geometry mutation, trusted metric mutation, Core Data writes/import/merge/restore, cloud sync, or persistence/export/package schema changes.
+
+Task-031-prep-ActivityViz-015 limitation token: Activity Visualization Display Boundary, Shared decides visualization data semantics; platforms decide rendering, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, no trusted metric mutation.
+
+
+### Task-031-prep Activity Visualization Final Parity Gate Boundary
+
+- **Current status:** Task-031-prep now has a final parity gate for the Shared display-only visualization preparation layer.
+- **Implemented boundary:** The parity gate validates route/speed/elevation focused pipelines, unified `ActivityVisualizationPipeline`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, compact display-only summaries, docs/ADR alignment, cross-platform source membership, and no Shared platform UI imports.
+- **Ownership rule:** Shared decides visualization data semantics; platforms decide rendering.
+- **Still deferred / not unlocked:** The final parity gate does not add Watch UI, Watch recording, compact watchOS consumption, current-user-location display, location permission prompts, road matching, map matching, snap-to-road, route reconstruction, route geometry mutation, trusted metric mutation, Core Data writes/import/merge/restore, cloud sync, or persistence/export/package schema changes.
+
+Task-031-prep-ActivityViz-016 limitation token: Final Parity Gate Boundary, Task-031-prep closure gate, Shared decides visualization data semantics; platforms decide rendering, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, no trusted metric mutation.

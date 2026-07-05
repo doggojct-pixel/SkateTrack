@@ -1,6 +1,6 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-13
+**Last Updated:** 2026-07-05
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
 **Current Baseline:** Source-controlled repository after Task-030b Documentation Consolidation + Deferred Feature Handoff Package.
 **Current Development Gate:** Task-030b consolidates fragmented docs and ADRs into `docs/DOCUMENTATION_INDEX.md`, `docs/process/DEVELOPMENT_RULES.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`, `docs/release/RELEASE_READINESS_PRE_ADP.md`, `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`, and `docs/adr/ADR-INDEX.md`. It adds no runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
@@ -309,7 +309,7 @@ SkateTrack/
 │   │   │   ├── SessionSharePhotoSaveState.swift    # [協作區] Local save-to-Photos UI state and localized message mapping.
 │   │   │   ├── SessionShareSheetView.swift         # [協作區 — 系統橋接層] UIActivityViewController wrapper for local export URLs.
 │   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
-│   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline for Pro / DEBUG subscriber state.
+│   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline renderer consuming Shared SpeedDisplayResult for Pro / DEBUG subscriber state.
 │   │   │   ├── ElevationProfileChartView.swift     # [協作區] Swift Charts elevation profile for Pro / DEBUG subscriber state.
 │   │   │   ├── AdvancedChartsLockedView.swift      # [協作區] Free-user Pro preview and Paywall entry for advanced charts.
 │   │   │   └── HeartRateZonePlaceholderView.swift  # [協作區] No-fake-data heart-rate zone placeholder for future wearable / HealthKit work.
@@ -355,6 +355,11 @@ SkateTrack/
 │       ├── Tutorials/                             # [佔位] Future tutorials.
 │       └── VideoOverlay/                          # [佔位] Future video overlay analysis.
 ├── Tests/                                         # Test source tree.
+│   ├── ActivityVisualizationTests/                 # [協作區] ActivityViz fixture and parity tests for shared display preparation.
+│   │   └── RouteDisplayFixtureTests.swift          # [協作區] Task-031-prep-ActivityViz-002 route semantic distribution baselines.
+│   ├── Fixtures/
+│   │   └── ActivityVisualization/
+│   │       └── route_display_fixture_baselines.json # [協作區] Snapshot fixture metadata for route semantic baselines.
 │   ├── iOSTests/
 │   │   ├── SessionRecordingCoordinatorTests.swift  # [工程設定] iOS unit tests for state transitions, session coordinator behavior, and Task-015b persistence integration.
 │   │   └── SessionRepositoryTests.swift            # [工程設定] Task-015a persistence save / fetch / export / delete tests.
@@ -1006,7 +1011,7 @@ Task-030c-b2 intentionally touches iOS generated Info.plist background location 
 - `iOS/Core/SensorEngine/SensorFusionEngine.swift` — prefers Core Location speed when available and rejects implausible coordinate-derived speed outliers for current pre-Snow-mode route recovery.
 - `iOS/Core/SensorEngine/GPSProvider.swift` — applies the same coordinate-derived speed outlier guard before publishing fallback speed.
 - `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` — assigns chart segment identifiers when long gaps, stale fixes, or low-confidence fixes appear.
-- `iOS/Features/SessionSummary/SpeedTimelineChartView.swift` — renders speed as segmented lines without area fills so missing data does not appear as pale filled blocks.
+- `iOS/Features/SessionSummary/SpeedTimelineChartView.swift` — renders Shared `SpeedDisplayResult` as segmented Swift Charts lines without area fills so missing data does not appear as pale filled blocks.
 - `iOS/Features/SessionSummary/ElevationProfileChartView.swift` — renders elevation as segmented lines without area fills so missing data does not appear as pale filled blocks.
 - `iOS/Features/SessionSummary/SessionRouteMapView.swift` — splits route map polylines across long gaps or low-confidence location diagnostics instead of drawing one continuous precise route.
 - `iOS/Features/SessionSummary/SessionSummaryView.swift` — uses a persistent floating bottom return CTA via `safeAreaInset(edge: .bottom)`.
@@ -1935,3 +1940,223 @@ docs/reference/FILE_STRUCTURE.md
 Task-030e-MacViewer-014 remains docs/tooling/merge-readiness only. It adds the final merge gate checklist and verifier, but no product UI, package open behavior, package schema, Core Data write, route geometry, trusted metrics, location permission, user-location display, Watch behavior, or Task-031 implementation.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate Addendum, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, final merge gate checklist.
+
+## Task-031-prep Activity Visualization Structure
+
+Task-031-prep introduces `Shared/ActivityVisualization/` as the display-only, platform-neutral preparation namespace. ActivityViz-001 is limited to model shells and project membership; pipeline behavior and renderer migration remain deferred to later subtasks.
+
+```text
+Shared/ActivityVisualization/
+├── ActivityVisualizationQuality.swift              # [協作區] Platform-neutral quality state for display-prepared visualization data.
+├── ActivityVisualizationDiagnostics.swift          # [協作區] Developer-facing diagnostics shell for route/speed/elevation display preparation.
+├── ActivityVisualizationConfiguration.swift        # [協作區] Route/speed/elevation visualization configuration, unified result, and compact summary contract.
+├── ActivityVisualizationPipeline.swift             # [協作區] Umbrella display-only route/speed/elevation pipeline entry point.
+├── Compact/
+│   └── CompactActivityVisualizationModels.swift    # [協作區] Watch-ready compact route/speed/elevation display payload models.
+├── Route/
+│   ├── RouteDisplayModels.swift                    # [協作區] Route display points, segments, semantics, bounds, summary, diagnostics, and result shells.
+│   ├── RouteDisplayPipeline.swift                  # [協作區] Display-only Shared route preparation orchestration extracted from existing iOS route semantics.
+│   ├── RouteDisplayPipeline+Filtering.swift        # [協作區] Display-only sample filtering, timer-fusion fallback, and de-duplication helpers.
+│   ├── RouteDisplayPipeline+Startup.swift          # [協作區] Startup GPS lock anchor and warmup semantic classification helpers.
+│   ├── RouteDisplayPipeline+Segmentation.swift     # [協作區] Route segment splitting, smoothing, and small-area jitter suppression helpers.
+│   └── RouteDisplayPipeline+Bounds.swift           # [協作區] Route bounds, quality, diagnostics, and empty-result helpers.
+├── Speed/
+│   ├── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
+│   └── SpeedDisplayPipeline.swift                  # [協作區] Display-only Shared speed chart preparation shell from MotionSample source-of-truth data.
+└── Elevation/
+    ├── ElevationDisplayModels.swift                # [協作區] Elevation profile display points, range, summary, diagnostics, result, and configuration shells.
+    └── ElevationDisplayPipeline.swift              # [協作區] Display-only Shared elevation profile preparation pipeline.
+```
+
+ActivityViz-001 started the model shell only. By ActivityViz-015, the namespace owns display-only route/speed/elevation focused pipelines, the `ActivityVisualizationPipeline` umbrella entry point, the compact route/speed/elevation adapter contract, and a cross-platform verifier. Shared decides visualization data semantics; platforms decide rendering. Compact/displayDerived values remain display-only and must not be written into persistence, export, package schema, Core Data, or trusted metrics.
+
+### Task-031-prep ActivityViz-002 route fixture baseline
+
+`Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` captures existing iOS route display semantic distribution before Shared route pipeline extraction. The fixture metadata under `Tests/Fixtures/ActivityVisualization/` covers clean GPS route, startup drift, low-confidence segment, sparse route, duplicate location fixes, large jump, and too few points. This stage intentionally does not modify iOS/macOS renderers or introduce `RouteDisplayPipeline` behavior.
+
+
+### Task-031-prep ActivityViz-003 Shared route pipeline extraction
+
+`Shared/ActivityVisualization/Route/RouteDisplayPipeline.swift` prepares display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data. ActivityViz-003-1 splits helper logic into `RouteDisplayPipeline+Filtering.swift`, `RouteDisplayPipeline+Startup.swift`, `RouteDisplayPipeline+Segmentation.swift`, and `RouteDisplayPipeline+Bounds.swift` before ActivityViz-004 so the Shared route pipeline stays maintainable and aligned with the build plan. `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` checks the Shared pipeline against the ActivityViz-002 fixture baselines before any renderer migration. This stage intentionally does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.
+
+### Task-031-prep ActivityViz-004 iOS Route Migration
+
+`iOS/Features/SessionSummary/SessionRouteMapView.swift` now consumes Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only route points and segments while preserving iOS renderer ownership of MapKit, colors, polylines, start / finish annotations, empty state, localized disclosure text, and SwiftUI layout.
+
+```text
+iOS/Features/SessionSummary/SessionRouteMapView.swift          # [協作區] iOS route map renderer migrated to Shared route display data while keeping MapKit rendering behavior local to iOS.
+scripts/verify_task031_prep_004_ios_route_migration.py         # [工程設定] Verifies ActivityViz-004 iOS route migration, renderer boundaries, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-004 intentionally does not modify `macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display. macOS route migration remains deferred to ActivityViz-005.
+
+### Task-031-prep ActivityViz-005 macOS Route Migration
+
+`macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift` now consumes Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only route points in the read-only macOS package viewer while preserving macOS renderer ownership of MapKit context, visual style mapping, preview / inspection UI, endpoint annotations, and SwiftUI layout.
+
+```
+macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift       # [協作區] macOS route display data migrated to Shared route display pipeline while retaining read-only derived metric handling.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift           # [協作區] macOS route preview renderer remains macOS-owned.
+macOS/Features/SessionBrowser/MacRouteMapContextView.swift        # [協作區] macOS MapKit context renderer remains macOS-owned.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift        # [協作區] macOS expanded route inspection UI remains macOS-owned.
+scripts/verify_task031_prep_005_macos_route_migration.py          # [工程設定] Verifies ActivityViz-005 macOS route migration, iOS untouched guard, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-005 intentionally does not modify `iOS/Features/SessionSummary/SessionRouteMapView.swift`, Shared route pipeline behavior, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display.
+
+
+### Task-031-prep ActivityViz-006 Shared Speed Display Pipeline Shell
+
+`Shared/ActivityVisualization/Speed/SpeedDisplayPipeline.swift` prepares display-only speed chart points, segment IDs, summaries, and diagnostics from `MotionSample` source-of-truth speed data. `SpeedDisplayPoint` now carries `segmentID` and `SpeedDisplaySummary` carries `segmentCount` so ActivityViz-007/008 can migrate platform chart data adapters without moving SwiftUI/AppKit chart rendering into Shared. `Tests/ActivityVisualizationTests/SpeedDisplayPipelineTests.swift` verifies point creation, display-only invalid/out-of-range speed dropping, segmentation, downsampling, and no metric mutation before any platform chart migration.
+
+```text
+Shared/ActivityVisualization/Speed/SpeedDisplayPipeline.swift   # [協作區] Display-only Shared speed chart preparation shell.
+Tests/ActivityVisualizationTests/SpeedDisplayPipelineTests.swift # [協作區] Shared speed pipeline shell tests for ActivityViz-006.
+scripts/verify_task031_prep_006_speed_pipeline.py               # [工程設定] Verifies ActivityViz-006 speed pipeline shell, project membership, tests, route stability, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-006 intentionally does not modify `iOS/Features/SessionSummary/SpeedTimelineChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacSpeedSparklineView.swift`, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. iOS speed chart migration remains deferred to ActivityViz-007; macOS speed chart migration remains deferred to ActivityViz-008.
+
+
+### Task-031-prep ActivityViz-007 iOS Speed Chart Migration
+
+`iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` now adapts iOS speed chart data through the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` from ActivityViz-006 while preserving iOS SwiftUI renderer ownership. `SpeedTimelineChartView.swift` accepts `SpeedDisplayResult` and maps Shared `SpeedDisplayPoint` values into the existing `SessionSummaryChartPoint` / segmented `LineMark` renderer so chart styling, labels, empty state, locked preview copy, localization, and accessibility identifiers remain iOS-owned.
+
+ActivityViz-007 files:
+
+```text
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift      # [協作區] Builds Shared SpeedDisplayResult for iOS advanced speed chart display.
+iOS/Features/SessionSummary/SpeedTimelineChartView.swift         # [協作區] Swift Charts renderer consuming Shared SpeedDisplayResult.
+scripts/verify_task031_prep_007_ios_speed_chart_migration.py     # [工程設定] Verifies ActivityViz-007 iOS speed chart migration, Shared speed pipeline untouched guard, macOS speed untouched guard, route stability, and no persistence/export/package mutation.
+```
+
+ActivityViz-007 intentionally does not modify `MacSpeedSparklineView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. macOS speed chart migration remains deferred to ActivityViz-008.
+
+
+### Task-031-prep ActivityViz-008 macOS Speed Chart Migration
+
+`macOS/Features/SessionBrowser/MacSessionViewerModel.swift` now adapts macOS speed sparkline data through the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` from ActivityViz-006 while preserving macOS SwiftUI renderer ownership. `MacSpeedSparklineView.swift` accepts `SpeedDisplayResult` and maps Shared `SpeedDisplayPoint` values into a macOS-owned segmented `Path` renderer so cyan styling, grid lines, empty state, card material, localization, and accessibility identifiers remain macOS-owned.
+
+ActivityViz-008 files:
+
+```text
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift        # [協作區] Builds Shared SpeedDisplayResult for macOS session viewer speed sparkline display.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift        # [協作區] SwiftUI sparkline renderer consuming Shared SpeedDisplayResult.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift         # [協作區] Passes model.speedResult into MacSpeedSparklineView(result:).
+scripts/verify_task031_prep_008_macos_speed_chart_migration.py   # [工程設定] Verifies ActivityViz-008 macOS speed chart migration, Shared speed pipeline untouched guard, iOS speed committed invariant guard, route stability, and no persistence/export/package mutation.
+```
+
+ActivityViz-008 intentionally does not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display.
+
+### Task-031-prep ActivityViz-009 Shared Elevation Display Pipeline Shell
+
+`Shared/ActivityVisualization/Elevation/ElevationDisplayPipeline.swift` prepares display-only elevation profile points, segment IDs, selected source, range, display-derived total ascent, summaries, and diagnostics from `MotionSample` source-of-truth altitude data. ActivityViz-009 keeps SwiftUI/AppKit/Charts rendering on iOS/macOS and does not migrate platform elevation chart adapters yet.
+
+```text
+Shared/ActivityVisualization/Elevation/
+├── ElevationDisplayModels.swift                    # [協作區] Elevation profile display points, selected source, segment IDs, range, summary, diagnostics, result, and configuration shells.
+└── ElevationDisplayPipeline.swift                  # [協作區] Display-only Shared elevation profile preparation shell.
+
+Tests/ActivityVisualizationTests/ElevationDisplayPipelineTests.swift # [協作區] Shared elevation pipeline shell tests for ActivityViz-009.
+scripts/verify_task031_prep_009_elevation_pipeline.py               # [工程設定] Verifies ActivityViz-009 elevation pipeline shell, project membership, renderer untouched guards, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-009 intentionally does not modify `iOS/Features/SessionSummary/ElevationProfileChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, current user location display, Watch UI, or Watch recording. iOS elevation profile migration remains deferred to ActivityViz-010; macOS elevation profile migration remains deferred to ActivityViz-011.
+
+### Task-031-prep ActivityViz-010 iOS Elevation Profile Migration
+
+`iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` now consumes `ElevationDisplayPipeline` for display-only elevation profile data and converts `ElevationDisplayResult.points` into the existing iOS `SessionSummaryChartPoint` adapter. `ElevationProfileChartView.swift` remains the SwiftUI/Charts renderer and keeps platform drawing, color, empty-state, axis, and accessibility ownership.
+
+ActivityViz-010 files:
+
+```text
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift          # [協作區] iOS advanced chart adapter consuming Shared speed/elevation pipelines.
+iOS/Features/SessionSummary/ElevationProfileChartView.swift          # [協作區] iOS elevation chart renderer; intentionally untouched in ActivityViz-010.
+scripts/verify_task031_prep_010_ios_elevation_migration.py           # [工程設定] Verifies ActivityViz-010 iOS elevation migration, renderer untouched guard, Shared elevation invariant, and no persistence/export/package mutation.
+```
+
+ActivityViz-010 intentionally does not modify `MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. macOS elevation migration remains deferred to ActivityViz-011.
+
+### Task-031-prep ActivityViz-011 macOS Elevation Profile Migration
+
+`macOS/Features/SessionBrowser/MacSessionViewerModel.swift` now adapts macOS elevation profile and total-ascent display data through the Shared `ElevationDisplayPipeline` / `ElevationDisplayResult` from ActivityViz-009 while preserving macOS SwiftUI renderer ownership. `MacElevationDisplayPipeline.swift` is demoted to a thin adapter that creates Shared elevation results and maps Shared points into existing macOS renderer point models.
+
+ActivityViz-011 files:
+
+```text
+macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift      # [協作區] macOS adapter around Shared ElevationDisplayPipeline / ElevationDisplayResult.
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift            # [協作區] Builds Shared elevation result and display-only total-ascent value for macOS session viewer.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift             # [協作區] Displays Shared-derived elevation gain while keeping macOS renderer ownership.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift            # [協作區] MacElevationProfileView remains the SwiftUI Path renderer and is intentionally not migrated into Shared.
+scripts/verify_task031_prep_011_macos_elevation_migration.py         # [工程設定] Verifies ActivityViz-011 macOS elevation migration, iOS elevation committed invariant, Shared elevation untouched guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-011 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, Shared elevation pipeline behavior, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. `MacElevationProfileView` remains the SwiftUI/Path renderer; Shared owns display data preparation only.
+
+### Task-031-prep ActivityViz-012 Unified ActivityVisualizationPipeline Entry Point
+
+`Shared/ActivityVisualization/ActivityVisualizationPipeline.swift` provides a display-only umbrella entry point for consumers that want route, speed, elevation, aggregate diagnostics, and a compact summary shell at once. ActivityViz-012 composes the already-verified focused sub-pipelines and intentionally does not force platform views to switch away from focused adapters when those are cleaner.
+
+ActivityViz-012 files:
+
+```text
+Shared/ActivityVisualization/ActivityVisualizationConfiguration.swift    # [協作區] Configuration plus ActivityVisualizationResult / ActivityVisualizationCompactSummary umbrella shells.
+Shared/ActivityVisualization/ActivityVisualizationPipeline.swift         # [協作區] Umbrella makeVisualization(...) entry point composing route/speed/elevation display pipelines.
+Tests/ActivityVisualizationTests/ActivityVisualizationPipelineTests.swift # [協作區] Verifies umbrella pipeline composition, diagnostics, and compact summary shell behavior.
+scripts/verify_task031_prep_012_unified_pipeline.py                      # [工程設定] Verifies ActivityViz-012 umbrella pipeline, project membership, committed invariants, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-012 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, `SpeedTimelineChartView.swift`, `SessionRouteMapView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, focused route/speed/elevation pipeline behavior, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. ActivityViz-013 remains responsible for the Watch-ready compact adapter contract.
+
+## Task-031-prep ActivityViz-013 Watch-ready Compact Adapter Contract
+
+- `Shared/ActivityVisualization/Compact/CompactActivityVisualizationModels.swift` defines `CompactRouteDisplay`, `CompactRoutePoint`, `CompactSpeedSparkline`, `CompactSparklinePoint`, and `CompactElevationProfile` for display-only compact summaries.
+- `Shared/ActivityVisualization/ActivityVisualizationConfiguration.swift` now lets `ActivityVisualizationCompactSummary` carry compact route/speed/elevation payloads while preserving route/speed/elevation quality and count fields from ActivityViz-012.
+- `Tests/ActivityVisualizationTests/CompactActivityVisualizationTests.swift` verifies compact output, standalone compact route initialization, and normalized/downsampled compact sparkline data.
+- `scripts/verify_task031_prep_013_compact_adapter.py` checks compact contract scope, target membership, line limits, UI-import boundaries, and persistence/export/package safety.
+- ActivityViz-013 remains display-data only: no Watch UI, no Watch recording, trusted metric mutation, persistence/export/package schema change, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+## Task-031-prep ActivityViz-014 Cross-platform Visualization Verifier
+
+ActivityViz-014 adds a cross-platform static verification layer over the completed route, speed, elevation, unified, and compact visualization pipeline work. It is a verifier/docs-only step and does not change Shared visualization semantics or platform rendering.
+
+ActivityViz-014 files:
+
+```text
+scripts/verify_task031_prep_014_cross_platform_visualization.py  # [工程設定] Cross-platform verifier for Shared ActivityVisualization route/speed/elevation/unified/compact invariants, iOS/macOS/watchOS source membership, UI-import boundaries, platform renderer ownership, and compact/displayDerived persistence/export/package safety.
+```
+
+ActivityViz-014 intentionally does not modify `Shared/ActivityVisualization` production models/pipelines, `SessionAdvancedChartsView.swift`, `SessionRouteMapView.swift`, `SpeedTimelineChartView.swift`, `ElevationProfileChartView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display. ActivityViz-015 remains responsible for docs/ADR final sync.
+## Task-031-prep ActivityViz-015 Docs / ADR Final Sync
+
+ActivityViz-015 synchronizes the final Task-031-prep documentation and ADR boundary after the ActivityViz-014 cross-platform verifier. It is docs/ADR/verifier-only and does not modify production visualization source, project membership, tests, platform renderers, Watch UI, Watch recording, or persistence/export/package schema.
+
+ActivityViz-015 files:
+
+```text
+docs/history/DEV_LOG.md                                      # [工程設定] Final Task-031-prep ActivityViz documentation sync.
+docs/reference/FILE_STRUCTURE.md                             # [工程設定] Updated Shared/ActivityVisualization structure and boundary notes.
+docs/adr/ADR-INDEX.md                                        # [工程設定] ADR decision note for Shared activity visualization ownership.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                    # [工程設定] Pre-ADP limitations note for display-only visualization boundaries.
+scripts/verify_task031_prep_015_docs_adr_sync.py             # [工程設定] Verifies ActivityViz-015 docs/ADR sync, source untouched guards, and no persistence/export/package mutation.
+```
+
+ActivityViz-015 final docs state: Shared decides visualization data semantics; platforms decide rendering. Route/speed/elevation focused pipelines, `ActivityVisualizationPipeline`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, `CompactElevationProfile`, and `verify_task031_prep_014_cross_platform_visualization.py` are documented as display-only preparation and verification assets. ActivityViz-016 remains responsible for the final parity gate.
+
+ActivityViz-015 intentionally does not modify `Shared/ActivityVisualization` production models/pipelines, `Tests/ActivityVisualizationTests`, `SkateTrack.xcodeproj/project.pbxproj`, `SessionAdvancedChartsView.swift`, `SessionRouteMapView.swift`, `SpeedTimelineChartView.swift`, `ElevationProfileChartView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+
+## Task-031-prep ActivityViz-016 Final Parity Gate
+
+- `scripts/verify_task031_prep_016_final_parity_gate.py`
+  - Final Task-031-prep parity verifier for Shared ActivityVisualization.
+  - Confirms route/speed/elevation focused pipelines, unified `ActivityVisualizationPipeline`, compact display-only adapters, docs/ADR/known-limitation boundaries, Shared source membership, ActivityVisualization test membership, no Shared UI imports, no watchOS compact consumption, and no persistence/export/package schema leakage.
+  - Composes the ActivityViz-003/004/010/011/012/013/014/015 verifier family and uses committed Shared elevation invariant checks instead of the obsolete raw ActivityViz-009 verifier after ActivityViz-011.
+- `docs/history/DEV_LOG.md`
+  - Documents ActivityViz-016 Final Parity Gate and Task-031-prep closure boundary.
+- `docs/adr/ADR-INDEX.md`
+  - Records the final shared visualization ownership and closure decision: Shared decides visualization data semantics; platforms decide rendering.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`
+  - Reiterates that final parity does not unlock Watch UI, Watch recording, route correction, current-user-location display, trusted metric mutation, or persistence/export/package schema changes.
+
+Task-031-prep ActivityViz-016 Final Parity Gate token: final parity verifier, `scripts/verify_task031_prep_016_final_parity_gate.py`, ActivityViz-003 through ActivityViz-015 verifier family, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, Task-031-prep closure gate.
