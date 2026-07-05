@@ -2582,3 +2582,15 @@ Task-031-prep-ActivityViz-005 verification token: macOS Route Migration, `MacRou
 - Did not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, `MacSpeedSparklineView.swift`, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, or current user location display.
 
 Task-031-prep-ActivityViz-006 verification token: Shared Speed Display Pipeline Shell, `SpeedDisplayPipeline`, `makeDisplaySpeed`, `SpeedDisplayPoint.segmentID`, `SpeedDisplaySummary.segmentCount`, `SpeedDisplayPipelineTests`, speed charts untouched, no persistence/export/package schema change, no speed metric mutation.
+
+
+## 2026-07-05 — Task-031-prep-ActivityViz-007 iOS Speed Chart Migration
+
+- Migrated the iOS speed timeline chart data adapter to consume the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` created in ActivityViz-006.
+- Updated `SessionAdvancedChartsView` to build display-only speed results through `SpeedDisplayPipeline(configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 120)).makeDisplaySpeed(...)`, preserving the existing iOS chart point count cap while keeping SwiftUI rendering on iOS.
+- Updated `SpeedTimelineChartView` to accept `SpeedDisplayResult` and map Shared `SpeedDisplayPoint` values into the existing segmented chart renderer.
+- Preserved iOS renderer ownership: Swift Charts `LineMark`, chart labels, teal styling, empty state, card layout, locked preview behavior, localization keys, and accessibility identifiers remain iOS-owned.
+- Did not modify `MacSpeedSparklineView.swift`; macOS speed chart migration remains deferred to ActivityViz-008.
+- Did not modify Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, or current user location display.
+
+Task-031-prep-ActivityViz-007 verification token: iOS Speed Chart Migration, `SpeedTimelineChartView`, `SessionAdvancedChartsView`, `SpeedDisplayPipeline(configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 120))`, `SpeedTimelineChartView(result: speedResult)`, `SpeedDisplayResult`, iOS renderer remains SwiftUI-owned, `MacSpeedSparklineView.swift` untouched, no persistence/export/package schema change, no speed metric mutation.

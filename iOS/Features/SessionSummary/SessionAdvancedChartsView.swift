@@ -1,3 +1,6 @@
+// [協作區] SessionAdvancedChartsView.swift
+// 用途：組合 iOS Session Summary 進階圖表，並把速度資料委派至 Shared SpeedDisplayPipeline。
+// 委派至：SpeedTimelineChartView / ElevationProfileChartView / AdvancedChartsLockedView。
 
 import SwiftUI
 
@@ -25,8 +28,17 @@ struct SessionAdvancedChartsView: View {
         )
     }
 
+    private var speedResult: SpeedDisplayResult {
+        SpeedDisplayPipeline(
+            configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 120)
+        ).makeDisplaySpeed(
+            samples: content.motionSamples,
+            fidelityPolicy: fidelityPolicy
+        )
+    }
+
     private var speedPoints: [SessionSummaryChartPoint] {
-        smoothedSpeedPoints(chartPoints(from: content.motionSamples) { displaySpeedKilometersPerHour(for: $0) })
+        chartPoints(from: speedResult)
     }
 
     private var elevationPoints: [SessionSummaryChartPoint] {
@@ -86,13 +98,8 @@ struct SessionAdvancedChartsView: View {
     }
 
     private var unlockedCharts: some View {
-        VStack(spacing: 12) { SpeedTimelineChartView(points: speedPoints); ElevationProfileChartView(points: elevationPoints) }
+        VStack(spacing: 12) { SpeedTimelineChartView(result: speedResult); ElevationProfileChartView(points: elevationPoints) }
             .accessibilityIdentifier("session-advanced-charts-unlocked")
-    }
-
-    private func displaySpeedKilometersPerHour(for sample: MotionSample) -> Double? {
-        // Task-030c-b13-A-4: chart display falls back to metric-eligible diagnostics speed.
-        SessionSummaryDisplayMetrics.displaySpeedKilometersPerHour(for: sample, policy: fidelityPolicy)
     }
 
     private enum ElevationDisplaySource {
@@ -232,6 +239,17 @@ struct SessionAdvancedChartsView: View {
         return altitude
     }
 
+    private func chartPoints(from result: SpeedDisplayResult) -> [SessionSummaryChartPoint] {
+        result.points.map { point in
+            SessionSummaryChartPoint(
+                id: point.id,
+                elapsedSeconds: point.elapsedSeconds,
+                value: point.speedKilometersPerHour,
+                segmentID: point.segmentID
+            )
+        }
+    }
+
     private func chartPoints(
         from samples: [MotionSample],
         value: (MotionSample) -> Double?
@@ -255,10 +273,6 @@ struct SessionAdvancedChartsView: View {
         }
 
         return downsample(points, maxCount: 120)
-    }
-
-    private func smoothedSpeedPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {
-        smooth(points, windowRadius: 2, maximumStepValue: 2.2)
     }
 
     private func smoothedElevationPoints(_ points: [SessionSummaryChartPoint]) -> [SessionSummaryChartPoint] {

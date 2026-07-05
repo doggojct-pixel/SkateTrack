@@ -309,7 +309,7 @@ SkateTrack/
 │   │   │   ├── SessionSharePhotoSaveState.swift    # [協作區] Local save-to-Photos UI state and localized message mapping.
 │   │   │   ├── SessionShareSheetView.swift         # [協作區 — 系統橋接層] UIActivityViewController wrapper for local export URLs.
 │   │   │   ├── SessionAdvancedChartsView.swift     # [協作區] Subscriber-gated advanced chart section, downsampling, and Paywall routing.
-│   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline for Pro / DEBUG subscriber state.
+│   │   │   ├── SpeedTimelineChartView.swift        # [協作區] Swift Charts speed timeline renderer consuming Shared SpeedDisplayResult for Pro / DEBUG subscriber state.
 │   │   │   ├── ElevationProfileChartView.swift     # [協作區] Swift Charts elevation profile for Pro / DEBUG subscriber state.
 │   │   │   ├── AdvancedChartsLockedView.swift      # [協作區] Free-user Pro preview and Paywall entry for advanced charts.
 │   │   │   └── HeartRateZonePlaceholderView.swift  # [協作區] No-fake-data heart-rate zone placeholder for future wearable / HealthKit work.
@@ -1011,7 +1011,7 @@ Task-030c-b2 intentionally touches iOS generated Info.plist background location 
 - `iOS/Core/SensorEngine/SensorFusionEngine.swift` — prefers Core Location speed when available and rejects implausible coordinate-derived speed outliers for current pre-Snow-mode route recovery.
 - `iOS/Core/SensorEngine/GPSProvider.swift` — applies the same coordinate-derived speed outlier guard before publishing fallback speed.
 - `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` — assigns chart segment identifiers when long gaps, stale fixes, or low-confidence fixes appear.
-- `iOS/Features/SessionSummary/SpeedTimelineChartView.swift` — renders speed as segmented lines without area fills so missing data does not appear as pale filled blocks.
+- `iOS/Features/SessionSummary/SpeedTimelineChartView.swift` — renders Shared `SpeedDisplayResult` as segmented Swift Charts lines without area fills so missing data does not appear as pale filled blocks.
 - `iOS/Features/SessionSummary/ElevationProfileChartView.swift` — renders elevation as segmented lines without area fills so missing data does not appear as pale filled blocks.
 - `iOS/Features/SessionSummary/SessionRouteMapView.swift` — splits route map polylines across long gaps or low-confidence location diagnostics instead of drawing one continuous precise route.
 - `iOS/Features/SessionSummary/SessionSummaryView.swift` — uses a persistent floating bottom return CTA via `safeAreaInset(edge: .bottom)`.
@@ -2012,3 +2012,18 @@ scripts/verify_task031_prep_006_speed_pipeline.py               # [工程設定]
 ```
 
 ActivityViz-006 intentionally does not modify `iOS/Features/SessionSummary/SpeedTimelineChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacSpeedSparklineView.swift`, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. iOS speed chart migration remains deferred to ActivityViz-007; macOS speed chart migration remains deferred to ActivityViz-008.
+
+
+### Task-031-prep ActivityViz-007 iOS Speed Chart Migration
+
+`iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` now adapts iOS speed chart data through the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` from ActivityViz-006 while preserving iOS SwiftUI renderer ownership. `SpeedTimelineChartView.swift` accepts `SpeedDisplayResult` and maps Shared `SpeedDisplayPoint` values into the existing `SessionSummaryChartPoint` / segmented `LineMark` renderer so chart styling, labels, empty state, locked preview copy, localization, and accessibility identifiers remain iOS-owned.
+
+ActivityViz-007 files:
+
+```text
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift      # [協作區] Builds Shared SpeedDisplayResult for iOS advanced speed chart display.
+iOS/Features/SessionSummary/SpeedTimelineChartView.swift         # [協作區] Swift Charts renderer consuming Shared SpeedDisplayResult.
+scripts/verify_task031_prep_007_ios_speed_chart_migration.py     # [工程設定] Verifies ActivityViz-007 iOS speed chart migration, Shared speed pipeline untouched guard, macOS speed untouched guard, route stability, and no persistence/export/package mutation.
+```
+
+ActivityViz-007 intentionally does not modify `MacSpeedSparklineView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. macOS speed chart migration remains deferred to ActivityViz-008.
