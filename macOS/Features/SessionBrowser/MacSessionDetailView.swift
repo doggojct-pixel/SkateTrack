@@ -68,7 +68,7 @@ struct MacSessionDetailView: View {
 
     private var sessionSideColumn: some View {
         VStack(alignment: .leading, spacing: 14) {
-            MacSpeedSparklineView(points: model.speedPoints)
+            MacSpeedSparklineView(result: model.speedResult)
             MacElevationProfileView(points: model.elevationPoints)
             privacySection
         }

@@ -2594,3 +2594,15 @@ Task-031-prep-ActivityViz-006 verification token: Shared Speed Display Pipeline 
 - Did not modify Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, or current user location display.
 
 Task-031-prep-ActivityViz-007 verification token: iOS Speed Chart Migration, `SpeedTimelineChartView`, `SessionAdvancedChartsView`, `SpeedDisplayPipeline(configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 120))`, `SpeedTimelineChartView(result: speedResult)`, `SpeedDisplayResult`, iOS renderer remains SwiftUI-owned, `MacSpeedSparklineView.swift` untouched, no persistence/export/package schema change, no speed metric mutation.
+
+
+## 2026-07-05 — Task-031-prep-ActivityViz-008 macOS Speed Chart Migration
+
+- Migrated the macOS speed sparkline data adapter to consume the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` created in ActivityViz-006.
+- Updated `MacSessionViewerModel` to build display-only speed results through `SpeedDisplayPipeline(configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 180)).makeDisplaySpeed(...)`, preserving the existing macOS sparkline point-count cap while keeping SwiftUI rendering on macOS.
+- Updated `MacSpeedSparklineView` to accept `SpeedDisplayResult` and map Shared `SpeedDisplayPoint` values into macOS-owned sparkline path segments.
+- Updated `MacSessionDetailView` to pass `model.speedResult` into `MacSpeedSparklineView(result:)`.
+- Preserved macOS renderer ownership: SwiftUI `Path`, cyan stroke styling, grid lines, empty state, card material, localization keys, and accessibility identifiers remain macOS-owned.
+- Did not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, or current user location display.
+
+Task-031-prep-ActivityViz-008 verification token: macOS Speed Chart Migration, `MacSpeedSparklineView`, `MacSessionViewerModel`, `MacSessionDetailView`, `SpeedDisplayPipeline(configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 180))`, `MacSpeedSparklineView(result: model.speedResult)`, `SpeedDisplayResult`, macOS renderer remains SwiftUI-owned, `SpeedTimelineChartView.swift` untouched, no persistence/export/package schema change, no speed metric mutation.

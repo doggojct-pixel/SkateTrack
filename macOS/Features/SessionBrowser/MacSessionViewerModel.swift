@@ -18,7 +18,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
     let motionSampleCount: Int
     let routeSampleCount: Int
     let privacyNotes: [String]
-    let speedPoints: [MacSpeedPoint]
+    let speedResult: SpeedDisplayResult
     let elevationPoints: [MacElevationPoint]
     let routePoints: [MacRoutePoint]
     let routeSummary: MacRouteSummary
@@ -44,7 +44,7 @@ struct MacSessionViewerModel: Identifiable, Equatable {
         motionSampleCount = samples.count
         routeSampleCount = samples.filter { $0.gpsCoordinate != nil }.count
         privacyNotes = packageSession.privacyNotes
-        speedPoints = MacSessionMetricsDeriver.speedPoints(from: samples)
+        speedResult = MacSessionViewerModel.speedDisplayResult(session: session, samples: samples)
         elevationPoints = MacElevationDisplayPipeline.elevationPoints(session: session, samples: samples)
         routePoints = derived.routePoints
         routeSummary = derived.routeSummary
@@ -76,6 +76,19 @@ struct MacSessionViewerModel: Identifiable, Equatable {
             return equipmentName
         }
         return String(localized: "mac.viewer.session.no_equipment")
+    }
+
+    private static func speedDisplayResult(session: SessionData, samples: [MotionSample]) -> SpeedDisplayResult {
+        let policy = ActivityFidelityPolicy(
+            profile: session.fidelityProfile ?? ActivityFidelityProfile.defaultProfile(for: session.sportMode, powerType: session.powerType)
+        )
+        return SpeedDisplayPipeline(
+            configuration: SpeedDisplayConfiguration(maximumDisplayPointCount: 180)
+        ).makeDisplaySpeed(
+            samples: samples,
+            startDate: session.startDate,
+            fidelityPolicy: policy
+        )
     }
 
     private static func preferredMetrics(stored: SessionSummaryMetrics?, derived: SessionSummaryMetrics) -> SessionSummaryMetrics {

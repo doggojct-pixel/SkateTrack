@@ -2027,3 +2027,19 @@ scripts/verify_task031_prep_007_ios_speed_chart_migration.py     # [工程設定
 ```
 
 ActivityViz-007 intentionally does not modify `MacSpeedSparklineView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display. macOS speed chart migration remains deferred to ActivityViz-008.
+
+
+### Task-031-prep ActivityViz-008 macOS Speed Chart Migration
+
+`macOS/Features/SessionBrowser/MacSessionViewerModel.swift` now adapts macOS speed sparkline data through the Shared `SpeedDisplayPipeline` / `SpeedDisplayResult` from ActivityViz-006 while preserving macOS SwiftUI renderer ownership. `MacSpeedSparklineView.swift` accepts `SpeedDisplayResult` and maps Shared `SpeedDisplayPoint` values into a macOS-owned segmented `Path` renderer so cyan styling, grid lines, empty state, card material, localization, and accessibility identifiers remain macOS-owned.
+
+ActivityViz-008 files:
+
+```text
+macOS/Features/SessionBrowser/MacSessionViewerModel.swift        # [協作區] Builds Shared SpeedDisplayResult for macOS session viewer speed sparkline display.
+macOS/Features/SessionBrowser/MacSpeedSparklineView.swift        # [協作區] SwiftUI sparkline renderer consuming Shared SpeedDisplayResult.
+macOS/Features/SessionBrowser/MacSessionDetailView.swift         # [協作區] Passes model.speedResult into MacSpeedSparklineView(result:).
+scripts/verify_task031_prep_008_macos_speed_chart_migration.py   # [工程設定] Verifies ActivityViz-008 macOS speed chart migration, Shared speed pipeline untouched guard, iOS speed committed invariant guard, route stability, and no persistence/export/package mutation.
+```
+
+ActivityViz-008 intentionally does not modify `SpeedTimelineChartView.swift`, `SessionAdvancedChartsView.swift`, Shared speed pipeline behavior, route display pipelines, elevation display pipelines, stored speed metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission, or current user location display.
