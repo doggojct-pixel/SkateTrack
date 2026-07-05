@@ -2144,3 +2144,19 @@ scripts/verify_task031_prep_015_docs_adr_sync.py             # [工程設定] Ve
 ActivityViz-015 final docs state: Shared decides visualization data semantics; platforms decide rendering. Route/speed/elevation focused pipelines, `ActivityVisualizationPipeline`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, `CompactElevationProfile`, and `verify_task031_prep_014_cross_platform_visualization.py` are documented as display-only preparation and verification assets. ActivityViz-016 remains responsible for the final parity gate.
 
 ActivityViz-015 intentionally does not modify `Shared/ActivityVisualization` production models/pipelines, `Tests/ActivityVisualizationTests`, `SkateTrack.xcodeproj/project.pbxproj`, `SessionAdvancedChartsView.swift`, `SessionRouteMapView.swift`, `SpeedTimelineChartView.swift`, `ElevationProfileChartView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, Watch UI, Watch recording, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+
+## Task-031-prep ActivityViz-016 Final Parity Gate
+
+- `scripts/verify_task031_prep_016_final_parity_gate.py`
+  - Final Task-031-prep parity verifier for Shared ActivityVisualization.
+  - Confirms route/speed/elevation focused pipelines, unified `ActivityVisualizationPipeline`, compact display-only adapters, docs/ADR/known-limitation boundaries, Shared source membership, ActivityVisualization test membership, no Shared UI imports, no watchOS compact consumption, and no persistence/export/package schema leakage.
+  - Composes the ActivityViz-003/004/010/011/012/013/014/015 verifier family and uses committed Shared elevation invariant checks instead of the obsolete raw ActivityViz-009 verifier after ActivityViz-011.
+- `docs/history/DEV_LOG.md`
+  - Documents ActivityViz-016 Final Parity Gate and Task-031-prep closure boundary.
+- `docs/adr/ADR-INDEX.md`
+  - Records the final shared visualization ownership and closure decision: Shared decides visualization data semantics; platforms decide rendering.
+- `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`
+  - Reiterates that final parity does not unlock Watch UI, Watch recording, route correction, current-user-location display, trusted metric mutation, or persistence/export/package schema changes.
+
+Task-031-prep ActivityViz-016 Final Parity Gate token: final parity verifier, `scripts/verify_task031_prep_016_final_parity_gate.py`, ActivityViz-003 through ActivityViz-015 verifier family, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, Task-031-prep closure gate.

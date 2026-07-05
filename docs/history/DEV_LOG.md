@@ -2681,3 +2681,14 @@ Task-031-prep-ActivityViz-014 verification token: Cross-platform Visualization V
 - ActivityViz-015 intentionally does not modify production Swift source, Xcode project membership, tests, iOS/macOS renderers, Watch UI, Watch recording, route/speed/elevation behavior, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission, or current user location display.
 
 Task-031-prep-ActivityViz-015 verification token: Docs / ADR Final Sync, Shared decides visualization data semantics; platforms decide rendering, focused pipelines documented, `ActivityVisualizationPipeline`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, `CompactElevationProfile`, Cross-platform Visualization Verifier documented, ActivityViz-016 remains final parity gate, no Watch UI, no Watch recording, no persistence/export/package schema change.
+
+
+## 2026-07-05 — Task-031-prep-ActivityViz-016 Final Parity Gate
+
+- Added `scripts/verify_task031_prep_016_final_parity_gate.py` as the final Task-031-prep static parity gate for the Shared ActivityVisualization display-preparation layer.
+- Confirmed the completed ActivityViz stack remains aligned: route, speed, elevation, unified `ActivityVisualizationPipeline`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, `CompactRouteDisplay`, `CompactSpeedSparkline`, and `CompactElevationProfile` remain display-only contracts.
+- The final parity gate composes the ActivityViz-003/004/010/011/012/013/014/015 invariant family and keeps the obsolete raw ActivityViz-009 verifier replaced by committed Shared elevation invariant checks after ActivityViz-011.
+- Preserved ownership rule: Shared decides visualization data semantics; platforms decide rendering. iOS/macOS/watchOS drawing, colors, fonts, layout, MapKit/Charts/SwiftUI/AppKit usage, localization, and accessibility identifiers remain platform-owned.
+- Verified no Watch UI, no Watch recording, no watchOS compact consumption, no route correction, no map matching, no snap-to-road, no route reconstruction, no current-user-location display, no location permission prompt, no trusted metric mutation, and no persistence/export/package schema change.
+
+Task-031-prep-ActivityViz-016 verification token: Final Parity Gate, `verify_task031_prep_016_final_parity_gate.py`, ActivityViz-003 through ActivityViz-015 verifier family, Shared decides visualization data semantics; platforms decide rendering, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, Task-031-prep closure gate.
