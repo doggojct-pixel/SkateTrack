@@ -2103,3 +2103,11 @@ scripts/verify_task031_prep_012_unified_pipeline.py                      # [х╖еч
 ```
 
 ActivityViz-012 intentionally does not modify `SessionAdvancedChartsView.swift`, `ElevationProfileChartView.swift`, `SpeedTimelineChartView.swift`, `SessionRouteMapView.swift`, `MacSessionViewerModel.swift`, `MacSessionDetailView.swift`, `MacRouteDisplayPipeline.swift`, `MacElevationDisplayPipeline.swift`, `MacSpeedSparklineView.swift`, focused route/speed/elevation pipeline behavior, stored/trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. ActivityViz-013 remains responsible for the Watch-ready compact adapter contract.
+
+## Task-031-prep ActivityViz-013 Watch-ready Compact Adapter Contract
+
+- `Shared/ActivityVisualization/Compact/CompactActivityVisualizationModels.swift` defines `CompactRouteDisplay`, `CompactRoutePoint`, `CompactSpeedSparkline`, `CompactSparklinePoint`, and `CompactElevationProfile` for display-only compact summaries.
+- `Shared/ActivityVisualization/ActivityVisualizationConfiguration.swift` now lets `ActivityVisualizationCompactSummary` carry compact route/speed/elevation payloads while preserving route/speed/elevation quality and count fields from ActivityViz-012.
+- `Tests/ActivityVisualizationTests/CompactActivityVisualizationTests.swift` verifies compact output, standalone compact route initialization, and normalized/downsampled compact sparkline data.
+- `scripts/verify_task031_prep_013_compact_adapter.py` checks compact contract scope, target membership, line limits, UI-import boundaries, and persistence/export/package safety.
+- ActivityViz-013 remains display-data only: no Watch UI, no Watch recording, trusted metric mutation, persistence/export/package schema change, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.

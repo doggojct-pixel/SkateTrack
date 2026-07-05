@@ -49,6 +49,9 @@ struct ActivityVisualizationResult: Equatable, Sendable {
 }
 
 struct ActivityVisualizationCompactSummary: Equatable, Sendable {
+    let compactRoute: CompactRouteDisplay
+    let speedSparkline: CompactSpeedSparkline
+    let elevationProfile: CompactElevationProfile
     let routeQuality: ActivityVisualizationQuality
     let speedQuality: ActivityVisualizationQuality
     let elevationQuality: ActivityVisualizationQuality
@@ -71,8 +74,14 @@ struct ActivityVisualizationCompactSummary: Equatable, Sendable {
         routeSegmentCount: Int = 0,
         speedSegmentCount: Int = 0,
         elevationSegmentCount: Int = 0,
-        selectedElevationSource: ElevationDisplaySource = .motionSample
+        selectedElevationSource: ElevationDisplaySource = .motionSample,
+        compactRoute: CompactRouteDisplay = .empty,
+        speedSparkline: CompactSpeedSparkline = .empty,
+        elevationProfile: CompactElevationProfile = .empty
     ) {
+        self.compactRoute = compactRoute
+        self.speedSparkline = speedSparkline
+        self.elevationProfile = elevationProfile
         self.routeQuality = routeQuality
         self.speedQuality = speedQuality
         self.elevationQuality = elevationQuality
@@ -83,7 +92,10 @@ struct ActivityVisualizationCompactSummary: Equatable, Sendable {
         self.speedSegmentCount = max(0, speedSegmentCount)
         self.elevationSegmentCount = max(0, elevationSegmentCount)
         self.selectedElevationSource = selectedElevationSource
-        self.hasAnyDisplayData = routeDisplayPointCount > 0
+        self.hasAnyDisplayData = compactRoute.hasDisplayData
+            || speedSparkline.hasDisplayData
+            || elevationProfile.hasDisplayData
+            || routeDisplayPointCount > 0
             || speedDisplayPointCount > 0
             || elevationDisplayPointCount > 0
     }
@@ -103,7 +115,10 @@ struct ActivityVisualizationCompactSummary: Equatable, Sendable {
             routeSegmentCount: route.summary.segmentCount,
             speedSegmentCount: speed.summary.segmentCount,
             elevationSegmentCount: elevation.summary.segmentCount,
-            selectedElevationSource: elevation.summary.selectedSource
+            selectedElevationSource: elevation.summary.selectedSource,
+            compactRoute: CompactRouteDisplay(route: route),
+            speedSparkline: CompactSpeedSparkline(speed: speed),
+            elevationProfile: CompactElevationProfile(elevation: elevation)
         )
     }
 }

@@ -2651,3 +2651,14 @@ Task-031-prep-ActivityViz-011 verification token: macOS Elevation Profile Migrat
 - Did not implement ActivityViz-013 Watch-ready compact route/speed/elevation adapters, Watch UI, Watch recording, route/speed/elevation behavior rewrites, stored/trusted metric mutation, persistence/export/package schema changes, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
 
 Task-031-prep-ActivityViz-012 verification token: Unified ActivityVisualizationPipeline Entry Point, `ActivityVisualizationPipeline.makeVisualization`, `ActivityVisualizationResult`, `ActivityVisualizationCompactSummary`, focused sub-pipelines preserved, no forced platform view migration, no persistence/export/package schema change, no trusted metric mutation.
+
+### Task-031-prep-ActivityViz-013 Watch-ready Compact Adapter Contract
+
+- Added `Shared/ActivityVisualization/Compact/CompactActivityVisualizationModels.swift` as a display-only compact contract for future watchOS summaries.
+- Expanded `ActivityVisualizationCompactSummary` to carry `CompactRouteDisplay`, `CompactSpeedSparkline`, and `CompactElevationProfile` while preserving existing quality/count fields.
+- Added `CompactActivityVisualizationTests.swift` to verify compact payload construction, standalone `CompactRouteDisplay` initialization without requiring a full `RouteDisplayResult`, and compact sparkline normalization/downsampling.
+- Updated Xcode project membership for the compact Shared file across iOS/macOS/watchOS and the compact test file in the iOS test target.
+- Focused sub-pipelines and platform renderers are preserved; no forced platform view migration.
+- Not implementing ActivityViz-014 cross-platform verifier, Watch UI, Watch recording, route/speed/elevation behavior rewrites, stored/trusted metric mutation, persistence/export/package schema change, Core Data writes/import/merge/restore, cloud sync, location permission request, or current user location display.
+
+- ActivityViz-013 verification note: no Watch UI, no Watch recording, and no current-user-location behavior are introduced.

@@ -21,6 +21,10 @@
 		31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
 		31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
 		31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */; };
+		31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B600000000000000000001 /* CompactActivityVisualizationTests.swift */; };
 		31A200000000000000000101 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
 		31A200000000000000000102 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
 		31A200000000000000000103 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
@@ -441,7 +445,9 @@
 		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
 		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
 		31A500000000000000000001 /* ActivityVisualizationPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipeline.swift; sourceTree = "<group>"; };
+		31A600000000000000000001 /* CompactActivityVisualizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationModels.swift; sourceTree = "<group>"; };
 		31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipelineTests.swift; sourceTree = "<group>"; };
+		31B600000000000000000001 /* CompactActivityVisualizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationTests.swift; sourceTree = "<group>"; };
 		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
 		31A250000000000000000001 /* RouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayPipeline.swift; sourceTree = "<group>"; };
 		31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Filtering.swift"; sourceTree = "<group>"; };
@@ -786,11 +792,20 @@
 				31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */,
 				31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */,
 				31A500000000000000000001 /* ActivityVisualizationPipeline.swift */,
+				31A600000000000000000000 /* Compact */,
 				31A200000000000000000000 /* Route */,
 				31A300000000000000000000 /* Speed */,
 				31A400000000000000000000 /* Elevation */,
 			);
 			path = ActivityVisualization;
+			sourceTree = "<group>";
+		};
+		31A600000000000000000000 /* Compact */ = {
+			isa = PBXGroup;
+			children = (
+				31A600000000000000000001 /* CompactActivityVisualizationModels.swift */,
+			);
+			path = Compact;
 			sourceTree = "<group>";
 		};
 		31A200000000000000000000 /* Route */ = {
@@ -987,6 +1002,7 @@
 				31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */,
 				31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */,
 				31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */,
+				31B600000000000000000001 /* CompactActivityVisualizationTests.swift */,
 			);
 			path = ActivityVisualizationTests;
 			sourceTree = "<group>";
@@ -1677,6 +1693,7 @@
 				31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */,
 				31B400000000000000000101 /* ElevationDisplayPipelineTests.swift in Sources */,
 				31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */,
+				31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
 				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
 				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,
@@ -1893,6 +1910,7 @@
 				31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */,
 				31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A500000000000000000101 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */,
 				31A200000000000000000101 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */,
 				31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */,
@@ -1974,6 +1992,7 @@
 				31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */,
 				31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */,
 				31A200000000000000000103 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */,
 				31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */,
@@ -2039,6 +2058,7 @@
 				31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */,
 				31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */,
 				31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */,
+				31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */,
 				31A200000000000000000102 /* RouteDisplayModels.swift in Sources */,
 				31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */,
 				31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */,
