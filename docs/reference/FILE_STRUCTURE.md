@@ -1984,3 +1984,17 @@ scripts/verify_task031_prep_004_ios_route_migration.py         # [工程設定] 
 ```
 
 ActivityViz-004 intentionally does not modify `macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display. macOS route migration remains deferred to ActivityViz-005.
+
+### Task-031-prep ActivityViz-005 macOS Route Migration
+
+`macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift` now consumes Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only route points in the read-only macOS package viewer while preserving macOS renderer ownership of MapKit context, visual style mapping, preview / inspection UI, endpoint annotations, and SwiftUI layout.
+
+```
+macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift       # [協作區] macOS route display data migrated to Shared route display pipeline while retaining read-only derived metric handling.
+macOS/Features/SessionBrowser/MacRoutePreviewView.swift           # [協作區] macOS route preview renderer remains macOS-owned.
+macOS/Features/SessionBrowser/MacRouteMapContextView.swift        # [協作區] macOS MapKit context renderer remains macOS-owned.
+macOS/Features/SessionBrowser/MacRouteInspectionView.swift        # [協作區] macOS expanded route inspection UI remains macOS-owned.
+scripts/verify_task031_prep_005_macos_route_migration.py          # [工程設定] Verifies ActivityViz-005 macOS route migration, iOS untouched guard, shared UI-import guard, and no persistence/export/package mutation.
+```
+
+ActivityViz-005 intentionally does not modify `iOS/Features/SessionSummary/SessionRouteMapView.swift`, Shared route pipeline behavior, route appearance, stored route geometry, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, route correction, road matching, map matching, snap-to-road, route reconstruction, location permission, or current user location display.

@@ -1,16 +1,10 @@
 // [協作區] macOS/Features/SessionBrowser/MacRouteDisplayPipeline.swift
-// 用途：為 macOS read-only package viewer 建立與 iOS Summary 對齊的 display-route 分段、暖機、平滑與指標衍生流程。
-// 委派至：MacSessionViewerModel / MacRouteMapContextView；只產生顯示模型，不修正、不重建、不寫回路線或 trusted metrics。
+// 用途：為 macOS read-only package viewer 建立與 iOS Summary 對齊的 display-route、speed、elevation 與指標衍生流程。
+// 委派至：Shared RouteDisplayPipeline / MacSessionViewerModel / MacRouteMapContextView；只產生顯示模型，不修正、不重建、不寫回路線或 trusted metrics。
 
 import Foundation
 
 enum MacSessionMetricsDeriver {
-    private static let startupStableAnchorClusterWindowSeconds: TimeInterval = 7
-    private static let startupStableAnchorMinimumCandidateCount = 3
-    private static let startupGPSLockSearchWindowSeconds: TimeInterval = 60
-    private static let startupConvergenceWarmupSeconds: TimeInterval = 45
-    private static let startupRouteVisualSuppressionMaximumSeconds: TimeInterval = 45
-
     static func deriveMetrics(session: SessionData, samples: [MotionSample]) -> MacDerivedMetricsResult {
         let sortedSamples = samples.sorted { $0.timestamp < $1.timestamp }
         let routeSamples = sortedSamples.compactMap { sample -> (timestamp: Date, coordinate: GeoCoordinate, speedKmh: Double)? in
@@ -18,7 +12,8 @@ enum MacSessionMetricsDeriver {
             return (routeTimestamp(for: sample), coordinate, sample.speedKmh)
         }
         let distanceKilometers = deriveDistanceKilometers(from: routeSamples)
-        let routePoints = routePoints(session: session, from: samples)
+        let routeResult = routeDisplayResult(session: session, samples: samples)
+        let routePoints = routePoints(from: routeResult)
         let durationSeconds = max(0, session.durationSeconds ?? 0)
         let validSpeeds = sortedSamples.map(\.speedKmh).filter { $0.isFinite && $0 >= 0 }
         let maxSpeed = validSpeeds.max() ?? 0
@@ -63,198 +58,46 @@ enum MacSessionMetricsDeriver {
         return downsample(points: points, maxCount: 180)
     }
 
-    private static func routePoints(session: SessionData, from samples: [MotionSample]) -> [MacRoutePoint] {
-        let candidates = deduplicatedTrustedLocationFixes(from: samples)
-        guard let first = candidates.first else { return [] }
-        let firstDate = routeTimestamp(for: first)
+    private static func routeDisplayResult(session: SessionData, samples: [MotionSample]) -> RouteDisplayResult {
         let policy = ActivityFidelityPolicy(
             profile: session.fidelityProfile ?? ActivityFidelityProfile.defaultProfile(for: session.sportMode, powerType: session.powerType)
         )
-        let gpsLockTimestamp = firstGPSLockAnchorTimestamp(from: candidates, session: session, fidelityPolicy: policy)
-        var displayPoints: [MacRoutePoint] = []
-        var previousDisplayCoordinate: GeoCoordinate?
-        var previousRawCoordinate: GeoCoordinate?
-        var pointID = 0
-
-        for sample in candidates {
-            guard let rawCoordinate = sample.gpsCoordinate else { continue }
-            let confidence = sample.locationDiagnostics?.routeSegmentConfidence ?? .medium
-            let hasReliableAnchor = displayPoints.contains(where: { $0.isReliableAnchor })
-            let isStartup = isStartupWarmupSample(
-                sample,
-                session: session,
-                fidelityPolicy: policy,
-                stableStartupAnchorTimestamp: gpsLockTimestamp,
-                gpsLockAnchorTimestamp: gpsLockTimestamp,
-                hasReliableAnchor: hasReliableAnchor
-            )
-            let isFirstReliableAnchor = !hasReliableAnchor && !isStartup && confidence != .low && confidence != .unavailable
-            if shouldSkipJitter(
-                isFirstReliableAnchor: isFirstReliableAnchor,
-                previousDisplayCoordinate: previousDisplayCoordinate,
-                previousRawCoordinate: previousRawCoordinate,
-                rawCoordinate: rawCoordinate,
-                sample: sample
-            ) { continue }
-
-            let displayCoordinate = displayCoordinateForPoint(
-                isFirstReliableAnchor: isFirstReliableAnchor,
-                previousDisplayCoordinate: previousDisplayCoordinate,
-                rawCoordinate: rawCoordinate,
-                sample: sample
-            )
-            displayPoints.append(MacRoutePoint(
-                id: pointID,
-                timestamp: routeTimestamp(for: sample),
-                elapsedSeconds: routeTimestamp(for: sample).timeIntervalSince(firstDate),
-                rawCoordinate: rawCoordinate,
-                displayCoordinate: displayCoordinate,
-                speedKmh: sample.speedKmh,
-                confidence: confidence,
-                horizontalAccuracyMeters: sample.locationDiagnostics?.horizontalAccuracyMeters,
-                isStartupWarmup: isStartup
-            ))
-            previousRawCoordinate = rawCoordinate
-            previousDisplayCoordinate = displayCoordinate
-            pointID += 1
-        }
-        return downsample(routePoints: displayPoints, maxCount: 260)
-    }
-
-    private static func shouldSkipJitter(
-        isFirstReliableAnchor: Bool,
-        previousDisplayCoordinate: GeoCoordinate?,
-        previousRawCoordinate: GeoCoordinate?,
-        rawCoordinate: GeoCoordinate,
-        sample: MotionSample
-    ) -> Bool {
-        guard !isFirstReliableAnchor,
-              let previousDisplayCoordinate,
-              let previousRawCoordinate else { return false }
-        return shouldSuppressSmallAreaJitter(
-            from: previousRawCoordinate,
-            previousDisplayCoordinate: previousDisplayCoordinate,
-            to: rawCoordinate,
-            sample: sample
+        return RouteDisplayPipeline().makeDisplayRoute(
+            samples: samples,
+            startDate: session.startDate,
+            fidelityPolicy: policy
         )
     }
 
-    private static func displayCoordinateForPoint(
-        isFirstReliableAnchor: Bool,
-        previousDisplayCoordinate: GeoCoordinate?,
-        rawCoordinate: GeoCoordinate,
-        sample: MotionSample
-    ) -> GeoCoordinate {
-        if isFirstReliableAnchor { return rawCoordinate }
-        guard let previousDisplayCoordinate else { return rawCoordinate }
-        return smoothDisplayCoordinate(previous: previousDisplayCoordinate, current: rawCoordinate, sample: sample)
+    private static func routePoints(from result: RouteDisplayResult) -> [MacRoutePoint] {
+        downsample(routePoints: result.points.map { macRoutePoint(from: $0) }, maxCount: 260)
     }
 
-    private static func deduplicatedTrustedLocationFixes(from samples: [MotionSample]) -> [MotionSample] {
-        let primary = deduplicatedTrustedLocationFixes(from: samples, allowsTimerFusionFallback: false)
-        return primary.isEmpty ? deduplicatedTrustedLocationFixes(from: samples, allowsTimerFusionFallback: true) : primary
+    private static func macRoutePoint(from point: ActivityRouteDisplayPoint) -> MacRoutePoint {
+        MacRoutePoint(
+            id: point.id,
+            timestamp: point.timestamp,
+            elapsedSeconds: point.elapsedSeconds,
+            rawCoordinate: point.rawCoordinate,
+            displayCoordinate: point.displayCoordinate,
+            speedKmh: point.speedKilometersPerHour ?? 0,
+            confidence: macRouteConfidence(for: point.confidence),
+            horizontalAccuracyMeters: point.horizontalAccuracyMeters,
+            isStartupWarmup: point.semantic == .startupWarmup
+        )
     }
 
-    private static func deduplicatedTrustedLocationFixes(from samples: [MotionSample], allowsTimerFusionFallback: Bool) -> [MotionSample] {
-        var seenKeys = Set<String>()
-        return samples.sorted { routeTimestamp(for: $0) < routeTimestamp(for: $1) }.compactMap { sample in
-            guard sample.gpsCoordinate != nil,
-                  isTrustedDisplayRouteSample(sample, allowsTimerFusionFallback: allowsTimerFusionFallback) else { return nil }
-            guard seenKeys.insert(locationFixKey(for: sample)).inserted else { return nil }
-            return sample
+    private static func macRouteConfidence(for confidence: RouteDisplayConfidence) -> RouteSegmentConfidence {
+        switch confidence {
+        case .high:
+            return .high
+        case .medium:
+            return .medium
+        case .low:
+            return .low
+        case .unavailable:
+            return .unavailable
         }
-    }
-
-    private static func isStartupWarmupSample(
-        _ sample: MotionSample,
-        session: SessionData,
-        fidelityPolicy: ActivityFidelityPolicy,
-        stableStartupAnchorTimestamp: Date?,
-        gpsLockAnchorTimestamp: Date?,
-        hasReliableAnchor: Bool
-    ) -> Bool {
-        let timestamp = routeTimestamp(for: sample)
-        let elapsed = timestamp.timeIntervalSince(session.startDate)
-        if elapsed < 0 { return elapsed >= -10 }
-        guard !hasReliableAnchor, elapsed <= startupConvergenceWarmupSeconds else { return false }
-        guard let diagnostics = sample.locationDiagnostics else { return elapsed <= 8 }
-
-        let accuracy = diagnostics.horizontalAccuracyMeters ?? .infinity
-        let warmupAccuracyLimit = max(fidelityPolicy.preferredHorizontalAccuracyMeters * 1.8, 18)
-        if diagnostics.freshnessState == .stale { return true }
-        if diagnostics.routeSegmentConfidence == .low || diagnostics.routeSegmentConfidence == .unavailable { return true }
-        if accuracy > warmupAccuracyLimit { return true }
-        if startupAnchorGuardApplies(fidelityPolicy: fidelityPolicy) {
-            return startupGuardWarmup(
-                sample: sample,
-                elapsed: elapsed,
-                timestamp: timestamp,
-                stableStartupAnchorTimestamp: stableStartupAnchorTimestamp,
-                fidelityPolicy: fidelityPolicy
-            )
-        }
-        if let gpsLockAnchorTimestamp { return timestamp < gpsLockAnchorTimestamp }
-        return elapsed <= 10 && !isPreferredFreshAnchor(sample, fidelityPolicy: fidelityPolicy)
-    }
-
-    private static func startupGuardWarmup(
-        sample: MotionSample,
-        elapsed: TimeInterval,
-        timestamp: Date,
-        stableStartupAnchorTimestamp: Date?,
-        fidelityPolicy: ActivityFidelityPolicy
-    ) -> Bool {
-        guard let stableStartupAnchorTimestamp else {
-            return elapsed <= startupConvergenceWarmupSeconds && !isPreferredFreshAnchor(sample, fidelityPolicy: fidelityPolicy)
-        }
-        if timestamp < stableStartupAnchorTimestamp { return true }
-        return elapsed <= startupRouteVisualSuppressionMaximumSeconds
-            && timestamp.timeIntervalSince(stableStartupAnchorTimestamp) <= 3
-            && !isPreferredFreshAnchor(sample, fidelityPolicy: fidelityPolicy)
-    }
-
-    private static func startupAnchorGuardApplies(fidelityPolicy: ActivityFidelityPolicy) -> Bool {
-        switch fidelityPolicy.profile {
-        case .technicalSkateboard, .standardSkateboard, .electricSkateboard, .inlineRecreation:
-            return true
-        case .inlineSpeed, .snowReserved, .vehicleValidation:
-            return fidelityPolicy.usesStrictSmallAreaLowSpeedGate
-        }
-    }
-
-    private static func firstGPSLockAnchorTimestamp(from candidates: [MotionSample], session: SessionData, fidelityPolicy: ActivityFidelityPolicy) -> Date? {
-        let lockCandidates = candidates.filter { sample in
-            let elapsed = routeTimestamp(for: sample).timeIntervalSince(session.startDate)
-            return elapsed >= 0 && elapsed <= startupGPSLockSearchWindowSeconds && isPreferredFreshAnchor(sample, fidelityPolicy: fidelityPolicy)
-        }
-        guard lockCandidates.count >= startupStableAnchorMinimumCandidateCount else { return nil }
-        for candidate in lockCandidates {
-            let anchorTime = routeTimestamp(for: candidate)
-            let cluster = lockCandidates.filter { sample in
-                let delta = routeTimestamp(for: sample).timeIntervalSince(anchorTime)
-                return delta >= 0 && delta <= startupStableAnchorClusterWindowSeconds
-            }
-            if cluster.count >= startupStableAnchorMinimumCandidateCount { return anchorTime }
-        }
-        return nil
-    }
-
-    private static func isPreferredFreshAnchor(_ sample: MotionSample, fidelityPolicy: ActivityFidelityPolicy) -> Bool {
-        guard let diagnostics = sample.locationDiagnostics else { return false }
-        let accuracy = diagnostics.horizontalAccuracyMeters ?? .infinity
-        return diagnostics.freshnessState == .fresh
-            && diagnostics.routeSegmentConfidence == .high
-            && accuracy <= fidelityPolicy.preferredHorizontalAccuracyMeters
-    }
-
-    private static func isTrustedDisplayRouteSample(_ sample: MotionSample, allowsTimerFusionFallback: Bool) -> Bool {
-        if !allowsTimerFusionFallback && sample.sampleSource == .timerFusion && sample.locationDiagnostics?.rawLocationTimestampMillisecondsSince1970 != nil { return false }
-        guard let diagnostics = sample.locationDiagnostics else { return true }
-        if diagnostics.freshnessState == .stale { return false }
-        if diagnostics.gpsUpdateIntervalSeconds.map({ $0 > 12 }) == true { return false }
-        if diagnostics.horizontalAccuracyMeters.map({ $0 > 45 }) == true { return false }
-        if diagnostics.coordinateDerivedSpeedKmh.map({ $0 > 150 }) == true { return false }
-        return true
     }
 
     private static func deriveDistanceKilometers(from routeSamples: [(timestamp: Date, coordinate: GeoCoordinate, speedKmh: Double)]) -> Double {
@@ -298,47 +141,6 @@ enum MacSessionMetricsDeriver {
             previous = altitude
         }
         return gain
-    }
-
-    private static func shouldSuppressSmallAreaJitter(from previousRawCoordinate: GeoCoordinate, previousDisplayCoordinate: GeoCoordinate, to rawCoordinate: GeoCoordinate, sample: MotionSample) -> Bool {
-        let rawDistance = distanceMetersBetween(previousRawCoordinate, rawCoordinate)
-        let displayDistance = distanceMetersBetween(previousDisplayCoordinate, rawCoordinate)
-        let horizontalAccuracy = sample.locationDiagnostics?.horizontalAccuracyMeters ?? 12
-        let speed = max(sample.speedKmh, sample.locationDiagnostics?.coordinateDerivedSpeedKmh ?? 0)
-        let jitterThreshold = min(max(horizontalAccuracy * 0.18, 1.25), 4.0)
-        guard speed < 4.5 else { return false }
-        return rawDistance < jitterThreshold && displayDistance < max(jitterThreshold, 1.75)
-    }
-
-    private static func smoothDisplayCoordinate(previous: GeoCoordinate, current: GeoCoordinate, sample: MotionSample) -> GeoCoordinate {
-        let distance = distanceMetersBetween(previous, current)
-        guard distance.isFinite, distance > 0 else { return previous }
-        let horizontalAccuracy = sample.locationDiagnostics?.horizontalAccuracyMeters ?? 12
-        let confidence = sample.locationDiagnostics?.routeSegmentConfidence ?? .medium
-        let speed = max(sample.speedKmh, sample.locationDiagnostics?.coordinateDerivedSpeedKmh ?? 0)
-        let weight = smoothingWeight(distance: distance, horizontalAccuracy: horizontalAccuracy, confidence: confidence, speed: speed)
-        return GeoCoordinate(
-            latitude: previous.latitude + (current.latitude - previous.latitude) * weight,
-            longitude: previous.longitude + (current.longitude - previous.longitude) * weight
-        )
-    }
-
-    private static func smoothingWeight(distance: Double, horizontalAccuracy: Double, confidence: RouteSegmentConfidence, speed: Double) -> Double {
-        if distance > 18 || speed > 12 { return 0.82 }
-        if confidence == .high && horizontalAccuracy <= 6 { return 0.68 }
-        if horizontalAccuracy <= 12 { return 0.52 }
-        return 0.34
-    }
-
-    private static func locationFixKey(for sample: MotionSample) -> String {
-        if let timestamp = sample.locationDiagnostics?.rawLocationTimestampMillisecondsSince1970 { return "locationFix:\(timestamp)" }
-        if let coordinate = sample.gpsCoordinate {
-            let latitude = (coordinate.latitude * 100_000).rounded() / 100_000
-            let longitude = (coordinate.longitude * 100_000).rounded() / 100_000
-            let second = Int(sample.timestamp.timeIntervalSince1970.rounded())
-            return "coordinate:\(latitude):\(longitude):\(second)"
-        }
-        return sample.id.uuidString
     }
 
     private static func routeTimestamp(for sample: MotionSample) -> Date {

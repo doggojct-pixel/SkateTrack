@@ -2560,3 +2560,15 @@ Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge 
 - No route correction, road matching, map matching, snap-to-road, route reconstruction, stored route geometry mutation, trusted metrics mutation, persistence/export/package schema change, Core Data write/import/merge/restore, location permission request, or current user location display was introduced.
 
 Task-031-prep-ActivityViz-004 verification token: iOS Route Migration, `SessionRouteMapView`, `RouteDisplayPipeline().makeDisplayRoute`, `RouteDisplayResult`, `RouteDisplaySemantic`, renderer remains iOS-owned, `MacRouteDisplayPipeline.swift` untouched, no persistence/export/package schema change, no route correction.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-005 macOS Route Migration
+
+- Migrated `MacRouteDisplayPipeline` to consume the Shared `RouteDisplayPipeline` / `RouteDisplayResult` for display-only macOS route points while preserving macOS read-only package viewer behavior.
+- Preserved macOS renderer ownership in `MacRoutePreviewView`, `MacRouteMapContextView`, `MacRouteInspectionView`, `MacRouteInspectionWindowPresenter`, and `MacRouteVisualStyle`: MapKit context, visual styles, preview / inspection UI, endpoint annotations, and SwiftUI layout remain macOS-owned.
+- Removed duplicated macOS route preparation helpers for filtering, timer-fusion fallback, startup warmup classification, GPS-lock clustering, small-area jitter suppression, smoothing, route display point construction, and location-fix keys from `MacRouteDisplayPipeline`.
+- Kept macOS display-only derived metrics, speed points, elevation gain, moving ratio, and read-only route summary derivation local to the macOS package viewer; these values are not written back to stored route geometry, trusted metrics, persistence, export, or package schema.
+- Added `scripts/verify_task031_prep_005_macos_route_migration.py` for ActivityViz-005 source checks, macOS migration boundaries, iOS untouched guard, Shared UI-import guard, and no persistence/export/package mutation guard.
+- Did not modify `SessionRouteMapView.swift`; iOS route migration remains untouched after ActivityViz-004.
+- No route correction, road matching, map matching, snap-to-road, route reconstruction, stored route geometry mutation, trusted metrics mutation, persistence/export/package schema change, Core Data write/import/merge/restore, location permission request, or current user location display was introduced.
+
+Task-031-prep-ActivityViz-005 verification token: macOS Route Migration, `MacRouteDisplayPipeline`, `RouteDisplayPipeline().makeDisplayRoute`, `RouteDisplayResult`, `ActivityRouteDisplayPoint`, macOS renderer remains macOS-owned, `SessionRouteMapView.swift` untouched, no persistence/export/package schema change, no route correction.
