@@ -1,6 +1,6 @@
 # SkateTrack File Structure
 
-**Last Updated:** 2026-06-13
+**Last Updated:** 2026-07-05
 **Source of Truth:** DevProcess v1.0 Principle E — Living Documentation Protocol
 **Current Baseline:** Source-controlled repository after Task-030b Documentation Consolidation + Deferred Feature Handoff Package.
 **Current Development Gate:** Task-030b consolidates fragmented docs and ADRs into `docs/DOCUMENTATION_INDEX.md`, `docs/process/DEVELOPMENT_RULES.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md`, `docs/release/RELEASE_READINESS_PRE_ADP.md`, `docs/release/MANUAL_QA_MATRIX_PRE_ADP.md`, and `docs/adr/ADR-INDEX.md`. It adds no runtime feature, production credential, signing change, entitlement, custom UTType, document association, or cloud / StoreKit / Google production integration.
@@ -1935,3 +1935,22 @@ docs/reference/FILE_STRUCTURE.md
 Task-030e-MacViewer-014 remains docs/tooling/merge-readiness only. It adds the final merge gate checklist and verifier, but no product UI, package open behavior, package schema, Core Data write, route geometry, trusted metrics, location permission, user-location display, Watch behavior, or Task-031 implementation.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 Final Merge Gate Addendum, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, final merge gate checklist.
+
+## Task-031-prep Activity Visualization Structure
+
+Task-031-prep introduces `Shared/ActivityVisualization/` as the display-only, platform-neutral preparation namespace. ActivityViz-001 is limited to model shells and project membership; pipeline behavior and renderer migration remain deferred to later subtasks.
+
+```text
+Shared/ActivityVisualization/
+├── ActivityVisualizationQuality.swift              # [協作區] Platform-neutral quality state for display-prepared visualization data.
+├── ActivityVisualizationDiagnostics.swift          # [協作區] Developer-facing diagnostics shell for route/speed/elevation display preparation.
+├── ActivityVisualizationConfiguration.swift        # [協作區] Model-only route/speed/elevation visualization configuration and prepared summary shell.
+├── Route/
+│   └── RouteDisplayModels.swift                    # [協作區] Route display points, segments, semantics, bounds, summary, diagnostics, and result shells.
+├── Speed/
+│   └── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
+└── Elevation/
+    └── ElevationDisplayModels.swift                # [協作區] Elevation profile display points, range, summary, diagnostics, result, and configuration shells.
+```
+
+ActivityViz-001 does not add `Shared/ActivityVisualization/*Pipeline.swift`, does not migrate iOS/macOS renderers, and does not write display-derived values into persistence or package export paths.

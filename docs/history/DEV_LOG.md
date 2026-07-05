@@ -9,6 +9,19 @@
 
 This log is append-only. Do not delete or overwrite old entries.
 
+## 2026-07-05 — Task-031-prep-ActivityViz-001 Shared Model Shell
+
+### Completed
+- Added `Shared/ActivityVisualization/` as the platform-neutral model-shell area for route, speed, and elevation display data.
+- Added model-only route, speed, and elevation display result/configuration/diagnostics types.
+- Added Xcode project membership for the new Shared model shell in iOS, macOS, and watchOS app targets.
+- Preserved Task-031-prep v1.1 scope boundaries: no route correction, renderer migration, trusted metric mutation, persistence/export/package schema change, Core Data write, Watch UI, or Watch recording implementation.
+
+### Validation Notes
+- ActivityViz-001 verification must confirm Swift headers, line counts, project membership, no platform UI imports, iOS build, and macOS build before ActivityViz-002 begins.
+- `displayDerived` and `displayDerivedTotalAscentMeters` are display-only model terminology and must remain absent from `SessionData` encode/export/package writer paths.
+
+
 ## 2026-06-09 Phase 0 — Task-001 Project Scaffold Completed
 
 ### Completed

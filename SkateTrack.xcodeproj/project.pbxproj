@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+
+		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A200000000000000000101 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000102 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000103 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -389,6 +408,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+
+		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
+		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
+		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
+		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
+		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
+		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -712,6 +738,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+
+		31A000000000000000000000 /* ActivityVisualization */ = {
+			isa = PBXGroup;
+			children = (
+				31A100000000000000000001 /* ActivityVisualizationQuality.swift */,
+				31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */,
+				31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */,
+				31A200000000000000000000 /* Route */,
+				31A300000000000000000000 /* Speed */,
+				31A400000000000000000000 /* Elevation */,
+			);
+			path = ActivityVisualization;
+			sourceTree = "<group>";
+		};
+		31A200000000000000000000 /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				31A200000000000000000001 /* RouteDisplayModels.swift */,
+			);
+			path = Route;
+			sourceTree = "<group>";
+		};
+		31A300000000000000000000 /* Speed */ = {
+			isa = PBXGroup;
+			children = (
+				31A300000000000000000001 /* SpeedDisplayModels.swift */,
+			);
+			path = Speed;
+			sourceTree = "<group>";
+		};
+		31A400000000000000000000 /* Elevation */ = {
+			isa = PBXGroup;
+			children = (
+				31A400000000000000000001 /* ElevationDisplayModels.swift */,
+			);
+			path = Elevation;
+			sourceTree = "<group>";
+		};
 		12A200000000000000000006 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -1364,6 +1428,7 @@
 				12A30000000000000000000B /* Models */,
 				27A200000000000000000000 /* Export */,
 				15A100000000000000000000 /* Persistence */,
+				31A000000000000000000000 /* ActivityVisualization */,
 				12A30000000000000000000C /* Protocols */,
 				12A200000000000000000007 /* Localization */,
 				12A200000000000000000008 /* Utilities */,
@@ -1760,6 +1825,12 @@
 				23A100000000000000000101 /* SessionShareCardData.swift in Sources */,
 				24A100000000000000000101 /* Achievement.swift in Sources */,
 				24A100000000000000000104 /* WeeklyChallenge.swift in Sources */,
+				31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A200000000000000000101 /* RouteDisplayModels.swift in Sources */,
+				31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */,
+				31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */,
 				12A200000000000000000009 /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000C /* NumberFormatter+SkateTrack.swift in Sources */,
 				15A100000000000000000101 /* PersistenceController.swift in Sources */,
@@ -1827,6 +1898,12 @@
 				30ED00000000000000000101 /* MacElevationDisplayPipeline.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
+				31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A200000000000000000103 /* RouteDisplayModels.swift in Sources */,
+				31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */,
+				31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000B /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000103 /* SessionData.swift in Sources */,
@@ -1878,6 +1955,12 @@
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,
+				31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */,
+				31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */,
+				31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */,
+				31A200000000000000000102 /* RouteDisplayModels.swift in Sources */,
+				31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */,
+				31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */,
 				12A20000000000000000000A /* UnitFormatter.swift in Sources */,
 				12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000102 /* SessionData.swift in Sources */,
