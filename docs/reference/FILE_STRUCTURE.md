@@ -1951,7 +1951,8 @@ Shared/ActivityVisualization/
 ├── ActivityVisualizationDiagnostics.swift          # [協作區] Developer-facing diagnostics shell for route/speed/elevation display preparation.
 ├── ActivityVisualizationConfiguration.swift        # [協作區] Model-only route/speed/elevation visualization configuration and prepared summary shell.
 ├── Route/
-│   └── RouteDisplayModels.swift                    # [協作區] Route display points, segments, semantics, bounds, summary, diagnostics, and result shells.
+│   ├── RouteDisplayModels.swift                    # [協作區] Route display points, segments, semantics, bounds, summary, diagnostics, and result shells.
+│   └── RouteDisplayPipeline.swift                  # [協作區] Display-only Shared route preparation extracted from existing iOS route semantics.
 ├── Speed/
 │   └── SpeedDisplayModels.swift                    # [協作區] Speed chart display points, source, summary, diagnostics, result, and configuration shells.
 └── Elevation/
@@ -1963,3 +1964,8 @@ ActivityViz-001 does not add `Shared/ActivityVisualization/*Pipeline.swift`, doe
 ### Task-031-prep ActivityViz-002 route fixture baseline
 
 `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` captures existing iOS route display semantic distribution before Shared route pipeline extraction. The fixture metadata under `Tests/Fixtures/ActivityVisualization/` covers clean GPS route, startup drift, low-confidence segment, sparse route, duplicate location fixes, large jump, and too few points. This stage intentionally does not modify iOS/macOS renderers or introduce `RouteDisplayPipeline` behavior.
+
+
+### Task-031-prep ActivityViz-003 Shared route pipeline extraction
+
+`Shared/ActivityVisualization/Route/RouteDisplayPipeline.swift` prepares display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data. `Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` now checks the Shared pipeline against the ActivityViz-002 fixture baselines before any renderer migration. This stage intentionally does not modify `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, package schema, location permission, or current user location display.

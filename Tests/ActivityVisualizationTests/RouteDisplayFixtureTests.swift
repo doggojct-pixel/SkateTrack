@@ -55,6 +55,28 @@ final class RouteDisplayFixtureTests: XCTestCase {
         }
     }
 
+
+    func testSharedRouteDisplayPipelineMatchesActivityViz002Baselines() throws {
+        let pipeline = RouteDisplayPipeline()
+        for fixture in try Self.loadScenarioFixtures() {
+            let result = pipeline.makeDisplayRoute(
+                samples: Self.makeMotionSamples(from: fixture),
+                startDate: Self.startDate,
+                fidelityPolicy: Self.routePolicy
+            )
+            let semanticCounts = result.points.reduce(SemanticCounts.zero) { partial, point in
+                partial.adding(point.semantic)
+            }
+            XCTAssertEqual(semanticCounts, fixture.expectedSemanticDistribution, fixture.id)
+            XCTAssertEqual(result.summary.rawSampleCount, fixture.rawSampleCount, fixture.id)
+            XCTAssertEqual(result.summary.displayPointCount, fixture.expectedDisplayPointCount, fixture.id)
+            XCTAssertEqual(result.summary.segmentCount, result.segments.count, fixture.id)
+            XCTAssertEqual(result.summary.hasStartupWarmup, semanticCounts.startupWarmup > 0, fixture.id)
+            XCTAssertEqual(result.summary.hasLowConfidenceSegments, semanticCounts.lowConfidence > 0, fixture.id)
+            XCTAssertEqual(result.points.count, fixture.expectedDisplayPointCount, fixture.id)
+        }
+    }
+
     func testRouteQualityBaselinesMatchMotionSampleSourceOfTruth() throws {
         for fixture in try Self.loadScenarioFixtures() {
             let summary = RouteQualitySummary.make(from: Self.makeMotionSamples(from: fixture))

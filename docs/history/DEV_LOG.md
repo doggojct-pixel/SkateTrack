@@ -10,6 +10,18 @@
 This log is append-only. Do not delete or overwrite old entries.
 
 
+## 2026-07-05 — Task-031-prep-ActivityViz-003 Shared Route Pipeline Extraction
+
+### Completed
+- Added `RouteDisplayPipeline` under `Shared/ActivityVisualization/Route/` to prepare display-only route points, segments, bounds, summaries, and diagnostics from `MotionSample` source-of-truth data.
+- Added parity coverage so ActivityViz-002 JSON-backed fixtures verify the Shared pipeline output against existing route semantic baselines.
+- Kept iOS and macOS renderers untouched; renderer migration remains deferred to ActivityViz-004 and ActivityViz-005.
+
+### Validation Notes
+- The Shared route pipeline mirrors existing display semantics without route correction, road matching, map matching, snap-to-road, route reconstruction, trusted metrics mutation, persistence/export writes, package schema changes, location permission requests, or current user location display.
+- `RouteDisplayPipeline` is display-only and does not write `displayDerived` values into `SessionData`, persistence, export, or package paths.
+
+
 ## 2026-07-05 — Task-031-prep-ActivityViz-002 Route Pipeline Test Fixtures
 
 ### Completed
