@@ -382,6 +382,7 @@
 		B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
 		B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */; };
 		B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */; };
+		31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B200000000000000000001 /* RouteDisplayFixtureTests.swift */; };
 		B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
@@ -684,6 +685,7 @@
 		B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayDecision.swift; sourceTree = "<group>"; };
 		B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGate.swift; sourceTree = "<group>"; };
 		B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGateTests.swift; sourceTree = "<group>"; };
+		31B200000000000000000001 /* RouteDisplayFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayFixtureTests.swift; sourceTree = "<group>"; };
 		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
 		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
@@ -931,6 +933,14 @@
 			);
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
+		};
+		31B200000000000000000000 /* ActivityVisualizationTests */ = {
+			isa = PBXGroup;
+			children = (
+				31B200000000000000000001 /* RouteDisplayFixtureTests.swift */,
+			);
+			path = ActivityVisualizationTests;
+			sourceTree = "<group>";
 		};
 		12AC02000000000000000001 /* iOSTests */ = {
 			isa = PBXGroup;
@@ -1416,6 +1426,7 @@
 		E1B7981D5F0CC62B8BC6C4A0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				31B200000000000000000000 /* ActivityVisualizationTests */,
 				12AC02000000000000000001 /* iOSTests */,
 			);
 			path = Tests;
@@ -1613,6 +1624,7 @@
 				B17C030000000000000101 /* DeadReckoningClosureScoringTests.swift in Sources */,
 				B17D030000000000000101 /* DeadReckoningReplayReviewPackTests.swift in Sources */,
 				B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */,
+				31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */,
 				B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */,
 				B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */,
 				B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */,

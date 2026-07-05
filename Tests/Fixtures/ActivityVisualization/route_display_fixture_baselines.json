@@ -1,0 +1,154 @@
+{
+  "task": "task-031-prep-ActivityViz-002",
+  "purpose": "Snapshot baselines for existing iOS route display semantics before Shared route pipeline extraction.",
+  "sourceOfTruth": [
+    "MotionSample.swift RouteQualitySummary.make(from:)",
+    "SessionRouteMapView.swift display-only route semantics mirrored in RouteDisplayFixtureTests"
+  ],
+  "doNotImplement": [
+    "route correction",
+    "road matching",
+    "map matching",
+    "snap-to-road",
+    "route reconstruction",
+    "trusted metrics mutation",
+    "route geometry mutation",
+    "renderer migration",
+    "persistence/export/package schema changes"
+  ],
+  "fixtures": [
+    {
+      "id": "clean-gps-route",
+      "fileName": "clean_gps_route.json",
+      "semanticDistribution": {
+        "highConfidence": 5,
+        "lowConfidence": 0,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 5,
+      "routeQuality": {
+        "sampleCount": 5,
+        "gpsSampleCount": 5,
+        "uniqueCoordinateCount": 5,
+        "lowConfidenceSegmentCount": 0,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "startup-drift",
+      "fileName": "startup_drift.json",
+      "semanticDistribution": {
+        "highConfidence": 3,
+        "lowConfidence": 0,
+        "startupWarmup": 2
+      },
+      "displayPointCount": 5,
+      "routeQuality": {
+        "sampleCount": 5,
+        "gpsSampleCount": 5,
+        "uniqueCoordinateCount": 5,
+        "lowConfidenceSegmentCount": 2,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "low-confidence-segment",
+      "fileName": "low_confidence_segment.json",
+      "semanticDistribution": {
+        "highConfidence": 4,
+        "lowConfidence": 2,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 6,
+      "routeQuality": {
+        "sampleCount": 6,
+        "gpsSampleCount": 6,
+        "uniqueCoordinateCount": 6,
+        "lowConfidenceSegmentCount": 2,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "sparse-route",
+      "fileName": "sparse_route.json",
+      "semanticDistribution": {
+        "highConfidence": 1,
+        "lowConfidence": 0,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 1,
+      "routeQuality": {
+        "sampleCount": 1,
+        "gpsSampleCount": 1,
+        "uniqueCoordinateCount": 1,
+        "lowConfidenceSegmentCount": 0,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "duplicate-location-fixes",
+      "fileName": "duplicate_location_fixes.json",
+      "semanticDistribution": {
+        "highConfidence": 3,
+        "lowConfidence": 0,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 3,
+      "routeQuality": {
+        "sampleCount": 5,
+        "gpsSampleCount": 5,
+        "uniqueCoordinateCount": 3,
+        "lowConfidenceSegmentCount": 0,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "large-jump",
+      "fileName": "large_jump.json",
+      "semanticDistribution": {
+        "highConfidence": 4,
+        "lowConfidence": 0,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 4,
+      "routeQuality": {
+        "sampleCount": 4,
+        "gpsSampleCount": 4,
+        "uniqueCoordinateCount": 4,
+        "lowConfidenceSegmentCount": 1,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    },
+    {
+      "id": "too-few-points",
+      "fileName": "too_few_points.json",
+      "semanticDistribution": {
+        "highConfidence": 0,
+        "lowConfidence": 0,
+        "startupWarmup": 0
+      },
+      "displayPointCount": 0,
+      "routeQuality": {
+        "sampleCount": 2,
+        "gpsSampleCount": 0,
+        "uniqueCoordinateCount": 0,
+        "lowConfidenceSegmentCount": 0,
+        "staleLocationSampleCount": 0,
+        "longLocationUpdateGapCount": 0,
+        "longMotionSampleGapCount": 0
+      }
+    }
+  ]
+}

@@ -355,6 +355,11 @@ SkateTrack/
 │       ├── Tutorials/                             # [佔位] Future tutorials.
 │       └── VideoOverlay/                          # [佔位] Future video overlay analysis.
 ├── Tests/                                         # Test source tree.
+│   ├── ActivityVisualizationTests/                 # [協作區] ActivityViz fixture and parity tests for shared display preparation.
+│   │   └── RouteDisplayFixtureTests.swift          # [協作區] Task-031-prep-ActivityViz-002 route semantic distribution baselines.
+│   ├── Fixtures/
+│   │   └── ActivityVisualization/
+│   │       └── route_display_fixture_baselines.json # [協作區] Snapshot fixture metadata for route semantic baselines.
 │   ├── iOSTests/
 │   │   ├── SessionRecordingCoordinatorTests.swift  # [工程設定] iOS unit tests for state transitions, session coordinator behavior, and Task-015b persistence integration.
 │   │   └── SessionRepositoryTests.swift            # [工程設定] Task-015a persistence save / fetch / export / delete tests.
@@ -1954,3 +1959,7 @@ Shared/ActivityVisualization/
 ```
 
 ActivityViz-001 does not add `Shared/ActivityVisualization/*Pipeline.swift`, does not migrate iOS/macOS renderers, and does not write display-derived values into persistence or package export paths.
+
+### Task-031-prep ActivityViz-002 route fixture baseline
+
+`Tests/ActivityVisualizationTests/RouteDisplayFixtureTests.swift` captures existing iOS route display semantic distribution before Shared route pipeline extraction. The fixture metadata under `Tests/Fixtures/ActivityVisualization/` covers clean GPS route, startup drift, low-confidence segment, sparse route, duplicate location fixes, large jump, and too few points. This stage intentionally does not modify iOS/macOS renderers or introduce `RouteDisplayPipeline` behavior.

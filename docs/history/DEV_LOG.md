@@ -9,6 +9,19 @@
 
 This log is append-only. Do not delete or overwrite old entries.
 
+
+## 2026-07-05 — Task-031-prep-ActivityViz-002 Route Pipeline Test Fixtures
+
+### Completed
+- Added deterministic route display fixture tests before Shared route pipeline extraction.
+- Added fixture baselines for clean GPS route, startup drift, low-confidence segment, sparse route, duplicate location fixes, large jump, and too few points.
+- Added source verifier for ActivityViz-002 fixture scope, project membership, Shared UI-import guard, and no renderer/pipeline migration.
+
+### Validation Notes
+- ActivityViz-002 is test/fixture only. It does not change `SessionRouteMapView.swift`, `MacRouteDisplayPipeline.swift`, route appearance, stored route geometry, trusted metrics, persistence/export, or package schema.
+- These baselines are intended to fail loudly if ActivityViz-003/004 changes `RouteDisplaySemantic` distribution without deliberate investigation.
+
+
 ## 2026-07-05 — Task-031-prep-ActivityViz-001 Shared Model Shell
 
 ### Completed
