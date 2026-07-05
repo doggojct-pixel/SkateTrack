@@ -2616,3 +2616,16 @@ Task-031-prep-ActivityViz-008 verification token: macOS Speed Chart Migration, `
 - Did not modify `ElevationProfileChartView.swift`, `SessionAdvancedChartsView.swift`, `MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, current user location display, Watch UI, or Watch recording.
 
 Task-031-prep-ActivityViz-009 verification token: Shared Elevation Display Pipeline Shell, `ElevationDisplayPipeline`, `makeDisplayElevation`, `ElevationDisplayPoint.segmentID`, `ElevationDisplaySummary.displayDerivedTotalAscentMeters`, `ElevationDisplayPipelineTests`, elevation renderers untouched, no persistence/export/package schema change, no elevation metric mutation.
+
+## 2026-07-05 — Task-031-prep-ActivityViz-010 iOS Elevation Profile Migration
+
+### Completed
+- Migrated iOS `SessionAdvancedChartsView` elevation data preparation to consume `ElevationDisplayPipeline` with `ElevationDisplayConfiguration(maximumDisplayPointCount: 120)`.
+- Preserved iOS renderer ownership by keeping `ElevationProfileChartView.swift` as the SwiftUI/Charts drawing surface that receives `SessionSummaryChartPoint` values.
+- Removed duplicated iOS-only elevation source selection, absolute-anchor, micro-dip guard, smoothing, segmenting, and downsampling helpers from `SessionAdvancedChartsView`; Shared `ElevationDisplayPipeline` now owns display-only elevation semantics.
+- Added `scripts/verify_task031_prep_010_ios_elevation_migration.py` to verify Shared elevation consumption, renderer untouched guard, route/speed/macOS invariants, line limits, and no persistence/export/package mutation.
+
+### Validation Notes
+- ActivityViz-010 intentionally does not modify `ElevationProfileChartView.swift`, `MacElevationDisplayPipeline.swift`, macOS elevation rendering, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission, current user location display, Watch UI, or Watch recording.
+
+Task-031-prep-ActivityViz-010 verification token: iOS Elevation Profile Migration, `SessionAdvancedChartsView`, `ElevationDisplayPipeline(configuration: ElevationDisplayConfiguration(maximumDisplayPointCount: 120))`, `ElevationDisplayResult`, `chartPoints(from result: ElevationDisplayResult)`, `ElevationProfileChartView(points: elevationPoints)`, iOS renderer remains SwiftUI-owned, `ElevationProfileChartView.swift` untouched, no persistence/export/package schema change, no elevation metric mutation.

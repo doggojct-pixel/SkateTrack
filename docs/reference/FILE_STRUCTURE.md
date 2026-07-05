@@ -2058,3 +2058,17 @@ scripts/verify_task031_prep_009_elevation_pipeline.py               # [工程設
 ```
 
 ActivityViz-009 intentionally does not modify `iOS/Features/SessionSummary/ElevationProfileChartView.swift`, `iOS/Features/SessionSummary/SessionAdvancedChartsView.swift`, `macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, location permission request, current user location display, Watch UI, or Watch recording. iOS elevation profile migration remains deferred to ActivityViz-010; macOS elevation profile migration remains deferred to ActivityViz-011.
+
+### Task-031-prep ActivityViz-010 iOS Elevation Profile Migration
+
+`iOS/Features/SessionSummary/SessionAdvancedChartsView.swift` now consumes `ElevationDisplayPipeline` for display-only elevation profile data and converts `ElevationDisplayResult.points` into the existing iOS `SessionSummaryChartPoint` adapter. `ElevationProfileChartView.swift` remains the SwiftUI/Charts renderer and keeps platform drawing, color, empty-state, axis, and accessibility ownership.
+
+ActivityViz-010 files:
+
+```text
+iOS/Features/SessionSummary/SessionAdvancedChartsView.swift          # [協作區] iOS advanced chart adapter consuming Shared speed/elevation pipelines.
+iOS/Features/SessionSummary/ElevationProfileChartView.swift          # [協作區] iOS elevation chart renderer; intentionally untouched in ActivityViz-010.
+scripts/verify_task031_prep_010_ios_elevation_migration.py           # [工程設定] Verifies ActivityViz-010 iOS elevation migration, renderer untouched guard, Shared elevation invariant, and no persistence/export/package mutation.
+```
+
+ActivityViz-010 intentionally does not modify `MacElevationDisplayPipeline.swift`, `MacElevationProfileView`, route display pipelines, speed display pipelines, stored elevation/ascent metrics, trusted metrics, persistence/export/package schema, Core Data writes/import/merge/restore, cloud sync, location permission request, current user location display, Watch UI, or Watch recording. macOS elevation migration remains deferred to ActivityViz-011.
