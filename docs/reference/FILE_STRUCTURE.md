@@ -2361,3 +2361,14 @@ Task-032e does not add product Swift, project membership, platform UI, WatchConn
   - Verifies fallback activation, fallback send behavior, and unavailable runtime representation.
 - `scripts/verify_task033a_watchconnectivity_boundary.py`
   - Verifies boundary shell placement, target membership, no direct UI WCSession usage, and Task-033a guardrails.
+
+## Task-033b Mirrored Session Commands Addendum
+
+- `Shared/WatchBridge/WatchBridgeMirroredCommandModels.swift`
+  - Defines mirrored start / pause / resume / stop command request, decision, stale policy, idempotency, and acknowledgement mapping models.
+- `Shared/WatchBridge/WatchBridgeMirroredCommandProcessor.swift`
+  - Processes Watch-originated command envelopes through an iPhone-side authority protocol without mutating sessions directly.
+- `Tests/iOSTests/WatchBridgeMirroredSessionCommandTests.swift`
+  - Verifies accepted, stale, duplicate, missing-session, and invalid-direction command behavior.
+- `scripts/verify_task033b_mirrored_session_commands.py`
+  - Verifies Task-033b command boundary scope, project membership, documentation, and no UI/schema/Snow/session-mutation guardrails.
