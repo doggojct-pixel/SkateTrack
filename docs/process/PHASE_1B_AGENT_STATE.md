@@ -100,3 +100,33 @@ TASK031B_MANUAL_QA_SCOPE=DOCUMENTED_NOT_REQUIRED_INVENTORY_ONLY
 
 Not implemented in Task-031b: Watch UI, WatchBridge runtime behavior, WatchConnectivity runtime behavior, HealthKit, signing, entitlements, capabilities, bundle identifiers, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production implementation.
 <!-- TASK031B_WATCHOS_INVENTORY_END -->
+
+<!-- TASK031C_MODE_GUARDRAILS_STATE_START -->
+## Task-031c Mode Guardrails State
+
+```text
+TASK031C_MODE_GUARDRAILS_RESULT=PASSED
+TASK031C_BASELINE_HEAD=1822845e2e1872f923bc1a332c69c10611537be7
+TASK031C_MODE_NEUTRAL_ARCHITECTURE=YES
+TASK031C_SPORTMODE_HAS_PRODUCTION_SNOW_CASE=NO
+TASK031C_ACTIVITY_FIDELITY_SNOW_RESERVED_ONLY=YES
+TASK031C_SNOW_PRODUCTION_IMPLEMENTATION_COUNT=0
+TASK031C_TRICK_RECOGNITION_IMPLEMENTATION_COUNT=0
+TASK031C_BOOLEAN_ONLY_MODE_SHORTCUT_COUNT=0
+TASK031C_WATCH_UI_IMPLEMENTED=NO
+TASK031C_WATCHBRIDGE_RUNTIME_IMPLEMENTED=NO
+TASK031C_WATCHOS_COMPACT_CONSUMPTION_PRE_UI=NO
+TASK031C_SNOWFEATURE_REFERENCE_ONLY=YES
+TASK031C_SNOW_UI_SCREENSHOTS_REFERENCE_ONLY=YES
+TASK031C_MAIN_REPO_IMPORTS_SNOWFEATURE_CODE=NO
+TASK031C_SCHEMA_OR_CORE_DATA_MUTATION=NO
+TASK031C_PACKAGE_SCHEMA_MUTATION=NO
+TASK031C_ROUTE_GEOMETRY_MUTATION=NO
+TASK031C_TRUSTED_METRIC_MUTATION=NO
+TASK031C_ESTIMATED_ROUTE_ENABLEMENT=NO
+```
+
+Task-031c records the current architecture as mode-neutral and future-Snow-safe without implementing Snow production behavior. The external `SkateTrack-SnowFeature` repo and Snow UI screenshots were used as reference-only context; no SnowFeature source, assets, UI, schema, classifier, run detector, WatchBridge runtime, or payload transport was copied into the main repo.
+
+Existing equipment classification helpers are not treated as boolean-only Watch payload shortcuts. Task-031c guards against new unapproved boolean-only mode shortcuts in shared mode architecture and watchOS boundary paths.
+<!-- TASK031C_MODE_GUARDRAILS_STATE_END -->
