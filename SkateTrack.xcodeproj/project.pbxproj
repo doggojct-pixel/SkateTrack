@@ -16,6 +16,10 @@
 		32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
 		32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
 		32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
+		32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
+		32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
 
 		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
 		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
@@ -454,6 +458,8 @@
 		32B200000000000000000001 /* WatchBridgePayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgePayloads.swift; sourceTree = "<group>"; };
 		32B300000000000000000001 /* WatchBridgeConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionState.swift; sourceTree = "<group>"; };
 		32B400000000000000000001 /* WatchBridgeCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandModels.swift; sourceTree = "<group>"; };
+		32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeActivityPayloads.swift; sourceTree = "<group>"; };
+		32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMetricPayloads.swift; sourceTree = "<group>"; };
 
 		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
 		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
@@ -806,6 +812,8 @@
 				32B200000000000000000001 /* WatchBridgePayloads.swift */,
 				32B300000000000000000001 /* WatchBridgeConnectionState.swift */,
 				32B400000000000000000001 /* WatchBridgeCommandModels.swift */,
+				32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */,
+				32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */,
 			);
 			path = WatchBridge;
 			sourceTree = "<group>";
@@ -1738,6 +1746,8 @@
 				32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */,
 				32B300000000000000000101 /* WatchBridgeConnectionState.swift in Sources */,
 				32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */,
+				32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */,
+				32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2086,6 +2096,8 @@
 				32B200000000000000000102 /* WatchBridgePayloads.swift in Sources */,
 				32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */,
 				32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */,
+				32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */,
+				32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,

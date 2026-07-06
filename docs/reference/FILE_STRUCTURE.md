@@ -2304,3 +2304,13 @@ scripts/verify_task032b_watchbridge_contracts.py
 ```
 
 Task-032b owns the initial Codable-only WatchBridge contract model surface and iOS/watchOS source membership. It does not own runtime `WatchConnectivity`, command mirroring runtime behavior, Watch UI, HealthKit, or Snow production implementation.
+
+## Task-032c Activity-aware Payload Models Addendum
+
+Shared/WatchBridge/WatchBridgeActivityPayloads.swift    # [協作區] Activity/session/display-only payload models for WatchBridge contracts.
+Shared/WatchBridge/WatchBridgeMetricPayloads.swift      # [協作區] Metric update, command acknowledgement, and connection status payload models.
+scripts/verify_task032c_activity_payload_models.py      # Verifies Task-032c contract files, project membership, and runtime/UI/safety guardrails.
+
+- `WatchBridgePayload` now includes activity session, metric update, display summary, combined activity snapshot, command result, and connection status payload cases.
+- Task-032c payloads are Codable/Equatable/Sendable contract models only; runtime WatchConnectivity and Watch UI remain deferred.
+- Compact activity display payloads remain display-only and must not mutate trusted session metrics or route geometry.

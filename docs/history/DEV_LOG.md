@@ -2821,3 +2821,12 @@ NEXT_TASK=Task-032c
 ```
 
 Task-032b added the first versioned, Codable-only WatchBridge contract surface under `Shared/WatchBridge/` and source-membered it for iOS/watchOS. It intentionally avoided `WatchConnectivity`, `WCSession`, command mirroring runtime behavior, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, and estimated route enablement.
+
+## Task-032c-001 Activity-aware Payload Models
+
+- Added activity-aware WatchBridge Codable payload models for session state, metric updates, command acknowledgement, connection status, and display-only compact activity summaries.
+- Extended `WatchBridgePayload` with typed activity/session/metric/display/command-result payload cases while keeping Task-032 runtime work deferred.
+- Added iOS/watchOS source membership for the new `Shared/WatchBridge` payload model files.
+- Verified no WatchConnectivity runtime behavior, no Watch UI, no HealthKit runtime, no Snow production implementation, no trusted metric mutation, and no route geometry mutation.
+
+Task-032c verification token: WATCHBRIDGE_ACTIVITY_PAYLOAD_MODELS_IMPLEMENTED=YES, WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO, WATCH_UI_IMPLEMENTED=NO, TRUSTED_METRIC_MUTATION=NO, NEXT_TASK=Task-032d.
