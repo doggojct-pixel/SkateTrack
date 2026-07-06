@@ -516,3 +516,13 @@ Task-031-prep-ActivityViz-015 ADR token: Shared decides visualization data seman
 - **Boundary:** Final parity does not implement Watch UI, Watch recording, compact watchOS consumption, route correction, map matching, snap-to-road, route reconstruction, current-user-location display, location permission prompts, trusted metric mutation, Core Data writes/import/merge/restore, cloud sync, or persistence/export/package schema mutation.
 
 Task-031-prep-ActivityViz-016 ADR token: final parity gate and closure decision, Shared decides visualization data semantics; platforms decide rendering, verify_task031_prep_016_final_parity_gate.py, ActivityVisualizationResult, ActivityVisualizationCompactSummary, CompactRouteDisplay, CompactSpeedSparkline, CompactElevationProfile, no Watch UI, no Watch recording, no persistence/export/package schema mutation.
+
+<!-- Task-031a-001 BEGIN -->
+
+## Task-031a ADR Addendum — Shared Activity Visualization Pipeline
+
+| ADR | Status | Summary |
+|---|---|---|
+| `docs/adr/ADR-Shared-Activity-Visualization-Pipeline.md` | Accepted / documented from merged baseline | Records that Shared decides route/speed/elevation/compact visualization semantics while platforms decide rendering. No Watch UI, WatchBridge implementation, Watch recording, route geometry mutation, trusted metric mutation, package schema mutation, Core Data mutation, or Snow production implementation is introduced by Task-031a. |
+
+<!-- Task-031a-001 END -->

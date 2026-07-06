@@ -2692,3 +2692,26 @@ Task-031-prep-ActivityViz-015 verification token: Docs / ADR Final Sync, Shared 
 - Verified no Watch UI, no Watch recording, no watchOS compact consumption, no route correction, no map matching, no snap-to-road, no route reconstruction, no current-user-location display, no location permission prompt, no trusted metric mutation, and no persistence/export/package schema change.
 
 Task-031-prep-ActivityViz-016 verification token: Final Parity Gate, `verify_task031_prep_016_final_parity_gate.py`, ActivityViz-003 through ActivityViz-015 verifier family, Shared decides visualization data semantics; platforms decide rendering, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, Task-031-prep closure gate.
+
+<!-- Task-031a-001 BEGIN -->
+
+## 2026-07-06 — Task-031a-001 Baseline Preflight
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+Aligned subtask: `Task-031a — Develop Baseline Lock + Source-of-Truth Preflight`
+
+Task-031a opens Phase 1b from the confirmed `develop` baseline at `b941c7c2519c8e152327b5f91e4322e87de39cd9`, with Task-031-prep merged at `99e9737fa7878cee84259ea98012aa5988f59fde` through merge commit `b941c7c`.
+
+This documentation/verifier-only step adds:
+
+```text
+docs/process/PHASE_1B_AGENT_STATE.md
+docs/adr/ADR-Shared-Activity-Visualization-Pipeline.md
+scripts/verify_task031_phase1b_preflight.py
+```
+
+It also records the initial macOS XCTest policy checkpoint and Watch route mini-card checkpoint for later Task-031d closure.
+
+Task-031a-001 intentionally does not implement Watch UI, WatchBridge runtime behavior, Watch recording, Snow production code, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, signing changes, capabilities, or Xcode project membership changes.
+
+<!-- Task-031a-001 END -->
