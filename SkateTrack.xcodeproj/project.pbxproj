@@ -8,6 +8,27 @@
 
 /* Begin PBXBuildFile section */
 
+		32B100000000000000000101 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
+		32B100000000000000000102 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
+		32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
+		32B200000000000000000102 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
+		32B300000000000000000101 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
+		32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
+		32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
+		32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
+		32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
+		32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
+		32D100000000000000000101 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
+		32D100000000000000000102 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
+		32D200000000000000000101 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
+		32D200000000000000000102 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
+		32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
+		32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
+		32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */; };
+		32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */; };
+
 		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
 		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
 		31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
@@ -441,6 +462,18 @@
 
 /* Begin PBXFileReference section */
 
+		32B100000000000000000001 /* WatchBridgeEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeEnvelope.swift; sourceTree = "<group>"; };
+		32B200000000000000000001 /* WatchBridgePayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgePayloads.swift; sourceTree = "<group>"; };
+		32B300000000000000000001 /* WatchBridgeConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionState.swift; sourceTree = "<group>"; };
+		32B400000000000000000001 /* WatchBridgeCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandModels.swift; sourceTree = "<group>"; };
+		32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeActivityPayloads.swift; sourceTree = "<group>"; };
+		32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMetricPayloads.swift; sourceTree = "<group>"; };
+		32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionTimeline.swift; sourceTree = "<group>"; };
+		32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStore.swift; sourceTree = "<group>"; };
+		32D300000000000000000001 /* WatchBridgeMockTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransport.swift; sourceTree = "<group>"; };
+		32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStoreTests.swift; sourceTree = "<group>"; };
+		32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransportTests.swift; sourceTree = "<group>"; };
+
 		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
 		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
 		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
@@ -785,6 +818,23 @@
 
 /* Begin PBXGroup section */
 
+		32B000000000000000000000 /* WatchBridge */ = {
+			isa = PBXGroup;
+			children = (
+				32B100000000000000000001 /* WatchBridgeEnvelope.swift */,
+				32B200000000000000000001 /* WatchBridgePayloads.swift */,
+				32B300000000000000000001 /* WatchBridgeConnectionState.swift */,
+				32B400000000000000000001 /* WatchBridgeCommandModels.swift */,
+				32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */,
+				32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */,
+				32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */,
+				32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */,
+				32D300000000000000000001 /* WatchBridgeMockTransport.swift */,
+			);
+			path = WatchBridge;
+			sourceTree = "<group>";
+		};
+
 		31A000000000000000000000 /* ActivityVisualization */ = {
 			isa = PBXGroup;
 			children = (
@@ -1026,6 +1076,8 @@
 				B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */,
 				15A100000000000000000008 /* SessionRepositoryTests.swift */,
 				30D500000000000000000001 /* SkateTrackPackageImportTests.swift */,
+				32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */,
+				32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1500,6 +1552,7 @@
 		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				32B000000000000000000000 /* WatchBridge */,
 				12A200000000000000000006 /* Constants */,
 				12A30000000000000000000B /* Models */,
 				27A200000000000000000000 /* Export */,
@@ -1700,6 +1753,8 @@
 				B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */,
 				15A100000000000000000108 /* SessionRepositoryTests.swift in Sources */,
 				30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */,
+				32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */,
+				32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1707,6 +1762,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B100000000000000000101 /* WatchBridgeEnvelope.swift in Sources */,
+				32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */,
+				32B300000000000000000101 /* WatchBridgeConnectionState.swift in Sources */,
+				32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */,
+				32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */,
+				32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */,
+				32D100000000000000000101 /* WatchBridgeConnectionTimeline.swift in Sources */,
+				32D200000000000000000101 /* WatchBridgeConnectionStateStore.swift in Sources */,
+				32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2051,6 +2115,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B100000000000000000102 /* WatchBridgeEnvelope.swift in Sources */,
+				32B200000000000000000102 /* WatchBridgePayloads.swift in Sources */,
+				32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */,
+				32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */,
+				32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */,
+				32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */,
+				32D100000000000000000102 /* WatchBridgeConnectionTimeline.swift in Sources */,
+				32D200000000000000000102 /* WatchBridgeConnectionStateStore.swift in Sources */,
+				32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,

@@ -2264,3 +2264,90 @@ docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
 
 Task-031d records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` and `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must reopen the route mini-card product decision before implementing compact Watch route UI. `NEXT_TASK=Task-032a` is the post-Task-031 handoff.
 <!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_END -->
+
+<!-- TASK032A_WATCHBRIDGE_AUDIT_FILE_STRUCTURE_START -->
+## Task-032a WatchBridge Audit Addendum
+
+Task-032a adds documentation and verification only:
+
+```text
+docs/adr/ADR-WatchBridge-Contract-Placement.md     # [原則 E] Records WatchBridge contract namespace, planned file split, target membership plan, and runtime boundary.
+scripts/verify_task032a_watchbridge_audit.py       # [工程設定] Verifies Task-032a audit/docs scope and contract placement decision.
+docs/process/PHASE_1B_AGENT_STATE.md               # [原則 E] Records Task-032a state and next task.
+docs/history/DEV_LOG.md                            # [原則 E] Records Task-032a-001 audit result.
+docs/reference/FILE_STRUCTURE.md                   # [原則 E] Documents Task-032a output scope and future file plan.
+docs/adr/ADR-INDEX.md                              # [原則 E] Registers the WatchBridge contract placement ADR.
+```
+
+Planned future files, not created by Task-032a:
+
+```text
+Shared/WatchBridge/WatchBridgeEnvelope.swift
+Shared/WatchBridge/WatchBridgePayloads.swift
+Shared/WatchBridge/WatchBridgeConnectionState.swift
+Shared/WatchBridge/WatchBridgeCommandModels.swift
+```
+
+Task-032a keeps `Shared/WatchBridge/` absent until Task-032b creates the first contract files. When those files are added, iOS + watchOS source membership is required. macOS membership is optional only for compile-only tools, previews, or tests.
+
+Task-032a does not implement WatchBridge models, WatchConnectivity runtime behavior, command mirroring, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+<!-- TASK032A_WATCHBRIDGE_AUDIT_FILE_STRUCTURE_END -->
+
+## Task-032b WatchBridge Contracts Addendum
+
+```text
+Shared/WatchBridge/WatchBridgeEnvelope.swift
+Shared/WatchBridge/WatchBridgePayloads.swift
+Shared/WatchBridge/WatchBridgeConnectionState.swift
+Shared/WatchBridge/WatchBridgeCommandModels.swift
+scripts/verify_task032b_watchbridge_contracts.py
+```
+
+Task-032b owns the initial Codable-only WatchBridge contract model surface and iOS/watchOS source membership. It does not own runtime `WatchConnectivity`, command mirroring runtime behavior, Watch UI, HealthKit, or Snow production implementation.
+
+## Task-032c Activity-aware Payload Models Addendum
+
+Shared/WatchBridge/WatchBridgeActivityPayloads.swift    # [協作區] Activity/session/display-only payload models for WatchBridge contracts.
+Shared/WatchBridge/WatchBridgeMetricPayloads.swift      # [協作區] Metric update, command acknowledgement, and connection status payload models.
+scripts/verify_task032c_activity_payload_models.py      # Verifies Task-032c contract files, project membership, and runtime/UI/safety guardrails.
+
+- `WatchBridgePayload` now includes activity session, metric update, display summary, combined activity snapshot, command result, and connection status payload cases.
+- Task-032c payloads are Codable/Equatable/Sendable contract models only; runtime WatchConnectivity and Watch UI remain deferred.
+- Compact activity display payloads remain display-only and must not mutate trusted session metrics or route geometry.
+
+## Task-032d Connection State Store + Mock Transport Addendum
+
+Shared/WatchBridge/WatchBridgeConnectionTimeline.swift       # [協作區] Simulator-safe connection timeline events for connected/disconnected/unavailable/stale/message-received states.
+Shared/WatchBridge/WatchBridgeConnectionStateStore.swift    # [協作區] Deterministic connection state reducer and status snapshot payload builder.
+Shared/WatchBridge/WatchBridgeMockTransport.swift           # [協作區] Mock transport queue/reject/inbox helper for pre-runtime WatchBridge verification.
+Tests/iOSTests/WatchBridgeConnectionStateStoreTests.swift   # [協作區] Unit tests for connection state transition and timeline behavior.
+Tests/iOSTests/WatchBridgeMockTransportTests.swift          # [協作區] Unit tests for mock transport queue/reject/receive behavior.
+scripts/verify_task032d_connection_state_mock_transport.py  # Verifies Task-032d scope, project membership, tests, and runtime/UI/safety guardrails.
+
+- Task-032d is simulator-safe infrastructure only; it does not add real WatchConnectivity, WCSession, command mirroring runtime behavior, or Watch UI.
+- The mock transport is for state transition verification and future UI/test harness use only.
+
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_FILE_STRUCTURE_START -->
+## Task-032e WatchBridge Foundation Closure Addendum
+
+```text
+scripts/verify_task032_watchbridge_foundation.py     # Aggregate Task-032 foundation verifier for contracts, payloads, connection/mock transport, tests, docs, and runtime guardrails.
+docs/adr/ADR-WatchBridge-Foundation.md              # ADR recording Task-032 foundation closure and Task-033a runtime handoff.
+docs/adr/ADR-INDEX.md                               # Registers the WatchBridge Foundation Boundary ADR.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md           # Records that WatchBridge runtime/session-control mirroring/Watch UI remain deferred.
+```
+
+Task-032 foundation file counts:
+
+```text
+WATCHBRIDGE_SWIFT_FILE_COUNT=9
+WATCHBRIDGE_TEST_SWIFT_COUNT=2
+WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO
+WCSESSION_DEPENDENCY_IMPLEMENTED=NO
+SESSION_CONTROL_MIRRORING_RUNTIME_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-033a
+```
+
+Task-032e does not add product Swift, project membership, platform UI, WatchConnectivity runtime behavior, `WCSession`, HealthKit runtime, Snow production, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_FILE_STRUCTURE_END -->

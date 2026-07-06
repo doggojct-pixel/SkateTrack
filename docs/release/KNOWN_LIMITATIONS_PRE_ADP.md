@@ -710,3 +710,14 @@ Task-031-prep-ActivityViz-016 limitation token: Final Parity Gate Boundary, Task
 - **Required future checkpoint:** `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must remind the operator and request a refreshed decision before implementing compact Watch route UI.
 - **Boundary:** Deferral does not remove Shared `CompactRouteDisplay`; it only prevents current Watch UI implementation before the Task-036c decision.
 <!-- TASK031D_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK032E_PRE_ADP_LIMITATIONS_START -->
+### Task-032 WatchBridge Foundation Boundary
+
+- **Current status:** Task-032 has a shared WatchBridge foundation for contracts, activity-aware payloads, display-only compact payload carriage, simulator-safe connection state, mock transport, iOS tests, and aggregate verification.
+- **Still deferred:** no real WatchConnectivity runtime, no `WCSession`, no session-control mirroring runtime, no Watch UI, no HealthKit runtime, no Snow production behavior, no schema/Core Data/package mutation, no route geometry mutation, no trusted metric mutation, and no estimated route enablement.
+- **Runtime handoff:** Task-033a owns the first real WatchConnectivity runtime boundary shell and must not mix runtime behavior into the Task-032 foundation closure.
+- **Manual QA:** Task-032e does not require manual UI QA because it adds verifier/docs/ADR closure only and does not implement UI.
+
+Task-032e limitation token: Task-032 WatchBridge Foundation Boundary, no real WatchConnectivity runtime, no session-control mirroring runtime, no Watch UI, Task-033a runtime handoff.
+<!-- TASK032E_PRE_ADP_LIMITATIONS_END -->
