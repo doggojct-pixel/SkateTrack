@@ -12,6 +12,7 @@ PLAN = "SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md"
 SUBTASK = "Task-031b — watchOS Target / Scheme / Simulator Inventory"
 EXPECTED_BASELINE = "8d4e83e77c3f3a927c66710f0960d178a2b6f2de"
 TASK_BRANCH = "task-031b-watchos-inventory"
+AGGREGATE_TASK031_BRANCH = "task-031c-mode-guardrails"
 WATCH_TARGET = "SkateTrack-watchOS"
 WATCH_SCHEME = "SkateTrack-watchOS"
 
@@ -55,6 +56,10 @@ ALLOWED_CHANGED_PATHS = {
     "docs/history/DEV_LOG.md",
     "docs/reference/FILE_STRUCTURE.md",
     "scripts/verify_task031_watchos_inventory.py",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "scripts/verify_task031_phase1b_preflight.py",
+    "scripts/verify_task031_mode_guardrails.py",
+    "scripts/verify_task031_docs_alignment.py",
 }
 
 failure_count = 0
@@ -128,11 +133,11 @@ def baseline_check(repo: Path) -> None:
     branch_exit, branch = git_output(["branch", "--show-current"], repo)
     branch = branch.strip()
     print(f"CURRENT_BRANCH={branch}")
-    if branch in {"develop", TASK_BRANCH}:
+    if branch in {"develop", TASK_BRANCH, AGGREGATE_TASK031_BRANCH}:
         print("TASK031B_BRANCH_CONTEXT=ALLOWED")
         passed("current branch is valid for Task-031b inventory verification")
     else:
-        fail(f"current branch must be develop or {TASK_BRANCH}, got {branch}")
+        fail(f"current branch must be develop, {TASK_BRANCH}, or {AGGREGATE_TASK031_BRANCH}, got {branch}")
 
     head_exit, head = git_output(["rev-parse", "HEAD"], repo)
     head = head.strip()

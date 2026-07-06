@@ -49,6 +49,10 @@ ALLOWED_DIFF_PREFIXES = [
     "docs/adr/ADR-INDEX.md",
     "docs/adr/ADR-Shared-Activity-Visualization-Pipeline.md",
     "scripts/verify_task031_phase1b_preflight.py",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "scripts/verify_task031_watchos_inventory.py",
+    "scripts/verify_task031_mode_guardrails.py",
+    "scripts/verify_task031_docs_alignment.py",
 ]
 
 FORBIDDEN_SCOPE_PATTERNS = [
@@ -129,7 +133,7 @@ def contains_token(path: Path, token: str, label: str | None = None) -> bool:
 
 def check_git_baseline(repo: Path) -> None:
     print_header("Git baseline")
-    allowed_branches = {"develop", "task-031a-phase1b-baseline-preflight"}
+    allowed_branches = {"develop", "task-031a-phase1b-baseline-preflight", "task-031c-mode-guardrails"}
     code, branch = run_git(repo, ["rev-parse", "--abbrev-ref", "HEAD"])
     if code == 0:
         print(f"CURRENT_BRANCH={branch}")

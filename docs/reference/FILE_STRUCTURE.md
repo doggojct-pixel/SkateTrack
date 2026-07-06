@@ -2245,3 +2245,22 @@ SNOWFEATURE_REFERENCE_ONLY=YES
 
 Task-031c does not implement Snow UI, Snow production models, Snow Core Data schema, Snow classifiers, Snow run detectors, SnowPrototype UI changes, Trick recognition, WatchBridge runtime behavior, WatchConnectivity, HealthKit, route geometry mutation, trusted metric mutation, estimated route enablement, signing, capabilities, or Xcode project membership changes.
 <!-- TASK031C_MODE_GUARDRAILS_FILE_STRUCTURE_END -->
+
+<!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_START -->
+## Task-031d Documentation Alignment Addendum
+
+Task-031d added/updated documentation and verification files only:
+
+```text
+scripts/verify_task031_phase1b_preflight.py
+scripts/verify_task031_watchos_inventory.py
+scripts/verify_task031_mode_guardrails.py
+scripts/verify_task031_docs_alignment.py
+docs/process/PHASE_1B_AGENT_STATE.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+```
+
+Task-031d records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` and `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must reopen the route mini-card product decision before implementing compact Watch route UI. `NEXT_TASK=Task-032a` is the post-Task-031 handoff.
+<!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_END -->

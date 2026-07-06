@@ -14,6 +14,10 @@ ALLOWED_DIFF_PATHS = {
     "docs/history/DEV_LOG.md",
     "docs/reference/FILE_STRUCTURE.md",
     "scripts/verify_task031_mode_guardrails.py",
+    "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+    "scripts/verify_task031_phase1b_preflight.py",
+    "scripts/verify_task031_watchos_inventory.py",
+    "scripts/verify_task031_docs_alignment.py",
 }
 
 SNOW_PRODUCTION_PATHS = [
