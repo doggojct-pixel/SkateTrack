@@ -2830,3 +2830,12 @@ Task-032b added the first versioned, Codable-only WatchBridge contract surface u
 - Verified no WatchConnectivity runtime behavior, no Watch UI, no HealthKit runtime, no Snow production implementation, no trusted metric mutation, and no route geometry mutation.
 
 Task-032c verification token: WATCHBRIDGE_ACTIVITY_PAYLOAD_MODELS_IMPLEMENTED=YES, WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO, WATCH_UI_IMPLEMENTED=NO, TRUSTED_METRIC_MUTATION=NO, NEXT_TASK=Task-032d.
+
+## Task-032d-001 Connection State Store + Mock Transport
+
+- Added a simulator-safe WatchBridge connection timeline, connection state store, and mock transport under `Shared/WatchBridge/`.
+- Added iOS/watchOS source membership for the new connection/mock transport files.
+- Added iOS unit tests for connected, disconnected, unavailable, stale, message-received, queue, and reject transition behavior.
+- Verified no real WatchConnectivity runtime behavior, no WCSession dependency, no command mirroring runtime, no Watch UI, no HealthKit runtime, no Snow production implementation, no schema/Core Data/package mutation, no trusted metric mutation, and no route geometry mutation.
+
+Task-032d verification token: WATCHBRIDGE_CONNECTION_STATE_STORE_IMPLEMENTED=YES, WATCHBRIDGE_MOCK_TRANSPORT_IMPLEMENTED=YES, WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-032e.

@@ -2314,3 +2314,15 @@ scripts/verify_task032c_activity_payload_models.py      # Verifies Task-032c con
 - `WatchBridgePayload` now includes activity session, metric update, display summary, combined activity snapshot, command result, and connection status payload cases.
 - Task-032c payloads are Codable/Equatable/Sendable contract models only; runtime WatchConnectivity and Watch UI remain deferred.
 - Compact activity display payloads remain display-only and must not mutate trusted session metrics or route geometry.
+
+## Task-032d Connection State Store + Mock Transport Addendum
+
+Shared/WatchBridge/WatchBridgeConnectionTimeline.swift       # [協作區] Simulator-safe connection timeline events for connected/disconnected/unavailable/stale/message-received states.
+Shared/WatchBridge/WatchBridgeConnectionStateStore.swift    # [協作區] Deterministic connection state reducer and status snapshot payload builder.
+Shared/WatchBridge/WatchBridgeMockTransport.swift           # [協作區] Mock transport queue/reject/inbox helper for pre-runtime WatchBridge verification.
+Tests/iOSTests/WatchBridgeConnectionStateStoreTests.swift   # [協作區] Unit tests for connection state transition and timeline behavior.
+Tests/iOSTests/WatchBridgeMockTransportTests.swift          # [協作區] Unit tests for mock transport queue/reject/receive behavior.
+scripts/verify_task032d_connection_state_mock_transport.py  # Verifies Task-032d scope, project membership, tests, and runtime/UI/safety guardrails.
+
+- Task-032d is simulator-safe infrastructure only; it does not add real WatchConnectivity, WCSession, command mirroring runtime behavior, or Watch UI.
+- The mock transport is for state transition verification and future UI/test harness use only.
