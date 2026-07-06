@@ -526,3 +526,11 @@ Task-031-prep-ActivityViz-016 ADR token: final parity gate and closure decision,
 | `docs/adr/ADR-Shared-Activity-Visualization-Pipeline.md` | Accepted / documented from merged baseline | Records that Shared decides route/speed/elevation/compact visualization semantics while platforms decide rendering. No Watch UI, WatchBridge implementation, Watch recording, route geometry mutation, trusted metric mutation, package schema mutation, Core Data mutation, or Snow production implementation is introduced by Task-031a. |
 
 <!-- Task-031a-001 END -->
+
+<!-- TASK032A_WATCHBRIDGE_ADR_INDEX_START -->
+## Task-032a WatchBridge ADR
+
+| ADR | Status | Notes |
+|---|---|---|
+| `docs/adr/ADR-WatchBridge-Contract-Placement.md` | Accepted for Task-032a planning | Records WatchBridge Contract Placement: `Shared/WatchBridge/` namespace, planned file split, target membership plan, duplicate-layer audit, and the boundary that Task-032a adds no runtime WatchConnectivity or Watch UI behavior. |
+<!-- TASK032A_WATCHBRIDGE_ADR_INDEX_END -->

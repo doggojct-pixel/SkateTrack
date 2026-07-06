@@ -2264,3 +2264,31 @@ docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
 
 Task-031d records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` and `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must reopen the route mini-card product decision before implementing compact Watch route UI. `NEXT_TASK=Task-032a` is the post-Task-031 handoff.
 <!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_END -->
+
+<!-- TASK032A_WATCHBRIDGE_AUDIT_FILE_STRUCTURE_START -->
+## Task-032a WatchBridge Audit Addendum
+
+Task-032a adds documentation and verification only:
+
+```text
+docs/adr/ADR-WatchBridge-Contract-Placement.md     # [原則 E] Records WatchBridge contract namespace, planned file split, target membership plan, and runtime boundary.
+scripts/verify_task032a_watchbridge_audit.py       # [工程設定] Verifies Task-032a audit/docs scope and contract placement decision.
+docs/process/PHASE_1B_AGENT_STATE.md               # [原則 E] Records Task-032a state and next task.
+docs/history/DEV_LOG.md                            # [原則 E] Records Task-032a-001 audit result.
+docs/reference/FILE_STRUCTURE.md                   # [原則 E] Documents Task-032a output scope and future file plan.
+docs/adr/ADR-INDEX.md                              # [原則 E] Registers the WatchBridge contract placement ADR.
+```
+
+Planned future files, not created by Task-032a:
+
+```text
+Shared/WatchBridge/WatchBridgeEnvelope.swift
+Shared/WatchBridge/WatchBridgePayloads.swift
+Shared/WatchBridge/WatchBridgeConnectionState.swift
+Shared/WatchBridge/WatchBridgeCommandModels.swift
+```
+
+Task-032a keeps `Shared/WatchBridge/` absent until Task-032b creates the first contract files. When those files are added, iOS + watchOS source membership is required. macOS membership is optional only for compile-only tools, previews, or tests.
+
+Task-032a does not implement WatchBridge models, WatchConnectivity runtime behavior, command mirroring, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+<!-- TASK032A_WATCHBRIDGE_AUDIT_FILE_STRUCTURE_END -->

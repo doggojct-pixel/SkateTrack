@@ -2782,3 +2782,26 @@ Summary:
 
 No Watch UI, WatchBridge runtime behavior, WatchConnectivity runtime behavior, HealthKit, signing, entitlements, capabilities, bundle identifiers, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production implementation was added.
 <!-- TASK031D_DOCS_ALIGNMENT_DEVLOG_END -->
+
+<!-- TASK032A_WATCHBRIDGE_AUDIT_DEVLOG_START -->
+## 2026-07-06 — Task-032a-001 WatchBridge Source Audit + Contract Placement
+
+- Audited the post-Task-031 `develop` baseline for WatchBridge placement readiness.
+- Confirmed `Shared/WatchBridge` is absent before contract creation and no duplicate WatchBridge runtime layer exists.
+- Confirmed guarded Swift source paths do not contain runtime `WatchConnectivity` / `WCSession` implementation.
+- Recorded `Shared/WatchBridge/` as the future contract namespace for Task-032b.
+- Recorded the planned file split: `WatchBridgeEnvelope.swift`, `WatchBridgePayloads.swift`, `WatchBridgeConnectionState.swift`, and `WatchBridgeCommandModels.swift`.
+- Recorded the target-membership plan: iOS + watchOS required when contracts are added; macOS optional only for compile-only tools, previews, or tests.
+- Added `docs/adr/ADR-WatchBridge-Contract-Placement.md` and `scripts/verify_task032a_watchbridge_audit.py`.
+
+```text
+VERIFY_TASK032A_WATCHBRIDGE_AUDIT_RESULT=PASSED
+CONTRACT_PLACEMENT_DECIDED=YES
+WATCHBRIDGE_CONTRACT_NAMESPACE=Shared/WatchBridge
+DUPLICATE_WATCHBRIDGE_LAYER_COUNT=0
+WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO
+NEXT_TASK=Task-032b
+```
+
+Task-032a intentionally does not add WatchBridge Swift models, WatchConnectivity runtime behavior, command mirroring, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+<!-- TASK032A_WATCHBRIDGE_AUDIT_DEVLOG_END -->
