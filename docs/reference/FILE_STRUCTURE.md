@@ -2372,3 +2372,12 @@ Task-032e does not add product Swift, project membership, platform UI, WatchConn
   - Verifies accepted, stale, duplicate, missing-session, and invalid-direction command behavior.
 - `scripts/verify_task033b_mirrored_session_commands.py`
   - Verifies Task-033b command boundary scope, project membership, documentation, and no UI/schema/Snow/session-mutation guardrails.
+
+## Task-033c Command Safety / Conflict Rules Addendum
+
+- `Shared/WatchBridge/WatchBridgeCommandSafetyRules.swift`
+  - Defines command safety context, rule decisions, and a safety authority wrapper for iPhone-vs-Watch conflict, out-of-order, and disconnected-state rejection before iPhone authority validation.
+- `Tests/iOSTests/WatchBridgeCommandSafetyTests.swift`
+  - Verifies simultaneous iPhone action conflict rejection, out-of-order Watch command rejection, disconnected Watch command rejection, and reachable/in-order forwarding.
+- `scripts/verify_task033c_command_safety_conflict_rules.py`
+  - Verifies Task-033c command safety files, project membership, docs, and no UI/schema/Snow/HealthKit/direct-mutation guardrails.

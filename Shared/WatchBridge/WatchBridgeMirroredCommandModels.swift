@@ -33,6 +33,9 @@ public enum WatchBridgeMirroredCommandRejectionReason: String, Codable, Equatabl
     case missingSessionId
     case iPhoneAuthorityRejected
     case unavailable
+    case iPhoneActionInProgress
+    case outOfOrderCommand
+    case watchDisconnected
 }
 
 public struct WatchBridgeMirroredSessionCommandPolicy: Codable, Equatable, Sendable {
@@ -102,19 +105,29 @@ public struct WatchBridgeMirroredCommandAuthorityDecision: Codable, Equatable, S
     public let accepted: Bool
     public let sessionId: UUID?
     public let reason: String?
+    public let rejectionReason: WatchBridgeMirroredCommandRejectionReason?
 
-    public init(accepted: Bool, sessionId: UUID? = nil, reason: String? = nil) {
+    public init(
+        accepted: Bool,
+        sessionId: UUID? = nil,
+        reason: String? = nil,
+        rejectionReason: WatchBridgeMirroredCommandRejectionReason? = nil
+    ) {
         self.accepted = accepted
         self.sessionId = sessionId
         self.reason = reason
+        self.rejectionReason = rejectionReason
     }
 
     public static func accept(sessionId: UUID? = nil) -> Self {
         Self(accepted: true, sessionId: sessionId)
     }
 
-    public static func reject(reason: String) -> Self {
-        Self(accepted: false, reason: reason)
+    public static func reject(
+        reason: String,
+        rejectionReason: WatchBridgeMirroredCommandRejectionReason = .iPhoneAuthorityRejected
+    ) -> Self {
+        Self(accepted: false, reason: reason, rejectionReason: rejectionReason)
     }
 }
 

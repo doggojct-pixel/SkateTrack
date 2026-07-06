@@ -734,3 +734,10 @@ Task-032e limitation token: Task-032 WatchBridge Foundation Boundary, no real Wa
 - Watch commands still require iPhone-side session authority before acceptance.
 - There is no Watch UI and no direct Watch session mutation.
 - There is still no HealthKit workout runtime, Snow production implementation, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+
+## Task-033c Command Safety / Conflict Rules
+
+- Task-033c adds safety rules for mirrored command conflict handling, out-of-order command rejection, and disconnected Watch command rejection.
+- iPhone-side authority remains final; Watch-originated commands are rejected or forwarded for validation rather than mutating session state directly.
+- There is still no Watch UI and no direct Watch session mutation.
+- There is still no HealthKit workout runtime, Snow production implementation, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.

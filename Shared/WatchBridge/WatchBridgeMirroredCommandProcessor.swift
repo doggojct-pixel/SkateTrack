@@ -152,7 +152,7 @@ public struct WatchBridgeMirroredCommandProcessor<Authority: WatchBridgeMirrored
         let decision = reject(
             request,
             action: action,
-            reason: .iPhoneAuthorityRejected,
+            reason: authorityDecision.rejectionReason ?? .iPhoneAuthorityRejected,
             message: authorityDecision.reason ?? "iPhone authority rejected mirrored command",
             decidedAt: decidedAt,
             sessionId: authorityDecision.sessionId

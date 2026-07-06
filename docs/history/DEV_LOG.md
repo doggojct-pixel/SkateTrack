@@ -2871,3 +2871,10 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Added duplicate command protection with command-id idempotency and stale command rejection.
 - Added command acknowledgement/rejection round-trip tests without paired hardware.
 - Preserved guardrails: MIRRORED_SESSION_COMMAND_BOUNDARY_IMPLEMENTED=YES, IPHONE_SESSION_AUTHORITY_PRESERVED=YES, WATCH_DIRECT_SESSION_MUTATION=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-033c.
+
+## Task-033c-001 Command Safety / Conflict Rules
+
+- Added command safety rules for simultaneous iPhone-side action conflicts, out-of-order Watch commands, and disconnected/unreachable Watch command state.
+- Added a safety authority wrapper that rejects unsafe Watch commands before forwarding to the iPhone-side command authority.
+- Added simulator-safe conflict tests for iPhone action precedence, out-of-order rejection, disconnected Watch rejection, and reachable/in-order forwarding.
+- Preserved guardrails: COMMAND_CONFLICT_RULES_IMPLEMENTED=YES, IPHONE_WATCH_CONFLICT_PRECEDENCE=IPHONE_AUTHORITY_FIRST, OUT_OF_ORDER_COMMAND_REJECTION=YES, WATCH_DIRECT_SESSION_MUTATION=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-033d.
