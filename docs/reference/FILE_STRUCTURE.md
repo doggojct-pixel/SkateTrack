@@ -2160,3 +2160,26 @@ ActivityViz-015 intentionally does not modify `Shared/ActivityVisualization` pro
   - Reiterates that final parity does not unlock Watch UI, Watch recording, route correction, current-user-location display, trusted metric mutation, or persistence/export/package schema changes.
 
 Task-031-prep ActivityViz-016 Final Parity Gate token: final parity verifier, `scripts/verify_task031_prep_016_final_parity_gate.py`, ActivityViz-003 through ActivityViz-015 verifier family, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, Task-031-prep closure gate.
+
+<!-- Task-031a-001 BEGIN -->
+
+## Task-031a Baseline Preflight Addendum
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+Aligned subtask: `Task-031a — Develop Baseline Lock + Source-of-Truth Preflight`
+
+Task-031a-001 adds Phase 1b baseline state tracking and a focused preflight verifier. This is a docs/verifier-only step.
+
+Task-031a-001 files:
+
+```text
+docs/process/PHASE_1B_AGENT_STATE.md                         # [原則 E] Phase 1b baseline lock, open macOS XCTest policy checkpoint, Watch route mini-card checkpoint, and explicit not-implemented scope.
+docs/adr/ADR-Shared-Activity-Visualization-Pipeline.md       # [原則 E] Standalone ADR documenting the already-merged Shared ActivityVisualization architecture.
+scripts/verify_task031_phase1b_preflight.py                  # [工程設定] Task-031a preflight verifier for develop baseline, Task-031-prep reachability, Shared ActivityVisualization paths, compact adapter types, watchOS membership/consumption distinction, docs tokens, and forbidden-scope guards.
+```
+
+Task-031a-001 intentionally does not add product Swift behavior, Xcode project membership changes, Watch UI, WatchBridge implementation, Watch recording, Snow production implementation, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, signing changes, capabilities, or localization changes.
+
+`Shared/WatchBridge` remains intentionally absent at this stage and is recorded as `ABSENT_EXPECTED_UNTIL_TASK032A_AUDIT` rather than a Task-031a failure.
+
+<!-- Task-031a-001 END -->
