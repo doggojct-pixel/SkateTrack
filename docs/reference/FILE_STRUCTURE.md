@@ -2381,3 +2381,30 @@ Task-032e does not add product Swift, project membership, platform UI, WatchConn
   - Verifies simultaneous iPhone action conflict rejection, out-of-order Watch command rejection, disconnected Watch command rejection, and reachable/in-order forwarding.
 - `scripts/verify_task033c_command_safety_conflict_rules.py`
   - Verifies Task-033c command safety files, project membership, docs, and no UI/schema/Snow/HealthKit/direct-mutation guardrails.
+
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_FILE_STRUCTURE_START -->
+## Task-033d WatchConnectivity Verifier + Docs Addendum
+
+Task-033d closes the Task-033 WatchConnectivity boundary stack with verifier/docs only:
+
+```text
+scripts/verify_task033_watchconnectivity_boundary.py        # [工程設定] Aggregate Task-033 closure verifier.
+docs/process/PHASE_1B_AGENT_STATE.md                       # [原則 E] Records Task-033d aggregate state.
+docs/history/DEV_LOG.md                                    # [原則 E] Records Task-033d closure result.
+docs/reference/FILE_STRUCTURE.md                           # [原則 E] Documents aggregate verifier placement.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                  # [原則 E] Records remaining limitations.
+```
+
+The verified Task-033 product/test surface remains:
+
+```text
+Shared/WatchBridge/WatchBridgeConnectivityBoundary.swift
+Shared/WatchBridge/WatchBridgeWCSessionBoundary.swift
+Shared/WatchBridge/WatchBridgeMirroredCommandModels.swift
+Shared/WatchBridge/WatchBridgeMirroredCommandProcessor.swift
+Shared/WatchBridge/WatchBridgeCommandSafetyRules.swift
+Tests/iOSTests/WatchBridgeConnectivityBoundaryTests.swift
+Tests/iOSTests/WatchBridgeMirroredSessionCommandTests.swift
+Tests/iOSTests/WatchBridgeCommandSafetyTests.swift
+```
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_FILE_STRUCTURE_END -->
