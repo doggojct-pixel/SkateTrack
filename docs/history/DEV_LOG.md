@@ -2851,3 +2851,40 @@ Task-032d verification token: WATCHBRIDGE_CONNECTION_STATE_STORE_IMPLEMENTED=YES
 
 Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO, SESSION_CONTROL_MIRRORING_RUNTIME_IMPLEMENTED=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-033a.
 <!-- TASK032E_WATCHBRIDGE_FOUNDATION_DEV_LOG_END -->
+## Task-033a-001C WatchConnectivity Boundary Shell
+
+- Added `WatchBridgeConnectivityBoundary` and `WatchBridgeConnectivityAvailability` as the Task-033a boundary shell.
+- Added `WatchBridgeWCSessionBoundary` to isolate WCSession usage inside a single shared boundary wrapper for iOS/watchOS.
+- Added `WatchBridgeSimulatorFallbackBoundary` and iOS fallback tests.
+- Preserved Task-033a boundaries:
+  - WCSESSION_WRAPPED_BY_BOUNDARY=YES
+  - SIMULATOR_FALLBACK_PRESENT=YES
+  - DIRECT_UI_WCSESSION_USAGE_COUNT=0
+  - SESSION_CONTROL_MIRRORING_RUNTIME_IMPLEMENTED=NO
+  - WATCH_UI_IMPLEMENTED=NO
+- NEXT_TASK=Task-033b
+
+## Task-033b-001 Mirrored Session Commands
+
+- Added mirrored session command models for start / pause / resume / stop actions.
+- Added a command processor that requires iPhone-side authority validation before accepting Watch-originated commands.
+- Added duplicate command protection with command-id idempotency and stale command rejection.
+- Added command acknowledgement/rejection round-trip tests without paired hardware.
+- Preserved guardrails: MIRRORED_SESSION_COMMAND_BOUNDARY_IMPLEMENTED=YES, IPHONE_SESSION_AUTHORITY_PRESERVED=YES, WATCH_DIRECT_SESSION_MUTATION=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-033c.
+
+## Task-033c-001 Command Safety / Conflict Rules
+
+- Added command safety rules for simultaneous iPhone-side action conflicts, out-of-order Watch commands, and disconnected/unreachable Watch command state.
+- Added a safety authority wrapper that rejects unsafe Watch commands before forwarding to the iPhone-side command authority.
+- Added simulator-safe conflict tests for iPhone action precedence, out-of-order rejection, disconnected Watch rejection, and reachable/in-order forwarding.
+- Preserved guardrails: COMMAND_CONFLICT_RULES_IMPLEMENTED=YES, IPHONE_WATCH_CONFLICT_PRECEDENCE=IPHONE_AUTHORITY_FIRST, OUT_OF_ORDER_COMMAND_REJECTION=YES, WATCH_DIRECT_SESSION_MUTATION=NO, WATCH_UI_IMPLEMENTED=NO, NEXT_TASK=Task-033d.
+
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_DEVLOG_START -->
+## Task-033d-001 WatchConnectivity Verifier + Docs
+
+- Added the aggregate `scripts/verify_task033_watchconnectivity_boundary.py` closure verifier for Task-033.
+- Confirmed the Task-033 bridge stack remains limited to a WatchConnectivity boundary wrapper, simulator fallback, mirrored command acknowledgement/rejection, duplicate and stale command protection, and command safety/conflict rules.
+- Confirmed `TASK033_AGGREGATE_VERIFIER_IMPLEMENTED=YES` and `TASK033_WATCHCONNECTIVITY_BOUNDARY_COMPLETE=YES`.
+- Preserved guardrails: `WATCHCONNECTIVITY_WRAPPED_BY_BOUNDARY=YES`, `DIRECT_UI_WCSESSION_USAGE_COUNT=0`, `IPHONE_SESSION_AUTHORITY_PRESERVED=YES`, `WATCH_DIRECT_SESSION_MUTATION=NO`, `WATCH_UI_IMPLEMENTED=NO`, `HEALTHKIT_PRODUCTION_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTATION=NO`.
+- Next task handoff: `NEXT_TASK=Task-034a`.
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_DEVLOG_END -->

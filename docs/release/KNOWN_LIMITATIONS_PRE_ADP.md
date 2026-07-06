@@ -721,3 +721,39 @@ Task-031-prep-ActivityViz-016 limitation token: Final Parity Gate Boundary, Task
 
 Task-032e limitation token: Task-032 WatchBridge Foundation Boundary, no real WatchConnectivity runtime, no session-control mirroring runtime, no Watch UI, Task-033a runtime handoff.
 <!-- TASK032E_PRE_ADP_LIMITATIONS_END -->
+## Task-033a WatchConnectivity Boundary Shell
+
+- Task-033a introduces a WatchConnectivity boundary shell only.
+- There is still no production session-control mirroring runtime.
+- There is still no Watch UI.
+- There is still no HealthKit workout runtime or Snow production implementation.
+
+## Task-033b Mirrored Session Commands
+
+- Task-033b adds mirrored command boundary models and processor tests only.
+- Watch commands still require iPhone-side session authority before acceptance.
+- There is no Watch UI and no direct Watch session mutation.
+- There is still no HealthKit workout runtime, Snow production implementation, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+
+## Task-033c Command Safety / Conflict Rules
+
+- Task-033c adds safety rules for mirrored command conflict handling, out-of-order command rejection, and disconnected Watch command rejection.
+- iPhone-side authority remains final; Watch-originated commands are rejected or forwarded for validation rather than mutating session state directly.
+- There is still no Watch UI and no direct Watch session mutation.
+- There is still no HealthKit workout runtime, Snow production implementation, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_LIMITATIONS_START -->
+## Task-033 WatchConnectivity boundary closure
+
+Task-033 closes as a bounded WatchConnectivity foundation. The runtime boundary shell, mirrored command models, command acknowledgement/rejection path, duplicate/stale command protection, and command safety/conflict rules are in place.
+
+Remaining limitations before later Watch UI / runtime integration tasks:
+
+- iPhone-side authority remains final for session state decisions.
+- There is no Watch UI in Task-033.
+- There is no direct Watch session mutation in Task-033.
+- There is no HealthKit production implementation in Task-033.
+- There is no Snow production implementation in Task-033.
+- There is no schema/Core Data/package mutation in Task-033.
+- There is no route geometry or trusted metric mutation in Task-033.
+<!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_LIMITATIONS_END -->

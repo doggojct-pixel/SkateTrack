@@ -28,6 +28,19 @@
 		32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
 		32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */; };
 		32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */; };
+		33A100000000000000000101 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
+		33A100000000000000000102 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
+		33A200000000000000000101 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
+		33A200000000000000000102 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
+		33A900000000000000000101 /* WatchBridgeConnectivityBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */; };
+		33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
+		33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
+		33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
+		33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
+		33B900000000000000000101 /* WatchBridgeMirroredSessionCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */; };
+		33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
+		33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
+		33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */; };
 
 		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
 		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
@@ -473,6 +486,14 @@
 		32D300000000000000000001 /* WatchBridgeMockTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransport.swift; sourceTree = "<group>"; };
 		32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStoreTests.swift; sourceTree = "<group>"; };
 		32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransportTests.swift; sourceTree = "<group>"; };
+		33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundary.swift; sourceTree = "<group>"; };
+		33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeWCSessionBoundary.swift; sourceTree = "<group>"; };
+		33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundaryTests.swift; sourceTree = "<group>"; };
+		33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandModels.swift; sourceTree = "<group>"; };
+		33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandProcessor.swift; sourceTree = "<group>"; };
+		33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredSessionCommandTests.swift; sourceTree = "<group>"; };
+		33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyRules.swift; sourceTree = "<group>"; };
+		33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyTests.swift; sourceTree = "<group>"; };
 
 		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
 		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
@@ -830,6 +851,11 @@
 				32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */,
 				32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */,
 				32D300000000000000000001 /* WatchBridgeMockTransport.swift */,
+				33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */,
+				33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */,
+				33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */,
+				33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */,
+				33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */,
 			);
 			path = WatchBridge;
 			sourceTree = "<group>";
@@ -1078,6 +1104,9 @@
 				30D500000000000000000001 /* SkateTrackPackageImportTests.swift */,
 				32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */,
 				32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */,
+				33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */,
+				33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */,
+				33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1755,6 +1784,9 @@
 				30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */,
 				32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */,
 				32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */,
+				33A900000000000000000101 /* WatchBridgeConnectivityBoundaryTests.swift in Sources */,
+				33B900000000000000000101 /* WatchBridgeMirroredSessionCommandTests.swift in Sources */,
+				33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1771,6 +1803,11 @@
 				32D100000000000000000101 /* WatchBridgeConnectionTimeline.swift in Sources */,
 				32D200000000000000000101 /* WatchBridgeConnectionStateStore.swift in Sources */,
 				32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */,
+				33A100000000000000000101 /* WatchBridgeConnectivityBoundary.swift in Sources */,
+				33A200000000000000000101 /* WatchBridgeWCSessionBoundary.swift in Sources */,
+				33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */,
+				33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
+				33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2124,6 +2161,11 @@
 				32D100000000000000000102 /* WatchBridgeConnectionTimeline.swift in Sources */,
 				32D200000000000000000102 /* WatchBridgeConnectionStateStore.swift in Sources */,
 				32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */,
+				33A100000000000000000102 /* WatchBridgeConnectivityBoundary.swift in Sources */,
+				33A200000000000000000102 /* WatchBridgeWCSessionBoundary.swift in Sources */,
+				33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */,
+				33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
+				33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,
