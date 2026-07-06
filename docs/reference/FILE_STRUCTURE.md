@@ -2351,3 +2351,13 @@ NEXT_TASK=Task-033a
 
 Task-032e does not add product Swift, project membership, platform UI, WatchConnectivity runtime behavior, `WCSession`, HealthKit runtime, Snow production, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
 <!-- TASK032E_WATCHBRIDGE_FOUNDATION_FILE_STRUCTURE_END -->
+## Task-033a WatchConnectivity Boundary Shell Addendum
+
+- `Shared/WatchBridge/WatchBridgeConnectivityBoundary.swift`
+  - Defines runtime-independent boundary protocol, availability model, send result, and simulator fallback.
+- `Shared/WatchBridge/WatchBridgeWCSessionBoundary.swift`
+  - Wraps WCSession behind the boundary shell for iOS/watchOS only.
+- `Tests/iOSTests/WatchBridgeConnectivityBoundaryTests.swift`
+  - Verifies fallback activation, fallback send behavior, and unavailable runtime representation.
+- `scripts/verify_task033a_watchconnectivity_boundary.py`
+  - Verifies boundary shell placement, target membership, no direct UI WCSession usage, and Task-033a guardrails.

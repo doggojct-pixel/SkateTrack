@@ -721,3 +721,9 @@ Task-031-prep-ActivityViz-016 limitation token: Final Parity Gate Boundary, Task
 
 Task-032e limitation token: Task-032 WatchBridge Foundation Boundary, no real WatchConnectivity runtime, no session-control mirroring runtime, no Watch UI, Task-033a runtime handoff.
 <!-- TASK032E_PRE_ADP_LIMITATIONS_END -->
+## Task-033a WatchConnectivity Boundary Shell
+
+- Task-033a introduces a WatchConnectivity boundary shell only.
+- There is still no production session-control mirroring runtime.
+- There is still no Watch UI.
+- There is still no HealthKit workout runtime or Snow production implementation.
