@@ -2326,3 +2326,28 @@ scripts/verify_task032d_connection_state_mock_transport.py  # Verifies Task-032d
 
 - Task-032d is simulator-safe infrastructure only; it does not add real WatchConnectivity, WCSession, command mirroring runtime behavior, or Watch UI.
 - The mock transport is for state transition verification and future UI/test harness use only.
+
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_FILE_STRUCTURE_START -->
+## Task-032e WatchBridge Foundation Closure Addendum
+
+```text
+scripts/verify_task032_watchbridge_foundation.py     # Aggregate Task-032 foundation verifier for contracts, payloads, connection/mock transport, tests, docs, and runtime guardrails.
+docs/adr/ADR-WatchBridge-Foundation.md              # ADR recording Task-032 foundation closure and Task-033a runtime handoff.
+docs/adr/ADR-INDEX.md                               # Registers the WatchBridge Foundation Boundary ADR.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md           # Records that WatchBridge runtime/session-control mirroring/Watch UI remain deferred.
+```
+
+Task-032 foundation file counts:
+
+```text
+WATCHBRIDGE_SWIFT_FILE_COUNT=9
+WATCHBRIDGE_TEST_SWIFT_COUNT=2
+WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO
+WCSESSION_DEPENDENCY_IMPLEMENTED=NO
+SESSION_CONTROL_MIRRORING_RUNTIME_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-033a
+```
+
+Task-032e does not add product Swift, project membership, platform UI, WatchConnectivity runtime behavior, `WCSession`, HealthKit runtime, Snow production, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_FILE_STRUCTURE_END -->

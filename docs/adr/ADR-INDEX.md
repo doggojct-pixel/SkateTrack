@@ -534,3 +534,13 @@ Task-031-prep-ActivityViz-016 ADR token: final parity gate and closure decision,
 |---|---|---|
 | `docs/adr/ADR-WatchBridge-Contract-Placement.md` | Accepted for Task-032a planning | Records WatchBridge Contract Placement: `Shared/WatchBridge/` namespace, planned file split, target membership plan, duplicate-layer audit, and the boundary that Task-032a adds no runtime WatchConnectivity or Watch UI behavior. |
 <!-- TASK032A_WATCHBRIDGE_ADR_INDEX_END -->
+
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_ADR_INDEX_START -->
+## Task-032e decision note — WatchBridge Foundation Boundary
+
+| ADR | Decision | Status | Owning active docs |
+|---|---|---|---|
+| ADR-WatchBridge-Foundation.md | Task-032 closes the WatchBridge foundation as contracts, simulator-safe state, mock transport, tests, and aggregate verification only. Real WatchConnectivity, `WCSession`, session-control mirroring runtime, Watch UI, HealthKit runtime, Snow production, schema/Core Data/package mutation, route geometry mutation, and trusted metric mutation remain deferred. | Accepted / foundation closure | `docs/adr/ADR-WatchBridge-Foundation.md`, `docs/process/PHASE_1B_AGENT_STATE.md`, `docs/reference/FILE_STRUCTURE.md`, `docs/release/KNOWN_LIMITATIONS_PRE_ADP.md` |
+
+Task-032e ADR token: WatchBridge Foundation Boundary, TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, NEXT_TASK=Task-033a.
+<!-- TASK032E_WATCHBRIDGE_FOUNDATION_ADR_INDEX_END -->
