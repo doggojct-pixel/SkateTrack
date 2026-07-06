@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 
+		34A100000000000000000101 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
+		34A100000000000000000102 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
+		34A200000000000000000101 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
+		34A200000000000000000102 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
+		34A300000000000000000101 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
+		34A300000000000000000102 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
+		34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
+		34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
+		34A900000000000000000101 /* WatchSensorProviderAvailabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */; };
+
 		32B100000000000000000101 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
 		32B100000000000000000102 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
 		32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
@@ -475,6 +485,12 @@
 
 /* Begin PBXFileReference section */
 
+		34A100000000000000000001 /* WatchSensorProviderProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderProtocols.swift; sourceTree = "<group>"; };
+		34A200000000000000000001 /* WatchSensorSampleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorSampleModels.swift; sourceTree = "<group>"; };
+		34A300000000000000000001 /* WatchSensorMockProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorMockProvider.swift; sourceTree = "<group>"; };
+		34A400000000000000000001 /* WatchSensorDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorDisabledProvider.swift; sourceTree = "<group>"; };
+		34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderAvailabilityTests.swift; sourceTree = "<group>"; };
+
 		32B100000000000000000001 /* WatchBridgeEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeEnvelope.swift; sourceTree = "<group>"; };
 		32B200000000000000000001 /* WatchBridgePayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgePayloads.swift; sourceTree = "<group>"; };
 		32B300000000000000000001 /* WatchBridgeConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionState.swift; sourceTree = "<group>"; };
@@ -839,6 +855,18 @@
 
 /* Begin PBXGroup section */
 
+		34A000000000000000000000 /* WatchSensors */ = {
+			isa = PBXGroup;
+			children = (
+				34A100000000000000000001 /* WatchSensorProviderProtocols.swift */,
+				34A200000000000000000001 /* WatchSensorSampleModels.swift */,
+				34A300000000000000000001 /* WatchSensorMockProvider.swift */,
+				34A400000000000000000001 /* WatchSensorDisabledProvider.swift */,
+			);
+			path = WatchSensors;
+			sourceTree = "<group>";
+		};
+
 		32B000000000000000000000 /* WatchBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -1107,6 +1135,7 @@
 				33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */,
 				33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */,
 				33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */,
+				34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1581,6 +1610,7 @@
 		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				34A000000000000000000000 /* WatchSensors */,
 				32B000000000000000000000 /* WatchBridge */,
 				12A200000000000000000006 /* Constants */,
 				12A30000000000000000000B /* Models */,
@@ -1787,6 +1817,7 @@
 				33A900000000000000000101 /* WatchBridgeConnectivityBoundaryTests.swift in Sources */,
 				33B900000000000000000101 /* WatchBridgeMirroredSessionCommandTests.swift in Sources */,
 				33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */,
+				34A900000000000000000101 /* WatchSensorProviderAvailabilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1808,6 +1839,10 @@
 				33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */,
 				33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
 				33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */,
+				34A100000000000000000101 /* WatchSensorProviderProtocols.swift in Sources */,
+				34A200000000000000000101 /* WatchSensorSampleModels.swift in Sources */,
+				34A300000000000000000101 /* WatchSensorMockProvider.swift in Sources */,
+				34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2166,6 +2201,10 @@
 				33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */,
 				33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
 				33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */,
+				34A100000000000000000102 /* WatchSensorProviderProtocols.swift in Sources */,
+				34A200000000000000000102 /* WatchSensorSampleModels.swift in Sources */,
+				34A300000000000000000102 /* WatchSensorMockProvider.swift in Sources */,
+				34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,

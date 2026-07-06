@@ -2888,3 +2888,14 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Preserved guardrails: `WATCHCONNECTIVITY_WRAPPED_BY_BOUNDARY=YES`, `DIRECT_UI_WCSESSION_USAGE_COUNT=0`, `IPHONE_SESSION_AUTHORITY_PRESERVED=YES`, `WATCH_DIRECT_SESSION_MUTATION=NO`, `WATCH_UI_IMPLEMENTED=NO`, `HEALTHKIT_PRODUCTION_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTATION=NO`.
 - Next task handoff: `NEXT_TASK=Task-034a`.
 <!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_DEVLOG_END -->
+
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_DEVLOG_START -->
+## Task-034a-001 Watch Sensor Provider Protocols
+
+- Added `Shared/WatchSensors` provider contracts for watch-originated sensor data availability without starting persistence, fusion, or production sensor APIs.
+- Added sample value models plus mock and disabled providers for simulator-safe provider boundary tests.
+- Added iOS unit tests covering disabled/unavailable provider state, mock provider availability, sample limiting, and confidence clamping.
+- Verification tokens: `TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_RESULT=PASSED`, `WATCH_SENSOR_PROVIDER_PROTOCOLS_IMPLEMENTED=YES`, `MOCK_SENSOR_PROVIDER_PRESENT=YES`, `DISABLED_SENSOR_PROVIDER_PRESENT=YES`, `PROVIDER_AVAILABILITY_TESTS=YES`.
+- Preserved guardrails: `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`.
+- Next task handoff: `NEXT_TASK=Task-034b`.
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_DEVLOG_END -->

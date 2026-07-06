@@ -757,3 +757,32 @@ Remaining limitations before later Watch UI / runtime integration tasks:
 - There is no schema/Core Data/package mutation in Task-033.
 - There is no route geometry or trusted metric mutation in Task-033.
 <!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_LIMITATIONS_END -->
+
+<!-- TASK034A_PRE_ADP_LIMITATIONS_START -->
+## Task-034a Watch Sensor Provider Protocols Boundary
+
+Task-034a defines provider contracts, sample value models, mock provider behavior, disabled provider behavior, and availability tests only.
+
+Remaining limitations:
+
+- No production HealthKit API is used in Task-034a.
+- No HealthKit entitlement or capability is added in Task-034a.
+- No Watch sample storage is implemented in Task-034a.
+- No metric fusion is implemented in Task-034a.
+- No Watch UI is implemented in Task-034a.
+- No Snow production implementation is added in Task-034a.
+- No schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation is added in Task-034a.
+
+```text
+TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_RESULT=PASSED
+WATCH_SENSOR_PROVIDER_PROTOCOLS_IMPLEMENTED=YES
+MOCK_SENSOR_PROVIDER_PRESENT=YES
+DISABLED_SENSOR_PROVIDER_PRESENT=YES
+PROVIDER_AVAILABILITY_TESTS=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-034b
+```
+<!-- TASK034A_PRE_ADP_LIMITATIONS_END -->

@@ -2408,3 +2408,33 @@ Tests/iOSTests/WatchBridgeMirroredSessionCommandTests.swift
 Tests/iOSTests/WatchBridgeCommandSafetyTests.swift
 ```
 <!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_FILE_STRUCTURE_END -->
+
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_FILE_STRUCTURE_START -->
+## Task-034a Watch Sensor Provider Protocols Addendum
+
+Task-034a adds provider-boundary files only:
+
+```text
+Shared/WatchSensors/WatchSensorProviderProtocols.swift      # Provider kind, availability state, and provider protocol.
+Shared/WatchSensors/WatchSensorSampleModels.swift           # Codable sample value and snapshot models.
+Shared/WatchSensors/WatchSensorMockProvider.swift           # Simulator-safe scripted provider.
+Shared/WatchSensors/WatchSensorDisabledProvider.swift       # Disabled/unavailable provider boundary.
+Tests/iOSTests/WatchSensorProviderAvailabilityTests.swift   # Availability, mock, disabled, and sample model tests.
+scripts/verify_task034a_watch_sensor_provider_protocols.py  # Task-034a verifier.
+```
+
+Task-034a does not add production HealthKit API usage, HealthKit entitlements, Watch sample storage, metric fusion, Watch UI, Snow production, schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation.
+
+```text
+TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_RESULT=PASSED
+WATCH_SENSOR_PROVIDER_PROTOCOLS_IMPLEMENTED=YES
+MOCK_SENSOR_PROVIDER_PRESENT=YES
+DISABLED_SENSOR_PROVIDER_PRESENT=YES
+PROVIDER_AVAILABILITY_TESTS=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-034b
+```
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_FILE_STRUCTURE_END -->
