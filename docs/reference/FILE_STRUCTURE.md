@@ -2183,3 +2183,35 @@ Task-031a-001 intentionally does not add product Swift behavior, Xcode project m
 `Shared/WatchBridge` remains intentionally absent at this stage and is recorded as `ABSENT_EXPECTED_UNTIL_TASK032A_AUDIT` rather than a Task-031a failure.
 
 <!-- Task-031a-001 END -->
+
+<!-- TASK031B_WATCHOS_INVENTORY_FILE_STRUCTURE_START -->
+## Task-031b WatchOS Inventory Addendum
+
+### Added / Updated
+
+```text
+scripts/verify_task031_watchos_inventory.py       # [工程設定] Task-031b watchOS target/scheme/build-settings inventory verifier.
+docs/process/PHASE_1B_AGENT_STATE.md             # [原則 E] Records Task-031b target/scheme/no-signing build style, compact consumption, and WatchBridge audit state.
+docs/history/DEV_LOG.md                          # [原則 E] Records Task-031b-001 WatchOS Target Inventory.
+docs/reference/FILE_STRUCTURE.md                 # [原則 E] Documents Task-031b verifier and inventory status.
+```
+
+### Current Task-031b Inventory State
+
+```text
+WATCHOS_TARGET_FOUND=YES
+WATCHOS_TARGET_NAME=SkateTrack-watchOS
+WATCHOS_SCHEME_FOUND=YES
+WATCHOS_SCHEME_NAME=SkateTrack-watchOS
+WATCHOS_NO_SIGNING_BUILD_STYLE=TARGET_BUILD_GENERIC_WATCHOS_CODE_SIGNING_ALLOWED_NO
+SHARED_ACTIVITYVIZ_WATCHOS_MEMBERSHIP=YES
+WATCHOS_COMPACT_CONSUMPTION_PRE_UI=NO
+MEMBERSHIP_REPAIR_APPLIED_IF_NEEDED=NA
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+SHARED_WATCHBRIDGE_PATH_STATUS=ABSENT_EXPECTED_UNTIL_TASK032A_AUDIT
+```
+
+### Deferred / Not Implemented
+
+Task-031b does not implement Watch UI, WatchBridge runtime behavior, WatchConnectivity runtime behavior, HealthKit, signing, entitlements, capabilities, bundle identifier changes, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production behavior.
+<!-- TASK031B_WATCHOS_INVENTORY_FILE_STRUCTURE_END -->

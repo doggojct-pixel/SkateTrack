@@ -2715,3 +2715,23 @@ It also records the initial macOS XCTest policy checkpoint and Watch route mini-
 Task-031a-001 intentionally does not implement Watch UI, WatchBridge runtime behavior, Watch recording, Snow production code, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, signing changes, capabilities, or Xcode project membership changes.
 
 <!-- Task-031a-001 END -->
+
+<!-- TASK031B_WATCHOS_INVENTORY_DEVLOG_START -->
+## Task-031b-001 WatchOS Target Inventory
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-031b — watchOS Target / Scheme / Simulator Inventory`
+
+Summary:
+
+- Inventoried the existing watchOS target and scheme before implementation.
+- Confirmed `SkateTrack-watchOS` is the watchOS target and scheme name.
+- Recorded the no-signing build style as target build with `CODE_SIGNING_ALLOWED=NO`.
+- Confirmed Shared ActivityVisualization watchOS source membership remains present.
+- Confirmed watchOS compact visualization consumption remains absent before approved Watch UI subtasks.
+- Recorded `Shared/WatchBridge` as absent and deferred to Task-032a audit.
+- Added `scripts/verify_task031_watchos_inventory.py`.
+
+No product Swift behavior, Watch UI, WatchBridge runtime behavior, HealthKit, signing, capabilities, bundle identifiers, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production work was implemented.
+<!-- TASK031B_WATCHOS_INVENTORY_DEVLOG_END -->
