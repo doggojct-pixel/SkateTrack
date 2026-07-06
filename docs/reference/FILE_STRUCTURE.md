@@ -2215,3 +2215,52 @@ SHARED_WATCHBRIDGE_PATH_STATUS=ABSENT_EXPECTED_UNTIL_TASK032A_AUDIT
 
 Task-031b does not implement Watch UI, WatchBridge runtime behavior, WatchConnectivity runtime behavior, HealthKit, signing, entitlements, capabilities, bundle identifier changes, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production behavior.
 <!-- TASK031B_WATCHOS_INVENTORY_FILE_STRUCTURE_END -->
+
+<!-- TASK031C_MODE_GUARDRAILS_FILE_STRUCTURE_START -->
+## Task-031c Mode Guardrails Addendum
+
+### Added / Updated
+
+```text
+scripts/verify_task031_mode_guardrails.py          # [工程設定] Task-031c SportMode / Snow-aware architecture guardrail verifier.
+docs/process/PHASE_1B_AGENT_STATE.md              # [原則 E] Records Task-031c mode-neutral / future-Snow-safe state.
+docs/history/DEV_LOG.md                           # [原則 E] Records Task-031c-001 SportMode and Snow-aware Guardrails.
+docs/reference/FILE_STRUCTURE.md                  # [原則 E] Documents Task-031c verifier and guardrail scope.
+```
+
+### Current Task-031c Guardrail State
+
+```text
+SPORTMODE_PRODUCTION_SNOW_CASE=NO
+ACTIVITY_FIDELITY_SNOW_RESERVED_ONLY=YES
+SNOW_PRODUCTION_IMPLEMENTATION_COUNT=0
+TRICK_RECOGNITION_IMPLEMENTATION_COUNT=0
+BOOLEAN_ONLY_MODE_SHORTCUT_COUNT=0
+WATCH_UI_IMPLEMENTED=NO
+WATCHBRIDGE_RUNTIME_IMPLEMENTED=NO
+SNOWFEATURE_REFERENCE_ONLY=YES
+```
+
+### Deferred / Not Implemented
+
+Task-031c does not implement Snow UI, Snow production models, Snow Core Data schema, Snow classifiers, Snow run detectors, SnowPrototype UI changes, Trick recognition, WatchBridge runtime behavior, WatchConnectivity, HealthKit, route geometry mutation, trusted metric mutation, estimated route enablement, signing, capabilities, or Xcode project membership changes.
+<!-- TASK031C_MODE_GUARDRAILS_FILE_STRUCTURE_END -->
+
+<!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_START -->
+## Task-031d Documentation Alignment Addendum
+
+Task-031d added/updated documentation and verification files only:
+
+```text
+scripts/verify_task031_phase1b_preflight.py
+scripts/verify_task031_watchos_inventory.py
+scripts/verify_task031_mode_guardrails.py
+scripts/verify_task031_docs_alignment.py
+docs/process/PHASE_1B_AGENT_STATE.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+```
+
+Task-031d records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` and `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must reopen the route mini-card product decision before implementing compact Watch route UI. `NEXT_TASK=Task-032a` is the post-Task-031 handoff.
+<!-- TASK031D_DOCS_ALIGNMENT_FILE_STRUCTURE_END -->

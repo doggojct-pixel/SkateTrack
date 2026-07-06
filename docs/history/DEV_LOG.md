@@ -2735,3 +2735,50 @@ Summary:
 
 No product Swift behavior, Watch UI, WatchBridge runtime behavior, HealthKit, signing, capabilities, bundle identifiers, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production work was implemented.
 <!-- TASK031B_WATCHOS_INVENTORY_DEVLOG_END -->
+
+<!-- TASK031C_MODE_GUARDRAILS_DEVLOG_START -->
+## Task-031c-001 SportMode and Snow-aware Guardrails
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-031c — SportMode and Snow-aware Architecture Guardrails`
+
+Summary:
+
+- Added `scripts/verify_task031_mode_guardrails.py` as the Task-031c architecture guardrail verifier.
+- Confirmed `SportMode` remains skateboard / inline only in mainline Phase 1b and does not introduce a production Snow case.
+- Confirmed `ActivityFidelityProfile.snowReserved` remains a reserved future profile and is not wired to a production Snow mode.
+- Confirmed `SessionData`, `MotionSample`, and fidelity policy boundaries remain mode-aware without adding Snow production schema or classifier behavior.
+- Classified the external `SkateTrack-SnowFeature` repo and Snow UI screenshots as SnowFeature reference-only context.
+- Guarded against Snow production implementation, Trick recognition implementation, and unapproved boolean-only mode shortcuts.
+
+Verification markers:
+
+```text
+SNOW_PRODUCTION_IMPLEMENTATION_COUNT=0
+TRICK_RECOGNITION_IMPLEMENTATION_COUNT=0
+BOOLEAN_ONLY_MODE_SHORTCUT_COUNT=0
+SnowFeature reference-only
+```
+
+No product Swift behavior, Watch UI, WatchBridge runtime behavior, WatchConnectivity, HealthKit, SnowSegment, SnowRun, SnowDistanceBreakdown, Snow Core Data schema, Snow classifier, Snow run detector, SnowPrototype UI, Trick recognition implementation, route geometry mutation, trusted metric mutation, estimated route enablement, signing, capabilities, or Xcode project membership change was implemented.
+<!-- TASK031C_MODE_GUARDRAILS_DEVLOG_END -->
+
+<!-- TASK031D_DOCS_ALIGNMENT_DEVLOG_START -->
+## Task-031d-001 Phase 1b Documentation Alignment
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-031d — Phase 1b Documentation Alignment Commit`
+
+Summary:
+
+- Closed the Task-031 macOS XCTest policy checkpoint as `DOCUMENTED_UNAVAILABLE_NO_MACOS_TEST_TARGET_IN_PBXPROJ`.
+- Recorded `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` for the current Task-031 closure.
+- Recorded `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`; Task-036c must remind the operator and request a refreshed decision before any compact Watch route mini-card implementation.
+- Added `scripts/verify_task031_docs_alignment.py` as the Task-031d documentation alignment gate.
+- Updated the Task-031a/031b/031c verifiers so the aggregate Task-031 branch can run all accumulated pre-merge gates before the final merge-to-develop.
+- Confirmed the next implementation step after Task-031 closure is `NEXT_TASK=Task-032a`.
+
+No Watch UI, WatchBridge runtime behavior, WatchConnectivity runtime behavior, HealthKit, signing, entitlements, capabilities, bundle identifiers, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, estimated route enablement, or Snow production implementation was added.
+<!-- TASK031D_DOCS_ALIGNMENT_DEVLOG_END -->

@@ -696,3 +696,17 @@ Task-031-prep-ActivityViz-015 limitation token: Activity Visualization Display B
 - **Still deferred / not unlocked:** The final parity gate does not add Watch UI, Watch recording, compact watchOS consumption, current-user-location display, location permission prompts, road matching, map matching, snap-to-road, route reconstruction, route geometry mutation, trusted metric mutation, Core Data writes/import/merge/restore, cloud sync, or persistence/export/package schema changes.
 
 Task-031-prep-ActivityViz-016 limitation token: Final Parity Gate Boundary, Task-031-prep closure gate, Shared decides visualization data semantics; platforms decide rendering, display-only compact summaries, no Watch UI, no Watch recording, no persistence/export/package schema change, no trusted metric mutation.
+
+<!-- TASK031D_PRE_ADP_LIMITATIONS_START -->
+### Task-031d macOS XCTest policy limitation
+
+- **Current status:** `DOCUMENTED_UNAVAILABLE_NO_MACOS_TEST_TARGET_IN_PBXPROJ` is the recorded Phase 1b macOS XCTest policy. The Xcode project does not currently expose a dedicated macOS XCTest target for Task-031 verification.
+- **Verification boundary:** Task-031 gates rely on static verifiers, documentation gates, source membership checks, and watchOS no-signing inventory/build gates where scoped.
+- **Do not claim:** Do not claim macOS XCTest coverage for Task-031 until a future task explicitly adds a macOS test target and verifier policy.
+
+### Watch route mini-card deferred pending Task-036c review
+
+- **Current status:** `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` for Task-031 closure.
+- **Required future checkpoint:** `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`. Task-036c must remind the operator and request a refreshed decision before implementing compact Watch route UI.
+- **Boundary:** Deferral does not remove Shared `CompactRouteDisplay`; it only prevents current Watch UI implementation before the Task-036c decision.
+<!-- TASK031D_PRE_ADP_LIMITATIONS_END -->
