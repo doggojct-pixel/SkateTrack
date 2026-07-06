@@ -2805,3 +2805,19 @@ NEXT_TASK=Task-032b
 
 Task-032a intentionally does not add WatchBridge Swift models, WatchConnectivity runtime behavior, command mirroring, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
 <!-- TASK032A_WATCHBRIDGE_AUDIT_DEVLOG_END -->
+
+## Task-032b-001 WatchBridge Contract Models
+
+```text
+TASK032B_WATCHBRIDGE_CONTRACTS_RESULT=PASSED
+WATCHBRIDGE_CONTRACT_NAMESPACE=Shared/WatchBridge
+WATCHBRIDGE_CONTRACT_SCHEMA_VERSION=1
+WATCHBRIDGE_CONTRACT_FILES=WatchBridgeEnvelope.swift|WatchBridgePayloads.swift|WatchBridgeConnectionState.swift|WatchBridgeCommandModels.swift
+WATCHBRIDGE_CONTRACT_TARGET_MEMBERSHIP=IOS_AND_WATCHOS_REQUIRED_MACOS_OPTIONAL
+WATCHBRIDGE_MODELS_IMPLEMENTED=YES
+WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-032c
+```
+
+Task-032b added the first versioned, Codable-only WatchBridge contract surface under `Shared/WatchBridge/` and source-membered it for iOS/watchOS. It intentionally avoided `WatchConnectivity`, `WCSession`, command mirroring runtime behavior, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, and estimated route enablement.

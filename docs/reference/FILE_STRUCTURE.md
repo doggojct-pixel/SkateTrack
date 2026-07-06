@@ -2292,3 +2292,15 @@ Task-032a keeps `Shared/WatchBridge/` absent until Task-032b creates the first c
 
 Task-032a does not implement WatchBridge models, WatchConnectivity runtime behavior, command mirroring, Watch UI, HealthKit runtime, Snow production behavior, schema/Core Data/package mutation, route geometry mutation, trusted metric mutation, or estimated route enablement.
 <!-- TASK032A_WATCHBRIDGE_AUDIT_FILE_STRUCTURE_END -->
+
+## Task-032b WatchBridge Contracts Addendum
+
+```text
+Shared/WatchBridge/WatchBridgeEnvelope.swift
+Shared/WatchBridge/WatchBridgePayloads.swift
+Shared/WatchBridge/WatchBridgeConnectionState.swift
+Shared/WatchBridge/WatchBridgeCommandModels.swift
+scripts/verify_task032b_watchbridge_contracts.py
+```
+
+Task-032b owns the initial Codable-only WatchBridge contract model surface and iOS/watchOS source membership. It does not own runtime `WatchConnectivity`, command mirroring runtime behavior, Watch UI, HealthKit, or Snow production implementation.

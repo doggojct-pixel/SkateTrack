@@ -193,3 +193,25 @@ NEXT_TASK=Task-032b
 
 Task-032a is a docs/source-audit/verifier checkpoint only. It records `Shared/WatchBridge/` as the contract namespace for Task-032b, with iOS + watchOS source membership required when Swift contract files are added. macOS membership remains optional for compile-only tooling. Runtime WatchConnectivity remains deferred to Task-033a.
 <!-- TASK032A_WATCHBRIDGE_AUDIT_STATE_END -->
+
+<!-- TASK032B_WATCHBRIDGE_CONTRACTS_STATE_START -->
+
+## Task-032b — WatchBridge Contract Models
+
+```text
+TASK032B_WATCHBRIDGE_CONTRACTS_RESULT=PASSED
+TASK032B_BASE_HEAD=56410ccb13727e6b0e059a2d1ff2015d94333237
+TASK032_AGGREGATE_TASK_BRANCH=task-032-watchbridge-foundation
+WATCHBRIDGE_CONTRACT_NAMESPACE=Shared/WatchBridge
+WATCHBRIDGE_CONTRACT_SCHEMA_VERSION=1
+WATCHBRIDGE_CONTRACT_FILES=WatchBridgeEnvelope.swift|WatchBridgePayloads.swift|WatchBridgeConnectionState.swift|WatchBridgeCommandModels.swift
+WATCHBRIDGE_CONTRACT_TARGET_MEMBERSHIP=IOS_AND_WATCHOS_REQUIRED_MACOS_OPTIONAL
+WATCHBRIDGE_MODELS_IMPLEMENTED=YES
+WATCHCONNECTIVITY_RUNTIME_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+HEALTHKIT_RUNTIME_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+NEXT_TASK=Task-032c
+```
+
+<!-- TASK032B_WATCHBRIDGE_CONTRACTS_STATE_END -->
