@@ -2540,3 +2540,46 @@ PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
 NEXT_TASK=Task-035b
 ```
 <!-- TASK035A_SAMPLE_MODEL_AUDIT_FILE_STRUCTURE_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_FILE_STRUCTURE_START -->
+## Task-035b Watch Sample Ingestion Addendum
+
+Task-035b adds a shared Watch sample ingestion path, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/WatchSensors/WatchSampleIngestion.swift        # Conservative ingestion path for WatchSensorProviderSnapshot.
+Tests/iOSTests/WatchSampleIngestionTests.swift        # Ordering, gaps, duplicates, source-attribution, and no-mutation tests.
+scripts/verify_task035b_watch_sample_ingestion.py     # Task-035b verifier for implementation, membership, docs, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                  # Adds WatchSampleIngestion.swift to iOS/watchOS sources and tests to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035b result and Task-035c handoff.
+docs/history/DEV_LOG.md                               # Records Task-035b implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035b file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining storage/fusion/package limitations.
+```
+
+Task-035b intentionally does not modify these durable storage, schema, package, import/export, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser
+```
+
+```text
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES
+WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035c
+```
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_FILE_STRUCTURE_END -->

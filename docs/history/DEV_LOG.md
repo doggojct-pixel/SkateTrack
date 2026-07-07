@@ -2934,3 +2934,15 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION=NO`, `TRUSTED_METRIC_MUTATION=NO`.
 - Next task handoff: `NEXT_TASK=Task-035b`.
 <!-- TASK035A_SAMPLE_MODEL_AUDIT_DEVLOG_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_DEVLOG_START -->
+## Task-035b-001 Watch Sample Ingestion
+
+- Added `Shared/WatchSensors/WatchSampleIngestion.swift` as a conservative shared-model ingestion path for `WatchSensorProviderSnapshot`.
+- Preserved Watch provenance through `WatchSampleSourceAttribution` and `WatchIngestedSample` without converting Watch samples into trusted iPhone `MotionSample` route inputs.
+- Added ordering, gap, duplicate-id, unavailable-snapshot, source-attribution, and no-mutation tests in `Tests/iOSTests/WatchSampleIngestionTests.swift`.
+- Added `scripts/verify_task035b_watch_sample_ingestion.py` to guard required files, project membership, docs, source attribution, no storage/schema/package changes, no route geometry mutation, no trusted metric mutation, and no production HealthKit boundary violations.
+- Verification tokens: `VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED`, `WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES`, `WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES`, `WATCH_SAMPLE_ORDERING_TESTED=YES`, `WATCH_SAMPLE_GAP_TESTED=YES`, `WATCH_SAMPLE_DUPLICATE_TESTED=YES`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035c`.
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_DEVLOG_END -->

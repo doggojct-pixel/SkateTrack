@@ -484,3 +484,35 @@ NEXT_TASK=Task-035b
 
 Task-035a does not implement Watch sample ingestion, persistence, fusion, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
 <!-- TASK035A_SAMPLE_MODEL_AUDIT_STATE_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_STATE_START -->
+## Task-035b Watch Sample Ingestion
+
+Task-035b adds a conservative shared-model ingestion path for Watch-originated samples. The ingestor accepts `WatchSensorProviderSnapshot`, preserves provider/capture/source attribution, sorts ingested output by timestamp, reports out-of-order arrivals, reports sample gaps, drops duplicate sample ids when configured, and keeps the result distinct from trusted iPhone route samples.
+
+The Task-035b ingestion output is intentionally separate from `MotionSample`, `SessionData`, route geometry, trusted distance/speed/elevation metrics, package payloads, import commit flows, and Core Data storage. This step does not make Watch samples durable and does not alter existing sessions silently.
+
+```text
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES
+WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES
+WATCH_SAMPLE_ORDERING_TESTED=YES
+WATCH_SAMPLE_GAP_TESTED=YES
+WATCH_SAMPLE_DUPLICATE_TESTED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035c
+```
+
+Task-035b does not implement Watch sample persistence, package export/import of Watch samples, fusion rules, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_STATE_END -->

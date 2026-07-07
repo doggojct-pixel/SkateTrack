@@ -901,3 +901,48 @@ TRUSTED_METRIC_MUTATION=NO
 NEXT_TASK=Task-035b
 ```
 <!-- TASK035A_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK035B_PRE_ADP_LIMITATIONS_START -->
+## Task-035b Watch Sample Ingestion Boundary
+
+Task-035b adds conservative in-memory ingestion for Watch-originated samples, but it does not make Watch samples durable or merge them into trusted iPhone route data.
+
+Current status:
+
+- Watch-originated samples can be ingested from `WatchSensorProviderSnapshot` into `WatchIngestedSample`.
+- Source attribution preserves provider kind, capture time, availability status, and unavailable reason.
+- Ordering, gap, duplicate-id, unavailable-snapshot, and no-mutation behavior is covered by focused iOS tests.
+- Trusted iPhone distance, speed, elevation, route geometry, session state, package payloads, import/export behavior, and Core Data storage remain unchanged.
+
+Remaining limitations:
+
+- No Watch sample storage is implemented.
+- No package schema or package format change is implemented.
+- No Core Data schema change is implemented.
+- No package export/import support for Watch samples is implemented.
+- No conservative fusion rules are implemented yet; Task-035c remains responsible for interpretation rules.
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No Watch UI is implemented.
+- No Snow production implementation is added.
+
+```text
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES
+WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035c
+```
+<!-- TASK035B_PRE_ADP_LIMITATIONS_END -->
