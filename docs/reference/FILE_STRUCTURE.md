@@ -2668,3 +2668,50 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035e
 ```
 <!-- TASK035D_PACKAGE_COMPATIBILITY_FILE_STRUCTURE_END -->
+
+<!-- TASK035E_DOCS_MANUAL_QA_FILE_STRUCTURE_START -->
+## Task-035e Watch Sample Docs + Manual QA Addendum
+
+Task-035e adds a documentation/manual QA gate, a verifier, and documentation updates only:
+
+```text
+docs/release/TASK035E_WATCH_SAMPLE_MANUAL_QA.md       # Watch sample foundation manual QA gate and Task-036 handoff notes.
+scripts/verify_task035e_docs_manual_qa.py             # Task-035e verifier for docs/manual QA closure and forbidden boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035e result and Task-036a handoff.
+docs/history/DEV_LOG.md                               # Records Task-035e evidence chain and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035e file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining Pre-UI and Pre-storage limitations.
+```
+
+Task-035e intentionally does not modify these product, test, project, storage, route, metric, UI, or package implementation paths:
+
+```text
+Shared/
+iOS/
+macOS/
+watchOS/
+Tests/
+SkateTrack.xcodeproj/
+```
+
+```text
+VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED
+MANUAL_QA_WATCH_SAMPLE_PATH=PASSED
+DOCS_UPDATED=YES
+WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED
+WATCH_SAMPLE_INGESTION_PATH=PASSED
+WATCH_SAMPLE_FUSION_RULES=PASSED
+WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED
+WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED
+WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES
+WATCH_UI_IMPLEMENTED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-036a
+```
+<!-- TASK035E_DOCS_MANUAL_QA_FILE_STRUCTURE_END -->

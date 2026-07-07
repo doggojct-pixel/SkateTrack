@@ -1042,3 +1042,54 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035e
 ```
 <!-- TASK035D_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK035E_PRE_ADP_LIMITATIONS_START -->
+## Task-035e Watch Sample Docs + Manual QA Boundary
+
+Task-035e closes the Watch sample foundation documentation and manual QA gate before Watch UI starts. The completed evidence chain covers the Task-034 sensor provider boundary, Task-035b ingestion, Task-035c display-derived fusion rules, and Task-035d package compatibility.
+
+Current status:
+
+- `MANUAL_QA_WATCH_SAMPLE_PATH=PASSED` for the Pre-UI, Pre-storage Watch sample foundation path.
+- Watch sample provider boundary is documented as closed without production HealthKit APIs or HealthKit entitlements.
+- Watch sample ingestion remains source-attributed and separate from trusted iPhone route samples.
+- Watch sample fusion remains display-derived and does not mutate trusted route geometry or trusted metrics.
+- Package compatibility remains schemaVersion 1 with optional Watch compatibility metadata only.
+- Task-036a may begin with Watch UI data contract and view model work.
+- Task-036c must refresh the route mini-card decision before compact Watch route UI implementation.
+
+Remaining limitations:
+
+- No Watch UI is implemented.
+- No Watch sample storage is implemented.
+- No Watch sample sidecar payload is implemented.
+- No Core Data schema change is implemented.
+- No durable package export/import support for Watch sample arrays is implemented.
+- Display-derived fusion is not approved for trusted metric policy.
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No Snow production implementation is added.
+- `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED` remains in effect until Task-036c asks the operator for a refreshed decision.
+
+```text
+VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED
+MANUAL_QA_WATCH_SAMPLE_PATH=PASSED
+DOCS_UPDATED=YES
+WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED
+WATCH_SAMPLE_INGESTION_PATH=PASSED
+WATCH_SAMPLE_FUSION_RULES=PASSED
+WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED
+WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED
+WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES
+WATCH_UI_IMPLEMENTED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-036a
+```
+<!-- TASK035E_PRE_ADP_LIMITATIONS_END -->

@@ -577,3 +577,40 @@ NEXT_TASK=Task-035e
 
 Task-035d keeps package compatibility deliberately narrow: optional manifest metadata and compatibility tests only. Durable Watch sample export/import remains unimplemented until a later approved storage/package design.
 <!-- TASK035D_PACKAGE_COMPATIBILITY_STATE_END -->
+
+<!-- TASK035E_DOCS_MANUAL_QA_STATE_START -->
+## Task-035e Watch Sample Docs + Manual QA
+
+Task-035e closes the Watch sample foundation work before Watch UI starts. The manual QA gate reviews the completed evidence chain from Task-034 sensor provider boundaries through Task-035b ingestion, Task-035c display-derived fusion rules, and Task-035d package compatibility. It confirms the documented path is ready for Task-036a view model/data contract work while preserving all Pre-UI and Pre-storage limitations.
+
+This task is documentation and verifier only. It does not add Watch UI, production HealthKit collection, HealthKit entitlement, durable Watch sample storage, Core Data migration, package sidecar persistence, route geometry mutation, trusted metric mutation, Snow production behavior, or product Swift behavior.
+
+```text
+VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED
+MANUAL_QA_WATCH_SAMPLE_PATH=PASSED
+DOCS_UPDATED=YES
+WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED
+WATCH_SAMPLE_INGESTION_PATH=PASSED
+WATCH_SAMPLE_FUSION_RULES=PASSED
+WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED
+TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+DISPLAY_DERIVED_SEPARATION=YES
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED
+WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES
+WATCH_UI_IMPLEMENTED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-036a
+```
+
+Task-036a may begin after this gate. Task-036c must still ask the operator for a refreshed route mini-card decision before implementing compact Watch route UI, because Task-031d currently records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`.
+<!-- TASK035E_DOCS_MANUAL_QA_STATE_END -->
