@@ -3008,3 +3008,16 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Deferred scope: full Watch map renderer, drawn route shape, route reconstruction, new trusted ascent computation, Watch-side speed filtering, Task-036d fallback/always-on expansion, Task-036e aggregate localization/verifier closure, and Snow UI.
 - Next task handoff: `NEXT_TASK=Task-036d`.
 <!-- TASK036C_COMPACT_CARDS_DEVLOG_END -->
+
+<!-- TASK036D_FALLBACK_STATES_DEVLOG_START -->
+## Task-036d - Always-On / Empty / Disabled States
+
+- Added display-only Watch fallback state in `WatchActivityViewModel` for disconnected, no-samples, disabled-provider, and stale-data conditions.
+- Updated the watchOS live face with localized fallback banners and an Always-On low-luminance fallback view that preserves essential speed/session status.
+- Kept fallback handling inside Watch UI/view-model display state only; no route segmentation, speed filtering, elevation ascent logic, MapKit route semantics, Snow UI, storage, schema, or package changes were introduced.
+- Added focused view-model tests for disconnected WatchBridge state, active no-samples state, disabled provider state, stale transport quality, and normal ready state.
+- Added `scripts/verify_task036d_fallback_states.py` to guard fallback state presence, localization/accessibility, Always-On display support, Task-036c regression boundaries, and forbidden semantic reimplementation.
+- Verification tokens: `VERIFY_TASK036D_FALLBACK_STATES_RESULT=PASSED`, `DISCONNECTED_STATE_PRESENT=YES`, `NO_DATA_STATE_PRESENT=YES`, `STALE_DATA_STATE_PRESENT=YES`.
+- Deferred scope: Task-036e aggregate localization/verifier closure, full Watch map renderer, Watch route drawing, Watch-side route reconstruction, new trusted ascent computation, Watch-side speed filtering, Snow UI, and develop merge until Task-036 completes.
+- Next task handoff: `NEXT_TASK=Task-036e`.
+<!-- TASK036D_FALLBACK_STATES_DEVLOG_END -->

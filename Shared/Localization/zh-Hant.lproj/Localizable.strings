@@ -1291,3 +1291,15 @@
 "watch.compact.elevation.title" = "海拔";
 "watch.compact.elevation.ascent" = "爬升";
 "watch.compact.elevation.empty" = "無資料";
+"watch.fallback.ready.title" = "準備完成";
+"watch.fallback.ready.detail" = "手錶顯示資料已可使用。";
+"watch.fallback.disconnected.title" = "手錶已中斷";
+"watch.fallback.disconnected.detail" = "重新連接 Apple Watch 後即可繼續即時更新。";
+"watch.fallback.noSamples.title" = "等待樣本";
+"watch.fallback.noSamples.detail" = "請繼續記錄，SkateTrack 正在等待第一筆手錶樣本。";
+"watch.fallback.disabledProvider.title" = "手錶樣本已停用";
+"watch.fallback.disabledProvider.detail" = "此版本正在使用停用的提供者邊界。";
+"watch.fallback.staleData.title" = "顯示最後更新";
+"watch.fallback.staleData.detail" = "即時資料延遲，SkateTrack 會保留最後一筆安全顯示。";
+"watch.fallback.alwaysOn.title" = "永遠顯示";
+"watch.fallback.alwaysOn.detail" = "低亮度模式只保留必要的即時狀態。";

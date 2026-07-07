@@ -11,6 +11,7 @@ struct WatchActivityViewModel: Equatable, Sendable {
     let metrics: WatchActivityMetricViewState
     let samples: WatchActivitySampleViewState
     let compactSummary: WatchActivityCompactSummaryViewState
+    let fallback: WatchActivityFallbackViewState
 
     init(
         connectionStatus: WatchBridgeConnectionStatusPayload? = nil,
@@ -23,18 +24,29 @@ struct WatchActivityViewModel: Equatable, Sendable {
         bridgeDisplay: WatchBridgeCompactActivityDisplayPayload? = nil,
         generatedAt: Date = Date()
     ) {
-        self.generatedAt = generatedAt
-        self.connection = WatchActivityConnectionViewState(payload: connectionStatus)
-        self.session = WatchActivitySessionViewState(payload: session)
-        self.metrics = WatchActivityMetricViewState(payload: metrics)
-        self.samples = WatchActivitySampleViewState(
+        let connectionState = WatchActivityConnectionViewState(payload: connectionStatus)
+        let sessionState = WatchActivitySessionViewState(payload: session)
+        let sampleState = WatchActivitySampleViewState(
             sensorSnapshot: sensorSnapshot,
             ingestion: ingestion,
             fusion: fusion
         )
-        self.compactSummary = WatchActivityCompactSummaryViewState(
+        let compactSummaryState = WatchActivityCompactSummaryViewState(
             compactSummary: compactSummary,
             bridgeDisplay: bridgeDisplay
+        )
+
+        self.generatedAt = generatedAt
+        self.connection = connectionState
+        self.session = sessionState
+        self.metrics = WatchActivityMetricViewState(payload: metrics)
+        self.samples = sampleState
+        self.compactSummary = compactSummaryState
+        self.fallback = WatchActivityFallbackViewState(
+            connection: connectionState,
+            session: sessionState,
+            samples: sampleState,
+            compactSummary: compactSummaryState
         )
     }
 
@@ -85,6 +97,15 @@ struct WatchActivityConnectionViewState: Equatable, Sendable {
 
     var isStale: Bool {
         quality == .stale
+    }
+
+    var isDisconnected: Bool {
+        switch status {
+        case .unavailable, .pairedButUnreachable:
+            return true
+        case .reachable, .simulator, .unknown:
+            return false
+        }
     }
 }
 
@@ -183,6 +204,83 @@ struct WatchActivitySampleViewState: Equatable, Sendable {
 
     var canShowWatchOriginatedData: Bool {
         availabilityStatus == .available
+    }
+
+    var hasAnySampleData: Bool {
+        rawSampleCount > 0 || ingestedSampleCount > 0 || fusionDisplayPointCount > 0 || displayDerivedPointCount > 0
+    }
+
+    var isDisabled: Bool {
+        availabilityStatus == .disabled
+    }
+}
+
+enum WatchActivityFallbackKind: Equatable, Sendable {
+    case ready
+    case disconnected
+    case noSamples
+    case disabledProvider
+    case staleData
+}
+
+struct WatchActivityFallbackViewState: Equatable, Sendable {
+    let kind: WatchActivityFallbackKind
+    let titleLocalizationKey: String
+    let detailLocalizationKey: String
+    let accessibilityIdentifier: String
+    let isBlocking: Bool
+
+    init(
+        connection: WatchActivityConnectionViewState,
+        session: WatchActivitySessionViewState,
+        samples: WatchActivitySampleViewState,
+        compactSummary: WatchActivityCompactSummaryViewState
+    ) {
+        let kind: WatchActivityFallbackKind
+        if connection.isStale {
+            kind = .staleData
+        } else if connection.isDisconnected {
+            kind = .disconnected
+        } else if samples.isDisabled {
+            kind = .disabledProvider
+        } else if session.isActive && !samples.hasAnySampleData && !compactSummary.hasAnyDisplayData {
+            kind = .noSamples
+        } else {
+            kind = .ready
+        }
+
+        self.kind = kind
+        switch kind {
+        case .ready:
+            self.titleLocalizationKey = "watch.fallback.ready.title"
+            self.detailLocalizationKey = "watch.fallback.ready.detail"
+            self.accessibilityIdentifier = "watch-fallback-ready"
+            self.isBlocking = false
+        case .disconnected:
+            self.titleLocalizationKey = "watch.fallback.disconnected.title"
+            self.detailLocalizationKey = "watch.fallback.disconnected.detail"
+            self.accessibilityIdentifier = "watch-fallback-disconnected"
+            self.isBlocking = true
+        case .noSamples:
+            self.titleLocalizationKey = "watch.fallback.noSamples.title"
+            self.detailLocalizationKey = "watch.fallback.noSamples.detail"
+            self.accessibilityIdentifier = "watch-fallback-no-samples"
+            self.isBlocking = false
+        case .disabledProvider:
+            self.titleLocalizationKey = "watch.fallback.disabledProvider.title"
+            self.detailLocalizationKey = "watch.fallback.disabledProvider.detail"
+            self.accessibilityIdentifier = "watch-fallback-disabled-provider"
+            self.isBlocking = true
+        case .staleData:
+            self.titleLocalizationKey = "watch.fallback.staleData.title"
+            self.detailLocalizationKey = "watch.fallback.staleData.detail"
+            self.accessibilityIdentifier = "watch-fallback-stale-data"
+            self.isBlocking = false
+        }
+    }
+
+    var isVisible: Bool {
+        kind != .ready
     }
 }
 

@@ -1291,3 +1291,15 @@
 "watch.compact.elevation.title" = "標高";
 "watch.compact.elevation.ascent" = "上昇";
 "watch.compact.elevation.empty" = "データなし";
+"watch.fallback.ready.title" = "準備完了";
+"watch.fallback.ready.detail" = "Watch 表示データを利用できます。";
+"watch.fallback.disconnected.title" = "Watch が未接続";
+"watch.fallback.disconnected.detail" = "Apple Watch を再接続するとライブ更新を続行できます。";
+"watch.fallback.noSamples.title" = "サンプル待機中";
+"watch.fallback.noSamples.detail" = "記録を続けると、SkateTrack が最初の Watch サンプルを待機します。";
+"watch.fallback.disabledProvider.title" = "Watch サンプル無効";
+"watch.fallback.disabledProvider.detail" = "このビルドは無効なプロバイダー境界を使用しています。";
+"watch.fallback.staleData.title" = "最後の更新を表示";
+"watch.fallback.staleData.detail" = "ライブデータが遅延しているため、最後の安全な表示を維持します。";
+"watch.fallback.alwaysOn.title" = "常時表示";
+"watch.fallback.alwaysOn.detail" = "低輝度モードでは必要なライブ状態のみを表示します。";

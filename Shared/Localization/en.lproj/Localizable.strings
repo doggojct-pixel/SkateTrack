@@ -1291,3 +1291,15 @@
 "watch.compact.elevation.title" = "Elevation";
 "watch.compact.elevation.ascent" = "Ascent";
 "watch.compact.elevation.empty" = "No data";
+"watch.fallback.ready.title" = "Ready";
+"watch.fallback.ready.detail" = "Watch display data is ready.";
+"watch.fallback.disconnected.title" = "Watch disconnected";
+"watch.fallback.disconnected.detail" = "Reconnect Apple Watch to continue live updates.";
+"watch.fallback.noSamples.title" = "Waiting for samples";
+"watch.fallback.noSamples.detail" = "Keep recording while SkateTrack waits for the first watch samples.";
+"watch.fallback.disabledProvider.title" = "Watch samples disabled";
+"watch.fallback.disabledProvider.detail" = "This build is using the disabled provider boundary.";
+"watch.fallback.staleData.title" = "Showing last update";
+"watch.fallback.staleData.detail" = "Live data is delayed, so SkateTrack is keeping the last safe display.";
+"watch.fallback.alwaysOn.title" = "Always-On";
+"watch.fallback.alwaysOn.detail" = "Reduced display mode keeps only essential live status visible.";

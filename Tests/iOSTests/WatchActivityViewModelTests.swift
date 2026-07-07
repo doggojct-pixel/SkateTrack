@@ -24,6 +24,8 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.compactSummary.routeCard.status, .unavailable)
         XCTAssertFalse(viewModel.compactSummary.speedCard.hasData)
         XCTAssertFalse(viewModel.compactSummary.elevationCard.hasData)
+        XCTAssertEqual(viewModel.fallback.kind, .ready)
+        XCTAssertFalse(viewModel.fallback.isVisible)
     }
 
     func testSnapshotBuildsConnectionSessionMetricsSamplesAndCompactSummaryState() {
@@ -119,6 +121,92 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.compactSummary.elevationCard.points, compactSummary.elevationProfile.points)
         XCTAssertEqual(viewModel.compactSummary.elevationCard.ascentMeters, 4)
         XCTAssertTrue(viewModel.compactSummary.hasAnyDisplayData)
+        XCTAssertEqual(viewModel.fallback.kind, .ready)
+    }
+
+    func testDisconnectedFallbackWhenWatchBridgeIsUnavailable() {
+        let baseDate = Date(timeIntervalSince1970: 3_000)
+        let payload = WatchBridgeConnectionStatusPayload(
+            state: WatchBridgeConnectionState(
+                status: .pairedButUnreachable,
+                quality: .delayed,
+                lastUpdatedAt: baseDate,
+                explanation: "watch is not reachable"
+            ),
+            reportedAt: baseDate,
+            canSendCommands: false,
+            canReceiveSnapshots: false
+        )
+
+        let viewModel = WatchActivityViewModel(connectionStatus: payload)
+
+        XCTAssertTrue(viewModel.connection.isDisconnected)
+        XCTAssertEqual(viewModel.fallback.kind, .disconnected)
+        XCTAssertTrue(viewModel.fallback.isBlocking)
+        XCTAssertEqual(viewModel.fallback.titleLocalizationKey, "watch.fallback.disconnected.title")
+        XCTAssertEqual(viewModel.fallback.accessibilityIdentifier, "watch-fallback-disconnected")
+    }
+
+    func testNoSamplesFallbackWhenActiveSessionHasNoDisplayData() {
+        let baseDate = Date(timeIntervalSince1970: 4_000)
+        let session = WatchBridgeActivitySessionPayload(
+            state: .recording,
+            mode: WatchBridgeActivityModeDescriptor(sportModeKey: "skateboard"),
+            updatedAt: baseDate,
+            elapsedSeconds: 12,
+            isRecordingAllowed: true
+        )
+        let sensorSnapshot = WatchSensorProviderSnapshot(
+            providerKind: .mock,
+            availability: .available(at: baseDate),
+            capturedAt: baseDate,
+            samples: []
+        )
+
+        let viewModel = WatchActivityViewModel(
+            connectionStatus: Self.connectionStatus(status: .reachable, quality: .fresh, at: baseDate),
+            session: session,
+            sensorSnapshot: sensorSnapshot
+        )
+
+        XCTAssertTrue(viewModel.session.isActive)
+        XCTAssertFalse(viewModel.samples.hasAnySampleData)
+        XCTAssertFalse(viewModel.compactSummary.hasAnyDisplayData)
+        XCTAssertEqual(viewModel.fallback.kind, .noSamples)
+        XCTAssertFalse(viewModel.fallback.isBlocking)
+        XCTAssertEqual(viewModel.fallback.titleLocalizationKey, "watch.fallback.noSamples.title")
+    }
+
+    func testDisabledProviderFallbackWhenProviderIsDisabled() {
+        let baseDate = Date(timeIntervalSince1970: 5_000)
+        let sensorSnapshot = WatchSensorProviderSnapshot(
+            providerKind: .disabled,
+            availability: .disabled(at: baseDate, explanation: "disabled for this build"),
+            capturedAt: baseDate,
+            samples: []
+        )
+
+        let viewModel = WatchActivityViewModel(
+            connectionStatus: Self.connectionStatus(status: .reachable, quality: .fresh, at: baseDate),
+            sensorSnapshot: sensorSnapshot
+        )
+
+        XCTAssertTrue(viewModel.samples.isDisabled)
+        XCTAssertEqual(viewModel.fallback.kind, .disabledProvider)
+        XCTAssertTrue(viewModel.fallback.isBlocking)
+        XCTAssertEqual(viewModel.fallback.titleLocalizationKey, "watch.fallback.disabledProvider.title")
+    }
+
+    func testStaleDataFallbackWhenTransportQualityIsStale() {
+        let baseDate = Date(timeIntervalSince1970: 6_000)
+        let viewModel = WatchActivityViewModel(
+            connectionStatus: Self.connectionStatus(status: .reachable, quality: .stale, at: baseDate)
+        )
+
+        XCTAssertTrue(viewModel.connection.isStale)
+        XCTAssertEqual(viewModel.fallback.kind, .staleData)
+        XCTAssertFalse(viewModel.fallback.isBlocking)
+        XCTAssertEqual(viewModel.fallback.titleLocalizationKey, "watch.fallback.staleData.title")
     }
 
     func testBridgeDisplayPayloadProvidesDisplayStateWhenCompactSummaryIsUnavailable() {
@@ -197,6 +285,24 @@ final class WatchActivityViewModelTests: XCTestCase {
                     confidence: 0.9
                 )
             ]
+        )
+    }
+
+    private static func connectionStatus(
+        status: WatchBridgeConnectionStatus,
+        quality: WatchBridgeTransportQuality,
+        at date: Date
+    ) -> WatchBridgeConnectionStatusPayload {
+        WatchBridgeConnectionStatusPayload(
+            state: WatchBridgeConnectionState(
+                status: status,
+                quality: quality,
+                lastUpdatedAt: date,
+                lastReceivedMessageAt: status == .reachable ? date : nil
+            ),
+            reportedAt: date,
+            canSendCommands: status == .reachable && quality != .stale,
+            canReceiveSnapshots: status == .reachable
         )
     }
 

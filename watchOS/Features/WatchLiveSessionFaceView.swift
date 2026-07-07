@@ -5,6 +5,8 @@
 import SwiftUI
 
 struct WatchLiveSessionFaceView: View {
+    @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+
     let viewModel: WatchActivityViewModel
     let onCommand: (WatchBridgeCommandEnvelope) -> Void
 
@@ -23,96 +25,113 @@ struct WatchLiveSessionFaceView: View {
         let controls = WatchLiveControlState(viewModel: viewModel)
         let modeAccent = WatchLivePalette.accentColor(for: viewModel.session.mode.sportModeKey)
 
-        ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("watch.live.title")
-                    .font(.headline)
-                    .foregroundStyle(.white)
+        Group {
+            if isLuminanceReduced {
+                WatchAlwaysOnFallbackView(
+                    viewModel: viewModel,
+                    speed: speed,
+                    accentColor: modeAccent
+                )
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("watch.live.title")
+                            .font(.headline)
+                            .foregroundStyle(.white)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("watch.live.speed.current")
-                        .font(.caption2)
-                        .foregroundStyle(WatchLivePalette.textSecondary)
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text(speed.valueText)
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
-                            .monospacedDigit()
-                            .foregroundStyle(modeAccent)
-                            .shadow(color: modeAccent.opacity(0.35), radius: 10, x: 0, y: 0)
-                        Text(LocalizedStringKey(speed.unitLocalizationKey))
-                            .font(.caption)
-                            .foregroundStyle(WatchLivePalette.textSecondary)
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(Text("watch.live.accessibility.currentSpeed"))
-                }
+                        if viewModel.fallback.isVisible {
+                            WatchFallbackBannerView(
+                                state: viewModel.fallback,
+                                accentColor: modeAccent
+                            )
+                        }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("watch.live.session.status")
-                        .font(.caption2)
-                        .foregroundStyle(WatchLivePalette.textSecondary)
-                    Text(LocalizedStringKey(WatchLiveSessionStatusLocalization.key(for: viewModel.session.state)))
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .accessibilityLabel(Text("watch.live.accessibility.sessionStatus"))
-                }
-
-                VStack(spacing: 8) {
-                    WatchRouteCompactCardView(
-                        card: viewModel.compactSummary.routeCard,
-                        accentColor: modeAccent
-                    )
-                    WatchSparklineCompactCardView(
-                        titleKey: "watch.compact.speed.title",
-                        valueText: WatchCompactCardFormatting.speedValueText(
-                            viewModel.compactSummary.speedCard.maximumSpeedKilometersPerHour
-                        ),
-                        unitKey: "unit.speed.kmh.short",
-                        detailKey: viewModel.compactSummary.speedCard.hasData
-                            ? "watch.compact.speed.max"
-                            : "watch.compact.speed.empty",
-                        points: viewModel.compactSummary.speedCard.points,
-                        tintColor: WatchLivePalette.teal,
-                        accessibilityIdentifier: "watch-speed-compact-card"
-                    )
-                    WatchSparklineCompactCardView(
-                        titleKey: "watch.compact.elevation.title",
-                        valueText: WatchCompactCardFormatting.meterValueText(
-                            viewModel.compactSummary.elevationCard.ascentMeters
-                        ),
-                        unitKey: "unit.length.meter.short",
-                        detailKey: viewModel.compactSummary.elevationCard.hasData
-                            ? "watch.compact.elevation.ascent"
-                            : "watch.compact.elevation.empty",
-                        points: viewModel.compactSummary.elevationCard.points,
-                        tintColor: WatchLivePalette.amber,
-                        accessibilityIdentifier: "watch-elevation-compact-card"
-                    )
-                }
-
-                if controls.actions.isEmpty {
-                    Text("watch.live.controls.pending")
-                        .font(.caption)
-                        .foregroundStyle(WatchLivePalette.textSecondary)
-                } else {
-                    VStack(spacing: 6) {
-                        ForEach(controls.actions) { action in
-                            Button {
-                                if let command = controls.makeCommand(for: action.kind) {
-                                    onCommand(command)
-                                }
-                            } label: {
-                                Text(LocalizedStringKey(action.titleLocalizationKey))
-                                    .frame(maxWidth: .infinity)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("watch.live.speed.current")
+                                .font(.caption2)
+                                .foregroundStyle(WatchLivePalette.textSecondary)
+                            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                Text(speed.valueText)
+                                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                                    .monospacedDigit()
+                                    .foregroundStyle(modeAccent)
+                                    .shadow(color: modeAccent.opacity(0.35), radius: 10, x: 0, y: 0)
+                                Text(LocalizedStringKey(speed.unitLocalizationKey))
+                                    .font(.caption)
+                                    .foregroundStyle(WatchLivePalette.textSecondary)
                             }
-                            .disabled(!action.isEnabled)
-                            .accessibilityLabel(Text(LocalizedStringKey(action.accessibilityLabelLocalizationKey)))
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel(Text("watch.live.accessibility.currentSpeed"))
+                        }
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("watch.live.session.status")
+                                .font(.caption2)
+                                .foregroundStyle(WatchLivePalette.textSecondary)
+                            Text(LocalizedStringKey(WatchLiveSessionStatusLocalization.key(for: viewModel.session.state)))
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .accessibilityLabel(Text("watch.live.accessibility.sessionStatus"))
+                        }
+
+                        VStack(spacing: 8) {
+                            WatchRouteCompactCardView(
+                                card: viewModel.compactSummary.routeCard,
+                                accentColor: modeAccent
+                            )
+                            WatchSparklineCompactCardView(
+                                titleKey: "watch.compact.speed.title",
+                                valueText: WatchCompactCardFormatting.speedValueText(
+                                    viewModel.compactSummary.speedCard.maximumSpeedKilometersPerHour
+                                ),
+                                unitKey: "unit.speed.kmh.short",
+                                detailKey: viewModel.compactSummary.speedCard.hasData
+                                    ? "watch.compact.speed.max"
+                                    : "watch.compact.speed.empty",
+                                points: viewModel.compactSummary.speedCard.points,
+                                tintColor: WatchLivePalette.teal,
+                                accessibilityIdentifier: "watch-speed-compact-card"
+                            )
+                            WatchSparklineCompactCardView(
+                                titleKey: "watch.compact.elevation.title",
+                                valueText: WatchCompactCardFormatting.meterValueText(
+                                    viewModel.compactSummary.elevationCard.ascentMeters
+                                ),
+                                unitKey: "unit.length.meter.short",
+                                detailKey: viewModel.compactSummary.elevationCard.hasData
+                                    ? "watch.compact.elevation.ascent"
+                                    : "watch.compact.elevation.empty",
+                                points: viewModel.compactSummary.elevationCard.points,
+                                tintColor: WatchLivePalette.amber,
+                                accessibilityIdentifier: "watch-elevation-compact-card"
+                            )
+                        }
+
+                        if controls.actions.isEmpty {
+                            Text("watch.live.controls.pending")
+                                .font(.caption)
+                                .foregroundStyle(WatchLivePalette.textSecondary)
+                        } else {
+                            VStack(spacing: 6) {
+                                ForEach(controls.actions) { action in
+                                    Button {
+                                        if let command = controls.makeCommand(for: action.kind) {
+                                            onCommand(command)
+                                        }
+                                    } label: {
+                                        Text(LocalizedStringKey(action.titleLocalizationKey))
+                                            .frame(maxWidth: .infinity)
+                                    }
+                                    .disabled(!action.isEnabled)
+                                    .accessibilityLabel(Text(LocalizedStringKey(action.accessibilityLabelLocalizationKey)))
+                                }
+                            }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
         }
         .background(WatchLivePalette.navy.ignoresSafeArea())
     }
@@ -120,6 +139,83 @@ struct WatchLiveSessionFaceView: View {
 
 #Preview {
     WatchLiveSessionFaceView(viewModel: WatchActivityViewModel())
+}
+
+private struct WatchFallbackBannerView: View {
+    let state: WatchActivityFallbackViewState
+    let accentColor: Color
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: state.isBlocking ? "exclamationmark.triangle.fill" : "clock.badge.exclamationmark")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(state.isBlocking ? WatchLivePalette.amber : accentColor)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(LocalizedStringKey(state.titleLocalizationKey))
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.white)
+                Text(LocalizedStringKey(state.detailLocalizationKey))
+                    .font(.caption2)
+                    .foregroundStyle(WatchLivePalette.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 9)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(WatchLivePalette.panel)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(WatchLivePalette.border, lineWidth: 1)
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(state.accessibilityIdentifier)
+    }
+}
+
+private struct WatchAlwaysOnFallbackView: View {
+    let viewModel: WatchActivityViewModel
+    let speed: WatchLiveSpeedDisplayValue
+    let accentColor: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("watch.fallback.alwaysOn.title")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(WatchLivePalette.textSecondary)
+
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(speed.valueText)
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(accentColor)
+                Text(LocalizedStringKey(speed.unitLocalizationKey))
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(WatchLivePalette.textSecondary)
+            }
+
+            Text(LocalizedStringKey(WatchLiveSessionStatusLocalization.key(for: viewModel.session.state)))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+
+            Text(LocalizedStringKey(alwaysOnDetailKey))
+                .font(.caption2)
+                .foregroundStyle(WatchLivePalette.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("watch-always-on-fallback")
+    }
+
+    private var alwaysOnDetailKey: String {
+        viewModel.fallback.isVisible
+            ? viewModel.fallback.detailLocalizationKey
+            : "watch.fallback.alwaysOn.detail"
+    }
 }
 
 private struct WatchRouteCompactCardView: View {
