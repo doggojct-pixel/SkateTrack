@@ -2408,3 +2408,87 @@ Tests/iOSTests/WatchBridgeMirroredSessionCommandTests.swift
 Tests/iOSTests/WatchBridgeCommandSafetyTests.swift
 ```
 <!-- TASK033D_WATCHCONNECTIVITY_VERIFIER_DOCS_FILE_STRUCTURE_END -->
+
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_FILE_STRUCTURE_START -->
+## Task-034a Watch Sensor Provider Protocols Addendum
+
+Task-034a adds provider-boundary files only:
+
+```text
+Shared/WatchSensors/WatchSensorProviderProtocols.swift      # Provider kind, availability state, and provider protocol.
+Shared/WatchSensors/WatchSensorSampleModels.swift           # Codable sample value and snapshot models.
+Shared/WatchSensors/WatchSensorMockProvider.swift           # Simulator-safe scripted provider.
+Shared/WatchSensors/WatchSensorDisabledProvider.swift       # Disabled/unavailable provider boundary.
+Tests/iOSTests/WatchSensorProviderAvailabilityTests.swift   # Availability, mock, disabled, and sample model tests.
+scripts/verify_task034a_watch_sensor_provider_protocols.py  # Task-034a verifier.
+```
+
+Task-034a does not add production HealthKit API usage, HealthKit entitlements, Watch sample storage, metric fusion, Watch UI, Snow production, schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation.
+
+```text
+TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_RESULT=PASSED
+WATCH_SENSOR_PROVIDER_PROTOCOLS_IMPLEMENTED=YES
+MOCK_SENSOR_PROVIDER_PRESENT=YES
+DISABLED_SENSOR_PROVIDER_PRESENT=YES
+PROVIDER_AVAILABILITY_TESTS=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+NEXT_TASK=Task-034b
+```
+<!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_FILE_STRUCTURE_END -->
+## Task-034b Disabled HealthKit Boundary Addendum
+- `Shared/WatchSensors/WatchHealthKitBoundary.swift` defines the disabled boundary contract and availability state.
+- `Shared/WatchSensors/WatchHealthKitDisabledProvider.swift` adapts the disabled boundary to `WatchSensorProviding` without collecting or saving samples.
+- `Shared/WatchSensors/WatchHealthKitCopy.swift` centralizes non-clinical disabled-state copy.
+- `Tests/iOSTests/WatchHealthKitDisabledBoundaryTests.swift` verifies disabled state and copy guardrails.
+- `scripts/verify_task034b_disabled_healthkit_boundary.py` verifies the disabled boundary and forbidden scope.
+- TASK034B_DISABLED_HEALTHKIT_BOUNDARY_RESULT=PASSED
+- DISABLED_HEALTHKIT_BOUNDARY_PRESENT=YES
+- HEALTHKIT_PRODUCTION_API_USED=NO
+- HEALTHKIT_ENTITLEMENT_CHANGED=NO
+- RESTRICTED_CLAIM_WORDING_PRESENT=NO
+- BACKGROUND_COLLECTION_ENABLED=NO
+- WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+- METRIC_FUSION_IMPLEMENTED=NO
+- WATCH_UI_IMPLEMENTED=NO
+- NEXT_TASK=Task-034c
+
+<!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_START -->
+## Task-034c Sensor Provider Tests + Docs Addendum
+
+Task-034c adds the aggregate verifier:
+
+```text
+scripts/verify_task034_sensor_provider.py  # Task-034 aggregate sensor-provider tests/docs verifier.
+```
+
+Task-034c relies on the existing Task-034 sensor test files:
+
+```text
+Tests/iOSTests/WatchSensorProviderAvailabilityTests.swift
+Tests/iOSTests/WatchHealthKitDisabledBoundaryTests.swift
+```
+
+Task-034c closes Task-034 without adding product Swift files, Xcode project membership changes, production HealthKit API, HealthKit entitlement/capability, health monitoring claims, background health collection, Watch sample storage, metric fusion, Watch UI, Snow production, schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation.
+
+```text
+TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES
+VERIFY_TASK034_SENSOR_PROVIDER_RESULT=PASSED
+SENSOR_PROVIDER_TESTS_EXIT=0
+KNOWN_LIMITATIONS_UPDATED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+RESTRICTED_CLAIM_WORDING_PRESENT=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+SCHEMA_CORE_DATA_PACKAGE_MUTATION=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035a
+```
+<!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_END -->
