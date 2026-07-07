@@ -1251,3 +1251,43 @@
 "mac.accessibility.elevation_chart.label" = "海拔剖面圖";
 
 "mac.accessibility.package_card.remove.hint" = "從只讀瀏覽器階段移除此 package；不會刪除 package 檔案。";
+
+// Task-036b watchOS live face and mirrored controls
+"watch.live.title" = "即時紀錄";
+"watch.live.speed.current" = "目前速度";
+"watch.live.session.status" = "紀錄狀態";
+"watch.live.status.idle" = "準備開始";
+"watch.live.status.preparing" = "準備中";
+"watch.live.status.ready" = "可開始";
+"watch.live.status.recording" = "記錄中";
+"watch.live.status.paused" = "已暫停";
+"watch.live.status.ending" = "結束中";
+"watch.live.status.ended" = "已結束";
+"watch.live.status.failed" = "需要注意";
+"watch.live.controls.start" = "開始";
+"watch.live.controls.pause" = "暫停";
+"watch.live.controls.resume" = "繼續";
+"watch.live.controls.stop" = "停止";
+"watch.live.controls.pending" = "Session 準備好後即可操作。";
+"watch.live.accessibility.currentSpeed" = "目前速度";
+"watch.live.accessibility.sessionStatus" = "紀錄狀態";
+"watch.live.accessibility.start" = "開始紀錄";
+"watch.live.accessibility.pause" = "暫停紀錄";
+"watch.live.accessibility.resume" = "繼續紀錄";
+"watch.live.accessibility.stop" = "停止紀錄";
+
+// Task-036c watchOS compact route, speed, and elevation cards
+"unit.length.meter.short" = "m";
+"watch.compact.route.title" = "路線";
+"watch.compact.route.scope.textOnly" = "文字";
+"watch.compact.route.status.recorded" = "路線已記錄";
+"watch.compact.route.status.qualityInsufficient" = "GPS 品質不足";
+"watch.compact.route.status.unavailable" = "無路線資料";
+"watch.compact.route.points" = "點";
+"watch.compact.route.segments" = "段";
+"watch.compact.speed.title" = "速度";
+"watch.compact.speed.max" = "最高";
+"watch.compact.speed.empty" = "無資料";
+"watch.compact.elevation.title" = "海拔";
+"watch.compact.elevation.ascent" = "爬升";
+"watch.compact.elevation.empty" = "無資料";

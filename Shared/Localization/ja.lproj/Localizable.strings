@@ -1251,3 +1251,43 @@
 "mac.accessibility.elevation_chart.label" = "標高プロファイルチャート";
 
 "mac.accessibility.package_card.remove.hint" = "このパッケージを読み取り専用ブラウザーセッションから外します。パッケージファイルは削除しません。";
+
+// Task-036b watchOS live face and mirrored controls
+"watch.live.title" = "ライブ記録";
+"watch.live.speed.current" = "現在の速度";
+"watch.live.session.status" = "記録状態";
+"watch.live.status.idle" = "開始できます";
+"watch.live.status.preparing" = "準備中";
+"watch.live.status.ready" = "開始できます";
+"watch.live.status.recording" = "記録中";
+"watch.live.status.paused" = "一時停止中";
+"watch.live.status.ending" = "終了中";
+"watch.live.status.ended" = "終了しました";
+"watch.live.status.failed" = "確認が必要です";
+"watch.live.controls.start" = "開始";
+"watch.live.controls.pause" = "一時停止";
+"watch.live.controls.resume" = "再開";
+"watch.live.controls.stop" = "停止";
+"watch.live.controls.pending" = "セッションの準備ができると操作できます。";
+"watch.live.accessibility.currentSpeed" = "現在の速度";
+"watch.live.accessibility.sessionStatus" = "記録状態";
+"watch.live.accessibility.start" = "記録を開始";
+"watch.live.accessibility.pause" = "記録を一時停止";
+"watch.live.accessibility.resume" = "記録を再開";
+"watch.live.accessibility.stop" = "記録を停止";
+
+// Task-036c watchOS compact route, speed, and elevation cards
+"unit.length.meter.short" = "m";
+"watch.compact.route.title" = "ルート";
+"watch.compact.route.scope.textOnly" = "テキスト";
+"watch.compact.route.status.recorded" = "ルートを記録済み";
+"watch.compact.route.status.qualityInsufficient" = "GPS 品質が不足";
+"watch.compact.route.status.unavailable" = "ルートなし";
+"watch.compact.route.points" = "点";
+"watch.compact.route.segments" = "区間";
+"watch.compact.speed.title" = "速度";
+"watch.compact.speed.max" = "最高";
+"watch.compact.speed.empty" = "データなし";
+"watch.compact.elevation.title" = "標高";
+"watch.compact.elevation.ascent" = "上昇";
+"watch.compact.elevation.empty" = "データなし";

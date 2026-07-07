@@ -20,6 +20,10 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.samples.rawSampleCount, 0)
         XCTAssertFalse(viewModel.compactSummary.hasAnyDisplayData)
         XCTAssertTrue(viewModel.compactSummary.displayOnly)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.scope, .textOnly)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.status, .unavailable)
+        XCTAssertFalse(viewModel.compactSummary.speedCard.hasData)
+        XCTAssertFalse(viewModel.compactSummary.elevationCard.hasData)
     }
 
     func testSnapshotBuildsConnectionSessionMetricsSamplesAndCompactSummaryState() {
@@ -108,6 +112,12 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.compactSummary.elevationPointCount, 6)
         XCTAssertEqual(viewModel.compactSummary.routeQuality, .usable)
         XCTAssertEqual(viewModel.compactSummary.displayDerivedTotalAscentMeters, 4)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.compactRoute, compactSummary.compactRoute)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.status, .recorded)
+        XCTAssertEqual(viewModel.compactSummary.speedCard.points, compactSummary.speedSparkline.points)
+        XCTAssertEqual(viewModel.compactSummary.speedCard.maximumSpeedKilometersPerHour, 12)
+        XCTAssertEqual(viewModel.compactSummary.elevationCard.points, compactSummary.elevationProfile.points)
+        XCTAssertEqual(viewModel.compactSummary.elevationCard.ascentMeters, 4)
         XCTAssertTrue(viewModel.compactSummary.hasAnyDisplayData)
     }
 
@@ -132,6 +142,43 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.compactSummary.hasElevationProfile)
         XCTAssertTrue(viewModel.compactSummary.hasAnyDisplayData)
         XCTAssertTrue(viewModel.compactSummary.displayOnly)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.status, .recorded)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.pointCount, 5)
+        XCTAssertTrue(viewModel.compactSummary.speedCard.hasData)
+        XCTAssertEqual(viewModel.compactSummary.speedCard.pointCount, 4)
+        XCTAssertFalse(viewModel.compactSummary.elevationCard.hasData)
+        XCTAssertEqual(viewModel.compactSummary.elevationCard.pointCount, 3)
+    }
+
+    func testTextOnlyRouteCardShowsQualityInsufficientWithoutSemanticForking() {
+        let limitedRoute = CompactRouteDisplay(
+            points: [
+                CompactRoutePoint(
+                    id: 1,
+                    elapsedSeconds: 1,
+                    coordinate: GeoCoordinate(latitude: 25.033, longitude: 121.565),
+                    semantic: .lowConfidence
+                )
+            ],
+            quality: .limited,
+            segmentCount: 1,
+            hasLowConfidenceSegments: true,
+            hasStartupWarmup: true
+        )
+        let compactSummary = ActivityVisualizationCompactSummary(
+            routeQuality: .limited,
+            routeDisplayPointCount: 1,
+            routeSegmentCount: 1,
+            compactRoute: limitedRoute
+        )
+
+        let viewModel = WatchActivityViewModel(compactSummary: compactSummary)
+
+        XCTAssertEqual(viewModel.compactSummary.routeCard.scope, .textOnly)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.compactRoute, limitedRoute)
+        XCTAssertEqual(viewModel.compactSummary.routeCard.status, .qualityInsufficient)
+        XCTAssertTrue(viewModel.compactSummary.routeCard.hasLowConfidenceSegments)
+        XCTAssertTrue(viewModel.compactSummary.routeCard.hasStartupWarmup)
     }
 
     private static func sensorSnapshot(capturedAt: Date) -> WatchSensorProviderSnapshot {

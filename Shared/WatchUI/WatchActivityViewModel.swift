@@ -191,6 +191,9 @@ struct WatchActivityCompactSummaryViewState: Equatable, Sendable {
     let hasCompactRoute: Bool
     let hasSpeedSparkline: Bool
     let hasElevationProfile: Bool
+    let routeCard: WatchActivityRouteCompactCardViewState
+    let speedCard: WatchActivitySpeedCompactCardViewState
+    let elevationCard: WatchActivityElevationCompactCardViewState
     let routePointCount: Int
     let speedPointCount: Int
     let elevationPointCount: Int
@@ -226,5 +229,117 @@ struct WatchActivityCompactSummaryViewState: Equatable, Sendable {
         self.displayDerivedTotalAscentMeters = compactSummary?.elevationProfile.displayDerivedTotalAscentMeters
         self.displayOnly = bridgeDisplay?.displayOnly ?? true
         self.hasAnyDisplayData = compactSummary?.hasAnyDisplayData ?? (routeData || speedData || elevationData)
+        self.routeCard = WatchActivityRouteCompactCardViewState(
+            compactRoute: compactSummary?.compactRoute,
+            bridgeDisplay: bridgeDisplay
+        )
+        self.speedCard = WatchActivitySpeedCompactCardViewState(
+            speedSparkline: compactSummary?.speedSparkline,
+            bridgeDisplay: bridgeDisplay
+        )
+        self.elevationCard = WatchActivityElevationCompactCardViewState(
+            elevationProfile: compactSummary?.elevationProfile,
+            bridgeDisplay: bridgeDisplay
+        )
+    }
+}
+
+enum WatchActivityRouteMiniCardScope: String, Equatable, Sendable {
+    case textOnly = "TEXT_ONLY"
+}
+
+enum WatchActivityRouteCompactStatus: Equatable, Sendable {
+    case recorded
+    case qualityInsufficient
+    case unavailable
+}
+
+struct WatchActivityRouteCompactCardViewState: Equatable, Sendable {
+    let scope: WatchActivityRouteMiniCardScope
+    let compactRoute: CompactRouteDisplay?
+    let hasData: Bool
+    let pointCount: Int
+    let segmentCount: Int
+    let quality: ActivityVisualizationQuality?
+    let hasLowConfidenceSegments: Bool
+    let hasStartupWarmup: Bool
+    let status: WatchActivityRouteCompactStatus
+
+    init(
+        compactRoute: CompactRouteDisplay?,
+        bridgeDisplay: WatchBridgeCompactActivityDisplayPayload?
+    ) {
+        let hasCompactRoute = compactRoute?.hasDisplayData ?? bridgeDisplay?.hasCompactRoute ?? false
+        let pointCount = compactRoute?.points.count ?? bridgeDisplay?.routePointCount ?? 0
+        let quality = compactRoute?.quality
+
+        self.scope = .textOnly
+        self.compactRoute = compactRoute
+        self.hasData = hasCompactRoute
+        self.pointCount = pointCount
+        self.segmentCount = compactRoute?.segmentCount ?? 0
+        self.quality = quality
+        self.hasLowConfidenceSegments = compactRoute?.hasLowConfidenceSegments ?? false
+        self.hasStartupWarmup = compactRoute?.hasStartupWarmup ?? false
+
+        if hasCompactRoute || pointCount > 0 {
+            self.status = quality == .limited ? .qualityInsufficient : .recorded
+        } else {
+            self.status = .unavailable
+        }
+    }
+}
+
+struct WatchActivitySpeedCompactCardViewState: Equatable, Sendable {
+    let points: [CompactSparklinePoint]
+    let hasData: Bool
+    let pointCount: Int
+    let segmentCount: Int
+    let quality: ActivityVisualizationQuality?
+    let minimumSpeedKilometersPerHour: Double?
+    let maximumSpeedKilometersPerHour: Double?
+    let averageDisplaySpeedKilometersPerHour: Double?
+    let hasSparseData: Bool
+
+    init(
+        speedSparkline: CompactSpeedSparkline?,
+        bridgeDisplay: WatchBridgeCompactActivityDisplayPayload?
+    ) {
+        self.points = speedSparkline?.points ?? []
+        self.hasData = speedSparkline?.hasDisplayData ?? bridgeDisplay?.hasSpeedSparkline ?? false
+        self.pointCount = speedSparkline?.points.count ?? bridgeDisplay?.speedSampleCount ?? 0
+        self.segmentCount = speedSparkline?.segmentCount ?? 0
+        self.quality = speedSparkline?.quality
+        self.minimumSpeedKilometersPerHour = speedSparkline?.minimumSpeedKilometersPerHour
+        self.maximumSpeedKilometersPerHour = speedSparkline?.maximumSpeedKilometersPerHour
+        self.averageDisplaySpeedKilometersPerHour = speedSparkline?.averageDisplaySpeedKilometersPerHour
+        self.hasSparseData = speedSparkline?.hasSparseData ?? false
+    }
+}
+
+struct WatchActivityElevationCompactCardViewState: Equatable, Sendable {
+    let points: [CompactSparklinePoint]
+    let hasData: Bool
+    let pointCount: Int
+    let segmentCount: Int
+    let quality: ActivityVisualizationQuality?
+    let ascentMeters: Double?
+    let selectedSource: ElevationDisplaySource?
+    let hasAbsoluteAnchor: Bool
+    let hasSparseData: Bool
+
+    init(
+        elevationProfile: CompactElevationProfile?,
+        bridgeDisplay: WatchBridgeCompactActivityDisplayPayload?
+    ) {
+        self.points = elevationProfile?.points ?? []
+        self.hasData = elevationProfile?.hasDisplayData ?? bridgeDisplay?.hasElevationProfile ?? false
+        self.pointCount = elevationProfile?.points.count ?? bridgeDisplay?.elevationSampleCount ?? 0
+        self.segmentCount = elevationProfile?.segmentCount ?? 0
+        self.quality = elevationProfile?.quality
+        self.ascentMeters = elevationProfile?.displayDerivedTotalAscentMeters
+        self.selectedSource = elevationProfile?.selectedSource
+        self.hasAbsoluteAnchor = elevationProfile?.hasAbsoluteAnchor ?? false
+        self.hasSparseData = elevationProfile?.hasSparseData ?? false
     }
 }

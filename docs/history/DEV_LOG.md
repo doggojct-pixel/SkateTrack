@@ -2994,3 +2994,17 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Verification tokens: `VERIFY_TASK036A_WATCH_UI_VIEWMODEL_RESULT=PASSED`, `COMPACT_SUMMARY_CONSUMPTION=YES`, `WATCH_UI_SEMANTIC_REIMPLEMENTATION_COUNT=0`, `VIEWMODEL_STATE_TESTS_EXIT=0`.
 - Next task handoff: `NEXT_TASK=Task-036b`.
 <!-- TASK036A_WATCH_UI_VIEWMODEL_DEVLOG_END -->
+
+<!-- TASK036C_COMPACT_CARDS_DEVLOG_START -->
+## Task-036c - Route/Speed/Elevation Compact Cards
+
+- Added text-only Watch route mini-card state for the Task-036c route scope decision: `WATCH_ROUTE_MINI_CARD_SCOPE=TEXT_ONLY`.
+- Added Watch compact speed and elevation card state that consumes Shared `CompactSpeedSparkline` and `CompactElevationProfile` outputs without Watch-side speed filtering or ascent computation.
+- Updated the watchOS live face with compact route, speed, and elevation cards using the iOS skateboard/inline color language: deep navy/card surfaces, skateboard accent, inline purple, speed teal, and elevation amber.
+- Added empty/no-data display states and localized keys for `en`, `zh-Hant`, and `ja`.
+- Added focused view-model tests for text-only route status, compact speed/elevation point consumption, and bridge-display fallback states.
+- Added `scripts/verify_task036c_compact_cards.py` to guard Shared compact consumption, text-only route scope, localization parity, no MapKit route semantics, no Watch-side route/speed/elevation semantic forks, and no Snow UI.
+- Verification tokens: `VERIFY_TASK036C_COMPACT_CARDS_RESULT=PASSED`, `USES_COMPACT_SPEED_SPARKLINE=YES`, `USES_COMPACT_ELEVATION_PROFILE=YES`, `WATCH_ROUTE_MINI_CARD_SCOPE=TEXT_ONLY`, `ROUTE_CARD_IF_PRESENT_USES_COMPACT_ROUTE_DISPLAY=YES`, `WATCH_SEMANTIC_FORK_COUNT=0`.
+- Deferred scope: full Watch map renderer, drawn route shape, route reconstruction, new trusted ascent computation, Watch-side speed filtering, Task-036d fallback/always-on expansion, Task-036e aggregate localization/verifier closure, and Snow UI.
+- Next task handoff: `NEXT_TASK=Task-036d`.
+<!-- TASK036C_COMPACT_CARDS_DEVLOG_END -->
