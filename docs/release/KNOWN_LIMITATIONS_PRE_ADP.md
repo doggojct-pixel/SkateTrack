@@ -994,3 +994,51 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035d
 ```
 <!-- TASK035C_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK035D_PRE_ADP_LIMITATIONS_START -->
+## Task-035d Package / Backup Compatibility Boundary
+
+Task-035d keeps old `.skatetrack` packages compatible after the Watch sample foundation work. Existing schemaVersion 1 packages without Watch metadata still decode, import validation remains compatible with Task-030d, and the Task-030e macOS read-only viewer path continues to open old packages through the shared reader.
+
+Current status:
+
+- Package schemaVersion remains 1.
+- Optional Watch sample compatibility metadata may be encoded when a future approved package producer advertises optional Watch data.
+- Old packages without the optional metadata decode with `watchSampleCompatibility == nil`.
+- Optional metadata does not make Watch samples durable and does not change trusted metrics or route geometry.
+- Task-030d iOS import compatibility is covered by focused tests.
+- Task-030e read-only viewer compatibility is covered by reader compatibility tests and verifier source guards.
+
+Remaining limitations:
+
+- No Watch sample storage is implemented.
+- No Watch sample sidecar payload is implemented.
+- No Core Data schema change is implemented.
+- No durable package export/import support for Watch sample arrays is implemented.
+- Display-derived fusion is not approved for trusted metric policy.
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No Watch UI is implemented.
+- No Snow production implementation is added.
+
+```text
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OLD_PACKAGE_DECODE_TESTS_EXIT=0
+NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES
+TASK030D_IMPORT_COMPATIBILITY=PASSED
+TASK030E_VIEWER_COMPATIBILITY=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035e
+```
+<!-- TASK035D_PRE_ADP_LIMITATIONS_END -->

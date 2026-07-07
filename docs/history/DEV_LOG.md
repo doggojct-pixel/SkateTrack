@@ -2959,3 +2959,14 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
 - Next task handoff: `NEXT_TASK=Task-035d`.
 <!-- TASK035C_CONSERVATIVE_FUSION_RULES_DEVLOG_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_DEVLOG_START -->
+## Task-035d-001 Package / Backup Compatibility
+
+- Added optional Watch sample compatibility metadata to `SkateTrackPackageManifest` while preserving `schemaVersion = 1` and old package decode behavior.
+- Added `Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift` covering legacy package decode without Watch metadata, new optional Watch metadata round-trip without schema bump, Task-030d import compatibility for legacy packages, and the Task-030e read-only reader path for legacy packages.
+- Added `scripts/verify_task035d_package_compatibility.py` to guard allowed paths, project membership, optional metadata tokens, Task-030d/030e compatibility evidence, and forbidden storage/schema/route/trusted-metric/HealthKit boundaries.
+- Verification tokens: `VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED`, `OLD_PACKAGE_DECODE_TESTS_EXIT=0`, `NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES`, `TASK030D_IMPORT_COMPATIBILITY=PASSED`, `TASK030E_VIEWER_COMPATIBILITY=PASSED`.
+- Boundary tokens: `OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES`, `PACKAGE_SCHEMA_VERSION_UNCHANGED=YES`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035e`.
+<!-- TASK035D_PACKAGE_COMPATIBILITY_DEVLOG_END -->

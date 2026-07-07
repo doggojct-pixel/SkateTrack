@@ -23,6 +23,7 @@
 		35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
 		35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
 		35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */; };
+		35D900000000000000000101 /* SkateTrackPackageWatchCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */; };
 
 		34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
 		34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
@@ -508,6 +509,7 @@
 		35B900000000000000000001 /* WatchSampleIngestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestionTests.swift; sourceTree = "<group>"; };
 		35C100000000000000000001 /* WatchSampleFusionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRules.swift; sourceTree = "<group>"; };
 		35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRulesTests.swift; sourceTree = "<group>"; };
+		35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageWatchCompatibilityTests.swift; sourceTree = "<group>"; };
 
 		34B100000000000000000001 /* WatchHealthKitBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitBoundary.swift; sourceTree = "<group>"; };
 		34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledProvider.swift; sourceTree = "<group>"; };
@@ -1168,6 +1170,7 @@
 				34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */,
 				35B900000000000000000001 /* WatchSampleIngestionTests.swift */,
 				35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */,
+				35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1853,6 +1856,7 @@
 				34B900000000000000000101 /* WatchHealthKitDisabledBoundaryTests.swift in Sources */,
 				35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */,
 				35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */,
+				35D900000000000000000101 /* SkateTrackPackageWatchCompatibilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

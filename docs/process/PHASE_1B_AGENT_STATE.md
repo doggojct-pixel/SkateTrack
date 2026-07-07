@@ -547,3 +547,33 @@ NEXT_TASK=Task-035d
 
 Task-035c does not implement Watch sample persistence, package export/import of Watch samples, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
 <!-- TASK035C_CONSERVATIVE_FUSION_RULES_STATE_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_STATE_START -->
+## Task-035d Package / Backup Compatibility
+
+Task-035d preserves package export/import and local restore compatibility after the Watch sample foundation work. The package manifest now accepts optional Watch sample compatibility metadata while keeping `schemaVersion` at 1, so old packages that do not include Watch metadata still decode through `SkateTrackPackageReader`, validate through Task-030d iOS import, and remain openable by the Task-030e macOS read-only viewer path.
+
+The optional metadata is compatibility-only. It records whether a package advertises optional Watch sample data and preserves boundary markers for source attribution, display-derived-only handling, route geometry mutation count, and trusted metric mutation count. Task-035d does not make Watch samples durable, does not add package sidecar storage, and does not alter `MotionSample`, `SessionData`, Core Data, route geometry, trusted metrics, production HealthKit access, Watch UI, or Snow production scope.
+
+```text
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OLD_PACKAGE_DECODE_TESTS_EXIT=0
+NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES
+TASK030D_IMPORT_COMPATIBILITY=PASSED
+TASK030E_VIEWER_COMPATIBILITY=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035e
+```
+
+Task-035d keeps package compatibility deliberately narrow: optional manifest metadata and compatibility tests only. Durable Watch sample export/import remains unimplemented until a later approved storage/package design.
+<!-- TASK035D_PACKAGE_COMPATIBILITY_STATE_END -->

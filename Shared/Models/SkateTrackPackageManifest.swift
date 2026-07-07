@@ -23,6 +23,7 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
     let includesAchievements: Bool
     let formatDescription: String
     let formatCapabilities: [String]?
+    let watchSampleCompatibility: SkateTrackWatchSampleCompatibility?
 
     init(
         packageType: SkateTrackPackageType = .export,
@@ -36,7 +37,8 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         includesAccountData: Bool = false,
         includesAchievements: Bool = false,
         formatDescription: String = "portable-session-export",
-        formatCapabilities: [String]? = nil
+        formatCapabilities: [String]? = nil,
+        watchSampleCompatibility: SkateTrackWatchSampleCompatibility? = nil
     ) {
         self.packageType = packageType
         self.schemaVersion = schemaVersion
@@ -50,6 +52,11 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         self.includesAchievements = includesAchievements
         self.formatDescription = formatDescription
         self.formatCapabilities = formatCapabilities
+        self.watchSampleCompatibility = watchSampleCompatibility
+    }
+
+    var includesOptionalWatchSampleData: Bool {
+        watchSampleCompatibility?.containsWatchSamples == true
     }
 
     static func decode(from data: Data) throws -> SkateTrackPackageManifest {
@@ -79,6 +86,33 @@ struct SkateTrackPackageManifest: Codable, Sendable, Equatable {
         guard !manifest.includesAchievements else {
             throw SkateTrackPackageError.achievementsNotAllowed
         }
+    }
+}
+
+struct SkateTrackWatchSampleCompatibility: Codable, Sendable, Equatable {
+    static let capabilityIdentifier = "watch-sample-optional-v1"
+
+    let containsWatchSamples: Bool
+    let storageStrategy: String
+    let sourceAttributionPreserved: Bool
+    let displayDerivedOnly: Bool
+    let trustedMetricMutationCount: Int
+    let routeGeometryMutationCount: Int
+
+    init(
+        containsWatchSamples: Bool = false,
+        storageStrategy: String = "not-exported",
+        sourceAttributionPreserved: Bool = false,
+        displayDerivedOnly: Bool = true,
+        trustedMetricMutationCount: Int = 0,
+        routeGeometryMutationCount: Int = 0
+    ) {
+        self.containsWatchSamples = containsWatchSamples
+        self.storageStrategy = storageStrategy
+        self.sourceAttributionPreserved = sourceAttributionPreserved
+        self.displayDerivedOnly = displayDerivedOnly
+        self.trustedMetricMutationCount = trustedMetricMutationCount
+        self.routeGeometryMutationCount = routeGeometryMutationCount
     }
 }
 

@@ -2624,3 +2624,47 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035d
 ```
 <!-- TASK035C_CONSERVATIVE_FUSION_RULES_FILE_STRUCTURE_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_FILE_STRUCTURE_START -->
+## Task-035d Package / Backup Compatibility Addendum
+
+Task-035d adds optional package compatibility metadata, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/Models/SkateTrackPackageManifest.swift             # Adds optional Watch sample compatibility metadata; schemaVersion remains 1.
+Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift # Legacy decode, optional metadata round-trip, Task-030d import, and Task-030e reader compatibility tests.
+scripts/verify_task035d_package_compatibility.py          # Task-035d verifier for package compatibility, docs, membership, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                      # Adds SkateTrackPackageWatchCompatibilityTests.swift to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                      # Records Task-035d result and Task-035e handoff.
+docs/history/DEV_LOG.md                                   # Records Task-035d implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                          # Records Task-035d file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                 # Records remaining durable Watch storage/package limitations.
+```
+
+Task-035d intentionally does not modify these durable storage, payload, import/export implementation, viewer implementation, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser/
+```
+
+```text
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OLD_PACKAGE_DECODE_TESTS_EXIT=0
+NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES
+TASK030D_IMPORT_COMPATIBILITY=PASSED
+TASK030E_VIEWER_COMPATIBILITY=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035e
+```
+<!-- TASK035D_PACKAGE_COMPATIBILITY_FILE_STRUCTURE_END -->
