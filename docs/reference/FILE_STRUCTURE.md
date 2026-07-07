@@ -2492,3 +2492,226 @@ TRUSTED_METRIC_MUTATION=NO
 NEXT_TASK=Task-035a
 ```
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_FILE_STRUCTURE_START -->
+## Task-035a Watch Sample Model Extension Audit Addendum
+
+Task-035a adds documentation and a verifier draft only:
+
+```text
+scripts/verify_task035a_sample_model_audit.py  # Task-035a sample model audit and compatibility-plan verifier.
+docs/process/PHASE_1B_AGENT_STATE.md           # Records Task-035a audit result, reviewed mini-plan, and Task-035b handoff.
+docs/history/DEV_LOG.md                        # Records the Task-035a source audit decision and scope boundaries.
+docs/reference/FILE_STRUCTURE.md               # Records the Task-035a verifier/documentation-only file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md      # Records pre-ADP limitation and compatibility boundaries for Watch samples.
+```
+
+Task-035a audits these existing source paths but does not modify them:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/MotionSampleFileStore.swift
+Shared/Persistence/SessionRepository.swift
+Shared/Persistence/SessionEntityMapper.swift
+Shared/Persistence/PersistenceController.swift
+Shared/Persistence/SkateTrackDataModel.xcdatamodeld/SkateTrackDataModel.xcdatamodel/contents
+Shared/Export/SkateTrackPackageReader.swift
+Shared/Export/SkateTrackPackageWriter.swift
+iOS/Core/Import/SkateTrackPackageImportCoordinator.swift
+macOS/Features/SessionBrowser
+```
+
+Task-035a intentionally does not add product Swift files, Xcode project membership changes, Watch sample ingestion, Watch sample storage, Core Data schema changes, package format changes, route geometry mutation, trusted metric mutation, production HealthKit API, HealthKit entitlement/capability, Watch UI, or Snow production behavior.
+
+```text
+VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED
+SCHEMA_CHANGE_REQUIRED=YES
+COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES
+SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES
+TASK035B_ALLOWED_TO_START=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+NEXT_TASK=Task-035b
+```
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_FILE_STRUCTURE_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_FILE_STRUCTURE_START -->
+## Task-035b Watch Sample Ingestion Addendum
+
+Task-035b adds a shared Watch sample ingestion path, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/WatchSensors/WatchSampleIngestion.swift        # Conservative ingestion path for WatchSensorProviderSnapshot.
+Tests/iOSTests/WatchSampleIngestionTests.swift        # Ordering, gaps, duplicates, source-attribution, and no-mutation tests.
+scripts/verify_task035b_watch_sample_ingestion.py     # Task-035b verifier for implementation, membership, docs, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                  # Adds WatchSampleIngestion.swift to iOS/watchOS sources and tests to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035b result and Task-035c handoff.
+docs/history/DEV_LOG.md                               # Records Task-035b implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035b file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining storage/fusion/package limitations.
+```
+
+Task-035b intentionally does not modify these durable storage, schema, package, import/export, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser
+```
+
+```text
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES
+WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035c
+```
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_FILE_STRUCTURE_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_FILE_STRUCTURE_START -->
+## Task-035c Conservative Fusion Rules Addendum
+
+Task-035c adds display-only conservative fusion rules, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/WatchSensors/WatchSampleFusionRules.swift      # Conservative display-only iPhone/Watch interpretation policy and diagnostics.
+Tests/iOSTests/WatchSampleFusionRulesTests.swift      # Conflict, gap, display-derived, and policy-disable tests.
+scripts/verify_task035c_fusion_rules.py               # Task-035c verifier for implementation, membership, docs, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                  # Adds WatchSampleFusionRules.swift to iOS/watchOS sources and tests to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035c result and Task-035d handoff.
+docs/history/DEV_LOG.md                               # Records Task-035c implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035c file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining storage/package/export/import limitations.
+```
+
+Task-035c intentionally does not modify these durable storage, schema, package, import/export, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser
+```
+
+```text
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES
+DISPLAY_DERIVED_SEPARATION=YES
+CONFLICT_TESTS_EXIT=0
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035d
+```
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_FILE_STRUCTURE_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_FILE_STRUCTURE_START -->
+## Task-035d Package / Backup Compatibility Addendum
+
+Task-035d adds optional package compatibility metadata, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/Models/SkateTrackPackageManifest.swift             # Adds optional Watch sample compatibility metadata; schemaVersion remains 1.
+Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift # Legacy decode, optional metadata round-trip, Task-030d import, and Task-030e reader compatibility tests.
+scripts/verify_task035d_package_compatibility.py          # Task-035d verifier for package compatibility, docs, membership, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                      # Adds SkateTrackPackageWatchCompatibilityTests.swift to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                      # Records Task-035d result and Task-035e handoff.
+docs/history/DEV_LOG.md                                   # Records Task-035d implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                          # Records Task-035d file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md                 # Records remaining durable Watch storage/package limitations.
+```
+
+Task-035d intentionally does not modify these durable storage, payload, import/export implementation, viewer implementation, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser/
+```
+
+```text
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OLD_PACKAGE_DECODE_TESTS_EXIT=0
+NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES
+TASK030D_IMPORT_COMPATIBILITY=PASSED
+TASK030E_VIEWER_COMPATIBILITY=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035e
+```
+<!-- TASK035D_PACKAGE_COMPATIBILITY_FILE_STRUCTURE_END -->
+
+<!-- TASK035E_DOCS_MANUAL_QA_FILE_STRUCTURE_START -->
+## Task-035e Watch Sample Docs + Manual QA Addendum
+
+Task-035e adds a documentation/manual QA gate, a verifier, and documentation updates only:
+
+```text
+docs/release/TASK035E_WATCH_SAMPLE_MANUAL_QA.md       # Watch sample foundation manual QA gate and Task-036 handoff notes.
+scripts/verify_task035e_docs_manual_qa.py             # Task-035e verifier for docs/manual QA closure and forbidden boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035e result and Task-036a handoff.
+docs/history/DEV_LOG.md                               # Records Task-035e evidence chain and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035e file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining Pre-UI and Pre-storage limitations.
+```
+
+Task-035e intentionally does not modify these product, test, project, storage, route, metric, UI, or package implementation paths:
+
+```text
+Shared/
+iOS/
+macOS/
+watchOS/
+Tests/
+SkateTrack.xcodeproj/
+```
+
+```text
+VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED
+MANUAL_QA_WATCH_SAMPLE_PATH=PASSED
+DOCS_UPDATED=YES
+WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED
+WATCH_SAMPLE_INGESTION_PATH=PASSED
+WATCH_SAMPLE_FUSION_RULES=PASSED
+WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED
+WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED
+WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES
+WATCH_UI_IMPLEMENTED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-036a
+```
+<!-- TASK035E_DOCS_MANUAL_QA_FILE_STRUCTURE_END -->

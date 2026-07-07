@@ -2922,3 +2922,64 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `RESTRICTED_CLAIM_WORDING_PRESENT=NO`, `BACKGROUND_COLLECTION_ENABLED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `SCHEMA_CORE_DATA_PACKAGE_MUTATION=NO`, `ROUTE_GEOMETRY_MUTATION=NO`, `TRUSTED_METRIC_MUTATION=NO`.
 - Next task handoff: `NEXT_TASK=Task-035a`.
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_DEVLOG_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_DEVLOG_START -->
+## Task-035a-001 Watch Sample Model Extension Audit
+
+- Audited the current durable sample path: `SessionData.motionSamples`, `MotionSample`, `MotionSampleFileStore`, `SessionEntityMapper`, the programmatic Core Data model, `.xcdatamodeld`, package payload/manifest, package reader/writer, Task-030d import coordinator, and Task-030e package viewer compatibility surface.
+- Determined `SCHEMA_CHANGE_REQUIRED=YES` for future Watch-originated sample storage because current durable session/package paths only preserve `MotionSample` and do not carry the Task-034 Watch sample provenance fields (`kind`, `unitSymbol`, `providerKind`, and confidence) needed to keep Watch data distinguishable from iPhone trusted route/metric inputs.
+- Produced and reviewed the compatibility mini-plan before Task-035b: preserve Watch provenance separately, avoid trusted metric mutation, prefer future sidecar JSON before Core Data migration, define package version/capability handling deliberately, keep schemaVersion 1 decoder compatibility, protect Task-030d import compatibility, keep Task-030e viewer read-only compatibility, and preserve rollback/restore safety.
+- Added the Task-035a compatibility verifier draft `scripts/verify_task035a_sample_model_audit.py`.
+- Verification tokens: `VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED`, `SCHEMA_CHANGE_REQUIRED=YES`, `COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES`, `SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES`, `TASK035B_ALLOWED_TO_START=YES`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION=NO`, `TRUSTED_METRIC_MUTATION=NO`.
+- Next task handoff: `NEXT_TASK=Task-035b`.
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_DEVLOG_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_DEVLOG_START -->
+## Task-035b-001 Watch Sample Ingestion
+
+- Added `Shared/WatchSensors/WatchSampleIngestion.swift` as a conservative shared-model ingestion path for `WatchSensorProviderSnapshot`.
+- Preserved Watch provenance through `WatchSampleSourceAttribution` and `WatchIngestedSample` without converting Watch samples into trusted iPhone `MotionSample` route inputs.
+- Added ordering, gap, duplicate-id, unavailable-snapshot, source-attribution, and no-mutation tests in `Tests/iOSTests/WatchSampleIngestionTests.swift`.
+- Added `scripts/verify_task035b_watch_sample_ingestion.py` to guard required files, project membership, docs, source attribution, no storage/schema/package changes, no route geometry mutation, no trusted metric mutation, and no production HealthKit boundary violations.
+- Verification tokens: `VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED`, `WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES`, `WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES`, `WATCH_SAMPLE_ORDERING_TESTED=YES`, `WATCH_SAMPLE_GAP_TESTED=YES`, `WATCH_SAMPLE_DUPLICATE_TESTED=YES`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035c`.
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_DEVLOG_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_DEVLOG_START -->
+## Task-035c-001 Conservative Fusion Rules
+
+- Added `Shared/WatchSensors/WatchSampleFusionRules.swift` with a conservative display-only fusion policy, display point model, diagnostics, and result markers.
+- Kept iPhone display inputs authoritative when nearby Watch samples conflict and allowed Watch samples only as display-derived continuity inside iPhone sample gaps.
+- Added diagnostics for iPhone/Watch conflicts, iPhone sample gaps, ignored Watch samples, and display-derived Watch continuity.
+- Added focused iOS tests in `Tests/iOSTests/WatchSampleFusionRulesTests.swift` for conflict precedence, display-derived gap continuity, non-conflicting overlap, and policy-disabled Watch continuity.
+- Added `scripts/verify_task035c_fusion_rules.py` to guard implementation, project membership, docs, display-derived separation, no route geometry mutation, no trusted metric mutation, and no production HealthKit boundary violations.
+- Verification tokens: `VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED`, `CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES`, `DISPLAY_DERIVED_SEPARATION=YES`, `CONFLICT_DIAGNOSTICS_IMPLEMENTED=YES`, `GAP_DIAGNOSTICS_IMPLEMENTED=YES`, `CONFLICT_TESTS_EXIT=0`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035d`.
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_DEVLOG_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_DEVLOG_START -->
+## Task-035d-001 Package / Backup Compatibility
+
+- Added optional Watch sample compatibility metadata to `SkateTrackPackageManifest` while preserving `schemaVersion = 1` and old package decode behavior.
+- Added `Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift` covering legacy package decode without Watch metadata, new optional Watch metadata round-trip without schema bump, Task-030d import compatibility for legacy packages, and the Task-030e read-only reader path for legacy packages.
+- Added `scripts/verify_task035d_package_compatibility.py` to guard allowed paths, project membership, optional metadata tokens, Task-030d/030e compatibility evidence, and forbidden storage/schema/route/trusted-metric/HealthKit boundaries.
+- Verification tokens: `VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED`, `OLD_PACKAGE_DECODE_TESTS_EXIT=0`, `NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES`, `TASK030D_IMPORT_COMPATIBILITY=PASSED`, `TASK030E_VIEWER_COMPATIBILITY=PASSED`.
+- Boundary tokens: `OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES`, `PACKAGE_SCHEMA_VERSION_UNCHANGED=YES`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035e`.
+<!-- TASK035D_PACKAGE_COMPATIBILITY_DEVLOG_END -->
+
+<!-- TASK035E_DOCS_MANUAL_QA_DEVLOG_START -->
+## Task-035e-001 Watch Sample Docs + Manual QA
+
+- Added `docs/release/TASK035E_WATCH_SAMPLE_MANUAL_QA.md` as the Watch sample foundation manual QA gate before Watch UI work begins.
+- Added `scripts/verify_task035e_docs_manual_qa.py` to verify documentation/manual QA closure, allowed paths, prior Task-034/035 evidence tokens, and forbidden product/UI/storage/schema/HealthKit/Snow boundaries.
+- Confirmed Task-034 sensor provider boundaries, Task-035b ingestion, Task-035c display-derived fusion rules, and Task-035d package compatibility form a complete Pre-UI evidence chain.
+- Confirmed Task-031d currently records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`; Task-036c must ask the operator for a refreshed route mini-card decision before compact Watch route UI implementation.
+- Verification tokens: `VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED`, `MANUAL_QA_WATCH_SAMPLE_PATH=PASSED`, `DOCS_UPDATED=YES`, `WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED`, `WATCH_SAMPLE_INGESTION_PATH=PASSED`, `WATCH_SAMPLE_FUSION_RULES=PASSED`, `WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED`.
+- Evidence tokens: `TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES`, `VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED`, `VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED`, `DISPLAY_DERIVED_SEPARATION=YES`, `VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED`, `OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES`.
+- Boundary tokens: `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`, `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`, `WATCH_UI_IMPLEMENTED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_VERSION_UNCHANGED=YES`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-036a`.
+<!-- TASK035E_DOCS_MANUAL_QA_DEVLOG_END -->

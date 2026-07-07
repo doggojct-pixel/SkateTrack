@@ -442,3 +442,175 @@ NEXT_TASK=Task-035a
 
 Task-034c does not implement runtime collection, HealthKit production access, Watch UI, sample storage, metric fusion, Snow production, schema/package changes, route mutation, or trusted metric mutation.
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_STATE_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_STATE_START -->
+## Task-035a Watch Sample Model Extension Audit
+
+Task-035a audits the existing sample, session, package, import/export, and Core Data surfaces before any Watch sample ingestion. The audit concludes that Watch-originated samples require an explicit compatibility plan before implementation because the current durable session/package paths only persist `MotionSample` arrays, while Task-034 Watch sensor samples carry provider/kind/unit/confidence provenance that must not be blended into trusted iPhone route or metric inputs.
+
+Reviewed Task-035a mini-plan:
+
+1. Preserve Watch sample provenance separately from trusted iPhone `MotionSample` route/metric inputs.
+2. Keep Task-035a documentation/verifier-only; do not mutate Swift models, Core Data, package schema, package reader/writer behavior, import commit behavior, route geometry, or trusted metrics in this audit patch.
+3. Prefer a future sidecar JSON persistence/package strategy for Watch-originated samples to avoid Core Data migration unless Task-035b/035d evidence requires otherwise.
+4. If a package schema change is required later, update package `schemaVersion`/capabilities intentionally and keep decoder backwards compatibility for current schemaVersion 1 packages.
+5. Keep Task-030d iOS import compatible by preventing Watch samples from being silently imported as trusted route samples.
+6. Keep Task-030e macOS viewer read-only and compatible with both existing v1 packages and future Watch-sample-capable packages.
+7. Rollback/restore safety must allow Watch sample sidecars to be ignored or removed without breaking existing session and motion-sample reads.
+
+```text
+VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED
+SCHEMA_CHANGE_REQUIRED=YES
+COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES
+SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES
+TASK035B_ALLOWED_TO_START=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+TASK030D_IMPORT_COMPATIBILITY_REVIEWED=YES
+TASK030E_VIEWER_COMPATIBILITY_REVIEWED=YES
+ROLLBACK_RESTORE_SAFETY_REVIEWED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035b
+```
+
+Task-035a does not implement Watch sample ingestion, persistence, fusion, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_STATE_END -->
+
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_STATE_START -->
+## Task-035b Watch Sample Ingestion
+
+Task-035b adds a conservative shared-model ingestion path for Watch-originated samples. The ingestor accepts `WatchSensorProviderSnapshot`, preserves provider/capture/source attribution, sorts ingested output by timestamp, reports out-of-order arrivals, reports sample gaps, drops duplicate sample ids when configured, and keeps the result distinct from trusted iPhone route samples.
+
+The Task-035b ingestion output is intentionally separate from `MotionSample`, `SessionData`, route geometry, trusted distance/speed/elevation metrics, package payloads, import commit flows, and Core Data storage. This step does not make Watch samples durable and does not alter existing sessions silently.
+
+```text
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+WATCH_SAMPLE_INGESTION_PATH_IMPLEMENTED=YES
+WATCH_SAMPLE_SOURCE_ATTRIBUTION=YES
+WATCH_SAMPLE_ORDERING_TESTED=YES
+WATCH_SAMPLE_GAP_TESTED=YES
+WATCH_SAMPLE_DUPLICATE_TESTED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035c
+```
+
+Task-035b does not implement Watch sample persistence, package export/import of Watch samples, fusion rules, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035B_WATCH_SAMPLE_INGESTION_STATE_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_STATE_START -->
+## Task-035c Conservative Fusion Rules
+
+Task-035c adds conservative display-only interpretation rules for iPhone and Watch samples. The fusion engine accepts trusted iPhone display inputs and ingested Watch samples, keeps iPhone values authoritative when nearby Watch values conflict, uses Watch values only as display-derived continuity inside iPhone sample gaps, and records diagnostics for conflicts, gaps, ignored Watch samples, and display-derived continuity.
+
+The Task-035c output is intentionally display-derived and separate from trusted metrics. It does not write Watch values into `MotionSample`, `SessionData`, route geometry, distance/speed/elevation trusted metrics, package payloads, import/export flows, or Core Data storage.
+
+```text
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES
+DISPLAY_DERIVED_SEPARATION=YES
+CONFLICT_DIAGNOSTICS_IMPLEMENTED=YES
+GAP_DIAGNOSTICS_IMPLEMENTED=YES
+CONFLICT_TESTS_EXIT=0
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035d
+```
+
+Task-035c does not implement Watch sample persistence, package export/import of Watch samples, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_STATE_END -->
+
+<!-- TASK035D_PACKAGE_COMPATIBILITY_STATE_START -->
+## Task-035d Package / Backup Compatibility
+
+Task-035d preserves package export/import and local restore compatibility after the Watch sample foundation work. The package manifest now accepts optional Watch sample compatibility metadata while keeping `schemaVersion` at 1, so old packages that do not include Watch metadata still decode through `SkateTrackPackageReader`, validate through Task-030d iOS import, and remain openable by the Task-030e macOS read-only viewer path.
+
+The optional metadata is compatibility-only. It records whether a package advertises optional Watch sample data and preserves boundary markers for source attribution, display-derived-only handling, route geometry mutation count, and trusted metric mutation count. Task-035d does not make Watch samples durable, does not add package sidecar storage, and does not alter `MotionSample`, `SessionData`, Core Data, route geometry, trusted metrics, production HealthKit access, Watch UI, or Snow production scope.
+
+```text
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OLD_PACKAGE_DECODE_TESTS_EXIT=0
+NEW_OPTIONAL_FIELDS_BACKWARD_COMPATIBLE=YES
+TASK030D_IMPORT_COMPATIBILITY=PASSED
+TASK030E_VIEWER_COMPATIBILITY=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035e
+```
+
+Task-035d keeps package compatibility deliberately narrow: optional manifest metadata and compatibility tests only. Durable Watch sample export/import remains unimplemented until a later approved storage/package design.
+<!-- TASK035D_PACKAGE_COMPATIBILITY_STATE_END -->
+
+<!-- TASK035E_DOCS_MANUAL_QA_STATE_START -->
+## Task-035e Watch Sample Docs + Manual QA
+
+Task-035e closes the Watch sample foundation work before Watch UI starts. The manual QA gate reviews the completed evidence chain from Task-034 sensor provider boundaries through Task-035b ingestion, Task-035c display-derived fusion rules, and Task-035d package compatibility. It confirms the documented path is ready for Task-036a view model/data contract work while preserving all Pre-UI and Pre-storage limitations.
+
+This task is documentation and verifier only. It does not add Watch UI, production HealthKit collection, HealthKit entitlement, durable Watch sample storage, Core Data migration, package sidecar persistence, route geometry mutation, trusted metric mutation, Snow production behavior, or product Swift behavior.
+
+```text
+VERIFY_TASK035E_DOCS_MANUAL_QA_RESULT=PASSED
+MANUAL_QA_WATCH_SAMPLE_PATH=PASSED
+DOCS_UPDATED=YES
+WATCH_SAMPLE_PROVIDER_BOUNDARY=PASSED
+WATCH_SAMPLE_INGESTION_PATH=PASSED
+WATCH_SAMPLE_FUSION_RULES=PASSED
+WATCH_SAMPLE_PACKAGE_COMPATIBILITY=PASSED
+TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES
+VERIFY_TASK035B_WATCH_SAMPLE_INGESTION_RESULT=PASSED
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+DISPLAY_DERIVED_SEPARATION=YES
+VERIFY_TASK035D_PACKAGE_COMPATIBILITY_RESULT=PASSED
+OPTIONAL_WATCH_PACKAGE_METADATA_IMPLEMENTED=YES
+WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED
+WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES
+WATCH_UI_IMPLEMENTED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_VERSION_UNCHANGED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-036a
+```
+
+Task-036a may begin after this gate. Task-036c must still ask the operator for a refreshed route mini-card decision before implementing compact Watch route UI, because Task-031d currently records `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`.
+<!-- TASK035E_DOCS_MANUAL_QA_STATE_END -->
