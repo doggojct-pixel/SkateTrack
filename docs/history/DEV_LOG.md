@@ -2922,3 +2922,15 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `RESTRICTED_CLAIM_WORDING_PRESENT=NO`, `BACKGROUND_COLLECTION_ENABLED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `SCHEMA_CORE_DATA_PACKAGE_MUTATION=NO`, `ROUTE_GEOMETRY_MUTATION=NO`, `TRUSTED_METRIC_MUTATION=NO`.
 - Next task handoff: `NEXT_TASK=Task-035a`.
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_DEVLOG_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_DEVLOG_START -->
+## Task-035a-001 Watch Sample Model Extension Audit
+
+- Audited the current durable sample path: `SessionData.motionSamples`, `MotionSample`, `MotionSampleFileStore`, `SessionEntityMapper`, the programmatic Core Data model, `.xcdatamodeld`, package payload/manifest, package reader/writer, Task-030d import coordinator, and Task-030e package viewer compatibility surface.
+- Determined `SCHEMA_CHANGE_REQUIRED=YES` for future Watch-originated sample storage because current durable session/package paths only preserve `MotionSample` and do not carry the Task-034 Watch sample provenance fields (`kind`, `unitSymbol`, `providerKind`, and confidence) needed to keep Watch data distinguishable from iPhone trusted route/metric inputs.
+- Produced and reviewed the compatibility mini-plan before Task-035b: preserve Watch provenance separately, avoid trusted metric mutation, prefer future sidecar JSON before Core Data migration, define package version/capability handling deliberately, keep schemaVersion 1 decoder compatibility, protect Task-030d import compatibility, keep Task-030e viewer read-only compatibility, and preserve rollback/restore safety.
+- Added the Task-035a compatibility verifier draft `scripts/verify_task035a_sample_model_audit.py`.
+- Verification tokens: `VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED`, `SCHEMA_CHANGE_REQUIRED=YES`, `COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES`, `SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES`, `TASK035B_ALLOWED_TO_START=YES`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION=NO`, `TRUSTED_METRIC_MUTATION=NO`.
+- Next task handoff: `NEXT_TASK=Task-035b`.
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_DEVLOG_END -->

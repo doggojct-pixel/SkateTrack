@@ -843,3 +843,61 @@ TRUSTED_METRIC_MUTATION=NO
 NEXT_TASK=Task-035a
 ```
 <!-- TASK034C_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK035A_PRE_ADP_LIMITATIONS_START -->
+## Task-035a Watch Sample Model Extension Audit Boundary
+
+Task-035a is an audit, compatibility-plan, and verifier-draft step only. It does not make Watch-originated samples durable yet.
+
+Current audit decision:
+
+- `SCHEMA_CHANGE_REQUIRED=YES` for future Watch-originated sample storage.
+- Existing `MotionSample` and package v1 paths are not sufficient for durable Watch samples without preserving Watch provenance separately from trusted iPhone route/metric inputs.
+- The Task-035a mini-plan has been reviewed and allows Task-035b to start with the compatibility constraints recorded here.
+
+Remaining limitations:
+
+- No Watch sample ingestion is implemented.
+- No Watch sample storage is implemented.
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No metric fusion is implemented.
+- No Watch UI is implemented.
+- No Snow production implementation is added.
+- No Swift model schema, Core Data schema, package format, package reader/writer, route geometry, or trusted metric mutation is implemented in Task-035a.
+
+Compatibility constraints for later Task-035 work:
+
+- Future Watch samples must preserve kind, unit, provider, timestamp, and confidence provenance.
+- Future storage/package work must keep Watch samples distinguishable from trusted iPhone route samples.
+- Existing schemaVersion 1 `.skatetrack` packages must remain decodable.
+- Task-030d iOS import must not silently import Watch samples as trusted route samples.
+- Task-030e macOS viewer must remain read-only and must not mutate packages, route geometry, or trusted metrics.
+- Rollback/restore must tolerate missing or removed Watch-sample sidecars.
+
+```text
+VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED
+SCHEMA_CHANGE_REQUIRED=YES
+COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES
+SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES
+TASK035B_ALLOWED_TO_START=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+TASK030D_IMPORT_COMPATIBILITY_REVIEWED=YES
+TASK030E_VIEWER_COMPATIBILITY_REVIEWED=YES
+ROLLBACK_RESTORE_SAFETY_REVIEWED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035b
+```
+<!-- TASK035A_PRE_ADP_LIMITATIONS_END -->

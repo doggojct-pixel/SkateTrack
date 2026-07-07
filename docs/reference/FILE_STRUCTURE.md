@@ -2492,3 +2492,51 @@ TRUSTED_METRIC_MUTATION=NO
 NEXT_TASK=Task-035a
 ```
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_FILE_STRUCTURE_START -->
+## Task-035a Watch Sample Model Extension Audit Addendum
+
+Task-035a adds documentation and a verifier draft only:
+
+```text
+scripts/verify_task035a_sample_model_audit.py  # Task-035a sample model audit and compatibility-plan verifier.
+docs/process/PHASE_1B_AGENT_STATE.md           # Records Task-035a audit result, reviewed mini-plan, and Task-035b handoff.
+docs/history/DEV_LOG.md                        # Records the Task-035a source audit decision and scope boundaries.
+docs/reference/FILE_STRUCTURE.md               # Records the Task-035a verifier/documentation-only file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md      # Records pre-ADP limitation and compatibility boundaries for Watch samples.
+```
+
+Task-035a audits these existing source paths but does not modify them:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/MotionSampleFileStore.swift
+Shared/Persistence/SessionRepository.swift
+Shared/Persistence/SessionEntityMapper.swift
+Shared/Persistence/PersistenceController.swift
+Shared/Persistence/SkateTrackDataModel.xcdatamodeld/SkateTrackDataModel.xcdatamodel/contents
+Shared/Export/SkateTrackPackageReader.swift
+Shared/Export/SkateTrackPackageWriter.swift
+iOS/Core/Import/SkateTrackPackageImportCoordinator.swift
+macOS/Features/SessionBrowser
+```
+
+Task-035a intentionally does not add product Swift files, Xcode project membership changes, Watch sample ingestion, Watch sample storage, Core Data schema changes, package format changes, route geometry mutation, trusted metric mutation, production HealthKit API, HealthKit entitlement/capability, Watch UI, or Snow production behavior.
+
+```text
+VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED
+SCHEMA_CHANGE_REQUIRED=YES
+COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES
+SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES
+TASK035B_ALLOWED_TO_START=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+NEXT_TASK=Task-035b
+```
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_FILE_STRUCTURE_END -->

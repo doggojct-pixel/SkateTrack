@@ -442,3 +442,45 @@ NEXT_TASK=Task-035a
 
 Task-034c does not implement runtime collection, HealthKit production access, Watch UI, sample storage, metric fusion, Snow production, schema/package changes, route mutation, or trusted metric mutation.
 <!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_STATE_END -->
+
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_STATE_START -->
+## Task-035a Watch Sample Model Extension Audit
+
+Task-035a audits the existing sample, session, package, import/export, and Core Data surfaces before any Watch sample ingestion. The audit concludes that Watch-originated samples require an explicit compatibility plan before implementation because the current durable session/package paths only persist `MotionSample` arrays, while Task-034 Watch sensor samples carry provider/kind/unit/confidence provenance that must not be blended into trusted iPhone route or metric inputs.
+
+Reviewed Task-035a mini-plan:
+
+1. Preserve Watch sample provenance separately from trusted iPhone `MotionSample` route/metric inputs.
+2. Keep Task-035a documentation/verifier-only; do not mutate Swift models, Core Data, package schema, package reader/writer behavior, import commit behavior, route geometry, or trusted metrics in this audit patch.
+3. Prefer a future sidecar JSON persistence/package strategy for Watch-originated samples to avoid Core Data migration unless Task-035b/035d evidence requires otherwise.
+4. If a package schema change is required later, update package `schemaVersion`/capabilities intentionally and keep decoder backwards compatibility for current schemaVersion 1 packages.
+5. Keep Task-030d iOS import compatible by preventing Watch samples from being silently imported as trusted route samples.
+6. Keep Task-030e macOS viewer read-only and compatible with both existing v1 packages and future Watch-sample-capable packages.
+7. Rollback/restore safety must allow Watch sample sidecars to be ignored or removed without breaking existing session and motion-sample reads.
+
+```text
+VERIFY_TASK035A_SAMPLE_MODEL_AUDIT_RESULT=PASSED
+SCHEMA_CHANGE_REQUIRED=YES
+COMPATIBILITY_PLAN_PRESENT_IF_REQUIRED=YES
+SCHEMA_CHANGE_MINIPLAN_REVIEWED_IF_REQUIRED=YES
+TASK035B_ALLOWED_TO_START=YES
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+MODEL_SCHEMA_MUTATION_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+TASK030D_IMPORT_COMPATIBILITY_REVIEWED=YES
+TASK030E_VIEWER_COMPATIBILITY_REVIEWED=YES
+ROLLBACK_RESTORE_SAFETY_REVIEWED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035b
+```
+
+Task-035a does not implement Watch sample ingestion, persistence, fusion, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035A_SAMPLE_MODEL_AUDIT_STATE_END -->
