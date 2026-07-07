@@ -786,3 +786,17 @@ WATCH_UI_IMPLEMENTED=NO
 NEXT_TASK=Task-034b
 ```
 <!-- TASK034A_PRE_ADP_LIMITATIONS_END -->
+## Task-034b Disabled HealthKit Boundary
+- HealthKit remains disabled for production access in this build.
+- The boundary reports disabled/unavailable state only and does not collect, save, or fuse Watch-originated samples.
+- Copy remains non-clinical and avoids restricted claim wording.
+- TASK034B_DISABLED_HEALTHKIT_BOUNDARY_RESULT=PASSED
+- DISABLED_HEALTHKIT_BOUNDARY_PRESENT=YES
+- HEALTHKIT_PRODUCTION_API_USED=NO
+- HEALTHKIT_ENTITLEMENT_CHANGED=NO
+- RESTRICTED_CLAIM_WORDING_PRESENT=NO
+- BACKGROUND_COLLECTION_ENABLED=NO
+- WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+- METRIC_FUSION_IMPLEMENTED=NO
+- WATCH_UI_IMPLEMENTED=NO
+- NEXT_TASK=Task-034c

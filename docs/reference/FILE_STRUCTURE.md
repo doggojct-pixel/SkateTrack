@@ -2438,3 +2438,19 @@ WATCH_UI_IMPLEMENTED=NO
 NEXT_TASK=Task-034b
 ```
 <!-- TASK034A_WATCH_SENSOR_PROVIDER_PROTOCOLS_FILE_STRUCTURE_END -->
+## Task-034b Disabled HealthKit Boundary Addendum
+- `Shared/WatchSensors/WatchHealthKitBoundary.swift` defines the disabled boundary contract and availability state.
+- `Shared/WatchSensors/WatchHealthKitDisabledProvider.swift` adapts the disabled boundary to `WatchSensorProviding` without collecting or saving samples.
+- `Shared/WatchSensors/WatchHealthKitCopy.swift` centralizes non-clinical disabled-state copy.
+- `Tests/iOSTests/WatchHealthKitDisabledBoundaryTests.swift` verifies disabled state and copy guardrails.
+- `scripts/verify_task034b_disabled_healthkit_boundary.py` verifies the disabled boundary and forbidden scope.
+- TASK034B_DISABLED_HEALTHKIT_BOUNDARY_RESULT=PASSED
+- DISABLED_HEALTHKIT_BOUNDARY_PRESENT=YES
+- HEALTHKIT_PRODUCTION_API_USED=NO
+- HEALTHKIT_ENTITLEMENT_CHANGED=NO
+- RESTRICTED_CLAIM_WORDING_PRESENT=NO
+- BACKGROUND_COLLECTION_ENABLED=NO
+- WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+- METRIC_FUSION_IMPLEMENTED=NO
+- WATCH_UI_IMPLEMENTED=NO
+- NEXT_TASK=Task-034c
