@@ -2454,3 +2454,41 @@ NEXT_TASK=Task-034b
 - METRIC_FUSION_IMPLEMENTED=NO
 - WATCH_UI_IMPLEMENTED=NO
 - NEXT_TASK=Task-034c
+
+<!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_START -->
+## Task-034c Sensor Provider Tests + Docs Addendum
+
+Task-034c adds the aggregate verifier:
+
+```text
+scripts/verify_task034_sensor_provider.py  # Task-034 aggregate sensor-provider tests/docs verifier.
+```
+
+Task-034c relies on the existing Task-034 sensor test files:
+
+```text
+Tests/iOSTests/WatchSensorProviderAvailabilityTests.swift
+Tests/iOSTests/WatchHealthKitDisabledBoundaryTests.swift
+```
+
+Task-034c closes Task-034 without adding product Swift files, Xcode project membership changes, production HealthKit API, HealthKit entitlement/capability, health monitoring claims, background health collection, Watch sample storage, metric fusion, Watch UI, Snow production, schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation.
+
+```text
+TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES
+VERIFY_TASK034_SENSOR_PROVIDER_RESULT=PASSED
+SENSOR_PROVIDER_TESTS_EXIT=0
+KNOWN_LIMITATIONS_UPDATED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+RESTRICTED_CLAIM_WORDING_PRESENT=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+SCHEMA_CORE_DATA_PACKAGE_MUTATION=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035a
+```
+<!-- TASK034C_SENSOR_PROVIDER_TESTS_DOCS_FILE_STRUCTURE_END -->

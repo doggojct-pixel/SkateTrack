@@ -800,3 +800,46 @@ NEXT_TASK=Task-034b
 - METRIC_FUSION_IMPLEMENTED=NO
 - WATCH_UI_IMPLEMENTED=NO
 - NEXT_TASK=Task-034c
+
+<!-- TASK034C_PRE_ADP_LIMITATIONS_START -->
+## Task-034c Sensor Provider Tests + Docs Boundary
+
+Task-034 closes as a provider-boundary, test, and documentation foundation only.
+
+Current state:
+
+- Watch sensor provider protocols, sample value models, mock provider, and disabled provider are present.
+- The HealthKit boundary remains disabled and unavailable for production access in this build.
+- Existing Task-034 sensor provider XCTest coverage is expected to pass before commit.
+- Task-034 adds no clinical, monitoring, diagnosis, heart-rate, or background health-collection claim.
+
+Remaining limitations:
+
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No Watch sample storage is implemented.
+- No metric fusion is implemented.
+- No Watch UI is implemented.
+- No Snow production implementation is added.
+- No schema/Core Data/package mutation, route geometry mutation, or trusted metric mutation is added.
+
+```text
+TASK034_SENSOR_PROVIDER_BOUNDARY_CLOSED=YES
+VERIFY_TASK034_SENSOR_PROVIDER_RESULT=PASSED
+SENSOR_PROVIDER_TESTS_EXIT=0
+KNOWN_LIMITATIONS_UPDATED=YES
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+RESTRICTED_CLAIM_WORDING_PRESENT=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+METRIC_FUSION_IMPLEMENTED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+SCHEMA_CORE_DATA_PACKAGE_MUTATION=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+NEXT_TASK=Task-035a
+```
+<!-- TASK034C_PRE_ADP_LIMITATIONS_END -->
