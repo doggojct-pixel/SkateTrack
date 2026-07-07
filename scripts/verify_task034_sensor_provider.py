@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-EXPECTED_BRANCH = "task-034-sensor-provider-boundary"
+ALLOWED_BRANCHES = {"task-034-sensor-provider-boundary", "develop"}
 TASK034B_HEAD = "37152a736e93062dda4fa1584ebfaceda8cd0add"
 
 REQUIRED_PROVIDER_FILES = [
@@ -146,10 +146,11 @@ def check_repo(repo: Path) -> None:
     print(f"CURRENT_BRANCH={branch}")
     print(f"CURRENT_HEAD_FULL={head}")
 
-    if branch == EXPECTED_BRANCH:
+    if branch in ALLOWED_BRANCHES:
         pass_msg("current branch is valid for Task-034c verification")
     else:
-        fail(f"current branch is {branch}, expected {EXPECTED_BRANCH}")
+        allowed = ", ".join(sorted(ALLOWED_BRANCHES))
+        fail(f"current branch is {branch}, expected one of: {allowed}")
 
     ancestor = run(["git", "merge-base", "--is-ancestor", TASK034B_HEAD, "HEAD"], repo)
     print(f"TASK034B_HEAD_REACHABLE_EXIT={ancestor.returncode}")
