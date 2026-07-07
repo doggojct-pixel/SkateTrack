@@ -2715,3 +2715,20 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-036a
 ```
 <!-- TASK035E_DOCS_MANUAL_QA_FILE_STRUCTURE_END -->
+
+<!-- TASK036A_WATCH_UI_VIEWMODEL_FILE_STRUCTURE_START -->
+## Task-036a Watch UI Data Contract + View Model Addendum
+
+Shared/WatchUI/WatchActivityViewModel.swift             # [Collaboration] Display-only Watch UI state from WatchBridge, WatchSensors, and compact ActivityVisualization outputs.
+Tests/iOSTests/WatchActivityViewModelTests.swift        # [Collaboration] View model state tests for default, snapshot, sample/fusion, and bridge-display fallback states.
+scripts/verify_task036a_watch_ui_viewmodel.py           # [Engineering] Task-036a verifier for path scope, project membership, compact summary consumption, and forbidden Watch UI semantics.
+SkateTrack.xcodeproj/project.pbxproj                    # [Engineering] Adds WatchActivityViewModel.swift to iOS/watchOS sources and WatchActivityViewModelTests.swift to iOSTests.
+
+Task-036a keeps Watch route mini-card product scope deferred to Task-036c and does not implement Watch UI route semantics, MapKit route semantics, Snow UI, Watch sample storage, schema/package mutation, route geometry mutation, or trusted metric mutation.
+
+VERIFY_TASK036A_WATCH_UI_VIEWMODEL_RESULT=PASSED
+COMPACT_SUMMARY_CONSUMPTION=YES
+WATCH_UI_SEMANTIC_REIMPLEMENTATION_COUNT=0
+VIEWMODEL_STATE_TESTS_EXIT=0
+NEXT_TASK=Task-036b
+<!-- TASK036A_WATCH_UI_VIEWMODEL_FILE_STRUCTURE_END -->

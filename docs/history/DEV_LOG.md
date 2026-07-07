@@ -2983,3 +2983,14 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`, `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`, `WATCH_UI_IMPLEMENTED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_VERSION_UNCHANGED=YES`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
 - Next task handoff: `NEXT_TASK=Task-036a`.
 <!-- TASK035E_DOCS_MANUAL_QA_DEVLOG_END -->
+
+<!-- TASK036A_WATCH_UI_VIEWMODEL_DEVLOG_START -->
+## Task-036a - Watch UI Data Contract + View Model
+
+- Added `Shared/WatchUI/WatchActivityViewModel.swift` as a display-only Watch UI state contract.
+- Consumes WatchBridge connection/session/metric payloads, WatchSensor provider snapshots, Task-035 ingestion/fusion results, and Shared `ActivityVisualizationCompactSummary` compact outputs.
+- Added `Tests/iOSTests/WatchActivityViewModelTests.swift` for default, snapshot, sample/fusion, and bridge-display fallback states.
+- Preserved boundaries: no route segmentation, speed filtering, elevation ascent logic, MapKit route semantics, Snow UI, HealthKit production API, Watch sample storage, schema/package mutation, route geometry mutation, or trusted metric mutation.
+- Verification tokens: `VERIFY_TASK036A_WATCH_UI_VIEWMODEL_RESULT=PASSED`, `COMPACT_SUMMARY_CONSUMPTION=YES`, `WATCH_UI_SEMANTIC_REIMPLEMENTATION_COUNT=0`, `VIEWMODEL_STATE_TESTS_EXIT=0`.
+- Next task handoff: `NEXT_TASK=Task-036b`.
+<!-- TASK036A_WATCH_UI_VIEWMODEL_DEVLOG_END -->
