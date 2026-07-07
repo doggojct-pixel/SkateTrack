@@ -516,3 +516,34 @@ NEXT_TASK=Task-035c
 
 Task-035b does not implement Watch sample persistence, package export/import of Watch samples, fusion rules, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
 <!-- TASK035B_WATCH_SAMPLE_INGESTION_STATE_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_STATE_START -->
+## Task-035c Conservative Fusion Rules
+
+Task-035c adds conservative display-only interpretation rules for iPhone and Watch samples. The fusion engine accepts trusted iPhone display inputs and ingested Watch samples, keeps iPhone values authoritative when nearby Watch values conflict, uses Watch values only as display-derived continuity inside iPhone sample gaps, and records diagnostics for conflicts, gaps, ignored Watch samples, and display-derived continuity.
+
+The Task-035c output is intentionally display-derived and separate from trusted metrics. It does not write Watch values into `MotionSample`, `SessionData`, route geometry, distance/speed/elevation trusted metrics, package payloads, import/export flows, or Core Data storage.
+
+```text
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES
+DISPLAY_DERIVED_SEPARATION=YES
+CONFLICT_DIAGNOSTICS_IMPLEMENTED=YES
+GAP_DIAGNOSTICS_IMPLEMENTED=YES
+CONFLICT_TESTS_EXIT=0
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035d
+```
+
+Task-035c does not implement Watch sample persistence, package export/import of Watch samples, HealthKit production access, Watch UI, Snow production, schema/Core Data/package mutation, route mutation, or trusted metric mutation.
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_STATE_END -->

@@ -20,6 +20,9 @@
 		35B100000000000000000101 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
 		35B100000000000000000102 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
 		35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B900000000000000000001 /* WatchSampleIngestionTests.swift */; };
+		35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
+		35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
+		35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */; };
 
 		34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
 		34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
@@ -503,6 +506,8 @@
 		34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderAvailabilityTests.swift; sourceTree = "<group>"; };
 		35B100000000000000000001 /* WatchSampleIngestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestion.swift; sourceTree = "<group>"; };
 		35B900000000000000000001 /* WatchSampleIngestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestionTests.swift; sourceTree = "<group>"; };
+		35C100000000000000000001 /* WatchSampleFusionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRules.swift; sourceTree = "<group>"; };
+		35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRulesTests.swift; sourceTree = "<group>"; };
 
 		34B100000000000000000001 /* WatchHealthKitBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitBoundary.swift; sourceTree = "<group>"; };
 		34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledProvider.swift; sourceTree = "<group>"; };
@@ -881,6 +886,7 @@
 				34A300000000000000000001 /* WatchSensorMockProvider.swift */,
 				34A400000000000000000001 /* WatchSensorDisabledProvider.swift */,
 				35B100000000000000000001 /* WatchSampleIngestion.swift */,
+				35C100000000000000000001 /* WatchSampleFusionRules.swift */,
 
 				34B100000000000000000001 /* WatchHealthKitBoundary.swift */,
 				34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */,
@@ -1161,6 +1167,7 @@
 				34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */,
 				34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */,
 				35B900000000000000000001 /* WatchSampleIngestionTests.swift */,
+				35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1845,6 +1852,7 @@
 				34A900000000000000000101 /* WatchSensorProviderAvailabilityTests.swift in Sources */,
 				34B900000000000000000101 /* WatchHealthKitDisabledBoundaryTests.swift in Sources */,
 				35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */,
+				35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1871,6 +1879,7 @@
 				34A300000000000000000101 /* WatchSensorMockProvider.swift in Sources */,
 				34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */,
 				35B100000000000000000101 /* WatchSampleIngestion.swift in Sources */,
+				35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */,
 
 				34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */,
 				34B200000000000000000101 /* WatchHealthKitDisabledProvider.swift in Sources */,
@@ -2238,6 +2247,7 @@
 				34A300000000000000000102 /* WatchSensorMockProvider.swift in Sources */,
 				34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */,
 				35B100000000000000000102 /* WatchSampleIngestion.swift in Sources */,
+				35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */,
 
 				34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */,
 				34B200000000000000000102 /* WatchHealthKitDisabledProvider.swift in Sources */,

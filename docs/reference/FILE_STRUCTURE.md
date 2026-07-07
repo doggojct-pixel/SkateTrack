@@ -2583,3 +2583,44 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035c
 ```
 <!-- TASK035B_WATCH_SAMPLE_INGESTION_FILE_STRUCTURE_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_FILE_STRUCTURE_START -->
+## Task-035c Conservative Fusion Rules Addendum
+
+Task-035c adds display-only conservative fusion rules, focused tests, project membership, documentation, and a verifier:
+
+```text
+Shared/WatchSensors/WatchSampleFusionRules.swift      # Conservative display-only iPhone/Watch interpretation policy and diagnostics.
+Tests/iOSTests/WatchSampleFusionRulesTests.swift      # Conflict, gap, display-derived, and policy-disable tests.
+scripts/verify_task035c_fusion_rules.py               # Task-035c verifier for implementation, membership, docs, and forbidden boundaries.
+SkateTrack.xcodeproj/project.pbxproj                  # Adds WatchSampleFusionRules.swift to iOS/watchOS sources and tests to iOSTests.
+docs/process/PHASE_1B_AGENT_STATE.md                  # Records Task-035c result and Task-035d handoff.
+docs/history/DEV_LOG.md                               # Records Task-035c implementation and boundary decisions.
+docs/reference/FILE_STRUCTURE.md                      # Records Task-035c file inventory.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # Records remaining storage/package/export/import limitations.
+```
+
+Task-035c intentionally does not modify these durable storage, schema, package, import/export, or route/trusted-metric paths:
+
+```text
+Shared/Models/MotionSample.swift
+Shared/Models/SessionData.swift
+Shared/Models/SkateTrackPackagePayload.swift
+Shared/Models/SkateTrackPackageManifest.swift
+Shared/Persistence/
+Shared/Export/
+iOS/Core/Import/
+macOS/Features/SessionBrowser
+```
+
+```text
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES
+DISPLAY_DERIVED_SEPARATION=YES
+CONFLICT_TESTS_EXIT=0
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035d
+```
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_FILE_STRUCTURE_END -->

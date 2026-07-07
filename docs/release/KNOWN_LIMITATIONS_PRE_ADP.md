@@ -946,3 +946,51 @@ TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-035c
 ```
 <!-- TASK035B_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK035C_PRE_ADP_LIMITATIONS_START -->
+## Task-035c Conservative Fusion Rules Boundary
+
+Task-035c adds conservative display-only interpretation rules for iPhone and Watch samples. It does not make Watch values trusted, durable, exported, imported, or available to route geometry or stored metric mutation.
+
+Current status:
+
+- iPhone samples remain authoritative when nearby Watch samples conflict.
+- Watch samples may be used only as display-derived continuity for display gaps.
+- Diagnostics report conflicts, gaps, ignored Watch samples, and display-derived continuity decisions.
+- Display-derived Watch points remain identifiable by source and source attribution.
+- Trusted distance, speed, elevation, route geometry, session state, package payloads, import/export behavior, and Core Data storage remain unchanged.
+
+Remaining limitations:
+
+- No Watch sample storage is implemented.
+- No package schema or package format change is implemented.
+- No Core Data schema change is implemented.
+- No package export/import support for Watch samples is implemented.
+- Display-derived fusion is not approved for trusted metric policy.
+- No production HealthKit API is used.
+- No HealthKit entitlement or capability is added.
+- No background health collection is enabled.
+- No Watch UI is implemented.
+- No Snow production implementation is added.
+
+```text
+VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED
+CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES
+DISPLAY_DERIVED_SEPARATION=YES
+CONFLICT_DIAGNOSTICS_IMPLEMENTED=YES
+GAP_DIAGNOSTICS_IMPLEMENTED=YES
+CONFLICT_TESTS_EXIT=0
+WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO
+CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO
+PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO
+PRODUCTION_HEALTHKIT_API_USED=NO
+HEALTHKIT_ENTITLEMENT_CHANGED=NO
+BACKGROUND_COLLECTION_ENABLED=NO
+WATCH_UI_IMPLEMENTED=NO
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION_COUNT=0
+TRUSTED_METRIC_MUTATION_COUNT=0
+NEXT_TASK=Task-035d
+```
+<!-- TASK035C_PRE_ADP_LIMITATIONS_END -->

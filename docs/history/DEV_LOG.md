@@ -2946,3 +2946,16 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `METRIC_FUSION_IMPLEMENTED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
 - Next task handoff: `NEXT_TASK=Task-035c`.
 <!-- TASK035B_WATCH_SAMPLE_INGESTION_DEVLOG_END -->
+
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_DEVLOG_START -->
+## Task-035c-001 Conservative Fusion Rules
+
+- Added `Shared/WatchSensors/WatchSampleFusionRules.swift` with a conservative display-only fusion policy, display point model, diagnostics, and result markers.
+- Kept iPhone display inputs authoritative when nearby Watch samples conflict and allowed Watch samples only as display-derived continuity inside iPhone sample gaps.
+- Added diagnostics for iPhone/Watch conflicts, iPhone sample gaps, ignored Watch samples, and display-derived Watch continuity.
+- Added focused iOS tests in `Tests/iOSTests/WatchSampleFusionRulesTests.swift` for conflict precedence, display-derived gap continuity, non-conflicting overlap, and policy-disabled Watch continuity.
+- Added `scripts/verify_task035c_fusion_rules.py` to guard implementation, project membership, docs, display-derived separation, no route geometry mutation, no trusted metric mutation, and no production HealthKit boundary violations.
+- Verification tokens: `VERIFY_TASK035C_FUSION_RULES_RESULT=PASSED`, `CONSERVATIVE_FUSION_RULES_IMPLEMENTED=YES`, `DISPLAY_DERIVED_SEPARATION=YES`, `CONFLICT_DIAGNOSTICS_IMPLEMENTED=YES`, `GAP_DIAGNOSTICS_IMPLEMENTED=YES`, `CONFLICT_TESTS_EXIT=0`.
+- Boundary tokens: `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_FORMAT_MUTATION_IMPLEMENTED=NO`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `WATCH_UI_IMPLEMENTED=NO`, `SNOW_PRODUCTION_IMPLEMENTED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
+- Next task handoff: `NEXT_TASK=Task-035d`.
+<!-- TASK035C_CONSERVATIVE_FUSION_RULES_DEVLOG_END -->
