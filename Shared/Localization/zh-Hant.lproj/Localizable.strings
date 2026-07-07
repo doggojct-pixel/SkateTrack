@@ -1268,7 +1268,7 @@
 "watch.live.controls.pause" = "暫停";
 "watch.live.controls.resume" = "繼續";
 "watch.live.controls.stop" = "停止";
-"watch.live.controls.pending" = "Session 準備好後即可操作。";
+"watch.live.controls.pending" = "紀錄準備好後即可操作。";
 "watch.live.accessibility.currentSpeed" = "目前速度";
 "watch.live.accessibility.sessionStatus" = "紀錄狀態";
 "watch.live.accessibility.start" = "開始紀錄";

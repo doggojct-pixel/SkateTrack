@@ -3021,3 +3021,15 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Deferred scope: Task-036e aggregate localization/verifier closure, full Watch map renderer, Watch route drawing, Watch-side route reconstruction, new trusted ascent computation, Watch-side speed filtering, Snow UI, and develop merge until Task-036 completes.
 - Next task handoff: `NEXT_TASK=Task-036e`.
 <!-- TASK036D_FALLBACK_STATES_DEVLOG_END -->
+
+<!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_START -->
+## Task-036e - Watch UI Localization + Verifier Closure
+
+- Added `scripts/verify_task036_watch_core_ui.py` as the aggregate Task-036 Watch core UI verifier.
+- Verified Watch UI localization key parity across `en`, `zh-Hant`, and `ja`, including live face, compact cards, fallback states, accessibility labels, and shared unit keys.
+- Aligned Watch Traditional Chinese wording with the existing iOS/macOS session-recording terminology by replacing a mixed English `Session` sentence in the Watch controls-pending copy.
+- Aggregated Task-036b, Task-036c, and Task-036d verifier coverage under the Task-036e closure gate.
+- Preserved boundaries: no new Watch UI page routing, no MapKit route semantics, no Watch-side route segmentation, no speed filtering, no elevation ascent logic, no Snow UI, no storage/schema/package changes, and no develop merge during this branch-stage closure.
+- Verification tokens: `VERIFY_TASK036_WATCH_CORE_UI_RESULT=PASSED`, `LOCALIZATION_PARITY=PASSED`, `WATCHOS_BUILD_EXIT=0`, `FAILURE_COUNT=0`.
+- Task closure note: Task-036 branch work can proceed to final commit/push review; merge to `develop` remains deferred until the operator explicitly runs the final Task-036 merge gate.
+<!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_END -->
