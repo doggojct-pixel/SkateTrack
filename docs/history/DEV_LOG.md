@@ -2983,3 +2983,53 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Boundary tokens: `WATCH_ROUTE_MINI_CARD_SCOPE=DEFERRED`, `WATCH_ROUTE_MINI_CARD_REVIEW_AT_TASK036C=YES`, `WATCH_UI_IMPLEMENTED=NO`, `WATCH_SAMPLE_STORAGE_IMPLEMENTED=NO`, `CORE_DATA_SCHEMA_MUTATION_IMPLEMENTED=NO`, `PACKAGE_SCHEMA_VERSION_UNCHANGED=YES`, `PRODUCTION_HEALTHKIT_API_USED=NO`, `HEALTHKIT_ENTITLEMENT_CHANGED=NO`, `ROUTE_GEOMETRY_MUTATION_COUNT=0`, `TRUSTED_METRIC_MUTATION_COUNT=0`.
 - Next task handoff: `NEXT_TASK=Task-036a`.
 <!-- TASK035E_DOCS_MANUAL_QA_DEVLOG_END -->
+
+<!-- TASK036A_WATCH_UI_VIEWMODEL_DEVLOG_START -->
+## Task-036a - Watch UI Data Contract + View Model
+
+- Added `Shared/WatchUI/WatchActivityViewModel.swift` as a display-only Watch UI state contract.
+- Consumes WatchBridge connection/session/metric payloads, WatchSensor provider snapshots, Task-035 ingestion/fusion results, and Shared `ActivityVisualizationCompactSummary` compact outputs.
+- Added `Tests/iOSTests/WatchActivityViewModelTests.swift` for default, snapshot, sample/fusion, and bridge-display fallback states.
+- Preserved boundaries: no route segmentation, speed filtering, elevation ascent logic, MapKit route semantics, Snow UI, HealthKit production API, Watch sample storage, schema/package mutation, route geometry mutation, or trusted metric mutation.
+- Verification tokens: `VERIFY_TASK036A_WATCH_UI_VIEWMODEL_RESULT=PASSED`, `COMPACT_SUMMARY_CONSUMPTION=YES`, `WATCH_UI_SEMANTIC_REIMPLEMENTATION_COUNT=0`, `VIEWMODEL_STATE_TESTS_EXIT=0`.
+- Next task handoff: `NEXT_TASK=Task-036b`.
+<!-- TASK036A_WATCH_UI_VIEWMODEL_DEVLOG_END -->
+
+<!-- TASK036C_COMPACT_CARDS_DEVLOG_START -->
+## Task-036c - Route/Speed/Elevation Compact Cards
+
+- Added text-only Watch route mini-card state for the Task-036c route scope decision: `WATCH_ROUTE_MINI_CARD_SCOPE=TEXT_ONLY`.
+- Added Watch compact speed and elevation card state that consumes Shared `CompactSpeedSparkline` and `CompactElevationProfile` outputs without Watch-side speed filtering or ascent computation.
+- Updated the watchOS live face with compact route, speed, and elevation cards using the iOS skateboard/inline color language: deep navy/card surfaces, skateboard accent, inline purple, speed teal, and elevation amber.
+- Added empty/no-data display states and localized keys for `en`, `zh-Hant`, and `ja`.
+- Added focused view-model tests for text-only route status, compact speed/elevation point consumption, and bridge-display fallback states.
+- Added `scripts/verify_task036c_compact_cards.py` to guard Shared compact consumption, text-only route scope, localization parity, no MapKit route semantics, no Watch-side route/speed/elevation semantic forks, and no Snow UI.
+- Verification tokens: `VERIFY_TASK036C_COMPACT_CARDS_RESULT=PASSED`, `USES_COMPACT_SPEED_SPARKLINE=YES`, `USES_COMPACT_ELEVATION_PROFILE=YES`, `WATCH_ROUTE_MINI_CARD_SCOPE=TEXT_ONLY`, `ROUTE_CARD_IF_PRESENT_USES_COMPACT_ROUTE_DISPLAY=YES`, `WATCH_SEMANTIC_FORK_COUNT=0`.
+- Deferred scope: full Watch map renderer, drawn route shape, route reconstruction, new trusted ascent computation, Watch-side speed filtering, Task-036d fallback/always-on expansion, Task-036e aggregate localization/verifier closure, and Snow UI.
+- Next task handoff: `NEXT_TASK=Task-036d`.
+<!-- TASK036C_COMPACT_CARDS_DEVLOG_END -->
+
+<!-- TASK036D_FALLBACK_STATES_DEVLOG_START -->
+## Task-036d - Always-On / Empty / Disabled States
+
+- Added display-only Watch fallback state in `WatchActivityViewModel` for disconnected, no-samples, disabled-provider, and stale-data conditions.
+- Updated the watchOS live face with localized fallback banners and an Always-On low-luminance fallback view that preserves essential speed/session status.
+- Kept fallback handling inside Watch UI/view-model display state only; no route segmentation, speed filtering, elevation ascent logic, MapKit route semantics, Snow UI, storage, schema, or package changes were introduced.
+- Added focused view-model tests for disconnected WatchBridge state, active no-samples state, disabled provider state, stale transport quality, and normal ready state.
+- Added `scripts/verify_task036d_fallback_states.py` to guard fallback state presence, localization/accessibility, Always-On display support, Task-036c regression boundaries, and forbidden semantic reimplementation.
+- Verification tokens: `VERIFY_TASK036D_FALLBACK_STATES_RESULT=PASSED`, `DISCONNECTED_STATE_PRESENT=YES`, `NO_DATA_STATE_PRESENT=YES`, `STALE_DATA_STATE_PRESENT=YES`.
+- Deferred scope: Task-036e aggregate localization/verifier closure, full Watch map renderer, Watch route drawing, Watch-side route reconstruction, new trusted ascent computation, Watch-side speed filtering, Snow UI, and develop merge until Task-036 completes.
+- Next task handoff: `NEXT_TASK=Task-036e`.
+<!-- TASK036D_FALLBACK_STATES_DEVLOG_END -->
+
+<!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_START -->
+## Task-036e - Watch UI Localization + Verifier Closure
+
+- Added `scripts/verify_task036_watch_core_ui.py` as the aggregate Task-036 Watch core UI verifier.
+- Verified Watch UI localization key parity across `en`, `zh-Hant`, and `ja`, including live face, compact cards, fallback states, accessibility labels, and shared unit keys.
+- Aligned Watch Traditional Chinese wording with the existing iOS/macOS session-recording terminology by replacing a mixed English `Session` sentence in the Watch controls-pending copy.
+- Aggregated Task-036b, Task-036c, and Task-036d verifier coverage under the Task-036e closure gate.
+- Preserved boundaries: no new Watch UI page routing, no MapKit route semantics, no Watch-side route segmentation, no speed filtering, no elevation ascent logic, no Snow UI, no storage/schema/package changes, and no develop merge during this branch-stage closure.
+- Verification tokens: `VERIFY_TASK036_WATCH_CORE_UI_RESULT=PASSED`, `LOCALIZATION_PARITY=PASSED`, `WATCHOS_BUILD_EXIT=0`, `FAILURE_COUNT=0`.
+- Task closure note: Task-036 branch work can proceed to final commit/push review; merge to `develop` remains deferred until the operator explicitly runs the final Task-036 merge gate.
+<!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_END -->

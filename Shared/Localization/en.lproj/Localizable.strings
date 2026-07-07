@@ -1251,3 +1251,55 @@
 "mac.accessibility.elevation_chart.label" = "Elevation profile chart";
 
 "mac.accessibility.package_card.remove.hint" = "Removes this package from the read-only browser session. It does not delete the package file.";
+
+// Task-036b watchOS live face and mirrored controls
+"watch.live.title" = "Live Session";
+"watch.live.speed.current" = "Current speed";
+"watch.live.session.status" = "Session status";
+"watch.live.status.idle" = "Ready";
+"watch.live.status.preparing" = "Preparing";
+"watch.live.status.ready" = "Ready";
+"watch.live.status.recording" = "Recording";
+"watch.live.status.paused" = "Paused";
+"watch.live.status.ending" = "Ending";
+"watch.live.status.ended" = "Ended";
+"watch.live.status.failed" = "Needs attention";
+"watch.live.controls.start" = "Start";
+"watch.live.controls.pause" = "Pause";
+"watch.live.controls.resume" = "Resume";
+"watch.live.controls.stop" = "Stop";
+"watch.live.controls.pending" = "Controls will unlock when the session is ready.";
+"watch.live.accessibility.currentSpeed" = "Current speed";
+"watch.live.accessibility.sessionStatus" = "Session status";
+"watch.live.accessibility.start" = "Start session";
+"watch.live.accessibility.pause" = "Pause session";
+"watch.live.accessibility.resume" = "Resume session";
+"watch.live.accessibility.stop" = "Stop session";
+
+// Task-036c watchOS compact route, speed, and elevation cards
+"unit.length.meter.short" = "m";
+"watch.compact.route.title" = "Route";
+"watch.compact.route.scope.textOnly" = "Text";
+"watch.compact.route.status.recorded" = "Route recorded";
+"watch.compact.route.status.qualityInsufficient" = "GPS quality insufficient";
+"watch.compact.route.status.unavailable" = "Route unavailable";
+"watch.compact.route.points" = "pts";
+"watch.compact.route.segments" = "segments";
+"watch.compact.speed.title" = "Speed";
+"watch.compact.speed.max" = "Max";
+"watch.compact.speed.empty" = "No data";
+"watch.compact.elevation.title" = "Elevation";
+"watch.compact.elevation.ascent" = "Ascent";
+"watch.compact.elevation.empty" = "No data";
+"watch.fallback.ready.title" = "Ready";
+"watch.fallback.ready.detail" = "Watch display data is ready.";
+"watch.fallback.disconnected.title" = "Watch disconnected";
+"watch.fallback.disconnected.detail" = "Reconnect Apple Watch to continue live updates.";
+"watch.fallback.noSamples.title" = "Waiting for samples";
+"watch.fallback.noSamples.detail" = "Keep recording while SkateTrack waits for the first watch samples.";
+"watch.fallback.disabledProvider.title" = "Watch samples disabled";
+"watch.fallback.disabledProvider.detail" = "This build is using the disabled provider boundary.";
+"watch.fallback.staleData.title" = "Showing last update";
+"watch.fallback.staleData.detail" = "Live data is delayed, so SkateTrack is keeping the last safe display.";
+"watch.fallback.alwaysOn.title" = "Always-On";
+"watch.fallback.alwaysOn.detail" = "Reduced display mode keeps only essential live status visible.";

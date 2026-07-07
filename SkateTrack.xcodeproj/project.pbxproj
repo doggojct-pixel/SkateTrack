@@ -7,113 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-		34A100000000000000000101 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
-		34A100000000000000000102 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
-		34A200000000000000000101 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
-		34A200000000000000000102 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
-		34A300000000000000000101 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
-		34A300000000000000000102 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
-		34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
-		34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
-		34A900000000000000000101 /* WatchSensorProviderAvailabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */; };
-		35B100000000000000000101 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
-		35B100000000000000000102 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
-		35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B900000000000000000001 /* WatchSampleIngestionTests.swift */; };
-		35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
-		35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
-		35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */; };
-		35D900000000000000000101 /* SkateTrackPackageWatchCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */; };
-
-		34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
-		34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
-		34B200000000000000000101 /* WatchHealthKitDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */; };
-		34B200000000000000000102 /* WatchHealthKitDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */; };
-		34B300000000000000000101 /* WatchHealthKitCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B300000000000000000001 /* WatchHealthKitCopy.swift */; };
-		34B300000000000000000102 /* WatchHealthKitCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B300000000000000000001 /* WatchHealthKitCopy.swift */; };
-		34B900000000000000000101 /* WatchHealthKitDisabledBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */; };
-
-		32B100000000000000000101 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
-		32B100000000000000000102 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
-		32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
-		32B200000000000000000102 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
-		32B300000000000000000101 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
-		32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
-		32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
-		32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
-		32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
-		32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
-		32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
-		32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
-		32D100000000000000000101 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
-		32D100000000000000000102 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
-		32D200000000000000000101 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
-		32D200000000000000000102 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
-		32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
-		32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
-		32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */; };
-		32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */; };
-		33A100000000000000000101 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
-		33A100000000000000000102 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
-		33A200000000000000000101 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
-		33A200000000000000000102 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
-		33A900000000000000000101 /* WatchBridgeConnectivityBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */; };
-		33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
-		33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
-		33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
-		33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
-		33B900000000000000000101 /* WatchBridgeMirroredSessionCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */; };
-		33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
-		33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
-		33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */; };
-
-		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
-		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
-		31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
-		31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
-		31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
-		31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
-		31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
-		31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
-		31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
-		31A500000000000000000101 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
-		31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
-		31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
-		31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */; };
-		31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
-		31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
-		31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
-		31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B600000000000000000001 /* CompactActivityVisualizationTests.swift */; };
-		31A200000000000000000101 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
-		31A200000000000000000102 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
-		31A200000000000000000103 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
-		31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
-		31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
-		31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
-		31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
-		31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
-		31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
-		31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
-		31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
-		31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
-		31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
-		31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
-		31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
-		31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
-		31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
-		31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
-		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
-		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
-		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
-		31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
-		31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
-		31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
-		31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
-		31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
-		31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
-		31A410000000000000000101 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
-		31A410000000000000000102 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
-		31A410000000000000000103 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -213,18 +106,6 @@
 		14D000000000000000000103 /* DebugRuntimeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000003 /* DebugRuntimeOptions.swift */; };
 		14D000000000000000000104 /* DebugMockSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000004 /* DebugMockSessionFactory.swift */; };
 		14D000000000000000000105 /* DebugToolsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D000000000000000000005 /* DebugToolsPanelView.swift */; };
-		B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */; };
-		B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */; };
-		B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
-		B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
-		B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
-		B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */; };
-		B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */; };
-		B190100000000000000101 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
-		B190100000000000000102 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
-		B190100000000000000103 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
-		B190200000000000000101 /* OutdoorLocalizationReleaseGateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */; };
-		B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */; };
 		15A100000000000000000101 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000001 /* PersistenceController.swift */; };
 		15A100000000000000000102 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000002 /* RepositoryError.swift */; };
 		15A100000000000000000103 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A100000000000000000003 /* SessionRepository.swift */; };
@@ -404,15 +285,22 @@
 		27B200000000000000000103 /* MacPackageImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B200000000000000000003 /* MacPackageImportViewModel.swift */; };
 		27B300000000000000000101 /* MacLockedFeatureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B300000000000000000001 /* MacLockedFeatureCardView.swift */; };
 		28A100000000000000000101 /* MacSessionBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000001 /* MacSessionBrowserView.swift */; };
+		28A100000000000000000102 /* MacSessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000002 /* MacSessionDetailView.swift */; };
+		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
+		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
+		28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B100000000000000000001 /* MacRoutePreviewView.swift */; };
+		30D100000000000000000101 /* SkateTrackPackageImportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000001 /* SkateTrackPackageImportModels.swift */; };
+		30D100000000000000000102 /* SkateTrackPackageImportCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */; };
+		30D200000000000000000101 /* useSkateTrackPackageImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D200000000000000000001 /* useSkateTrackPackageImport.swift */; };
+		30D300000000000000000101 /* SessionHistoryImportEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D300000000000000000001 /* SessionHistoryImportEntryView.swift */; };
+		30D400000000000000000101 /* SessionImportPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000001 /* SessionImportPreviewView.swift */; };
+		30D400000000000000000102 /* SessionImportCandidateRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000002 /* SessionImportCandidateRowView.swift */; };
+		30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D500000000000000000001 /* SkateTrackPackageImportTests.swift */; };
 		30E300000000000000000101 /* MacMultiPackageViewerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E300000000000000000001 /* MacMultiPackageViewerState.swift */; };
 		30E400000000000000000101 /* MacPackageOpenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E400000000000000000001 /* MacPackageOpenCoordinator.swift */; };
 		30E500000000000000000101 /* MacPackageOpenResultStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */; };
 		30E600000000000000000101 /* MacPackageCardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E600000000000000000001 /* MacPackageCardListView.swift */; };
 		30E700000000000000000101 /* MacPackageSessionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E700000000000000000001 /* MacPackageSessionListView.swift */; };
-		28A100000000000000000102 /* MacSessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000002 /* MacSessionDetailView.swift */; };
-		28A100000000000000000103 /* MacSessionViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000003 /* MacSessionViewerModel.swift */; };
-		28A100000000000000000104 /* MacSpeedSparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A100000000000000000004 /* MacSpeedSparklineView.swift */; };
-		28B100000000000000000101 /* MacRoutePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B100000000000000000001 /* MacRoutePreviewView.swift */; };
 		30E800000000000000000101 /* MacRouteMapContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E800000000000000000001 /* MacRouteMapContextView.swift */; };
 		30E900000000000000000101 /* MacRouteVisualStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E900000000000000000001 /* MacRouteVisualStyle.swift */; };
 		30EA00000000000000000101 /* MacRouteInspectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EA00000000000000000001 /* MacRouteInspectionView.swift */; };
@@ -421,6 +309,119 @@
 		30ED00000000000000000101 /* MacElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ED00000000000000000001 /* MacElevationDisplayPipeline.swift */; };
 		30EE00000000000000000101 /* MacPackageAttentionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EE00000000000000000001 /* MacPackageAttentionState.swift */; };
 		30EF00000000000000000101 /* MacPackageAttentionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EF00000000000000000001 /* MacPackageAttentionSummaryView.swift */; };
+		31A100000000000000000101 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000001 /* ActivityVisualizationQuality.swift */; };
+		31A100000000000000000111 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000112 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000113 /* ActivityVisualizationDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */; };
+		31A100000000000000000121 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000122 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A100000000000000000123 /* ActivityVisualizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */; };
+		31A200000000000000000101 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000102 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A200000000000000000103 /* RouteDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A200000000000000000001 /* RouteDisplayModels.swift */; };
+		31A250000000000000000101 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A250000000000000000102 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A250000000000000000103 /* RouteDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A250000000000000000001 /* RouteDisplayPipeline.swift */; };
+		31A251000000000000000101 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000102 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A251000000000000000103 /* RouteDisplayPipeline+Filtering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */; };
+		31A252000000000000000101 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000102 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A252000000000000000103 /* RouteDisplayPipeline+Startup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */; };
+		31A253000000000000000101 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000102 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A253000000000000000103 /* RouteDisplayPipeline+Segmentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */; };
+		31A254000000000000000101 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000102 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A254000000000000000103 /* RouteDisplayPipeline+Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */; };
+		31A300000000000000000101 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000102 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A300000000000000000103 /* SpeedDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A300000000000000000001 /* SpeedDisplayModels.swift */; };
+		31A310000000000000000101 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000102 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A310000000000000000103 /* SpeedDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A310000000000000000001 /* SpeedDisplayPipeline.swift */; };
+		31A400000000000000000101 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000102 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A400000000000000000103 /* ElevationDisplayModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A400000000000000000001 /* ElevationDisplayModels.swift */; };
+		31A410000000000000000101 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
+		31A410000000000000000102 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
+		31A410000000000000000103 /* ElevationDisplayPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A410000000000000000001 /* ElevationDisplayPipeline.swift */; };
+		31A500000000000000000101 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31A500000000000000000102 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31A500000000000000000103 /* ActivityVisualizationPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A500000000000000000001 /* ActivityVisualizationPipeline.swift */; };
+		31A600000000000000000101 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000102 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31A600000000000000000103 /* CompactActivityVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A600000000000000000001 /* CompactActivityVisualizationModels.swift */; };
+		31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B200000000000000000001 /* RouteDisplayFixtureTests.swift */; };
+		31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */; };
+		31B400000000000000000101 /* ElevationDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */; };
+		31B500000000000000000101 /* ActivityVisualizationPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */; };
+		31B600000000000000000101 /* CompactActivityVisualizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B600000000000000000001 /* CompactActivityVisualizationTests.swift */; };
+		32B100000000000000000101 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
+		32B100000000000000000102 /* WatchBridgeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B100000000000000000001 /* WatchBridgeEnvelope.swift */; };
+		32B200000000000000000101 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
+		32B200000000000000000102 /* WatchBridgePayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B200000000000000000001 /* WatchBridgePayloads.swift */; };
+		32B300000000000000000101 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
+		32B300000000000000000102 /* WatchBridgeConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B300000000000000000001 /* WatchBridgeConnectionState.swift */; };
+		32B400000000000000000101 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
+		32B400000000000000000102 /* WatchBridgeCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B400000000000000000001 /* WatchBridgeCommandModels.swift */; };
+		32C100000000000000000101 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C100000000000000000102 /* WatchBridgeActivityPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */; };
+		32C200000000000000000101 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
+		32C200000000000000000102 /* WatchBridgeMetricPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */; };
+		32D100000000000000000101 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
+		32D100000000000000000102 /* WatchBridgeConnectionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */; };
+		32D200000000000000000101 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
+		32D200000000000000000102 /* WatchBridgeConnectionStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */; };
+		32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
+		32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D300000000000000000001 /* WatchBridgeMockTransport.swift */; };
+		32D900000000000000000101 /* WatchBridgeConnectionStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */; };
+		32DA00000000000000000101 /* WatchBridgeMockTransportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */; };
+		33A100000000000000000101 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
+		33A100000000000000000102 /* WatchBridgeConnectivityBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */; };
+		33A200000000000000000101 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
+		33A200000000000000000102 /* WatchBridgeWCSessionBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */; };
+		33A900000000000000000101 /* WatchBridgeConnectivityBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */; };
+		33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
+		33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */; };
+		33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
+		33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */; };
+		33B900000000000000000101 /* WatchBridgeMirroredSessionCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */; };
+		33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
+		33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
+		33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */; };
+		34A100000000000000000101 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
+		34A100000000000000000102 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
+		34A200000000000000000101 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
+		34A200000000000000000102 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
+		34A300000000000000000101 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
+		34A300000000000000000102 /* WatchSensorMockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A300000000000000000001 /* WatchSensorMockProvider.swift */; };
+		34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
+		34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A400000000000000000001 /* WatchSensorDisabledProvider.swift */; };
+		34A900000000000000000101 /* WatchSensorProviderAvailabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */; };
+		34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
+		34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B100000000000000000001 /* WatchHealthKitBoundary.swift */; };
+		34B200000000000000000101 /* WatchHealthKitDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */; };
+		34B200000000000000000102 /* WatchHealthKitDisabledProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */; };
+		34B300000000000000000101 /* WatchHealthKitCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B300000000000000000001 /* WatchHealthKitCopy.swift */; };
+		34B300000000000000000102 /* WatchHealthKitCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B300000000000000000001 /* WatchHealthKitCopy.swift */; };
+		34B900000000000000000101 /* WatchHealthKitDisabledBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */; };
+		35B100000000000000000101 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
+		35B100000000000000000102 /* WatchSampleIngestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B100000000000000000001 /* WatchSampleIngestion.swift */; };
+		35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B900000000000000000001 /* WatchSampleIngestionTests.swift */; };
+		35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
+		35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C100000000000000000001 /* WatchSampleFusionRules.swift */; };
+		35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */; };
+		35D900000000000000000101 /* SkateTrackPackageWatchCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */; };
+		36A100000000000000000101 /* WatchActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A100000000000000000001 /* WatchActivityViewModel.swift */; };
+		36A100000000000000000102 /* WatchActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A100000000000000000001 /* WatchActivityViewModel.swift */; };
+		36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A900000000000000000001 /* WatchActivityViewModelTests.swift */; };
+		36B100000000000000000101 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
+		36B100000000000000000102 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
+		36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */; };
+		36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B900000000000000000001 /* WatchLiveControlStateTests.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -470,22 +471,24 @@
 		B18A010000000000000103 /* EstimatedRouteDisplayDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */; };
 		B18A020000000000000101 /* EstimatedRouteDisplayGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */; };
 		B18A030000000000000101 /* EstimatedRouteDisplayGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */; };
-		31B200000000000000000101 /* RouteDisplayFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B200000000000000000001 /* RouteDisplayFixtureTests.swift */; };
-		31B300000000000000000101 /* SpeedDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */; };
-		31B400000000000000000101 /* ElevationDisplayPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */; };
 		B18B010000000000000101 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000102 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B010000000000000103 /* EstimatedRouteReviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */; };
 		B18B020000000000000101 /* EstimatedRouteReviewOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */; };
 		B18B030000000000000101 /* EstimatedRouteReviewOverlayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */; };
+		B18C010000000000000101 /* EstimatedRouteReviewPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C010000000000000001 /* EstimatedRouteReviewPanel.swift */; };
+		B18C020000000000000101 /* EstimatedRouteReviewPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18C020000000000000001 /* EstimatedRouteReviewPanelTests.swift */; };
+		B18D010000000000000101 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000102 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D010000000000000103 /* EstimatedRouteProductDecisionUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D010000000000000001 /* EstimatedRouteProductDecisionUpdate.swift */; };
+		B18D020000000000000101 /* EstimatedRouteProductDecisionUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D020000000000000001 /* EstimatedRouteProductDecisionUpdateBuilder.swift */; };
+		B18D030000000000000101 /* EstimatedRouteProductDecisionUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D030000000000000001 /* EstimatedRouteProductDecisionUpdateTests.swift */; };
+		B190100000000000000101 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190100000000000000102 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190100000000000000103 /* OutdoorLocalizationReleaseGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190100000000000000001 /* OutdoorLocalizationReleaseGate.swift */; };
+		B190200000000000000101 /* OutdoorLocalizationReleaseGateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */; };
+		B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
-		30D100000000000000000101 /* SkateTrackPackageImportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000001 /* SkateTrackPackageImportModels.swift */; };
-		30D100000000000000000102 /* SkateTrackPackageImportCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */; };
-		30D200000000000000000101 /* useSkateTrackPackageImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D200000000000000000001 /* useSkateTrackPackageImport.swift */; };
-		30D300000000000000000101 /* SessionHistoryImportEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D300000000000000000001 /* SessionHistoryImportEntryView.swift */; };
-		30D400000000000000000101 /* SessionImportPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000001 /* SessionImportPreviewView.swift */; };
-		30D400000000000000000102 /* SessionImportCandidateRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D400000000000000000002 /* SessionImportCandidateRowView.swift */; };
-		30D500000000000000000101 /* SkateTrackPackageImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D500000000000000000001 /* SkateTrackPackageImportTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -499,60 +502,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-
-		34A100000000000000000001 /* WatchSensorProviderProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderProtocols.swift; sourceTree = "<group>"; };
-		34A200000000000000000001 /* WatchSensorSampleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorSampleModels.swift; sourceTree = "<group>"; };
-		34A300000000000000000001 /* WatchSensorMockProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorMockProvider.swift; sourceTree = "<group>"; };
-		34A400000000000000000001 /* WatchSensorDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorDisabledProvider.swift; sourceTree = "<group>"; };
-		34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderAvailabilityTests.swift; sourceTree = "<group>"; };
-		35B100000000000000000001 /* WatchSampleIngestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestion.swift; sourceTree = "<group>"; };
-		35B900000000000000000001 /* WatchSampleIngestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestionTests.swift; sourceTree = "<group>"; };
-		35C100000000000000000001 /* WatchSampleFusionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRules.swift; sourceTree = "<group>"; };
-		35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRulesTests.swift; sourceTree = "<group>"; };
-		35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageWatchCompatibilityTests.swift; sourceTree = "<group>"; };
-
-		34B100000000000000000001 /* WatchHealthKitBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitBoundary.swift; sourceTree = "<group>"; };
-		34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledProvider.swift; sourceTree = "<group>"; };
-		34B300000000000000000001 /* WatchHealthKitCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitCopy.swift; sourceTree = "<group>"; };
-		34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledBoundaryTests.swift; sourceTree = "<group>"; };
-
-		32B100000000000000000001 /* WatchBridgeEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeEnvelope.swift; sourceTree = "<group>"; };
-		32B200000000000000000001 /* WatchBridgePayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgePayloads.swift; sourceTree = "<group>"; };
-		32B300000000000000000001 /* WatchBridgeConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionState.swift; sourceTree = "<group>"; };
-		32B400000000000000000001 /* WatchBridgeCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandModels.swift; sourceTree = "<group>"; };
-		32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeActivityPayloads.swift; sourceTree = "<group>"; };
-		32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMetricPayloads.swift; sourceTree = "<group>"; };
-		32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionTimeline.swift; sourceTree = "<group>"; };
-		32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStore.swift; sourceTree = "<group>"; };
-		32D300000000000000000001 /* WatchBridgeMockTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransport.swift; sourceTree = "<group>"; };
-		32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStoreTests.swift; sourceTree = "<group>"; };
-		32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransportTests.swift; sourceTree = "<group>"; };
-		33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundary.swift; sourceTree = "<group>"; };
-		33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeWCSessionBoundary.swift; sourceTree = "<group>"; };
-		33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundaryTests.swift; sourceTree = "<group>"; };
-		33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandModels.swift; sourceTree = "<group>"; };
-		33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandProcessor.swift; sourceTree = "<group>"; };
-		33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredSessionCommandTests.swift; sourceTree = "<group>"; };
-		33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyRules.swift; sourceTree = "<group>"; };
-		33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyTests.swift; sourceTree = "<group>"; };
-
-		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
-		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
-		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
-		31A500000000000000000001 /* ActivityVisualizationPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipeline.swift; sourceTree = "<group>"; };
-		31A600000000000000000001 /* CompactActivityVisualizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationModels.swift; sourceTree = "<group>"; };
-		31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipelineTests.swift; sourceTree = "<group>"; };
-		31B600000000000000000001 /* CompactActivityVisualizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationTests.swift; sourceTree = "<group>"; };
-		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
-		31A250000000000000000001 /* RouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayPipeline.swift; sourceTree = "<group>"; };
-		31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Filtering.swift"; sourceTree = "<group>"; };
-		31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Startup.swift"; sourceTree = "<group>"; };
-		31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Segmentation.swift"; sourceTree = "<group>"; };
-		31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Bounds.swift"; sourceTree = "<group>"; };
-		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
-		31A310000000000000000001 /* SpeedDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipeline.swift; sourceTree = "<group>"; };
-		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
-		31A410000000000000000001 /* ElevationDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipeline.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -772,15 +721,22 @@
 		27B200000000000000000003 /* MacPackageImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageImportViewModel.swift; sourceTree = "<group>"; };
 		27B300000000000000000001 /* MacLockedFeatureCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacLockedFeatureCardView.swift; sourceTree = "<group>"; };
 		28A100000000000000000001 /* MacSessionBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionBrowserView.swift; sourceTree = "<group>"; };
+		28A100000000000000000002 /* MacSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionDetailView.swift; sourceTree = "<group>"; };
+		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
+		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
+		28B100000000000000000001 /* MacRoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRoutePreviewView.swift; sourceTree = "<group>"; };
+		30D100000000000000000001 /* SkateTrackPackageImportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportModels.swift; sourceTree = "<group>"; };
+		30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportCoordinator.swift; sourceTree = "<group>"; };
+		30D200000000000000000001 /* useSkateTrackPackageImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageImport.swift; sourceTree = "<group>"; };
+		30D300000000000000000001 /* SessionHistoryImportEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryImportEntryView.swift; sourceTree = "<group>"; };
+		30D400000000000000000001 /* SessionImportPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportPreviewView.swift; sourceTree = "<group>"; };
+		30D400000000000000000002 /* SessionImportCandidateRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportCandidateRowView.swift; sourceTree = "<group>"; };
+		30D500000000000000000001 /* SkateTrackPackageImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportTests.swift; sourceTree = "<group>"; };
 		30E300000000000000000001 /* MacMultiPackageViewerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacMultiPackageViewerState.swift; sourceTree = "<group>"; };
 		30E400000000000000000001 /* MacPackageOpenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageOpenCoordinator.swift; sourceTree = "<group>"; };
 		30E500000000000000000001 /* MacPackageOpenResultStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageOpenResultStatusView.swift; sourceTree = "<group>"; };
 		30E600000000000000000001 /* MacPackageCardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageCardListView.swift; sourceTree = "<group>"; };
 		30E700000000000000000001 /* MacPackageSessionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageSessionListView.swift; sourceTree = "<group>"; };
-		28A100000000000000000002 /* MacSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionDetailView.swift; sourceTree = "<group>"; };
-		28A100000000000000000003 /* MacSessionViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSessionViewerModel.swift; sourceTree = "<group>"; };
-		28A100000000000000000004 /* MacSpeedSparklineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSpeedSparklineView.swift; sourceTree = "<group>"; };
-		28B100000000000000000001 /* MacRoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRoutePreviewView.swift; sourceTree = "<group>"; };
 		30E800000000000000000001 /* MacRouteMapContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteMapContextView.swift; sourceTree = "<group>"; };
 		30E900000000000000000001 /* MacRouteVisualStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteVisualStyle.swift; sourceTree = "<group>"; };
 		30EA00000000000000000001 /* MacRouteInspectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRouteInspectionView.swift; sourceTree = "<group>"; };
@@ -789,6 +745,64 @@
 		30ED00000000000000000001 /* MacElevationDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacElevationDisplayPipeline.swift; sourceTree = "<group>"; };
 		30EE00000000000000000001 /* MacPackageAttentionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageAttentionState.swift; sourceTree = "<group>"; };
 		30EF00000000000000000001 /* MacPackageAttentionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPackageAttentionSummaryView.swift; sourceTree = "<group>"; };
+		31A100000000000000000001 /* ActivityVisualizationQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationQuality.swift; sourceTree = "<group>"; };
+		31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationDiagnostics.swift; sourceTree = "<group>"; };
+		31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationConfiguration.swift; sourceTree = "<group>"; };
+		31A200000000000000000001 /* RouteDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayModels.swift; sourceTree = "<group>"; };
+		31A250000000000000000001 /* RouteDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Filtering.swift"; sourceTree = "<group>"; };
+		31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Startup.swift"; sourceTree = "<group>"; };
+		31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Segmentation.swift"; sourceTree = "<group>"; };
+		31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RouteDisplayPipeline+Bounds.swift"; sourceTree = "<group>"; };
+		31A300000000000000000001 /* SpeedDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayModels.swift; sourceTree = "<group>"; };
+		31A310000000000000000001 /* SpeedDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A400000000000000000001 /* ElevationDisplayModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayModels.swift; sourceTree = "<group>"; };
+		31A410000000000000000001 /* ElevationDisplayPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipeline.swift; sourceTree = "<group>"; };
+		31A500000000000000000001 /* ActivityVisualizationPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipeline.swift; sourceTree = "<group>"; };
+		31A600000000000000000001 /* CompactActivityVisualizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationModels.swift; sourceTree = "<group>"; };
+		31B200000000000000000001 /* RouteDisplayFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayFixtureTests.swift; sourceTree = "<group>"; };
+		31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipelineTests.swift; sourceTree = "<group>"; };
+		31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipelineTests.swift; sourceTree = "<group>"; };
+		31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVisualizationPipelineTests.swift; sourceTree = "<group>"; };
+		31B600000000000000000001 /* CompactActivityVisualizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActivityVisualizationTests.swift; sourceTree = "<group>"; };
+		32B100000000000000000001 /* WatchBridgeEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeEnvelope.swift; sourceTree = "<group>"; };
+		32B200000000000000000001 /* WatchBridgePayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgePayloads.swift; sourceTree = "<group>"; };
+		32B300000000000000000001 /* WatchBridgeConnectionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionState.swift; sourceTree = "<group>"; };
+		32B400000000000000000001 /* WatchBridgeCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandModels.swift; sourceTree = "<group>"; };
+		32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeActivityPayloads.swift; sourceTree = "<group>"; };
+		32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMetricPayloads.swift; sourceTree = "<group>"; };
+		32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionTimeline.swift; sourceTree = "<group>"; };
+		32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStore.swift; sourceTree = "<group>"; };
+		32D300000000000000000001 /* WatchBridgeMockTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransport.swift; sourceTree = "<group>"; };
+		32D900000000000000000001 /* WatchBridgeConnectionStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectionStateStoreTests.swift; sourceTree = "<group>"; };
+		32DA00000000000000000001 /* WatchBridgeMockTransportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMockTransportTests.swift; sourceTree = "<group>"; };
+		33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundary.swift; sourceTree = "<group>"; };
+		33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeWCSessionBoundary.swift; sourceTree = "<group>"; };
+		33A900000000000000000001 /* WatchBridgeConnectivityBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeConnectivityBoundaryTests.swift; sourceTree = "<group>"; };
+		33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandModels.swift; sourceTree = "<group>"; };
+		33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredCommandProcessor.swift; sourceTree = "<group>"; };
+		33B900000000000000000001 /* WatchBridgeMirroredSessionCommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeMirroredSessionCommandTests.swift; sourceTree = "<group>"; };
+		33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyRules.swift; sourceTree = "<group>"; };
+		33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeCommandSafetyTests.swift; sourceTree = "<group>"; };
+		34A100000000000000000001 /* WatchSensorProviderProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderProtocols.swift; sourceTree = "<group>"; };
+		34A200000000000000000001 /* WatchSensorSampleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorSampleModels.swift; sourceTree = "<group>"; };
+		34A300000000000000000001 /* WatchSensorMockProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorMockProvider.swift; sourceTree = "<group>"; };
+		34A400000000000000000001 /* WatchSensorDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorDisabledProvider.swift; sourceTree = "<group>"; };
+		34A900000000000000000001 /* WatchSensorProviderAvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSensorProviderAvailabilityTests.swift; sourceTree = "<group>"; };
+		34B100000000000000000001 /* WatchHealthKitBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitBoundary.swift; sourceTree = "<group>"; };
+		34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledProvider.swift; sourceTree = "<group>"; };
+		34B300000000000000000001 /* WatchHealthKitCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitCopy.swift; sourceTree = "<group>"; };
+		34B900000000000000000001 /* WatchHealthKitDisabledBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthKitDisabledBoundaryTests.swift; sourceTree = "<group>"; };
+		35B100000000000000000001 /* WatchSampleIngestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestion.swift; sourceTree = "<group>"; };
+		35B900000000000000000001 /* WatchSampleIngestionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleIngestionTests.swift; sourceTree = "<group>"; };
+		35C100000000000000000001 /* WatchSampleFusionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRules.swift; sourceTree = "<group>"; };
+		35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSampleFusionRulesTests.swift; sourceTree = "<group>"; };
+		35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageWatchCompatibilityTests.swift; sourceTree = "<group>"; };
+		36A100000000000000000001 /* WatchActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModel.swift; sourceTree = "<group>"; };
+		36A900000000000000000001 /* WatchActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModelTests.swift; sourceTree = "<group>"; };
+		36B100000000000000000001 /* WatchLiveControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlState.swift; sourceTree = "<group>"; };
+		36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchLiveSessionFaceView.swift; sourceTree = SOURCE_ROOT; };
+		36B900000000000000000001 /* WatchLiveControlStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlStateTests.swift; sourceTree = "<group>"; };
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
 		6DCBF0B258C0606469DD1AA3 /* SkateTrackMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackMacApp.swift; sourceTree = "<group>"; };
 		7F7BF9BD18DF80222D528D3C /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -822,9 +836,6 @@
 		B18A010000000000000001 /* EstimatedRouteDisplayDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayDecision.swift; sourceTree = "<group>"; };
 		B18A020000000000000001 /* EstimatedRouteDisplayGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGate.swift; sourceTree = "<group>"; };
 		B18A030000000000000001 /* EstimatedRouteDisplayGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteDisplayGateTests.swift; sourceTree = "<group>"; };
-		31B200000000000000000001 /* RouteDisplayFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplayFixtureTests.swift; sourceTree = "<group>"; };
-		31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedDisplayPipelineTests.swift; sourceTree = "<group>"; };
-		31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplayPipelineTests.swift; sourceTree = "<group>"; };
 		B18B010000000000000001 /* EstimatedRouteReviewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlay.swift; sourceTree = "<group>"; };
 		B18B020000000000000001 /* EstimatedRouteReviewOverlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayBuilder.swift; sourceTree = "<group>"; };
 		B18B030000000000000001 /* EstimatedRouteReviewOverlayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedRouteReviewOverlayTests.swift; sourceTree = "<group>"; };
@@ -838,13 +849,6 @@
 		B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGateTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		30D100000000000000000001 /* SkateTrackPackageImportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportModels.swift; sourceTree = "<group>"; };
-		30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportCoordinator.swift; sourceTree = "<group>"; };
-		30D200000000000000000001 /* useSkateTrackPackageImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSkateTrackPackageImport.swift; sourceTree = "<group>"; };
-		30D300000000000000000001 /* SessionHistoryImportEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryImportEntryView.swift; sourceTree = "<group>"; };
-		30D400000000000000000001 /* SessionImportPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportPreviewView.swift; sourceTree = "<group>"; };
-		30D400000000000000000002 /* SessionImportCandidateRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImportCandidateRowView.swift; sourceTree = "<group>"; };
-		30D500000000000000000001 /* SkateTrackPackageImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageImportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -879,101 +883,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-
-		34A000000000000000000000 /* WatchSensors */ = {
-			isa = PBXGroup;
-			children = (
-				34A100000000000000000001 /* WatchSensorProviderProtocols.swift */,
-				34A200000000000000000001 /* WatchSensorSampleModels.swift */,
-				34A300000000000000000001 /* WatchSensorMockProvider.swift */,
-				34A400000000000000000001 /* WatchSensorDisabledProvider.swift */,
-				35B100000000000000000001 /* WatchSampleIngestion.swift */,
-				35C100000000000000000001 /* WatchSampleFusionRules.swift */,
-
-				34B100000000000000000001 /* WatchHealthKitBoundary.swift */,
-				34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */,
-				34B300000000000000000001 /* WatchHealthKitCopy.swift */,
-			);
-			path = WatchSensors;
-			sourceTree = "<group>";
-		};
-
-		32B000000000000000000000 /* WatchBridge */ = {
-			isa = PBXGroup;
-			children = (
-				32B100000000000000000001 /* WatchBridgeEnvelope.swift */,
-				32B200000000000000000001 /* WatchBridgePayloads.swift */,
-				32B300000000000000000001 /* WatchBridgeConnectionState.swift */,
-				32B400000000000000000001 /* WatchBridgeCommandModels.swift */,
-				32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */,
-				32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */,
-				32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */,
-				32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */,
-				32D300000000000000000001 /* WatchBridgeMockTransport.swift */,
-				33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */,
-				33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */,
-				33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */,
-				33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */,
-				33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */,
-			);
-			path = WatchBridge;
-			sourceTree = "<group>";
-		};
-
-		31A000000000000000000000 /* ActivityVisualization */ = {
-			isa = PBXGroup;
-			children = (
-				31A100000000000000000001 /* ActivityVisualizationQuality.swift */,
-				31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */,
-				31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */,
-				31A500000000000000000001 /* ActivityVisualizationPipeline.swift */,
-				31A600000000000000000000 /* Compact */,
-				31A200000000000000000000 /* Route */,
-				31A300000000000000000000 /* Speed */,
-				31A400000000000000000000 /* Elevation */,
-			);
-			path = ActivityVisualization;
-			sourceTree = "<group>";
-		};
-		31A600000000000000000000 /* Compact */ = {
-			isa = PBXGroup;
-			children = (
-				31A600000000000000000001 /* CompactActivityVisualizationModels.swift */,
-			);
-			path = Compact;
-			sourceTree = "<group>";
-		};
-		31A200000000000000000000 /* Route */ = {
-			isa = PBXGroup;
-			children = (
-				31A200000000000000000001 /* RouteDisplayModels.swift */,
-				31A250000000000000000001 /* RouteDisplayPipeline.swift */,
-				31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */,
-				31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */,
-				31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */,
-				31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */,
-			);
-			path = Route;
-			sourceTree = "<group>";
-		};
-		31A300000000000000000000 /* Speed */ = {
-			isa = PBXGroup;
-			children = (
-				31A300000000000000000001 /* SpeedDisplayModels.swift */,
-				31A310000000000000000001 /* SpeedDisplayPipeline.swift */,
-			);
-			path = Speed;
-			sourceTree = "<group>";
-		};
-		31A400000000000000000000 /* Elevation */ = {
-			isa = PBXGroup;
-			children = (
-				31A400000000000000000001 /* ElevationDisplayModels.swift */,
-				31A410000000000000000001 /* ElevationDisplayPipeline.swift */,
-			);
-			path = Elevation;
-			sourceTree = "<group>";
-		};
 		12A200000000000000000006 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -1130,21 +1039,11 @@
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
 		};
-		31B200000000000000000000 /* ActivityVisualizationTests */ = {
-			isa = PBXGroup;
-			children = (
-				31B200000000000000000001 /* RouteDisplayFixtureTests.swift */,
-				31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */,
-				31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */,
-				31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */,
-				31B600000000000000000001 /* CompactActivityVisualizationTests.swift */,
-			);
-			path = ActivityVisualizationTests;
-			sourceTree = "<group>";
-		};
 		12AC02000000000000000001 /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				36A900000000000000000001 /* WatchActivityViewModelTests.swift */,
+				36B900000000000000000001 /* WatchLiveControlStateTests.swift */,
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
 				B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */,
 				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
@@ -1274,15 +1173,6 @@
 				30D300000000000000000001 /* SessionHistoryImportEntryView.swift */,
 			);
 			path = iOS/Features/SessionHistory;
-			sourceTree = SOURCE_ROOT;
-		};
-		30D400000000000000000000 /* iOS/Features/SessionImport */ = {
-			isa = PBXGroup;
-			children = (
-				30D400000000000000000001 /* SessionImportPreviewView.swift */,
-				30D400000000000000000002 /* SessionImportCandidateRowView.swift */,
-			);
-			path = iOS/Features/SessionImport;
 			sourceTree = SOURCE_ROOT;
 		};
 		18A100000000000000000000 /* iOS/Features/SessionSummary */ = {
@@ -1475,15 +1365,6 @@
 			path = iOS/Core/Export;
 			sourceTree = SOURCE_ROOT;
 		};
-		30D100000000000000000000 /* iOS/Core/Import */ = {
-			isa = PBXGroup;
-			children = (
-				30D100000000000000000001 /* SkateTrackPackageImportModels.swift */,
-				30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */,
-			);
-			path = iOS/Core/Import;
-			sourceTree = SOURCE_ROOT;
-		};
 		27B000000000000000000000 /* macOS/Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1537,12 +1418,150 @@
 			path = SessionBrowser;
 			sourceTree = "<group>";
 		};
+		30D100000000000000000000 /* iOS/Core/Import */ = {
+			isa = PBXGroup;
+			children = (
+				30D100000000000000000001 /* SkateTrackPackageImportModels.swift */,
+				30D100000000000000000002 /* SkateTrackPackageImportCoordinator.swift */,
+			);
+			path = iOS/Core/Import;
+			sourceTree = SOURCE_ROOT;
+		};
+		30D400000000000000000000 /* iOS/Features/SessionImport */ = {
+			isa = PBXGroup;
+			children = (
+				30D400000000000000000001 /* SessionImportPreviewView.swift */,
+				30D400000000000000000002 /* SessionImportCandidateRowView.swift */,
+			);
+			path = iOS/Features/SessionImport;
+			sourceTree = SOURCE_ROOT;
+		};
+		31A000000000000000000000 /* ActivityVisualization */ = {
+			isa = PBXGroup;
+			children = (
+				31A100000000000000000001 /* ActivityVisualizationQuality.swift */,
+				31A100000000000000000002 /* ActivityVisualizationDiagnostics.swift */,
+				31A100000000000000000003 /* ActivityVisualizationConfiguration.swift */,
+				31A500000000000000000001 /* ActivityVisualizationPipeline.swift */,
+				31A600000000000000000000 /* Compact */,
+				31A200000000000000000000 /* Route */,
+				31A300000000000000000000 /* Speed */,
+				31A400000000000000000000 /* Elevation */,
+			);
+			path = ActivityVisualization;
+			sourceTree = "<group>";
+		};
+		31A200000000000000000000 /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				31A200000000000000000001 /* RouteDisplayModels.swift */,
+				31A250000000000000000001 /* RouteDisplayPipeline.swift */,
+				31A251000000000000000001 /* RouteDisplayPipeline+Filtering.swift */,
+				31A252000000000000000001 /* RouteDisplayPipeline+Startup.swift */,
+				31A253000000000000000001 /* RouteDisplayPipeline+Segmentation.swift */,
+				31A254000000000000000001 /* RouteDisplayPipeline+Bounds.swift */,
+			);
+			path = Route;
+			sourceTree = "<group>";
+		};
+		31A300000000000000000000 /* Speed */ = {
+			isa = PBXGroup;
+			children = (
+				31A300000000000000000001 /* SpeedDisplayModels.swift */,
+				31A310000000000000000001 /* SpeedDisplayPipeline.swift */,
+			);
+			path = Speed;
+			sourceTree = "<group>";
+		};
+		31A400000000000000000000 /* Elevation */ = {
+			isa = PBXGroup;
+			children = (
+				31A400000000000000000001 /* ElevationDisplayModels.swift */,
+				31A410000000000000000001 /* ElevationDisplayPipeline.swift */,
+			);
+			path = Elevation;
+			sourceTree = "<group>";
+		};
+		31A600000000000000000000 /* Compact */ = {
+			isa = PBXGroup;
+			children = (
+				31A600000000000000000001 /* CompactActivityVisualizationModels.swift */,
+			);
+			path = Compact;
+			sourceTree = "<group>";
+		};
+		31B200000000000000000000 /* ActivityVisualizationTests */ = {
+			isa = PBXGroup;
+			children = (
+				31B200000000000000000001 /* RouteDisplayFixtureTests.swift */,
+				31B300000000000000000001 /* SpeedDisplayPipelineTests.swift */,
+				31B400000000000000000001 /* ElevationDisplayPipelineTests.swift */,
+				31B500000000000000000001 /* ActivityVisualizationPipelineTests.swift */,
+				31B600000000000000000001 /* CompactActivityVisualizationTests.swift */,
+			);
+			path = ActivityVisualizationTests;
+			sourceTree = "<group>";
+		};
+		32B000000000000000000000 /* WatchBridge */ = {
+			isa = PBXGroup;
+			children = (
+				32B100000000000000000001 /* WatchBridgeEnvelope.swift */,
+				32B200000000000000000001 /* WatchBridgePayloads.swift */,
+				32B300000000000000000001 /* WatchBridgeConnectionState.swift */,
+				32B400000000000000000001 /* WatchBridgeCommandModels.swift */,
+				32C100000000000000000001 /* WatchBridgeActivityPayloads.swift */,
+				32C200000000000000000001 /* WatchBridgeMetricPayloads.swift */,
+				32D100000000000000000001 /* WatchBridgeConnectionTimeline.swift */,
+				32D200000000000000000001 /* WatchBridgeConnectionStateStore.swift */,
+				32D300000000000000000001 /* WatchBridgeMockTransport.swift */,
+				33A100000000000000000001 /* WatchBridgeConnectivityBoundary.swift */,
+				33A200000000000000000001 /* WatchBridgeWCSessionBoundary.swift */,
+				33B100000000000000000001 /* WatchBridgeMirroredCommandModels.swift */,
+				33B200000000000000000001 /* WatchBridgeMirroredCommandProcessor.swift */,
+				33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */,
+			);
+			path = WatchBridge;
+			sourceTree = "<group>";
+		};
+		34A000000000000000000000 /* WatchSensors */ = {
+			isa = PBXGroup;
+			children = (
+				34A100000000000000000001 /* WatchSensorProviderProtocols.swift */,
+				34A200000000000000000001 /* WatchSensorSampleModels.swift */,
+				34A300000000000000000001 /* WatchSensorMockProvider.swift */,
+				34A400000000000000000001 /* WatchSensorDisabledProvider.swift */,
+				35B100000000000000000001 /* WatchSampleIngestion.swift */,
+				35C100000000000000000001 /* WatchSampleFusionRules.swift */,
+				34B100000000000000000001 /* WatchHealthKitBoundary.swift */,
+				34B200000000000000000001 /* WatchHealthKitDisabledProvider.swift */,
+				34B300000000000000000001 /* WatchHealthKitCopy.swift */,
+			);
+			path = WatchSensors;
+			sourceTree = "<group>";
+		};
+		36A000000000000000000000 /* WatchUI */ = {
+			isa = PBXGroup;
+			children = (
+				36A100000000000000000001 /* WatchActivityViewModel.swift */,
+				36B100000000000000000001 /* WatchLiveControlState.swift */,
+			);
+			path = WatchUI;
+			sourceTree = "<group>";
+		};
 		3963F8F31F93F511E309A0BF /* scripts */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = scripts;
 			sourceTree = SOURCE_ROOT;
+		};
+		397B7DA02FFCFC78001AC43D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
 		};
 		8EC3D2CF02A3326DF14F23BF /* watchOS/App */ = {
 			isa = PBXGroup;
@@ -1591,6 +1610,7 @@
 				DA3F5B38A0177725491BBD32 /* docs */,
 				3963F8F31F93F511E309A0BF /* scripts */,
 				DB0FE2794C17B0CCB9393690 /* Products */,
+				397B7DA02FFCFC78001AC43D /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1645,6 +1665,7 @@
 		F5168E4BB74FFD31A60E8CE0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				36A000000000000000000000 /* WatchUI */,
 				34A000000000000000000000 /* WatchSensors */,
 				32B000000000000000000000 /* WatchBridge */,
 				12A200000000000000000006 /* Constants */,
@@ -1826,6 +1847,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */,
+				36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */,
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
 				B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */,
 				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
@@ -1884,10 +1907,11 @@
 				34A400000000000000000101 /* WatchSensorDisabledProvider.swift in Sources */,
 				35B100000000000000000101 /* WatchSampleIngestion.swift in Sources */,
 				35C100000000000000000101 /* WatchSampleFusionRules.swift in Sources */,
-
 				34B100000000000000000101 /* WatchHealthKitBoundary.swift in Sources */,
 				34B200000000000000000101 /* WatchHealthKitDisabledProvider.swift in Sources */,
 				34B300000000000000000101 /* WatchHealthKitCopy.swift in Sources */,
+				36A100000000000000000101 /* WatchActivityViewModel.swift in Sources */,
+				36B100000000000000000101 /* WatchLiveControlState.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2252,11 +2276,13 @@
 				34A400000000000000000102 /* WatchSensorDisabledProvider.swift in Sources */,
 				35B100000000000000000102 /* WatchSampleIngestion.swift in Sources */,
 				35C100000000000000000102 /* WatchSampleFusionRules.swift in Sources */,
-
 				34B100000000000000000102 /* WatchHealthKitBoundary.swift in Sources */,
 				34B200000000000000000102 /* WatchHealthKitDisabledProvider.swift in Sources */,
 				34B300000000000000000102 /* WatchHealthKitCopy.swift in Sources */,
+				36A100000000000000000102 /* WatchActivityViewModel.swift in Sources */,
+				36B100000000000000000102 /* WatchLiveControlState.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
+				36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,
 				31A100000000000000000102 /* ActivityVisualizationQuality.swift in Sources */,
@@ -2545,7 +2571,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 822YF6NJF6;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iOS/App/Info.plist;
@@ -2640,7 +2666,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 822YF6NJF6;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iOS/App/Info.plist;
