@@ -34,6 +34,7 @@ enum WatchMetricCardKind: String, Equatable, Sendable {
     case route
     case speed
     case elevation
+    case cadence
 }
 
 enum WatchMetricProviderSource: String, Equatable, Sendable {
@@ -120,11 +121,17 @@ struct WatchBaseMetricProvider: WatchMetricProviding {
     }
 
     func makeMetricOutputs(context: WatchMetricProviderContext) -> [WatchMetricProviderOutput] {
-        [
+        var outputs = [
             routeOutput(context: context),
             speedOutput(context: context),
             elevationOutput(context: context),
         ]
+
+        if context.activityMode == .inline {
+            outputs.append(cadenceOutput(context: context))
+        }
+
+        return outputs
     }
 
     private func routeOutput(context: WatchMetricProviderContext) -> WatchMetricProviderOutput {
@@ -173,6 +180,35 @@ struct WatchBaseMetricProvider: WatchMetricProviding {
             speedSparkline: nil,
             elevationProfile: hasCompactValues ? compactElevationProfile(from: elevationCard) : nil
         )
+    }
+
+    private func cadenceOutput(context: WatchMetricProviderContext) -> WatchMetricProviderOutput {
+        WatchMetricProviderOutput(
+            identifier: "watch.metric.inline.cadence",
+            kind: .cadence,
+            titleLocalizationKey: "session.hud.inline.cadence",
+            accessibilityIdentifier: "watch-metric-provider-inline-cadence",
+            availability: inlineCadenceAvailability(context: context),
+            source: .unavailable,
+            compactRoute: nil,
+            speedSparkline: nil,
+            elevationProfile: nil
+        )
+    }
+
+    private func inlineCadenceAvailability(
+        context: WatchMetricProviderContext
+    ) -> WatchMetricAvailabilityState {
+        switch context.fallback.kind {
+        case .disabledProvider:
+            return .disabled(.providerDisabled)
+        case .disconnected:
+            return .unavailable(.watchBridgeDisconnected)
+        case .staleData:
+            return .unavailable(.staleData)
+        case .ready, .noSamples:
+            return .unavailable(.missingCompactOutput)
+        }
     }
 
     private func availability(

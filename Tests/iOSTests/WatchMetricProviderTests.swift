@@ -38,11 +38,32 @@ final class WatchMetricProviderTests: XCTestCase {
 
         XCTAssertEqual(selection.activityMode, .inline)
         XCTAssertEqual(selection.providerIdentifier, "watch.metric.provider.base")
-        XCTAssertEqual(selection.outputs.count, 3)
+        XCTAssertEqual(selection.outputs.map(\.kind), [.route, .speed, .elevation, .cadence])
         XCTAssertTrue(selection.outputs.allSatisfy { output in
             output.availability == .unavailable(.missingCompactOutput)
         })
         XCTAssertTrue(selection.outputs.allSatisfy { $0.source == .unavailable })
+        XCTAssertEqual(
+            selection.outputs.first { $0.kind == .cadence }?.titleLocalizationKey,
+            "session.hud.inline.cadence"
+        )
+    }
+
+    func testInlineCadenceStaysUnavailableEvenWhenCompactSpeedAndElevationExist() {
+        let viewModel = Self.viewModel(
+            sportModeKey: "inline",
+            compactSummary: Self.compactSummary()
+        )
+
+        let selection = WatchMetricProviderSelector().makeSelection(for: viewModel)
+        let cadence = selection.outputs.first { $0.kind == .cadence }
+
+        XCTAssertEqual(selection.outputs.map(\.kind), [.route, .speed, .elevation, .cadence])
+        XCTAssertEqual(cadence?.availability, .unavailable(.missingCompactOutput))
+        XCTAssertEqual(cadence?.source, .unavailable)
+        XCTAssertNil(cadence?.speedSparkline)
+        XCTAssertNil(cadence?.elevationProfile)
+        XCTAssertNil(cadence?.compactRoute)
     }
 
     func testDefaultPreparationModeKeepsBaseProviderWithUnavailableOutputs() {

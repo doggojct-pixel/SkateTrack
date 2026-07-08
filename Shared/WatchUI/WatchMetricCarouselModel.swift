@@ -71,6 +71,8 @@ struct WatchMetricCarouselModel: Equatable, Sendable {
             return speedCardModel(from: output)
         case .elevation:
             return elevationCardModel(from: output)
+        case .cadence:
+            return cadenceCardModel(from: output)
         }
     }
 
@@ -136,6 +138,24 @@ struct WatchMetricCarouselModel: Equatable, Sendable {
                 ? "watch.compact.elevation.ascent"
                 : detailKey(for: output.availability),
             sparklinePoints: output.isRenderable ? elevationProfilePoints(from: profile) : [],
+            availability: output.availability,
+            displayState: displayState(for: output.availability),
+            source: output.source
+        )
+    }
+
+    private static func cadenceCardModel(
+        from output: WatchMetricProviderOutput
+    ) -> WatchMetricCarouselCardModel {
+        WatchMetricCarouselCardModel(
+            id: output.identifier,
+            kind: output.kind,
+            titleLocalizationKey: output.titleLocalizationKey,
+            accessibilityIdentifier: "watch-metric-carousel-inline-cadence-card",
+            valueText: unavailableValueText,
+            unitLocalizationKey: nil,
+            detailLocalizationKey: detailKey(for: output.availability),
+            sparklinePoints: [],
             availability: output.availability,
             displayState: displayState(for: output.availability),
             source: output.source

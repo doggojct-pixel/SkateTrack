@@ -3097,3 +3097,23 @@ TASK037B_MANUALQA_UI_HOTFIX_003=YES
 DEFAULT_PREPARATION_CARDS_PRESENT=YES
 SNOW_METRIC_IMPLEMENTATION_COUNT=0
 ```
+
+## 2026-07-08 — Task-037c Inline Cadence Metric Safe Unavailable State
+
+### Completed
+- Added an inline-only cadence metric card path to the Watch metric provider output list.
+- Kept cadence unavailable until a safe inline cadence data source exists; the card displays `--` and does not claim rpm, spm, stride rate, or computed cadence.
+- Added provider and carousel model tests for missing cadence data and compact-data-present-but-cadence-missing cases.
+- Preserved Task-037b speed and elevation compact output usage and avoided Snow metric implementation.
+
+### Validation Notes
+
+```text
+<!-- TASK037C_INLINE_CADENCE_START -->
+VERIFY_TASK037C_INLINE_CADENCE_RESULT=PASSED
+UNAVAILABLE_STATE_PRESENT=YES
+FALSE_PRECISION_COPY_COUNT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037d
+```

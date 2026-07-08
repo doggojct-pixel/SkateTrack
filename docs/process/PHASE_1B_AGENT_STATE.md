@@ -689,3 +689,25 @@ SNOW_METRIC_IMPLEMENTATION_COUNT=0
 NEXT_TASK=Task-037c
 ```
 <!-- TASK037B_MANUALQA_UI_HOTFIX_003_END -->
+
+<!-- TASK037C_INLINE_CADENCE_START -->
+## Task-037c Inline Cadence Metric State
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-037c — Inline Cadence Metric`
+
+```text
+TASK037C_BASELINE_TASK_BRANCH_HEAD=acd563937daae305281eecacb3c2581eeb42cfbe
+INLINE_CADENCE_CARD_PRESENT=YES
+INLINE_CADENCE_REAL_DATA_SOURCE_PRESENT=NO
+INLINE_CADENCE_VALUE_DISPLAY=--
+UNAVAILABLE_STATE_PRESENT=YES
+FALSE_PRECISION_COPY_COUNT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+VERIFY_TASK037C_INLINE_CADENCE_RESULT=PASSED
+NEXT_TASK=Task-037d
+```
+
+Task-037c intentionally uses an unavailable cadence state because no safe inline cadence source is available in the current WatchBridge / compact summary contract. It must not treat IMU sample frequency or skateboard `.skatetrack` packages as inline stride cadence.
+<!-- TASK037C_INLINE_CADENCE_END -->

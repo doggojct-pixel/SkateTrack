@@ -32,13 +32,31 @@ final class WatchMetricCarouselModelTests: XCTestCase {
 
         let model = WatchMetricCarouselModel(selection: selection)
 
-        XCTAssertEqual(model.cards.count, 3)
+        XCTAssertEqual(model.cards.map(\.kind), [.route, .speed, .elevation, .cadence])
         XCTAssertFalse(model.hasRenderableCompactSpeed)
         XCTAssertFalse(model.hasRenderableCompactElevation)
         XCTAssertTrue(model.cards.allSatisfy { $0.displayState == .unavailable })
         XCTAssertTrue(model.cards.allSatisfy { $0.detailLocalizationKey == "watch.metric.card.unavailable" })
         XCTAssertTrue(model.cards.allSatisfy { $0.valueText == "--" })
         XCTAssertTrue(model.cards.allSatisfy { $0.sparklinePoints.isEmpty })
+        XCTAssertNil(model.cards.first { $0.kind == .cadence }?.unitLocalizationKey)
+    }
+
+    func testInlineCadenceCardAvoidsFalsePrecisionWhenCompactDataExists() {
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: Self.viewModel(sportModeKey: "inline", compactSummary: Self.compactSummary())
+        )
+
+        let model = WatchMetricCarouselModel(selection: selection)
+        let cadence = model.cards.first { $0.kind == .cadence }
+
+        XCTAssertEqual(model.cards.map(\.kind), [.route, .speed, .elevation, .cadence])
+        XCTAssertEqual(cadence?.titleLocalizationKey, "session.hud.inline.cadence")
+        XCTAssertEqual(cadence?.displayState, .unavailable)
+        XCTAssertEqual(cadence?.detailLocalizationKey, "watch.metric.card.unavailable")
+        XCTAssertEqual(cadence?.valueText, "--")
+        XCTAssertNil(cadence?.unitLocalizationKey)
+        XCTAssertTrue(cadence?.sparklinePoints.isEmpty == true)
     }
 
     func testCarouselModelKeepsSafeCardsForDefaultPreparationViewModel() {

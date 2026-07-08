@@ -100,8 +100,8 @@ private struct WatchMetricCarouselCardView: View {
                 }
             }
 
-            if card.kind == .route {
-                WatchMetricCarouselPillView(titleKey: "watch.metric.card.route.textOnly")
+            if card.kind == .route || card.kind == .cadence {
+                WatchMetricCarouselPillView(titleKey: card.detailLocalizationKey)
             } else {
                 WatchMetricCarouselSparklineView(
                     points: card.sparklinePoints,
@@ -144,6 +144,8 @@ private struct WatchMetricCarouselCardView: View {
             return "speedometer"
         case .elevation:
             return "mountain.2.fill"
+        case .cadence:
+            return "timer"
         }
     }
 }

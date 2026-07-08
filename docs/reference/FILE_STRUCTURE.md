@@ -2793,3 +2793,37 @@ SNOW_METRIC_IMPLEMENTATION_COUNT=0
 NEXT_TASK=Task-037c
 ```
 <!-- TASK037B_MANUALQA_UI_HOTFIX_003_END -->
+
+<!-- TASK037C_INLINE_CADENCE_START -->
+## Task-037c Inline Cadence Metric Addendum
+
+Task-037c adds a safe inline-only cadence metric card path without implementing a cadence algorithm.
+
+### Updated Source Areas
+
+```text
+Shared/WatchUI/WatchMetricProvider.swift          # [協作區] Adds inline-only cadence provider output with unavailable/disabled/stale states only.
+Shared/WatchUI/WatchMetricCarouselModel.swift     # [協作區] Maps cadence output to a `--` unavailable carousel card with no false precision unit.
+watchOS/Features/WatchMetricCarouselView.swift    # [協作區] Renders the cadence card using the same safe card surface as Task-037b.
+Tests/iOSTests/WatchMetricProviderTests.swift     # [工程設定] Adds inline cadence unavailable provider tests.
+Tests/iOSTests/WatchMetricCarouselModelTests.swift # [工程設定] Adds cadence carousel model unavailable tests.
+scripts/verify_task037c_inline_cadence.py         # [工程設定] Verifies Task-037c scope, unavailable state, and false-precision guardrails.
+```
+
+### Status
+
+```text
+VERIFY_TASK037C_INLINE_CADENCE_RESULT=PASSED
+UNAVAILABLE_STATE_PRESENT=YES
+FALSE_PRECISION_COPY_COUNT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037d
+```
+
+### Deferred After Task-037c
+
+- Real inline cadence computation remains deferred until a safe cadence data source and quality model are approved.
+- Task-037c must not infer cadence from IMU sample cadence, accelerometer frequency, gyroscope frequency, or skateboard sample packages.
+- No WatchBridge schema, MotionSample schema, Core Data, package, HealthKit, Snow, StoreKit, route, speed filtering, or elevation ascent behavior changes are part of Task-037c.
+<!-- TASK037C_INLINE_CADENCE_END -->
