@@ -3000,3 +3000,34 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038d
 ```
 <!-- TASK038C_FALL_SAFETY_SHELL_END -->
+
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START -->
+## Task-038d Haptics/Safety Verifier + Manual QA Closure Preparation Addendum
+
+Task-038d prepares Task-038 closure with an aggregate verifier, known-limitations coverage, and an aggregate manual QA checklist. It is docs/verifier-only and does not modify Swift product code, Xcode project membership, localization runtime files, UI/runtime behavior, schema, package format, StoreKit production code, sensor/session engines, route / speed / elevation logic, ActivityVisualization, Snow, HealthKit production usage, WatchKit haptic playback, fall detection implementation, emergency/SOS automation, rescue promises, or medical/clinical safety claims.
+
+### Updated source areas
+
+```text
+scripts/verify_task038_haptics_safety.py        # [工程設定] Task-038 aggregate verifier for haptic intent, health reminder, fall-safety shell, docs, manual-QA, and forbidden-scope closure checks.
+AGENTS.md                                      # [原則 E] Updates the current Task-038 baseline and next expected subtask to Task-038d / Task-039a handoff.
+docs/history/DEV_LOG.md                        # [原則 E] Records Task-038d closure-preparation state and validation markers.
+docs/reference/FILE_STRUCTURE.md               # [原則 E] Records Task-038d file ownership and docs/verifier-only boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md           # [原則 E] Records Task-038d pre-manual-QA closure state.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md      # [原則 E] Adds Task-038 haptics/safety closure limitation note.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md       # [原則 E] Adds aggregate Task-038 haptics/safety manual QA checklist.
+```
+
+### Closure-preparation markers
+
+```text
+TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START
+VERIFY_TASK038_HAPTICS_SAFETY_PRE_QA_RESULT=PASSED
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+KNOWN_LIMITATIONS_UPDATED=YES
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039a
+```
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->

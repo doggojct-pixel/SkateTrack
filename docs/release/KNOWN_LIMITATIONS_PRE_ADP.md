@@ -258,6 +258,27 @@ Task-030c-b11 compatibility token: Trusted Chart Metrics + Display Source Alignm
 
 ### Task-030c-b11-r1 — Route confidence display continuity
 
+<!-- TASK038D_HAPTICS_SAFETY_LIMITATIONS_START -->
+## Task-038 Haptics/Safety Closure
+
+- **Current status:** Task-038a/038b/038c provide haptic intent state, a non-medical Watch health reminder shell, and a fall-safety presentation shell. Task-038d adds aggregate verifier and manual-QA closure preparation only.
+- **Haptic limitation:** Haptic intent remains mock/disabled intent state unless a later task explicitly permits device playback. There is no WatchKit haptic playback in Task-038.
+- **Health reminder limitation:** The Watch health reminder shell is non-medical with no production HealthKit, no HealthKit permission request, no body-data read, no health monitoring, no diagnosis, no treatment, no prevention, and no clinical claims.
+- **Fall safety limitation:** The Watch fall-safety shell is presentation-only. It has no emergency/SOS automation and does not implement real fall detection, rescue dispatch, emergency-service promises, medical monitoring, diagnosis, treatment, prevention, or clinical safety claims.
+- **Manual QA limitation:** Aggregate haptics/safety manual QA remains required before final Task-038 closure commit and push.
+- **Do not claim:** Do not claim real-world fall detection validation, emergency response, rescue guarantee, clinical safety monitoring, production HealthKit readiness, or physical Watch haptic playback from Task-038.
+
+```text
+TASK038_HAPTICS_SAFETY_LIMITATIONS_UPDATED=YES
+KNOWN_LIMITATIONS_UPDATED=YES
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+```
+<!-- TASK038D_HAPTICS_SAFETY_LIMITATIONS_END -->
+
 - **Current status:** Task-030c-b11-r1 keeps low-confidence / uncertain route samples visible as secondary Summary map segments instead of treating them as route disappearance. This makes motorcycle / high-speed validation routes less misleading while preserving confidence separation for skateboard-mode summaries.
 - **Pre-ADP limitation:** This is a display-continuity refinement, not high-precision positioning. Do not claim small-area loops are accurate, do not claim 1m absolute positioning, and do not claim raw GPS drift has been solved.
 - **Still deferred:** IMU-assisted route reconstruction, skateboard S-curve presentation, high-precision metric calibration, map matching, road snapping, and any fabricated route geometry remain out of scope.

@@ -137,3 +137,31 @@ The Task-030e final merge gate is documented in `docs/release/TASK030E_FINAL_MER
 Final merge QA evidence must include `task030e_014_oneclick`, `ONECLICK_RUN_DIR_REMOVED=YES`, clean diff/status review, develop merge readiness, and confirmation that the macOS package viewer remains read-only with no import / merge / route mutation, no schema / Core Data mutation, no location permission, and no user-location display.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, manual QA gate remains a merge blocker, task030e_014_oneclick.
+
+<!-- TASK038D_HAPTICS_SAFETY_MANUAL_QA_START -->
+## Task-038d Haptics/Safety Manual QA Gate
+
+Task-038d is docs/verifier-only closure preparation, but final Task-038 closure still requires an aggregate operator QA pass because Task-038b and Task-038c introduced visible watchOS shell UI and user-facing safety copy.
+
+Manual QA status:
+
+```text
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+```
+
+Required aggregate checklist:
+
+- 在 watchOS simulator 開啟 live session face。
+- 確認 Task-038b Health Reminder shell 與 Task-038c Fall Safety shell 位置合理，沒有擠壓或遮住 metric carousel、live controls、session status。
+- 確認 haptic intent 仍只是 mock/disabled intent 狀態，沒有 WatchKit 實體震動播放。
+- 確認健康提醒文案只描述一般提醒，不宣稱醫療監測、診斷、治療、預防、臨床準確或 HealthKit 身體資料讀取。
+- 確認 fall safety 文案只描述 presentation shell / limitation，不承諾跌倒偵測、SOS、自動通知、急救、救援或緊急服務。
+- 點選 false alarm / dismiss 類按鈕，確認 shell 可回到安全狀態，且不觸發 emergency/SOS/HealthKit/sensor 行為。
+- 確認沒有跳 HealthKit 權限請求，沒有讀取心率或身體資料。
+- 確認速度、路線、海拔、metric carousel、session controls 行為沒有改變。
+- 確認 VoiceOver/accessibility label 不含 emergency/medical/detection promise。
+- 確認 Snow 功能沒有出現或改變。
+- 完成後回報 MANUAL_QA_HAPTICS_SAFETY=PASSED 或明確列出失敗項目。
+
+Task-038d manual QA token: aggregate haptics/safety manual QA pending, no production HealthKit, no WatchKit haptic playback, no emergency/SOS automation, no fall detection implementation.
+<!-- TASK038D_HAPTICS_SAFETY_MANUAL_QA_END -->

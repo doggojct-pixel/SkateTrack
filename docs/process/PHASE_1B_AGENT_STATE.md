@@ -831,3 +831,43 @@ NEXT_TASK=Task-038d
 
 Task-038c adds a Watch presentation shell for fall-safety wording and local dismissal / false-alarm handling. It is presentation state/UI only, reuses Task-038a haptic policy only as mock-only or disabled intent state, and does not add fall detection, emergency service behavior, SOS automation, production HealthKit usage, body-data reads, WatchKit haptic playback, Snow implementation, route / speed / elevation mutations, ActivityVisualization changes, package / Core Data / StoreKit changes, or sensor / session engine changes.
 <!-- TASK038C_FALL_SAFETY_SHELL_END -->
+
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START -->
+## Task-038d Haptics/Safety Verifier + Manual QA Closure Preparation
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-038d — Haptics/Safety Verifier + Manual QA`
+
+```text
+TASK038_BRANCH=task-038-haptics-safety-shells
+TASK038D_BASELINE_HEAD=d019aa79e94e296567a8373f6e00cdc60487eada
+TASK038D_DOCS_VERIFIER_ONLY=YES
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+VERIFY_TASK038_HAPTICS_SAFETY_PRE_QA_RESULT=PASSED
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+KNOWN_LIMITATIONS_UPDATED=YES
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039a
+```
+
+Task-038d prepares aggregate closure only. Task-038a haptic intent remains mock/disabled with no WatchKit haptic playback. Task-038b Health Reminder shell remains non-medical with no production HealthKit or body-data usage. Task-038c Fall Safety shell remains presentation-only with no real fall detection, no emergency/SOS automation, no rescue promise, and no clinical or medical safety claim. Manual QA must be explicitly confirmed by the operator before final verification, commit, push, or develop merge.
+
+Aggregate manual QA checklist:
+
+- 在 watchOS simulator 開啟 live session face。
+- 確認 Task-038b Health Reminder shell 與 Task-038c Fall Safety shell 位置合理，沒有擠壓或遮住 metric carousel、live controls、session status。
+- 確認 haptic intent 仍只是 mock/disabled intent 狀態，沒有 WatchKit 實體震動播放。
+- 確認健康提醒文案只描述一般提醒，不宣稱醫療監測、診斷、治療、預防、臨床準確或 HealthKit 身體資料讀取。
+- 確認 fall safety 文案只描述 presentation shell / limitation，不承諾跌倒偵測、SOS、自動通知、急救、救援或緊急服務。
+- 點選 false alarm / dismiss 類按鈕，確認 shell 可回到安全狀態，且不觸發 emergency/SOS/HealthKit/sensor 行為。
+- 確認沒有跳 HealthKit 權限請求，沒有讀取心率或身體資料。
+- 確認速度、路線、海拔、metric carousel、session controls 行為沒有改變。
+- 確認 VoiceOver/accessibility label 不含 emergency/medical/detection promise。
+- 確認 Snow 功能沒有出現或改變。
+- 完成後回報 MANUAL_QA_HAPTICS_SAFETY=PASSED 或明確列出失敗項目。
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->

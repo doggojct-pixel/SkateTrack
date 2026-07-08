@@ -3239,3 +3239,26 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038d
 ```
 <!-- TASK038C_FALL_SAFETY_SHELL_END -->
+
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START -->
+## 2026-07-08 — Task-038d Haptics/Safety Verifier + Manual QA Closure Preparation
+
+### Completed
+- Added a Task-038 aggregate verifier for docs/verifier-only closure preparation.
+- The aggregate verifier checks Task-038a haptic intent evidence, Task-038b non-medical reminder shell evidence, Task-038c fall-safety presentation shell evidence, known-limitations coverage, manual-QA checklist coverage, allowed paths, and forbidden-scope boundaries.
+- Preserved Task-038d boundaries: no Swift changes, no Xcode project change, no localization runtime change, no production HealthKit usage, no WatchKit haptic playback, no fall detection implementation, no emergency/SOS automation, no Snow implementation, no route / speed / elevation mutation, and no develop merge claim.
+- Manual QA remains pending until the operator explicitly confirms the aggregate haptics/safety checklist.
+
+### Validation Notes
+
+```text
+TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START
+VERIFY_TASK038_HAPTICS_SAFETY_PRE_QA_RESULT=PASSED
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+KNOWN_LIMITATIONS_UPDATED=YES
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039a
+```
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->

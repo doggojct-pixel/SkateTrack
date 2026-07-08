@@ -23,12 +23,14 @@ Follow it before modifying code, writing hotfixes, running verification, or sugg
   - `develop` post-merge head: `2f414119f3adc7bfd222ffd4d8917a058c48098b`
 - Task-038 branch:
   - `task-038-haptics-safety-shells`
-- Task-038 current baseline after AGENTS.md commit:
-  - `TASK038_BASELINE_HEAD=1f4061e42620411d6c3c0efd5b55a13bd392973e`
-- Task-038a completed and pushed before the AGENTS.md baseline update at:
+- Task-038a completed and pushed at:
   - `TASK038A_COMMIT_HEAD=2e74d510d42002a7cdbf9dfa1ecac30eac3a6fce`
+- Task-038b completed and pushed at:
+  - `TASK038B_COMMIT_HEAD=f96be0db6d9b30415e1083559dbcaaf0b57df21a`
+- Task-038c completed and pushed at:
+  - `TASK038C_COMMIT_HEAD=d019aa79e94e296567a8373f6e00cdc60487eada`
 - Next expected subtask:
-  - `Task-038b — Health Reminder Shell`
+  - `Task-038d — Haptics/Safety Verifier + Manual QA`
 - Do not merge `task-038-haptics-safety-shells` into `develop` until Task-038d closure and final merge gates pass.
 
 ## 3. BuildPlan alignment
@@ -48,7 +50,7 @@ FAILURE_COUNT=0
 
 Do not re-open or rewrite 038a unless a verified regression requires it.
 
-### Task-038b — Health Reminder Shell — NEXT
+### Task-038b — Health Reminder Shell — CLOSED
 
 Goal: add a non-medical reminder shell if in product scope.
 
@@ -69,9 +71,9 @@ Allowed direction:
 - No claim of medical monitoring, diagnosis, prevention, emergency response, clinical accuracy, or always-on safety detection.
 - No production HealthKit dependency or live health-data integration.
 
-### Task-038c — Fall Safety Presentation Shell — later
+Do not re-open or rewrite 038b unless a verified regression requires it.
 
-Do not implement during 038b.
+### Task-038c — Fall Safety Presentation Shell — CLOSED
 
 Expected future exit criteria:
 
@@ -82,9 +84,15 @@ FALSE_ALARM_PATH_PRESENT=YES
 FAILURE_COUNT=0
 ```
 
-### Task-038d — Haptics/Safety Verifier + Manual QA — later
+Do not re-open or rewrite 038c unless a verified regression requires it.
 
-Do not implement during 038b or 038c except for docs state that correctly says it is pending.
+### Task-038d — Haptics/Safety Verifier + Manual QA — NEXT
+
+Current direction:
+
+- Docs/verifier-only closure preparation.
+- Do not modify Swift, Xcode project, localization runtime, UI/runtime, schema, package, StoreKit, sensor/session, route/speed/elevation, ActivityVisualization, Snow, HealthKit production, WatchKit haptic playback, or emergency/SOS runtime files.
+- Manual QA must remain pending until the operator explicitly confirms `MANUAL_QA_HAPTICS_SAFETY=PASSED`.
 
 Expected future exit criteria:
 
@@ -294,22 +302,22 @@ A source pack should normally include:
 The next implementation task after this AGENTS.md setup is expected to be:
 
 ```text
-Task-038b — Health Reminder Shell
+Task-038d — Haptics/Safety Verifier + Manual QA
 ```
 
-Before implementing 038b, do a fresh source audit from branch:
+Before implementing 038d, do a fresh source audit from branch:
 
 ```text
 task-038-haptics-safety-shells
 ```
 
-Expected starting HEAD for Task-038b after AGENTS.md commit:
+Expected starting HEAD for Task-038d after Task-038c:
 
 ```text
-1f4061e42620411d6c3c0efd5b55a13bd392973e
+d019aa79e94e296567a8373f6e00cdc60487eada
 ```
 
-Do not start 038b implementation until the source audit confirms the branch/head and working tree are clean.
+Do not start 038d implementation until the source audit confirms the branch/head and working tree are clean.
 
 ## 14. Agent response style for this repo
 
