@@ -139,6 +139,71 @@ final class WatchMetricProviderTests: XCTestCase {
         })
     }
 
+
+    func testLockedEntitlementBoundaryLocksConfiguredMetricWithoutProductionDependency() {
+        let viewModel = Self.viewModel(
+            sportModeKey: "skateboard",
+            compactSummary: Self.compactSummary()
+        )
+
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: viewModel,
+            entitlementBoundary: .freeLocked(metricIdentifiers: ["watch.metric.speed"])
+        )
+        let route = selection.outputs.first { $0.kind == .route }
+        let speed = selection.outputs.first { $0.kind == .speed }
+        let elevation = selection.outputs.first { $0.kind == .elevation }
+
+        XCTAssertEqual(selection.providerIdentifier, "watch.metric.provider.base")
+        XCTAssertEqual(route?.availability, .available)
+        XCTAssertEqual(speed?.availability, .locked(.lockedByEntitlementBoundary))
+        XCTAssertEqual(speed?.source, .unavailable)
+        XCTAssertNil(speed?.speedSparkline)
+        XCTAssertNil(speed?.compactRoute)
+        XCTAssertNil(speed?.elevationProfile)
+        XCTAssertEqual(elevation?.availability, .available)
+    }
+
+    func testSubscriberEntitlementBoundaryLeavesMetricUnlocked() {
+        let viewModel = Self.viewModel(
+            sportModeKey: "skateboard",
+            compactSummary: Self.compactSummary()
+        )
+
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: viewModel,
+            entitlementBoundary: .subscriberUnlocked(lockedMetricIdentifiers: ["watch.metric.speed"])
+        )
+        let speed = selection.outputs.first { $0.kind == .speed }
+
+        XCTAssertEqual(speed?.availability, .available)
+        XCTAssertEqual(speed?.source, .compactSpeedSparkline)
+        XCTAssertNotNil(speed?.speedSparkline)
+    }
+
+    func testDisabledProviderFallbackIsNotOverriddenByEntitlementBoundary() {
+        let viewModel = Self.viewModel(
+            sportModeKey: "skateboard",
+            sensorSnapshot: WatchSensorProviderSnapshot(
+                providerKind: .disabled,
+                availability: .disabled(at: Self.baseDate, explanation: "disabled for this build"),
+                capturedAt: Self.baseDate,
+                samples: []
+            ),
+            compactSummary: Self.compactSummary()
+        )
+
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: viewModel,
+            entitlementBoundary: .freeLocked(metricIdentifiers: ["watch.metric.speed"])
+        )
+
+        XCTAssertEqual(selection.outputs.first { $0.kind == .speed }?.availability, .disabled(.providerDisabled))
+        XCTAssertTrue(selection.outputs.allSatisfy { output in
+            output.availability == .disabled(.providerDisabled)
+        })
+    }
+
     private struct FutureModeMetricProvider: WatchMetricProviding {
         let providerIdentifier = "watch.metric.provider.future.stub"
 

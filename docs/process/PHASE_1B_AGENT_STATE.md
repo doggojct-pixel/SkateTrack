@@ -711,3 +711,20 @@ NEXT_TASK=Task-037d
 
 Task-037c intentionally uses an unavailable cadence state because no safe inline cadence source is available in the current WatchBridge / compact summary contract. It must not treat IMU sample frequency or skateboard `.skatetrack` packages as inline stride cadence.
 <!-- TASK037C_INLINE_CADENCE_END -->
+
+
+<!-- TASK037D_LOCKED_STATE_START -->
+## Task-037d Entitlement / Locked State
+
+```text
+TASK037D_LOCKED_STATE_START
+VERIFY_TASK037D_LOCKED_STATE_RESULT=PASSED
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+LOCKED_STATE_TESTS_EXIT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037e
+```
+
+Task-037d exposes locked and unlocked Watch metric provider paths through a local subscriber-flag boundary. It does not add production monetization, production purchase handling, Snow metrics, Snow UI, Store transaction handling, or new route / speed / elevation semantics.
+<!-- TASK037D_LOCKED_STATE_END -->

@@ -66,6 +66,43 @@ enum WatchMetricAvailabilityState: Equatable, Sendable {
     }
 }
 
+
+struct WatchMetricEntitlementBoundary: Equatable, Sendable {
+    let isSubscriber: Bool
+    let lockedMetricIdentifiers: Set<String>
+
+    static let unlocked = WatchMetricEntitlementBoundary(
+        isSubscriber: true,
+        lockedMetricIdentifiers: []
+    )
+
+    static func subscriberUnlocked(
+        lockedMetricIdentifiers: Set<String> = []
+    ) -> WatchMetricEntitlementBoundary {
+        WatchMetricEntitlementBoundary(
+            isSubscriber: true,
+            lockedMetricIdentifiers: lockedMetricIdentifiers
+        )
+    }
+
+    static func freeLocked(
+        metricIdentifiers: Set<String>
+    ) -> WatchMetricEntitlementBoundary {
+        WatchMetricEntitlementBoundary(
+            isSubscriber: false,
+            lockedMetricIdentifiers: metricIdentifiers
+        )
+    }
+
+    func lockedAvailabilityOverride(
+        for output: WatchMetricProviderOutput
+    ) -> WatchMetricAvailabilityState? {
+        guard !isSubscriber else { return nil }
+        guard lockedMetricIdentifiers.contains(output.identifier) else { return nil }
+        return .locked(.lockedByEntitlementBoundary)
+    }
+}
+
 struct WatchMetricProviderContext: Equatable, Sendable {
     let generatedAt: Date
     let activityMode: WatchMetricActivityMode
@@ -74,8 +111,12 @@ struct WatchMetricProviderContext: Equatable, Sendable {
     let samples: WatchActivitySampleViewState
     let compactSummary: WatchActivityCompactSummaryViewState
     let fallback: WatchActivityFallbackViewState
+    let entitlementBoundary: WatchMetricEntitlementBoundary
 
-    init(viewModel: WatchActivityViewModel) {
+    init(
+        viewModel: WatchActivityViewModel,
+        entitlementBoundary: WatchMetricEntitlementBoundary = .unlocked
+    ) {
         self.generatedAt = viewModel.generatedAt
         self.activityMode = WatchMetricActivityMode(descriptor: viewModel.session.mode)
         self.session = viewModel.session
@@ -83,6 +124,7 @@ struct WatchMetricProviderContext: Equatable, Sendable {
         self.samples = viewModel.samples
         self.compactSummary = viewModel.compactSummary
         self.fallback = viewModel.fallback
+        self.entitlementBoundary = entitlementBoundary
     }
 }
 
@@ -99,6 +141,20 @@ struct WatchMetricProviderOutput: Equatable, Sendable {
 
     var isRenderable: Bool {
         availability.isRenderable
+    }
+
+    func lockedByEntitlementBoundary() -> WatchMetricProviderOutput {
+        WatchMetricProviderOutput(
+            identifier: identifier,
+            kind: kind,
+            titleLocalizationKey: titleLocalizationKey,
+            accessibilityIdentifier: accessibilityIdentifier,
+            availability: .locked(.lockedByEntitlementBoundary),
+            source: .unavailable,
+            compactRoute: nil,
+            speedSparkline: nil,
+            elevationProfile: nil
+        )
     }
 }
 
@@ -282,8 +338,14 @@ struct WatchMetricProviderSelector: Sendable {
         }
     }
 
-    func makeSelection(for viewModel: WatchActivityViewModel) -> WatchMetricProviderSelectionResult {
-        let context = WatchMetricProviderContext(viewModel: viewModel)
+    func makeSelection(
+        for viewModel: WatchActivityViewModel,
+        entitlementBoundary: WatchMetricEntitlementBoundary = .unlocked
+    ) -> WatchMetricProviderSelectionResult {
+        let context = WatchMetricProviderContext(
+            viewModel: viewModel,
+            entitlementBoundary: entitlementBoundary
+        )
         guard let provider = selectProvider(for: context) else {
             return WatchMetricProviderSelectionResult(
                 activityMode: context.activityMode,
@@ -293,12 +355,31 @@ struct WatchMetricProviderSelector: Sendable {
             )
         }
 
+        let outputs = provider.makeMetricOutputs(context: context).map { output in
+            entitlementAdjustedOutput(output, context: context)
+        }
+
         return WatchMetricProviderSelectionResult(
             activityMode: context.activityMode,
             providerIdentifier: provider.providerIdentifier,
-            outputs: provider.makeMetricOutputs(context: context),
+            outputs: outputs,
             availability: .available
         )
+    }
+
+    private func entitlementAdjustedOutput(
+        _ output: WatchMetricProviderOutput,
+        context: WatchMetricProviderContext
+    ) -> WatchMetricProviderOutput {
+        if case .disabled = output.availability {
+            return output
+        }
+
+        if context.entitlementBoundary.lockedAvailabilityOverride(for: output) != nil {
+            return output.lockedByEntitlementBoundary()
+        }
+
+        return output
     }
 
     private func unsupportedAvailability(

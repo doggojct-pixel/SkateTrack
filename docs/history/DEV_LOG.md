@@ -3117,3 +3117,23 @@ SNOW_METRIC_IMPLEMENTATION_COUNT=0
 FAILURE_COUNT=0
 NEXT_TASK=Task-037d
 ```
+
+
+## 2026-07-08 — Task-037d Entitlement / Locked State
+
+### Completed
+- Added a local Watch metric entitlement boundary so provider outputs can expose locked paths through a subscriber flag without adding a production monetization dependency.
+- Preserved disabled provider paths as disabled, even when a metric identifier is configured as locked.
+- Added locked and unlocked provider selection tests plus carousel model coverage for locked display state.
+- Reused the existing localized `watch.metric.card.locked` copy in `en`, `zh-Hant`, and `ja`.
+
+### Validation Notes
+```text
+TASK037D_LOCKED_STATE_START
+VERIFY_TASK037D_LOCKED_STATE_RESULT=PASSED
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+LOCKED_STATE_TESTS_EXIT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037e
+```

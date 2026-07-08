@@ -102,6 +102,25 @@ final class WatchMetricCarouselModelTests: XCTestCase {
         XCTAssertTrue(model.cards[0].sparklinePoints.isEmpty)
     }
 
+
+    func testCarouselModelReflectsEntitlementLockedProviderPath() {
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: Self.viewModel(sportModeKey: "skateboard", compactSummary: Self.compactSummary()),
+            entitlementBoundary: .freeLocked(metricIdentifiers: ["watch.metric.speed"])
+        )
+
+        let model = WatchMetricCarouselModel(selection: selection)
+        let speed = model.cards.first { $0.kind == .speed }
+
+        XCTAssertEqual(model.cards.map(\.kind), [.route, .speed, .elevation])
+        XCTAssertEqual(speed?.displayState, .locked)
+        XCTAssertEqual(speed?.detailLocalizationKey, "watch.metric.card.locked")
+        XCTAssertEqual(speed?.valueText, "--")
+        XCTAssertTrue(speed?.sparklinePoints.isEmpty == true)
+        XCTAssertFalse(model.hasRenderableCompactSpeed)
+        XCTAssertTrue(model.hasRenderableCompactElevation)
+    }
+
     func testCarouselModelKeepsUnsupportedModeEmptyAndSafe() {
         let selection = WatchMetricProviderSelector().makeSelection(
             for: Self.viewModel(sportModeKey: "future_mode")

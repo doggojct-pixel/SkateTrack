@@ -2827,3 +2827,32 @@ NEXT_TASK=Task-037d
 - Task-037c must not infer cadence from IMU sample cadence, accelerometer frequency, gyroscope frequency, or skateboard sample packages.
 - No WatchBridge schema, MotionSample schema, Core Data, package, HealthKit, Snow, StoreKit, route, speed filtering, or elevation ascent behavior changes are part of Task-037c.
 <!-- TASK037C_INLINE_CADENCE_END -->
+
+
+<!-- TASK037D_LOCKED_STATE_START -->
+## Task-037d Entitlement / Locked State Addendum
+
+Task-037d adds the locked / unlocked provider path for Watch metric cards without implementing production monetization.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchMetricProvider.swift           # [協作區] Adds WatchMetricEntitlementBoundary and locked provider output adjustment.
+Shared/WatchUI/WatchMetricCarouselModel.swift      # [協作區] Existing locked display state remains the display boundary.
+Tests/iOSTests/WatchMetricProviderTests.swift      # [工程設定] Adds locked, unlocked, and disabled-precedence provider tests.
+Tests/iOSTests/WatchMetricCarouselModelTests.swift # [工程設定] Adds locked display model coverage.
+scripts/verify_task037d_locked_state.py            # [工程設定] Task-037d locked-state verifier.
+```
+
+### Closure markers
+
+```text
+TASK037D_LOCKED_STATE_START
+VERIFY_TASK037D_LOCKED_STATE_RESULT=PASSED
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+LOCKED_STATE_TESTS_EXIT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037e
+```
+<!-- TASK037D_LOCKED_STATE_END -->
