@@ -3033,3 +3033,27 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Verification tokens: `VERIFY_TASK036_WATCH_CORE_UI_RESULT=PASSED`, `LOCALIZATION_PARITY=PASSED`, `WATCHOS_BUILD_EXIT=0`, `FAILURE_COUNT=0`.
 - Task closure note: Task-036 branch work can proceed to final commit/push review; merge to `develop` remains deferred until the operator explicitly runs the final Task-036 merge gate.
 <!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_END -->
+
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_START -->
+## 2026-07-08 — Task-037a Metric Provider Protocol
+
+### Completed
+- Added a mode-aware Watch metric provider protocol and selector under `Shared/WatchUI/`.
+- Added safe availability states for available, unavailable, disabled, locked-boundary, and unsupported-mode metric output paths.
+- Added a base provider for existing skateboard and inline Watch compact metric outputs.
+- Added iOS XCTest coverage for skateboard selection, inline selection, unsupported future-mode fallback, custom future provider injection, disabled provider state, and stale bridge state.
+
+### Scope boundaries
+- Carousel UI remains deferred to Task-037b.
+- Inline cadence remains deferred to Task-037c.
+- Entitlement wiring and localized locked copy remain deferred to Task-037d.
+- No route, speed, elevation, package, schema, Core Data, HealthKit, StoreKit, or WatchConnectivity semantics were reimplemented.
+
+```text
+VERIFY_TASK037A_METRIC_PROVIDER_PROTOCOL_RESULT=PASSED
+MODE_AWARE_PROVIDER_PRESENT=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-037b
+```
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_END -->

@@ -2732,3 +2732,21 @@ WATCH_UI_SEMANTIC_REIMPLEMENTATION_COUNT=0
 VIEWMODEL_STATE_TESTS_EXIT=0
 NEXT_TASK=Task-036b
 <!-- TASK036A_WATCH_UI_VIEWMODEL_FILE_STRUCTURE_END -->
+
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_START -->
+## Task-037a Metric Provider Protocol Additions
+
+| File | Status | Purpose |
+|---|---|---|
+| `Shared/WatchUI/WatchMetricProvider.swift` | Active | Mode-aware Watch metric provider protocol, selector, base provider, safe availability states, and compact-output provider payloads. |
+| `Tests/iOSTests/WatchMetricProviderTests.swift` | Active | Provider selection and safe availability-state tests for skateboard, inline, unsupported future mode, disabled provider, and stale data paths. |
+| `scripts/verify_task037a_metric_provider_protocol.py` | Active | Task-037a source, project membership, scope, docs, line-count, and provider-selection verifier. |
+
+```text
+VERIFY_TASK037A_METRIC_PROVIDER_PROTOCOL_RESULT=PASSED
+MODE_AWARE_PROVIDER_PRESENT=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-037b
+```
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_END -->

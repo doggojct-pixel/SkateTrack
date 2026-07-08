@@ -420,6 +420,9 @@
 		36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A900000000000000000001 /* WatchActivityViewModelTests.swift */; };
 		36B100000000000000000101 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
 		36B100000000000000000102 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
+		37A100000000000000000101 /* WatchMetricProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A100000000000000000001 /* WatchMetricProvider.swift */; };
+		37A100000000000000000102 /* WatchMetricProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A100000000000000000001 /* WatchMetricProvider.swift */; };
+		37A900000000000000000101 /* WatchMetricProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A900000000000000000001 /* WatchMetricProviderTests.swift */; };
 		36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */; };
 		36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B900000000000000000001 /* WatchLiveControlStateTests.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -801,6 +804,8 @@
 		36A100000000000000000001 /* WatchActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModel.swift; sourceTree = "<group>"; };
 		36A900000000000000000001 /* WatchActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModelTests.swift; sourceTree = "<group>"; };
 		36B100000000000000000001 /* WatchLiveControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlState.swift; sourceTree = "<group>"; };
+		37A100000000000000000001 /* WatchMetricProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMetricProvider.swift; sourceTree = "<group>"; };
+		37A900000000000000000001 /* WatchMetricProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMetricProviderTests.swift; sourceTree = "<group>"; };
 		36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchLiveSessionFaceView.swift; sourceTree = SOURCE_ROOT; };
 		36B900000000000000000001 /* WatchLiveControlStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlStateTests.swift; sourceTree = "<group>"; };
 		6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackWatchApp.swift; sourceTree = "<group>"; };
@@ -1044,6 +1049,7 @@
 			children = (
 				36A900000000000000000001 /* WatchActivityViewModelTests.swift */,
 				36B900000000000000000001 /* WatchLiveControlStateTests.swift */,
+				37A900000000000000000001 /* WatchMetricProviderTests.swift */,
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
 				B16B04000000000000000001 /* BarometricGPSOutlierDiagnosticsTests.swift */,
 				B16C03000000000000000001 /* LocationAccuracySourceDiagnosticsTests.swift */,
@@ -1544,6 +1550,7 @@
 			children = (
 				36A100000000000000000001 /* WatchActivityViewModel.swift */,
 				36B100000000000000000001 /* WatchLiveControlState.swift */,
+				37A100000000000000000001 /* WatchMetricProvider.swift */,
 			);
 			path = WatchUI;
 			sourceTree = "<group>";
@@ -1849,6 +1856,7 @@
 			files = (
 				36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */,
 				36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */,
+				37A900000000000000000101 /* WatchMetricProviderTests.swift in Sources */,
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
 				B16B04000000000000000101 /* BarometricGPSOutlierDiagnosticsTests.swift in Sources */,
 				B16C03000000000000000101 /* LocationAccuracySourceDiagnosticsTests.swift in Sources */,
@@ -1912,6 +1920,7 @@
 				34B300000000000000000101 /* WatchHealthKitCopy.swift in Sources */,
 				36A100000000000000000101 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000101 /* WatchLiveControlState.swift in Sources */,
+				37A100000000000000000101 /* WatchMetricProvider.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
 				12AD01000000000000000101 /* RootNavigationView.swift in Sources */,
 				12AD02000000000000000101 /* SessionStartView.swift in Sources */,
@@ -2281,6 +2290,7 @@
 				34B300000000000000000102 /* WatchHealthKitCopy.swift in Sources */,
 				36A100000000000000000102 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000102 /* WatchLiveControlState.swift in Sources */,
+				37A100000000000000000102 /* WatchMetricProvider.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
