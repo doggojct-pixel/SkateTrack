@@ -23,7 +23,9 @@ Follow it before modifying code, writing hotfixes, running verification, or sugg
   - `develop` post-merge head: `2f414119f3adc7bfd222ffd4d8917a058c48098b`
 - Task-038 branch:
   - `task-038-haptics-safety-shells`
-- Task-038a completed and pushed at:
+- Task-038 current baseline after AGENTS.md commit:
+  - `TASK038_BASELINE_HEAD=1f4061e42620411d6c3c0efd5b55a13bd392973e`
+- Task-038a completed and pushed before the AGENTS.md baseline update at:
   - `TASK038A_COMMIT_HEAD=2e74d510d42002a7cdbf9dfa1ecac30eac3a6fce`
 - Next expected subtask:
   - `Task-038b — Health Reminder Shell`
@@ -301,10 +303,10 @@ Before implementing 038b, do a fresh source audit from branch:
 task-038-haptics-safety-shells
 ```
 
-Expected starting HEAD after Task-038a:
+Expected starting HEAD for Task-038b after AGENTS.md commit:
 
 ```text
-2e74d510d42002a7cdbf9dfa1ecac30eac3a6fce
+1f4061e42620411d6c3c0efd5b55a13bd392973e
 ```
 
 Do not start 038b implementation until the source audit confirms the branch/head and working tree are clean.
