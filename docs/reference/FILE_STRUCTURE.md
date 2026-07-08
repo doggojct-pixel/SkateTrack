@@ -2925,3 +2925,40 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038b
 ```
 <!-- TASK038A_HAPTIC_INTENT_END -->
+
+<!-- TASK038B_HEALTH_REMINDER_SHELL_START -->
+## Task-038b Health Reminder Shell Addendum
+
+Task-038b adds a non-medical Watch reminder shell for hydration, rest, and stretch prompts. It is shell state/UI only and defaults to disabled local behavior; it does not request sensor permission, consume live body data, add production HealthKit usage, make medical claims, add emergency/fall-safety presentation behavior, start Snow implementation, play device haptics, or mutate route / speed / elevation outputs.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchHealthReminderShellState.swift   # [協作區] New safe reminder shell state for hydration, rest, and stretch prompts.
+watchOS/Features/WatchHealthReminderShellView.swift  # [協作區] New lightweight watchOS reminder shell card.
+watchOS/Features/WatchLiveSessionFaceView.swift      # [協作區] Integrates the reminder shell card without changing metric carousel runtime.
+Tests/iOSTests/WatchHealthReminderShellStateTests.swift # [工程設定] Tests disabled shell state, reminder categories, copy keys, production-data flags, and mock-only haptic policy.
+scripts/verify_task038b_health_reminder_shell.py     # [工程設定] Task-038b verifier for allowed paths, localization, membership, line/header, and forbidden-scope guardrails.
+Shared/Localization/en.lproj/Localizable.strings     # [原則 A] Adds Task-038b watch reminder shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings # [原則 A] Adds Task-038b watch reminder shell strings.
+Shared/Localization/ja.lproj/Localizable.strings     # [原則 A] Adds Task-038b watch reminder shell strings.
+SkateTrack.xcodeproj/project.pbxproj                 # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                              # [原則 E] Records Task-038b implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                     # [原則 E] Records Task-038b file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                 # [原則 E] Records Task-038b state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038B_HEALTH_REMINDER_SHELL_START
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+WATCH_HEALTH_REMINDER_SHELL_CATEGORIES=hydration|rest|stretch
+WATCH_HEALTH_REMINDER_SHELL_DEFAULT=DISABLED_SHELL_ONLY
+MEDICAL_CLAIM_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-038c
+```
+<!-- TASK038B_HEALTH_REMINDER_SHELL_END -->

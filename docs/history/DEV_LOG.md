@@ -3188,3 +3188,28 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038b
 ```
 <!-- TASK038A_HAPTIC_INTENT_END -->
+
+<!-- TASK038B_HEALTH_REMINDER_SHELL_START -->
+## 2026-07-08 — Task-038b Health Reminder Shell
+
+### Completed
+- Added a non-medical Watch reminder shell state for hydration, rest, and stretch prompts.
+- Added a lightweight watchOS reminder shell card to the live session face without changing metric carousel runtime.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-038b verifier covering branch/head baseline, allowed paths, project membership, localization, Swift line/header rules, and forbidden-scope guardrails.
+- Preserved Task-038b boundaries: no production HealthKit usage, no live health-data integration, no medical monitoring claim, no emergency/fall-safety promise, no Snow implementation, no WatchKit haptic playback, and no route / speed / elevation mutation.
+
+### Validation Notes
+
+```text
+TASK038B_HEALTH_REMINDER_SHELL_START
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+WATCH_HEALTH_REMINDER_SHELL_CATEGORIES=hydration|rest|stretch
+WATCH_HEALTH_REMINDER_SHELL_DEFAULT=DISABLED_SHELL_ONLY
+MEDICAL_CLAIM_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-038c
+```
+<!-- TASK038B_HEALTH_REMINDER_SHELL_END -->

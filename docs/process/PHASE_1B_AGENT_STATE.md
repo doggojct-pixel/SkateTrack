@@ -777,3 +777,29 @@ NEXT_TASK=Task-038b
 
 Task-038a models haptic intent only. It keeps unsupported targets disabled or mock-only and does not add direct WatchKit haptic playback, sensor-derived safety claims, medical monitoring language, emergency-service promises, Snow production behavior, or route / speed / elevation mutations.
 <!-- TASK038A_HAPTIC_INTENT_END -->
+
+<!-- TASK038B_HEALTH_REMINDER_SHELL_START -->
+## Task-038b Health Reminder Shell
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-038b — Health Reminder Shell`
+
+```text
+TASK038_BRANCH=task-038-haptics-safety-shells
+TASK038B_BASELINE_HEAD=b227fc4c8037f2752e194d354e172119acca2aac
+WATCH_HEALTH_REMINDER_SHELL_PRESENT=YES
+WATCH_HEALTH_REMINDER_SHELL_CATEGORIES=hydration|rest|stretch
+WATCH_HEALTH_REMINDER_SHELL_DEFAULT=DISABLED_SHELL_ONLY
+WATCH_HEALTH_REMINDER_VISIBLE_UI=YES
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+MEDICAL_CLAIM_COUNT=0
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038c
+```
+
+Task-038b adds a non-medical Watch reminder shell for hydration, rest, and stretch prompts. It is local shell state/UI only, defaults to disabled shell behavior, reuses Task-038a haptic policy only as mock-only intent state, and does not add production HealthKit usage, live health-data integration, medical claims, emergency promises, fall-safety presentation behavior, Snow implementation, WatchKit haptic playback, or route / speed / elevation mutations.
+<!-- TASK038B_HEALTH_REMINDER_SHELL_END -->

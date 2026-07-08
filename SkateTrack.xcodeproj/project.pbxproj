@@ -420,6 +420,10 @@
 		36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A900000000000000000001 /* WatchActivityViewModelTests.swift */; };
 		36B100000000000000000101 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
 		36B100000000000000000102 /* WatchLiveControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B100000000000000000001 /* WatchLiveControlState.swift */; };
+		38B100000000000000000101 /* WatchHealthReminderShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B100000000000000000001 /* WatchHealthReminderShellState.swift */; };
+		38B100000000000000000102 /* WatchHealthReminderShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B100000000000000000001 /* WatchHealthReminderShellState.swift */; };
+		38B200000000000000000101 /* watchOS/Features/WatchHealthReminderShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */; };
+		38B900000000000000000101 /* WatchHealthReminderShellStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B900000000000000000001 /* WatchHealthReminderShellStateTests.swift */; };
 		37A100000000000000000101 /* WatchMetricProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A100000000000000000001 /* WatchMetricProvider.swift */; };
 		37A100000000000000000102 /* WatchMetricProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A100000000000000000001 /* WatchMetricProvider.swift */; };
 		37A900000000000000000101 /* WatchMetricProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A900000000000000000001 /* WatchMetricProviderTests.swift */; };
@@ -808,6 +812,9 @@
 		36A100000000000000000001 /* WatchActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModel.swift; sourceTree = "<group>"; };
 		36A900000000000000000001 /* WatchActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModelTests.swift; sourceTree = "<group>"; };
 		36B100000000000000000001 /* WatchLiveControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlState.swift; sourceTree = "<group>"; };
+		38B100000000000000000001 /* WatchHealthReminderShellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthReminderShellState.swift; sourceTree = "<group>"; };
+		38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchHealthReminderShellView.swift; sourceTree = SOURCE_ROOT; };
+		38B900000000000000000001 /* WatchHealthReminderShellStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthReminderShellStateTests.swift; sourceTree = "<group>"; };
 		37A100000000000000000001 /* WatchMetricProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMetricProvider.swift; sourceTree = "<group>"; };
 		37A900000000000000000001 /* WatchMetricProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMetricProviderTests.swift; sourceTree = "<group>"; };
 		37B100000000000000000001 /* WatchMetricCarouselModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMetricCarouselModel.swift; sourceTree = "<group>"; };
@@ -1056,6 +1063,7 @@
 			children = (
 				36A900000000000000000001 /* WatchActivityViewModelTests.swift */,
 				36B900000000000000000001 /* WatchLiveControlStateTests.swift */,
+				38B900000000000000000001 /* WatchHealthReminderShellStateTests.swift */,
 				37A900000000000000000001 /* WatchMetricProviderTests.swift */,
 				37B900000000000000000001 /* WatchMetricCarouselModelTests.swift */,
 				12AC01000000000000000001 /* SessionRecordingCoordinatorTests.swift */,
@@ -1558,6 +1566,7 @@
 			children = (
 				36A100000000000000000001 /* WatchActivityViewModel.swift */,
 				36B100000000000000000001 /* WatchLiveControlState.swift */,
+				38B100000000000000000001 /* WatchHealthReminderShellState.swift */,
 				37A100000000000000000001 /* WatchMetricProvider.swift */,
 				37B100000000000000000001 /* WatchMetricCarouselModel.swift */,
 			);
@@ -1575,6 +1584,7 @@
 			isa = PBXGroup;
 			children = (
 				36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */,
+				38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */,
 				37B200000000000000000001 /* watchOS/Features/WatchMetricCarouselView.swift */,
 			);
 			name = "Recovered References";
@@ -1866,6 +1876,7 @@
 			files = (
 				36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */,
 				36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */,
+				38B900000000000000000101 /* WatchHealthReminderShellStateTests.swift in Sources */,
 				37A900000000000000000101 /* WatchMetricProviderTests.swift in Sources */,
 				37B900000000000000000101 /* WatchMetricCarouselModelTests.swift in Sources */,
 				12AC01000000000000000101 /* SessionRecordingCoordinatorTests.swift in Sources */,
@@ -1931,6 +1942,7 @@
 				34B300000000000000000101 /* WatchHealthKitCopy.swift in Sources */,
 				36A100000000000000000101 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000101 /* WatchLiveControlState.swift in Sources */,
+				38B100000000000000000101 /* WatchHealthReminderShellState.swift in Sources */,
 				37A100000000000000000101 /* WatchMetricProvider.swift in Sources */,
 				37B100000000000000000101 /* WatchMetricCarouselModel.swift in Sources */,
 				A5EDE9E266C22891B6E0BDBA /* SkateTrackApp.swift in Sources */,
@@ -2302,10 +2314,12 @@
 				34B300000000000000000102 /* WatchHealthKitCopy.swift in Sources */,
 				36A100000000000000000102 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000102 /* WatchLiveControlState.swift in Sources */,
+				38B100000000000000000102 /* WatchHealthReminderShellState.swift in Sources */,
 				37A100000000000000000102 /* WatchMetricProvider.swift in Sources */,
 				37B100000000000000000102 /* WatchMetricCarouselModel.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */,
+				38B200000000000000000101 /* watchOS/Features/WatchHealthReminderShellView.swift in Sources */,
 				37B200000000000000000101 /* watchOS/Features/WatchMetricCarouselView.swift in Sources */,
 				39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */,
 				12A400000000000000000102 /* FeatureFlags.swift in Sources */,

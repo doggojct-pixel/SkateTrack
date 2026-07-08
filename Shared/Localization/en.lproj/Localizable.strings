@@ -1276,6 +1276,19 @@
 "watch.live.accessibility.resume" = "Resume session";
 "watch.live.accessibility.stop" = "Stop session";
 
+// Task-038b watchOS reminder shell
+"watch.healthReminder.title" = "Reminders";
+"watch.healthReminder.detail" = "Local hydration, rest, and stretch prompts only. Live body data is unavailable in this build.";
+"watch.healthReminder.status.disabled" = "Shell";
+"watch.healthReminder.status.shellOnly" = "Local";
+"watch.healthReminder.hydration.title" = "Hydrate";
+"watch.healthReminder.hydration.detail" = "Take water breaks when you have stopped somewhere safe.";
+"watch.healthReminder.rest.title" = "Rest";
+"watch.healthReminder.rest.detail" = "Plan short pauses during longer rides.";
+"watch.healthReminder.stretch.title" = "Stretch";
+"watch.healthReminder.stretch.detail" = "Stretch after the ride once the session is done.";
+"watch.healthReminder.accessibility.label" = "General reminder shell";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "Route";

@@ -1276,6 +1276,19 @@
 "watch.live.accessibility.resume" = "記録を再開";
 "watch.live.accessibility.stop" = "記録を停止";
 
+// Task-038b watchOS reminder shell
+"watch.healthReminder.title" = "リマインダー";
+"watch.healthReminder.detail" = "水分補給、休憩、ストレッチのローカル通知シェルです。このビルドでは身体データを読み取りません。";
+"watch.healthReminder.status.disabled" = "シェル";
+"watch.healthReminder.status.shellOnly" = "ローカル";
+"watch.healthReminder.hydration.title" = "水分";
+"watch.healthReminder.hydration.detail" = "安全に止まってから短い水分補給を入れます。";
+"watch.healthReminder.rest.title" = "休憩";
+"watch.healthReminder.rest.detail" = "長めのライドでは短い休憩を計画します。";
+"watch.healthReminder.stretch.title" = "ストレッチ";
+"watch.healthReminder.stretch.detail" = "セッション後に短いストレッチを行います。";
+"watch.healthReminder.accessibility.label" = "一般リマインダーシェル";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "ルート";
