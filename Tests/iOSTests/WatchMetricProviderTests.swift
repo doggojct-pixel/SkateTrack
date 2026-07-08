@@ -45,6 +45,19 @@ final class WatchMetricProviderTests: XCTestCase {
         XCTAssertTrue(selection.outputs.allSatisfy { $0.source == .unavailable })
     }
 
+    func testDefaultPreparationModeKeepsBaseProviderWithUnavailableOutputs() {
+        let selection = WatchMetricProviderSelector().makeSelection(
+            for: WatchActivityViewModel(generatedAt: Self.baseDate)
+        )
+
+        XCTAssertEqual(selection.activityMode, .skateboard)
+        XCTAssertEqual(selection.providerIdentifier, "watch.metric.provider.base")
+        XCTAssertEqual(selection.outputs.map(\.kind), [.route, .speed, .elevation])
+        XCTAssertTrue(selection.outputs.allSatisfy { output in
+            output.availability == .unavailable(.missingCompactOutput)
+        })
+    }
+
     func testUnsupportedModeHasNoProviderAndReturnsSafeUnavailableState() {
         let viewModel = Self.viewModel(sportModeKey: "future_mode")
 

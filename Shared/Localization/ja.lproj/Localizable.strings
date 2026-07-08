@@ -1291,6 +1291,15 @@
 "watch.compact.elevation.title" = "標高";
 "watch.compact.elevation.ascent" = "上昇";
 "watch.compact.elevation.empty" = "データなし";
+"watch.metric.carousel.title" = "指標";
+"watch.metric.carousel.empty" = "利用できる指標はありません";
+"watch.metric.card.available" = "利用可能";
+"watch.metric.card.unavailable" = "利用不可";
+"watch.metric.card.disabled" = "無効";
+"watch.metric.card.locked" = "ロック中";
+"watch.metric.card.unsupported" = "未対応";
+"watch.metric.card.route.textOnly" = "テキスト経路";
+"watch.metric.carousel.subtitle" = "安全出力";
 "watch.fallback.ready.title" = "準備完了";
 "watch.fallback.ready.detail" = "Watch 表示データを利用できます。";
 "watch.fallback.disconnected.title" = "Watch が未接続";

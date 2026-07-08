@@ -14,6 +14,11 @@ enum WatchMetricActivityMode: Equatable, Hashable, Sendable {
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
 
+        guard let normalized, !normalized.isEmpty else {
+            self = .skateboard
+            return
+        }
+
         switch normalized {
         case "skateboard", "board":
             self = .skateboard

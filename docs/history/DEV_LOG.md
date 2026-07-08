@@ -3057,3 +3057,43 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-037b
 ```
 <!-- TASK037A_METRIC_PROVIDER_PROTOCOL_END -->
+
+<!-- TASK037B_METRIC_CAROUSEL_START -->
+## 2026-07-08 — Task-037b Base Watch Metric Carousel
+
+### Completed
+- Added a provider-driven base Watch metric carousel UI for route, speed, and elevation metric cards.
+- Added a shared carousel model that consumes `WatchMetricProviderOutput` instead of re-reading Watch route, speed, or elevation semantics in the watchOS face.
+- Sourced speed chart points from `CompactSpeedSparkline` provider output and elevation profile points from `CompactElevationProfile` provider output.
+- Added clean unavailable, disabled, locked-boundary, and unsupported display states without adding production StoreKit or Snow-specific metrics.
+- Added iOS XCTest coverage for compact speed/elevation usage, missing compact data, locked provider output, and unsupported future mode.
+
+### Scope boundaries
+- Inline cadence remains deferred to Task-037c.
+- Entitlement/subscriber wiring remains deferred to Task-037d.
+- Task-037b does not implement Snow metrics, Snow UI, production StoreKit, HealthKit claims, route segmentation, speed filtering, or elevation ascent recomputation.
+
+```text
+VERIFY_TASK037B_METRIC_CAROUSEL_RESULT=PASSED
+COMPACT_SPEED_USAGE=YES
+COMPACT_ELEVATION_USAGE=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037c
+```
+<!-- TASK037B_METRIC_CAROUSEL_END -->
+
+## 2026-07-08 — Task-037b Manual QA UI Hotfix
+
+### Completed
+- Updated the base Watch metric carousel so default preparation state keeps safe placeholder metric cards instead of rendering an empty metric section.
+- Refined the carousel card styling toward the approved rounded-card Watch direction while keeping SkateTrack mode accent colors and avoiding mode-specific metrics outside the current skateboard / inline scope.
+- Kept speed and elevation values sourced only from provider outputs backed by `CompactSpeedSparkline` and `CompactElevationProfile`.
+
+### Validation Notes
+
+```text
+TASK037B_MANUALQA_UI_HOTFIX_003=YES
+DEFAULT_PREPARATION_CARDS_PRESENT=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+```

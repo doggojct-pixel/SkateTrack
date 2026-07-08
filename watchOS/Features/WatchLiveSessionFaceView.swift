@@ -24,6 +24,7 @@ struct WatchLiveSessionFaceView: View {
         )
         let controls = WatchLiveControlState(viewModel: viewModel)
         let modeAccent = WatchLivePalette.accentColor(for: viewModel.session.mode.sportModeKey)
+        let metricSelection = WatchMetricProviderSelector().makeSelection(for: viewModel)
 
         Group {
             if isLuminanceReduced {
@@ -74,38 +75,10 @@ struct WatchLiveSessionFaceView: View {
                                 .accessibilityLabel(Text("watch.live.accessibility.sessionStatus"))
                         }
 
-                        VStack(spacing: 8) {
-                            WatchRouteCompactCardView(
-                                card: viewModel.compactSummary.routeCard,
-                                accentColor: modeAccent
-                            )
-                            WatchSparklineCompactCardView(
-                                titleKey: "watch.compact.speed.title",
-                                valueText: WatchCompactCardFormatting.speedValueText(
-                                    viewModel.compactSummary.speedCard.maximumSpeedKilometersPerHour
-                                ),
-                                unitKey: "unit.speed.kmh.short",
-                                detailKey: viewModel.compactSummary.speedCard.hasData
-                                    ? "watch.compact.speed.max"
-                                    : "watch.compact.speed.empty",
-                                points: viewModel.compactSummary.speedCard.points,
-                                tintColor: WatchLivePalette.teal,
-                                accessibilityIdentifier: "watch-speed-compact-card"
-                            )
-                            WatchSparklineCompactCardView(
-                                titleKey: "watch.compact.elevation.title",
-                                valueText: WatchCompactCardFormatting.meterValueText(
-                                    viewModel.compactSummary.elevationCard.ascentMeters
-                                ),
-                                unitKey: "unit.length.meter.short",
-                                detailKey: viewModel.compactSummary.elevationCard.hasData
-                                    ? "watch.compact.elevation.ascent"
-                                    : "watch.compact.elevation.empty",
-                                points: viewModel.compactSummary.elevationCard.points,
-                                tintColor: WatchLivePalette.amber,
-                                accessibilityIdentifier: "watch-elevation-compact-card"
-                            )
-                        }
+                        WatchMetricCarouselView(
+                            selection: metricSelection,
+                            accentColor: modeAccent
+                        )
 
                         if controls.actions.isEmpty {
                             Text("watch.live.controls.pending")

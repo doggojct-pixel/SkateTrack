@@ -2750,3 +2750,46 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-037b
 ```
 <!-- TASK037A_METRIC_PROVIDER_PROTOCOL_END -->
+
+<!-- TASK037B_METRIC_CAROUSEL_START -->
+## Task-037b Base Watch Metric Carousel Additions
+
+| File | Status | Purpose |
+|---|---|---|
+| `Shared/WatchUI/WatchMetricCarouselModel.swift` | Active | Maps safe provider outputs into display-only carousel card models and state labels. |
+| `watchOS/Features/WatchMetricCarouselView.swift` | Active | Renders the base horizontal Watch metric carousel from provider-backed models. |
+| `watchOS/Features/WatchLiveSessionFaceView.swift` | Updated | Uses `WatchMetricProviderSelector` and `WatchMetricCarouselView` instead of directly wiring speed/elevation compact cards. |
+| `Tests/iOSTests/WatchMetricCarouselModelTests.swift` | Active | Verifies compact speed/elevation usage, unavailable data, locked output state, and unsupported mode safety. |
+| `scripts/verify_task037b_metric_carousel.py` | Active | Task-037b source, membership, localization, docs, line-count, compact-output usage, and forbidden-scope verifier. |
+
+```text
+VERIFY_TASK037B_METRIC_CAROUSEL_RESULT=PASSED
+COMPACT_SPEED_USAGE=YES
+COMPACT_ELEVATION_USAGE=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037c
+```
+<!-- TASK037B_METRIC_CAROUSEL_END -->
+
+<!-- TASK037B_MANUALQA_UI_HOTFIX_003_START -->
+## Task-037b Manual QA UI Hotfix
+
+Task-037b keeps the base provider-driven Watch metric carousel under:
+
+```text
+Shared/WatchUI/WatchMetricCarouselModel.swift
+watchOS/Features/WatchMetricCarouselView.swift
+Tests/iOSTests/WatchMetricCarouselModelTests.swift
+```
+
+The manual QA follow-up keeps default preparation-state metric cards visible as safe unavailable cards instead of an empty metric section.
+
+```text
+TASK037B_MANUALQA_UI_HOTFIX_003=YES
+DEFAULT_PREPARATION_CARDS_PRESENT=YES
+BASE_CAROUSEL_USES_MODE_ACCENT=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+NEXT_TASK=Task-037c
+```
+<!-- TASK037B_MANUALQA_UI_HOTFIX_003_END -->
