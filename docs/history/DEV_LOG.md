@@ -3137,3 +3137,29 @@ SNOW_METRIC_IMPLEMENTATION_COUNT=0
 FAILURE_COUNT=0
 NEXT_TASK=Task-037e
 ```
+
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START -->
+## 2026-07-08 — Task-037e Metric Provider Carousel Closure
+
+### Completed
+- Added the aggregate Task-037 metric provider carousel verifier for Task-037a through Task-037d closure evidence.
+- Confirmed localization parity remains aligned for `en`, `zh-Hant`, and `ja` after the Watch metric carousel, unavailable cadence, and locked-state work.
+- Closed Task-037 documentation for the provider protocol, base carousel, inline cadence unavailable state, and locked / entitlement provider boundary.
+- Preserved the Phase 1b scope boundaries: no Snow provider, no Snow metrics, no production StoreKit dependency, no production HealthKit claim, no route segmentation rewrite, no speed filtering rewrite, no elevation ascent recomputation, and no Watch MapKit route semantics.
+
+### Validation Notes
+
+```text
+TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START
+VERIFY_TASK037_METRIC_PROVIDER_CAROUSEL_RESULT=PASSED
+LOCALIZATION_PARITY=PASSED
+DOCS_UPDATED=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+FALSE_PRECISION_COPY_COUNT=0
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038a
+```
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->

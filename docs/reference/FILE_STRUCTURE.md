@@ -2856,3 +2856,41 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-037e
 ```
 <!-- TASK037D_LOCKED_STATE_END -->
+
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START -->
+## Task-037e Metric Provider Carousel Closure Addendum
+
+Task-037e closes the Task-037 provider / carousel sequence with aggregate verification and documentation sync only.
+
+### Updated source areas
+
+```text
+scripts/verify_task037_metric_provider_carousel.py # [工程設定] Aggregate Task-037 verifier covering provider protocol, base carousel, inline cadence unavailable state, locked-state boundary, localization parity markers, and forbidden-scope guardrails.
+docs/history/DEV_LOG.md                            # [原則 E] Adds Task-037e closure evidence and deferred-scope notes.
+docs/reference/FILE_STRUCTURE.md                   # [原則 E] Records Task-037e aggregate verifier and closure status.
+docs/process/PHASE_1B_AGENT_STATE.md               # [原則 E] Records Task-037 closure state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START
+VERIFY_TASK037_METRIC_PROVIDER_CAROUSEL_RESULT=PASSED
+LOCALIZATION_PARITY=PASSED
+DOCS_UPDATED=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+FALSE_PRECISION_COPY_COUNT=0
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038a
+```
+
+### Deferred after Task-037
+
+- Real inline cadence computation remains deferred until a safe inline cadence source and quality model are approved.
+- Production StoreKit remains deferred behind the existing entitlement/provider boundary.
+- Snow provider, Snow metrics, Snow UI, Snow classifier, lift / gondola exclusion, Snow HealthKit export, and Snow package semantics remain out of Phase 1b Task-037 scope.
+- Watch route semantics must continue to consume Shared compact visualization outputs instead of importing MapKit or reimplementing route, speed, or elevation logic in watchOS UI.
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->

@@ -728,3 +728,28 @@ NEXT_TASK=Task-037e
 
 Task-037d exposes locked and unlocked Watch metric provider paths through a local subscriber-flag boundary. It does not add production monetization, production purchase handling, Snow metrics, Snow UI, Store transaction handling, or new route / speed / elevation semantics.
 <!-- TASK037D_LOCKED_STATE_END -->
+
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START -->
+## Task-037e Metric Provider Carousel Closure
+
+```text
+TASK037_BRANCH=task-037-metric-provider-carousel
+TASK037D_BASELINE_TASK_BRANCH_HEAD=9433287881e96630c543dc3630b62b7024337616
+TASK037_PROVIDER_PROTOCOL_CLOSED=YES
+TASK037_BASE_CAROUSEL_CLOSED=YES
+TASK037_INLINE_CADENCE_UNAVAILABLE_STATE_CLOSED=YES
+TASK037_LOCKED_STATE_BOUNDARY_CLOSED=YES
+VERIFY_TASK037_METRIC_PROVIDER_CAROUSEL_RESULT=PASSED
+LOCALIZATION_PARITY=PASSED
+DOCS_UPDATED=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+FALSE_PRECISION_COPY_COUNT=0
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038a
+```
+
+Task-037e is documentation and aggregate-verifier closure only. It does not add Snow provider implementation, Snow metrics, production StoreKit, production HealthKit collection, Watch MapKit route semantics, route segmentation changes, speed filtering changes, elevation ascent recomputation, package schema changes, or Core Data changes.
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
