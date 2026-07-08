@@ -753,3 +753,27 @@ NEXT_TASK=Task-038a
 
 Task-037e is documentation and aggregate-verifier closure only. It does not add Snow provider implementation, Snow metrics, production StoreKit, production HealthKit collection, Watch MapKit route semantics, route segmentation changes, speed filtering changes, elevation ascent recomputation, package schema changes, or Core Data changes.
 <!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
+
+<!-- TASK038A_HAPTIC_INTENT_START -->
+## Task-038a Haptic Intent Model
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-038a — Haptic Intent Model`
+
+```text
+TASK038_BRANCH=task-038-haptics-safety-shells
+TASK038A_BASELINE_DEVELOP_HEAD=2f414119f3adc7bfd222ffd4d8917a058c48098b
+TASK038A_HAPTIC_INTENT_MODEL_PRESENT=YES
+RATE_LIMIT_PRESENT=YES
+DUPLICATE_SUPPRESSION_PRESENT=YES
+HAPTIC_TARGET_SUPPORT_BOUNDARY=MOCK_OR_DISABLED_WHEN_UNAVAILABLE
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+SENSOR_CLAIM_HAPTIC_TRIGGER_COUNT=0
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+FAILURE_COUNT=0
+NEXT_TASK=Task-038b
+```
+
+Task-038a models haptic intent only. It keeps unsupported targets disabled or mock-only and does not add direct WatchKit haptic playback, sensor-derived safety claims, medical monitoring language, emergency-service promises, Snow production behavior, or route / speed / elevation mutations.
+<!-- TASK038A_HAPTIC_INTENT_END -->

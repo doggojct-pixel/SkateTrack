@@ -269,6 +269,101 @@ final class WatchActivityViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.compactSummary.routeCard.hasStartupWarmup)
     }
 
+
+    func testHapticIntentSchedulesDevicePlaybackWithoutSensorClaim() {
+        let issuedAt = Date(timeIntervalSince1970: 10)
+        let intent = WatchHapticIntent.sessionControl(
+            .start,
+            issuedAt: issuedAt,
+            correlationId: "command-start-1"
+        )
+        var gate = WatchHapticIntentGate(
+            policy: .deviceSupported(minimumIntervalSeconds: 1, duplicateSuppressionSeconds: 5)
+        )
+
+        let decision = gate.resolve(intent, decidedAt: issuedAt)
+
+        XCTAssertEqual(intent.kind, .sessionStart)
+        XCTAssertEqual(intent.sourceDescription, "watch live control")
+        XCTAssertFalse(intent.isSensorDerivedClaim)
+        XCTAssertEqual(decision.state, .scheduled)
+        XCTAssertTrue(decision.shouldPlayOnDevice)
+    }
+
+    func testHapticIntentRateLimitsRepeatedKindWithDifferentCorrelation() {
+        let firstDate = Date(timeIntervalSince1970: 20)
+        let secondDate = firstDate.addingTimeInterval(0.5)
+        var gate = WatchHapticIntentGate(
+            policy: .deviceSupported(minimumIntervalSeconds: 3, duplicateSuppressionSeconds: 10)
+        )
+
+        let first = gate.resolve(
+            .sessionControl(.pause, issuedAt: firstDate, correlationId: "pause-1"),
+            decidedAt: firstDate
+        )
+        let second = gate.resolve(
+            .sessionControl(.pause, issuedAt: secondDate, correlationId: "pause-2"),
+            decidedAt: secondDate
+        )
+
+        XCTAssertEqual(first.state, .scheduled)
+        XCTAssertEqual(second.state, .rateLimited)
+        XCTAssertFalse(second.shouldPlayOnDevice)
+    }
+
+    func testHapticIntentDuplicateSuppressionUsesCorrelationKey() {
+        let firstDate = Date(timeIntervalSince1970: 30)
+        let secondDate = firstDate.addingTimeInterval(2)
+        var gate = WatchHapticIntentGate(
+            policy: .deviceSupported(minimumIntervalSeconds: 0.5, duplicateSuppressionSeconds: 8)
+        )
+
+        let first = gate.resolve(
+            .sessionControl(.resume, issuedAt: firstDate, correlationId: "resume-command"),
+            decidedAt: firstDate
+        )
+        let second = gate.resolve(
+            .sessionControl(.resume, issuedAt: secondDate, correlationId: "resume-command"),
+            decidedAt: secondDate
+        )
+
+        XCTAssertEqual(first.state, .scheduled)
+        XCTAssertEqual(second.state, .duplicateSuppressed)
+        XCTAssertFalse(second.shouldPlayOnDevice)
+    }
+
+    func testHapticIntentFallsBackToMockOnlyWhenDevicePlaybackIsNotAvailable() {
+        let issuedAt = Date(timeIntervalSince1970: 40)
+        var gate = WatchHapticIntentGate(policy: .mockOnly)
+
+        let decision = gate.resolve(
+            .sessionControl(.stop, issuedAt: issuedAt, correlationId: "stop-command"),
+            decidedAt: issuedAt
+        )
+
+        XCTAssertEqual(decision.state, .mockOnly)
+        XCTAssertFalse(decision.shouldPlayOnDevice)
+    }
+
+    func testHapticIntentIsDisabledWhenTargetSupportIsUnavailable() {
+        let issuedAt = Date(timeIntervalSince1970: 50)
+        var gate = WatchHapticIntentGate(policy: .disabled)
+
+        let decision = gate.resolve(
+            WatchHapticIntent(
+                kind: .safetyNotice,
+                issuedAt: issuedAt,
+                correlationId: "safe-notice",
+                sourceDescription: "non-emergency safety notice"
+            ),
+            decidedAt: issuedAt
+        )
+
+        XCTAssertEqual(decision.state, .disabled)
+        XCTAssertFalse(decision.shouldPlayOnDevice)
+        XCTAssertFalse(decision.intent.isSensorDerivedClaim)
+    }
+
     private static func sensorSnapshot(capturedAt: Date) -> WatchSensorProviderSnapshot {
         WatchSensorProviderSnapshot(
             providerKind: .mock,

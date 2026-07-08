@@ -2894,3 +2894,34 @@ NEXT_TASK=Task-038a
 - Snow provider, Snow metrics, Snow UI, Snow classifier, lift / gondola exclusion, Snow HealthKit export, and Snow package semantics remain out of Phase 1b Task-037 scope.
 - Watch route semantics must continue to consume Shared compact visualization outputs instead of importing MapKit or reimplementing route, speed, or elevation logic in watchOS UI.
 <!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
+
+<!-- TASK038A_HAPTIC_INTENT_START -->
+## Task-038a Haptic Intent Model Addendum
+
+Task-038a adds a safe haptic intent model under the existing Watch live-control boundary. It models haptic intent only; it does not play device haptics directly, claim sensor-derived safety detection, add HealthKit production usage, add emergency-service behavior, or start Snow implementation.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchLiveControlState.swift     # [協作區] Adds WatchHapticIntent, WatchHapticIntentPolicy, target support states, rate limiting, and duplicate suppression.
+Tests/iOSTests/WatchActivityViewModelTests.swift # [工程設定] Adds haptic intent trigger-rule tests for scheduled, rate-limited, duplicate-suppressed, mock-only, and disabled paths.
+scripts/verify_task038a_haptic_intent.py       # [工程設定] Task-038a verifier for haptic intent safety, rate limiting, duplicate suppression, docs, line/header, and forbidden-scope guardrails.
+docs/history/DEV_LOG.md                        # [原則 E] Records Task-038a implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md               # [原則 E] Records Task-038a file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md           # [原則 E] Records Task-038a state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038A_HAPTIC_INTENT_START
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+RATE_LIMIT_PRESENT=YES
+DUPLICATE_SUPPRESSION_PRESENT=YES
+HAPTIC_TARGET_SUPPORT_BOUNDARY=MOCK_OR_DISABLED_WHEN_UNAVAILABLE
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+SENSOR_CLAIM_HAPTIC_TRIGGER_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038b
+```
+<!-- TASK038A_HAPTIC_INTENT_END -->

@@ -3163,3 +3163,28 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-038a
 ```
 <!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
+
+<!-- TASK038A_HAPTIC_INTENT_START -->
+## 2026-07-08 — Task-038a Haptic Intent Model
+
+### Completed
+- Added a safe haptic intent model to the Watch live-control boundary without calling platform haptic playback APIs directly.
+- Added explicit target-support states so unsupported targets stay disabled and non-device paths remain mock-only.
+- Added duplicate suppression by intent correlation key and rate limiting by haptic intent kind.
+- Added tests for scheduled, rate-limited, duplicate-suppressed, mock-only, and disabled haptic intent paths.
+- Preserved Task-038 scope boundaries: no HealthKit production usage, no medical monitoring claim, no emergency-service promise, no Snow implementation, and no route / speed / elevation mutation.
+
+### Validation Notes
+
+```text
+TASK038A_HAPTIC_INTENT_START
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+RATE_LIMIT_PRESENT=YES
+DUPLICATE_SUPPRESSION_PRESENT=YES
+HAPTIC_TARGET_SUPPORT_BOUNDARY=MOCK_OR_DISABLED_WHEN_UNAVAILABLE
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+SENSOR_CLAIM_HAPTIC_TRIGGER_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038b
+```
+<!-- TASK038A_HAPTIC_INTENT_END -->
