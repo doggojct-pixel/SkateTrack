@@ -6,6 +6,7 @@ import SwiftUI
 
 struct WatchLiveSessionFaceView: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+    @State private var fallSafetyShellState = WatchFallSafetyPresentationShellState.presented()
 
     let viewModel: WatchActivityViewModel
     let onCommand: (WatchBridgeCommandEnvelope) -> Void
@@ -79,6 +80,17 @@ struct WatchLiveSessionFaceView: View {
                         WatchHealthReminderShellView(
                             state: reminderShell,
                             accentColor: modeAccent
+                        )
+
+                        WatchFallSafetyPresentationShellView(
+                            state: fallSafetyShellState,
+                            accentColor: modeAccent,
+                            onDismiss: {
+                                fallSafetyShellState = fallSafetyShellState.dismissed()
+                            },
+                            onFalseAlarm: {
+                                fallSafetyShellState = fallSafetyShellState.markedFalseAlarm()
+                            }
                         )
 
                         WatchMetricCarouselView(

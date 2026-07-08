@@ -803,3 +803,31 @@ NEXT_TASK=Task-038c
 
 Task-038b adds a non-medical Watch reminder shell for hydration, rest, and stretch prompts. It is local shell state/UI only, defaults to disabled shell behavior, reuses Task-038a haptic policy only as mock-only intent state, and does not add production HealthKit usage, live health-data integration, medical claims, emergency promises, fall-safety presentation behavior, Snow implementation, WatchKit haptic playback, or route / speed / elevation mutations.
 <!-- TASK038B_HEALTH_REMINDER_SHELL_END -->
+
+<!-- TASK038C_FALL_SAFETY_SHELL_START -->
+## Task-038c Fall Safety Presentation Shell
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-038c — Fall Safety Presentation Shell`
+
+```text
+TASK038_BRANCH=task-038-haptics-safety-shells
+TASK038C_BASELINE_HEAD=f96be0db6d9b30415e1083559dbcaaf0b57df21a
+WATCH_FALL_SAFETY_PRESENTATION_SHELL_PRESENT=YES
+WATCH_FALL_SAFETY_PRESENTATION_DEFAULT=PRESENTED_SHELL_ONLY
+FALSE_ALARM_PATH_PRESENT=YES
+MANUAL_DISMISS_PATH_PRESENT=YES
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+EMERGENCY_PROMISE_COPY_COUNT=0
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038d
+```
+
+Task-038c adds a Watch presentation shell for fall-safety wording and local dismissal / false-alarm handling. It is presentation state/UI only, reuses Task-038a haptic policy only as mock-only or disabled intent state, and does not add fall detection, emergency service behavior, SOS automation, production HealthKit usage, body-data reads, WatchKit haptic playback, Snow implementation, route / speed / elevation mutations, ActivityVisualization changes, package / Core Data / StoreKit changes, or sensor / session engine changes.
+<!-- TASK038C_FALL_SAFETY_SHELL_END -->

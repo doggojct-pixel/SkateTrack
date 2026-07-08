@@ -1289,6 +1289,17 @@
 "watch.healthReminder.stretch.detail" = "滑行結束後，再做簡短伸展。";
 "watch.healthReminder.accessibility.label" = "一般提醒 shell";
 
+// Task-038c watchOS fall safety presentation shell
+"watch.fallSafety.title" = "跌倒安全 shell";
+"watch.fallSafety.detail" = "僅為呈現 shell；不會進行跌倒判定、不會聯絡緊急服務，也不會讀取身體資料。";
+"watch.fallSafety.limitation" = "請先停在安全位置後再回應。";
+"watch.fallSafety.status.shell" = "Shell";
+"watch.fallSafety.status.dismissed" = "已關閉";
+"watch.fallSafety.status.falseAlarm" = "誤觸";
+"watch.fallSafety.dismiss" = "關閉";
+"watch.fallSafety.falseAlarm" = "誤觸";
+"watch.fallSafety.accessibility.label" = "跌倒安全呈現 shell";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "路線";

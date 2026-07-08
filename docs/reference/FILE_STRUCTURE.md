@@ -2962,3 +2962,41 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038c
 ```
 <!-- TASK038B_HEALTH_REMINDER_SHELL_END -->
+
+<!-- TASK038C_FALL_SAFETY_SHELL_START -->
+## Task-038c Fall Safety Presentation Shell Addendum
+
+Task-038c adds a Watch fall-safety presentation shell with local manual dismiss and false-alarm handling. It is shell state/UI only and does not add fall detection, emergency service behavior, SOS automation, production HealthKit usage, body-data reads, WatchKit haptic playback, Snow implementation, route / speed / elevation mutations, ActivityVisualization changes, package / Core Data / StoreKit changes, or sensor / session engine changes.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchFallSafetyPresentationShellState.swift   # [協作區] New safe presentation shell state with dismiss / false-alarm transitions and no runtime detection/dispatch flags.
+watchOS/Features/WatchFallSafetyPresentationShellView.swift  # [協作區] New compact watchOS fall-safety presentation shell card.
+watchOS/Features/WatchLiveSessionFaceView.swift              # [協作區] Places the fall-safety shell without changing metric carousel runtime.
+Tests/iOSTests/WatchFallSafetyPresentationShellStateTests.swift # [工程設定] Tests shell-only state, dismiss / false-alarm transitions, disabled runtime flags, and mock-only haptic policy.
+scripts/verify_task038c_fall_safety_shell.py                 # [工程設定] Task-038c verifier for allowed paths, localization, membership, line/header, false-alarm path, and forbidden-scope guardrails.
+Shared/Localization/en.lproj/Localizable.strings             # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings        # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+Shared/Localization/ja.lproj/Localizable.strings             # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+SkateTrack.xcodeproj/project.pbxproj                         # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                                      # [原則 E] Records Task-038c implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                             # [原則 E] Records Task-038c file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                         # [原則 E] Records Task-038c state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038C_FALL_SAFETY_SHELL_START
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+EMERGENCY_PROMISE_COPY_COUNT=0
+FALSE_ALARM_PATH_PRESENT=YES
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038d
+```
+<!-- TASK038C_FALL_SAFETY_SHELL_END -->

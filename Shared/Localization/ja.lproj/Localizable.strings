@@ -1289,6 +1289,17 @@
 "watch.healthReminder.stretch.detail" = "セッション後に短いストレッチを行います。";
 "watch.healthReminder.accessibility.label" = "一般リマインダーシェル";
 
+// Task-038c watchOS fall safety presentation shell
+"watch.fallSafety.title" = "転倒安全シェル";
+"watch.fallSafety.detail" = "表示シェルのみです。転倒判定、緊急サービスへの連絡、身体データの読み取りは行いません。";
+"watch.fallSafety.limitation" = "安全な場所で止まってから応答してください。";
+"watch.fallSafety.status.shell" = "シェル";
+"watch.fallSafety.status.dismissed" = "閉じました";
+"watch.fallSafety.status.falseAlarm" = "誤報";
+"watch.fallSafety.dismiss" = "閉じる";
+"watch.fallSafety.falseAlarm" = "誤報";
+"watch.fallSafety.accessibility.label" = "転倒安全表示シェル";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "ルート";

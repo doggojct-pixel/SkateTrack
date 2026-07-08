@@ -1289,6 +1289,17 @@
 "watch.healthReminder.stretch.detail" = "Stretch after the ride once the session is done.";
 "watch.healthReminder.accessibility.label" = "General reminder shell";
 
+// Task-038c watchOS fall safety presentation shell
+"watch.fallSafety.title" = "Fall safety shell";
+"watch.fallSafety.detail" = "Presentation shell only. It does not run fall checks, contact emergency services, or read body data.";
+"watch.fallSafety.limitation" = "Stop somewhere safe before responding.";
+"watch.fallSafety.status.shell" = "Shell";
+"watch.fallSafety.status.dismissed" = "Dismissed";
+"watch.fallSafety.status.falseAlarm" = "False alarm";
+"watch.fallSafety.dismiss" = "Dismiss";
+"watch.fallSafety.falseAlarm" = "False alarm";
+"watch.fallSafety.accessibility.label" = "Fall safety presentation shell";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "Route";

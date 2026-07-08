@@ -3213,3 +3213,29 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-038c
 ```
 <!-- TASK038B_HEALTH_REMINDER_SHELL_END -->
+
+<!-- TASK038C_FALL_SAFETY_SHELL_START -->
+## 2026-07-08 — Task-038c Fall Safety Presentation Shell
+
+### Completed
+- Added a Watch fall-safety presentation shell state with local manual-dismiss and false-alarm transitions.
+- Added a compact watchOS presentation shell card to the live session face without changing metric carousel runtime.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-038c verifier covering branch/head baseline, allowed paths, project membership, localization, Swift line/header rules, false-alarm path, and forbidden-scope guardrails.
+- Preserved Task-038c boundaries: no fall detection, no emergency service behavior, no SOS automation, no production HealthKit usage, no body-data reads, no WatchKit haptic playback, no Snow implementation, no route / speed / elevation mutation, no ActivityVisualization change, no package / Core Data / StoreKit change, and no sensor / session engine change.
+
+### Validation Notes
+
+```text
+TASK038C_FALL_SAFETY_SHELL_START
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+EMERGENCY_PROMISE_COPY_COUNT=0
+FALSE_ALARM_PATH_PRESENT=YES
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038d
+```
+<!-- TASK038C_FALL_SAFETY_SHELL_END -->
