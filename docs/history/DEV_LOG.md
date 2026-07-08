@@ -3033,3 +3033,133 @@ Task-032e verification token: TASK032_WATCHBRIDGE_FOUNDATION_COMPLETE=YES, WATCH
 - Verification tokens: `VERIFY_TASK036_WATCH_CORE_UI_RESULT=PASSED`, `LOCALIZATION_PARITY=PASSED`, `WATCHOS_BUILD_EXIT=0`, `FAILURE_COUNT=0`.
 - Task closure note: Task-036 branch work can proceed to final commit/push review; merge to `develop` remains deferred until the operator explicitly runs the final Task-036 merge gate.
 <!-- TASK036E_WATCH_CORE_UI_CLOSURE_DEVLOG_END -->
+
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_START -->
+## 2026-07-08 — Task-037a Metric Provider Protocol
+
+### Completed
+- Added a mode-aware Watch metric provider protocol and selector under `Shared/WatchUI/`.
+- Added safe availability states for available, unavailable, disabled, locked-boundary, and unsupported-mode metric output paths.
+- Added a base provider for existing skateboard and inline Watch compact metric outputs.
+- Added iOS XCTest coverage for skateboard selection, inline selection, unsupported future-mode fallback, custom future provider injection, disabled provider state, and stale bridge state.
+
+### Scope boundaries
+- Carousel UI remains deferred to Task-037b.
+- Inline cadence remains deferred to Task-037c.
+- Entitlement wiring and localized locked copy remain deferred to Task-037d.
+- No route, speed, elevation, package, schema, Core Data, HealthKit, StoreKit, or WatchConnectivity semantics were reimplemented.
+
+```text
+VERIFY_TASK037A_METRIC_PROVIDER_PROTOCOL_RESULT=PASSED
+MODE_AWARE_PROVIDER_PRESENT=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-037b
+```
+<!-- TASK037A_METRIC_PROVIDER_PROTOCOL_END -->
+
+<!-- TASK037B_METRIC_CAROUSEL_START -->
+## 2026-07-08 — Task-037b Base Watch Metric Carousel
+
+### Completed
+- Added a provider-driven base Watch metric carousel UI for route, speed, and elevation metric cards.
+- Added a shared carousel model that consumes `WatchMetricProviderOutput` instead of re-reading Watch route, speed, or elevation semantics in the watchOS face.
+- Sourced speed chart points from `CompactSpeedSparkline` provider output and elevation profile points from `CompactElevationProfile` provider output.
+- Added clean unavailable, disabled, locked-boundary, and unsupported display states without adding production StoreKit or Snow-specific metrics.
+- Added iOS XCTest coverage for compact speed/elevation usage, missing compact data, locked provider output, and unsupported future mode.
+
+### Scope boundaries
+- Inline cadence remains deferred to Task-037c.
+- Entitlement/subscriber wiring remains deferred to Task-037d.
+- Task-037b does not implement Snow metrics, Snow UI, production StoreKit, HealthKit claims, route segmentation, speed filtering, or elevation ascent recomputation.
+
+```text
+VERIFY_TASK037B_METRIC_CAROUSEL_RESULT=PASSED
+COMPACT_SPEED_USAGE=YES
+COMPACT_ELEVATION_USAGE=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037c
+```
+<!-- TASK037B_METRIC_CAROUSEL_END -->
+
+## 2026-07-08 — Task-037b Manual QA UI Hotfix
+
+### Completed
+- Updated the base Watch metric carousel so default preparation state keeps safe placeholder metric cards instead of rendering an empty metric section.
+- Refined the carousel card styling toward the approved rounded-card Watch direction while keeping SkateTrack mode accent colors and avoiding mode-specific metrics outside the current skateboard / inline scope.
+- Kept speed and elevation values sourced only from provider outputs backed by `CompactSpeedSparkline` and `CompactElevationProfile`.
+
+### Validation Notes
+
+```text
+TASK037B_MANUALQA_UI_HOTFIX_003=YES
+DEFAULT_PREPARATION_CARDS_PRESENT=YES
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+```
+
+## 2026-07-08 — Task-037c Inline Cadence Metric Safe Unavailable State
+
+### Completed
+- Added an inline-only cadence metric card path to the Watch metric provider output list.
+- Kept cadence unavailable until a safe inline cadence data source exists; the card displays `--` and does not claim rpm, spm, stride rate, or computed cadence.
+- Added provider and carousel model tests for missing cadence data and compact-data-present-but-cadence-missing cases.
+- Preserved Task-037b speed and elevation compact output usage and avoided Snow metric implementation.
+
+### Validation Notes
+
+```text
+<!-- TASK037C_INLINE_CADENCE_START -->
+VERIFY_TASK037C_INLINE_CADENCE_RESULT=PASSED
+UNAVAILABLE_STATE_PRESENT=YES
+FALSE_PRECISION_COPY_COUNT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037d
+```
+
+
+## 2026-07-08 — Task-037d Entitlement / Locked State
+
+### Completed
+- Added a local Watch metric entitlement boundary so provider outputs can expose locked paths through a subscriber flag without adding a production monetization dependency.
+- Preserved disabled provider paths as disabled, even when a metric identifier is configured as locked.
+- Added locked and unlocked provider selection tests plus carousel model coverage for locked display state.
+- Reused the existing localized `watch.metric.card.locked` copy in `en`, `zh-Hant`, and `ja`.
+
+### Validation Notes
+```text
+TASK037D_LOCKED_STATE_START
+VERIFY_TASK037D_LOCKED_STATE_RESULT=PASSED
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+LOCKED_STATE_TESTS_EXIT=0
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-037e
+```
+
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START -->
+## 2026-07-08 — Task-037e Metric Provider Carousel Closure
+
+### Completed
+- Added the aggregate Task-037 metric provider carousel verifier for Task-037a through Task-037d closure evidence.
+- Confirmed localization parity remains aligned for `en`, `zh-Hant`, and `ja` after the Watch metric carousel, unavailable cadence, and locked-state work.
+- Closed Task-037 documentation for the provider protocol, base carousel, inline cadence unavailable state, and locked / entitlement provider boundary.
+- Preserved the Phase 1b scope boundaries: no Snow provider, no Snow metrics, no production StoreKit dependency, no production HealthKit claim, no route segmentation rewrite, no speed filtering rewrite, no elevation ascent recomputation, and no Watch MapKit route semantics.
+
+### Validation Notes
+
+```text
+TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_START
+VERIFY_TASK037_METRIC_PROVIDER_CAROUSEL_RESULT=PASSED
+LOCALIZATION_PARITY=PASSED
+DOCS_UPDATED=YES
+SNOW_PROVIDER_IMPLEMENTED=NO
+SNOW_METRIC_IMPLEMENTATION_COUNT=0
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+FALSE_PRECISION_COPY_COUNT=0
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-038a
+```
+<!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->

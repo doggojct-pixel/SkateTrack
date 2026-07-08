@@ -1291,6 +1291,15 @@
 "watch.compact.elevation.title" = "Elevation";
 "watch.compact.elevation.ascent" = "Ascent";
 "watch.compact.elevation.empty" = "No data";
+"watch.metric.carousel.title" = "Metrics";
+"watch.metric.carousel.empty" = "No metrics available";
+"watch.metric.card.available" = "Available";
+"watch.metric.card.unavailable" = "Unavailable";
+"watch.metric.card.disabled" = "Disabled";
+"watch.metric.card.locked" = "Locked";
+"watch.metric.card.unsupported" = "Not supported";
+"watch.metric.card.route.textOnly" = "Text route";
+"watch.metric.carousel.subtitle" = "Safe output";
 "watch.fallback.ready.title" = "Ready";
 "watch.fallback.ready.detail" = "Watch display data is ready.";
 "watch.fallback.disconnected.title" = "Watch disconnected";

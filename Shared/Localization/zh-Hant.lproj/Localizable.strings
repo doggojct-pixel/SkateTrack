@@ -1291,6 +1291,15 @@
 "watch.compact.elevation.title" = "海拔";
 "watch.compact.elevation.ascent" = "爬升";
 "watch.compact.elevation.empty" = "無資料";
+"watch.metric.carousel.title" = "指標";
+"watch.metric.carousel.empty" = "目前沒有可用指標";
+"watch.metric.card.available" = "可使用";
+"watch.metric.card.unavailable" = "無法使用";
+"watch.metric.card.disabled" = "已停用";
+"watch.metric.card.locked" = "已鎖定";
+"watch.metric.card.unsupported" = "不支援";
+"watch.metric.card.route.textOnly" = "文字路線";
+"watch.metric.carousel.subtitle" = "安全輸出";
 "watch.fallback.ready.title" = "準備完成";
 "watch.fallback.ready.detail" = "手錶顯示資料已可使用。";
 "watch.fallback.disconnected.title" = "手錶已中斷";
