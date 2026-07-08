@@ -2894,3 +2894,140 @@ NEXT_TASK=Task-038a
 - Snow provider, Snow metrics, Snow UI, Snow classifier, lift / gondola exclusion, Snow HealthKit export, and Snow package semantics remain out of Phase 1b Task-037 scope.
 - Watch route semantics must continue to consume Shared compact visualization outputs instead of importing MapKit or reimplementing route, speed, or elevation logic in watchOS UI.
 <!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
+
+<!-- TASK038A_HAPTIC_INTENT_START -->
+## Task-038a Haptic Intent Model Addendum
+
+Task-038a adds a safe haptic intent model under the existing Watch live-control boundary. It models haptic intent only; it does not play device haptics directly, claim sensor-derived safety detection, add HealthKit production usage, add emergency-service behavior, or start Snow implementation.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchLiveControlState.swift     # [協作區] Adds WatchHapticIntent, WatchHapticIntentPolicy, target support states, rate limiting, and duplicate suppression.
+Tests/iOSTests/WatchActivityViewModelTests.swift # [工程設定] Adds haptic intent trigger-rule tests for scheduled, rate-limited, duplicate-suppressed, mock-only, and disabled paths.
+scripts/verify_task038a_haptic_intent.py       # [工程設定] Task-038a verifier for haptic intent safety, rate limiting, duplicate suppression, docs, line/header, and forbidden-scope guardrails.
+docs/history/DEV_LOG.md                        # [原則 E] Records Task-038a implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md               # [原則 E] Records Task-038a file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md           # [原則 E] Records Task-038a state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038A_HAPTIC_INTENT_START
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+RATE_LIMIT_PRESENT=YES
+DUPLICATE_SUPPRESSION_PRESENT=YES
+HAPTIC_TARGET_SUPPORT_BOUNDARY=MOCK_OR_DISABLED_WHEN_UNAVAILABLE
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+SENSOR_CLAIM_HAPTIC_TRIGGER_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038b
+```
+<!-- TASK038A_HAPTIC_INTENT_END -->
+
+<!-- TASK038B_HEALTH_REMINDER_SHELL_START -->
+## Task-038b Health Reminder Shell Addendum
+
+Task-038b adds a non-medical Watch reminder shell for hydration, rest, and stretch prompts. It is shell state/UI only and defaults to disabled local behavior; it does not request sensor permission, consume live body data, add production HealthKit usage, make medical claims, add emergency/fall-safety presentation behavior, start Snow implementation, play device haptics, or mutate route / speed / elevation outputs.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchHealthReminderShellState.swift   # [協作區] New safe reminder shell state for hydration, rest, and stretch prompts.
+watchOS/Features/WatchHealthReminderShellView.swift  # [協作區] New lightweight watchOS reminder shell card.
+watchOS/Features/WatchLiveSessionFaceView.swift      # [協作區] Integrates the reminder shell card without changing metric carousel runtime.
+Tests/iOSTests/WatchHealthReminderShellStateTests.swift # [工程設定] Tests disabled shell state, reminder categories, copy keys, production-data flags, and mock-only haptic policy.
+scripts/verify_task038b_health_reminder_shell.py     # [工程設定] Task-038b verifier for allowed paths, localization, membership, line/header, and forbidden-scope guardrails.
+Shared/Localization/en.lproj/Localizable.strings     # [原則 A] Adds Task-038b watch reminder shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings # [原則 A] Adds Task-038b watch reminder shell strings.
+Shared/Localization/ja.lproj/Localizable.strings     # [原則 A] Adds Task-038b watch reminder shell strings.
+SkateTrack.xcodeproj/project.pbxproj                 # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                              # [原則 E] Records Task-038b implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                     # [原則 E] Records Task-038b file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                 # [原則 E] Records Task-038b state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038B_HEALTH_REMINDER_SHELL_START
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+WATCH_HEALTH_REMINDER_SHELL_CATEGORIES=hydration|rest|stretch
+WATCH_HEALTH_REMINDER_SHELL_DEFAULT=DISABLED_SHELL_ONLY
+MEDICAL_CLAIM_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-038c
+```
+<!-- TASK038B_HEALTH_REMINDER_SHELL_END -->
+
+<!-- TASK038C_FALL_SAFETY_SHELL_START -->
+## Task-038c Fall Safety Presentation Shell Addendum
+
+Task-038c adds a Watch fall-safety presentation shell with local manual dismiss and false-alarm handling. It is shell state/UI only and does not add fall detection, emergency service behavior, SOS automation, production HealthKit usage, body-data reads, WatchKit haptic playback, Snow implementation, route / speed / elevation mutations, ActivityVisualization changes, package / Core Data / StoreKit changes, or sensor / session engine changes.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchFallSafetyPresentationShellState.swift   # [協作區] New safe presentation shell state with dismiss / false-alarm transitions and no runtime detection/dispatch flags.
+watchOS/Features/WatchFallSafetyPresentationShellView.swift  # [協作區] New compact watchOS fall-safety presentation shell card.
+watchOS/Features/WatchLiveSessionFaceView.swift              # [協作區] Places the fall-safety shell without changing metric carousel runtime.
+Tests/iOSTests/WatchFallSafetyPresentationShellStateTests.swift # [工程設定] Tests shell-only state, dismiss / false-alarm transitions, disabled runtime flags, and mock-only haptic policy.
+scripts/verify_task038c_fall_safety_shell.py                 # [工程設定] Task-038c verifier for allowed paths, localization, membership, line/header, false-alarm path, and forbidden-scope guardrails.
+Shared/Localization/en.lproj/Localizable.strings             # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings        # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+Shared/Localization/ja.lproj/Localizable.strings             # [原則 A] Adds Task-038c watch fall-safety presentation shell strings.
+SkateTrack.xcodeproj/project.pbxproj                         # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                                      # [原則 E] Records Task-038c implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                             # [原則 E] Records Task-038c file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                         # [原則 E] Records Task-038c state before commit / push review.
+```
+
+### Closure markers
+
+```text
+TASK038C_FALL_SAFETY_SHELL_START
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+EMERGENCY_PROMISE_COPY_COUNT=0
+FALSE_ALARM_PATH_PRESENT=YES
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038d
+```
+<!-- TASK038C_FALL_SAFETY_SHELL_END -->
+
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START -->
+## Task-038d Haptics/Safety Verifier + Manual QA Closure Preparation Addendum
+
+Task-038d prepares Task-038 closure with an aggregate verifier, known-limitations coverage, and an aggregate manual QA checklist. It is docs/verifier-only and does not modify Swift product code, Xcode project membership, localization runtime files, UI/runtime behavior, schema, package format, StoreKit production code, sensor/session engines, route / speed / elevation logic, ActivityVisualization, Snow, HealthKit production usage, WatchKit haptic playback, fall detection implementation, emergency/SOS automation, rescue promises, or medical/clinical safety claims.
+
+### Updated source areas
+
+```text
+scripts/verify_task038_haptics_safety.py        # [工程設定] Task-038 aggregate verifier for haptic intent, health reminder, fall-safety shell, docs, manual-QA, and forbidden-scope closure checks.
+AGENTS.md                                      # [原則 E] Updates the current Task-038 baseline and next expected subtask to Task-038d / Task-039a handoff.
+docs/history/DEV_LOG.md                        # [原則 E] Records Task-038d closure-preparation state and validation markers.
+docs/reference/FILE_STRUCTURE.md               # [原則 E] Records Task-038d file ownership and docs/verifier-only boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md           # [原則 E] Records Task-038d pre-manual-QA closure state.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md      # [原則 E] Adds Task-038 haptics/safety closure limitation note.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md       # [原則 E] Adds aggregate Task-038 haptics/safety manual QA checklist.
+```
+
+### Closure-preparation markers
+
+```text
+TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START
+VERIFY_TASK038_HAPTICS_SAFETY_PRE_QA_RESULT=PASSED
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+KNOWN_LIMITATIONS_UPDATED=YES
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039a
+```
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->

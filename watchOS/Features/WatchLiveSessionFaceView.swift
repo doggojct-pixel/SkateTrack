@@ -1,4 +1,4 @@
-// [Collaboration] watchOS/Features/WatchLiveSessionFaceView.swift
+// [協作區] watchOS/Features/WatchLiveSessionFaceView.swift
 // Purpose: Provides the Task-036b live watch face shell for speed, session status, and mirrored controls.
 // Delegates to: Shared WatchUI view models and WatchBridge command boundary.
 
@@ -6,6 +6,7 @@ import SwiftUI
 
 struct WatchLiveSessionFaceView: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+    @State private var fallSafetyShellState = WatchFallSafetyPresentationShellState.presented()
 
     let viewModel: WatchActivityViewModel
     let onCommand: (WatchBridgeCommandEnvelope) -> Void
@@ -25,6 +26,7 @@ struct WatchLiveSessionFaceView: View {
         let controls = WatchLiveControlState(viewModel: viewModel)
         let modeAccent = WatchLivePalette.accentColor(for: viewModel.session.mode.sportModeKey)
         let metricSelection = WatchMetricProviderSelector().makeSelection(for: viewModel)
+        let reminderShell = WatchHealthReminderShellState.disabled(generatedAt: viewModel.generatedAt)
 
         Group {
             if isLuminanceReduced {
@@ -74,6 +76,22 @@ struct WatchLiveSessionFaceView: View {
                                 .foregroundStyle(.white)
                                 .accessibilityLabel(Text("watch.live.accessibility.sessionStatus"))
                         }
+
+                        WatchHealthReminderShellView(
+                            state: reminderShell,
+                            accentColor: modeAccent
+                        )
+
+                        WatchFallSafetyPresentationShellView(
+                            state: fallSafetyShellState,
+                            accentColor: modeAccent,
+                            onDismiss: {
+                                fallSafetyShellState = fallSafetyShellState.dismissed()
+                            },
+                            onFalseAlarm: {
+                                fallSafetyShellState = fallSafetyShellState.markedFalseAlarm()
+                            }
+                        )
 
                         WatchMetricCarouselView(
                             selection: metricSelection,

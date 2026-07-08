@@ -3163,3 +3163,102 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-038a
 ```
 <!-- TASK037E_METRIC_PROVIDER_CAROUSEL_CLOSURE_END -->
+
+<!-- TASK038A_HAPTIC_INTENT_START -->
+## 2026-07-08 — Task-038a Haptic Intent Model
+
+### Completed
+- Added a safe haptic intent model to the Watch live-control boundary without calling platform haptic playback APIs directly.
+- Added explicit target-support states so unsupported targets stay disabled and non-device paths remain mock-only.
+- Added duplicate suppression by intent correlation key and rate limiting by haptic intent kind.
+- Added tests for scheduled, rate-limited, duplicate-suppressed, mock-only, and disabled haptic intent paths.
+- Preserved Task-038 scope boundaries: no HealthKit production usage, no medical monitoring claim, no emergency-service promise, no Snow implementation, and no route / speed / elevation mutation.
+
+### Validation Notes
+
+```text
+TASK038A_HAPTIC_INTENT_START
+VERIFY_TASK038A_HAPTIC_INTENT_RESULT=PASSED
+RATE_LIMIT_PRESENT=YES
+DUPLICATE_SUPPRESSION_PRESENT=YES
+HAPTIC_TARGET_SUPPORT_BOUNDARY=MOCK_OR_DISABLED_WHEN_UNAVAILABLE
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+SENSOR_CLAIM_HAPTIC_TRIGGER_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038b
+```
+<!-- TASK038A_HAPTIC_INTENT_END -->
+
+<!-- TASK038B_HEALTH_REMINDER_SHELL_START -->
+## 2026-07-08 — Task-038b Health Reminder Shell
+
+### Completed
+- Added a non-medical Watch reminder shell state for hydration, rest, and stretch prompts.
+- Added a lightweight watchOS reminder shell card to the live session face without changing metric carousel runtime.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-038b verifier covering branch/head baseline, allowed paths, project membership, localization, Swift line/header rules, and forbidden-scope guardrails.
+- Preserved Task-038b boundaries: no production HealthKit usage, no live health-data integration, no medical monitoring claim, no emergency/fall-safety promise, no Snow implementation, no WatchKit haptic playback, and no route / speed / elevation mutation.
+
+### Validation Notes
+
+```text
+TASK038B_HEALTH_REMINDER_SHELL_START
+VERIFY_TASK038B_HEALTH_REMINDER_SHELL_RESULT=PASSED
+WATCH_HEALTH_REMINDER_SHELL_CATEGORIES=hydration|rest|stretch
+WATCH_HEALTH_REMINDER_SHELL_DEFAULT=DISABLED_SHELL_ONLY
+MEDICAL_CLAIM_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+HAPTIC_DEVICE_PLAYBACK_IMPLEMENTED=NO
+FAILURE_COUNT=0
+NEXT_TASK=Task-038c
+```
+<!-- TASK038B_HEALTH_REMINDER_SHELL_END -->
+
+<!-- TASK038C_FALL_SAFETY_SHELL_START -->
+## 2026-07-08 — Task-038c Fall Safety Presentation Shell
+
+### Completed
+- Added a Watch fall-safety presentation shell state with local manual-dismiss and false-alarm transitions.
+- Added a compact watchOS presentation shell card to the live session face without changing metric carousel runtime.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-038c verifier covering branch/head baseline, allowed paths, project membership, localization, Swift line/header rules, false-alarm path, and forbidden-scope guardrails.
+- Preserved Task-038c boundaries: no fall detection, no emergency service behavior, no SOS automation, no production HealthKit usage, no body-data reads, no WatchKit haptic playback, no Snow implementation, no route / speed / elevation mutation, no ActivityVisualization change, no package / Core Data / StoreKit change, and no sensor / session engine change.
+
+### Validation Notes
+
+```text
+TASK038C_FALL_SAFETY_SHELL_START
+VERIFY_TASK038C_FALL_SAFETY_SHELL_RESULT=PASSED
+EMERGENCY_PROMISE_COPY_COUNT=0
+FALSE_ALARM_PATH_PRESENT=YES
+FALL_DETECTION_IMPLEMENTED=NO
+EMERGENCY_SERVICE_IMPLEMENTED=NO
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+WATCHKIT_HAPTIC_PLAYBACK_COUNT=0
+FAILURE_COUNT=0
+NEXT_TASK=Task-038d
+```
+<!-- TASK038C_FALL_SAFETY_SHELL_END -->
+
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START -->
+## 2026-07-08 — Task-038d Haptics/Safety Verifier + Manual QA Closure Preparation
+
+### Completed
+- Added a Task-038 aggregate verifier for docs/verifier-only closure preparation.
+- The aggregate verifier checks Task-038a haptic intent evidence, Task-038b non-medical reminder shell evidence, Task-038c fall-safety presentation shell evidence, known-limitations coverage, manual-QA checklist coverage, allowed paths, and forbidden-scope boundaries.
+- Preserved Task-038d boundaries: no Swift changes, no Xcode project change, no localization runtime change, no production HealthKit usage, no WatchKit haptic playback, no fall detection implementation, no emergency/SOS automation, no Snow implementation, no route / speed / elevation mutation, and no develop merge claim.
+- Manual QA remains pending until the operator explicitly confirms the aggregate haptics/safety checklist.
+
+### Validation Notes
+
+```text
+TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_START
+VERIFY_TASK038_HAPTICS_SAFETY_PRE_QA_RESULT=PASSED
+MANUAL_QA_HAPTICS_SAFETY=PENDING_OPERATOR_CONFIRMATION
+KNOWN_LIMITATIONS_UPDATED=YES
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039a
+```
+<!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->

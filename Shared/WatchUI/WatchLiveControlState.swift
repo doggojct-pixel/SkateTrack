@@ -223,3 +223,226 @@ struct WatchLiveSpeedDisplayValue: Equatable, Sendable {
         self.isAvailable = true
     }
 }
+
+// MARK: - Safe Haptic Intent Model
+
+enum WatchHapticIntentKind: String, CaseIterable, Codable, Equatable, Sendable {
+    case sessionStart
+    case sessionPause
+    case sessionResume
+    case sessionEnd
+    case commandRejected
+    case safetyNotice
+
+    static func sessionControl(_ action: WatchLiveControlActionKind) -> Self {
+        switch action {
+        case .start:
+            return .sessionStart
+        case .pause:
+            return .sessionPause
+        case .resume:
+            return .sessionResume
+        case .stop:
+            return .sessionEnd
+        }
+    }
+}
+
+enum WatchHapticIntentTargetSupport: String, Codable, Equatable, Sendable {
+    case unavailable
+    case mockOnly
+    case deviceSupported
+
+    var allowsDevicePlayback: Bool {
+        self == .deviceSupported
+    }
+}
+
+enum WatchHapticIntentDecisionState: String, Codable, Equatable, Sendable {
+    case scheduled
+    case mockOnly
+    case disabled
+    case rateLimited
+    case duplicateSuppressed
+}
+
+struct WatchHapticIntent: Identifiable, Codable, Equatable, Sendable {
+    let id: String
+    let kind: WatchHapticIntentKind
+    let issuedAt: Date
+    let correlationId: String?
+    let sourceDescription: String
+
+    init(
+        id: String = UUID().uuidString,
+        kind: WatchHapticIntentKind,
+        issuedAt: Date = Date(),
+        correlationId: String? = nil,
+        sourceDescription: String
+    ) {
+        self.id = id
+        self.kind = kind
+        self.issuedAt = issuedAt
+        self.correlationId = correlationId
+        self.sourceDescription = sourceDescription
+    }
+
+    static func sessionControl(
+        _ action: WatchLiveControlActionKind,
+        issuedAt: Date = Date(),
+        correlationId: String? = nil
+    ) -> Self {
+        Self(
+            id: [WatchHapticIntentKind.sessionControl(action).rawValue, correlationId ?? UUID().uuidString]
+                .joined(separator: ":"),
+            kind: WatchHapticIntentKind.sessionControl(action),
+            issuedAt: issuedAt,
+            correlationId: correlationId,
+            sourceDescription: "watch live control"
+        )
+    }
+
+    var duplicateSuppressionKey: String {
+        [kind.rawValue, correlationId ?? id].joined(separator: ":")
+    }
+
+    var isSensorDerivedClaim: Bool {
+        false
+    }
+}
+
+struct WatchHapticIntentPolicy: Codable, Equatable, Sendable {
+    let minimumIntervalSeconds: TimeInterval
+    let duplicateSuppressionSeconds: TimeInterval
+    let targetSupport: WatchHapticIntentTargetSupport
+
+    init(
+        minimumIntervalSeconds: TimeInterval = 1.0,
+        duplicateSuppressionSeconds: TimeInterval = 2.0,
+        targetSupport: WatchHapticIntentTargetSupport = .mockOnly
+    ) {
+        self.minimumIntervalSeconds = max(0, minimumIntervalSeconds)
+        self.duplicateSuppressionSeconds = max(0, duplicateSuppressionSeconds)
+        self.targetSupport = targetSupport
+    }
+
+    static let disabled = WatchHapticIntentPolicy(targetSupport: .unavailable)
+    static let mockOnly = WatchHapticIntentPolicy(targetSupport: .mockOnly)
+
+    static func deviceSupported(
+        minimumIntervalSeconds: TimeInterval = 1.0,
+        duplicateSuppressionSeconds: TimeInterval = 2.0
+    ) -> Self {
+        Self(
+            minimumIntervalSeconds: minimumIntervalSeconds,
+            duplicateSuppressionSeconds: duplicateSuppressionSeconds,
+            targetSupport: .deviceSupported
+        )
+    }
+}
+
+struct WatchHapticIntentDecision: Codable, Equatable, Sendable {
+    let intent: WatchHapticIntent
+    let state: WatchHapticIntentDecisionState
+    let decidedAt: Date
+    let reason: String
+    let allowsDevicePlayback: Bool
+
+    var shouldPlayOnDevice: Bool {
+        state == .scheduled && allowsDevicePlayback
+    }
+}
+
+struct WatchHapticIntentGate: Sendable {
+    let policy: WatchHapticIntentPolicy
+    private var lastAcceptedByKind: [WatchHapticIntentKind: Date]
+    private var lastAcceptedByDuplicateKey: [String: Date]
+
+    init(
+        policy: WatchHapticIntentPolicy = .mockOnly,
+        lastAcceptedByKind: [WatchHapticIntentKind: Date] = [:],
+        lastAcceptedByDuplicateKey: [String: Date] = [:]
+    ) {
+        self.policy = policy
+        self.lastAcceptedByKind = lastAcceptedByKind
+        self.lastAcceptedByDuplicateKey = lastAcceptedByDuplicateKey
+    }
+
+    mutating func resolve(
+        _ intent: WatchHapticIntent,
+        decidedAt: Date = Date()
+    ) -> WatchHapticIntentDecision {
+        if policy.targetSupport == .unavailable {
+            return decision(
+                for: intent,
+                state: .disabled,
+                decidedAt: decidedAt,
+                reason: "haptic target unavailable or disabled",
+                allowsDevicePlayback: false
+            )
+        }
+
+        if let lastDuplicate = lastAcceptedByDuplicateKey[intent.duplicateSuppressionKey],
+           decidedAt.timeIntervalSince(lastDuplicate) < policy.duplicateSuppressionSeconds {
+            return decision(
+                for: intent,
+                state: .duplicateSuppressed,
+                decidedAt: decidedAt,
+                reason: "duplicate haptic intent suppressed",
+                allowsDevicePlayback: false
+            )
+        }
+
+        if let lastKind = lastAcceptedByKind[intent.kind],
+           decidedAt.timeIntervalSince(lastKind) < policy.minimumIntervalSeconds {
+            return decision(
+                for: intent,
+                state: .rateLimited,
+                decidedAt: decidedAt,
+                reason: "haptic intent rate limited",
+                allowsDevicePlayback: false
+            )
+        }
+
+        recordAccepted(intent, at: decidedAt)
+
+        if policy.targetSupport == .mockOnly {
+            return decision(
+                for: intent,
+                state: .mockOnly,
+                decidedAt: decidedAt,
+                reason: "haptic target is mock-only",
+                allowsDevicePlayback: false
+            )
+        }
+
+        return decision(
+            for: intent,
+            state: .scheduled,
+            decidedAt: decidedAt,
+            reason: "haptic intent scheduled",
+            allowsDevicePlayback: policy.targetSupport.allowsDevicePlayback
+        )
+    }
+
+    private mutating func recordAccepted(_ intent: WatchHapticIntent, at date: Date) {
+        lastAcceptedByKind[intent.kind] = date
+        lastAcceptedByDuplicateKey[intent.duplicateSuppressionKey] = date
+    }
+
+    private func decision(
+        for intent: WatchHapticIntent,
+        state: WatchHapticIntentDecisionState,
+        decidedAt: Date,
+        reason: String,
+        allowsDevicePlayback: Bool
+    ) -> WatchHapticIntentDecision {
+        WatchHapticIntentDecision(
+            intent: intent,
+            state: state,
+            decidedAt: decidedAt,
+            reason: reason,
+            allowsDevicePlayback: allowsDevicePlayback
+        )
+    }
+}

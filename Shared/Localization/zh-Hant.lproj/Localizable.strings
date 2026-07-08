@@ -1276,6 +1276,30 @@
 "watch.live.accessibility.resume" = "繼續紀錄";
 "watch.live.accessibility.stop" = "停止紀錄";
 
+// Task-038b watchOS reminder shell
+"watch.healthReminder.title" = "提醒";
+"watch.healthReminder.detail" = "僅提供本機喝水、休息與伸展提示；此版本不讀取身體資料。";
+"watch.healthReminder.status.disabled" = "Shell";
+"watch.healthReminder.status.shellOnly" = "本機";
+"watch.healthReminder.hydration.title" = "喝水";
+"watch.healthReminder.hydration.detail" = "停在安全位置後，安排短暫補水。";
+"watch.healthReminder.rest.title" = "休息";
+"watch.healthReminder.rest.detail" = "較長滑行中，預先安排短暫停歇。";
+"watch.healthReminder.stretch.title" = "伸展";
+"watch.healthReminder.stretch.detail" = "滑行結束後，再做簡短伸展。";
+"watch.healthReminder.accessibility.label" = "一般提醒 shell";
+
+// Task-038c watchOS fall safety presentation shell
+"watch.fallSafety.title" = "跌倒安全 shell";
+"watch.fallSafety.detail" = "僅為呈現 shell；不會進行跌倒判定、不會聯絡緊急服務，也不會讀取身體資料。";
+"watch.fallSafety.limitation" = "請先停在安全位置後再回應。";
+"watch.fallSafety.status.shell" = "Shell";
+"watch.fallSafety.status.dismissed" = "已關閉";
+"watch.fallSafety.status.falseAlarm" = "誤觸";
+"watch.fallSafety.dismiss" = "關閉";
+"watch.fallSafety.falseAlarm" = "誤觸";
+"watch.fallSafety.accessibility.label" = "跌倒安全呈現 shell";
+
 // Task-036c watchOS compact route, speed, and elevation cards
 "unit.length.meter.short" = "m";
 "watch.compact.route.title" = "路線";
