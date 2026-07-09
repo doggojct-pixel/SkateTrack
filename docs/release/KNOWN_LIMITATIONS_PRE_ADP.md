@@ -246,6 +246,27 @@ NEXT_TASK=Task-039b
 ```
 <!-- TASK039A_PRE_ADP_LIMITATIONS_END -->
 
+<!-- TASK039B_PRE_ADP_LIMITATIONS_START -->
+## Task-039b Watch Quick Start Placeholder Boundary
+
+Task-039b adds a disabled/provider-aware quick-start shell inside the watchOS live session face. The shell shows placeholder options only and keeps iPhone authority for session start.
+
+- Watch quick-start direct start is not implemented.
+- Watch-side session runtime start is not implemented.
+- Quick-start options do not send `startSession`, `prepareSession`, or any new command transport.
+- Provider-aware copy may show that the provider is unavailable or that iPhone authority is required.
+- No StoreKit, HealthKit, Snow, entitlement, schema, package, route, speed, elevation, or Core Data behavior changes are included.
+
+```text
+TASK039B_PRE_ADP_LIMITATIONS_START
+WATCH_QUICK_START_DIRECT_START=NO
+WATCH_QUICK_START_COMMAND_SENT=NO
+IPHONE_SESSION_START_AUTHORITY=YES
+DISABLED_PROVIDER_AWARE=YES
+NEXT_TASK=Task-039c
+```
+<!-- TASK039B_PRE_ADP_LIMITATIONS_END -->
+
 ### Task-030c-b10-r3 — Low-speed metrics and UI responsiveness
 
 - **Current status:** Task-030c-b10-r3 adds conservative trusted-metric gates for low-speed / small-area GPS jumps, rejects unstable Core Location altitude from elevation gain, prefers barometer-relative altitude when available, and moves package export work away from the main actor.

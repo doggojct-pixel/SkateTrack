@@ -3293,3 +3293,32 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-039b
 ```
 <!-- TASK039A_COMPLICATION_SHELL_END -->
+
+<!-- TASK039B_QUICK_START_SHELL_START -->
+## 2026-07-09 — Task-039b Quick Start Shell
+
+### Completed
+- Added a disabled/provider-aware Watch quick-start shell state with placeholder options for last mode, outdoor ride, and ready check.
+- Added a compact watchOS shell card to the live session face that preserves iPhone session-start authority and does not send a Watch-side start command.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-039b verifier covering branch/head baseline, allowed paths, project membership, localization, line/header rules, provider-aware disabled behavior, iPhone authority preservation, and forbidden runtime guardrails.
+- Preserved Task-039b boundaries: no Task-039c reward foundation, no production StoreKit, no HealthKit, no Snow implementation, no Watch-side session runtime start, no entitlements, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039B_QUICK_START_SHELL_START
+TASK039B_BRANCH=codex/task-039b-quick-start-shell
+TASK039B_BASELINE_HEAD=fc52d885a74f7e5c42bca9bd38ca65a8e1077282
+WATCH_QUICK_START_SHELL_PRESENT=YES
+WATCH_QUICK_START_OPTIONS=lastMode|outdoorRide|readyCheck
+WATCH_QUICK_START_DIRECT_START=NO
+IPHONE_AUTHORITY_PRESERVED=YES
+DISABLED_PROVIDER_AWARE=YES
+VERIFY_TASK039B_QUICK_START_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039B_QUICK_START=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039c
+```
+<!-- TASK039B_QUICK_START_SHELL_END -->

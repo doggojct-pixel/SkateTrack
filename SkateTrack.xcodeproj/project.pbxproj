@@ -424,6 +424,10 @@
 		39A100000000000000000102 /* WatchComplicationShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A100000000000000000001 /* WatchComplicationShellState.swift */; };
 		39A200000000000000000101 /* watchOS/Features/WatchComplicationShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A200000000000000000001 /* watchOS/Features/WatchComplicationShellView.swift */; };
 		39A900000000000000000101 /* WatchComplicationShellStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A900000000000000000001 /* WatchComplicationShellStateTests.swift */; };
+		39B100000000000000000101 /* WatchQuickStartShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B100000000000000000001 /* WatchQuickStartShellState.swift */; };
+		39B100000000000000000102 /* WatchQuickStartShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B100000000000000000001 /* WatchQuickStartShellState.swift */; };
+		39B200000000000000000101 /* watchOS/Features/WatchQuickStartShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B200000000000000000001 /* watchOS/Features/WatchQuickStartShellView.swift */; };
+		39B900000000000000000101 /* WatchQuickStartShellStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B900000000000000000001 /* WatchQuickStartShellStateTests.swift */; };
 		38B100000000000000000101 /* WatchHealthReminderShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B100000000000000000001 /* WatchHealthReminderShellState.swift */; };
 		38B100000000000000000102 /* WatchHealthReminderShellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B100000000000000000001 /* WatchHealthReminderShellState.swift */; };
 		38B200000000000000000101 /* watchOS/Features/WatchHealthReminderShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */; };
@@ -823,6 +827,9 @@
 		39A100000000000000000001 /* WatchComplicationShellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchComplicationShellState.swift; sourceTree = "<group>"; };
 		39A200000000000000000001 /* watchOS/Features/WatchComplicationShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchComplicationShellView.swift; sourceTree = SOURCE_ROOT; };
 		39A900000000000000000001 /* WatchComplicationShellStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchComplicationShellStateTests.swift; sourceTree = "<group>"; };
+		39B100000000000000000001 /* WatchQuickStartShellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchQuickStartShellState.swift; sourceTree = "<group>"; };
+		39B200000000000000000001 /* watchOS/Features/WatchQuickStartShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchQuickStartShellView.swift; sourceTree = SOURCE_ROOT; };
+		39B900000000000000000001 /* WatchQuickStartShellStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchQuickStartShellStateTests.swift; sourceTree = "<group>"; };
 		38B100000000000000000001 /* WatchHealthReminderShellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthReminderShellState.swift; sourceTree = "<group>"; };
 		38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchHealthReminderShellView.swift; sourceTree = SOURCE_ROOT; };
 		38B900000000000000000001 /* WatchHealthReminderShellStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthReminderShellStateTests.swift; sourceTree = "<group>"; };
@@ -1078,6 +1085,7 @@
 				36A900000000000000000001 /* WatchActivityViewModelTests.swift */,
 				36B900000000000000000001 /* WatchLiveControlStateTests.swift */,
 				39A900000000000000000001 /* WatchComplicationShellStateTests.swift */,
+				39B900000000000000000001 /* WatchQuickStartShellStateTests.swift */,
 				38B900000000000000000001 /* WatchHealthReminderShellStateTests.swift */,
 				38C900000000000000000001 /* WatchFallSafetyPresentationShellStateTests.swift */,
 				37A900000000000000000001 /* WatchMetricProviderTests.swift */,
@@ -1583,6 +1591,7 @@
 				36A100000000000000000001 /* WatchActivityViewModel.swift */,
 				36B100000000000000000001 /* WatchLiveControlState.swift */,
 				39A100000000000000000001 /* WatchComplicationShellState.swift */,
+				39B100000000000000000001 /* WatchQuickStartShellState.swift */,
 				38B100000000000000000001 /* WatchHealthReminderShellState.swift */,
 				38C100000000000000000001 /* WatchFallSafetyPresentationShellState.swift */,
 				37A100000000000000000001 /* WatchMetricProvider.swift */,
@@ -1603,6 +1612,7 @@
 			children = (
 				36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */,
 				39A200000000000000000001 /* watchOS/Features/WatchComplicationShellView.swift */,
+				39B200000000000000000001 /* watchOS/Features/WatchQuickStartShellView.swift */,
 				38B200000000000000000001 /* watchOS/Features/WatchHealthReminderShellView.swift */,
 				38C200000000000000000001 /* watchOS/Features/WatchFallSafetyPresentationShellView.swift */,
 				37B200000000000000000001 /* watchOS/Features/WatchMetricCarouselView.swift */,
@@ -1897,6 +1907,7 @@
 				36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */,
 				36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */,
 				39A900000000000000000101 /* WatchComplicationShellStateTests.swift in Sources */,
+				39B900000000000000000101 /* WatchQuickStartShellStateTests.swift in Sources */,
 				38B900000000000000000101 /* WatchHealthReminderShellStateTests.swift in Sources */,
 				38C900000000000000000101 /* WatchFallSafetyPresentationShellStateTests.swift in Sources */,
 				37A900000000000000000101 /* WatchMetricProviderTests.swift in Sources */,
@@ -1965,6 +1976,7 @@
 				36A100000000000000000101 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000101 /* WatchLiveControlState.swift in Sources */,
 				39A100000000000000000101 /* WatchComplicationShellState.swift in Sources */,
+				39B100000000000000000101 /* WatchQuickStartShellState.swift in Sources */,
 				38B100000000000000000101 /* WatchHealthReminderShellState.swift in Sources */,
 				38C100000000000000000101 /* WatchFallSafetyPresentationShellState.swift in Sources */,
 				37A100000000000000000101 /* WatchMetricProvider.swift in Sources */,
@@ -2339,6 +2351,7 @@
 				36A100000000000000000102 /* WatchActivityViewModel.swift in Sources */,
 				36B100000000000000000102 /* WatchLiveControlState.swift in Sources */,
 				39A100000000000000000102 /* WatchComplicationShellState.swift in Sources */,
+				39B100000000000000000102 /* WatchQuickStartShellState.swift in Sources */,
 				38B100000000000000000102 /* WatchHealthReminderShellState.swift in Sources */,
 				38C100000000000000000102 /* WatchFallSafetyPresentationShellState.swift in Sources */,
 				37A100000000000000000102 /* WatchMetricProvider.swift in Sources */,
@@ -2346,6 +2359,7 @@
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
 				36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */,
 				39A200000000000000000101 /* watchOS/Features/WatchComplicationShellView.swift in Sources */,
+				39B200000000000000000101 /* watchOS/Features/WatchQuickStartShellView.swift in Sources */,
 				38B200000000000000000101 /* watchOS/Features/WatchHealthReminderShellView.swift in Sources */,
 				38C200000000000000000101 /* watchOS/Features/WatchFallSafetyPresentationShellView.swift in Sources */,
 				37B200000000000000000101 /* watchOS/Features/WatchMetricCarouselView.swift in Sources */,

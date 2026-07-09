@@ -26,6 +26,7 @@ struct WatchLiveSessionFaceView: View {
         let controls = WatchLiveControlState(viewModel: viewModel)
         let modeAccent = WatchLivePalette.accentColor(for: viewModel.session.mode.sportModeKey)
         let metricSelection = WatchMetricProviderSelector().makeSelection(for: viewModel)
+        let quickStartShell = WatchQuickStartShellState(viewModel: viewModel)
         let complicationShell = WatchComplicationShellState.disabled(generatedAt: viewModel.generatedAt)
         let reminderShell = WatchHealthReminderShellState.disabled(generatedAt: viewModel.generatedAt)
 
@@ -80,6 +81,11 @@ struct WatchLiveSessionFaceView: View {
 
                         WatchComplicationShellView(
                             state: complicationShell,
+                            accentColor: modeAccent
+                        )
+
+                        WatchQuickStartShellView(
+                            state: quickStartShell,
                             accentColor: modeAccent
                         )
 

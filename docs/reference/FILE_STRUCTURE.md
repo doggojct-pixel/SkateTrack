@@ -3072,3 +3072,42 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-039b
 ```
 <!-- TASK039A_COMPLICATION_SHELL_END -->
+
+<!-- TASK039B_QUICK_START_SHELL_START -->
+## Task-039b Quick Start Shell Addendum
+
+Task-039b adds a disabled/provider-aware Watch quick-start shell under Pre-ADP limits. It is shell state/UI only and does not add direct Watch session start, new session runtime, new command transport behavior, Task-039c reward foundation, StoreKit dependency, HealthKit usage, Snow implementation, route / speed / elevation mutation, package schema change, or Core Data change.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchQuickStartShellState.swift        # [協作區] New disabled/provider-aware quick-start shell state preserving iPhone session-start authority.
+watchOS/Features/WatchQuickStartShellView.swift       # [協作區] New compact watchOS shell card with provider-aware unavailable/iPhone-authority copy.
+watchOS/Features/WatchLiveSessionFaceView.swift       # [協作區] Integrates the quick-start shell card without changing existing command runtime.
+Tests/iOSTests/WatchQuickStartShellStateTests.swift   # [工程設定] Tests iPhone authority, provider-aware disabled state, no Watch-side start command, and placeholder options.
+scripts/verify_task039b_quick_start_shell.py          # [工程設定] Task-039b verifier for allowed paths, membership, localization, line/header, iPhone authority, provider-aware disabled behavior, and forbidden runtime guardrails.
+Shared/Localization/en.lproj/Localizable.strings      # [原則 A] Adds Task-039b quick-start shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings # [原則 A] Adds Task-039b quick-start shell strings.
+Shared/Localization/ja.lproj/Localizable.strings      # [原則 A] Adds Task-039b quick-start shell strings.
+SkateTrack.xcodeproj/project.pbxproj                  # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                               # [原則 E] Records Task-039b implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                      # [原則 E] Records Task-039b file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                  # [原則 E] Records Task-039b state before commit / push review.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # [原則 E] Records Pre-ADP quick-start direct-start limitation.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md              # [原則 E] Adds Task-039b manual QA checklist.
+```
+
+### Closure markers
+
+```text
+TASK039B_QUICK_START_SHELL_START
+VERIFY_TASK039B_QUICK_START_SHELL_RESULT=PASSED
+WATCH_QUICK_START_SHELL_PRESENT=YES
+WATCH_QUICK_START_DIRECT_START=NO
+IPHONE_AUTHORITY_PRESERVED=YES
+DISABLED_PROVIDER_AWARE=YES
+MANUAL_QA_TASK039B_QUICK_START=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+NEXT_TASK=Task-039c
+```
+<!-- TASK039B_QUICK_START_SHELL_END -->

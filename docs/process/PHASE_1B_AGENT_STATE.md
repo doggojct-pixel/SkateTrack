@@ -910,3 +910,39 @@ Task-039a adds only a disabled/readiness shell for Watch face complication place
 
 Manual QA remains pending because the live watch face gains a visible shell card. The operator must confirm layout, localization, accessibility wording, and absence of production complication claims before commit/push.
 <!-- TASK039A_COMPLICATION_SHELL_END -->
+
+<!-- TASK039B_QUICK_START_SHELL_START -->
+## Task-039b Quick Start Shell
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-039b — Quick Start Shell`
+
+```text
+TASK039B_BRANCH=codex/task-039b-quick-start-shell
+TASK039B_BASELINE_HEAD=fc52d885a74f7e5c42bca9bd38ca65a8e1077282
+TASK039B_SOURCE_AUDIT_BRANCH=codex/task-039a-complication-shell
+TASK039B_SOURCE_AUDIT_HEAD=fc52d885a74f7e5c42bca9bd38ca65a8e1077282
+WATCH_QUICK_START_SHELL_PRESENT=YES
+WATCH_QUICK_START_OPTIONS=lastMode|outdoorRide|readyCheck
+WATCH_QUICK_START_DIRECT_START=NO
+WATCH_QUICK_START_COMMAND_SENT=NO
+IPHONE_AUTHORITY_PRESERVED=YES
+DISABLED_PROVIDER_AWARE=YES
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+SCHEMA_OR_CORE_DATA_MUTATION=NO
+PACKAGE_SCHEMA_MUTATION=NO
+VERIFY_TASK039B_QUICK_START_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039B_QUICK_START=PENDING_OPERATOR_CONFIRMATION
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039c
+```
+
+Task-039b adds only a disabled/provider-aware quick-start placeholder shell. It does not add direct Watch session start, new session runtime, new command transport behavior, Task-039c reward foundation, production StoreKit, HealthKit, Snow, route / speed / elevation mutation, package schema change, or Core Data change.
+
+Manual QA is required because the live watch face gains a visible shell card. The operator must confirm layout, localization, accessibility wording, provider-aware disabled state, and preserved iPhone authority before commit/push.
+<!-- TASK039B_QUICK_START_SHELL_END -->
