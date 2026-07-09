@@ -1276,6 +1276,19 @@
 "watch.live.accessibility.resume" = "記録を再開";
 "watch.live.accessibility.stop" = "記録を停止";
 
+// Task-039a complication shell
+"watch.complication.title" = "文字盤";
+"watch.complication.detail" = "このビルドでは文字盤コンプリケーションのプレースホルダーは利用できません。ライブ状態は App で確認してください。";
+"watch.complication.status.unavailable" = "未対応";
+"watch.complication.status.placeholder" = "シェル";
+"watch.complication.speed.title" = "速度";
+"watch.complication.speed.detail" = "速度プレースホルダーのみです。文字盤へのライブ表示は有効ではありません。";
+"watch.complication.time.title" = "時間";
+"watch.complication.time.detail" = "経過時間プレースホルダーのみです。文字盤へのライブ表示は有効ではありません。";
+"watch.complication.distance.title" = "距離";
+"watch.complication.distance.detail" = "距離プレースホルダーのみです。文字盤へのライブ表示は有効ではありません。";
+"watch.complication.accessibility.label" = "文字盤コンプリケーションのプレースホルダーシェル";
+
 // Task-038b watchOS reminder shell
 "watch.healthReminder.title" = "リマインダー";
 "watch.healthReminder.detail" = "水分補給、休憩、ストレッチのローカル通知シェルです。このビルドでは身体データを読み取りません。";

@@ -219,6 +219,33 @@ Task-030c-b10 verification token: Effective Background Location Runtime + Gap Re
 
 Task-030c-b10-r2 verification token: Startup Speed Spike + Fall Handling Guard, Task-030c-b10-r2, startup coordinate-derived speed, fall handling, raw diagnostics preserved.
 
+<!-- TASK039A_PRE_ADP_LIMITATIONS_START -->
+## Task-039a Watch Face Complication Placeholder Boundary
+
+Current status:
+
+- Task-039a adds a disabled Watch face complication readiness shell inside the watchOS live session face.
+- The shell shows placeholder categories only: current speed, elapsed time, and distance.
+- No Watch face complication extension, WidgetKit timeline, ClockKit data source, complication target, or app capability is implemented.
+- No production distribution path, TestFlight readiness claim, App Store readiness claim, or watch-face delivery promise is made.
+
+Remaining limitations:
+
+- Watch face complication delivery is unavailable in this build.
+- The user must open the Watch app live face to view live ride status.
+- Future complication work requires a separately approved extension/capability task, localized copy review, watchOS build verification, and manual QA on relevant watch faces.
+
+```text
+TASK039A_PRE_ADP_LIMITATIONS_START
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+NEXT_TASK=Task-039b
+```
+<!-- TASK039A_PRE_ADP_LIMITATIONS_END -->
+
 ### Task-030c-b10-r3 — Low-speed metrics and UI responsiveness
 
 - **Current status:** Task-030c-b10-r3 adds conservative trusted-metric gates for low-speed / small-area GPS jumps, rejects unstable Core Location altitude from elevation gain, prefers barometer-relative altitude when available, and moves package export work away from the main actor.

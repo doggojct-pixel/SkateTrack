@@ -871,3 +871,42 @@ Aggregate manual QA checklist:
 - 確認 Snow 功能沒有出現或改變。
 - 完成後回報 MANUAL_QA_HAPTICS_SAFETY=PASSED 或明確列出失敗項目。
 <!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->
+
+<!-- TASK039A_COMPLICATION_SHELL_START -->
+## Task-039a Complication Shell
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-039a — Complication Shell`
+
+```text
+TASK039A_BRANCH=codex/task-039a-complication-shell
+TASK039A_BASELINE_DEVELOP_HEAD=769815d9e693d6303ffb9e9f2c2881321d16a389
+TASK039A_SOURCE_AUDIT_BRANCH=develop
+TASK039A_SOURCE_AUDIT_ORIGIN_DEVELOP_HEAD=769815d9e693d6303ffb9e9f2c2881321d16a389
+WATCH_COMPLICATION_SHELL_PRESENT=YES
+WATCH_COMPLICATION_PLACEHOLDER_SLOTS=currentSpeed|elapsedTime|distance
+WATCH_COMPLICATION_DEFAULT=UNAVAILABLE_SHELL_ONLY
+WATCH_COMPLICATION_VISIBLE_UI=YES
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+HEALTHKIT_PRODUCTION_USAGE_COUNT=0
+PRODUCTION_STOREKIT_DEPENDENCY_COUNT=0
+SNOW_PRODUCTION_IMPLEMENTED=NO
+ROUTE_GEOMETRY_MUTATION=NO
+TRUSTED_METRIC_MUTATION=NO
+SCHEMA_OR_CORE_DATA_MUTATION=NO
+PACKAGE_SCHEMA_MUTATION=NO
+VERIFY_TASK039A_COMPLICATION_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039A_COMPLICATION=PENDING_OPERATOR_CONFIRMATION
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039b
+```
+
+Task-039a adds only a disabled/readiness shell for Watch face complication placeholders. It does not add a WidgetKit or ClockKit extension, timeline provider, complication target, app capability, production distribution path, StoreKit dependency, HealthKit usage, Snow behavior, quick-start command path, reward foundation, route / speed / elevation mutation, package schema change, or Core Data change.
+
+Manual QA remains pending because the live watch face gains a visible shell card. The operator must confirm layout, localization, accessibility wording, and absence of production complication claims before commit/push.
+<!-- TASK039A_COMPLICATION_SHELL_END -->

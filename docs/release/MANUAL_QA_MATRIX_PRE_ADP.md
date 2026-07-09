@@ -165,3 +165,29 @@ Required aggregate checklist:
 
 Task-038d manual QA token: aggregate haptics/safety manual QA pending, no production HealthKit, no WatchKit haptic playback, no emergency/SOS automation, no fall detection implementation.
 <!-- TASK038D_HAPTICS_SAFETY_MANUAL_QA_END -->
+
+<!-- TASK039A_COMPLICATION_MANUAL_QA_START -->
+## Task-039a Complication Shell Manual QA Gate
+
+Task-039a changes the visible watchOS live session face by adding a disabled Watch face complication placeholder shell. Manual QA is required before commit/push.
+
+Manual QA status:
+
+```text
+MANUAL_QA_TASK039A_COMPLICATION=PENDING_OPERATOR_CONFIRMATION
+```
+
+Required checklist:
+
+- 在 watchOS simulator 開啟 live session face。
+- 確認新增的 Watch face / 錶面 shell 卡片位置合理，沒有擠壓或遮住速度、紀錄狀態、Health Reminder shell、Fall Safety shell、metric carousel 或 live controls。
+- 確認卡片呈現 unavailable / 未開放狀態，不宣稱可新增到錶面、不宣稱 TestFlight / App Store / production distribution readiness。
+- 確認 speed / time / distance 只是 placeholder slot，沒有提供錶面 timeline 或真正 complication 更新。
+- 確認沒有新增 WidgetKit / ClockKit 權限提示、extension 行為或能力要求。
+- 檢查 English、Traditional Chinese、Japanese 文案沒有缺 key、重疊或過長遮擋。
+- 使用 VoiceOver / Accessibility Inspector spot check，確認 accessibility label 也只描述 placeholder shell。
+- 確認 Snow、StoreKit、HealthKit、route / speed / elevation runtime 行為沒有改變。
+- 完成後回報 MANUAL_QA_TASK039A_COMPLICATION=PASSED 或明確列出失敗項目。
+
+Task-039a manual QA token: complication shell pending, no WidgetKit extension, no ClockKit data source, no production complication distribution claim.
+<!-- TASK039A_COMPLICATION_MANUAL_QA_END -->

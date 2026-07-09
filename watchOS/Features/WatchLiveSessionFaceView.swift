@@ -26,6 +26,7 @@ struct WatchLiveSessionFaceView: View {
         let controls = WatchLiveControlState(viewModel: viewModel)
         let modeAccent = WatchLivePalette.accentColor(for: viewModel.session.mode.sportModeKey)
         let metricSelection = WatchMetricProviderSelector().makeSelection(for: viewModel)
+        let complicationShell = WatchComplicationShellState.disabled(generatedAt: viewModel.generatedAt)
         let reminderShell = WatchHealthReminderShellState.disabled(generatedAt: viewModel.generatedAt)
 
         Group {
@@ -76,6 +77,11 @@ struct WatchLiveSessionFaceView: View {
                                 .foregroundStyle(.white)
                                 .accessibilityLabel(Text("watch.live.accessibility.sessionStatus"))
                         }
+
+                        WatchComplicationShellView(
+                            state: complicationShell,
+                            accentColor: modeAccent
+                        )
 
                         WatchHealthReminderShellView(
                             state: reminderShell,

@@ -3262,3 +3262,34 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-039a
 ```
 <!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->
+
+<!-- TASK039A_COMPLICATION_SHELL_START -->
+## 2026-07-09 — Task-039a Complication Shell
+
+### Completed
+- Added a disabled Watch complication readiness shell state with speed, elapsed-time, and distance placeholder slots.
+- Added a compact watchOS shell card to the live session face with unavailable copy, without adding a WidgetKit / ClockKit extension, timeline provider, or complication target.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-039a verifier covering branch/head baseline, allowed paths, project membership, localization, line/header rules, no runtime complication APIs, no extension target/capability changes, and no production availability claims.
+- Preserved Task-039a boundaries: no production complication distribution claim, no Task-039b quick start, no Task-039c reward foundation, no StoreKit, no HealthKit, no Snow implementation, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039A_COMPLICATION_SHELL_START
+TASK039A_BRANCH=codex/task-039a-complication-shell
+TASK039A_BASELINE_DEVELOP_HEAD=769815d9e693d6303ffb9e9f2c2881321d16a389
+WATCH_COMPLICATION_SHELL_PRESENT=YES
+WATCH_COMPLICATION_PLACEHOLDER_SLOTS=currentSpeed|elapsedTime|distance
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+VERIFY_TASK039A_COMPLICATION_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039A_COMPLICATION=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039b
+```
+<!-- TASK039A_COMPLICATION_SHELL_END -->

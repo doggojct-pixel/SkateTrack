@@ -3031,3 +3031,44 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-039a
 ```
 <!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->
+
+<!-- TASK039A_COMPLICATION_SHELL_START -->
+## Task-039a Complication Shell Addendum
+
+Task-039a adds a disabled Watch face complication readiness shell under Pre-ADP limits. It is shell state/UI only and does not add a WidgetKit extension, ClockKit data source, timeline provider, complication target, app capability, production distribution path, Task-039b quick start behavior, Task-039c reward foundation, StoreKit dependency, HealthKit usage, Snow implementation, route / speed / elevation mutation, package schema change, or Core Data change.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchComplicationShellState.swift       # [協作區] New disabled complication shell state with speed, elapsed-time, and distance placeholder slots.
+watchOS/Features/WatchComplicationShellView.swift      # [協作區] New compact watchOS shell card with unavailable/readiness copy.
+watchOS/Features/WatchLiveSessionFaceView.swift        # [協作區] Integrates the complication shell card without changing metric carousel runtime.
+Tests/iOSTests/WatchComplicationShellStateTests.swift  # [工程設定] Tests disabled shell state, placeholder slots, no runtime extension/capability flags, and no release-readiness claims.
+scripts/verify_task039a_complication_shell.py          # [工程設定] Task-039a verifier for allowed paths, membership, localization, line/header, runtime/API, extension-target, and claim guardrails.
+Shared/Localization/en.lproj/Localizable.strings       # [原則 A] Adds Task-039a complication shell strings.
+Shared/Localization/zh-Hant.lproj/Localizable.strings  # [原則 A] Adds Task-039a complication shell strings.
+Shared/Localization/ja.lproj/Localizable.strings       # [原則 A] Adds Task-039a complication shell strings.
+SkateTrack.xcodeproj/project.pbxproj                   # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                                # [原則 E] Records Task-039a implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                       # [原則 E] Records Task-039a file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                   # [原則 E] Records Task-039a state before commit / push review.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md              # [原則 E] Records Pre-ADP complication distribution limitation.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md               # [原則 E] Adds Task-039a manual QA checklist.
+```
+
+### Closure markers
+
+```text
+TASK039A_COMPLICATION_SHELL_START
+VERIFY_TASK039A_COMPLICATION_SHELL_RESULT=PASSED
+WATCH_COMPLICATION_SHELL_PRESENT=YES
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+MANUAL_QA_TASK039A_COMPLICATION=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+NEXT_TASK=Task-039b
+```
+<!-- TASK039A_COMPLICATION_SHELL_END -->
