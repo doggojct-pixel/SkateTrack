@@ -10,8 +10,12 @@ ROOT = Path.cwd()
 
 REQUIRED_FILES = [
     "Shared/WatchUI/WatchActivityViewModel.swift",
+    "Shared/WatchUI/WatchMetricCarouselModel.swift",
+    "Shared/WatchUI/WatchMetricProvider.swift",
     "watchOS/Features/WatchLiveSessionFaceView.swift",
+    "watchOS/Features/WatchMetricCarouselView.swift",
     "Tests/iOSTests/WatchActivityViewModelTests.swift",
+    "Tests/iOSTests/WatchMetricCarouselModelTests.swift",
     "scripts/verify_task036c_compact_cards.py",
     "docs/history/DEV_LOG.md",
 ]
@@ -49,10 +53,28 @@ WATCH_VIEW_TOKENS = [
     "WatchRouteCompactCardView",
     "WatchSparklineCompactCardView",
     "WatchCompactSparklineView",
+    "WatchMetricCarouselView",
     "watch.compact.route.status.qualityInsufficient",
-    "watch.compact.speed.title",
-    "watch.compact.elevation.title",
     "WatchLivePalette.accentColor",
+]
+
+CAROUSEL_TOKENS = [
+    "WatchMetricCarouselModel",
+    "hasRenderableCompactSpeed",
+    "hasRenderableCompactElevation",
+    "watch-metric-carousel-speed-card",
+    "watch-metric-carousel-elevation-card",
+    "watch.compact.speed.max",
+    "watch.compact.elevation.ascent",
+    "WatchMetricCarouselSparklineView",
+    "Text(LocalizedStringKey(card.titleLocalizationKey))",
+]
+
+PROVIDER_TOKENS = [
+    'titleLocalizationKey: "watch.compact.speed.title"',
+    'titleLocalizationKey: "watch.compact.elevation.title"',
+    "source: hasCompactValues ? .compactSpeedSparkline : .unavailable",
+    "source: hasCompactValues ? .compactElevationProfile : .unavailable",
 ]
 
 TEST_TOKENS = [
@@ -102,13 +124,25 @@ def main() -> int:
             fail(f"missing required file {relative}", failures)
 
     viewmodel = read("Shared/WatchUI/WatchActivityViewModel.swift") if (ROOT / "Shared/WatchUI/WatchActivityViewModel.swift").exists() else ""
+    carousel_model = read("Shared/WatchUI/WatchMetricCarouselModel.swift") if (ROOT / "Shared/WatchUI/WatchMetricCarouselModel.swift").exists() else ""
+    metric_provider = read("Shared/WatchUI/WatchMetricProvider.swift") if (ROOT / "Shared/WatchUI/WatchMetricProvider.swift").exists() else ""
     watch_view = read("watchOS/Features/WatchLiveSessionFaceView.swift") if (ROOT / "watchOS/Features/WatchLiveSessionFaceView.swift").exists() else ""
+    carousel_view = read("watchOS/Features/WatchMetricCarouselView.swift") if (ROOT / "watchOS/Features/WatchMetricCarouselView.swift").exists() else ""
     tests = read("Tests/iOSTests/WatchActivityViewModelTests.swift") if (ROOT / "Tests/iOSTests/WatchActivityViewModelTests.swift").exists() else ""
+    carousel_tests = read("Tests/iOSTests/WatchMetricCarouselModelTests.swift") if (ROOT / "Tests/iOSTests/WatchMetricCarouselModelTests.swift").exists() else ""
     dev_log = read("docs/history/DEV_LOG.md") if (ROOT / "docs/history/DEV_LOG.md").exists() else ""
 
     require_tokens(viewmodel, VIEWMODEL_TOKENS, "view model compact card", failures)
     require_tokens(watch_view, WATCH_VIEW_TOKENS, "watch compact card UI", failures)
+    require_tokens(carousel_model + "\n" + carousel_view, CAROUSEL_TOKENS, "watch metric carousel compact UI", failures)
+    require_tokens(metric_provider, PROVIDER_TOKENS, "watch metric provider compact output", failures)
     require_tokens(tests, TEST_TOKENS, "compact card test", failures)
+    require_tokens(
+        carousel_tests,
+        ["testCarouselModelUsesCompactSpeedAndElevationProviderOutputs", ".compactSpeedSparkline", ".compactElevationProfile"],
+        "metric carousel compact test",
+        failures,
+    )
 
     localization_complete = True
     for locale in ["en", "zh-Hant", "ja"]:
@@ -126,7 +160,9 @@ def main() -> int:
     semantic_fork_count = 0
     for relative in [
         "Shared/WatchUI/WatchActivityViewModel.swift",
+        "Shared/WatchUI/WatchMetricCarouselModel.swift",
         "watchOS/Features/WatchLiveSessionFaceView.swift",
+        "watchOS/Features/WatchMetricCarouselView.swift",
     ]:
         path = ROOT / relative
         if not path.exists():

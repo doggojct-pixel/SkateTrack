@@ -3351,3 +3351,61 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-040a
 ```
 <!-- TASK039C_REWARD_FOUNDATION_END -->
+
+<!-- TASK040A_SIMULATOR_QA_MATRIX_START -->
+## 2026-07-09 — Task-040a Phase 1b Simulator QA Matrix
+
+### Completed
+- Added a docs/verifier-only Phase 1b simulator QA matrix covering iPhone session smoke, Watch connection and mirrored-control states, Watch sample availability and fallback states, Shared ActivityVisualization compact sanity, iOS/macOS route/speed/elevation parity, macOS multi-package viewer smoke, Task-030d import smoke, localization parity, and no estimated route / trusted metric / package schema break guardrails.
+- Documented real paired iPhone/Watch requirements as Phase 2 / post-ADP limitation items while accepting simulator/local-Mac evidence for Pre-ADP Task-040a closure.
+- Added `scripts/verify_task040a_simulator_qa.py` to verify Task-040a docs coverage, allowed paths, forbidden runtime scope, evidence-source references, and required closure markers.
+- Refreshed stale verifier tokens in the Watch compact card, ActivityVisualization final parity, and macOS multi-package viewer verifiers so they match the current Task-037 carousel, package manifest safety flag, and macOS Shared route display pipeline structure.
+- Preserved Task-039a complication shell behavior, Task-039b quick-start iPhone authority, and Task-039c reward foundation local-only/non-monetized boundaries.
+
+### Validation Notes
+
+```text
+TASK040A_SIMULATOR_QA_MATRIX_START
+TASK040A_BRANCH=codex/task-040a-simulator-qa-matrix
+TASK040A_BASELINE_DEVELOP_HEAD=6b5f7606b1e096b94712c0d8c9a81578def00016
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+FAILURE_COUNT=0
+MANUAL_QA_REQUIRED=NO
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+NEXT_TASK=Task-040b
+```
+<!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
+
+<!-- TASK040B_ARCHIVE_READINESS_START -->
+## 2026-07-09 — Task-040b Archive Readiness Checks
+
+### Completed
+- Added a Task-040b archive-readiness verifier for signing/capability drift, empty development-team posture, entitlement absence, shared scheme presence, required documentation tokens, allowed paths, and forbidden-scope guardrails.
+- Documented no-signing build gates for iOS, watchOS, and macOS with `CODE_SIGNING_ALLOWED=NO`.
+- Updated Pre-ADP release readiness and known limitations to keep archive readiness honest without claiming ADP, TestFlight, App Store, production HealthKit, production StoreKit, WidgetKit/ClockKit runtime, or Snow readiness.
+- Preserved Task-039a/039b/039c behavior and Task-040a simulator QA matrix evidence.
+
+### Validation Notes
+
+```text
+TASK040B_ARCHIVE_READINESS_START
+TASK040B_BRANCH=codex/task-040b-archive-readiness
+TASK040B_BASELINE_HEAD=fce2e15f935c47cfc7d486e96facd19551e43c45
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+NO_SIGNING_BUILD_GATES=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+FAILURE_COUNT=0
+MANUAL_QA_REQUIRED=NO
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+NEXT_TASK=Task-040c
+```
+<!-- TASK040B_ARCHIVE_READINESS_END -->

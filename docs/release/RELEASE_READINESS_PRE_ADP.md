@@ -117,6 +117,43 @@ Check shared Xcode schemes for local test pollution:
 git --no-pager diff -- SkateTrack.xcodeproj/xcshareddata/xcschemes
 ```
 
+<!-- TASK040B_ARCHIVE_READINESS_START -->
+## Task-040b Archive Readiness Checks
+
+Task-040b prepares archive-readiness evidence without doing release work. It documents no-signing build gates and signing/capability boundaries only. No Apple Developer Program enrollment, no TestFlight release, no signing team change, no entitlement/capability change, no bundle identifier change, no production HealthKit capability, and no production StoreKit or Snow work is included.
+
+Required no-signing build gates:
+
+```bash
+xcodebuild -project SkateTrack.xcodeproj -list -json
+xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-iOS -destination generic/platform=iOS -configuration Debug CODE_SIGNING_ALLOWED=NO -skipPackagePluginValidation -skipMacroValidation build
+xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-watchOS -destination generic/platform=watchOS -configuration Debug CODE_SIGNING_ALLOWED=NO -skipPackagePluginValidation -skipMacroValidation build
+xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-macOS -destination platform=macOS -configuration Debug CODE_SIGNING_ALLOWED=NO -skipPackagePluginValidation -skipMacroValidation build
+```
+
+Build settings documented for Task-040b:
+
+- Existing app/test targets keep `CODE_SIGN_STYLE = Automatic`.
+- Existing `DEVELOPMENT_TEAM` values remain empty.
+- No `CODE_SIGN_ENTITLEMENTS` setting is present.
+- No `.entitlements` file is present.
+- No `SystemCapabilities`, `UTExportedTypeDeclarations`, `CFBundleDocumentTypes`, or `com.apple.developer.*` capability token is introduced.
+- Existing bundle identifiers remain local development identifiers: `com.jjf.skatetrack`, `com.jjf.skatetrack.watchkitapp`, `com.jjf.skatetrack.mac`, and `com.jjf.skatetrack.tests`.
+
+```text
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+NO_SIGNING_BUILD_GATES=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+No Apple Developer Program enrollment
+No TestFlight release
+No signing team change
+No production HealthKit capability
+FAILURE_COUNT=0
+```
+<!-- TASK040B_ARCHIVE_READINESS_END -->
+
 Expected output: none, unless the task explicitly changes a shared scheme. Local App Language, App Region, System Language overrides, and Location Scenario settings should not be committed.
 
 ## 5. Localization gate

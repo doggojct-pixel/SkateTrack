@@ -985,3 +985,71 @@ Task-039c adds only a local/state reward foundation. It does not add production 
 
 Manual QA is not required for this first run because no visible UI, navigation, interaction, localization runtime text, or accessibility surface is added.
 <!-- TASK039C_REWARD_FOUNDATION_END -->
+
+<!-- TASK040A_SIMULATOR_QA_MATRIX_START -->
+## Task-040a Phase 1b Simulator QA Matrix
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-040a — Phase 1b Simulator QA Matrix`
+
+```text
+TASK040A_BRANCH=codex/task-040a-simulator-qa-matrix
+TASK040A_BASELINE_DEVELOP_HEAD=6b5f7606b1e096b94712c0d8c9a81578def00016
+TASK040A_SOURCE_AUDIT_BRANCH=develop
+TASK040A_SOURCE_AUDIT_HEAD=6b5f7606b1e096b94712c0d8c9a81578def00016
+TASK040A_SOURCE_AUDIT_ORIGIN_DEVELOP_HEAD=6b5f7606b1e096b94712c0d8c9a81578def00016
+TASK040A_DOCS_VERIFIER_ONLY=YES
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+NO_ESTIMATED_ROUTE_UNLOCK=YES
+NO_TRUSTED_METRIC_MUTATION=YES
+NO_PACKAGE_SCHEMA_BREAK=YES
+THREE_LANGUAGE_LOCALIZATION_PARITY=PASSED
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+MANUAL_QA_TASK040A_SIMULATOR_QA_MATRIX=NOT_REQUIRED_DOCS_VERIFIER_ONLY
+BUILD_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+XCTEST_GATE_SKIPPED_REASON=DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+FAILURE_COUNT=0
+NEXT_TASK=Task-040b
+```
+
+Task-040a records the Phase 1b QA classification matrix only. It does not modify Swift, Xcode project membership, runtime localization files, UI/navigation behavior, schema, package format, StoreKit, HealthKit, WidgetKit, ClockKit, Watch direct session start, Snow, route geometry, trusted metrics, or ActivityVisualization semantics. Real paired iPhone/Watch validation remains documented as a Phase 2 / post-ADP limitation while simulator-only Pre-ADP QA is accepted for this closure checkpoint.
+
+Supporting verifier refreshes are verifier-only: `scripts/verify_task036c_compact_cards.py` now recognizes Task-037 carousel ownership of compact speed/elevation rendering, `scripts/verify_task031_prep_016_final_parity_gate.py` ignores the safe `displayDerivedOnly` manifest flag while still blocking display-derived persistence/export payloads, and `scripts/verify_task030e_macos_multi_package_viewer.py` recognizes the current Shared route display pipeline call path.
+<!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
+
+<!-- TASK040B_ARCHIVE_READINESS_START -->
+## Task-040b Archive Readiness Checks
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-040b — Archive Readiness Checks`
+
+```text
+TASK040B_BRANCH=codex/task-040b-archive-readiness
+TASK040B_BASELINE_HEAD=fce2e15f935c47cfc7d486e96facd19551e43c45
+TASK040B_SOURCE_AUDIT_BRANCH=codex/task-040a-simulator-qa-matrix
+TASK040B_SOURCE_AUDIT_HEAD=fce2e15f935c47cfc7d486e96facd19551e43c45
+TASK040B_DOCS_VERIFIER_ONLY=YES
+NO_SIGNING_BUILD_GATES=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+MANUAL_QA_TASK040B_ARCHIVE_READINESS=NOT_REQUIRED_DOCS_VERIFIER_ONLY
+BUILD_GATE_RESULT=PASSED
+XCTEST_GATE_RESULT=SKIPPED_WITH_REASON:DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+FAILURE_COUNT=0
+NEXT_TASK=Task-040c
+```
+
+Task-040b records archive-readiness evidence only. It does not enroll ADP, release to TestFlight, change signing team, add provisioning, add entitlements, enable production HealthKit capability, change bundle identifiers, start StoreKit production behavior, add WidgetKit/ClockKit runtime, change package/schema/runtime code, or start Phase 1c Snow work.
+<!-- TASK040B_ARCHIVE_READINESS_END -->
