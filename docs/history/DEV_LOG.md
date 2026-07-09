@@ -3262,3 +3262,92 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-039a
 ```
 <!-- TASK038D_HAPTICS_SAFETY_CLOSURE_PREP_END -->
+
+<!-- TASK039A_COMPLICATION_SHELL_START -->
+## 2026-07-09 — Task-039a Complication Shell
+
+### Completed
+- Added a disabled Watch complication readiness shell state with speed, elapsed-time, and distance placeholder slots.
+- Added a compact watchOS shell card to the live session face with unavailable copy, without adding a WidgetKit / ClockKit extension, timeline provider, or complication target.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-039a verifier covering branch/head baseline, allowed paths, project membership, localization, line/header rules, no runtime complication APIs, no extension target/capability changes, and no production availability claims.
+- Preserved Task-039a boundaries: no production complication distribution claim, no Task-039b quick start, no Task-039c reward foundation, no StoreKit, no HealthKit, no Snow implementation, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039A_COMPLICATION_SHELL_START
+TASK039A_BRANCH=codex/task-039a-complication-shell
+TASK039A_BASELINE_DEVELOP_HEAD=769815d9e693d6303ffb9e9f2c2881321d16a389
+WATCH_COMPLICATION_SHELL_PRESENT=YES
+WATCH_COMPLICATION_PLACEHOLDER_SLOTS=currentSpeed|elapsedTime|distance
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+VERIFY_TASK039A_COMPLICATION_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039A_COMPLICATION=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039b
+```
+<!-- TASK039A_COMPLICATION_SHELL_END -->
+
+<!-- TASK039B_QUICK_START_SHELL_START -->
+## 2026-07-09 — Task-039b Quick Start Shell
+
+### Completed
+- Added a disabled/provider-aware Watch quick-start shell state with placeholder options for last mode, outdoor ride, and ready check.
+- Added a compact watchOS shell card to the live session face that preserves iPhone session-start authority and does not send a Watch-side start command.
+- Added localized English, Traditional Chinese, and Japanese copy plus focused unit tests.
+- Added a Task-039b verifier covering branch/head baseline, allowed paths, project membership, localization, line/header rules, provider-aware disabled behavior, iPhone authority preservation, and forbidden runtime guardrails.
+- Preserved Task-039b boundaries: no Task-039c reward foundation, no production StoreKit, no HealthKit, no Snow implementation, no Watch-side session runtime start, no entitlements, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039B_QUICK_START_SHELL_START
+TASK039B_BRANCH=codex/task-039b-quick-start-shell
+TASK039B_BASELINE_HEAD=fc52d885a74f7e5c42bca9bd38ca65a8e1077282
+WATCH_QUICK_START_SHELL_PRESENT=YES
+WATCH_QUICK_START_OPTIONS=lastMode|outdoorRide|readyCheck
+WATCH_QUICK_START_DIRECT_START=NO
+IPHONE_AUTHORITY_PRESERVED=YES
+DISABLED_PROVIDER_AWARE=YES
+VERIFY_TASK039B_QUICK_START_SHELL_RESULT=PASSED
+MANUAL_QA_TASK039B_QUICK_START=PENDING_OPERATOR_CONFIRMATION
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-039c
+```
+<!-- TASK039B_QUICK_START_SHELL_END -->
+
+<!-- TASK039C_REWARD_FOUNDATION_START -->
+## 2026-07-09 — Task-039c Early-Bird Reward Foundation
+
+### Completed
+- Added a local-only Watch reward foundation state with placeholder entries for first session, steady week, and safety review.
+- Added focused unit tests for local-only behavior, non-monetized flags, entry defaults, progress clamping, and Codable round trip.
+- Added a Task-039c verifier covering branch/head baseline, allowed paths, project membership, line/header rules, StoreKit dependency guardrails, release/marketing claim guardrails, and known-limitations coverage.
+- Preserved Task-039c boundaries: no production StoreKit, no paywall, no purchase flow, no subscription, no reward economy, no HealthKit, no Snow implementation, no Watch-side direct session start, no entitlements, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039C_REWARD_FOUNDATION_START
+TASK039C_BRANCH=codex/task-039c-reward-foundation
+TASK039C_BASELINE_HEAD=c2102844b1efb2e3fb322aa2d2cf9ae26478b977
+WATCH_REWARD_FOUNDATION_PRESENT=YES
+WATCH_REWARD_FOUNDATION_LOCAL_ONLY=YES
+WATCH_REWARD_FOUNDATION_ENTRIES=firstSession|steadyWeek|safetyReview
+PRODUCTION_STOREKIT_REWARD_DEPENDENCY=NO
+STOREKIT_DEPENDENCY_COUNT=0
+RELEASE_CLAIM_COUNT=0
+VERIFY_TASK039C_REWARD_FOUNDATION_RESULT=PASSED
+MANUAL_QA_TASK039C_REWARD_FOUNDATION=NOT_REQUIRED_STATE_ONLY
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-040a
+```
+<!-- TASK039C_REWARD_FOUNDATION_END -->

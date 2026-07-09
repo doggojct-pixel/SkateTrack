@@ -1276,6 +1276,32 @@
 "watch.live.accessibility.resume" = "繼續紀錄";
 "watch.live.accessibility.stop" = "停止紀錄";
 
+// Task-039a complication shell
+"watch.complication.title" = "錶面";
+"watch.complication.detail" = "此版本尚未開放錶面小工具佔位；請開啟 App 查看即時滑行狀態。";
+"watch.complication.status.unavailable" = "未開放";
+"watch.complication.status.placeholder" = "Shell";
+"watch.complication.speed.title" = "速度";
+"watch.complication.speed.detail" = "僅為速度佔位；錶面即時顯示尚未啟用。";
+"watch.complication.time.title" = "時間";
+"watch.complication.time.detail" = "僅為經過時間佔位；錶面即時顯示尚未啟用。";
+"watch.complication.distance.title" = "距離";
+"watch.complication.distance.detail" = "僅為距離佔位；錶面即時顯示尚未啟用。";
+"watch.complication.accessibility.label" = "錶面小工具佔位 shell";
+
+// Task-039b quick start shell
+"watch.quickStart.title" = "快速開始";
+"watch.quickStart.detail" = "此版本的快速開始捷徑僅為佔位；請先從 iPhone 開始紀錄，再使用 Watch 控制。";
+"watch.quickStart.status.providerUnavailable" = "Provider 關閉";
+"watch.quickStart.status.iPhoneAuthority" = "iPhone";
+"watch.quickStart.lastMode.title" = "上次";
+"watch.quickStart.lastMode.detail" = "僅為上次模式捷徑佔位；Watch 不會直接開始 session。";
+"watch.quickStart.outdoor.title" = "戶外";
+"watch.quickStart.outdoor.detail" = "僅為戶外滑行捷徑佔位；開始權限仍由 iPhone 保留。";
+"watch.quickStart.readyCheck.title" = "就緒";
+"watch.quickStart.readyCheck.detail" = "僅為就緒檢查捷徑佔位；不會送出 Watch 端開始 session。";
+"watch.quickStart.accessibility.label" = "快速開始佔位 shell。請從 iPhone 開始紀錄。";
+
 // Task-038b watchOS reminder shell
 "watch.healthReminder.title" = "提醒";
 "watch.healthReminder.detail" = "僅提供本機喝水、休息與伸展提示；此版本不讀取身體資料。";

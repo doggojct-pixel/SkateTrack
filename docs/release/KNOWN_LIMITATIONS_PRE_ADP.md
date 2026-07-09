@@ -219,6 +219,76 @@ Task-030c-b10 verification token: Effective Background Location Runtime + Gap Re
 
 Task-030c-b10-r2 verification token: Startup Speed Spike + Fall Handling Guard, Task-030c-b10-r2, startup coordinate-derived speed, fall handling, raw diagnostics preserved.
 
+<!-- TASK039A_PRE_ADP_LIMITATIONS_START -->
+## Task-039a Watch Face Complication Placeholder Boundary
+
+Current status:
+
+- Task-039a adds a disabled Watch face complication readiness shell inside the watchOS live session face.
+- The shell shows placeholder categories only: current speed, elapsed time, and distance.
+- No Watch face complication extension, WidgetKit timeline, ClockKit data source, complication target, or app capability is implemented.
+- No production distribution path, TestFlight readiness claim, App Store readiness claim, or watch-face delivery promise is made.
+
+Remaining limitations:
+
+- Watch face complication delivery is unavailable in this build.
+- The user must open the Watch app live face to view live ride status.
+- Future complication work requires a separately approved extension/capability task, localized copy review, watchOS build verification, and manual QA on relevant watch faces.
+
+```text
+TASK039A_PRE_ADP_LIMITATIONS_START
+WATCH_FACE_COMPLICATION_DISTRIBUTION=NO
+WATCH_FACE_COMPLICATION_EXTENSION_IMPLEMENTED=NO
+WIDGETKIT_RUNTIME_IMPLEMENTED=NO
+CLOCKKIT_RUNTIME_IMPLEMENTED=NO
+PRODUCTION_COMPLICATION_CLAIM_COUNT=0
+NEXT_TASK=Task-039b
+```
+<!-- TASK039A_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK039B_PRE_ADP_LIMITATIONS_START -->
+## Task-039b Watch Quick Start Placeholder Boundary
+
+Task-039b adds a disabled/provider-aware quick-start shell inside the watchOS live session face. The shell shows placeholder options only and keeps iPhone authority for session start.
+
+- Watch quick-start direct start is not implemented.
+- Watch-side session runtime start is not implemented.
+- Quick-start options do not send `startSession`, `prepareSession`, or any new command transport.
+- Provider-aware copy may show that the provider is unavailable or that iPhone authority is required.
+- No StoreKit, HealthKit, Snow, entitlement, schema, package, route, speed, elevation, or Core Data behavior changes are included.
+
+```text
+TASK039B_PRE_ADP_LIMITATIONS_START
+WATCH_QUICK_START_DIRECT_START=NO
+WATCH_QUICK_START_COMMAND_SENT=NO
+IPHONE_SESSION_START_AUTHORITY=YES
+DISABLED_PROVIDER_AWARE=YES
+NEXT_TASK=Task-039c
+```
+<!-- TASK039B_PRE_ADP_LIMITATIONS_END -->
+
+<!-- TASK039C_PRE_ADP_LIMITATIONS_START -->
+## Task-039c Early-Bird Reward Foundation Boundary
+
+Task-039c adds a local-only reward foundation state for future product decisions. It is not a monetization feature and does not claim reward availability, campaign readiness, paid unlocks, or App Store readiness.
+
+- Reward foundation is local state only.
+- No production StoreKit dependency is added.
+- No paywall, purchase flow, subscription, transaction, entitlement grant, or reward economy is implemented.
+- No release, launch, marketing, or App Store reward claim is made.
+- No HealthKit, Snow, entitlement, schema, package, route, speed, elevation, direct Watch session start, or Core Data behavior changes are included.
+
+```text
+TASK039C_PRE_ADP_LIMITATIONS_START
+WATCH_REWARD_FOUNDATION_LOCAL_ONLY=YES
+PRODUCTION_STOREKIT_REWARD_DEPENDENCY=NO
+PAYWALL_OR_PURCHASE_FLOW_IMPLEMENTED=NO
+REWARD_ECONOMY_IMPLEMENTED=NO
+RELEASE_CLAIM_COUNT=0
+NEXT_TASK=Task-040a
+```
+<!-- TASK039C_PRE_ADP_LIMITATIONS_END -->
+
 ### Task-030c-b10-r3 — Low-speed metrics and UI responsiveness
 
 - **Current status:** Task-030c-b10-r3 adds conservative trusted-metric gates for low-speed / small-area GPS jumps, rejects unstable Core Location altitude from elevation gain, prefers barometer-relative altitude when available, and moves package export work away from the main actor.

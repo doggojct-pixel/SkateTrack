@@ -1276,6 +1276,32 @@
 "watch.live.accessibility.resume" = "Resume session";
 "watch.live.accessibility.stop" = "Stop session";
 
+// Task-039a complication shell
+"watch.complication.title" = "Watch face";
+"watch.complication.detail" = "Complication placeholders are unavailable in this build. Open the app for live ride status.";
+"watch.complication.status.unavailable" = "Unavailable";
+"watch.complication.status.placeholder" = "Shell";
+"watch.complication.speed.title" = "Speed";
+"watch.complication.speed.detail" = "Speed placeholder only. Live face delivery is not active.";
+"watch.complication.time.title" = "Time";
+"watch.complication.time.detail" = "Elapsed-time placeholder only. Live face delivery is not active.";
+"watch.complication.distance.title" = "Distance";
+"watch.complication.distance.detail" = "Distance placeholder only. Live face delivery is not active.";
+"watch.complication.accessibility.label" = "Watch face complication placeholder shell";
+
+// Task-039b quick start shell
+"watch.quickStart.title" = "Quick start";
+"watch.quickStart.detail" = "Quick-start shortcuts are placeholders in this build. Start recording from iPhone before using Watch controls.";
+"watch.quickStart.status.providerUnavailable" = "Provider off";
+"watch.quickStart.status.iPhoneAuthority" = "iPhone";
+"watch.quickStart.lastMode.title" = "Last";
+"watch.quickStart.lastMode.detail" = "Last-mode shortcut placeholder only. Watch cannot start a session directly.";
+"watch.quickStart.outdoor.title" = "Outdoor";
+"watch.quickStart.outdoor.detail" = "Outdoor ride shortcut placeholder only. iPhone keeps start authority.";
+"watch.quickStart.readyCheck.title" = "Ready";
+"watch.quickStart.readyCheck.detail" = "Ready-check shortcut placeholder only. No Watch-side session start is sent.";
+"watch.quickStart.accessibility.label" = "Quick start placeholder shell. Start recording from iPhone.";
+
 // Task-038b watchOS reminder shell
 "watch.healthReminder.title" = "Reminders";
 "watch.healthReminder.detail" = "Local hydration, rest, and stretch prompts only. Live body data is unavailable in this build.";
