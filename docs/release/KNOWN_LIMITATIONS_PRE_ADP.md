@@ -267,6 +267,28 @@ NEXT_TASK=Task-039c
 ```
 <!-- TASK039B_PRE_ADP_LIMITATIONS_END -->
 
+<!-- TASK039C_PRE_ADP_LIMITATIONS_START -->
+## Task-039c Early-Bird Reward Foundation Boundary
+
+Task-039c adds a local-only reward foundation state for future product decisions. It is not a monetization feature and does not claim reward availability, campaign readiness, paid unlocks, or App Store readiness.
+
+- Reward foundation is local state only.
+- No production StoreKit dependency is added.
+- No paywall, purchase flow, subscription, transaction, entitlement grant, or reward economy is implemented.
+- No release, launch, marketing, or App Store reward claim is made.
+- No HealthKit, Snow, entitlement, schema, package, route, speed, elevation, direct Watch session start, or Core Data behavior changes are included.
+
+```text
+TASK039C_PRE_ADP_LIMITATIONS_START
+WATCH_REWARD_FOUNDATION_LOCAL_ONLY=YES
+PRODUCTION_STOREKIT_REWARD_DEPENDENCY=NO
+PAYWALL_OR_PURCHASE_FLOW_IMPLEMENTED=NO
+REWARD_ECONOMY_IMPLEMENTED=NO
+RELEASE_CLAIM_COUNT=0
+NEXT_TASK=Task-040a
+```
+<!-- TASK039C_PRE_ADP_LIMITATIONS_END -->
+
 ### Task-030c-b10-r3 — Low-speed metrics and UI responsiveness
 
 - **Current status:** Task-030c-b10-r3 adds conservative trusted-metric gates for low-speed / small-area GPS jumps, rejects unstable Core Location altitude from elevation gain, prefers barometer-relative altitude when available, and moves package export work away from the main actor.

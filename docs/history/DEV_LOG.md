@@ -3322,3 +3322,32 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-039c
 ```
 <!-- TASK039B_QUICK_START_SHELL_END -->
+
+<!-- TASK039C_REWARD_FOUNDATION_START -->
+## 2026-07-09 — Task-039c Early-Bird Reward Foundation
+
+### Completed
+- Added a local-only Watch reward foundation state with placeholder entries for first session, steady week, and safety review.
+- Added focused unit tests for local-only behavior, non-monetized flags, entry defaults, progress clamping, and Codable round trip.
+- Added a Task-039c verifier covering branch/head baseline, allowed paths, project membership, line/header rules, StoreKit dependency guardrails, release/marketing claim guardrails, and known-limitations coverage.
+- Preserved Task-039c boundaries: no production StoreKit, no paywall, no purchase flow, no subscription, no reward economy, no HealthKit, no Snow implementation, no Watch-side direct session start, no entitlements, no route / speed / elevation mutation, and no schema / package changes.
+
+### Validation Notes
+
+```text
+TASK039C_REWARD_FOUNDATION_START
+TASK039C_BRANCH=codex/task-039c-reward-foundation
+TASK039C_BASELINE_HEAD=c2102844b1efb2e3fb322aa2d2cf9ae26478b977
+WATCH_REWARD_FOUNDATION_PRESENT=YES
+WATCH_REWARD_FOUNDATION_LOCAL_ONLY=YES
+WATCH_REWARD_FOUNDATION_ENTRIES=firstSession|steadyWeek|safetyReview
+PRODUCTION_STOREKIT_REWARD_DEPENDENCY=NO
+STOREKIT_DEPENDENCY_COUNT=0
+RELEASE_CLAIM_COUNT=0
+VERIFY_TASK039C_REWARD_FOUNDATION_RESULT=PASSED
+MANUAL_QA_TASK039C_REWARD_FOUNDATION=NOT_REQUIRED_STATE_ONLY
+FAILURE_COUNT=0
+COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
+NEXT_TASK=Task-040a
+```
+<!-- TASK039C_REWARD_FOUNDATION_END -->

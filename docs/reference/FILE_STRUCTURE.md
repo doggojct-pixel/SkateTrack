@@ -3111,3 +3111,37 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-039c
 ```
 <!-- TASK039B_QUICK_START_SHELL_END -->
+
+<!-- TASK039C_REWARD_FOUNDATION_START -->
+## Task-039c Early-Bird Reward Foundation Addendum
+
+Task-039c adds a local-only Watch reward foundation state under Pre-ADP limits. It is state/test/verifier/docs only and does not add production StoreKit, paywall, purchase flow, subscription, entitlement grant, rewards economy, HealthKit usage, Snow implementation, direct Watch session start, route / speed / elevation mutation, package schema change, or Core Data change.
+
+### Updated source areas
+
+```text
+Shared/WatchUI/WatchRewardFoundationState.swift       # [協作區] New local-only reward foundation state with placeholder entries and non-monetized guard flags.
+Tests/iOSTests/WatchRewardFoundationStateTests.swift  # [工程設定] Tests local-only state, non-monetized flags, entry defaults, progress clamping, and Codable round trip.
+scripts/verify_task039c_reward_foundation.py          # [工程設定] Task-039c verifier for allowed paths, membership, line/header, StoreKit dependency, release-claim, and forbidden-scope guardrails.
+SkateTrack.xcodeproj/project.pbxproj                  # [工程設定] Adds new Swift files to required iOS/watchOS/test targets.
+docs/history/DEV_LOG.md                               # [原則 E] Records Task-039c implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                      # [原則 E] Records Task-039c file ownership and boundaries.
+docs/process/PHASE_1B_AGENT_STATE.md                  # [原則 E] Records Task-039c state before commit / push review.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md             # [原則 E] Records Pre-ADP reward-foundation limitation.
+```
+
+### Closure markers
+
+```text
+TASK039C_REWARD_FOUNDATION_START
+VERIFY_TASK039C_REWARD_FOUNDATION_RESULT=PASSED
+WATCH_REWARD_FOUNDATION_PRESENT=YES
+WATCH_REWARD_FOUNDATION_LOCAL_ONLY=YES
+PRODUCTION_STOREKIT_REWARD_DEPENDENCY=NO
+STOREKIT_DEPENDENCY_COUNT=0
+RELEASE_CLAIM_COUNT=0
+MANUAL_QA_TASK039C_REWARD_FOUNDATION=NOT_REQUIRED_STATE_ONLY
+FAILURE_COUNT=0
+NEXT_TASK=Task-040a
+```
+<!-- TASK039C_REWARD_FOUNDATION_END -->
