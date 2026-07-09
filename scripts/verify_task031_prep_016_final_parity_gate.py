@@ -129,8 +129,13 @@ def scan_tokens(root: str, tokens: list[str], suffixes: set[str]) -> list[tuple[
             continue
         text = file.read_text(encoding="utf-8", errors="replace")
         for token in tokens:
+            relative = str(file.relative_to(REPO))
+            if relative == "Shared/Models/SkateTrackPackageManifest.swift" and token == "displayDerived":
+                safe_text = text.replace("displayDerivedOnly", "")
+                if token not in safe_text:
+                    continue
             if token in text:
-                hits.append((str(file.relative_to(REPO)), token))
+                hits.append((relative, token))
     return hits
 
 

@@ -246,7 +246,9 @@ def ensure_route_boundaries() -> None:
         "MacDerivedMetricsResult",
         "MacRoutePoint",
         "routeQuality(",
-        "deduplicatedTrustedLocationFixes",
+        "ActivityFidelityPolicy(",
+        "RouteDisplayPipeline().makeDisplayRoute(",
+        "routePoints(from: routeResult)",
     ])
     require_tokens("macOS/Features/SessionBrowser/MacElevationDisplayPipeline.swift", [
         "enum MacElevationDisplayPipeline",

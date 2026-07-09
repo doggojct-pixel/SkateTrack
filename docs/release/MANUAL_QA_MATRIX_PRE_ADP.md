@@ -216,3 +216,48 @@ Required checklist:
 
 Task-039b manual QA token: quick-start shell pending, iPhone authority preserved, provider-aware disabled, no Watch direct session start.
 <!-- TASK039B_QUICK_START_MANUAL_QA_END -->
+
+<!-- TASK040A_SIMULATOR_QA_MATRIX_START -->
+## Task-040a Phase 1b Simulator QA Matrix
+
+Task-040a is a docs/verifier-only closure matrix for Phase 1b. It does not change UI, navigation, runtime behavior, localization files loaded by the app, schema, package format, Xcode project membership, StoreKit, HealthKit, WidgetKit, ClockKit, Snow, route geometry, trusted metrics, or Watch direct session start. Manual QA for this documentation change is not required, but the matrix records which product checks are simulator-verifiable, local Mac-verifiable, or real paired iPhone/Watch required.
+
+Manual QA status for this change:
+
+```text
+MANUAL_QA_TASK040A_SIMULATOR_QA_MATRIX=NOT_REQUIRED_DOCS_VERIFIER_ONLY
+```
+
+| BuildPlan QA item | Classification | Evidence source / status |
+|---|---|---|
+| iPhone session start/pause/resume/stop | simulator-verifiable | Covered by existing session-flow and iOS smoke verifier family; Task-040a records the smoke item as `IOS_SMOKE_QA=PASSED` without changing session runtime. |
+| Watch connection states | simulator-verifiable | Covered by WatchBridge connection-state mocks and Watch UI fallback verifier family; no production WatchConnectivity behavior is added. |
+| Watch mirrored controls | simulator-verifiable | Covered by Watch core UI and mirrored-control verifiers; iPhone authority remains preserved. |
+| Watch sample unavailable/available states | simulator-verifiable | Covered by Watch sample compatibility, provider, metric carousel, and fallback-state verifiers. |
+| Watch UI empty/stale/disconnected states | simulator-verifiable | Covered by `scripts/verify_task036_watch_core_ui.py` and fallback-state source checks. |
+| Shared ActivityVisualization compact output sanity | simulator-verifiable | Covered by `scripts/verify_task031_prep_016_final_parity_gate.py` and ActivityVisualization parity verifier family. |
+| iOS/macOS route/speed/elevation parity smoke | local Mac-verifiable | Covered by the ActivityVisualization parity gate and macOS viewer display-only route/speed/elevation verifier family. |
+| macOS multi-package viewer smoke from Task-030e | local Mac-verifiable | Covered by `scripts/verify_task030e_macos_multi_package_viewer.py`; viewer remains read-only and in-memory. |
+| Task-030d import smoke where package compatibility changed | simulator-verifiable | Covered by `scripts/verify_task030d_ios_multifile_import.py`; no new package compatibility change is made by Task-040a. |
+| No estimated route unlock | simulator-verifiable | `estimatedRouteActive` and general-user estimated route display remain disabled; Task-040a adds no route display runtime. |
+| No trusted metric mutation | simulator-verifiable | No route, speed, elevation, package, persistence, or trusted metric source path changes are allowed. |
+| No package schema break | simulator-verifiable | Task-040a makes no schema/package/runtime changes and relies on existing package compatibility verifiers. |
+| Three-language localization parity | simulator-verifiable | Covered by `scripts/verify_localization_keys.py`; no localization runtime file changes are made. |
+| Real paired iPhone/Watch end-to-end behavior | real paired iPhone/Watch required | Documented as a Phase 2 / post-ADP limitation; simulator-only Pre-ADP QA is accepted for Task-040a closure. |
+
+Task-040a closure markers:
+
+```text
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+FAILURE_COUNT=0
+```
+
+Task-040a manual QA token: simulator QA matrix documented, real paired iPhone/Watch required, Phase 2 / post-ADP limitation, no estimated route unlock, no trusted metric mutation, no package schema break.
+<!-- TASK040A_SIMULATOR_QA_MATRIX_END -->

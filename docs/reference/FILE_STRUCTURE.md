@@ -3145,3 +3145,39 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-040a
 ```
 <!-- TASK039C_REWARD_FOUNDATION_END -->
+
+<!-- TASK040A_SIMULATOR_QA_MATRIX_START -->
+## Task-040a Phase 1b Simulator QA Matrix Addendum
+
+Task-040a adds a docs/verifier-only QA matrix for Phase 1b closure. It does not add or modify Swift runtime, Xcode project membership, localization resources loaded by the app, UI/navigation behavior, package schema, Core Data schema, StoreKit, HealthKit, WidgetKit, ClockKit, Watch direct session start, Snow, route geometry, trusted metrics, or ActivityVisualization semantics.
+
+### Updated source areas
+
+```text
+scripts/verify_task040a_simulator_qa.py          # [工程設定] Task-040a verifier for QA matrix coverage, allowed paths, evidence references, and forbidden runtime-scope guardrails.
+scripts/verify_task036c_compact_cards.py         # [工程設定] Refreshed verifier evidence for Task-037 metric carousel ownership of compact speed/elevation rendering.
+scripts/verify_task031_prep_016_final_parity_gate.py # [工程設定] Refreshed verifier exception for the safe `displayDerivedOnly` manifest flag.
+scripts/verify_task030e_macos_multi_package_viewer.py # [工程設定] Refreshed verifier evidence for macOS Shared route display pipeline usage.
+docs/history/DEV_LOG.md                         # [原則 E] Records Task-040a implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                # [原則 E] Records Task-040a file ownership and docs/verifier-only boundary.
+docs/process/PHASE_1B_AGENT_STATE.md            # [原則 E] Records Task-040a state before review; commit/push intentionally not performed in the first run.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md       # [原則 E] Records simulator-only Pre-ADP QA acceptance and real paired iPhone/Watch limitation.
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md        # [原則 E] Adds Task-040a QA classification matrix.
+```
+
+### Closure markers
+
+```text
+TASK040A_SIMULATOR_QA_MATRIX_START
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+FAILURE_COUNT=0
+NEXT_TASK=Task-040b
+```
+<!-- TASK040A_SIMULATOR_QA_MATRIX_END -->

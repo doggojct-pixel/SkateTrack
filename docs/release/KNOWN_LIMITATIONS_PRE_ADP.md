@@ -1205,3 +1205,28 @@ ROUTE_GEOMETRY_MUTATION_COUNT=0
 TRUSTED_METRIC_MUTATION_COUNT=0
 NEXT_TASK=Task-036b
 <!-- TASK036A_WATCH_UI_VIEWMODEL_LIMITATIONS_END -->
+
+<!-- TASK040A_PRE_ADP_QA_LIMITATIONS_START -->
+## Task-040a Phase 1b Simulator QA Matrix Boundary
+
+Task-040a records the Phase 1b QA matrix and accepts simulator/local-Mac evidence for Pre-ADP closure only. It does not claim full release-device readiness, production Watch pairing behavior, TestFlight readiness, App Store readiness, production complication distribution, Watch-side direct session start, production HealthKit, emergency/SOS automation, Snow mode, estimated route unlock, trusted metric mutation, or package schema changes.
+
+- **Simulator-verifiable:** iPhone session start/pause/resume/stop, Watch connection states, Watch mirrored controls, Watch sample unavailable/available states, Watch UI empty/stale/disconnected states, Shared ActivityVisualization compact output sanity, Task-030d import smoke, no estimated route unlock, no trusted metric mutation, no package schema break, and three-language localization parity.
+- **Local Mac-verifiable:** iOS/macOS route/speed/elevation parity smoke and macOS multi-package viewer smoke from Task-030e.
+- **Real paired iPhone/Watch required:** End-to-end real paired-device connection behavior, physical Watch interaction, device latency, always-on behavior, and any real-device haptic or complication distribution validation remain Phase 2 / post-ADP limitation items.
+- **Current substitute:** Source verifiers and simulator/local-Mac smoke evidence, including `scripts/verify_task036_watch_core_ui.py`, `scripts/verify_task031_prep_016_final_parity_gate.py`, `scripts/verify_task030d_ios_multifile_import.py`, `scripts/verify_task030e_macos_multi_package_viewer.py`, and `scripts/verify_localization_keys.py`.
+- **Do not claim:** Do not claim real paired-device QA is complete, do not claim production WatchConnectivity behavior, do not claim App Store/TestFlight readiness, and do not claim general-user estimated route display or trusted metric changes.
+
+```text
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+FAILURE_COUNT=0
+NEXT_TASK=Task-040b
+```
+<!-- TASK040A_PRE_ADP_QA_LIMITATIONS_END -->

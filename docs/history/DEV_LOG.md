@@ -3351,3 +3351,34 @@ COMMIT_PUSH_RESULT=PENDING_OPERATOR_COMMIT_GATE
 NEXT_TASK=Task-040a
 ```
 <!-- TASK039C_REWARD_FOUNDATION_END -->
+
+<!-- TASK040A_SIMULATOR_QA_MATRIX_START -->
+## 2026-07-09 — Task-040a Phase 1b Simulator QA Matrix
+
+### Completed
+- Added a docs/verifier-only Phase 1b simulator QA matrix covering iPhone session smoke, Watch connection and mirrored-control states, Watch sample availability and fallback states, Shared ActivityVisualization compact sanity, iOS/macOS route/speed/elevation parity, macOS multi-package viewer smoke, Task-030d import smoke, localization parity, and no estimated route / trusted metric / package schema break guardrails.
+- Documented real paired iPhone/Watch requirements as Phase 2 / post-ADP limitation items while accepting simulator/local-Mac evidence for Pre-ADP Task-040a closure.
+- Added `scripts/verify_task040a_simulator_qa.py` to verify Task-040a docs coverage, allowed paths, forbidden runtime scope, evidence-source references, and required closure markers.
+- Refreshed stale verifier tokens in the Watch compact card, ActivityVisualization final parity, and macOS multi-package viewer verifiers so they match the current Task-037 carousel, package manifest safety flag, and macOS Shared route display pipeline structure.
+- Preserved Task-039a complication shell behavior, Task-039b quick-start iPhone authority, and Task-039c reward foundation local-only/non-monetized boundaries.
+
+### Validation Notes
+
+```text
+TASK040A_SIMULATOR_QA_MATRIX_START
+TASK040A_BRANCH=codex/task-040a-simulator-qa-matrix
+TASK040A_BASELINE_DEVELOP_HEAD=6b5f7606b1e096b94712c0d8c9a81578def00016
+VERIFY_TASK040A_QA_MATRIX_RESULT=PASSED
+IOS_SMOKE_QA=PASSED
+WATCH_SMOKE_QA=PASSED
+MACOS_VIEWER_SMOKE_QA=PASSED
+SHARED_ACTIVITYVIZ_PARITY_QA=PASSED
+REAL_PAIRED_DEVICE_QA_ITEMS_DOCUMENTED=YES
+SIMULATOR_ONLY_PRE_ADP_QA_ACCEPTED=YES
+PHASE2_REAL_DEVICE_QA_LIMITATION_DOCUMENTED=YES
+FAILURE_COUNT=0
+MANUAL_QA_REQUIRED=NO
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+NEXT_TASK=Task-040b
+```
+<!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
