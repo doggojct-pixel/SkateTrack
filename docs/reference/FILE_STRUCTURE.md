@@ -3181,3 +3181,33 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-040b
 ```
 <!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
+
+<!-- TASK040B_ARCHIVE_READINESS_START -->
+## Task-040b Archive Readiness Checks Addendum
+
+Task-040b adds archive-readiness documentation and a focused verifier. It does not modify Swift runtime, Xcode project membership, signing settings, entitlements, capabilities, bundle identifiers, localization resources loaded by the app, UI/navigation behavior, package schema, Core Data schema, production HealthKit, production StoreKit, WidgetKit/ClockKit runtime, Watch direct session start, Snow, route geometry, trusted metrics, or ActivityVisualization semantics.
+
+### Updated source areas
+
+```text
+scripts/verify_task040b_archive_readiness.py       # [工程設定] Task-040b verifier for signing/capability drift, documentation coverage, allowed paths, and forbidden runtime/release scope.
+docs/release/RELEASE_READINESS_PRE_ADP.md          # [原則 E] Documents no-signing build gates and existing build settings for archive readiness.
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md          # [原則 E] Records archive-readiness limitations and no-release boundary.
+docs/history/DEV_LOG.md                            # [原則 E] Records Task-040b implementation and validation markers.
+docs/reference/FILE_STRUCTURE.md                   # [原則 E] Records Task-040b file ownership and docs/verifier-only boundary.
+docs/process/PHASE_1B_AGENT_STATE.md               # [原則 E] Records Task-040b state before review; commit/push intentionally not performed in the first run.
+```
+
+### Closure markers
+
+```text
+TASK040B_ARCHIVE_READINESS_START
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+NO_SIGNING_BUILD_GATES=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+FAILURE_COUNT=0
+NEXT_TASK=Task-040c
+```
+<!-- TASK040B_ARCHIVE_READINESS_END -->

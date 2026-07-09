@@ -1024,3 +1024,32 @@ Task-040a records the Phase 1b QA classification matrix only. It does not modify
 
 Supporting verifier refreshes are verifier-only: `scripts/verify_task036c_compact_cards.py` now recognizes Task-037 carousel ownership of compact speed/elevation rendering, `scripts/verify_task031_prep_016_final_parity_gate.py` ignores the safe `displayDerivedOnly` manifest flag while still blocking display-derived persistence/export payloads, and `scripts/verify_task030e_macos_multi_package_viewer.py` recognizes the current Shared route display pipeline call path.
 <!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
+
+<!-- TASK040B_ARCHIVE_READINESS_START -->
+## Task-040b Archive Readiness Checks
+
+Aligned Build Plan: `SkateTrack_BuildPlan_Phase1b_Task031-040_EN_v1_71.md`
+
+Aligned subtask: `Task-040b — Archive Readiness Checks`
+
+```text
+TASK040B_BRANCH=codex/task-040b-archive-readiness
+TASK040B_BASELINE_HEAD=fce2e15f935c47cfc7d486e96facd19551e43c45
+TASK040B_SOURCE_AUDIT_BRANCH=codex/task-040a-simulator-qa-matrix
+TASK040B_SOURCE_AUDIT_HEAD=fce2e15f935c47cfc7d486e96facd19551e43c45
+TASK040B_DOCS_VERIFIER_ONLY=YES
+NO_SIGNING_BUILD_GATES=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+MANUAL_QA_TASK040B_ARCHIVE_READINESS=NOT_REQUIRED_DOCS_VERIFIER_ONLY
+BUILD_GATE_RESULT=PASSED
+XCTEST_GATE_RESULT=SKIPPED_WITH_REASON:DOCS_AND_VERIFIER_ONLY
+COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
+FAILURE_COUNT=0
+NEXT_TASK=Task-040c
+```
+
+Task-040b records archive-readiness evidence only. It does not enroll ADP, release to TestFlight, change signing team, add provisioning, add entitlements, enable production HealthKit capability, change bundle identifiers, start StoreKit production behavior, add WidgetKit/ClockKit runtime, change package/schema/runtime code, or start Phase 1c Snow work.
+<!-- TASK040B_ARCHIVE_READINESS_END -->

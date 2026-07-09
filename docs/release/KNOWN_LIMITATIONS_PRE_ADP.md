@@ -1230,3 +1230,24 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-040b
 ```
 <!-- TASK040A_PRE_ADP_QA_LIMITATIONS_END -->
+
+<!-- TASK040B_ARCHIVE_READINESS_LIMITATIONS_START -->
+## Task-040b Archive Readiness Boundary
+
+Task-040b prepares archive-readiness evidence only. It runs and documents no-signing build gates, but it does not enroll in the Apple Developer Program, upload to TestFlight, change signing teams, add provisioning profiles, add entitlements, enable production HealthKit capability, enable production StoreKit behavior, add WidgetKit/ClockKit runtime, change bundle identifiers, or start Phase 1c Snow work.
+
+- **Current substitute:** Local no-signing Debug build gates with `CODE_SIGNING_ALLOWED=NO`.
+- **Signing posture:** Existing `DEVELOPMENT_TEAM` values remain empty and no `CODE_SIGN_ENTITLEMENTS` setting is present.
+- **Capability posture:** No `.entitlements` file, `SystemCapabilities`, `UTExportedTypeDeclarations`, `CFBundleDocumentTypes`, or `com.apple.developer.*` capability token is introduced.
+- **Do not claim:** Do not claim archive upload readiness, App Store/TestFlight readiness, production HealthKit entitlement readiness, production StoreKit readiness, or ADP completion.
+
+```text
+VERIFY_TASK040B_ARCHIVE_READINESS_RESULT=PASSED
+SIGNING_CAPABILITY_CHANGE_COUNT=0
+PRE_ADP_LIMITATIONS_DOCUMENTED=YES
+BUILD_SETTINGS_DOCUMENTED=YES
+NO_SIGNING_BUILD_GATES=PASSED
+FAILURE_COUNT=0
+NEXT_TASK=Task-040c
+```
+<!-- TASK040B_ARCHIVE_READINESS_LIMITATIONS_END -->
