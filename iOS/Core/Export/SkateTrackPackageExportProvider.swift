@@ -1,6 +1,6 @@
 // [協作區 — 邊界適配層] SkateTrackPackageExportProvider.swift
 // 用途：建立 iOS 單筆 Session 的 .skatetrack 暫存匯出檔，並交給系統分享表。
-// 委派至：Shared/Export writer 寫檔；ViewModel 管理 UI state 與 cleanup。
+// 委派至：Shared/Export writer 寫檔；ViewModel 管理 UI state 與 cleanup；Snow-Task-008a 從 SnowSessionRepository 取得正式 Snow package payload。
 
 import Foundation
 
@@ -36,21 +36,30 @@ struct SkateTrackPackageExportResult: Identifiable, Equatable, Sendable {
 struct SkateTrackPackageExportProvider {
     private let fileManager: FileManager
     private let writer: SkateTrackPackageWriter
+    private let snowRepository: SnowSessionRepositoryProtocol
+    private let now: @Sendable () -> Date
 
     init(
         fileManager: FileManager = .default,
-        writer: SkateTrackPackageWriter = SkateTrackPackageWriter()
+        writer: SkateTrackPackageWriter = SkateTrackPackageWriter(),
+        snowRepository: SnowSessionRepositoryProtocol = SnowSessionRepository.shared,
+        now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.fileManager = fileManager
         self.writer = writer
+        self.snowRepository = snowRepository
+        self.now = now
     }
 
-    func createExport(content: SessionSummaryContent) throws -> SkateTrackPackageExportResult {
+    func createExport(content: SessionSummaryContent) async throws -> SkateTrackPackageExportResult {
         let effectiveSamples = content.motionSamples.isEmpty ? content.session.motionSamples : content.motionSamples
         let exportSession = try sessionWithDiagnosticsFallback(content.session)
+        let snowPayload = try await makeSnowPayloadIfAvailable(for: exportSession)
         let sessionItem = SkateTrackPackageSession(
+            id: exportSession.id,
             session: exportSession,
-            motionSamples: effectiveSamples
+            motionSamples: effectiveSamples,
+            snowPayload: snowPayload
         )
         let manifest = SkateTrackPackageManifest(
             appVersion: bundleValue(for: "CFBundleShortVersionString"),
@@ -60,7 +69,8 @@ struct SkateTrackPackageExportProvider {
             includesMotionSamples: !effectiveSamples.isEmpty,
             includesAccountData: false,
             includesAchievements: false,
-            formatCapabilities: packageFormatCapabilities(for: effectiveSamples, session: exportSession)
+            formatCapabilities: packageFormatCapabilities(for: effectiveSamples, session: exportSession),
+            capabilities: snowPayload == nil ? nil : SkateTrackPackageSnowCapability.allRawValues
         )
         let payload = try SkateTrackPackagePayload(manifest: manifest, sessions: [sessionItem])
         let directoryURL = packageDirectoryURL(sessionID: exportSession.id)
@@ -79,7 +89,6 @@ struct SkateTrackPackageExportProvider {
     func cleanup(_ result: SkateTrackPackageExportResult) {
         try? fileManager.removeItem(at: result.directoryURL)
     }
-
 
     private func sessionWithDiagnosticsFallback(_ session: SessionData) throws -> SessionData {
         guard session.debugRecordingDiagnostics == nil else { return session }
@@ -153,8 +162,15 @@ struct SkateTrackPackageExportProvider {
         return capabilities
     }
 
+    private func makeSnowPayloadIfAvailable(for session: SessionData) async throws -> SkateTrackPackageSnowPayload? {
+        guard session.sportMode.isSnow else { return nil }
+
+        let state = try await snowRepository.fetchState(sessionID: session.id)
+        return SkateTrackPackageSnowPayload(snowState: state, generatedAt: now())
+    }
+
     private func packageDirectoryURL(sessionID: UUID) -> URL {
-        let folderName = "\(sessionID.uuidString)-\(Int(Date().timeIntervalSince1970))"
+        let folderName = "\(sessionID.uuidString)-\(Int(now().timeIntervalSince1970))"
         return fileManager.temporaryDirectory
             .appendingPathComponent("SkateTrackPackages", isDirectory: true)
             .appendingPathComponent(folderName, isDirectory: true)
@@ -171,5 +187,14 @@ struct SkateTrackPackageExportProvider {
 
     private func bundleValue(for key: String) -> String {
         Bundle.main.object(forInfoDictionaryKey: key) as? String ?? "local"
+    }
+}
+
+extension SportMode {
+    var isSnow: Bool {
+        if case .snow = self {
+            return true
+        }
+        return false
     }
 }

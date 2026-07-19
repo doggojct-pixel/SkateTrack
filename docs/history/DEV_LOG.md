@@ -3409,3 +3409,446 @@ COMMIT_PUSH_RESULT=NOT_REQUESTED_FIRST_RUN
 NEXT_TASK=Task-040c
 ```
 <!-- TASK040B_ARCHIVE_READINESS_END -->
+## 2026-06-14 — Snow-Task-001 Sport Mode Integration Foundation + Preflight
+
+### Completed
+- Added production `SnowDiscipline` and integrated `SportMode.snow(SnowDiscipline)` into the existing sport-mode model instead of creating a `SnowPrototype*` namespace.
+- Added explicit `.snow` handling to sport-related switches in session start, live HUD, session history, session summary, sensor calibration priority planning, equipment compatibility boundaries, weather mock context, and equipment wear thresholds.
+- Added minimal production Session Start snow discipline selection and localized `en` / `zh-Hant` / `ja` strings for Snow Sports, Snowboard, Skiing, mode descriptions, tags, and history filtering.
+- Added `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` as the Phase 1c production agent state record and `scripts/verify_snow_sport_enum.py` as the Snow sport integration gate.
+
+### Scope Boundary
+- Snow-Task-001 does not add SnowSegment / SnowRun persistence, Core Data migration, SnowSegmentClassifier, RunBoundaryDetector, Snow Live HUD, package compatibility, HealthKit export, WatchBridge wiring, signing changes, entitlements, or production service integrations.
+- Existing skateboard and inline behavior remains additive-only; electric power remains skateboard-only.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py` after applying this task.
+- Snow-Task-001 verification token: production snow sport enum integrated.
+
+
+## 2026-06-14 — Snow-Task-001a Debug-gated Snow Mode Entry
+
+### Completed
+- Kept production `SportMode.snow(SnowDiscipline)` and `SnowDiscipline` available for Snow-Task-002+ while hiding the normal user-facing Snow category from Release builds.
+- Added `SessionStartSportCategory.userFacingCases` so DEBUG builds can still exercise Snow / Snowboard / Skiing from Session Start, while Release builds show only the currently supported public sport categories.
+- Added a Debug Tools note clarifying that the Snow entry is DEBUG-only until Snow-Task-002 through Snow-Task-009 complete the production data path.
+- Added `scripts/verify_snow_task_001a_debug_gate.py` to guard against accidentally exposing the Snow entry publicly before the production schema, classifier, detector, package, and fixture tasks are complete.
+
+### Scope Boundary
+- Snow-Task-001a does not remove or wrap `SportMode.snow` in `#if DEBUG`; the production enum remains available for follow-up data-model work.
+- No `SnowPrototype*` namespace, WatchBridge wiring, Core Data migration, package compatibility, classifier, or RunBoundaryDetector work was added in this gate.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Snow-Task-001a verification token: snow mode public entry debug-gated.
+Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
+
+
+## 2026-06-14 — Snow-Task-002 Snow Session Data Layer
+
+### Completed
+- Added production Snow Mode value types: `SnowSegmentType`, `SnowSegment`, `SnowRun`, `SnowDistanceBreakdown`, `SnowVerticalMetrics`, and `SnowSessionState`.
+- Added additive Core Data entities `PersistedSnowRun` and `PersistedSnowSegment` through the existing programmatic model in `PersistenceController.makeManagedObjectModel()`.
+- Updated the `.xcdatamodeld` schema reference and model version identifier to `Phase1cSnowTask002` while preserving automatic lightweight migration options.
+- Added `SnowSessionRepository` and `SnowSessionEntityMapper` for repository-backed CRUD and aggregate Snow session state.
+- Added `useSnowSession.swift` as the iOS data boundary for later Snow-Task-005 UI integration.
+- Added `SnowSessionRepositoryTests.swift` and `scripts/verify_snow_schema.py` to verify repository persistence and schema registration.
+
+### Scope Boundary
+- Snow-Task-002 does not add `SnowSegmentClassifier`, `RunBoundaryDetector`, Snow UI, `.skatetrack` snow package compatibility, fixture generation, HealthKit export, WatchBridge wiring, signing, entitlements, or production service integrations.
+- Snow Mode continues to avoid `SnowPrototype*` namespaces and `Shared/WatchBridge/*` changes.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_snow_task_001a_debug_gate.py`, `python3 scripts/verify_snow_task_001b_debug_toggle.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Snow-Task-002 verification token: production snow schema and repository boundary integrated.
+
+## 2026-06-15 — Snow-Task-003 Snow Segment Classifier Foundation
+
+### Completed
+- Added `SnowClassifierConfig.productionV0` with centralized v0 thresholds for altitude smoothing, trend windows, hysteresis, downhill, ascent, stopped, walking, gondola, motion-energy, and derived-heading checks.
+- Added `SnowSegmentClassification` and `SnowSegmentClassifier` as a rule-based classifier over existing `MotionSample` windows.
+- Added fixture-driven tests covering clean downhill, lift ascent, gondola ascent, surface lift ascent, stopped, walking, noisy downhill altitude, ambiguous gondola-like descent, and missing-altitude movement.
+- Added `scripts/verify_snow_classifier.py` to verify classifier registration, fixture coverage, no `SnowPrototype*`, no `Shared/WatchBridge/*`, no `.skatetrack` samples, and no `MotionSample` schema expansion.
+
+### Scope Boundary
+- Snow-Task-003 does not implement the run-boundary state machine, Snow UI, package compatibility, WatchBridge wiring, or `.skatetrack` fixtures.
+- Snow-Task-003 does not modify `MotionSample` or Snow-Task-002 value types.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, `python3 scripts/verify_snow_sport_enum.py`, `python3 scripts/verify_localization_keys.py`, and `python3 scripts/verify_shared_models.py`.
+- Run `xcodebuild -project SkateTrack.xcodeproj -scheme SkateTrack-iOSTests -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test` to capture fixture result lines beginning with `SnowClassifierFixtureResult`.
+- Snow-Task-003 verification token: production snow segment classifier foundation integrated.
+
+## Snow-Task-004 — RunBoundaryDetector foundation
+
+- Added the production `RunBoundaryDetector` streaming state machine for Snow run boundaries.
+- Added `RunBoundaryState`, `RunBoundaryConfig`, `RunBoundarySnapshot`, and `RunBoundaryEvent` as production model-layer boundaries.
+- Added high-confidence lift/gondola/surface-lift fast-path run ending using `hardTransportEndConfidenceThreshold` and `hardTransportConfirmationSeconds`.
+- Added fixture tests for run start confirmation, short-stop resume, long-stop run end, high-confidence lift fast-path, pending-end cancellation, low-confidence unknown, and v0 altitude-endpoint limitations.
+- Kept `RunBoundaryDetector` pure and persistence-free; it does not call `SnowSessionRepository` directly.
+- Deferred Snow Live HUD, UI wiring, real WatchBridge wiring, and `.skatetrack` package compatibility to later Snow tasks.
+
+Snow-Task-004 verification token: RunBoundaryDetector state machine added without classifier/schema/WatchBridge scope creep.
+
+## 2026-06-16 — Snow-Task-005 iPhone Snow UI Production Wiring
+
+### Completed
+- Added the production iPhone Snow live data boundary for Snow Mode recording without creating a `SnowPrototype*` namespace.
+- Added `SnowLiveSessionConfig`, `SnowLiveSessionState`, `SnowClassificationWindowBuffer`, `SnowLiveSessionCoordinator`, `SnowLiveHUDState`, and `SnowLiveHUDStateMapper`.
+- Defined the iPhone `lowConfidence` HUD policy through `SnowLiveSessionConfig.productionV0.lowConfidenceThreshold`, sourced from `SnowClassifierConfig.productionV0.mediumConfidenceThreshold`, so Snow UI code does not hardcode confidence literals.
+- Wired `SessionRecordingCoordinator` to start, pause, resume, finish, reset, and feed MotionSample windows into the Snow live coordinator only for `.snow(...)` sessions.
+- Exposed live Snow state through `useSessionRecording` / `useSnowLiveSession` while keeping `useSnowSession` repository-backed for persisted history.
+- Added four-state iPhone `SnowHUDView` UI: downhill, lift / gondola, waiting, and low confidence.
+- Added repository-backed Snow summary surfaces: `SnowDaySummaryView`, `SnowSegmentTimelineView`, and `SnowDistanceInspectorView`.
+- Added localized Snow HUD / summary / timeline / inspector keys for `en`, `zh-Hant`, and `ja`.
+- Added `scripts/verify_snow_iphone_ui.py` as the Snow-Task-005 verification gate.
+- Added `scripts/create_snow_task005_review_pack.sh` to generate the Snow-Task-005 Claude review pack after final local verification.
+
+### Scope Boundary
+- Snow-Task-005 does not modify `RunBoundaryDetector`, `SnowSegmentClassifier`, `SnowClassifierConfig`, `MotionSample`, or Snow-Task-002 value types.
+- Snow-Task-005 does not touch `Shared/WatchBridge/*`, does not implement watchOS UI, does not implement WatchBridge real-data wiring, and does not add `.skatetrack` sample files.
+- Snow-Task-005 uses `/Users/doggo/Documents/App軟體區/SkateTrack-SnowPrototype` only as read-only visual / copy reference; no production `SnowPrototype*` namespace is introduced.
+
+### Deferred Items
+- Manual correction persistence is deferred because editing `SnowSegment.manualOverride` requires a separate UX and persistence task.
+- Real WatchBridge snow data wiring and any Watch low-confidence payload are deferred to Snow-Task-006b after mainline Task-040.
+- True altitude confidence scoring is deferred because `MotionSample` v0 still lacks vertical accuracy, GPS altitude, and altitude source metadata.
+- Live provisional timeline before `runEnded` is deferred because `RunBoundaryDetector` v0 finalizes segments at run-boundary events.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_iphone_ui.py`, `python3 scripts/verify_snow_run_boundary.py`, `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, and `python3 scripts/verify_snow_sport_enum.py`.
+- Run targeted iOS XCTest for `SnowLiveSessionConfigTests`, `SnowLiveHUDStateMapperTests`, and `SessionRecordingCoordinatorTests`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-iOS -destination 'platform=iOS Simulator,name=iPhone 17 Pro'`.
+- Manual smoke testing confirmed Snow toggle, Snow session HUD routing, Snow summary empty / zero state, and non-Snow HUD preservation.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+## 2026-06-17 — Snow-Task-006a Mock-backed Watch Snow UI
+
+### Completed
+- Added the production-safe Watch Snow data contract `WatchSnowSessionSnapshot` as the Watch UI equivalent of the Addendum's prototype session field contract, without introducing a `SnowPrototype*` production namespace.
+- Added the watchOS Snow data-source boundary: `WatchSnowSessionDataSource`, `WatchSnowMockScenario`, and the DEBUG-only `WatchSnowMockSessionProvider`.
+- Added `WatchSnowHapticIntent`, `WatchSnowHapticIntentObserver`, and `WatchSnowHapticEngine` so mock scenario transitions can expose haptic intent without WatchBridge / WatchConnectivity dependencies.
+- Added mock-backed Watch Snow UI surfaces: root, mock gallery, live speed, carousel, lift / gondola, waiting, low-confidence, fall-alert, summary, controls, metric chip, style, formatter, and Release-safe unavailable view.
+- Routed `SkateTrackWatchApp` to `WatchSnowRootView`; DEBUG builds show the mock gallery, while Release builds keep a neutral unavailable fallback until real Watch integration exists.
+- Added localized `snow.watch.*` keys for English, Traditional Chinese, and Japanese.
+- Added `scripts/verify_snow_watch_ui.py` as the Snow-Task-006a verification gate.
+- Added `scripts/create_snow_task006_review_pack.sh` to generate the Snow-Task-006a Claude review pack after final local verification.
+
+### Scope Boundary
+- Snow-Task-006a does not touch `Shared/WatchBridge/*`, does not import WatchConnectivity, does not reference `WCSession`, and does not implement `WatchSessionCoordinator` or real iPhone-to-Watch Snow metrics.
+- Snow-Task-006a does not modify `SessionRecordingCoordinator`, `useSessionRecording`, `useSnowLiveSession`, `SnowLiveSessionCoordinator`, `MotionSample`, `RunBoundaryDetector`, `SnowSegmentClassifier`, or Snow-Task-002 value types.
+- Snow-Task-006a uses SnowPrototype source only as read-only UI / scenario reference; production files use `WatchSnow*` names instead of `SnowPrototype*` names.
+- Snow-Task-006a does not add `.skatetrack` sample files, HealthKit integration, emergency contact integration, signing changes, entitlements, or production complication timeline data.
+
+### Deferred Items
+- Snow-Task-006b real WatchBridge / WatchConnectivity wiring remains deferred until mainline Task-040 is complete and `feature/snow-mode` is rebased or merged onto post-Task-040 `develop`.
+- The future 006b adapter should map real WatchBridge Snow payloads into `WatchSnowSessionSnapshot` while keeping Watch views unchanged.
+- Mock scenario switching, subscriber toggling, and fall-alert screens are DEBUG / preview QA surfaces only; they are not production sensor or safety integrations.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_watch_ui.py`, `python3 scripts/verify_snow_iphone_ui.py`, `python3 scripts/verify_snow_run_boundary.py`, `python3 scripts/verify_snow_classifier.py`, `python3 scripts/verify_snow_schema.py`, and `python3 scripts/verify_snow_sport_enum.py`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-watchOS -destination 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'`.
+- Run `xcodebuild build -project SkateTrack.xcodeproj -scheme SkateTrack-iOS -destination 'platform=iOS Simulator,name=iPhone 17 Pro'`.
+- Manual watchOS smoke testing confirmed the DEBUG Snow mock gallery, downhill, lift / gondola, waiting, low confidence, fall alert, summary, controls, and haptic intent text flows.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+## 2026-06-17 Phase 1c — Snow-Task-007 macOS Snow Viewer Completed
+
+### Completed
+
+- Added a production-safe macOS Snow analysis boundary for read-only post-session review.
+- Added `MacSnowSessionAnalysis` as a pure struct presentation model and kept live / repository / mock concerns outside the value type.
+- Added `MacSnowAnalysisViewModel`, `MacSnowAnalysisAvailability`, `MacSnowAnalysisSource`, `MacSnowSessionAnalysisMapper`, and `MacSnowRouteFilter` for macOS Snow viewer data flow.
+- Added a DEBUG-only `MacSnowMockAnalysisProvider` for local macOS Snow viewer QA before Snow-Task-008 package payload support.
+- Added macOS Snow viewer surfaces: session browser, dashboard, route + elevation overview, segment timeline, segment inspector, distance inspector, vertical drop chart, and package-pending / unavailable states.
+- Added DEBUG-only MacRootView integration for Snow Analysis Preview so the UI can be exercised without modifying production package schema.
+- Aligned the Snow viewer body toward `SkateTrack_SnowMode_UI_v1.1.1_Pack` visual direction: deep snow-night panels, ice cyan route/downhill emphasis, amber lift/transport emphasis, and explicit low-confidence indicators.
+- Added `scripts/verify_snow_macos_viewer.py` and `scripts/create_snow_task007_review_pack.sh`.
+
+### Reason / Context
+
+Snow-Task-007 implements the macOS Snow viewer surface required by the Phase 1c BuildPlan while preserving the task boundary with Snow-Task-008. Official `.skatetrack` Snow package manifest / payload / reader / writer compatibility remains deferred to Snow-Task-008.
+
+Claude's Snow-Task-007 guidance confirmed that Release builds should distinguish between repository-backed Snow sessions and imported packages without official Snow fields: repository-backed Snow sessions may show the full viewer, while imported `.skatetrack` packages missing Snow payload must show `packageSchemaPending` instead of inferred or fabricated analysis.
+
+### Validation Notes
+
+- Run `python3 scripts/verify_snow_macos_viewer.py` to verify macOS Snow viewer files, struct-based analysis model, DEBUG mock gating, localization, project membership, and package-schema guardrails.
+- Run cumulative Snow verify scripts before commit.
+- Build macOS, iOS, and watchOS targets because the task touches the Xcode project and shared localization.
+- Manual QA should open the DEBUG Snow Analysis Preview from the macOS sidebar and confirm the SnowMode visual direction, route/elevation readability, segment timeline, inspector, and distance inspector.
+
+### Known Issues / Follow-up
+
+- Snow-Task-007 does not add official `.skatetrack` Snow package payload support; this remains Snow-Task-008.
+- Snow-Task-007 does not persist manual segment corrections.
+- Snow-Task-007 uses lightweight SwiftUI route/elevation visualization; full MapKit fitting remains later work.
+- v0 elevation is limited because `SnowSegment.startAltitudeMeters` and `endAltitudeMeters` may be nil.
+- Future macOS main-shell integration may require outer layout adjustments when the app moves toward `SkateTrack_macOS_UI_v2`.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a — Snow Package Compatibility and macOS Imported Package Viewer
+
+### Completed
+- Added official optional Snow payload support to `.skatetrack` package sessions through `SkateTrackPackageSnowPayload`.
+- Bumped the package manifest schema to version 2 while preserving schema 1 decode compatibility.
+- Added optional package `capabilities` with Snow capability keys for payload-aware exports.
+- Updated iOS package export to include Snow payload only when real `SnowSessionState` is available from the repository.
+- Preserved `snowPayload == nil` for non-Snow sessions and Snow sessions without official repository Snow state.
+- Wired imported Snow packages into the macOS Snow viewer through `MacSnowSessionAnalysisMapper.makeAvailabilityFromPackage(...)` and `.importedPackage` source.
+- Added package compatibility verification, tests, and a review-pack script that writes artifacts outside the repo under `/Users/doggo/Documents/App軟體區/upload/`.
+
+### Deferred
+- Backup `snowSessions` compatibility and Snow Health export provider boundary remain deferred to Snow-Task-008b.
+
+
+### Snow-Task-008b backup compatibility and Health provider boundary
+
+- Added backup schema version 2 with schema 1 / 2 decode support.
+- Added optional `snowSessions: [SnowBackupSession]?` to backup payloads.
+- Preserved legacy backup semantics: missing `snowSessions` decodes successfully as a legacy backup.
+- Encodes new Snow-aware backups with an empty `snowSessions` array by default.
+- Added restore preview Snow session counts without changing restore execution behavior.
+- Added iOS-only Snow Health export provider boundary under `iOS/Core/Health/`.
+- `DisabledSnowHealthExporter` is the production default and returns unavailable without touching HealthKit.
+- `MockSnowHealthExporter` is DEBUG-only for local provider wiring tests.
+- Added `scripts/verify_snow_backup_compatibility.py` and `scripts/create_snow_task008b_review_pack.sh`.
+- Verified package compatibility, backup compatibility, cumulative Snow guardrails, iOS tests, and iOS / macOS / watchOS builds.
+
+Snow-Task-008b intentionally does not add production HealthKit export, WatchBridge wiring, classifier changes, run-boundary changes, or Snow value-model changes.
+
+### Snow-Task-009 QA fixtures and regression matrix
+
+Snow-Task-009 adds a QA / regression safety layer for Phase 1c Snow Mode after Snow-Task-008b.
+
+Implemented boundaries:
+
+- Added deterministic JSON-only Snow QA fixtures under `Tests/Fixtures/Snow/`.
+- Added `scripts/generate_snow_qa_fixtures.py` so committed fixtures can be regenerated deterministically.
+- Added `SnowQAFixtureRegressionTests` for package v2 Snow payload, package v2 without Snow payload, backup v1 legacy decode, backup v2 empty / populated Snow sessions, lift exclusion semantics, low-confidence safety, and Health boundary regression.
+- Added `scripts/verify_snow_regression.py` as the Task 009 verification gate.
+- Updated the manual QA matrix with Traditional Chinese checklist items covering iPhone, watchOS, macOS viewer, package import/export, backup compatibility, and Health boundary behavior.
+- Added `scripts/create_snow_task009_review_pack.sh`, writing `SnowTask009_ReviewPack.zip` to `/Users/doggo/Documents/App軟體區/upload/`.
+
+Snow-Task-009 intentionally does not change runtime classifier behavior, run-boundary behavior, package schema version, backup schema version, WatchBridge / WatchConnectivity wiring, or real HealthKit export.
+
+## 2026-06-18 — Snow-Task-010 Final Closure and Handoff
+
+### Completed
+- Added `docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md` as the final Phase 1c Snow Mode handoff record.
+- Added `scripts/verify_snow_phase1c_completion.py` as the final completion verifier.
+- Added `scripts/create_snow_task010_review_pack.sh` to generate the Snow-Task-010 Claude / human review pack under `/Users/doggo/Documents/App軟體區/upload/`.
+- Updated the Snow agent state, file structure, known limitations, manual QA matrix, and documentation index with the final Phase 1c closure state.
+
+### Scope Boundary
+- Snow-Task-010 adds closure, documentation, verification, and review artifacts only.
+- No runtime Snow feature behavior is added.
+- No package or backup schema version is bumped.
+- No production HealthKit export is implemented.
+- No WatchBridge / WatchConnectivity production Snow wiring is implemented.
+- Snow-Task-006b remains deferred until mainline Task-040+ alignment.
+
+### Validation Notes
+- Run `python3 scripts/verify_snow_phase1c_completion.py`.
+- Run the cumulative Snow verify scripts from Snow-Task-001 through Snow-Task-009.
+- Run `SnowQAFixtureRegressionTests` and `SkateTrackPackageSnowCompatibilityTests` on the iPhone 17 Pro simulator.
+- Build macOS, iOS, and watchOS targets.
+- Generate `SnowTask010_ReviewPack.zip` under `/Users/doggo/Documents/App軟體區/upload/`.
+
+Snow-Task-010 verification token: Phase 1c Snow Mode completion handoff is review-ready without runtime scope creep.
+
+## 2026-06-18 — Snow Pre-Task-040 Documentation Preparation
+
+### Completed
+- Added `docs/process/SNOW_TASK_006B_WIRING_PLAN.md` as the future WatchBridge / WatchConnectivity Snow wiring specification to be used after mainline Task-040 is merged into `feature/snow-mode`.
+- Added `docs/process/MOTION_SAMPLE_EXTENSION_DESIGN.md` as a future MotionSample v1 design proposal for GPS accuracy, course, and altitude-source metadata.
+- Added `docs/process/SNOW_CLASSIFIER_FIELD_TEST_PLAN.md` as the real-world field testing and threshold-tuning plan for SnowSegmentClassifier v0 / v1 validation.
+- Updated the documentation index to reference these preparation documents.
+
+### Scope Boundary
+- This is a documentation-only preparation task.
+- No Swift files, Xcode project files, Core Data model files, package / backup schema files, WatchBridge files, HealthKit code, or verify scripts are changed.
+- The Phase 1c completion commit `b975c43` remains the runtime closure baseline.
+- Item 4 from the Claude preparation note, iOS History Snow Filter UI, is intentionally excluded because it is runtime UI code and should be handled as a separate optional task.
+
+Snow Pre-Task-040 documentation token: preparation documents added without runtime scope creep.
+
+## 2026-07-13 — Snow-Integration-A005 Conflict Resolution Baseline
+
+### Status
+- Snow-Integration-A004 passed and left `integration/snow-mode-phase1c-after-task040` in the approved merge-in-progress state.
+- Snow-Integration-A005 is resolving conflicts for external review only. The merge remains uncommitted and unpushed.
+- No commit hash is assigned in this log for A005.
+
+### Historical checkpoint boundaries
+- At this dated A005 checkpoint, A006 WatchBridge Snow adaptation, A007 aggregate verification, A008 manual QA, and A009 documentation closure had not started.
+- A006R1, A007, and A008R1/A008R2R1 later closed those implementation, verifier, and manual-QA boundaries; the 2026-07-16 A009 entry records the current documentation state.
+- Commit / push and final merge to `develop` remain pending.
+
+## 2026-07-13 — Snow-Integration-A006R1 Minimal WatchBridge Runtime and Snow Adapter
+
+### Implemented
+- Extended the sole `WatchBridgeWCSessionBoundary` with injected envelope decoding, inbound delivery, malformed-data handling, and preserved connection freshness updates.
+- Added pure `WatchBridgeRuntimeState` ordering and duplicate guards plus a MainActor `WatchBridgeWatchRuntime` observable receiver.
+- Added the bounded iPhone `WatchBridgeActivityPublisher`, which reads the existing `SessionRecordingCoordinator` publishers and does not own recording lifecycle.
+- Extended `WatchBridgeMetricUpdatePayload` with optional, nil-defaulted Snow fields for backward-compatible Codable transport.
+- Added `WatchBridgeSnowSnapshotMapper` and `WatchBridgeSnowSessionProvider`; unsupported Snow metrics remain nil and provider lifecycle actions remain documented no-ops.
+- Composed one runtime/provider instance in the Watch app while preserving the non-Snow `WatchLiveSessionFaceView` root and the existing DEBUG Snow mock/gallery source.
+- Added focused runtime and Snow adapter XCTest suites plus A006R1 and cumulative Watch Snow verification guards.
+
+### Scope Boundary
+- `WatchBridgeWCSessionBoundary` remains the only production `WCSession` owner.
+- `SessionRecordingCoordinator` remains the single iPhone recording authority.
+- No Watch Snow view, localization, MotionSample, classifier, run-boundary, Core Data, package/backup schema, HealthKit, StoreKit, signing, capability, target-topology, or macOS source membership change is included.
+- No direct Snow-side recording start was added; `WatchBridgeSnowSessionProvider.startRun()` is a no-op required only for protocol conformance.
+- The merge remains in progress. No commit, push, merge continuation, manual QA, or A007 work is part of A006R1.
+
+### Validation Contract
+- Run the separated `WatchBridgeRuntimeFoundationTests` and `WatchBridgeSnowAdapterTests` selectors.
+- Run `python3 scripts/verify_a006r1_watchbridge_runtime.py` and `SNOW_INTEGRATION_A006R1=1 python3 scripts/verify_snow_watch_ui.py`.
+- Run cumulative Snow and directly relevant WatchBridge verifiers, followed by no-signing iOS and watchOS builds.
+- Package immutable review evidence under `/Users/doggo/Documents/App軟體區/upload/` and stop for independent review without committing.
+
+## 2026-07-16 — Snow-Integration-A009 Documentation and Deferred-Items Closure
+
+### Integration progression
+
+- The approved integration strategy remains Path A: history-preserving merge on `integration/snow-mode-phase1c-after-task040`.
+- A004 created the integration branch and approved merge-in-progress state; A005 resolved the reviewed conflict surface while preserving mainline Task-040 ownership.
+- A006 was blocked until the minimum WatchBridge runtime boundary was explicit; A006R1 then passed with bounded runtime decoding, the Snow snapshot mapper/provider, and preserved iPhone recording authority.
+- A007 passed the aggregate Snow integration verifier.
+- A008 was blocked on manual-QA readiness; A008R1 added bounded QA surfaces, and A008R2R1 completed three-platform operator QA with QA-01 through QA-12 accepted.
+- The operator explicitly waived retained screenshot evidence while confirming the required visual checks; no screenshot file, path, or hash is claimed.
+- QA-07 remains a documented limitation because no paired iPhone/watchOS destination was available. Automated WatchBridge/runtime coverage and independent normal-Watch-root and Snow mock-gallery launches passed, but a real paired round trip is not claimed.
+
+### A009 documentation closure
+
+- Updated the Snow development history, actual file structure, known-limitations/deferred registry, manual-QA matrix, release-readiness state, Phase 1c agent state, completion handoff, and documentation index.
+- Recorded the required deferred items with current safe state, reason, trigger, future owner/task, and verification boundary, including post-A012 Watch Unified Sport Routing / Mode Selection.
+- This task is documentation-only. It changes no product source, tests, verifier scripts, Xcode project membership, runtime localization, schema, package/backup runtime, WatchBridge runtime, UI, assets, signing, or capabilities.
+- Build and XCTest gates are intentionally skipped only after the documentation-only path guard passes.
+- The initial A009 execution stopped blocked after its documentation and index-preservation audits passed because `scripts/verify_snow_integration_aggregate.py` was still hard-locked to the A008R1 197-path stage and digest. That blocker remains part of the historical progression and was not a product/source failure.
+
+### A009R1 aggregate stage-progression remediation
+
+- Preserved the valid eight-document A009 staging and the exact 198-path index.
+- Updated only the existing aggregate verifier, its applicability registry, and the affected documentation status statements; no product runtime, test source, project, schema, localization runtime, UI, asset, package, persistence, WatchBridge runtime, entitlement, capability, or signing path changed.
+- Retained the original A007 index digest and A008R1 path guards, added the exact A008R1 197-path staged-list digest, required the eight approved A009 documents and sole newly staged `docs/release/RELEASE_READINESS_PRE_ADP.md`, and normalized the independently reviewed pre-A009 document entries before recomputing the historical digest.
+- The isolated seven-case regression suite rejects a 197-path rollback, unauthorized 199th path, approved-path substitution, non-allowed index blob mutation, unstaged changes, and unmerged paths while accepting the exact current 198-path index.
+- The mandatory CURRENT_REQUIRED sweep proved that the A008R1 readiness verifier and Snow-Task-008a/008b package/backup verifiers still contained obsolete stage/document-token assertions. The applicability registry now classifies those three as historical stage-local and routes their current package, backup, health-boundary, readiness, and index guarantees to the aggregate verifier.
+- The corrected aggregate verifier, all current required verifiers, documentation consistency audit, Python compile, and diff checks pass with zero failures. A009 is therefore closed through A009R1 remediation.
+
+### Current boundary
+
+- The history-preserving merge remains in progress at `HEAD=f48373c6610f35b865ea337953f68e544894f9a5`, `ORIG_HEAD=f48373c6610f35b865ea337953f68e544894f9a5`, and `MERGE_HEAD=c618f399dda786ac8c25946b4b1c67148b190901`.
+- No integration commit or push has been created, and the merge has not been continued.
+- A010 pre-commit final acceptance, A011 commit/push, and A012 final merge to `develop` remain pending independent approval.
+- Public Snow release approval, ADP, TestFlight, App Store, production HealthKit write, real-field validation, and real paired-Watch validation remain outside this closure.
+
+```text
+SNOW_INT_A008_RESULT=PASSED
+MANUAL_QA_SNOW_INTEGRATION=PASSED
+SCREENSHOT_EVIDENCE_WAIVED_BY_OPERATOR=YES
+PAIRED_WATCH_VALIDATION=DOCUMENTED_LIMITATION
+SNOW_INT_A009_RESULT=PASSED
+SNOW_INT_A009R1_RESULT=PASSED_REMEDIATION
+SNOW_INT_A010_RESULT=PENDING
+SNOW_INT_A011_RESULT=PENDING
+SNOW_INT_A012_RESULT=PENDING
+MERGE_IN_PROGRESS=YES
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```
+
+## 2026-07-18 — Snow-Integration-A010R3–A010R5 Distance Breakdown Follow-up
+
+### Historical failure and audit
+
+- A010R3 automated acceptance gates passed, but required fresh manual QA failed: the same approximately 59-second Snow session showed 0.43 km in the normal session summary and 0 km route/ski/lift in Snow Distance Inspector. A010R3 remains FAILED.
+- A010R4 performed no repository mutation and traced the behavior to no-altitude movement correctly remaining low-confidence `.unknown` while no run or Snow segment was committed. Existing `SnowSegment`, repository, Core Data, and schema-2 package fields were sufficient for a narrow repair. A010R4 remains PASSED as an audit only.
+
+### A010R5 bounded remediation
+
+- Selected Variant A because `SessionSummaryDisplayMetrics.make(session:samples:)` is already callable; `useSessionSummary.swift` and the trusted distance formula remain unchanged.
+- After the final `SessionData` is enriched, `SessionRecordingCoordinator` passes that exact summary-display route distance to `SnowLiveSessionCoordinator`.
+- The Snow coordinator combines existing persisted/in-memory segments, computes only a positive route residual, and persists at most one terminal `.unknown` segment with the same session ID, no run ID, no source-sample claim, and `countsTowardSkiDistance=false`.
+- Added deterministic coordinator tests for no-altitude unknown fallback, route/unknown equality, zero ski/lift inflation, session/run association, repeated-finish idempotency, partial residual accounting, equal/greater route guards, zero/non-finite values, and terminal metadata.
+- Added an existing-schema unknown-only Snow package export/import round trip and a same-summary-resolver handoff assertion while preserving the non-Snow isolation regression.
+- Updated the aggregate verifier/applicability registry for exact Variant-A stage progression, historical A007–A010R4 preservation, format/classifier locks, semantic contracts, and negative schema/classifier mutations.
+- Automated verification passed historically: 11/11 current verifiers, focused/affected tests, iOS/watchOS/macOS no-signing builds, localization and format locks, and 309/309 complete iOS tests with zero failures/skips. Focused manual QA later found `0.6 km` in the general summary but `1 km` in Timeline/Inspector, and the original run directory disappeared before authoritative finalization; A010R5 therefore remains `BLOCKED_HISTORICAL`. No commit, push, merge continuation, A010R6, A011, or A012 action is authorized.
+
+```text
+SNOW_INT_A010R3_RESULT=FAILED_HISTORICAL
+SNOW_INT_A010R4_RESULT=PASSED
+SNOW_INT_A010R5_RESULT=BLOCKED_HISTORICAL
+UNDERLYING_MANUAL_QA_GATE=FAILED
+A010R5_AUTOMATED_GATES=PASSED_HISTORICAL
+IOS_XCTEST_TOTAL_COUNT=309
+A010R5_STAGE_VARIANT=VARIANT_A
+FALLBACK_SEGMENT_TYPE=UNKNOWN
+FALLBACK_COUNTS_TOWARD_SKI_DISTANCE=NO
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```
+
+## 2026-07-18 — Snow-Integration-A010R5R2 — Distance Presentation and Downhill-Information Remediation
+
+- A010R5R1 passed its independent read-only audit and classified the visible distance mismatch as the same raw route value rendered with different formatter precision. Debug scenarios remain HUD-presentation-only, while live-HUD timer/chart parity remains deferred.
+- A010R5R2 changes only presentation: Snow Summary/Timeline/Inspector use the existing two-decimal-capable `UnitFormatter.distance` path; no raw distance, route resolver, unit conversion, package/schema, Core Data, classifier, or run-boundary contract changes.
+- The classified Snow card now uses the exact `Downhill information` / `滑降資訊` / `滑降情報` copy. Existing unknown-only model state selects one localized semantic status card instead of four misleading classified zero tiles; truly empty and classified-downhill states remain distinct.
+- Tests and verifiers cover 600-meter formatting, no forced trailing zeroes, Summary/Timeline/Inspector string parity, unknown-only/empty/classified presentation selection, exact three-language copy, zero-new-path stage progression, and forbidden-scope negative regressions.
+- Automated verification passed: 12/12 CURRENT_REQUIRED verifiers, focused 11/11 tests, affected 35/35 regressions, iOS/watchOS/macOS no-signing builds, and complete 314/314 iOS tests with zero failures or unexpected skips. Focused operator QA subsequently passed for all eight scenarios, including visible distance-string parity, three-language copy, unknown-only status, and shared-scheme preservation.
+- Snow-Integration-A010R5R2R1 remains `BLOCKED_HISTORICAL` because its superseded control document required nonexistent parent tokens. Snow-Integration-A010R5R2R2 performs only the corrected repository documentation and aggregate/applicability closure; A010R5R3, A010R5R4, A010R6, commit, push, and merge continuation remain unauthorized.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```
+
+## Snow-Integration-A010R5R2R2 current closure (2026-07-19)
+
+This is the active/current corrected post-QA closure. It reuses the approved A010R5R2 implementation, automated-gate, manual-QA, screenshot, Git/index, and shared-scheme evidence. It changes documentation and verifier contracts only and does not authorize later integration work.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+A010R5R2R1_RESULT=BLOCKED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+CURRENT_REQUIRED_VERIFIERS=12_OF_12_PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+A010R6_AUTHORIZED=NO_UNTIL_A010R5R2R2_INDEPENDENT_REVIEW
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```

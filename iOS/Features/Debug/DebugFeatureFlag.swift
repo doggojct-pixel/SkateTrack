@@ -9,6 +9,7 @@ enum DebugFeatureFlag: String, CaseIterable, Identifiable, Sendable {
     case simulateFallAlert
     case demoSpeedSession
     case recordingDiagnosticsContext
+    case snowModeEntry
     case subscriptionOverride
     case resetEmergencyContacts
 
@@ -22,6 +23,8 @@ enum DebugFeatureFlag: String, CaseIterable, Identifiable, Sendable {
             return "debug.tools.demoSpeed.title"
         case .recordingDiagnosticsContext:
             return "debug.tools.recordingContext.title"
+        case .snowModeEntry:
+            return "debug.tools.snowMode.title"
         case .subscriptionOverride:
             return "debug.subscription.title"
         case .resetEmergencyContacts:
@@ -37,6 +40,8 @@ enum DebugFeatureFlag: String, CaseIterable, Identifiable, Sendable {
             return "debug.tools.demoSpeed.description"
         case .recordingDiagnosticsContext:
             return "debug.tools.recordingContext.description"
+        case .snowModeEntry:
+            return "debug.tools.snowMode.description"
         case .subscriptionOverride:
             return "debug.tools.subscription.description"
         case .resetEmergencyContacts:

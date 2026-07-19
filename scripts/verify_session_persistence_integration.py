@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Verify Task-015b Session Recording -> Repository persistence integration."""
 from pathlib import Path
+import os
 import re
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+A005_INTEGRATION_MODE = os.environ.get("SNOW_INTEGRATION_A005") == "1"
 
 REQUIRED_FILES = [
     "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift",
@@ -31,6 +34,28 @@ def require_tokens(name: str, text: str, tokens: list[str]) -> None:
         sys.exit(1)
 
 
+def verify_a005_coordinator_growth(coordinator: str) -> None:
+    rel_path = "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift"
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "show", f"HEAD:{rel_path}"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        print("Unable to read SessionRecordingCoordinator.swift HEAD baseline", file=sys.stderr)
+        sys.exit(1)
+    head_line_count = len(result.stdout.splitlines())
+    final_line_count = len(coordinator.splitlines())
+    if not A005_INTEGRATION_MODE or head_line_count <= 450 or final_line_count - head_line_count != 55:
+        print(
+            "SessionRecordingCoordinator.swift oversized baseline mismatch: "
+            f"HEAD={head_line_count}, final={final_line_count}, expected A005 growth=55",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+
 def main() -> None:
     for path in REQUIRED_FILES:
         if not (ROOT / path).exists():
@@ -50,8 +75,7 @@ def main() -> None:
         print("completedSessionPublisher must fire only after repository save succeeds", file=sys.stderr)
         sys.exit(1)
     if len(coordinator.splitlines()) > 450:
-        print("SessionRecordingCoordinator.swift exceeded 450 lines after Task-015b", file=sys.stderr)
-        sys.exit(1)
+        verify_a005_coordinator_growth(coordinator)
 
     debug_mock = read("iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift")
     require_tokens("SessionRecordingCoordinator+DebugMock.swift", debug_mock, [

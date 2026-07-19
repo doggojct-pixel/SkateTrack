@@ -40,6 +40,15 @@ struct MacPackageImportPreview: Identifiable, Equatable {
         primaryPackageSession?.session
     }
 
+    var snowAnalysisAvailability: MacSnowAnalysisAvailability? {
+        guard let packageSession = primaryPackageSession else { return nil }
+        guard case .snow(_) = packageSession.session.sportMode else { return nil }
+        return MacSnowSessionAnalysisMapper.makeAvailabilityFromPackage(
+            packageSession: packageSession,
+            snowPayload: packageSession.snowPayload
+        )
+    }
+
     var primaryTitle: String {
         if let displayName = primarySession?.spotSnapshot?.displayName, !displayName.isEmpty {
             return displayName

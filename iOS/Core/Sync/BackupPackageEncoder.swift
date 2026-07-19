@@ -10,6 +10,7 @@ struct BackupPackageEncodingInput: Sendable {
     let spots: [SpotProfile]
     let achievements: [AchievementUnlockRecord]
     let weeklyChallengeCompletions: [WeeklyChallengeCompletionRecord]
+    let snowSessions: [SnowBackupSession]?
     let preflightIssues: [BackupPackageStoreIssue]
 
     init(
@@ -18,6 +19,7 @@ struct BackupPackageEncodingInput: Sendable {
         spots: [SpotProfile] = [],
         achievements: [AchievementUnlockRecord] = [],
         weeklyChallengeCompletions: [WeeklyChallengeCompletionRecord] = [],
+        snowSessions: [SnowBackupSession]? = [],
         preflightIssues: [BackupPackageStoreIssue] = []
     ) {
         self.sessions = sessions
@@ -25,6 +27,7 @@ struct BackupPackageEncodingInput: Sendable {
         self.spots = spots
         self.achievements = achievements
         self.weeklyChallengeCompletions = weeklyChallengeCompletions
+        self.snowSessions = snowSessions
         self.preflightIssues = preflightIssues
     }
 }
@@ -72,11 +75,12 @@ struct BackupPackageEncoder {
                 equipment: input.equipment.count,
                 spots: input.spots.count,
                 achievements: input.achievements.count,
-                weeklyChallengeCompletions: input.weeklyChallengeCompletions.count
+                weeklyChallengeCompletions: input.weeklyChallengeCompletions.count,
+                snowSessions: input.snowSessions?.count
             ),
             encodingIssues: issues
         )
-        let payload = BackupPackagePayload(manifest: manifest, sections: sections)
+        let payload = BackupPackagePayload(manifest: manifest, sections: sections, snowSessions: input.snowSessions)
         let encoder = makeEncoder()
         do {
             return BackupPackageEncodingResult(payload: payload, data: try encoder.encode(payload))

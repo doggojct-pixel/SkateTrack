@@ -23,7 +23,7 @@ struct BackupPackageDecoder: Sendable {
             guard raw.manifest.packageType == BackupPackageType.backup.rawValue else {
                 throw BackupPackageError.unsupportedPackageType(raw.manifest.packageType)
             }
-            guard raw.manifest.schemaVersion == BackupPackageManifest.currentSchemaVersion else {
+            guard BackupPackageManifest.supportedSchemaVersions.contains(raw.manifest.schemaVersion) else {
                 throw BackupPackageError.unsupportedSchemaVersion(raw.manifest.schemaVersion)
             }
         } catch let error as BackupPackageError {
@@ -72,11 +72,14 @@ struct BackupPackageDecoder: Sendable {
             stores.append(storePreview)
         }
 
+        validateSnowSessions(in: payload, issues: &issues)
+
         return BackupRestorePreview(
             manifest: payload.manifest,
             stores: stores,
             validationIssues: issues,
-            sourceFileName: sourceFileName
+            sourceFileName: sourceFileName,
+            snowSessionCount: payload.snowSessions?.count
         )
     }
 
@@ -128,6 +131,26 @@ struct BackupPackageDecoder: Sendable {
                 decodedItemCount: 0,
                 status: .failed,
                 message: error.localizedDescription
+            )
+        }
+    }
+
+
+    private func validateSnowSessions(
+        in payload: BackupPackagePayload,
+        issues: inout [BackupRestoreValidationIssue]
+    ) {
+        guard let snowSessions = payload.snowSessions else {
+            return
+        }
+
+        if let expectedCount = payload.manifest.storeCounts.snowSessions, expectedCount != snowSessions.count {
+            issues.append(
+                BackupRestoreValidationIssue(
+                    storeKey: nil,
+                    stage: "decode",
+                    message: "Decoded Snow session count \(snowSessions.count) does not match manifest count \(expectedCount)."
+                )
             )
         }
     }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38F100000000000000000101 /* SnowHealthExporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000002 /* SnowHealthExporting.swift */; };
+		38F100000000000000000102 /* DisabledSnowHealthExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000003 /* DisabledSnowHealthExporter.swift */; };
+		38F100000000000000000103 /* MockSnowHealthExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F100000000000000000004 /* MockSnowHealthExporter.swift */; };
 		12A200000000000000000009 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000A /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
 		12A20000000000000000000B /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A200000000000000000001 /* UnitFormatter.swift */; };
@@ -22,6 +25,67 @@
 		12A300000000000000000104 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
 		12A300000000000000000105 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
 		12A300000000000000000106 /* SportMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000002 /* SportMode.swift */; };
+		29C100000000000000000101 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
+		29C100000000000000000102 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
+		29C100000000000000000103 /* SnowDiscipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C100000000000000000001 /* SnowDiscipline.swift */; };
+		31C200000000000000000101 /* SnowSegmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000001 /* SnowSegmentType.swift */; };
+		31C200000000000000000102 /* SnowSegmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000001 /* SnowSegmentType.swift */; };
+		31C200000000000000000103 /* SnowSegmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000001 /* SnowSegmentType.swift */; };
+		31C200000000000000000104 /* SnowSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000002 /* SnowSegment.swift */; };
+		31C200000000000000000105 /* SnowSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000002 /* SnowSegment.swift */; };
+		31C200000000000000000106 /* SnowSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000002 /* SnowSegment.swift */; };
+		31C200000000000000000107 /* SnowRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000003 /* SnowRun.swift */; };
+		31C200000000000000000108 /* SnowRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000003 /* SnowRun.swift */; };
+		31C200000000000000000109 /* SnowRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000003 /* SnowRun.swift */; };
+		31C20000000000000000010A /* SnowDistanceBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000004 /* SnowDistanceBreakdown.swift */; };
+		31C20000000000000000010B /* SnowDistanceBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000004 /* SnowDistanceBreakdown.swift */; };
+		31C20000000000000000010C /* SnowDistanceBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000004 /* SnowDistanceBreakdown.swift */; };
+		31C20000000000000000010D /* SnowVerticalMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000005 /* SnowVerticalMetrics.swift */; };
+		31C20000000000000000010E /* SnowVerticalMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000005 /* SnowVerticalMetrics.swift */; };
+		31C20000000000000000010F /* SnowVerticalMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000005 /* SnowVerticalMetrics.swift */; };
+		31C200000000000000000110 /* SnowSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000006 /* SnowSessionState.swift */; };
+		31C200000000000000000111 /* SnowSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000006 /* SnowSessionState.swift */; };
+		31C200000000000000000112 /* SnowSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C200000000000000000006 /* SnowSessionState.swift */; };
+		31C210000000000000000101 /* SnowSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C210000000000000000001 /* SnowSessionRepository.swift */; };
+		31C210000000000000000102 /* SnowSessionEntityMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C210000000000000000002 /* SnowSessionEntityMapper.swift */; };
+		31C220000000000000000101 /* useSnowSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C220000000000000000001 /* useSnowSession.swift */; };
+		31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C230000000000000000001 /* SnowSessionRepositoryTests.swift */; };
+		32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000001 /* SnowClassifierConfig.swift */; };
+		32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000002 /* SnowSegmentClassification.swift */; };
+		32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C300000000000000000003 /* SnowSegmentClassifier.swift */; };
+		32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C310000000000000000001 /* SnowSegmentClassifierTests.swift */; };
+		33C400000000000000000101 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000102 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000103 /* RunBoundaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000001 /* RunBoundaryState.swift */; };
+		33C400000000000000000104 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000105 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000106 /* RunBoundaryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000002 /* RunBoundaryConfig.swift */; };
+		33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C400000000000000000108 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C400000000000000000109 /* RunBoundarySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000003 /* RunBoundarySnapshot.swift */; };
+		33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010B /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010C /* RunBoundaryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000004 /* RunBoundaryEvent.swift */; };
+		33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C40000000000000000010F /* RunBoundaryDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C400000000000000000005 /* RunBoundaryDetector.swift */; };
+		33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C410000000000000000001 /* RunBoundaryDetectorTests.swift */; };
+		34C500000000000000000101 /* SnowLiveSessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000001 /* SnowLiveSessionConfig.swift */; };
+		34C500000000000000000102 /* SnowClassificationWindowBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */; };
+		34C500000000000000000103 /* SnowLiveSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000003 /* SnowLiveSessionState.swift */; };
+		34C500000000000000000104 /* SnowLiveHUDState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000004 /* SnowLiveHUDState.swift */; };
+		34C500000000000000000105 /* SnowLiveHUDStateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */; };
+		34C500000000000000000106 /* SnowLiveSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */; };
+		34C500000000000000000107 /* useSnowLiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C500000000000000000007 /* useSnowLiveSession.swift */; };
+		34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */; };
+		34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */; };
+		A81500000000000000000101 /* SnowLiveSessionCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81500000000000000000001 /* SnowLiveSessionCoordinatorTests.swift */; };
 		12A300000000000000000107 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000108 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
 		12A300000000000000000109 /* PowerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A300000000000000000003 /* PowerType.swift */; };
@@ -72,10 +136,19 @@
 		12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD03000000000000000001 /* SportCategoryPickerView.swift */; };
 		12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD04000000000000000001 /* BoardModeSelectorView.swift */; };
 		12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD05000000000000000001 /* InlineModeSelectorView.swift */; };
+		29C110000000000000000101 /* SnowDisciplineSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C110000000000000000001 /* SnowDisciplineSelectorView.swift */; };
 		12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD06000000000000000001 /* PowerTypeToggleView.swift */; };
 		12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD07000000000000000001 /* ModeSelectionCardView.swift */; };
 		12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD08000000000000000001 /* StartSessionCTAView.swift */; };
 		12AE01000000000000000101 /* LiveHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE01000000000000000001 /* LiveHUDView.swift */; };
+		34C520000000000000000101 /* SnowHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000001 /* SnowHUDView.swift */; };
+		34C520000000000000000102 /* SnowHUDDownhillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000002 /* SnowHUDDownhillView.swift */; };
+		34C520000000000000000103 /* SnowHUDLiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000003 /* SnowHUDLiftView.swift */; };
+		34C520000000000000000104 /* SnowHUDWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000004 /* SnowHUDWaitingView.swift */; };
+		34C520000000000000000105 /* SnowHUDLowConfidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */; };
+		34C530000000000000000101 /* SnowDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000001 /* SnowDaySummaryView.swift */; };
+		34C530000000000000000102 /* SnowSegmentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000002 /* SnowSegmentTimelineView.swift */; };
+		34C530000000000000000103 /* SnowDistanceInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C530000000000000000003 /* SnowDistanceInspectorView.swift */; };
 		12AE02000000000000000101 /* LiveHUDMetricCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE02000000000000000001 /* LiveHUDMetricCardView.swift */; };
 		12AE03000000000000000101 /* LiveSpeedDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE03000000000000000001 /* LiveSpeedDisplayView.swift */; };
 		12AE04000000000000000101 /* TiltIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE04000000000000000001 /* TiltIndicatorView.swift */; };
@@ -392,6 +465,14 @@
 		33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
 		33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C100000000000000000001 /* WatchBridgeCommandSafetyRules.swift */; };
 		33C900000000000000000101 /* WatchBridgeCommandSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C900000000000000000001 /* WatchBridgeCommandSafetyTests.swift */; };
+		40A100000000000000000101 /* WatchBridgeRuntimeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A100000000000000000001 /* WatchBridgeRuntimeState.swift */; };
+		40A100000000000000000102 /* WatchBridgeRuntimeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A100000000000000000001 /* WatchBridgeRuntimeState.swift */; };
+		40A200000000000000000101 /* WatchBridgeSnowSnapshotMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A200000000000000000001 /* WatchBridgeSnowSnapshotMapper.swift */; };
+		40A200000000000000000102 /* WatchBridgeSnowSnapshotMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A200000000000000000001 /* WatchBridgeSnowSnapshotMapper.swift */; };
+		40A300000000000000000101 /* WatchBridgeActivityPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A300000000000000000001 /* WatchBridgeActivityPublisher.swift */; };
+		40A400000000000000000102 /* WatchBridgeWatchRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A400000000000000000001 /* WatchBridgeWatchRuntime.swift */; };
+		40A500000000000000000102 /* WatchBridgeSnowSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A500000000000000000001 /* WatchBridgeSnowSessionProvider.swift */; };
+		40A900000000000000000101 /* WatchBridgeRuntimeSnowAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A900000000000000000001 /* WatchBridgeRuntimeSnowAdapterTests.swift */; };
 		34A100000000000000000101 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
 		34A100000000000000000102 /* WatchSensorProviderProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A100000000000000000001 /* WatchSensorProviderProtocols.swift */; };
 		34A200000000000000000101 /* WatchSensorSampleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A200000000000000000001 /* WatchSensorSampleModels.swift */; };
@@ -448,6 +529,24 @@
 		37B900000000000000000101 /* WatchMetricCarouselModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B900000000000000000001 /* WatchMetricCarouselModelTests.swift */; };
 		36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B200000000000000000001 /* watchOS/Features/WatchLiveSessionFaceView.swift */; };
 		36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B900000000000000000001 /* WatchLiveControlStateTests.swift */; };
+		36D700000000000000000101 /* MacSnowAnalysisAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */; };
+		36D700000000000000000102 /* MacSnowSessionAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000002 /* MacSnowSessionAnalysis.swift */; };
+		36D700000000000000000103 /* MacSnowAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */; };
+		36D700000000000000000104 /* MacSnowSessionAnalysisMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */; };
+		36D700000000000000000105 /* MacSnowRouteFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000005 /* MacSnowRouteFilter.swift */; };
+		36D700000000000000000106 /* MacSnowMockAnalysisProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */; };
+		36D800000000000000000101 /* MacSnowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000001 /* MacSnowStyle.swift */; };
+		36D800000000000000000102 /* MacSnowComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000002 /* MacSnowComponents.swift */; };
+		36D800000000000000000103 /* MacSnowFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000003 /* MacSnowFormatters.swift */; };
+		36D800000000000000000104 /* MacSnowRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000004 /* MacSnowRootView.swift */; };
+		36D800000000000000000105 /* MacSnowSessionBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000005 /* MacSnowSessionBrowserView.swift */; };
+		36D800000000000000000106 /* MacSnowDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000006 /* MacSnowDashboardView.swift */; };
+		36D800000000000000000107 /* MacSnowRouteElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000007 /* MacSnowRouteElevationView.swift */; };
+		36D800000000000000000108 /* MacSnowSegmentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */; };
+		36D800000000000000000109 /* MacSnowSegmentInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */; };
+		36D80000000000000000010A /* MacSnowDistanceInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */; };
+		36D80000000000000000010B /* MacSnowVerticalDropChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */; };
+		36D80000000000000000010C /* MacSnowUnavailableDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D80000000000000000000C /* MacSnowUnavailableDataView.swift */; };
 		39B60F8F07E5CB037565CB72 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
 		4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */; };
 		6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
@@ -515,6 +614,43 @@
 		B190200000000000000101 /* OutdoorLocalizationReleaseGateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190200000000000000001 /* OutdoorLocalizationReleaseGateBuilder.swift */; };
 		B190300000000000000101 /* OutdoorLocalizationReleaseGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */; };
 		BF27EA674B71CDCF634EDDA7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BF9BD18DF80222D528D3C /* AppConstants.swift */; };
+
+		35C600000000000000000101 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C600000000000000000102 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C600000000000000000103 /* WatchSnowSessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */; };
+		35C610000000000000000101 /* WatchSnowSessionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000001 /* WatchSnowSessionDataSource.swift */; };
+		35C610000000000000000102 /* WatchSnowMockScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000002 /* WatchSnowMockScenario.swift */; };
+		35C610000000000000000103 /* WatchSnowMockSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */; };
+		35C610000000000000000104 /* WatchSnowHapticIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000004 /* WatchSnowHapticIntent.swift */; };
+		35C610000000000000000105 /* WatchSnowHapticIntentObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */; };
+		35C610000000000000000106 /* WatchSnowHapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C610000000000000000006 /* WatchSnowHapticEngine.swift */; };
+		35C620000000000000000101 /* WatchSnowRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000001 /* WatchSnowRootView.swift */; };
+		35C620000000000000000102 /* WatchSnowMockGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000002 /* WatchSnowMockGalleryView.swift */; };
+		35C620000000000000000103 /* WatchSnowUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000003 /* WatchSnowUnavailableView.swift */; };
+		35C620000000000000000104 /* WatchSnowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000004 /* WatchSnowStyle.swift */; };
+		35C620000000000000000105 /* WatchSnowFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000005 /* WatchSnowFormatters.swift */; };
+		35C620000000000000000106 /* WatchSnowMetricChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000006 /* WatchSnowMetricChipView.swift */; };
+		35C620000000000000000107 /* WatchSnowLiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000007 /* WatchSnowLiveView.swift */; };
+		35C620000000000000000108 /* WatchSnowCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000008 /* WatchSnowCarouselView.swift */; };
+		35C620000000000000000109 /* WatchSnowLiftCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000009 /* WatchSnowLiftCardView.swift */; };
+		35C620000000000000000110 /* WatchSnowWaitingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000010 /* WatchSnowWaitingCardView.swift */; };
+		35C620000000000000000111 /* WatchSnowSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000011 /* WatchSnowSummaryView.swift */; };
+		35C620000000000000000112 /* WatchSnowControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000012 /* WatchSnowControlView.swift */; };
+		35C620000000000000000113 /* WatchSnowFallAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000013 /* WatchSnowFallAlertView.swift */; };
+		35C620000000000000000114 /* WatchSnowLowConfidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */; };
+		37E800000000000000000101 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E800000000000000000102 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E800000000000000000103 /* SkateTrackPackageSnowPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */; };
+		37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */; };
+		37E809000000000000000101 /* SnowQAFixtureRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */; };
+		A80100000000000000000101 /* SnowHUDQAScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80100000000000000000001 /* SnowHUDQAScenario.swift */; };
+		A80200000000000000000101 /* SnowSummarySelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80200000000000000000001 /* SnowSummarySelection.swift */; };
+		A80300000000000000000101 /* WatchSnowLaunchRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80300000000000000000001 /* WatchSnowLaunchRoute.swift */; };
+		A80300000000000000000102 /* WatchSnowLaunchRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80300000000000000000001 /* WatchSnowLaunchRoute.swift */; };
+		A81100000000000000000101 /* SnowHUDQAScenarioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81100000000000000000001 /* SnowHUDQAScenarioTests.swift */; };
+		A81200000000000000000101 /* SnowSummarySelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81200000000000000000001 /* SnowSummarySelectionTests.swift */; };
+		A81300000000000000000101 /* SkateTrackPackageSnowImportRoundTripTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81300000000000000000001 /* SkateTrackPackageSnowImportRoundTripTests.swift */; };
+		A81400000000000000000101 /* WatchSnowLaunchRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81400000000000000000001 /* WatchSnowLaunchRouterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -528,6 +664,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38F100000000000000000002 /* SnowHealthExporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHealthExporting.swift; sourceTree = "<group>"; };
+		38F100000000000000000003 /* DisabledSnowHealthExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledSnowHealthExporter.swift; sourceTree = "<group>"; };
+		38F100000000000000000004 /* MockSnowHealthExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSnowHealthExporter.swift; sourceTree = "<group>"; };
 		12A200000000000000000001 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
 		12A200000000000000000002 /* NumberFormatter+SkateTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+SkateTrack.swift"; sourceTree = "<group>"; };
 		12A200000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -535,6 +674,47 @@
 		12A2F000000000000000001 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A300000000000000000001 /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		12A300000000000000000002 /* SportMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportMode.swift; sourceTree = "<group>"; };
+		29C100000000000000000001 /* SnowDiscipline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDiscipline.swift; sourceTree = "<group>"; };
+		31C200000000000000000001 /* SnowSegmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentType.swift; sourceTree = "<group>"; };
+		31C200000000000000000002 /* SnowSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegment.swift; sourceTree = "<group>"; };
+		31C200000000000000000003 /* SnowRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowRun.swift; sourceTree = "<group>"; };
+		31C200000000000000000004 /* SnowDistanceBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDistanceBreakdown.swift; sourceTree = "<group>"; };
+		31C200000000000000000005 /* SnowVerticalMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowVerticalMetrics.swift; sourceTree = "<group>"; };
+		31C200000000000000000006 /* SnowSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionState.swift; sourceTree = "<group>"; };
+		37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowPayload.swift; sourceTree = "<group>"; };
+		31C210000000000000000001 /* SnowSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionRepository.swift; sourceTree = "<group>"; };
+		31C210000000000000000002 /* SnowSessionEntityMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionEntityMapper.swift; sourceTree = "<group>"; };
+		31C220000000000000000001 /* useSnowSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowSession.swift; sourceTree = "<group>"; };
+		31C230000000000000000001 /* SnowSessionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSessionRepositoryTests.swift; sourceTree = "<group>"; };
+		32C300000000000000000001 /* SnowClassifierConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowClassifierConfig.swift; sourceTree = "<group>"; };
+		32C300000000000000000002 /* SnowSegmentClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassification.swift; sourceTree = "<group>"; };
+		32C300000000000000000003 /* SnowSegmentClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifier.swift; sourceTree = "<group>"; };
+		32C310000000000000000001 /* SnowSegmentClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentClassifierTests.swift; sourceTree = "<group>"; };
+		33C400000000000000000001 /* RunBoundaryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryState.swift; sourceTree = "<group>"; };
+		33C400000000000000000002 /* RunBoundaryConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryConfig.swift; sourceTree = "<group>"; };
+		33C400000000000000000003 /* RunBoundarySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundarySnapshot.swift; sourceTree = "<group>"; };
+		33C400000000000000000004 /* RunBoundaryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryEvent.swift; sourceTree = "<group>"; };
+		33C400000000000000000005 /* RunBoundaryDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetector.swift; sourceTree = "<group>"; };
+		33C410000000000000000001 /* RunBoundaryDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunBoundaryDetectorTests.swift; sourceTree = "<group>"; };
+		34C500000000000000000001 /* SnowLiveSessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfig.swift; sourceTree = "<group>"; };
+		34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowClassificationWindowBuffer.swift; sourceTree = "<group>"; };
+		34C500000000000000000003 /* SnowLiveSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionState.swift; sourceTree = "<group>"; };
+		34C500000000000000000004 /* SnowLiveHUDState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDState.swift; sourceTree = "<group>"; };
+		34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapper.swift; sourceTree = "<group>"; };
+		34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionCoordinator.swift; sourceTree = "<group>"; };
+		34C500000000000000000007 /* useSnowLiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = useSnowLiveSession.swift; sourceTree = "<group>"; };
+		34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionConfigTests.swift; sourceTree = "<group>"; };
+		34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveHUDStateMapperTests.swift; sourceTree = "<group>"; };
+		A81500000000000000000001 /* SnowLiveSessionCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowLiveSessionCoordinatorTests.swift; sourceTree = "<group>"; };
+		37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowCompatibilityTests.swift; sourceTree = "<group>"; };
+		37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowQAFixtureRegressionTests.swift; sourceTree = "<group>"; };
+		A80100000000000000000001 /* SnowHUDQAScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDQAScenario.swift; sourceTree = "<group>"; };
+		A80200000000000000000001 /* SnowSummarySelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSummarySelection.swift; sourceTree = "<group>"; };
+		A80300000000000000000001 /* WatchSnowLaunchRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLaunchRoute.swift; sourceTree = "<group>"; };
+		A81100000000000000000001 /* SnowHUDQAScenarioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDQAScenarioTests.swift; sourceTree = "<group>"; };
+		A81200000000000000000001 /* SnowSummarySelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSummarySelectionTests.swift; sourceTree = "<group>"; };
+		A81300000000000000000001 /* SkateTrackPackageSnowImportRoundTripTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageSnowImportRoundTripTests.swift; sourceTree = "<group>"; };
+		A81400000000000000000001 /* WatchSnowLaunchRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLaunchRouterTests.swift; sourceTree = "<group>"; };
 		12A300000000000000000003 /* PowerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerType.swift; sourceTree = "<group>"; };
 		12A300000000000000000004 /* MotionSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSample.swift; sourceTree = "<group>"; };
 		12A300000000000000000005 /* TrickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickEvent.swift; sourceTree = "<group>"; };
@@ -568,10 +748,19 @@
 		12AD03000000000000000001 /* SportCategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportCategoryPickerView.swift; sourceTree = "<group>"; };
 		12AD04000000000000000001 /* BoardModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModeSelectorView.swift; sourceTree = "<group>"; };
 		12AD05000000000000000001 /* InlineModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineModeSelectorView.swift; sourceTree = "<group>"; };
+		29C110000000000000000001 /* SnowDisciplineSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDisciplineSelectorView.swift; sourceTree = "<group>"; };
 		12AD06000000000000000001 /* PowerTypeToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerTypeToggleView.swift; sourceTree = "<group>"; };
 		12AD07000000000000000001 /* ModeSelectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelectionCardView.swift; sourceTree = "<group>"; };
 		12AD08000000000000000001 /* StartSessionCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionCTAView.swift; sourceTree = "<group>"; };
 		12AE01000000000000000001 /* LiveHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHUDView.swift; sourceTree = "<group>"; };
+		34C520000000000000000001 /* SnowHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDView.swift; sourceTree = "<group>"; };
+		34C520000000000000000002 /* SnowHUDDownhillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDDownhillView.swift; sourceTree = "<group>"; };
+		34C520000000000000000003 /* SnowHUDLiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDLiftView.swift; sourceTree = "<group>"; };
+		34C520000000000000000004 /* SnowHUDWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDWaitingView.swift; sourceTree = "<group>"; };
+		34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowHUDLowConfidenceView.swift; sourceTree = "<group>"; };
+		34C530000000000000000001 /* SnowDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDaySummaryView.swift; sourceTree = "<group>"; };
+		34C530000000000000000002 /* SnowSegmentTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowSegmentTimelineView.swift; sourceTree = "<group>"; };
+		34C530000000000000000003 /* SnowDistanceInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowDistanceInspectorView.swift; sourceTree = "<group>"; };
 		12AE02000000000000000001 /* LiveHUDMetricCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHUDMetricCardView.swift; sourceTree = "<group>"; };
 		12AE03000000000000000001 /* LiveSpeedDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeedDisplayView.swift; sourceTree = "<group>"; };
 		12AE04000000000000000001 /* TiltIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TiltIndicatorView.swift; sourceTree = "<group>"; };
@@ -826,6 +1015,12 @@
 		35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkateTrackPackageWatchCompatibilityTests.swift; sourceTree = "<group>"; };
 		36A100000000000000000001 /* WatchActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModel.swift; sourceTree = "<group>"; };
 		36A900000000000000000001 /* WatchActivityViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchActivityViewModelTests.swift; sourceTree = "<group>"; };
+		40A100000000000000000001 /* WatchBridgeRuntimeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeRuntimeState.swift; sourceTree = "<group>"; };
+		40A200000000000000000001 /* WatchBridgeSnowSnapshotMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeSnowSnapshotMapper.swift; sourceTree = "<group>"; };
+		40A300000000000000000001 /* WatchBridgeActivityPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeActivityPublisher.swift; sourceTree = "<group>"; };
+		40A400000000000000000001 /* WatchBridgeWatchRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeWatchRuntime.swift; sourceTree = "<group>"; };
+		40A500000000000000000001 /* WatchBridgeSnowSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeSnowSessionProvider.swift; sourceTree = "<group>"; };
+		40A900000000000000000001 /* WatchBridgeRuntimeSnowAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridgeRuntimeSnowAdapterTests.swift; sourceTree = "<group>"; };
 		36B100000000000000000001 /* WatchLiveControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLiveControlState.swift; sourceTree = "<group>"; };
 		39A100000000000000000001 /* WatchComplicationShellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchComplicationShellState.swift; sourceTree = "<group>"; };
 		39A200000000000000000001 /* watchOS/Features/WatchComplicationShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchOS/Features/WatchComplicationShellView.swift; sourceTree = SOURCE_ROOT; };
@@ -894,6 +1089,46 @@
 		B190300000000000000001 /* OutdoorLocalizationReleaseGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdoorLocalizationReleaseGateTests.swift; sourceTree = "<group>"; };
 		BA60AB4DF51DA50C4BB519EE /* SkateTrack-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB46CFEA29FB7D1D627BCC51 /* SkateTrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkateTrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+
+		35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSessionSnapshot.swift; sourceTree = "<group>"; };
+		35C610000000000000000001 /* WatchSnowSessionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSessionDataSource.swift; sourceTree = "<group>"; };
+		35C610000000000000000002 /* WatchSnowMockScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockScenario.swift; sourceTree = "<group>"; };
+		35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockSessionProvider.swift; sourceTree = "<group>"; };
+		35C610000000000000000004 /* WatchSnowHapticIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticIntent.swift; sourceTree = "<group>"; };
+		35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticIntentObserver.swift; sourceTree = "<group>"; };
+		35C610000000000000000006 /* WatchSnowHapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowHapticEngine.swift; sourceTree = "<group>"; };
+		35C620000000000000000001 /* WatchSnowRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowRootView.swift; sourceTree = "<group>"; };
+		35C620000000000000000002 /* WatchSnowMockGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMockGalleryView.swift; sourceTree = "<group>"; };
+		35C620000000000000000003 /* WatchSnowUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowUnavailableView.swift; sourceTree = "<group>"; };
+		35C620000000000000000004 /* WatchSnowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowStyle.swift; sourceTree = "<group>"; };
+		35C620000000000000000005 /* WatchSnowFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowFormatters.swift; sourceTree = "<group>"; };
+		35C620000000000000000006 /* WatchSnowMetricChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowMetricChipView.swift; sourceTree = "<group>"; };
+		35C620000000000000000007 /* WatchSnowLiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLiveView.swift; sourceTree = "<group>"; };
+		35C620000000000000000008 /* WatchSnowCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowCarouselView.swift; sourceTree = "<group>"; };
+		35C620000000000000000009 /* WatchSnowLiftCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLiftCardView.swift; sourceTree = "<group>"; };
+		35C620000000000000000010 /* WatchSnowWaitingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowWaitingCardView.swift; sourceTree = "<group>"; };
+		35C620000000000000000011 /* WatchSnowSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowSummaryView.swift; sourceTree = "<group>"; };
+		35C620000000000000000012 /* WatchSnowControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowControlView.swift; sourceTree = "<group>"; };
+		35C620000000000000000013 /* WatchSnowFallAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowFallAlertView.swift; sourceTree = "<group>"; };
+		35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSnowLowConfidenceView.swift; sourceTree = "<group>"; };
+		36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowAnalysisAvailability.swift; sourceTree = "<group>"; };
+		36D700000000000000000002 /* MacSnowSessionAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionAnalysis.swift; sourceTree = "<group>"; };
+		36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowAnalysisViewModel.swift; sourceTree = "<group>"; };
+		36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionAnalysisMapper.swift; sourceTree = "<group>"; };
+		36D700000000000000000005 /* MacSnowRouteFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRouteFilter.swift; sourceTree = "<group>"; };
+		36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowMockAnalysisProvider.swift; sourceTree = "<group>"; };
+		36D800000000000000000001 /* MacSnowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowStyle.swift; sourceTree = "<group>"; };
+		36D800000000000000000002 /* MacSnowComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowComponents.swift; sourceTree = "<group>"; };
+		36D800000000000000000003 /* MacSnowFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowFormatters.swift; sourceTree = "<group>"; };
+		36D800000000000000000004 /* MacSnowRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRootView.swift; sourceTree = "<group>"; };
+		36D800000000000000000005 /* MacSnowSessionBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSessionBrowserView.swift; sourceTree = "<group>"; };
+		36D800000000000000000006 /* MacSnowDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowDashboardView.swift; sourceTree = "<group>"; };
+		36D800000000000000000007 /* MacSnowRouteElevationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowRouteElevationView.swift; sourceTree = "<group>"; };
+		36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSegmentTimelineView.swift; sourceTree = "<group>"; };
+		36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowSegmentInspectorView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowDistanceInspectorView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowVerticalDropChartView.swift; sourceTree = "<group>"; };
+		36D80000000000000000000C /* MacSnowUnavailableDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSnowUnavailableDataView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -960,6 +1195,23 @@
 			children = (
 				12A300000000000000000001 /* SessionData.swift */,
 				12A300000000000000000002 /* SportMode.swift */,
+				29C100000000000000000001 /* SnowDiscipline.swift */,
+				31C200000000000000000001 /* SnowSegmentType.swift */,
+				31C200000000000000000002 /* SnowSegment.swift */,
+				31C200000000000000000003 /* SnowRun.swift */,
+				31C200000000000000000004 /* SnowDistanceBreakdown.swift */,
+				31C200000000000000000005 /* SnowVerticalMetrics.swift */,
+				31C200000000000000000006 /* SnowSessionState.swift */,
+				37E800000000000000000001 /* SkateTrackPackageSnowPayload.swift */,
+				32C300000000000000000001 /* SnowClassifierConfig.swift */,
+				32C300000000000000000002 /* SnowSegmentClassification.swift */,
+				32C300000000000000000003 /* SnowSegmentClassifier.swift */,
+				33C400000000000000000001 /* RunBoundaryState.swift */,
+				33C400000000000000000002 /* RunBoundaryConfig.swift */,
+				33C400000000000000000003 /* RunBoundarySnapshot.swift */,
+				33C400000000000000000004 /* RunBoundaryEvent.swift */,
+				33C400000000000000000005 /* RunBoundaryDetector.swift */,
+				35C600000000000000000001 /* WatchSnowSessionSnapshot.swift */,
 				12A300000000000000000003 /* PowerType.swift */,
 				12A300000000000000000004 /* MotionSample.swift */,
 				B16B01000000000000000001 /* BarometricGPSOutlierDiagnostics.swift */,
@@ -1029,6 +1281,8 @@
 				12AB04000000000000000001 /* useSessionRecording.swift */,
 				14A200000000000000000001 /* useFallDetection.swift */,
 				17A100000000000000000006 /* useSessionHistory.swift */,
+				31C220000000000000000001 /* useSnowSession.swift */,
+				34C500000000000000000007 /* useSnowLiveSession.swift */,
 				18A100000000000000000004 /* useSessionSummary.swift */,
 				23A200000000000000000001 /* useSessionShareCard.swift */,
 				27A400000000000000000001 /* useSkateTrackPackageExport.swift */,
@@ -1084,9 +1338,24 @@
 			path = iOS/Core/SessionRecording;
 			sourceTree = SOURCE_ROOT;
 		};
+		34C500000000000000000000 /* iOS/Core/SnowEngine */ = {
+			isa = PBXGroup;
+			children = (
+				34C500000000000000000001 /* SnowLiveSessionConfig.swift */,
+				34C500000000000000000002 /* SnowClassificationWindowBuffer.swift */,
+				34C500000000000000000003 /* SnowLiveSessionState.swift */,
+				34C500000000000000000004 /* SnowLiveHUDState.swift */,
+				34C500000000000000000005 /* SnowLiveHUDStateMapper.swift */,
+				34C500000000000000000006 /* SnowLiveSessionCoordinator.swift */,
+				A80100000000000000000001 /* SnowHUDQAScenario.swift */,
+			);
+			path = iOS/Core/SnowEngine;
+			sourceTree = SOURCE_ROOT;
+		};
 		12AC02000000000000000001 /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				40A900000000000000000001 /* WatchBridgeRuntimeSnowAdapterTests.swift */,
 				36A900000000000000000001 /* WatchActivityViewModelTests.swift */,
 				36B900000000000000000001 /* WatchLiveControlStateTests.swift */,
 				39A900000000000000000001 /* WatchComplicationShellStateTests.swift */,
@@ -1122,6 +1391,18 @@
 				35B900000000000000000001 /* WatchSampleIngestionTests.swift */,
 				35C900000000000000000001 /* WatchSampleFusionRulesTests.swift */,
 				35D900000000000000000001 /* SkateTrackPackageWatchCompatibilityTests.swift */,
+				31C230000000000000000001 /* SnowSessionRepositoryTests.swift */,
+				32C310000000000000000001 /* SnowSegmentClassifierTests.swift */,
+				33C410000000000000000001 /* RunBoundaryDetectorTests.swift */,
+				34C510000000000000000001 /* SnowLiveSessionConfigTests.swift */,
+				34C510000000000000000002 /* SnowLiveHUDStateMapperTests.swift */,
+				A81500000000000000000001 /* SnowLiveSessionCoordinatorTests.swift */,
+				37E801000000000000000001 /* SkateTrackPackageSnowCompatibilityTests.swift */,
+				37E809000000000000000001 /* SnowQAFixtureRegressionTests.swift */,
+				A81100000000000000000001 /* SnowHUDQAScenarioTests.swift */,
+				A81200000000000000000001 /* SnowSummarySelectionTests.swift */,
+				A81300000000000000000001 /* SkateTrackPackageSnowImportRoundTripTests.swift */,
+				A81400000000000000000001 /* WatchSnowLaunchRouterTests.swift */,
 			);
 			path = iOSTests;
 			sourceTree = "<group>";
@@ -1139,10 +1420,16 @@
 				12AD03000000000000000001 /* SportCategoryPickerView.swift */,
 				12AD04000000000000000001 /* BoardModeSelectorView.swift */,
 				12AD05000000000000000001 /* InlineModeSelectorView.swift */,
+				29C110000000000000000001 /* SnowDisciplineSelectorView.swift */,
 				12AD06000000000000000001 /* PowerTypeToggleView.swift */,
 				12AD07000000000000000001 /* ModeSelectionCardView.swift */,
 				12AD08000000000000000001 /* StartSessionCTAView.swift */,
 				12AE01000000000000000001 /* LiveHUDView.swift */,
+				34C520000000000000000001 /* SnowHUDView.swift */,
+				34C520000000000000000002 /* SnowHUDDownhillView.swift */,
+				34C520000000000000000003 /* SnowHUDLiftView.swift */,
+				34C520000000000000000004 /* SnowHUDWaitingView.swift */,
+				34C520000000000000000005 /* SnowHUDLowConfidenceView.swift */,
 				12AE02000000000000000001 /* LiveHUDMetricCardView.swift */,
 				12AE03000000000000000001 /* LiveSpeedDisplayView.swift */,
 				14A400000000000000000001 /* LiveSpeedTraceView.swift */,
@@ -1196,6 +1483,8 @@
 				15A100000000000000000004 /* SessionEntityMapper.swift */,
 				15A100000000000000000005 /* MotionSampleFileStore.swift */,
 				15A100000000000000000006 /* FallEventRepository.swift */,
+				31C210000000000000000001 /* SnowSessionRepository.swift */,
+				31C210000000000000000002 /* SnowSessionEntityMapper.swift */,
 				15A100000000000000000007 /* SkateTrackDataModel.xcdatamodeld */,
 			);
 			path = Persistence;
@@ -1233,6 +1522,10 @@
 				18A100000000000000000001 /* SessionSummaryView.swift */,
 				18A100000000000000000002 /* SessionSummaryMetricsGridView.swift */,
 				18A100000000000000000003 /* SessionSummaryPlaceholderSectionView.swift */,
+				34C530000000000000000001 /* SnowDaySummaryView.swift */,
+				34C530000000000000000002 /* SnowSegmentTimelineView.swift */,
+				34C530000000000000000003 /* SnowDistanceInspectorView.swift */,
+				A80200000000000000000001 /* SnowSummarySelection.swift */,
 				20C100000000000000000002 /* SessionEquipmentAttributionView.swift */,
 				21B400000000000000000001 /* SessionSpotAttributionView.swift */,
 				18B100000000000000000001 /* SessionRouteMapView.swift */,
@@ -1256,6 +1549,17 @@
 			path = iOS/Features/SessionSummary;
 			sourceTree = SOURCE_ROOT;
 		};
+		38F100000000000000000001 /* iOS/Core/Health */ = {
+			isa = PBXGroup;
+			children = (
+				38F100000000000000000002 /* SnowHealthExporting.swift */,
+				38F100000000000000000003 /* DisabledSnowHealthExporter.swift */,
+				38F100000000000000000004 /* MockSnowHealthExporter.swift */,
+			);
+			path = iOS/Core/Health;
+			sourceTree = SOURCE_ROOT;
+		};
+
 		19A100000000000000000000 /* iOS/Core/HealthReminders */ = {
 			isa = PBXGroup;
 			children = (
@@ -1422,6 +1726,7 @@
 			children = (
 				27B200000000000000000000 /* Import */,
 				28A100000000000000000000 /* SessionBrowser */,
+				36D800000000000000000000 /* Snow */,
 				27B300000000000000000000 /* Shared */,
 			);
 			path = macOS/Features;
@@ -1557,6 +1862,8 @@
 		32B000000000000000000000 /* WatchBridge */ = {
 			isa = PBXGroup;
 			children = (
+				40A100000000000000000001 /* WatchBridgeRuntimeState.swift */,
+				40A200000000000000000001 /* WatchBridgeSnowSnapshotMapper.swift */,
 				32B100000000000000000001 /* WatchBridgeEnvelope.swift */,
 				32B200000000000000000001 /* WatchBridgePayloads.swift */,
 				32B300000000000000000001 /* WatchBridgeConnectionState.swift */,
@@ -1631,9 +1938,61 @@
 			isa = PBXGroup;
 			children = (
 				6B9FEAB0565C78C0A163ECF7 /* SkateTrackWatchApp.swift */,
+				A80300000000000000000001 /* WatchSnowLaunchRoute.swift */,
 				13AF02000000000000000001 /* Assets.xcassets */,
 			);
 			path = watchOS/App;
+			sourceTree = SOURCE_ROOT;
+		};
+		35C610000000000000000000 /* watchOS/Core/Snow */ = {
+			isa = PBXGroup;
+			children = (
+				40A500000000000000000001 /* WatchBridgeSnowSessionProvider.swift */,
+				35C610000000000000000001 /* WatchSnowSessionDataSource.swift */,
+				35C610000000000000000002 /* WatchSnowMockScenario.swift */,
+				35C610000000000000000003 /* WatchSnowMockSessionProvider.swift */,
+				35C610000000000000000004 /* WatchSnowHapticIntent.swift */,
+				35C610000000000000000005 /* WatchSnowHapticIntentObserver.swift */,
+				35C610000000000000000006 /* WatchSnowHapticEngine.swift */,
+			);
+			path = watchOS/Core/Snow;
+			sourceTree = SOURCE_ROOT;
+		};
+		40A300000000000000000000 /* iOS/Core/WatchBridge */ = {
+			isa = PBXGroup;
+			children = (
+				40A300000000000000000001 /* WatchBridgeActivityPublisher.swift */,
+			);
+			path = iOS/Core/WatchBridge;
+			sourceTree = SOURCE_ROOT;
+		};
+		40A400000000000000000000 /* watchOS/Core/WatchBridge */ = {
+			isa = PBXGroup;
+			children = (
+				40A400000000000000000001 /* WatchBridgeWatchRuntime.swift */,
+			);
+			path = watchOS/Core/WatchBridge;
+			sourceTree = SOURCE_ROOT;
+		};
+		35C620000000000000000000 /* watchOS/Features/Snow */ = {
+			isa = PBXGroup;
+			children = (
+				35C620000000000000000001 /* WatchSnowRootView.swift */,
+				35C620000000000000000002 /* WatchSnowMockGalleryView.swift */,
+				35C620000000000000000003 /* WatchSnowUnavailableView.swift */,
+				35C620000000000000000004 /* WatchSnowStyle.swift */,
+				35C620000000000000000005 /* WatchSnowFormatters.swift */,
+				35C620000000000000000006 /* WatchSnowMetricChipView.swift */,
+				35C620000000000000000007 /* WatchSnowLiveView.swift */,
+				35C620000000000000000008 /* WatchSnowCarouselView.swift */,
+				35C620000000000000000009 /* WatchSnowLiftCardView.swift */,
+				35C620000000000000000010 /* WatchSnowWaitingCardView.swift */,
+				35C620000000000000000011 /* WatchSnowSummaryView.swift */,
+				35C620000000000000000012 /* WatchSnowControlView.swift */,
+				35C620000000000000000013 /* WatchSnowFallAlertView.swift */,
+				35C620000000000000000014 /* WatchSnowLowConfidenceView.swift */,
+			);
+			path = watchOS/Features/Snow;
 			sourceTree = SOURCE_ROOT;
 		};
 		AA3E9A5944CB760F04640508 = {
@@ -1646,7 +2005,10 @@
 				26A200000000000000000000 /* iOS/Core/Sync */,
 				12A600000000000000000006 /* iOS/Core/SensorEngine */,
 				12AB00000000000000000001 /* iOS/Core/SessionRecording */,
+				40A300000000000000000000 /* iOS/Core/WatchBridge */,
+				34C500000000000000000000 /* iOS/Core/SnowEngine */,
 				14A100000000000000000000 /* iOS/Core/Safety */,
+				38F100000000000000000001 /* iOS/Core/Health */,
 				19A100000000000000000000 /* iOS/Core/HealthReminders */,
 				20A100000000000000000000 /* iOS/Core/EquipmentManager */,
 				21A200000000000000000000 /* iOS/Core/Spots */,
@@ -1668,7 +2030,11 @@
 				25B100000000000000000000 /* iOS/Features/Settings */,
 				14D000000000000000000000 /* iOS/Features/Debug */,
 				8EC3D2CF02A3326DF14F23BF /* watchOS/App */,
+				40A400000000000000000000 /* watchOS/Core/WatchBridge */,
+				35C610000000000000000000 /* watchOS/Core/Snow */,
+				35C620000000000000000000 /* watchOS/Features/Snow */,
 				BB66BE6E71B096E496503051 /* macOS/App */,
+				36D700000000000000000000 /* macOS/Core */,
 				27B000000000000000000000 /* macOS/Features */,
 				E1B7981D5F0CC62B8BC6C4A0 /* Tests */,
 				DA3F5B38A0177725491BBD32 /* docs */,
@@ -1676,6 +2042,46 @@
 				DB0FE2794C17B0CCB9393690 /* Products */,
 				397B7DA02FFCFC78001AC43D /* Recovered References */,
 			);
+			sourceTree = "<group>";
+		};
+		36D700000000000000000000 /* macOS/Core */ = {
+			isa = PBXGroup;
+			children = (
+				36D70000000000000000000A /* Snow */,
+			);
+			path = macOS/Core;
+			sourceTree = SOURCE_ROOT;
+		};
+		36D70000000000000000000A /* Snow */ = {
+			isa = PBXGroup;
+			children = (
+						36D700000000000000000001 /* MacSnowAnalysisAvailability.swift */,
+						36D700000000000000000002 /* MacSnowSessionAnalysis.swift */,
+						36D700000000000000000003 /* MacSnowAnalysisViewModel.swift */,
+						36D700000000000000000004 /* MacSnowSessionAnalysisMapper.swift */,
+						36D700000000000000000005 /* MacSnowRouteFilter.swift */,
+						36D700000000000000000006 /* MacSnowMockAnalysisProvider.swift */,
+			);
+			path = Snow;
+			sourceTree = "<group>";
+		};
+		36D800000000000000000000 /* Snow */ = {
+			isa = PBXGroup;
+			children = (
+				36D800000000000000000001 /* MacSnowStyle.swift */,
+				36D800000000000000000002 /* MacSnowComponents.swift */,
+				36D800000000000000000003 /* MacSnowFormatters.swift */,
+				36D800000000000000000004 /* MacSnowRootView.swift */,
+				36D800000000000000000005 /* MacSnowSessionBrowserView.swift */,
+				36D800000000000000000006 /* MacSnowDashboardView.swift */,
+				36D800000000000000000007 /* MacSnowRouteElevationView.swift */,
+				36D800000000000000000008 /* MacSnowSegmentTimelineView.swift */,
+				36D800000000000000000009 /* MacSnowSegmentInspectorView.swift */,
+				36D80000000000000000000A /* MacSnowDistanceInspectorView.swift */,
+				36D80000000000000000000B /* MacSnowVerticalDropChartView.swift */,
+				36D80000000000000000000C /* MacSnowUnavailableDataView.swift */,
+			);
+			path = Snow;
 			sourceTree = "<group>";
 		};
 		BB66BE6E71B096E496503051 /* macOS/App */ = {
@@ -1911,6 +2317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40A900000000000000000101 /* WatchBridgeRuntimeSnowAdapterTests.swift in Sources */,
 				36A900000000000000000101 /* WatchActivityViewModelTests.swift in Sources */,
 				36B900000000000000000101 /* WatchLiveControlStateTests.swift in Sources */,
 				39A900000000000000000101 /* WatchComplicationShellStateTests.swift in Sources */,
@@ -1951,6 +2358,19 @@
 				35B900000000000000000101 /* WatchSampleIngestionTests.swift in Sources */,
 				35C900000000000000000101 /* WatchSampleFusionRulesTests.swift in Sources */,
 				35D900000000000000000101 /* SkateTrackPackageWatchCompatibilityTests.swift in Sources */,
+				31C230000000000000000101 /* SnowSessionRepositoryTests.swift in Sources */,
+				32C310000000000000000101 /* SnowSegmentClassifierTests.swift in Sources */,
+				33C410000000000000000101 /* RunBoundaryDetectorTests.swift in Sources */,
+				34C510000000000000000101 /* SnowLiveSessionConfigTests.swift in Sources */,
+				34C510000000000000000102 /* SnowLiveHUDStateMapperTests.swift in Sources */,
+				A81500000000000000000101 /* SnowLiveSessionCoordinatorTests.swift in Sources */,
+				37E801000000000000000101 /* SkateTrackPackageSnowCompatibilityTests.swift in Sources */,
+				37E809000000000000000101 /* SnowQAFixtureRegressionTests.swift in Sources */,
+				A80300000000000000000102 /* WatchSnowLaunchRoute.swift in Sources */,
+				A81100000000000000000101 /* SnowHUDQAScenarioTests.swift in Sources */,
+				A81200000000000000000101 /* SnowSummarySelectionTests.swift in Sources */,
+				A81300000000000000000101 /* SkateTrackPackageSnowImportRoundTripTests.swift in Sources */,
+				A81400000000000000000101 /* WatchSnowLaunchRouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1969,6 +2389,9 @@
 				32D300000000000000000101 /* WatchBridgeMockTransport.swift in Sources */,
 				33A100000000000000000101 /* WatchBridgeConnectivityBoundary.swift in Sources */,
 				33A200000000000000000101 /* WatchBridgeWCSessionBoundary.swift in Sources */,
+				40A100000000000000000101 /* WatchBridgeRuntimeState.swift in Sources */,
+				40A200000000000000000101 /* WatchBridgeSnowSnapshotMapper.swift in Sources */,
+				40A300000000000000000101 /* WatchBridgeActivityPublisher.swift in Sources */,
 				33B100000000000000000101 /* WatchBridgeMirroredCommandModels.swift in Sources */,
 				33B200000000000000000101 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
 				33C100000000000000000101 /* WatchBridgeCommandSafetyRules.swift in Sources */,
@@ -1997,10 +2420,16 @@
 				12AD03000000000000000101 /* SportCategoryPickerView.swift in Sources */,
 				12AD04000000000000000101 /* BoardModeSelectorView.swift in Sources */,
 				12AD05000000000000000101 /* InlineModeSelectorView.swift in Sources */,
+				29C110000000000000000101 /* SnowDisciplineSelectorView.swift in Sources */,
 				12AD06000000000000000101 /* PowerTypeToggleView.swift in Sources */,
 				12AD07000000000000000101 /* ModeSelectionCardView.swift in Sources */,
 				12AD08000000000000000101 /* StartSessionCTAView.swift in Sources */,
 				12AE01000000000000000101 /* LiveHUDView.swift in Sources */,
+				34C520000000000000000101 /* SnowHUDView.swift in Sources */,
+				34C520000000000000000102 /* SnowHUDDownhillView.swift in Sources */,
+				34C520000000000000000103 /* SnowHUDLiftView.swift in Sources */,
+				34C520000000000000000104 /* SnowHUDWaitingView.swift in Sources */,
+				34C520000000000000000105 /* SnowHUDLowConfidenceView.swift in Sources */,
 				12AE02000000000000000101 /* LiveHUDMetricCardView.swift in Sources */,
 				12AE03000000000000000101 /* LiveSpeedDisplayView.swift in Sources */,
 				14A400000000000000000101 /* LiveSpeedTraceView.swift in Sources */,
@@ -2024,6 +2453,8 @@
 				17A100000000000000000104 /* SessionHistoryFilterBar.swift in Sources */,
 				17A100000000000000000105 /* HistoryLimitPaywallBanner.swift in Sources */,
 				17A100000000000000000106 /* useSessionHistory.swift in Sources */,
+				31C220000000000000000101 /* useSnowSession.swift in Sources */,
+				34C500000000000000000107 /* useSnowLiveSession.swift in Sources */,
 				17A100000000000000000107 /* SessionHistoryBulkActionBarView.swift in Sources */,
 				17B200000000000000000101 /* SessionSummaryHandoffView.swift in Sources */,
 				30D300000000000000000101 /* SessionHistoryImportEntryView.swift in Sources */,
@@ -2032,6 +2463,9 @@
 				18A100000000000000000101 /* SessionSummaryView.swift in Sources */,
 				18A100000000000000000102 /* SessionSummaryMetricsGridView.swift in Sources */,
 				18A100000000000000000103 /* SessionSummaryPlaceholderSectionView.swift in Sources */,
+				34C530000000000000000101 /* SnowDaySummaryView.swift in Sources */,
+				34C530000000000000000102 /* SnowSegmentTimelineView.swift in Sources */,
+				34C530000000000000000103 /* SnowDistanceInspectorView.swift in Sources */,
 				18A100000000000000000104 /* useSessionSummary.swift in Sources */,
 				18B100000000000000000101 /* SessionRouteMapView.swift in Sources */,
 				18B100000000000000000102 /* SessionSummarySafetyStatusView.swift in Sources */,
@@ -2070,6 +2504,9 @@
 				19A100000000000000000101 /* HealthReminderRule.swift in Sources */,
 				19A100000000000000000102 /* HealthReminderSettingsStore.swift in Sources */,
 				19A100000000000000000103 /* useHealthReminders.swift in Sources */,
+				38F100000000000000000101 /* SnowHealthExporting.swift in Sources */,
+				38F100000000000000000102 /* DisabledSnowHealthExporter.swift in Sources */,
+				38F100000000000000000103 /* MockSnowHealthExporter.swift in Sources */,
 				19A100000000000000000104 /* HealthReminderSettingsView.swift in Sources */,
 				19B100000000000000000101 /* HealthReminderEvent.swift in Sources */,
 				19B100000000000000000102 /* HealthReminderScheduler.swift in Sources */,
@@ -2212,8 +2649,35 @@
 				15A100000000000000000104 /* SessionEntityMapper.swift in Sources */,
 				15A100000000000000000105 /* MotionSampleFileStore.swift in Sources */,
 				15A100000000000000000106 /* FallEventRepository.swift in Sources */,
+				31C210000000000000000101 /* SnowSessionRepository.swift in Sources */,
+				31C210000000000000000102 /* SnowSessionEntityMapper.swift in Sources */,
 				12A300000000000000000101 /* SessionData.swift in Sources */,
 				12A300000000000000000104 /* SportMode.swift in Sources */,
+				29C100000000000000000101 /* SnowDiscipline.swift in Sources */,
+				31C200000000000000000101 /* SnowSegmentType.swift in Sources */,
+				31C200000000000000000104 /* SnowSegment.swift in Sources */,
+				31C200000000000000000107 /* SnowRun.swift in Sources */,
+				31C20000000000000000010A /* SnowDistanceBreakdown.swift in Sources */,
+				31C20000000000000000010D /* SnowVerticalMetrics.swift in Sources */,
+				31C200000000000000000110 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000101 /* SkateTrackPackageSnowPayload.swift in Sources */,
+				32C300000000000000000101 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000104 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000107 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000101 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000104 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000107 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010A /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010D /* RunBoundaryDetector.swift in Sources */,
+				35C600000000000000000103 /* WatchSnowSessionSnapshot.swift in Sources */,
+				34C500000000000000000101 /* SnowLiveSessionConfig.swift in Sources */,
+				34C500000000000000000102 /* SnowClassificationWindowBuffer.swift in Sources */,
+				34C500000000000000000103 /* SnowLiveSessionState.swift in Sources */,
+				34C500000000000000000104 /* SnowLiveHUDState.swift in Sources */,
+				34C500000000000000000105 /* SnowLiveHUDStateMapper.swift in Sources */,
+				34C500000000000000000106 /* SnowLiveSessionCoordinator.swift in Sources */,
+				A80100000000000000000101 /* SnowHUDQAScenario.swift in Sources */,
+				A80200000000000000000101 /* SnowSummarySelection.swift in Sources */,
 				12A300000000000000000107 /* PowerType.swift in Sources */,
 				12A30000000000000000010A /* MotionSample.swift in Sources */,
 				B16B01000000000000000101 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
@@ -2269,6 +2733,24 @@
 				30EC00000000000000000101 /* MacRouteInspectionWindowPresenter.swift in Sources */,
 				30EB00000000000000000101 /* MacRouteDisplayPipeline.swift in Sources */,
 				30ED00000000000000000101 /* MacElevationDisplayPipeline.swift in Sources */,
+				36D700000000000000000101 /* MacSnowAnalysisAvailability.swift in Sources */,
+				36D700000000000000000102 /* MacSnowSessionAnalysis.swift in Sources */,
+				36D700000000000000000103 /* MacSnowAnalysisViewModel.swift in Sources */,
+				36D700000000000000000104 /* MacSnowSessionAnalysisMapper.swift in Sources */,
+				36D700000000000000000105 /* MacSnowRouteFilter.swift in Sources */,
+				36D700000000000000000106 /* MacSnowMockAnalysisProvider.swift in Sources */,
+				36D800000000000000000101 /* MacSnowStyle.swift in Sources */,
+				36D800000000000000000102 /* MacSnowComponents.swift in Sources */,
+				36D800000000000000000103 /* MacSnowFormatters.swift in Sources */,
+				36D800000000000000000104 /* MacSnowRootView.swift in Sources */,
+				36D800000000000000000105 /* MacSnowSessionBrowserView.swift in Sources */,
+				36D800000000000000000106 /* MacSnowDashboardView.swift in Sources */,
+				36D800000000000000000107 /* MacSnowRouteElevationView.swift in Sources */,
+				36D800000000000000000108 /* MacSnowSegmentTimelineView.swift in Sources */,
+				36D800000000000000000109 /* MacSnowSegmentInspectorView.swift in Sources */,
+				36D80000000000000000010A /* MacSnowDistanceInspectorView.swift in Sources */,
+				36D80000000000000000010B /* MacSnowVerticalDropChartView.swift in Sources */,
+				36D80000000000000000010C /* MacSnowUnavailableDataView.swift in Sources */,
 				6DD447ACB8B935A72A7989B5 /* AppConstants.swift in Sources */,
 				12A400000000000000000103 /* FeatureFlags.swift in Sources */,
 				31A100000000000000000103 /* ActivityVisualizationQuality.swift in Sources */,
@@ -2290,6 +2772,22 @@
 				12A20000000000000000000E /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000103 /* SessionData.swift in Sources */,
 				12A300000000000000000106 /* SportMode.swift in Sources */,
+				29C100000000000000000103 /* SnowDiscipline.swift in Sources */,
+				31C200000000000000000103 /* SnowSegmentType.swift in Sources */,
+				31C200000000000000000106 /* SnowSegment.swift in Sources */,
+				31C200000000000000000109 /* SnowRun.swift in Sources */,
+				31C20000000000000000010C /* SnowDistanceBreakdown.swift in Sources */,
+				31C20000000000000000010F /* SnowVerticalMetrics.swift in Sources */,
+				31C200000000000000000112 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000103 /* SkateTrackPackageSnowPayload.swift in Sources */,
+				32C300000000000000000103 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000106 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000109 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000103 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000106 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000109 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010C /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010F /* RunBoundaryDetector.swift in Sources */,
 				12A300000000000000000109 /* PowerType.swift in Sources */,
 				12A30000000000000000010C /* MotionSample.swift in Sources */,
 				B16B01000000000000000103 /* BarometricGPSOutlierDiagnostics.swift in Sources */,
@@ -2345,6 +2843,10 @@
 				32D300000000000000000102 /* WatchBridgeMockTransport.swift in Sources */,
 				33A100000000000000000102 /* WatchBridgeConnectivityBoundary.swift in Sources */,
 				33A200000000000000000102 /* WatchBridgeWCSessionBoundary.swift in Sources */,
+				40A100000000000000000102 /* WatchBridgeRuntimeState.swift in Sources */,
+				40A200000000000000000102 /* WatchBridgeSnowSnapshotMapper.swift in Sources */,
+				40A400000000000000000102 /* WatchBridgeWatchRuntime.swift in Sources */,
+				40A500000000000000000102 /* WatchBridgeSnowSessionProvider.swift in Sources */,
 				33B100000000000000000102 /* WatchBridgeMirroredCommandModels.swift in Sources */,
 				33B200000000000000000102 /* WatchBridgeMirroredCommandProcessor.swift in Sources */,
 				33C100000000000000000102 /* WatchBridgeCommandSafetyRules.swift in Sources */,
@@ -2367,6 +2869,7 @@
 				37A100000000000000000102 /* WatchMetricProvider.swift in Sources */,
 				37B100000000000000000102 /* WatchMetricCarouselModel.swift in Sources */,
 				4B757BBB72A1EFB7D86BCE02 /* SkateTrackWatchApp.swift in Sources */,
+				A80300000000000000000101 /* WatchSnowLaunchRoute.swift in Sources */,
 				36B200000000000000000101 /* watchOS/Features/WatchLiveSessionFaceView.swift in Sources */,
 				39A200000000000000000101 /* watchOS/Features/WatchComplicationShellView.swift in Sources */,
 				39B200000000000000000101 /* watchOS/Features/WatchQuickStartShellView.swift in Sources */,
@@ -2394,6 +2897,43 @@
 				12A20000000000000000000D /* NumberFormatter+SkateTrack.swift in Sources */,
 				12A300000000000000000102 /* SessionData.swift in Sources */,
 				12A300000000000000000105 /* SportMode.swift in Sources */,
+				29C100000000000000000102 /* SnowDiscipline.swift in Sources */,
+				31C200000000000000000102 /* SnowSegmentType.swift in Sources */,
+				31C200000000000000000105 /* SnowSegment.swift in Sources */,
+				31C200000000000000000108 /* SnowRun.swift in Sources */,
+				31C20000000000000000010B /* SnowDistanceBreakdown.swift in Sources */,
+				31C20000000000000000010E /* SnowVerticalMetrics.swift in Sources */,
+				31C200000000000000000111 /* SnowSessionState.swift in Sources */,
+				37E800000000000000000102 /* SkateTrackPackageSnowPayload.swift in Sources */,
+				32C300000000000000000102 /* SnowClassifierConfig.swift in Sources */,
+				32C300000000000000000105 /* SnowSegmentClassification.swift in Sources */,
+				32C300000000000000000108 /* SnowSegmentClassifier.swift in Sources */,
+				33C400000000000000000102 /* RunBoundaryState.swift in Sources */,
+				33C400000000000000000105 /* RunBoundaryConfig.swift in Sources */,
+				33C400000000000000000108 /* RunBoundarySnapshot.swift in Sources */,
+				33C40000000000000000010B /* RunBoundaryEvent.swift in Sources */,
+				33C40000000000000000010E /* RunBoundaryDetector.swift in Sources */,
+				35C600000000000000000102 /* WatchSnowSessionSnapshot.swift in Sources */,
+				35C610000000000000000101 /* WatchSnowSessionDataSource.swift in Sources */,
+				35C610000000000000000102 /* WatchSnowMockScenario.swift in Sources */,
+				35C610000000000000000103 /* WatchSnowMockSessionProvider.swift in Sources */,
+				35C610000000000000000104 /* WatchSnowHapticIntent.swift in Sources */,
+				35C610000000000000000105 /* WatchSnowHapticIntentObserver.swift in Sources */,
+				35C610000000000000000106 /* WatchSnowHapticEngine.swift in Sources */,
+				35C620000000000000000101 /* WatchSnowRootView.swift in Sources */,
+				35C620000000000000000102 /* WatchSnowMockGalleryView.swift in Sources */,
+				35C620000000000000000103 /* WatchSnowUnavailableView.swift in Sources */,
+				35C620000000000000000104 /* WatchSnowStyle.swift in Sources */,
+				35C620000000000000000105 /* WatchSnowFormatters.swift in Sources */,
+				35C620000000000000000106 /* WatchSnowMetricChipView.swift in Sources */,
+				35C620000000000000000107 /* WatchSnowLiveView.swift in Sources */,
+				35C620000000000000000108 /* WatchSnowCarouselView.swift in Sources */,
+				35C620000000000000000109 /* WatchSnowLiftCardView.swift in Sources */,
+				35C620000000000000000110 /* WatchSnowWaitingCardView.swift in Sources */,
+				35C620000000000000000111 /* WatchSnowSummaryView.swift in Sources */,
+				35C620000000000000000112 /* WatchSnowControlView.swift in Sources */,
+				35C620000000000000000113 /* WatchSnowFallAlertView.swift in Sources */,
+				35C620000000000000000114 /* WatchSnowLowConfidenceView.swift in Sources */,
 				12A300000000000000000108 /* PowerType.swift in Sources */,
 				12A30000000000000000010B /* MotionSample.swift in Sources */,
 				B16B01000000000000000102 /* BarometricGPSOutlierDiagnostics.swift in Sources */,

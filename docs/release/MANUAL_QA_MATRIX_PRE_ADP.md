@@ -261,3 +261,338 @@ FAILURE_COUNT=0
 
 Task-040a manual QA token: simulator QA matrix documented, real paired iPhone/Watch required, Phase 2 / post-ADP limitation, no estimated route unlock, no trusted metric mutation, no package schema break.
 <!-- TASK040A_SIMULATOR_QA_MATRIX_END -->
+## 9. Phase 1c Snow Mode iPhone UI smoke test
+
+Snow Mode remains DEBUG-gated until the Phase 1c production path is complete. For local development builds on `feature/snow-mode`, verify:
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| Snow entry gate | Open Debug Tools and toggle the Snow Mode entry | Snow entry is hidden when the toggle is off and visible when the toggle is on. |
+| Start Snow session | Select Snow / Skiing or Snowboarding from Session Start | Session starts without crash and routes to the Snow live HUD. |
+| Snow live HUD | Start a simulator Snow session | Snow-specific HUD appears. In simulator-only testing, waiting / low-confidence or zero-data states are acceptable. |
+| Existing HUD preservation | Start Skateboard or Inline session | Existing Live HUD appears unchanged and pause / resume / end controls still work. |
+| Snow summary empty state | End a simulator Snow session without real snow movement | Snow summary / timeline / distance inspector appear without crash and may show zero / empty values. |
+| Scope boundary | Inspect behavior after Snow UI test | No Watch UI / WatchBridge behavior should change. |
+
+Task-005 manual QA token: Snow iPhone UI smoke test complete.
+
+## 10. Phase 1c Snow Mode Watch mock UI smoke test
+
+Snow-Task-006a provides a DEBUG-only mock-backed Watch Snow UI. It is not real WatchBridge data wiring.
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| DEBUG mock gallery entry | Run `SkateTrack-watchOS` on an Apple Watch simulator | Snow Watch mock gallery appears instead of the original plain welcome shell. |
+| Downhill scenario | Select Downhill | Large speed, run number, vertical drop, and counting status display correctly. |
+| Lift / gondola scenario | Select Lift / Gondola | Uphill transport is clearly shown and marked as not counted toward ski distance. |
+| Waiting scenario | Select Waiting | Waiting / queue state and last-run summary display correctly. |
+| Low confidence scenario | Select Low Confidence | Low-confidence warning and confidence / status information display correctly. |
+| Fall alert scenario | Select Fall Alert | Fall-alert card, impact value, SOS/status, and acknowledgement presentation display correctly. No real SOS flow is triggered. |
+| Summary scenario | Select Summary | Today's runs, total vertical, ski distance, lift distance, and top speed display correctly. |
+| Controls | Use Start / Pause / Resume / Mark / End / subscriber toggle | Controls do not crash and haptic intent text updates as expected. |
+| Release fallback | Build Release watchOS target if needed | Mock provider is not injected as fake production data; neutral fallback remains available before 006b. |
+| Scope boundary | Inspect source / behavior after Watch QA | No `Shared/WatchBridge/*`, WatchConnectivity, real sensors, HealthKit, or emergency-contact behavior is involved. |
+
+Snow-Task-006a manual QA token: Watch Snow mock gallery smoke test complete.
+
+## 11. Phase 1c Snow Mode macOS viewer smoke test
+
+Snow-Task-007 provides a read-only macOS Snow viewer. The DEBUG preview exists for local UI validation before Snow-Task-008 package payload support.
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| DEBUG Snow preview entry | Run `SkateTrack-macOS` in DEBUG | Sidebar shows the Snow Analysis Preview entry. |
+| Open Snow viewer | Select Snow Analysis Preview | Snow viewer opens with mock resort-day data and does not crash. |
+| SnowMode visual direction | Inspect the viewer body | Viewer uses SnowMode visual language: deep snow-night panels, ice cyan downhill / route emphasis, amber lift emphasis, and low-confidence indicators. |
+| Dashboard | Review the dashboard cards | Runs, ski distance, lift distance, route distance, vertical drop, top speed, duration, and average run duration are visible. |
+| Route + Elevation | Inspect route and elevation panels | Lightweight route / elevation visualization is readable and limited altitude data is clearly indicated when needed. |
+| Segment timeline | Select downhill, lift, and unknown rows | Timeline selection updates inspector content; downhill is counted and lift / unknown are excluded as appropriate. |
+| Segment inspector | Inspect selected segment details | Segment type, distance, duration, confidence, altitude delta, and manual-correction placeholder display read-only information. |
+| Distance inspector | Review the distance breakdown | Ski distance, lift distance, route distance, and unknown / excluded distance remain distinct. |
+| Package pending state | Use package-pending mock state or future imported package without Snow payload | UI shows package schema pending instead of fabricated official Snow analysis. |
+| Scope boundary | Inspect behavior and source after QA | No package schema / reader / writer, iOS, watchOS, WatchBridge, HealthKit, WeatherKit, CloudKit, or persistence changes are introduced. |
+
+Snow-Task-007 manual QA token: macOS Snow viewer smoke test complete.
+
+## Snow-Task-008a Manual QA Addendum
+
+| Flow | Steps | Expected result |
+|---|---|---|
+| Old package import | Import a schema 1 `.skatetrack` package with no Snow fields | Package decodes and previews normally; no Snow crash. |
+| Non-Snow export | Export a skateboard / inline session | Package has no `snowPayload`; existing preview behavior remains unchanged. |
+| Snow export with state | Export a Snow session after repository-backed Snow state exists | Package declares Snow capability keys and includes official `snowPayload`. |
+| Snow export without state | Export a Snow session with no repository Snow state | Package remains valid but `snowPayload` is nil; no empty placeholder analysis is fabricated. |
+| macOS imported Snow package | Import a schema 2 Snow package with valid `snowPayload` | macOS shows Snow analysis through `MacSnowRootView` with source `.importedPackage`. |
+| macOS imported pending package | Import a Snow package without `snowPayload` | macOS shows the existing `packageSchemaPending` state. |
+
+
+## Snow-Task-008b Backup / Health Boundary QA
+
+Run after applying Snow-Task-008b:
+
+```bash
+python3 scripts/verify_snow_backup_compatibility.py
+python3 scripts/verify_snow_package_compatibility.py
+python3 scripts/verify_snow_macos_viewer.py
+python3 scripts/verify_snow_watch_ui.py
+python3 scripts/verify_snow_iphone_ui.py
+python3 scripts/verify_snow_run_boundary.py
+python3 scripts/verify_snow_classifier.py
+python3 scripts/verify_snow_schema.py
+python3 scripts/verify_snow_sport_enum.py
+```
+
+Manual QA checklist:
+
+- 備份 schema 1 舊檔可解碼，不因缺少 `snowSessions` 失敗。
+- 新備份 schema 2 會輸出 `snowSessions: []`，代表 Snow-aware backup 但目前 0 筆 Snow session。
+- 還原預覽可顯示 / 計入 Snow session count，不影響既有 session / gear / subscription counts。
+- Health provider boundary 保持 iOS-only，production default 為 unavailable。
+- DEBUG mock Health exporter 僅測試 wiring，不寫入系統健康資料。
+- Shared 不含 `import HealthKit`。
+- watchOS / macOS / iOS build 均成功。
+
+## Snow-Task-009 QA / Regression Manual Test Matrix
+
+Snow-Task-009 adds deterministic QA fixtures, regression tests, and manual QA coverage for the Snow Mode work completed through Snow-Task-008b. This section is intentionally written as a manual checklist; it does not introduce new runtime behavior.
+
+### iPhone Snow Mode
+
+- [ ] 在 DEBUG 模式確認 Snow entry 仍由 debug toggle 控制，不應在非預期狀態自行出現。
+- [ ] 開啟 Snow entry 後，確認 Snow live HUD 的 idle / recording / low confidence / summary 狀態都能顯示，且不 crash。
+- [ ] 使用 fixture 概念檢查低信心資料情境：低 confidence session 應能安全顯示，不應讓 summary 或 timeline 中斷。
+- [ ] 確認 skiing / snowboarding 相關文案在繁中、英文、日文模式下沒有明顯錯譯或截斷。
+
+### watchOS Snow UI
+
+- [ ] 在 DEBUG / mock-backed 狀態確認 Watch Snow UI 可載入。
+- [ ] 確認 006b WatchBridge production integration 仍是 deferred，Task 009 不應要求 WatchConnectivity。
+- [ ] 確認 watchOS build 不需要 HealthKit、package schema 或 backup schema 額外變更。
+
+### macOS Snow viewer
+
+- [ ] 匯入含 Snow payload 的 schema v2 package 時，應直接進入 Snow viewer / `MacSnowRootView` 顯示 Snow 分析。
+- [ ] 匯入沒有 Snow payload 的 Snow session package 時，應顯示 pending / unavailable 狀態，不應 crash。
+- [ ] 匯入 legacy schema v1 package 時，應安全處理沒有 Snow payload 的情境。
+
+### Package export / import
+
+- [ ] 非 Snow session 不應輸出 Snow payload。
+- [ ] Snow session 若 repository 沒有 Snow state，不應輸出空 placeholder payload。
+- [ ] Snow session 若有 Snow state，package schema v2 應包含 Snow capabilities 與 `snow-payload-1.0`。
+- [ ] JSON fixtures 中的 package v2 with / without Snow payload 情境都應能 decode。
+
+### Backup compatibility
+
+- [ ] Backup schema v1 沒有 `snowSessions` 時仍可 decode。
+- [ ] Backup schema v2 的 `snowSessions: []` 應被視為合法 snow-aware empty state。
+- [ ] Backup schema v2 若有 `SnowBackupSession`，基本 round-trip / preview count 不應失敗。
+
+### Health boundary
+
+- [ ] Production default exporter 應回傳 unavailable，不應跳出 HealthKit 權限要求。
+- [ ] DEBUG mock exporter 只作為本機測試 boundary，不代表正式 HealthKit export 已完成。
+- [ ] Task 009 不應加入 `import HealthKit`、`HKWorkout`、`HKQuantitySample` 或 `HKHealthStore`。
+
+### Regression smoke check
+
+- [ ] `python3 scripts/verify_snow_regression.py` PASS。
+- [ ] `SnowQAFixtureRegressionTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] macOS / iOS / watchOS builds PASS。
+- [ ] `SnowTask009_ReviewPack.zip` 產生在 `/Users/doggo/Documents/App軟體區/upload/`。
+
+## Snow-Task-010 Phase 1c Final Manual QA Gate
+
+本區是 Snow Mode Phase 1c 完成前的最終人工檢查清單。這不是新功能測試，而是確認 001～009 的成果可以交給 Claude / human reviewer 做 feature-branch review。
+
+### Final branch readiness
+
+- [ ] 確認目前分支是 `feature/snow-mode`。
+- [ ] 確認 Snow-Task-009 commit 已存在：`0d4f3a8 Add Snow QA fixtures and regression matrix`。
+- [ ] 確認 `python3 scripts/verify_snow_phase1c_completion.py` PASS。
+- [ ] 確認 Snow-Task-001～009 cumulative verify scripts 全部 PASS。
+- [ ] 確認 `SnowTask010_ReviewPack.zip` 產生於 `/Users/doggo/Documents/App軟體區/upload/`。
+
+### Runtime scope guardrails
+
+- [ ] 確認 010 沒有新增 runtime Snow feature behavior。
+- [ ] 確認 package schema 仍為 v2，且支援 schema 1 / 2 decode。
+- [ ] 確認 backup schema 仍為 v2，且支援 schema 1 / 2 decode。
+- [ ] 確認沒有新增 `.skatetrack` binary fixture。
+- [ ] 確認沒有 `SnowPrototype*` 或 `MacSnowPrototype*` production/test Swift symbol。
+
+### Deferred production integrations
+
+- [ ] 確認 WatchBridge / WatchConnectivity production Snow wiring 仍標記 deferred。
+- [ ] 確認 HealthKit production export 仍標記 deferred。
+- [ ] 確認 Snow-Task-006b 仍標記為 mainline Task-040+ 後再處理。
+- [ ] 確認 Snow Mode 尚未被宣告為 App Store production release-ready。
+
+### Build and test smoke
+
+- [ ] `SnowQAFixtureRegressionTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] `SkateTrackPackageSnowCompatibilityTests` 在 iPhone 17 Pro simulator 上 PASS。
+- [ ] macOS build PASS。
+- [ ] iOS build PASS。
+- [ ] watchOS build PASS。
+
+Snow-Task-010 verification token: final manual QA gate exists for Phase 1c handoff.
+
+## Snow-Integration-A005 Historical Manual QA Boundary
+
+At the A005 checkpoint, manual QA and A006 through A009 were pending. That historical state was superseded by A006R1, A007, A008R1/A008R2R1, and the completed A009/A009R1 documentation closure. Commit/push and final merge remain pending.
+
+## 12. Snow-Integration-A008 Reviewed Manual QA Closure
+
+The operator completed the reviewed A008R2R1 matrix. No new manual QA is required for A009 or A009R1 because A009 changed documentation only and A009R1 changes only verifier/documentation state without user-visible product behavior.
+
+| QA item | Reviewed result | Accepted evidence boundary |
+|---|---|---|
+| QA-01 | PASS | iPhone Snow DEBUG gate hides/shows correctly; non-Snow navigation remains normal. |
+| QA-02 | PASS | Waiting, Downhill, Lift/Gondola, and Low Confidence deterministic HUD scenarios display and switch correctly; lift distance is excluded from ski distance. |
+| QA-03 | PASS | Snow summary, run/segment selection, inspector updates, session switching, and empty state work without stale selection or crash. |
+| QA-04 | PASS | Snow and non-Snow package round trips were visually confirmed; numeric values were not separately retained. |
+| QA-05 | PASS | Normal `SkateTrack-watchOS` scheme launches the Task-040 mainline root without the Snow scenario selector. |
+| QA-06 | PASS | Local ignored `SkateTrack-watchOS-SnowQA` scheme launches the DEBUG Snow mock gallery; returning to the normal scheme restores the Task-040 root. |
+| QA-07 | DOCUMENTED_LIMITATION_SIMULATOR_ONLY_NO_PAIRED_WATCH_DESTINATION | No paired destination was available. Automated runtime/adapter tests and separate simulator launches passed; a real paired round trip is not claimed. |
+| QA-08 | PASS | macOS Snow Analysis Preview and Session Browser open Snow packages read-only. |
+| QA-09 | PASS | Backup v1, v2 Snow, and v2 empty preview/decode work; no restore, HealthKit permission, or production write occurred. |
+| QA-10 | PASS | Representative en, zh-Hant, and ja Snow screens showed no raw keys or material clipping/layout issue. |
+| QA-11 | PASS | Representative skateboard/inline session behavior remained normal without Snow classification or HUD contamination. |
+| QA-12 | PASS | No medical monitoring/diagnosis, automatic emergency service, rescue guarantee, or resort/professional-grade accuracy claim appeared. |
+
+The operator explicitly waived retained screenshots after completing the required interactive and visual checks. This waiver must not be rewritten as screenshot evidence being present, and no screenshot path, filename, hash, or manifest entry is claimed.
+
+```text
+QA-01=PASS
+QA-02=PASS
+QA-03=PASS
+QA-04=PASS
+QA-05=PASS
+QA-06=PASS
+QA-07=DOCUMENTED_LIMITATION_SIMULATOR_ONLY_NO_PAIRED_WATCH_DESTINATION
+QA-08=PASS
+QA-09=PASS
+QA-10=PASS
+QA-11=PASS
+QA-12=PASS
+MANUAL_QA_SNOW_INTEGRATION=PASSED
+SCREENSHOT_EVIDENCE_PROVIDED=NO
+SCREENSHOT_EVIDENCE_WAIVED_BY_OPERATOR=YES
+OPERATOR_VISUAL_CONFIRMATION=YES
+A009_MANUAL_QA_REQUIRED=NO
+A009_MANUAL_QA_SKIP_REASON=DOCUMENTATION_ONLY_NO_PRODUCT_BEHAVIOR_CHANGE
+SNOW_INT_A009_RESULT=PASSED
+SNOW_INT_A009R1_RESULT=PASSED_REMEDIATION
+A009R1_MANUAL_QA_REQUIRED=NO
+A009R1_MANUAL_QA_SKIP_REASON=VERIFIER_AND_DOCUMENTATION_ONLY_NO_USER_VISIBLE_BEHAVIOR_CHANGE
+```
+
+## 13. Snow-Integration-A010R5 focused no-altitude route QA
+
+Use a fresh iOS simulator Snow recording that follows the same approximately 59-second no-altitude path. Hash all shared schemes before and after QA; never add `-SnowMockGallery` to the shared watchOS scheme. Retain the four exact screenshots listed below.
+
+The pre-QA automated gate is green: all 11 current verifiers, iOS/watchOS/macOS no-signing builds, localization/format locks, and 309/309 complete iOS tests passed with zero failures or skips.
+
+| QA ID | Operator action | Required result |
+|---|---|---|
+| QA-R5-01 | End the fresh no-altitude Snow recording and open the normal session summary. | Summary distance is nonzero. |
+| QA-R5-02 | Open Snow Distance Inspector for the same session. | Route distance is nonzero. |
+| QA-R5-03 | Compare the two route values. | Summary and Inspector match when rounded to 0.01 km. |
+| QA-R5-04 | Inspect ski distance. | Ski distance remains 0 because classification is unknown. |
+| QA-R5-05 | Inspect lift distance. | Lift distance remains 0 because no lift exists. |
+| QA-R5-06 | Inspect summary/package speed values. | No 43 km/h HUD fixture value is persisted as trusted speed. |
+| QA-R5-07 | Export, import, and reopen the Snow package. | Route/unknown distance survives under existing schema 2. |
+| QA-R5-08 | Review import/export feedback. | No schema or compatibility warning appears. |
+| QA-R5-09 | Record a short skateboard or inline session. | Existing non-Snow GPS behavior remains unchanged. |
+| QA-R5-10 | Compare shared-scheme hashes. | All shared schemes are unchanged. |
+
+Required screenshots:
+
+```text
+A010R5_QA_summary_nonzero_route.png
+A010R5_QA_distance_inspector_nonzero_route.png
+A010R5_QA_package_roundtrip.png
+A010R5_QA_non_snow_gps.png
+```
+
+```text
+MANUAL_QA_A010R5_FOCUSED=PENDING
+A010R5_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=309
+SUMMARY_AND_INSPECTOR_ROUTE_ROUNDED_001KM_MATCH=PENDING
+UNKNOWN_DISTANCE_NONZERO_FOR_NO_ALTITUDE_ROUTE=PENDING
+SKI_DISTANCE_REMAINS_ZERO_FOR_UNKNOWN=PENDING
+PACKAGE_ROUNDTRIP_PRESERVES_FALLBACK=PENDING
+NON_SNOW_SESSION_GPS_BEHAVIOR_UNCHANGED=PENDING
+```
+
+## 14. Snow-Integration-A010R5R2 focused presentation/localization QA
+
+Use a fresh iOS simulator session; do not reuse A010R5 screenshots. Record a new approximately 60-second no-altitude Snow session, end it, and inspect the same session in the general Summary, unknown Timeline row, and Distance Inspector. Localization changes must not be written into shared schemes.
+
+The pre-QA automated gate is green: 12/12 CURRENT_REQUIRED verifiers, focused 11/11 tests, affected 35/35 regressions, iOS/watchOS/macOS no-signing builds, and 314/314 complete iOS tests passed with zero failures or unexpected skips.
+
+| QA ID | Operator action | Required result |
+|---|---|---|
+| QA-R2-01 | Compare the visible route string in Summary, unknown Timeline row, and Inspector route. | All three localized strings are identical (for example `0.6 km`); never `0.6 km` versus `1 km`. |
+| QA-R2-02 | Inspect Distance Inspector breakdown. | Route and unknown distances are positive; ski and lift distances remain zero. |
+| QA-R2-03 | Use zh-Hant and inspect the classified Snow card. | Title is `滑降資訊`; unknown-only heading/detail appear; four classified zero metric tiles do not appear; full route remains accessible. |
+| QA-R2-04 | Switch to English without shared-scheme arguments. | Title is `Downhill information`, heading is `No classified downhill data yet`, with no raw key or clipping. |
+| QA-R2-05 | Switch to Japanese without shared-scheme arguments. | Title is `滑降情報`, heading is `分類済みの滑降データはまだありません`, with no raw key or clipping. |
+| QA-R2-06 | Select the unknown Timeline segment. | Inspector updates and retains the same route/unknown mapping. |
+| QA-R2-07 | Optionally switch Debug HUD scenarios. | No transition persistence was added; Timeline remains live-classifier/persisted-data-backed. |
+| QA-R2-08 | Recompute shared-scheme hashes. | No `-SnowMockGallery`, localization argument, or other shared-scheme mutation exists. |
+
+Required screenshots:
+
+```text
+A010R5R2_QA_zhHant_summary_timeline_inspector_match.png
+A010R5R2_QA_zhHant_downhill_info_unknown_status.png
+A010R5R2_QA_en_downhill_info_unknown_status.png
+A010R5R2_QA_ja_downhill_info_unknown_status.png
+```
+
+```text
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+SKI_DISTANCE_REMAINS_ZERO_FOR_UNKNOWN=YES
+LIFT_DISTANCE_REMAINS_ZERO_FOR_UNKNOWN=YES
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+```
+
+## 15. Snow-Integration-A010R5R2R2 current closure (2026-07-19)
+
+The final A010R5R2 evidence records QA-R2-01 through QA-R2-08 as passed, ten readable screenshots, exact `0.89 公里` Summary/Timeline/Inspector parity, zero ski/lift distance for unknown-only movement, exact three-language copy, and unchanged shared schemes. R2R2 reuses this approved evidence and does not repeat manual QA.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+A010R5R2R1_RESULT=BLOCKED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+CURRENT_REQUIRED_VERIFIERS=12_OF_12_PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+A010R6_AUTHORIZED=NO_UNTIL_A010R5R2R2_INDEPENDENT_REVIEW
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```

@@ -87,6 +87,8 @@ struct SessionEquipmentAttributionView: View {
                 : SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 }

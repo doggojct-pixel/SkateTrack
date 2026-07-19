@@ -13,6 +13,8 @@ enum RepositoryError: Error, Sendable, Equatable {
     case exportFailed
     case deleteFailed
     case saveFailed
+    case snowRunNotFound
+    case snowSegmentNotFound
 
     var localizationKey: String {
         switch self {
@@ -32,6 +34,10 @@ enum RepositoryError: Error, Sendable, Equatable {
             return "repository.error.deleteFailed"
         case .saveFailed:
             return "repository.error.saveFailed"
+        case .snowRunNotFound:
+            return "repository.error.snowRunNotFound"
+        case .snowSegmentNotFound:
+            return "repository.error.snowSegmentNotFound"
         }
     }
 }

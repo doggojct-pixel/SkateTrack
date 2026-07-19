@@ -276,7 +276,7 @@ SkateTrack/
 │   │   │   ├── SessionStartHeaderMetricsView.swift # [協作區] Split Session Start title/header, hidden root navigation anchor, and preview metric strip, keeping SessionStartView under the file-size guardrail.
 │   │   │   ├── SessionStartView.swift              # [協作區] Session Start flow with equipment, local Spot selection, and measured sticky root-navigation positioning.
 │   │   │   ├── SlideToEndSessionControl.swift      # [協作區] Slide-to-end control with accidental-stop protection.
-│   │   │   ├── SportCategoryPickerView.swift       # [協作區] Skateboard / inline category picker; contains current inline glyph work.
+│   │   │   ├── SportCategoryPickerView.swift       # [協作區] Public sport category picker using `userFacingCases`; Snow remains DEBUG-only until later Phase 1c tasks complete.
 │   │   │   ├── StartSessionCTAView.swift           # [協作區] Start-session call-to-action button.
 │   │   │   └── TiltIndicatorView.swift             # [協作區] Conservative phone-posture card; does not claim calibrated board tilt in Phase 1a.
 │   │   ├── Subscription/                           # [協作區] Task-016b Paywall and locked feature UI.
@@ -3211,3 +3211,496 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-040c
 ```
 <!-- TASK040B_ARCHIVE_READINESS_END -->
+## Phase 1c Snow Mode Production Branch
+
+| Item | Status | Notes |
+|---|---|---|
+| `integration/snow-mode-phase1c-after-task040` | Active merge-in-progress branch | Approved Path-A integration branch; uncommitted and unpushed after A009R1. |
+| Snow-Task-001 through Snow-Task-010 | Integrated source history | Production Snow foundations, package/backup compatibility, three-platform presentation, fixtures, tests, and feature-branch closure records are present. |
+| Snow-Integration-A004 through A008 | Closed | Includes A006R1 WatchBridge runtime/adapter remediation and A008R1/A008R2R1 manual-QA readiness/closure. |
+| Snow-Integration-A009/A009R1 | Passed | A009 documentation closure initially stopped on the obsolete 197-path aggregate lock; A009R1 corrected the exact stage progression without runtime changes. A010–A012 remain pending. |
+
+### Snow-Task-001 Source Files
+
+| File | Purpose |
+|---|---|
+| `Shared/Models/SnowDiscipline.swift` | Production Snow Mode sub-discipline enum. |
+| `Shared/Models/SportMode.swift` | Existing sport enum extended with `SportMode.snow(SnowDiscipline)`. |
+| `iOS/Features/SessionRecording/SnowDisciplineSelectorView.swift` | Minimal Session Start selector for snowboard / skiing. |
+| `docs/process/PHASE_1C_SNOW_AGENT_STATE.md` | Production Phase 1c agent state record. |
+| `scripts/verify_snow_sport_enum.py` and `scripts/verify_snow_task_001a_debug_gate.py` | Snow sport enum / switch audit gate. |
+
+- `scripts/verify_snow_task_001b_debug_toggle.py` — Verifies DEBUG toggle gating for the Snow Mode Ride start entry.
+
+
+## Phase 1c Snow-Task-002 Production Data Layer
+
+Added production Snow session data-layer files:
+
+```text
+Shared/Models/SnowSegmentType.swift
+Shared/Models/SnowSegment.swift
+Shared/Models/SnowRun.swift
+Shared/Models/SnowDistanceBreakdown.swift
+Shared/Models/SnowVerticalMetrics.swift
+Shared/Models/SnowSessionState.swift
+Shared/Persistence/SnowSessionRepository.swift
+Shared/Persistence/SnowSessionEntityMapper.swift
+iOS/Hooks/useSnowSession.swift
+Tests/iOSTests/SnowSessionRepositoryTests.swift
+scripts/verify_snow_schema.py
+```
+
+`PersistenceController.makeManagedObjectModel()` remains the runtime Core Data source of truth. `Shared/Persistence/SkateTrackDataModel.xcdatamodeld` is updated as the schema reference with additive `PersistedSnowRun` and `PersistedSnowSegment` entities.
+
+Snow-Task-002 verification token: production snow schema and repository boundary integrated.
+
+## Phase 1c Snow Classifier Files
+
+- `Shared/Models/SnowClassifierConfig.swift` — centralized Snow-Task-003 v0 classifier thresholds.
+- `Shared/Models/SnowSegmentClassification.swift` — classifier result value type for a `MotionSample` window.
+- `Shared/Models/SnowSegmentClassifier.swift` — production v0 rule-based classifier; no `SnowPrototype*` dependency.
+- `Tests/iOSTests/SnowSegmentClassifierTests.swift` — fixture tests and fixture-result logging for Snow-Task-003.
+- `scripts/verify_snow_classifier.py` — Snow-Task-003 verification gate.
+
+## Snow-Task-004 Run Boundary Files
+
+- `Shared/Models/RunBoundaryState.swift` — Snow run-boundary state enum (`idle`, `active`, `pendingEnd`, `between`).
+- `Shared/Models/RunBoundaryConfig.swift` — centralized v0 run-boundary timing and confidence thresholds.
+- `Shared/Models/RunBoundarySnapshot.swift` — live snapshot boundary for future Snow UI / `useSnowSession` integration.
+- `Shared/Models/RunBoundaryEvent.swift` — run started / run ended / state transition events.
+- `Shared/Models/RunBoundaryDetector.swift` — pure streaming state machine that consumes `SnowSegmentClassification` values.
+- `Tests/iOSTests/RunBoundaryDetectorTests.swift` — fixture coverage for state transitions and fast-path transport run endings.
+- `scripts/verify_snow_run_boundary.py` — Snow-Task-004 verification gate.
+
+## Snow-Task-005 iPhone Snow UI Files
+
+### Live data boundary
+
+- `iOS/Core/SnowEngine/SnowLiveSessionConfig.swift` — iPhone Snow live UI policy, including config-sourced low-confidence threshold.
+- `iOS/Core/SnowEngine/SnowClassificationWindowBuffer.swift` — rolling `MotionSample` buffer used by the live Snow coordinator.
+- `iOS/Core/SnowEngine/SnowLiveSessionState.swift` — live Snow state contract for iPhone UI.
+- `iOS/Core/SnowEngine/SnowLiveSessionCoordinator.swift` — production driver that feeds `SnowSegmentClassifier` and `RunBoundaryDetector` from the existing session sample stream.
+- `iOS/Core/SnowEngine/SnowLiveHUDState.swift` — iPhone Snow HUD four-state view model enum.
+- `iOS/Core/SnowEngine/SnowLiveHUDStateMapper.swift` — config-driven mapping from live Snow state to iPhone HUD state.
+- `iOS/Hooks/useSnowLiveSession.swift` — SwiftUI-facing wrapper for live Snow state.
+- `iOS/Hooks/useSessionRecording.swift` — exposes `snowLiveState` and `snowLiveHUDState` for active recording.
+- `iOS/Core/SessionRecording/SessionRecordingCoordinator.swift` — starts / pauses / resumes / finishes Snow live processing while remaining the single recording lifecycle owner.
+
+### iPhone live HUD
+
+- `iOS/Features/SessionRecording/SnowHUDView.swift` — parent iPhone Snow live HUD view.
+- `iOS/Features/SessionRecording/SnowHUDDownhillView.swift` — downhill run HUD state.
+- `iOS/Features/SessionRecording/SnowHUDLiftView.swift` — lift / gondola / surface-lift HUD state.
+- `iOS/Features/SessionRecording/SnowHUDWaitingView.swift` — waiting / between-runs HUD state.
+- `iOS/Features/SessionRecording/SnowHUDLowConfidenceView.swift` — low-confidence HUD state.
+- `iOS/Features/SessionRecording/LiveHUDView.swift` — routes `.snow(...)` sessions to `SnowHUDView` and preserves existing skate / inline HUD behavior.
+
+### Snow summary surfaces
+
+- `iOS/Features/SessionSummary/SnowDaySummaryView.swift` — repository-backed Snow day summary.
+- `iOS/Features/SessionSummary/SnowSegmentTimelineView.swift` — repository-backed Snow segment timeline.
+- `iOS/Features/SessionSummary/SnowDistanceInspectorView.swift` — repository-backed ski / lift / route distance inspector.
+- `iOS/Features/SessionSummary/SessionSummaryView.swift` — shows Snow summary stack only for `.snow(...)` sessions.
+
+### Tests and verification
+
+- `Tests/iOSTests/SnowLiveSessionConfigTests.swift` — verifies config-driven low-confidence policy.
+- `Tests/iOSTests/SnowLiveSessionCoordinatorTests.swift` — verifies A010R5 no-altitude trusted-route residual persistence, unknown-only breakdown, idempotency, and no-negative fallback behavior.
+- `Tests/iOSTests/SnowLiveHUDStateMapperTests.swift` — verifies downhill / lift / waiting / low-confidence mapping.
+- `Tests/iOSTests/SessionRecordingCoordinatorTests.swift` — includes Snow live lifecycle and non-Snow isolation coverage.
+- `scripts/verify_snow_iphone_ui.py` — Snow-Task-005 verification gate.
+- `scripts/create_snow_task005_review_pack.sh` — generates the Snow-Task-005 Claude review pack after local verification.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+## Snow-Task-006a Watch Snow UI Files
+
+Snow-Task-006a added the first production watchOS Snow UI surface as mock-backed and DEBUG-gated. A006R1 later added the bounded post-Task-040 WatchBridge Snow runtime adapter without rewriting these views.
+
+Shared production contract:
+
+```text
+Shared/Models/WatchSnowSessionSnapshot.swift       # [協作區] Production-safe Watch Snow snapshot contract; equivalent field intent to the Addendum prototype session without SnowPrototype naming.
+```
+
+watchOS data boundary:
+
+```text
+watchOS/Core/Snow/WatchSnowSessionDataSource.swift       # [協作區] Protocol boundary for Watch Snow views.
+watchOS/Core/Snow/WatchSnowMockScenario.swift            # [協作區] DEBUG mock scenario enum for downhill / lift / waiting / low confidence / fall alert / summary.
+watchOS/Core/Snow/WatchSnowMockSessionProvider.swift     # [協作區] DEBUG-only mock data source; no WatchBridge / WatchConnectivity.
+watchOS/Core/Snow/WatchSnowHapticIntent.swift            # [協作區] Watch Snow haptic intent model.
+watchOS/Core/Snow/WatchSnowHapticIntentObserver.swift    # [協作區] Pure snapshot-transition-to-haptic-intent mapper.
+watchOS/Core/Snow/WatchSnowHapticEngine.swift            # [協作區] Local WatchKit haptic player boundary.
+```
+
+watchOS Snow UI:
+
+```text
+watchOS/Features/Snow/WatchSnowRootView.swift            # [協作區] DEBUG mock gallery / Release fallback router.
+watchOS/Features/Snow/WatchSnowMockGalleryView.swift     # [協作區] DEBUG scenario gallery for simulator QA.
+watchOS/Features/Snow/WatchSnowUnavailableView.swift     # [協作區] Release-safe neutral fallback before 006b.
+watchOS/Features/Snow/WatchSnowStyle.swift               # [協作區] Watch Snow visual helpers.
+watchOS/Features/Snow/WatchSnowFormatters.swift          # [協作區] Snapshot display formatting helpers.
+watchOS/Features/Snow/WatchSnowMetricChipView.swift      # [協作區] Compact metric chip component.
+watchOS/Features/Snow/WatchSnowLiveView.swift            # [協作區] Live speed / run status view.
+watchOS/Features/Snow/WatchSnowCarouselView.swift        # [協作區] Run / distance / vertical summary carousel.
+watchOS/Features/Snow/WatchSnowLiftCardView.swift        # [協作區] Lift / gondola / uphill transport card.
+watchOS/Features/Snow/WatchSnowWaitingCardView.swift     # [協作區] Waiting / queue state card.
+watchOS/Features/Snow/WatchSnowSummaryView.swift         # [協作區] Today's Snow summary card.
+watchOS/Features/Snow/WatchSnowControlView.swift         # [協作區] Mock control actions; no WatchBridge command path.
+watchOS/Features/Snow/WatchSnowFallAlertView.swift       # [協作區] Mock fall-alert presentation only.
+watchOS/Features/Snow/WatchSnowLowConfidenceView.swift   # [協作區] Low-confidence state presentation.
+```
+
+Verification / review:
+
+```text
+scripts/verify_snow_watch_ui.py                  # [工程設定] Snow-Task-006a verification gate.
+scripts/create_snow_task006_review_pack.sh       # [工程設定] Snow-Task-006a review pack generator.
+```
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+## Snow-Task-007 macOS Snow Viewer Files
+
+Snow-Task-007 adds a read-only macOS Snow viewer and presentation boundary. The viewer is available through a DEBUG-only MacRootView preview entry and is structured so Snow-Task-008 can later wire official package payload data without rewriting the UI.
+
+macOS Snow analysis boundary:
+
+```text
+macOS/Core/Snow/MacSnowAnalysisAvailability.swift     # [協作區] Availability and source enums for mock / repository / imported package states.
+macOS/Core/Snow/MacSnowSessionAnalysis.swift          # [協作區] Struct-based macOS Snow presentation model.
+macOS/Core/Snow/MacSnowAnalysisViewModel.swift        # [協作區] Observable macOS Snow viewer state holder.
+macOS/Core/Snow/MacSnowSessionAnalysisMapper.swift    # [協作區] Maps repository / pending package states into macOS analysis availability.
+macOS/Core/Snow/MacSnowRouteFilter.swift              # [協作區] Time-window route / elevation filtering helper.
+macOS/Core/Snow/MacSnowMockAnalysisProvider.swift     # [協作區] DEBUG-only mock provider for macOS Snow viewer QA.
+```
+
+macOS Snow viewer UI:
+
+```text
+macOS/Features/Snow/MacSnowRootView.swift             # [協作區] Read-only Snow viewer layout.
+macOS/Features/Snow/MacSnowSessionBrowserView.swift   # [協作區] Snow session list / browser surface.
+macOS/Features/Snow/MacSnowDashboardView.swift        # [協作區] Runs, ski distance, lift distance, route distance, vertical, speed, and time metrics.
+macOS/Features/Snow/MacSnowRouteElevationView.swift   # [協作區] Lightweight route + elevation overview with limited-data state.
+macOS/Features/Snow/MacSnowVerticalDropChartView.swift # [協作區] v0 vertical drop chart using available elevation / delta estimates.
+macOS/Features/Snow/MacSnowSegmentTimelineView.swift  # [協作區] Downhill / transport / unknown segment timeline.
+macOS/Features/Snow/MacSnowSegmentInspectorView.swift # [協作區] Read-only segment detail inspector.
+macOS/Features/Snow/MacSnowDistanceInspectorView.swift # [協作區] Ski / lift / route distance explanation and breakdown.
+macOS/Features/Snow/MacSnowUnavailableDataView.swift  # [協作區] Package schema pending / unavailable states.
+macOS/Features/Snow/MacSnowComponents.swift           # [協作區] Snow viewer reusable section / metric / status components.
+macOS/Features/Snow/MacSnowStyle.swift                # [協作區] SnowMode visual palette and gradients.
+macOS/Features/Snow/MacSnowFormatters.swift           # [協作區] macOS Snow display formatting helpers.
+```
+
+Integration / verification:
+
+```text
+macOS/App/MacRootView.swift                           # [協作區] DEBUG-only Snow Analysis Preview entry; main shell redesign remains deferred.
+scripts/verify_snow_macos_viewer.py                   # [協作區] Snow-Task-007 guardrail verification.
+scripts/create_snow_task007_review_pack.sh            # [協作區] Snow-Task-007 Claude review pack generator.
+```
+
+Snow-Task-007 intentionally does not add or modify package schema, package reader / writer, backup / restore flow, iOS source, watchOS source, WatchBridge, or Snow value types.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a Package Compatibility Files
+
+Snow-Task-008a adds the following package compatibility files / responsibilities:
+
+- `Shared/Models/SkateTrackPackageSnowPayload.swift` — official package Snow payload model and Snow capability keys.
+- `Shared/Models/SkateTrackPackageManifest.swift` — schema version 2 and supported schema versions 1 / 2.
+- `Shared/Models/SkateTrackPackagePayload.swift` — optional `snowPayload` on package sessions.
+- `iOS/Core/Export/SkateTrackPackageExportProvider.swift` — repository-backed Snow payload assembly during package export.
+- `macOS/Core/Snow/MacSnowSessionAnalysisMapper.swift` — package payload to `MacSnowSessionAnalysis` availability conversion.
+- `macOS/Features/Import/MacPackageImportViewModel.swift` and `MacPackagePreviewView.swift` — imported package Snow viewer routing.
+- `Tests/iOSTests/SkateTrackPackageSnowCompatibilityTests.swift` — schema and payload compatibility tests.
+- `scripts/verify_snow_package_compatibility.py` — Snow-Task-008a guardrail verification.
+- `scripts/create_snow_task008a_review_pack.sh` — writes 008a review artifacts to `/Users/doggo/Documents/App軟體區/upload/`.
+
+
+## Snow-Task-008b Backup / Health Boundary Files
+
+Snow-Task-008b adds backup schema compatibility and an iOS-only Snow Health export provider boundary.
+
+Backup compatibility:
+
+```text
+Shared/Models/BackupPackageManifest.swift        # [協作區] Backup schema version 2; supports schema versions 1 / 2 and optional snowSessions counts.
+Shared/Models/BackupPackagePayload.swift         # [協作區] Optional snowSessions section and SnowBackupSession backup DTO.
+Shared/Models/BackupRestorePreview.swift         # [協作區] Restore preview Snow session count and Snow-aware helper.
+iOS/Core/Sync/BackupPackageEncoder.swift         # [協作區] Encodes schema 2 backups with snowSessions: [] by default.
+iOS/Core/Sync/BackupPackageDecoder.swift         # [協作區] Decodes schema 1 / 2 and maps optional Snow sessions into preview counts.
+```
+
+Snow Health provider boundary:
+
+```text
+iOS/Core/Health/SnowHealthExporting.swift        # [協作區] iOS-only protocol, request, result, and status for future Snow Health export.
+iOS/Core/Health/DisabledSnowHealthExporter.swift # [協作區] Production default no-op / unavailable exporter; no HealthKit writes.
+iOS/Core/Health/MockSnowHealthExporter.swift     # [協作區] DEBUG-only mock provider for local wiring tests.
+```
+
+Verification / review:
+
+```text
+scripts/verify_snow_backup_compatibility.py      # [工程設定] Snow-Task-008b backup + Health boundary verification gate.
+scripts/create_snow_task008b_review_pack.sh      # [工程設定] Snow-Task-008b review pack generator; writes to /Users/doggo/Documents/App軟體區/upload/.
+```
+
+Snow-Task-008b must not add `import HealthKit` to `Shared/`, must not create HealthKit objects yet, and must not touch WatchBridge / WatchConnectivity wiring.
+
+## Snow-Task-009 QA / Regression Files
+
+Snow-Task-009 adds deterministic QA fixtures and regression verification for Phase 1c Snow Mode.
+
+```text
+Tests/Fixtures/Snow/qa_snow_basic_run.json                         # [測試資料] Basic downhill Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_lift_exclusion.json                    # [測試資料] Lift exclusion distance-breakdown fixture.
+Tests/Fixtures/Snow/qa_snow_low_confidence.json                    # [測試資料] Low-confidence Snow fixture.
+Tests/Fixtures/Snow/qa_snow_package_v2_with_payload.json           # [測試資料] Package schema v2 with Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_package_v2_without_payload.json        # [測試資料] Package schema v2 Snow session without Snow payload fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v1_legacy.json                  # [測試資料] Legacy backup schema v1 fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v2_empty_snow_sessions.json     # [測試資料] Backup schema v2 with empty snowSessions fixture.
+Tests/Fixtures/Snow/qa_snow_backup_v2_with_snow_sessions.json      # [測試資料] Backup schema v2 with populated snowSessions fixture.
+Tests/iOSTests/SnowQAFixtureRegressionTests.swift                  # [測試] Snow QA fixture regression tests.
+scripts/generate_snow_qa_fixtures.py                               # [工程設定] Deterministic Snow QA fixture generator.
+scripts/verify_snow_regression.py                                  # [工程設定] Snow-Task-009 verification gate.
+scripts/create_snow_task009_review_pack.sh                         # [工程設定] Snow-Task-009 review pack generator; writes to /Users/doggo/Documents/App軟體區/upload/.
+```
+
+Task 009 fixtures are JSON/text only. Do not commit `.skatetrack` binary fixture packages to the repository.
+
+## Snow-Task-010 Completion / Handoff Files
+
+Snow-Task-010 adds the final Phase 1c Snow Mode closure and handoff layer:
+
+```text
+docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md
+scripts/verify_snow_phase1c_completion.py
+scripts/create_snow_task010_review_pack.sh
+```
+
+Related final-state documents:
+
+```text
+docs/process/PHASE_1C_SNOW_AGENT_STATE.md
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md
+docs/DOCUMENTATION_INDEX.md
+```
+
+Snow-Task-010 does not add Swift runtime files and does not change package / backup schema models.
+
+## Snow-Integration-A005 Historical Integrated Path Boundary
+
+Snow-Integration-A005 resolves the approved A004 merge conflicts on `integration/snow-mode-phase1c-after-task040` and remains uncommitted pending external review.
+
+Actual integrated Snow path families present in this merge include:
+
+```text
+Shared/Models/Snow*.swift
+Shared/Models/RunBoundary*.swift
+iOS/Core/SnowEngine/*.swift
+iOS/Features/SessionRecording/Snow*.swift
+iOS/Features/SessionSummary/Snow*.swift
+iOS/Hooks/useSnowSession.swift
+iOS/Hooks/useSnowLiveSession.swift
+watchOS/Core/Snow/*.swift
+watchOS/Features/Snow/*.swift
+macOS/Core/Snow/*.swift
+macOS/Features/Snow/*.swift
+Tests/Fixtures/Snow/*.json
+scripts/verify_snow_*.py
+scripts/create_snow_task*_review_pack.sh
+```
+
+No `WatchBridgeSnowSessionProvider` existed at the A005 checkpoint. That historical state was superseded by A006R1, A007, A008R1/A008R2R1, and the current A009 documentation closure. Commit/push and final merge remain pending.
+
+## Snow-Integration-A006R1 WatchBridge Runtime and Snow Adapter
+
+A006R1 adds the minimum bounded runtime foundation needed to close the post-Task-040 Snow adapter gap. `WatchBridgeWCSessionBoundary` remains the only `WCSession` owner; the new platform adapters do not move recording authority away from `SessionRecordingCoordinator`.
+
+Shared runtime and transport contracts:
+
+```text
+Shared/WatchBridge/WatchBridgeRuntimeState.swift          # [協作區] Pure inbound decoding plus ordered/duplicate-safe runtime state.
+Shared/WatchBridge/WatchBridgeSnowSnapshotMapper.swift    # [協作區] Pure optional Snow payload to WatchSnowSessionSnapshot mapper.
+Shared/WatchBridge/WatchBridgeMetricPayloads.swift        # [協作區] Backward-compatible optional Snow metric extension fields.
+Shared/WatchBridge/WatchBridgeWCSessionBoundary.swift     # [協作區] Sole WCSession owner with safe inbound envelope delivery.
+```
+
+Platform runtime composition:
+
+```text
+iOS/Core/WatchBridge/WatchBridgeActivityPublisher.swift   # [協作區] Publishes authoritative activity/Snow snapshots without lifecycle ownership.
+watchOS/Core/WatchBridge/WatchBridgeWatchRuntime.swift     # [協作區] MainActor observable Watch receive state and existing command transport.
+watchOS/Core/Snow/WatchBridgeSnowSessionProvider.swift    # [協作區] Real runtime adapter conforming to WatchSnowSessionDataSource; lifecycle methods are no-ops.
+iOS/App/SkateTrackApp.swift                               # [協作區] Activates the iPhone boundary once.
+watchOS/App/SkateTrackWatchApp.swift                      # [協作區] Retains the mainline root and routes active Snow payloads to existing Snow presentation.
+```
+
+Verification:
+
+```text
+Tests/iOSTests/WatchBridgeRuntimeSnowAdapterTests.swift   # [測試] Runtime decode/order/duplicate and old/new Snow payload compatibility coverage.
+scripts/verify_a006r1_watchbridge_runtime.py              # [工程設定] Focused A006R1 ownership, scope, mapping, tests, and membership verifier.
+scripts/verify_snow_watch_ui.py                           # [工程設定] Preserves 006a UI/mock guards and verifies the A006R1 production provider.
+```
+
+A006R1 did not modify Watch Snow view files, localization, MotionSample, classifier/run-boundary thresholds, persistence, package/backup schema, HealthKit, signing, capabilities, target topology, or macOS membership. A007 and A008R2R1 later passed.
+
+## Snow-Integration-A008R1 Manual-QA Readiness Remediation
+
+A008R1 adds bounded DEBUG QA routing, read-only Snow summary selection, and iOS Snow package import persistence without changing classifier thresholds or package/Core Data schemas.
+
+```text
+iOS/Core/SnowEngine/SnowHUDQAScenario.swift                         # [協作區] DEBUG-only four-state iPhone Snow HUD presentation fixtures.
+iOS/Features/SessionSummary/SnowSummarySelection.swift              # [協作區] Pure read-only run/segment selection and inspector projection.
+watchOS/App/WatchSnowLaunchRoute.swift                              # [協作區] DEBUG-only -SnowMockGallery launch routing decision.
+Tests/iOSTests/SnowHUDQAScenarioTests.swift                         # [測試] Four HUD fixture mappings, Snow gating, and threshold independence.
+Tests/iOSTests/SnowSummarySelectionTests.swift                      # [測試] Default/fallback/session-change/empty/inspector selection coverage.
+Tests/iOSTests/SkateTrackPackageSnowImportRoundTripTests.swift      # [測試] Real temporary repository import persistence, rollback, and export round trip.
+Tests/iOSTests/WatchSnowLaunchRouterTests.swift                     # [測試] Default-mainline and DEBUG-only mock-gallery route coverage.
+scripts/verify_a008r1_manual_qa_readiness.py                        # [工程設定] Focused source, test, membership, and forbidden-scope verifier.
+```
+
+A008R1 did not itself perform manual QA, commit, push, merge continuation, classifier/RunBoundary tuning, schema changes, signing/capability changes, or SnowPrototype runtime integration. A008R2R1 later completed operator QA; A009 was documentation-only, and A009R1 changed only the aggregate verifier plus documentation status.
+
+## Snow-Integration-A007–A009R1 Closure Structure
+
+The following verified repository paths complete the current aggregate, manual-QA-readiness, and documentation-closure structure. Every listed path exists in the repository; no future planned file is presented as current.
+
+### Aggregate verification
+
+```text
+scripts/verify_snow_integration_aggregate.py
+scripts/snow_integration_verifier_applicability.json
+scripts/verify_a006r1_watchbridge_runtime.py
+scripts/verify_a008r1_manual_qa_readiness.py
+scripts/verify_snow_sport_enum.py
+scripts/verify_snow_schema.py
+scripts/verify_snow_classifier.py
+scripts/verify_snow_run_boundary.py
+scripts/verify_snow_iphone_ui.py
+scripts/verify_snow_watch_ui.py
+scripts/verify_snow_macos_viewer.py
+scripts/verify_snow_package_compatibility.py
+scripts/verify_snow_backup_compatibility.py
+scripts/verify_snow_regression.py
+scripts/verify_snow_phase1c_completion.py
+```
+
+A009R1 updates the existing `scripts/verify_snow_integration_aggregate.py` stage model. It requires the exact 198-path A009 stage, the eight approved A009 documentation paths, and the sole newly staged release-readiness document while retaining the historical A007 digest and A008R1 path guards. `scripts/snow_integration_verifier_applicability.json` reclassifies the A008R1 readiness and Snow-Task-008a/008b package/backup scripts as historical stage-local because their obsolete count/digest or Phase-state token assertions are superseded by the aggregate's current contract guards. No new verifier file was added.
+
+### A008 deterministic QA and round-trip coverage
+
+```text
+iOS/Core/SnowEngine/SnowHUDQAScenario.swift
+iOS/Features/Debug/DebugRuntimeOptions.swift
+iOS/Features/Debug/DebugToolsPanelView.swift
+iOS/App/RootNavigationView.swift
+iOS/Features/SessionSummary/SnowSummarySelection.swift
+iOS/Core/Import/SkateTrackPackageImportCoordinator.swift
+iOS/Core/Import/SkateTrackPackageImportModels.swift
+iOS/Hooks/useSkateTrackPackageImport.swift
+watchOS/App/WatchSnowLaunchRoute.swift
+Tests/iOSTests/SnowHUDQAScenarioTests.swift
+Tests/iOSTests/SnowSummarySelectionTests.swift
+Tests/iOSTests/WatchSnowLaunchRouterTests.swift
+Tests/iOSTests/SkateTrackPackageSnowImportRoundTripTests.swift
+Tests/iOSTests/WatchBridgeRuntimeSnowAdapterTests.swift
+```
+
+### Current Snow process and release documentation
+
+```text
+docs/history/DEV_LOG.md
+docs/reference/FILE_STRUCTURE.md
+docs/release/KNOWN_LIMITATIONS_PRE_ADP.md
+docs/release/MANUAL_QA_MATRIX_PRE_ADP.md
+docs/release/RELEASE_READINESS_PRE_ADP.md
+docs/process/PHASE_1C_SNOW_AGENT_STATE.md
+docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md
+docs/DOCUMENTATION_INDEX.md
+```
+
+Current integration boundary:
+
+```text
+SNOW_INTEGRATION_A008_STATUS=CLOSED
+SNOW_INT_A009_RESULT=PASSED
+SNOW_INT_A009R1_RESULT=PASSED_REMEDIATION
+SNOW_INT_A010_RESULT=PENDING
+SNOW_INT_A011_RESULT=PENDING
+SNOW_INT_A012_RESULT=PENDING
+CURRENT_INTEGRATION_BRANCH_COMMITTED=NO
+CURRENT_INTEGRATION_BRANCH_PUSHED=NO
+FINAL_MERGE_TO_DEVELOP=NO
+```
+
+## Snow-Integration-A010R5 no-altitude route remediation
+
+```text
+iOS/Core/SnowEngine/SnowLiveSessionCoordinator.swift               # Persists at most one terminal unknown residual using existing SnowSegment fields.
+iOS/Core/SessionRecording/SessionRecordingCoordinator.swift        # Passes the final SessionSummaryDisplayMetrics route distance after session enrichment.
+Tests/iOSTests/SnowLiveSessionCoordinatorTests.swift                # Nine deterministic fallback, residual, idempotency, zero/non-finite, and terminal-segment tests.
+Tests/iOSTests/SessionRecordingCoordinatorTests.swift               # Same-resolver handoff and existing non-Snow isolation coverage.
+Tests/iOSTests/SkateTrackPackageSnowImportRoundTripTests.swift       # Existing-schema unknown-only Snow export/import round trip.
+scripts/verify_snow_integration_aggregate.py                        # A010R5 Variant-A stage, semantic, negative-regression, and format-lock guards.
+scripts/snow_integration_verifier_applicability.json                # Preserves A010R2 history and declares current A010R5 applicability.
+```
+
+No new runtime source file, package field, Core Data entity/attribute, migration, localization key, entitlement, capability, or shared scheme is introduced. `Tests/iOSTests/SnowLiveSessionCoordinatorTests.swift` is the sole newly staged path and resolves through the existing `Tests/iOSTests` PBXGroup into the `SkateTrack-iOSTests` Sources phase.
+
+## Snow-Integration-A010R5R2 distance-presentation and downhill-information remediation
+
+```text
+iOS/Features/SessionSummary/SnowDaySummaryView.swift              # Owns SnowDaySummaryPresentation, the unknown-only semantic card, and the shared two-decimal-capable Snow distance formatter.
+iOS/Features/SessionSummary/SnowSegmentTimelineView.swift         # Continues to render segment.distanceMeters through SnowSummaryFormatters.distance.
+iOS/Features/SessionSummary/SnowDistanceInspectorView.swift       # Continues to render route/unknown breakdown values through SnowSummaryFormatters.distance.
+iOS/Features/SessionSummary/SessionSummaryView.swift               # Continues to render whole-session trusted route distance through UnitFormatter.distance(maximumFractionDigits: 2).
+Tests/iOSTests/SnowSummarySelectionTests.swift                     # Covers formatter parity, 600-meter precision, no forced zeroes, and empty/unknown-only/classified presentation selection.
+Shared/Localization/{en,zh-Hant,ja}.lproj/Localizable.strings     # Exact downhill-information title/subtitle and unknown-only heading/detail copy.
+scripts/verify_snow_iphone_ui.py                                  # Current A010R5R2 iPhone presentation/localization semantic guard.
+scripts/verify_snow_integration_aggregate.py                       # Exact zero-new-path stage, source/copy/status, negative-regression, and historical guards.
+scripts/snow_integration_verifier_applicability.json               # Declares A010R5R2 current-required verifier inventory and exact existing-blob progression.
+```
+
+A010R5R2 adds no file or Xcode membership. The frozen staged path count remains 200 and the index remains 839 rows. Only already-staged blobs in the v1.3.6 allowed set may change; package/schema, Core Data, Debug scenario, timer/chart, watchOS/macOS UI, signing, capability, and shared-scheme paths remain unchanged.
+
+Automated A010R5R2 verification passed with 12/12 CURRENT_REQUIRED verifiers, focused 11/11 tests, affected 35/35 regressions, three no-signing builds, and 314/314 complete iOS tests. Focused operator QA also passed. A010R5R2R2 changes no file structure or Xcode membership; it updates only seven existing documents and two existing verifier-contract files.
+
+## Snow-Integration-A010R5R2R2 current closure (2026-07-19)
+
+The repository structure remains unchanged. The exact R2R2 mutation set consists only of the seven authoritative documents listed by the controlling corrigendum plus `scripts/verify_snow_integration_aggregate.py` and `scripts/snow_integration_verifier_applicability.json`.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+A010R5R2R1_RESULT=BLOCKED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+CURRENT_REQUIRED_VERIFIERS=12_OF_12_PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+A010R6_AUTHORIZED=NO_UNTIL_A010R5R2R2_INDEPENDENT_REVIEW
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```

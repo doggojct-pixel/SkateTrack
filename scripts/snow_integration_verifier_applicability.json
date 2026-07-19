@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "task_id": "Snow-Integration-A010R5R2R2",
+  "aggregate_verifier": "scripts/verify_snow_integration_aggregate.py",
+  "a010r2_stage_progression": {
+    "expected_staged_path_count": 199,
+    "newly_staged_paths": [
+      "Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift"
+    ],
+    "already_staged_blob_mutation_paths": [
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py"
+    ],
+    "embedded_contract_guard": "scripts/verify_snow_integration_aggregate.py#watch-package-test-contract"
+  },
+  "a010r5_stage_progression": {
+    "variant": "VARIANT_A",
+    "expected_staged_path_count": 200,
+    "newly_staged_paths": [
+      "Tests/iOSTests/SnowLiveSessionCoordinatorTests.swift"
+    ],
+    "expected_mutation_paths": [
+      "SkateTrack.xcodeproj/project.pbxproj",
+      "Tests/iOSTests/SessionRecordingCoordinatorTests.swift",
+      "Tests/iOSTests/SkateTrackPackageSnowImportRoundTripTests.swift",
+      "Tests/iOSTests/SnowLiveSessionCoordinatorTests.swift",
+      "docs/history/DEV_LOG.md",
+      "docs/process/PHASE_1C_SNOW_AGENT_STATE.md",
+      "docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md",
+      "docs/reference/FILE_STRUCTURE.md",
+      "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+      "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+      "docs/release/RELEASE_READINESS_PRE_ADP.md",
+      "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift",
+      "iOS/Core/SnowEngine/SnowLiveSessionCoordinator.swift",
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py"
+    ],
+    "embedded_contract_guard": "scripts/verify_snow_integration_aggregate.py#a010r5-remediation-contract"
+  },
+  "a010r5r2_stage_progression": {
+    "expected_staged_path_count": 200,
+    "expected_index_data_row_count": 839,
+    "newly_staged_paths": [],
+    "allowed_paths": [
+      "Shared/Localization/en.lproj/Localizable.strings",
+      "Shared/Localization/ja.lproj/Localizable.strings",
+      "Shared/Localization/zh-Hant.lproj/Localizable.strings",
+      "Tests/iOSTests/SnowSummarySelectionTests.swift",
+      "docs/history/DEV_LOG.md",
+      "docs/process/PHASE_1C_SNOW_AGENT_STATE.md",
+      "docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md",
+      "docs/reference/FILE_STRUCTURE.md",
+      "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+      "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+      "docs/release/RELEASE_READINESS_PRE_ADP.md",
+      "iOS/Features/SessionSummary/SessionSummaryView.swift",
+      "iOS/Features/SessionSummary/SnowDaySummaryView.swift",
+      "iOS/Features/SessionSummary/SnowDistanceInspectorView.swift",
+      "iOS/Features/SessionSummary/SnowSegmentTimelineView.swift",
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py",
+      "scripts/verify_snow_iphone_ui.py"
+    ],
+    "expected_mutation_paths": [
+      "Shared/Localization/en.lproj/Localizable.strings",
+      "Shared/Localization/ja.lproj/Localizable.strings",
+      "Shared/Localization/zh-Hant.lproj/Localizable.strings",
+      "Tests/iOSTests/SnowSummarySelectionTests.swift",
+      "docs/history/DEV_LOG.md",
+      "docs/process/PHASE_1C_SNOW_AGENT_STATE.md",
+      "docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md",
+      "docs/reference/FILE_STRUCTURE.md",
+      "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+      "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+      "docs/release/RELEASE_READINESS_PRE_ADP.md",
+      "iOS/Features/SessionSummary/SnowDaySummaryView.swift",
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py",
+      "scripts/verify_snow_iphone_ui.py"
+    ],
+    "start_index_manifest_sha256": "12b7d6b91d60f767c454ad489dbe479676f1c7961eb9f278a42592a5cfee8ad5",
+    "start_staged_path_list_sha256": "25511e2913519f5d03acc7354cf574faf810bdf199b430c885cdc17b9a98a936",
+    "embedded_contract_guard": "scripts/verify_snow_integration_aggregate.py#a010r5r2-presentation-contract"
+  },
+  "a010r5r2r2_stage_progression": {
+    "expected_staged_path_count": 200,
+    "expected_index_data_row_count": 839,
+    "newly_staged_paths": [],
+    "allowed_paths": [
+      "docs/history/DEV_LOG.md",
+      "docs/process/PHASE_1C_SNOW_AGENT_STATE.md",
+      "docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md",
+      "docs/reference/FILE_STRUCTURE.md",
+      "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+      "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+      "docs/release/RELEASE_READINESS_PRE_ADP.md",
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py"
+    ],
+    "expected_mutation_paths": [
+      "docs/history/DEV_LOG.md",
+      "docs/process/PHASE_1C_SNOW_AGENT_STATE.md",
+      "docs/process/PHASE_1C_SNOW_COMPLETION_HANDOFF.md",
+      "docs/reference/FILE_STRUCTURE.md",
+      "docs/release/KNOWN_LIMITATIONS_PRE_ADP.md",
+      "docs/release/MANUAL_QA_MATRIX_PRE_ADP.md",
+      "docs/release/RELEASE_READINESS_PRE_ADP.md",
+      "scripts/snow_integration_verifier_applicability.json",
+      "scripts/verify_snow_integration_aggregate.py"
+    ],
+    "start_index_manifest_sha256": "2301ba37acec31e0c5606ed798ddf8c8370d426621e5bed645f08160471a9bd0",
+    "start_staged_path_list_sha256": "25511e2913519f5d03acc7354cf574faf810bdf199b430c885cdc17b9a98a936",
+    "manual_qa_evidence_reuse": "A010R5R2_APPROVED_EVIDENCE",
+    "embedded_contract_guard": "scripts/verify_snow_integration_aggregate.py#a010r5r2r2-closure-contract"
+  },
+  "classifications": [
+    "CURRENT_REQUIRED",
+    "CURRENT_OPTIONAL",
+    "HISTORICAL_STAGE_LOCAL",
+    "SUPERSEDED_BY_AGGREGATE",
+    "NOT_APPLICABLE_WITH_REASON"
+  ],
+  "verifiers": [
+    {
+      "path": "scripts/verify_snow_integration_aggregate.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Snow-Integration-A007/A010R5R2R2",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py"],
+      "environment": {},
+      "reason": "Authoritative current A010R5R2R2 exact nine-blob documentation/aggregate closure, active stale-state rejection, A010R5R2 zero-new-path presentation remediation, prior no-altitude unknown-distance remediation, format locks, Watch package contract, and historical aggregate gate."
+    },
+    {
+      "path": "scripts/verify_a008r1_manual_qa_readiness.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Integration-A008R1",
+      "obsolete_assertion": "The integration index must remain the exact A008R1 197-path stage and preserve the A007 digest after excluding only A008R1 paths.",
+      "reason": "A009 validly advances the reviewed index to 198 staged paths and changes approved documentation blobs, so the A008R1 stage-local count and digest are no longer current.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#a009-stage-progression-and-current-contracts"
+    },
+    {
+      "path": "scripts/verify_snow_backup_compatibility.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-008b",
+      "obsolete_assertion": "The dedicated Phase-state document must retain Snow-Task-008b-era agent-state tokens.",
+      "reason": "The current Phase-state document truthfully records the later A004-A009R1 integration progression; aggregate package/backup and disabled-health guards replace the stale documentation-token assertion.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#package-backup-and-health-boundaries"
+    },
+    {
+      "path": "scripts/verify_snow_package_compatibility.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-008a",
+      "obsolete_assertion": "The dedicated Phase-state document must retain Snow-Task-008a-era documentation tokens.",
+      "reason": "The current Phase-state document truthfully records the later A004-A009R1 integration progression; aggregate package v1/v2 and optional Snow payload guards replace the stale documentation-token assertion.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#package-backup-compatibility"
+    },
+    {
+      "path": "scripts/verify_snow_watch_ui.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Snow-Integration-A006R1",
+      "command": ["python3", "scripts/verify_snow_watch_ui.py"],
+      "environment": {"SNOW_INTEGRATION_A006R1": "1"},
+      "reason": "Current Watch Snow UI and A006R1 provider-mode gate."
+    },
+    {
+      "path": "scripts/verify_localization_keys.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_localization_keys.py"],
+      "environment": {},
+      "reason": "Current localization key integrity gate."
+    },
+    {
+      "path": "scripts/verify_shared_models.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project/A005",
+      "command": ["python3", "scripts/verify_shared_models.py"],
+      "environment": {"SNOW_INTEGRATION_A005": "1"},
+      "reason": "Current Shared model contract gate in integrated Snow mode."
+    },
+    {
+      "path": "scripts/verify_debug_tools.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_debug_tools.py"],
+      "environment": {},
+      "reason": "Current Debug Tools safety and production-gating guard."
+    },
+    {
+      "path": "scripts/verify_skatetrack_package.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_skatetrack_package.py"],
+      "environment": {},
+      "reason": "Current base package compatibility gate."
+    },
+    {
+      "path": "scripts/verify_session_recording_coordinator.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project/A005/A010R5",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--current-session-recording-contract"],
+      "environment": {},
+      "reason": "Current sole recording-authority and Snow-gating contract, preserving the A005 checks while replacing only its obsolete fixed 55-line growth assertion with the frozen A010R4-to-A010R5 eight-line delta."
+    },
+    {
+      "path": "scripts/verify_session_repository.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_session_repository.py"],
+      "environment": {},
+      "reason": "Current session repository compatibility gate."
+    },
+    {
+      "path": "scripts/verify_session_persistence_integration.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project/A005/A010R5",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--current-session-persistence-contract"],
+      "environment": {},
+      "reason": "Current additive Snow persistence and legacy migration gate, preserving the historical persistence assertions while replacing only the obsolete fixed 55-line growth assertion with the frozen A010R4-to-A010R5 eight-line delta."
+    },
+    {
+      "path": "scripts/verify_backup_sync.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_backup_sync.py"],
+      "environment": {},
+      "reason": "Current base backup synchronization compatibility gate."
+    },
+    {
+      "path": "scripts/verify_backup_restore_preview.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Cross-project",
+      "command": ["python3", "scripts/verify_backup_restore_preview.py"],
+      "environment": {},
+      "reason": "Current backup restore-preview compatibility gate."
+    },
+    {
+      "path": "scripts/verify_snow_phase1c_completion.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-010/A005",
+      "obsolete_assertion": "A005 integration must not modify Shared/WatchBridge and WatchBridgeSnowSessionProvider.swift must not exist before A006.",
+      "reason": "Those assertions were correct only before the reviewed A006R1 WatchBridge integration and are false for the current integrated index.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_snow_regression.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-009/A005",
+      "obsolete_assertion": "Task-009/A005 must not modify Shared/WatchBridge and WatchBridgeSnowSessionProvider.swift must not exist before A006.",
+      "reason": "The stage-local delta prohibition cannot be applied after the approved A006R1 runtime integration.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_snow_schema.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-002",
+      "obsolete_assertion": "Snow-Task-002 must not touch WatchBridge paths.",
+      "reason": "The verifier evaluates the isolated Task-002 scope, not the post-A006R1 integrated index.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_snow_sport_enum.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-001",
+      "obsolete_assertion": "Task-001-specific production inventory and documentation tokens define the entire gate.",
+      "reason": "Its SportMode logic remains useful, but the complete script is a stage-local gate rather than a current integration closure gate.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#sport-mode"
+    },
+    {
+      "path": "scripts/verify_snow_classifier.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-003",
+      "obsolete_assertion": "Task-003 must not touch WatchBridge and must not yet implement RunBoundaryDetector.",
+      "reason": "Both later approved stages are present in the integrated index, so the Task-003 delta boundary is not current.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#classifier-and-run-boundary-locks"
+    },
+    {
+      "path": "scripts/verify_snow_run_boundary.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-004",
+      "obsolete_assertion": "Snow-Task-004 must not touch WatchBridge paths.",
+      "reason": "The isolated Task-004 scope predates the approved A006R1 integration.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#classifier-and-run-boundary-locks"
+    },
+    {
+      "path": "scripts/verify_snow_iphone_ui.py",
+      "classification": "CURRENT_REQUIRED",
+      "historical_task": "Snow-Task-005/A005/A010R5R2",
+      "command": ["python3", "scripts/verify_snow_iphone_ui.py"],
+      "environment": {"SNOW_INTEGRATION_A010R5R2": "1"},
+      "reason": "Current iPhone Snow UI boundary plus A010R5R2 distance precision, three-language downhill copy, and unknown-only semantic status contract."
+    },
+    {
+      "path": "scripts/verify_snow_macos_viewer.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-007/A005",
+      "obsolete_assertion": "A005 must not modify Shared/WatchBridge and WatchBridgeSnowSessionProvider.swift must not exist before A006.",
+      "reason": "The macOS viewer stage gate predates and intentionally excludes the approved A006R1 runtime scope.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_snow_task_001a_debug_gate.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-001a",
+      "obsolete_assertion": "Task-001a public-entry and documentation tokens are sufficient as the complete Snow gate.",
+      "reason": "The entry-gate script is preserved as history but does not cover later production, persistence, package, or WatchBridge integration.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_snow_task_001b_debug_toggle.py",
+      "classification": "HISTORICAL_STAGE_LOCAL",
+      "historical_task": "Snow-Task-001b",
+      "obsolete_assertion": "Task-001b Debug Tools toggle behavior is sufficient as the complete Snow gate.",
+      "reason": "The toggle-only stage gate is preserved as history but is not an aggregate integration verifier.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py"
+    },
+    {
+      "path": "scripts/verify_a006r1_watchbridge_runtime.py",
+      "classification": "SUPERSEDED_BY_AGGREGATE",
+      "historical_task": "Snow-Integration-A006R1",
+      "obsolete_assertion": "The changed-path set must remain the exact A006R1 fifteen-path closure delta.",
+      "reason": "A007 necessarily adds verifier files, while the aggregate independently preserves the reviewed A006R1 runtime and transport contracts.",
+      "replacement": "scripts/verify_snow_integration_aggregate.py#watchbridge"
+    }
+  ]
+}

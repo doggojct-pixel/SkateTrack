@@ -423,9 +423,11 @@ final class SessionRecordingCoordinator {
     let sessionRepository: SessionRepositoryProtocol
     let equipmentMileageTracker: EquipmentMileageTracking
     let spotVisitTracker: SpotVisitTracking
+    private let snowLiveCoordinator: SnowLiveSessionCoordinating
     private var stateMachine = SessionStateMachine()
     var metricsAccumulator = SessionMetricsAccumulator()
 
+    private var activeSessionID: UUID?
     var selectedSportMode: SportMode?
     private var selectedPowerType: PowerType = .humanPowered
     private var selectedEquipmentID: UUID?
@@ -473,6 +475,12 @@ final class SessionRecordingCoordinator {
     var completedSessionPublisher: AnyPublisher<SessionData, Never> {
         completedSessionSubject.eraseToAnyPublisher()
     }
+    var snowLiveStatePublisher: AnyPublisher<SnowLiveSessionState, Never> {
+        snowLiveCoordinator.statePublisher
+    }
+    var currentSnowLiveState: SnowLiveSessionState {
+        snowLiveCoordinator.currentState
+    }
 
     init(
         sensorEngine: SessionSensorProviding = SensorFusionEngine(),
@@ -480,7 +488,8 @@ final class SessionRecordingCoordinator {
         sosDispatcher: SOSEventDispatcher = .shared,
         sessionRepository: SessionRepositoryProtocol = SessionRepository.shared,
         equipmentMileageTracker: EquipmentMileageTracking = EquipmentMileageTracker.shared,
-        spotVisitTracker: SpotVisitTracking = SpotVisitTracker.shared
+        spotVisitTracker: SpotVisitTracking = SpotVisitTracker.shared,
+        snowLiveCoordinator: SnowLiveSessionCoordinating = SnowLiveSessionCoordinator()
     ) {
         self.sensorEngine = sensorEngine
         self.fallDetectionEngine = fallDetectionEngine
@@ -488,6 +497,7 @@ final class SessionRecordingCoordinator {
         self.sessionRepository = sessionRepository
         self.equipmentMileageTracker = equipmentMileageTracker
         self.spotVisitTracker = spotVisitTracker
+        self.snowLiveCoordinator = snowLiveCoordinator
     }
 
     #if DEBUG
@@ -523,6 +533,7 @@ final class SessionRecordingCoordinator {
         selectedEquipmentSnapshot = equipmentSnapshot
         selectedSpotID = spotID
         selectedSpotSnapshot = spotSnapshot
+        activeSessionID = UUID()
         sessionStartDate = Date()
         #if DEBUG
         RecordingDebugDiagnosticsCollector.shared.beginSession(
@@ -543,6 +554,7 @@ final class SessionRecordingCoordinator {
         liveSessionSamples = []
         metricsAccumulator.beginSession(at: sessionStartDate ?? Date(), policy: ActivityFidelityPolicy(profile: currentFidelityProfile()))
         await Task.yield()
+        startSnowLiveSessionIfNeeded(mode: mode)
 
         do {
             #if DEBUG
@@ -557,6 +569,7 @@ final class SessionRecordingCoordinator {
             try applyTransition(to: .recording)
             publishMetrics()
         } catch {
+            snowLiveCoordinator.reset()
             await teardownActiveSession(resetToIdle: false)
             publishError(SessionRecordingError.sensorUnavailable.localizationKey)
             try? applyTransition(to: .failed)
@@ -567,6 +580,7 @@ final class SessionRecordingCoordinator {
     func pauseSession() async throws {
         try applyTransition(to: .paused)
         metricsAccumulator.setPaused(true)
+        pauseSnowLiveSessionIfNeeded()
         fallDetectionEngine.stopMonitoring()
         stopMockSampleFeed()
     }
@@ -578,6 +592,7 @@ final class SessionRecordingCoordinator {
 
         try applyTransition(to: .recording)
         metricsAccumulator.setPaused(false)
+        resumeSnowLiveSessionIfNeeded()
 
         #if DEBUG
         if dataSource == .mock {
@@ -707,7 +722,51 @@ final class SessionRecordingCoordinator {
         )
         #endif
         metricsAccumulator.process(sample)
+        ingestSnowLiveSampleIfNeeded(sample)
         publishMetrics()
+    }
+
+    private func startSnowLiveSessionIfNeeded(mode: SportMode) {
+        guard case .snow = mode, let activeSessionID else {
+            snowLiveCoordinator.reset()
+            return
+        }
+        snowLiveCoordinator.start(sessionID: activeSessionID)
+    }
+
+    private func ingestSnowLiveSampleIfNeeded(_ sample: MotionSample) {
+        guard case .snow = selectedSportMode else { return }
+        snowLiveCoordinator.ingest(sample)
+    }
+
+    private func pauseSnowLiveSessionIfNeeded() {
+        guard case .snow = selectedSportMode else { return }
+        snowLiveCoordinator.pause()
+    }
+
+    private func resumeSnowLiveSessionIfNeeded() {
+        guard case .snow = selectedSportMode else { return }
+        snowLiveCoordinator.resume()
+    }
+
+    private func finishSnowLiveSessionIfNeeded(discard: Bool, completedSession: SessionData) async {
+        guard case .snow = selectedSportMode else {
+            snowLiveCoordinator.reset()
+            return
+        }
+        if discard {
+            snowLiveCoordinator.reset()
+        } else {
+            let trustedSummaryMetrics = SessionSummaryDisplayMetrics.make(
+                session: completedSession,
+                samples: completedSession.motionSamples
+            )
+            await snowLiveCoordinator.finishSession(
+                trustedRouteDistanceMeters: trustedSummaryMetrics.distanceKilometers * 1_000,
+                sessionStartDate: completedSession.startDate,
+                sessionEndDate: completedSession.endDate ?? completedSession.startDate
+            )
+        }
     }
 
     private func publishMetrics() {
@@ -772,6 +831,7 @@ final class SessionRecordingCoordinator {
             liveSummaryMetrics: liveSummaryMetrics
         )
 
+        await finishSnowLiveSessionIfNeeded(discard: discard, completedSession: enrichedSession)
         resetCoordinatorState()
         fallEventSubject.send(nil)
         fallCountdownSubject.send(nil)
@@ -805,7 +865,7 @@ final class SessionRecordingCoordinator {
         #endif
 
         return try! SessionData(
-            id: session.id,
+            id: activeSessionID ?? session.id,
             startDate: session.startDate,
             endDate: endDate,
             sportMode: session.sportMode,
@@ -1106,6 +1166,7 @@ final class SessionRecordingCoordinator {
     ) -> SessionData {
         let mode = selectedSportMode ?? .skateboard(.streetPark)
         return try! SessionData(
+            id: activeSessionID ?? UUID(),
             startDate: sessionStartDate ?? endDate,
             endDate: endDate,
             sportMode: mode,
@@ -1125,6 +1186,7 @@ final class SessionRecordingCoordinator {
         let mode = selectedSportMode ?? .skateboard(.streetPark)
         let samples = mockSessionSamples
         return try! SessionData(
+            id: activeSessionID ?? UUID(),
             startDate: sessionStartDate ?? endDate,
             endDate: endDate,
             sportMode: mode,
@@ -1241,6 +1303,7 @@ final class SessionRecordingCoordinator {
         fallDetectionEngine.stopMonitoring()
         sampleCancellables.removeAll()
         fallCancellables.removeAll()
+        snowLiveCoordinator.reset()
 
         #if DEBUG
         if dataSource != .mock {
@@ -1322,6 +1385,7 @@ final class SessionRecordingCoordinator {
         #if DEBUG
         stopDebugLifecycleObservation()
         #endif
+        activeSessionID = nil
         selectedSportMode = nil
         selectedPowerType = .humanPowered
         selectedEquipmentID = nil
@@ -1337,4 +1401,3 @@ final class SessionRecordingCoordinator {
     }
 
 }
-

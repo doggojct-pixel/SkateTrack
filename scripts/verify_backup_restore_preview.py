@@ -94,7 +94,7 @@ def assert_decoder_boundaries() -> None:
     view = read("iOS/Features/Settings/BackupSyncSettingsView.swift")
     preview_view = read("iOS/Features/Settings/BackupRestorePreviewView.swift")
 
-    if "BackupPackageManifest.currentSchemaVersion" not in decoder or "unsupportedSchemaVersion" not in decoder:
+    if "BackupPackageManifest.supportedSchemaVersions.contains" not in decoder or "unsupportedSchemaVersion" not in decoder:
         fail("BackupPackageDecoder must validate schemaVersion before preview.")
     if "BackupPackageType.backup.rawValue" not in decoder or "unsupportedPackageType" not in decoder:
         fail("BackupPackageDecoder must reject non-backup package types.")

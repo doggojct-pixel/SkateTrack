@@ -1251,3 +1251,331 @@ FAILURE_COUNT=0
 NEXT_TASK=Task-040c
 ```
 <!-- TASK040B_ARCHIVE_READINESS_LIMITATIONS_END -->
+## Phase 1c Snow Mode Follow-up Boundary
+
+Snow-Task-001 integrates the production sport enum and preflight state. Snow-Task-001a keeps the normal user-facing Snow entry DEBUG-only while the production snow data path is incomplete. Snow data schema, classifier logic, RunBoundaryDetector, package compatibility, HealthKit export, and real WatchBridge wiring remain deferred to later Snow tasks. This boundary prevents overclaiming Snow Mode support before Snow-Task-002 through Snow-Task-009 are complete.
+
+Snow-Task-001 verification token: production snow sport enum integrated.
+Snow-Task-001a verification token: snow mode public entry debug-gated and controlled by Debug Tools toggle.
+
+
+### Snow-Task-001b Debug Entry Toggle
+- Snow Mode remains production enum code, but the Ride start card is hidden unless the DEBUG Snow Mode entry toggle is enabled.
+- Snow-Task-001b verification token: snow mode entry controlled by debug toggle.
+
+
+## Phase 1c Snow Mode Production Status
+
+- Snow-Task-001 through Snow-Task-010 feature-branch foundations have been integrated through the approved Path-A merge sequence.
+- Snow-Integration-A004 through A008 are closed. A006 was superseded by the passing A006R1 bounded WatchBridge runtime/adapter task; A008 was superseded by A008R1 readiness remediation and the passing A008R2R1 operator-QA task.
+- Production Snow value types, additive persistence, classifier v0, RunBoundary v0, iPhone Snow UI, optional package/backup compatibility, WatchBridge Snow runtime adaptation, watchOS Snow presentation, macOS read-only analysis, deterministic fixtures, and aggregate verification are present.
+- `DisabledSnowHealthExporter` remains the production default. Real HealthKit write remains deferred.
+- The normal Snow entry remains release gated. Real snow-field validation, real paired iPhone/Watch round-trip validation, resort-grade accuracy, Watch command authority, and public release approval are not claimed.
+
+### Snow-Task-003 v0 classifier input limitations
+
+Snow-Task-003 v0 classifier intentionally uses the existing `MotionSample` shape without schema changes. `MotionSample` does not yet persist horizontalAccuracy, verticalAccuracy, heading/course, GPS altitude, or barometer source metadata. Because of that:
+
+- Accuracy-aware classification cannot yet reject samples directly by per-sample horizontal / vertical accuracy.
+- GPS altitude vs barometer cross-validation is not available in v0.
+- Altitude smoothing uses the existing barometer-relative `altitudeMeters` stream.
+- Heading is not stored on `MotionSample`; bearing is derived from consecutive GPS coordinates when coordinates are available.
+- Gondola-like downhill movement with stable derived bearing and low IMU motion energy is classified as `unknown` instead of `downhillRun` to avoid inflating ski distance.
+
+This limitation is intentional for Snow-Task-003. Future classifier calibration may add backward-compatible optional sensor metadata only after a separate design review.
+
+### Snow-Task-004 v0 RunBoundaryDetector altitude endpoint limitation
+
+Snow-Task-004 v0 intentionally leaves `SnowSegment.startAltitudeMeters` and `SnowSegment.endAltitudeMeters` as `nil` when converting `SnowSegmentClassification` windows into production `SnowSegment` values. `SnowSegmentClassification` currently stores `altitudeDeltaMeters` for the classified window, but it does not preserve raw absolute altitude at the start and end of the window.
+
+As a result, the future Snow-Task-007 macOS elevation profile should treat Snow v0 elevation as an `altitudeDeltaMeters` accumulated estimate, not a true absolute-altitude profile. Absolute altitude start/end storage requires a later sensor-data design pass and should not be inferred in RunBoundaryDetector.
+
+Snow-Task-004 verification token: run boundary detector v0 uses delta-only altitude segments.
+
+Snow-Task-004 v0 explicit verification note: SnowSegment.startAltitudeMeters / endAltitudeMeters are nil in v0 RunBoundaryDetector output; Snow-Task-007 must use altitudeDeltaMeters accumulated estimate for Snow elevation preview until absolute altitude endpoints are added by a later approved task.
+
+### Snow-Task-005 iPhone Snow UI v0 limitations and deferred items
+
+Snow-Task-005 intentionally completes iPhone Snow UI wiring without expanding classifier, detector, sensor schema, package compatibility, or WatchBridge scope.
+
+- Manual correction persistence is not implemented in Snow-Task-005. The live HUD may expose placeholder controls, but editing `SnowSegment.manualOverride` requires a separate UX and persistence task.
+- WatchBridge real-data wiring is not implemented in Snow-Task-005. Any Watch low-confidence payload mapping remains deferred to Snow-Task-006b after mainline Task-040.
+- True altitude confidence scoring is not implemented in Snow-Task-005 because `MotionSample` v0 still lacks vertical accuracy, GPS altitude, and altitude source metadata.
+- Live provisional segment timeline before `RunBoundaryEvent.runEnded` is not implemented. v0 summary / timeline / inspector surfaces use repository-backed finalized Snow segments.
+- Simulator-only Snow HUD testing cannot validate real downhill / lift classifier transitions. Real-world snow or controlled fixture replay remains a later QA task.
+
+Snow-Task-005 verification token: production iPhone Snow UI wired to live Snow boundary without classifier/schema/WatchBridge scope creep.
+
+### Snow-Task-006a Watch Snow UI v0 limitations and deferred items
+
+Snow-Task-006a intentionally builds watchOS Snow UI before real WatchBridge transport is available.
+
+- Watch Snow UI is mock-backed in DEBUG builds. It does not receive real iPhone Snow session metrics yet.
+- Release builds use a neutral unavailable fallback instead of fake production Snow data.
+- `WatchSnowSessionSnapshot` is the production-safe equivalent of the Addendum's prototype session field contract; future real payload mapping belongs in Snow-Task-006b.
+- `Shared/WatchBridge/*`, WatchConnectivity, `WCSession`, and `WatchSessionCoordinator` are not modified or referenced by Snow-Task-006a.
+- Mock fall-alert UI is not real fall detection, HealthKit, SOS, emergency-contact, or safety-service integration.
+- Mock haptic intent text and local haptic boundaries are not a guarantee of final real-device haptic policy.
+- Snow-Task-006b real WatchBridge wiring remains deferred until mainline Task-040 is complete and the Snow branch is rebased or merged onto post-Task-040 `develop`.
+
+Snow-Task-006a verification token: mock-backed Watch Snow UI complete without WatchBridge real-data wiring.
+
+### Snow-Task-007 macOS Snow Viewer v0 limitations and deferred items
+
+Snow-Task-007 intentionally adds the macOS Snow viewer before official `.skatetrack` Snow package payload compatibility.
+
+- The DEBUG Snow Analysis Preview uses `MacSnowMockAnalysisProvider`; this mock data is for UI QA only.
+- Official imported `.skatetrack` packages without Snow payload fields must show `packageSchemaPending`; the viewer must not infer official Snow runs or segments from base package `motionSamples` in 007.
+- Repository-backed Snow sessions may be shown through the viewer, but official package-backed Snow analysis remains Snow-Task-008.
+- Package manifest / payload / reader / writer files are not modified in Snow-Task-007.
+- Manual segment correction persistence is not implemented.
+- Route + Elevation is lightweight SwiftUI visualization, not full MapKit fitting.
+- Elevation is limited because v0 `SnowSegment.startAltitudeMeters` and `endAltitudeMeters` may be nil; the UI must show a limited altitude data indicator rather than a misleading full profile.
+- The outer macOS shell remains temporary; future integration with `SkateTrack_macOS_UI_v2` may require layout adjustments around the Snow viewer.
+
+Snow-Task-007 verification token: read-only macOS Snow viewer complete without package schema scope creep.
+
+## Snow-Task-008a Package Compatibility Limitations
+
+Snow-Task-008a supports optional Snow package payloads for `.skatetrack` export/import, but the following remain deferred:
+
+- Backup package Snow compatibility is deferred to Snow-Task-008b.
+- Snow Health export provider boundary and any future HealthKit implementation are deferred to Snow-Task-008b / later ADP-ready work.
+- Production HealthKit export remains disabled and no HealthKit entitlement is required by Snow-Task-008a.
+- Imported Snow packages without `snowPayload` still show `packageSchemaPending`; the app does not fabricate Snow analysis from raw motion samples.
+- Manual correction persistence, resort maps, WeatherKit, CloudKit, and WatchBridge real Snow wiring remain deferred.
+
+
+## Snow-Task-008b Health provider boundary limitation
+
+Snow-Task-008b adds the Snow Health export provider boundary but intentionally keeps production Health export disabled.
+
+- `DisabledSnowHealthExporter` is the production default and returns unavailable.
+- `MockSnowHealthExporter` is DEBUG-only.
+- No `import HealthKit` is allowed in `Shared/`.
+- No `HKHealthStore`, `HKWorkout`, or `HKQuantitySample` objects are created in 008b.
+- Real HealthKit export requires later ADP / entitlement decisions and explicit implementation approval.
+
+## Snow-Task-009 QA limitation
+
+Snow-Task-009 adds regression fixtures and manual QA coverage, but it does not remove the Phase 1c limitations around production HealthKit export, WatchBridge production integration, real ski-resort map data, or advanced Snow classifier tuning.
+
+The JSON fixtures are deterministic test fixtures, not recorded `.skatetrack` packages. They validate package / backup / Snow payload boundaries and mapper-safe states, but they are not a replacement for future real-device ski resort testing.
+
+## Snow-Task-010 final deferred items
+
+Snow-Task-010 closes Phase 1c Snow Mode as a feature-branch review checkpoint, not as an App Store production launch gate.
+
+The following items remain deferred after Phase 1c:
+
+- WatchBridge / WatchConnectivity production Snow wiring remains deferred until future mainline Task-040+ alignment.
+- Real HealthKit export remains deferred until Apple Developer Program enrollment, HealthKit entitlements, privacy copy, and user-facing permission flow are ready.
+- Snow classifier remains v0 rule-based and is not a resort-grade production AI model.
+- Run boundary detector remains v0 deterministic state machine.
+- Manual correction persistence for Snow segment edits remains deferred.
+- Real ski-resort field testing remains pending.
+- Resort map / piste map / weather integration remains deferred.
+- App Store, subscription, and other ADP-dependent production services remain deferred.
+- Release exposure of Snow Mode entry remains gated until product/release readiness approval.
+
+Snow-Task-010 verification token: final deferred items are documented without adding runtime scope.
+
+## Snow-Integration-A005 Historical Review Limitations
+
+At the A005 checkpoint, A006 through A009 were still pending. That historical checkpoint was superseded by A006R1, A007, A008R1/A008R2R1, and the completed A009/A009R1 documentation closure. The merge remains uncommitted and unpushed, and final merge to `develop` remains pending through A012.
+
+## Snow-Integration-A009 Canonical Deferred-Items Registry
+
+This registry is the current integration-safe record. Every item states the deferred work, current safe state, reason, trigger, future owner/task, and verification boundary. A009 initially stopped on the aggregate verifier's obsolete 197-path stage lock; bounded A009R1 remediation passed without implementing any deferred item or changing product runtime.
+
+### 1. HealthKit Snow write
+
+- **Deferred item:** Production HealthKit Snow write.
+- **Current safe state:** `DisabledSnowHealthExporter` remains the production default.
+- **Reason:** HealthKit integration requires an explicit plan, privacy copy, permission UX, entitlements/capabilities, and release approval.
+- **Trigger / when to address:** After ADP and an independently approved HealthKit Snow build plan.
+- **Owner / future task:** Future HealthKit Snow integration task.
+- **Verification boundary:** No production HealthKit write, permission prompt, import, entitlement, or capability.
+
+### 2. Resort-grade classifier accuracy
+
+- **Deferred item:** Resort-grade classifier accuracy and tuning.
+- **Current safe state:** Deterministic v0 classifier only.
+- **Reason:** Representative real snow-field data, tuning evidence, and ML validation are insufficient.
+- **Trigger / when to address:** After sufficient representative field sessions and a separately approved tuning task.
+- **Owner / future task:** Future classifier field-validation and tuning task.
+- **Verification boundary:** No resort-grade, professional-grade, safety-grade, medical, or clinical accuracy claim.
+
+### 3. Real snow-field testing
+
+- **Deferred item:** Real snow-field validation.
+- **Current safe state:** Synthetic fixtures, automated tests, and simulator/manual QA only.
+- **Reason:** Seasonal real-world data and controlled field sessions were not available during integration.
+- **Trigger / when to address:** An actual snow-season field-testing window with approved data handling.
+- **Owner / future task:** Future real snow-field QA task.
+- **Verification boundary:** Do not claim that real-field validation passed; real packages remain outside the repository.
+
+### 4. MotionSample v1 extension
+
+- **Deferred item:** MotionSample v1 source-metadata extension.
+- **Current safe state:** The mainline post-Task-040 `MotionSample` contract remains authoritative and unchanged by Snow integration.
+- **Reason:** Extension has shared-contract, persistence, package, and migration risk.
+- **Trigger / when to address:** Only after field evidence proves additional source fields are necessary and a migration design is independently approved.
+- **Owner / future task:** Future MotionSample extension design and migration task.
+- **Verification boundary:** No current MotionSample v1 schema expansion, migration, or new authoritative metric-source claim.
+
+### 5. Lift or gondola network data
+
+- **Deferred item:** Network-backed resort lift or gondola data.
+- **Current safe state:** No resort or lift-network dependency exists; lift/gondola state is derived locally by the deterministic Snow model.
+- **Reason:** Resort network data is outside Phase 1c and requires product, partner, licensing, and data-quality decisions.
+- **Trigger / when to address:** An approved resort-data integration task.
+- **Owner / future task:** Future resort network data task.
+- **Verification boundary:** No network-backed lift, gondola, piste, or resort topology claim.
+
+### 6. Resort weather
+
+- **Deferred item:** Production resort-weather integration.
+- **Current safe state:** No production resort-weather provider or live resort forecast is used by Snow Mode.
+- **Reason:** Weather-provider policy and product behavior are outside the approved integration scope.
+- **Trigger / when to address:** An approved weather-provider and product task.
+- **Owner / future task:** Future resort weather integration task.
+- **Verification boundary:** No live resort-weather, WeatherKit, safety forecast, or weather-derived classifier claim.
+
+### 7. Snow subscription policy
+
+- **Deferred item:** Snow subscription, paywall, or monetization policy.
+- **Current safe state:** No production Snow paywall, purchase, entitlement, or monetization gate exists.
+- **Reason:** Product policy and StoreKit behavior remain undecided and outside integration.
+- **Trigger / when to address:** An approved monetization and StoreKit build plan.
+- **Owner / future task:** Future Snow subscription and StoreKit task.
+- **Verification boundary:** Production StoreKit behavior count remains zero; no purchase, restore, receipt, or Snow entitlement claim.
+
+### 8. Real paired iPhone/Watch validation
+
+- **Deferred item:** Real paired iPhone/Watch WatchBridge validation.
+- **Current safe state:** Automated WatchBridge runtime/adapter tests plus independent normal-Watch-root and Snow mock-gallery simulator launches passed.
+- **Reason:** No paired iPhone and watchOS destination was available during A008R2R1.
+- **Trigger / when to address:** A paired-simulator or physical-device QA window.
+- **Owner / future task:** Dedicated paired WatchBridge QA task.
+- **Verification boundary:** Do not claim a real paired round trip, device latency, always-on behavior, or physical-Watch validation passed.
+
+### 9. Release-visible Snow entry
+
+- **Deferred item:** Release-visible Snow entry.
+- **Current safe state:** Snow remains gated or DEBUG-visible unless separately approved.
+- **Reason:** Technical integration and operator QA do not equal product or public-release approval.
+- **Trigger / when to address:** Explicit product and release approval after the integration sequence.
+- **Owner / future task:** Future Snow release-entry approval task.
+- **Verification boundary:** Release-visible Snow entry remains disabled unless approved; no public availability claim.
+
+### 10. ADP, TestFlight, and App Store work
+
+- **Deferred item:** Apple Developer Program, signing/distribution, TestFlight, and App Store work.
+- **Current safe state:** Not started by Snow integration.
+- **Reason:** Distribution work is outside Phase 1c and requires separate credentials, signing, privacy, product, and release approval.
+- **Trigger / when to address:** Separate release-readiness and distribution approval.
+- **Owner / future task:** Future ADP and distribution task.
+- **Verification boundary:** No enrollment, signing/capability change, archive upload, TestFlight action, App Store action, or public release claim.
+
+### 11. Watch-side command forwarding
+
+- **Deferred item:** Watch-side Snow command forwarding and recording authority.
+- **Current safe state:** `WatchBridgeSnowSessionProvider` command methods remain safe no-ops where implemented; the iPhone remains the recording authority.
+- **Reason:** A006R1 authorized runtime observation and Snow adaptation, not a new Watch-controlled recording lifecycle.
+- **Trigger / when to address:** A separate Watch command-authority, conflict-policy, and transport task.
+- **Owner / future task:** Future Watch command forwarding task.
+- **Verification boundary:** Do not claim `startRun`, `pauseSession`, `resumeSession`, `endRun`, or `markManeuver` forwarding is implemented unless independently verified.
+
+### 12. Watch Unified Sport Routing / Mode Selection
+
+- **Deferred item:** Watch Unified Sport Routing / Mode Selection.
+- **Current safe state:** One SkateTrack Watch app is retained. Normal launch preserves the Task-040 mainline Watch root; Snow UI is available through approved Snow runtime state and DEBUG mock-gallery routing. There is no approved normal-launch Skateboarding/Snow unified selector.
+- **Reason:** A unified Watch root and sport-selection UX is a separate product, routing, and authority task outside Snow Phase 1c integration.
+- **Trigger / when to address:** Only after Snow-Integration-A012 is independently approved and merged.
+- **Owner / future task:** Future Watch Unified Sport Routing / Mode Selection task; planned identifier `SkateTrack_BuildPlan_WatchUnifiedSportRouting_ModeSelection_EN_v1_0`.
+- **Verification boundary:** Do not modify the Watch root during A009/A009R1, expose a release-visible Snow selector, enable `-SnowMockGallery` in the shared scheme, or create Watch-side recording authority. A009 and A009R1 do not claim that the planned BuildPlan file is tracked or locally present.
+
+```text
+KNOWN_LIMITATIONS_UPDATED=YES
+DEFERRED_ITEMS_DOCUMENTED_WITH_REASON_AND_TRIGGER=YES
+DEFERRED_ITEM_REQUIRED_FIELD_MISSING_COUNT=0
+WATCH_UNIFIED_SPORT_ROUTING_RECORDED_AS_DEFERRED=YES
+WATCH_UNIFIED_SPORT_ROUTING_IMPLEMENTED_DURING_A009=NO
+SNOW_INT_A009_RESULT=PASSED
+SNOW_INT_A009R1_RESULT=PASSED_REMEDIATION
+```
+
+### 13. No-altitude Snow movement classification and A010R5 acceptance
+
+- **Deferred item:** Real-field validation of no-altitude/low-confidence Snow movement after the A010R5 residual fallback.
+- **Current safe state:** Missing-altitude movement remains `.unknown`; a trusted final route residual is stored as one non-run unknown segment and is excluded from ski/lift distance.
+- **Reason:** A010R5 repairs representational completeness but does not tune classifier/run-boundary thresholds or prove resort-grade classification accuracy.
+- **Trigger / when to address:** A010R5 is closed as `BLOCKED_HISTORICAL`; A010R5R2 focused presentation QA and then an independently authorized A010R6 full acceptance rerun are required. Later real snow-field validation remains separate.
+- **Owner / future task:** A010R5R2 operator QA, A010R6 pre-commit rerun, and the future real snow-field QA task.
+- **Verification boundary:** Summary and Snow Inspector route values must round-match to 0.01 km; ski/lift stay zero for unknown-only movement; schema 2 and supported schemas 1/2 remain unchanged; no 43 km/h HUD fixture value becomes a trusted persisted metric.
+
+```text
+SNOW_INT_A010R3_RESULT=FAILED_HISTORICAL
+SNOW_INT_A010R4_RESULT=PASSED
+SNOW_INT_A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5_AUTOMATED_GATES=PASSED_HISTORICAL
+IOS_XCTEST_TOTAL_COUNT=309
+MANUAL_QA_A010R5_FOCUSED=FAILED_HISTORICAL
+CLASSIFIER_THRESHOLDS_UNCHANGED=YES
+RUN_BOUNDARY_THRESHOLDS_UNCHANGED=YES
+SKATETRACK_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R6_STARTED=NO
+```
+
+### 14. A010R5R2 presentation QA and deferred optional presentation work
+
+- **Deferred item:** Optional A010R5R3 Debug disclosure and A010R5R4 live-HUD timer/chart parity remain deferred after A010R5R2 presentation QA.
+- **Current safe state:** The same raw route metric is preserved; Snow presentation uses the existing two-decimal-capable formatter, and unknown-only movement selects a localized status instead of classified zero tiles. Automated gates and focused operator QA passed; A010R5 remains BLOCKED historical and A010R5R2R1 remains BLOCKED historical.
+- **Reason:** R3/R4 are optional presentation follow-ups, not part of the blocking R2 correction. A010R5R2R2 is limited to corrected documentation and aggregate/applicability closure.
+- **Trigger / when to address:** Only under a later independently approved task. A010R6 may begin only after independent A010R5R2R2 review.
+- **Owner / future task:** A010R5R3/A010R5R4 if separately authorized; otherwise A010R6 after R2R2 approval.
+- **Verification boundary:** Summary/Timeline/Inspector visible route strings must match; `en`/`zh-Hant`/`ja` must show exact copy without clipping/raw keys; unknown-only must expose one semantic card; no package/schema, Core Data, Debug persistence, timer/chart, shared-scheme, commit, push, or merge change.
+
+```text
+A010R5 remains BLOCKED historical
+A010R5R1_RESULT=PASSED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+A010R5R3 and A010R5R4 remain deferred and unauthorized
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R6_STARTED=NO
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+```
+
+## Snow-Integration-A010R5R2R2 current closure (2026-07-19)
+
+The current closure preserves all pre-ADP limitations. It does not approve Snow public release, production HealthKit, real-field accuracy claims, Watch command authority, StoreKit, signing, ADP, TestFlight, App Store, A010R5R3, A010R5R4, A010R6, commit, push, or final merge.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+A010R5R2R1_RESULT=BLOCKED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+CURRENT_REQUIRED_VERIFIERS=12_OF_12_PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+A010R6_AUTHORIZED=NO_UNTIL_A010R5R2R2_INDEPENDENT_REVIEW
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```

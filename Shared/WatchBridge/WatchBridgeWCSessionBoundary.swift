@@ -8,12 +8,17 @@ import WatchConnectivity
 public final class WatchBridgeWCSessionBoundary: NSObject, WatchBridgeConnectivityBoundary, WCSessionDelegate {
     private let session: WCSession
     private let encoder: JSONEncoder
+    private let inboundDecoder: WatchBridgeInboundEnvelopeDecoder
     private var connectionStore: WatchBridgeConnectionStateStore
     private var latestAvailability: WatchBridgeConnectivityAvailability
+
+    public var inboundEnvelopeHandler: ((WatchBridgeEnvelope) -> Void)?
+    public var malformedEnvelopeHandler: ((Data, Error) -> Void)?
 
     public init?(
         session: WCSession? = nil,
         encoder: JSONEncoder = JSONEncoder(),
+        decoder: JSONDecoder = JSONDecoder(),
         reportedAt: Date = Date()
     ) {
         guard WCSession.isSupported() else {
@@ -21,6 +26,7 @@ public final class WatchBridgeWCSessionBoundary: NSObject, WatchBridgeConnectivi
         }
         self.session = session ?? .default
         self.encoder = encoder
+        self.inboundDecoder = WatchBridgeInboundEnvelopeDecoder(decoder: decoder)
         self.connectionStore = WatchBridgeConnectionStateStore(
             initialState: WatchBridgeConnectionState(
                 status: .unknown,
@@ -96,14 +102,28 @@ public final class WatchBridgeWCSessionBoundary: NSObject, WatchBridgeConnectivi
     }
 
     public func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        _ = handleReceivedMessageData(messageData, receivedAt: Date())
+    }
+
+    @discardableResult
+    public func handleReceivedMessageData(_ messageData: Data, receivedAt: Date = Date()) -> Bool {
         connectionStore.apply(
             .messageReceived(
-                at: Date(),
+                at: receivedAt,
                 endpoint: .appleWatch,
                 explanation: "WCSession boundary received envelope data"
             )
         )
-        latestAvailability = makeAvailability(at: Date(), explanation: "received envelope data")
+        latestAvailability = makeAvailability(at: receivedAt, explanation: "received envelope data")
+
+        do {
+            let envelope = try inboundDecoder.decode(messageData)
+            inboundEnvelopeHandler?(envelope)
+            return true
+        } catch {
+            malformedEnvelopeHandler?(messageData, error)
+            return false
+        }
     }
 
     #if os(iOS)

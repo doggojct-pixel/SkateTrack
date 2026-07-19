@@ -10,8 +10,33 @@ import Foundation
 final class DebugRuntimeOptions: ObservableObject {
     static let shared = DebugRuntimeOptions()
 
-    @Published var isDebugToolsPresented = false
+    static let snowModeEntryUserDefaultsKey = "skateTrack.debug.snowModeEntryEnabled"
+    static let snowHUDQAScenarioUserDefaultsKey = "skateTrack.debug.snowHUDQAScenario"
 
-    private init() {}
+    @Published var isDebugToolsPresented = false
+    @Published var isSnowModeEntryEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(isSnowModeEntryEnabled, forKey: Self.snowModeEntryUserDefaultsKey)
+        }
+    }
+    @Published var selectedSnowHUDQAScenario: SnowHUDQAScenario? {
+        didSet {
+            if let selectedSnowHUDQAScenario {
+                UserDefaults.standard.set(
+                    selectedSnowHUDQAScenario.rawValue,
+                    forKey: Self.snowHUDQAScenarioUserDefaultsKey
+                )
+            } else {
+                UserDefaults.standard.removeObject(forKey: Self.snowHUDQAScenarioUserDefaultsKey)
+            }
+        }
+    }
+
+    private init() {
+        isSnowModeEntryEnabled = UserDefaults.standard.bool(forKey: Self.snowModeEntryUserDefaultsKey)
+        selectedSnowHUDQAScenario = UserDefaults.standard
+            .string(forKey: Self.snowHUDQAScenarioUserDefaultsKey)
+            .flatMap(SnowHUDQAScenario.init(rawValue:))
+    }
 }
 #endif

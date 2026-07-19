@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import os
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -80,11 +82,41 @@ LINE_LIMITS = {
     "SessionRecordingCoordinator+DebugMock.swift": 180,
     "useSessionRecording.swift": 350,
 }
+A005_INTEGRATION_MODE = os.environ.get("SNOW_INTEGRATION_A005") == "1"
+A005_OVERSIZED_BASELINES = {
+    "SessionRecordingCoordinator.swift": 55,
+    "SessionRecordingCoordinator+DebugMock.swift": 5,
+    "useSessionRecording.swift": 28,
+}
 
 
 def fail(message: str) -> None:
     print(f"Session recording check failed: {message}")
     sys.exit(1)
+
+
+def verify_a005_oversized_baseline(file_path: Path, final_line_count: int) -> None:
+    expected_growth = A005_OVERSIZED_BASELINES.get(file_path.name)
+    if not A005_INTEGRATION_MODE or expected_growth is None:
+        fail(f"{file_path.name} has {final_line_count} lines, expected <= {LINE_LIMITS[file_path.name]}")
+
+    rel_path = str(file_path.relative_to(ROOT))
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "show", f"HEAD:{rel_path}"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        fail(f"unable to read HEAD baseline for {rel_path}")
+    head_line_count = len(result.stdout.splitlines())
+    if head_line_count <= LINE_LIMITS[file_path.name]:
+        fail(f"A005 oversized baseline was not already oversized in HEAD: {rel_path}")
+    if final_line_count - head_line_count != expected_growth:
+        fail(
+            f"unexpected A005 line growth for {rel_path}: "
+            f"HEAD={head_line_count}, final={final_line_count}, expected_growth={expected_growth}"
+        )
 
 
 for file_path in REQUIRED_FILES:
@@ -110,7 +142,7 @@ for file_path in REQUIRED_FILES:
     if name in LINE_LIMITS:
         line_count = len(text.splitlines())
         if line_count > LINE_LIMITS[name]:
-            fail(f"{name} has {line_count} lines, expected <= {LINE_LIMITS[name]}")
+            verify_a005_oversized_baseline(file_path, line_count)
 
     if f"/* {name} */" not in project_text and f"/* {name} in Sources */" not in project_text:
         if name != "SessionRecordingCoordinatorTests.swift":

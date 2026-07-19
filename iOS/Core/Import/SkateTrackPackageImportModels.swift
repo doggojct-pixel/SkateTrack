@@ -71,6 +71,7 @@ enum SkateTrackImportFailureReason: String, Sendable, Equatable {
     case alreadyImported
     case duplicateCandidate
     case missingPayload
+    case invalidSnowPayload
     case commitFailed
 
     var localizationKey: String {
@@ -105,6 +106,8 @@ enum SkateTrackImportFailureReason: String, Sendable, Equatable {
             return "import.status.duplicateCandidate"
         case .missingPayload:
             return "import.error.missingPayload"
+        case .invalidSnowPayload:
+            return "import.error.invalidSnowPayload"
         case .commitFailed:
             return "import.error.commitFailed"
         }

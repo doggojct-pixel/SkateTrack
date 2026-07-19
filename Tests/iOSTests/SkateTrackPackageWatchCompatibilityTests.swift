@@ -7,14 +7,15 @@ import XCTest
 
 final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
     func testLegacySchemaOnePackageDecodesWithoutWatchCompatibilityMetadata() throws {
-        let payload = try makePackage(watchSampleCompatibility: nil)
+        let payload = try makePackage(schemaVersion: 1, watchSampleCompatibility: nil)
         let data = try SkateTrackPackageWriter().encodedData(for: payload)
         let json = try XCTUnwrap(String(data: data, encoding: .utf8))
 
         XCTAssertFalse(json.contains("watchSampleCompatibility"))
 
         let decoded = try SkateTrackPackageReader().decodePackage(from: data)
-        XCTAssertEqual(decoded.manifest.schemaVersion, SkateTrackPackageManifest.currentSchemaVersion)
+        XCTAssertEqual(decoded.manifest.schemaVersion, 1)
+        XCTAssertTrue(SkateTrackPackageManifest.supportedSchemaVersions.contains(1))
         XCTAssertNil(decoded.manifest.watchSampleCompatibility)
         XCTAssertFalse(decoded.manifest.includesOptionalWatchSampleData)
         XCTAssertEqual(decoded.primarySession?.sampleCount, payload.primarySession?.sampleCount)
@@ -30,15 +31,20 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
             routeGeometryMutationCount: 0
         )
         let payload = try makePackage(watchSampleCompatibility: compatibility)
+        let baselinePayload = try makePackage(watchSampleCompatibility: nil)
         let data = try SkateTrackPackageWriter().encodedData(for: payload)
+        let baselineData = try SkateTrackPackageWriter().encodedData(for: baselinePayload)
         let decoded = try SkateTrackPackageReader().decodePackage(from: data)
+        let baselineDecoded = try SkateTrackPackageReader().decodePackage(from: baselineData)
 
-        XCTAssertEqual(decoded.manifest.schemaVersion, 1)
+        XCTAssertEqual(decoded.manifest.schemaVersion, SkateTrackPackageManifest.currentSchemaVersion)
+        XCTAssertEqual(decoded.manifest.schemaVersion, baselineDecoded.manifest.schemaVersion)
         XCTAssertEqual(decoded.manifest.watchSampleCompatibility, compatibility)
         XCTAssertTrue(decoded.manifest.includesOptionalWatchSampleData)
         XCTAssertEqual(decoded.manifest.watchSampleCompatibility?.trustedMetricMutationCount, 0)
         XCTAssertEqual(decoded.manifest.watchSampleCompatibility?.routeGeometryMutationCount, 0)
         XCTAssertEqual(decoded.primarySession?.motionSamples, payload.primarySession?.motionSamples)
+        XCTAssertNil(decoded.primarySession?.snowPayload)
     }
 
     func testTask030dImportStillAcceptsLegacyPackageWithoutWatchMetadata() async throws {
@@ -53,6 +59,7 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
             sessionID: UUID(),
             fileName: "legacy.skatetrack",
             root: root,
+            schemaVersion: 1,
             watchSampleCompatibility: nil
         )
 
@@ -61,6 +68,7 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
         XCTAssertEqual(candidates.count, 1)
         XCTAssertEqual(candidates.first?.validationStatus, .ready)
         XCTAssertTrue(candidates.first?.isImportable ?? false)
+        XCTAssertEqual(candidates.first?.manifest?.schemaVersion, 1)
         XCTAssertNil(candidates.first?.manifest?.watchSampleCompatibility)
     }
 
@@ -71,6 +79,7 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
             sessionID: UUID(),
             fileName: "viewer-legacy.skatetrack",
             root: root,
+            schemaVersion: 1,
             watchSampleCompatibility: nil
         )
 
@@ -91,10 +100,15 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
         sessionID: UUID,
         fileName: String,
         root: URL,
+        schemaVersion: Int = SkateTrackPackageManifest.currentSchemaVersion,
         watchSampleCompatibility: SkateTrackWatchSampleCompatibility?
     ) throws -> URL {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
-        let payload = try makePackage(sessionID: sessionID, watchSampleCompatibility: watchSampleCompatibility)
+        let payload = try makePackage(
+            sessionID: sessionID,
+            schemaVersion: schemaVersion,
+            watchSampleCompatibility: watchSampleCompatibility
+        )
         let url = root.appendingPathComponent(fileName)
         _ = try SkateTrackPackageWriter().write(package: payload, to: url)
         return url
@@ -102,6 +116,7 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
 
     private func makePackage(
         sessionID: UUID = UUID(),
+        schemaVersion: Int = SkateTrackPackageManifest.currentSchemaVersion,
         watchSampleCompatibility: SkateTrackWatchSampleCompatibility?
     ) throws -> SkateTrackPackagePayload {
         let session = try makeSession(id: sessionID)
@@ -110,6 +125,7 @@ final class SkateTrackPackageWatchCompatibilityTests: XCTestCase {
             ? nil
             : [SkateTrackWatchSampleCompatibility.capabilityIdentifier]
         let manifest = SkateTrackPackageManifest(
+            schemaVersion: schemaVersion,
             appVersion: "test",
             buildNumber: "1",
             localeIdentifier: "en_US",

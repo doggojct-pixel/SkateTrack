@@ -83,9 +83,11 @@ def assert_file_exists() -> None:
 
 def assert_schema_version() -> None:
     manifest = read("Shared/Models/BackupPackageManifest.swift")
-    if "static let currentSchemaVersion = 1" not in manifest:
-        fail("BackupPackageManifest must pin schemaVersion as Int = 1.")
-    if "case currentSchemaVersion" not in manifest or "unsupportedSchemaVersion" not in manifest:
+    if "static let currentSchemaVersion = 2" not in manifest:
+        fail("BackupPackageManifest must pin schemaVersion as Int = 2.")
+    if "static let supportedSchemaVersions: Set<Int> = [1, 2]" not in manifest:
+        fail("BackupPackageManifest must keep schema versions 1 / 2 decode support.")
+    if "static func validate" not in manifest or "supportedSchemaVersions.contains" not in manifest or "unsupportedSchemaVersion" not in manifest:
         fail("BackupPackageManifest.decode(from:) must reject unsupported schema versions.")
     payload = read("Shared/Models/BackupPackagePayload.swift")
     if "case backup" not in manifest or "packageType" not in manifest:

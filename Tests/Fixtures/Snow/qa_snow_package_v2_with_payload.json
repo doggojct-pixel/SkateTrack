@@ -1,0 +1,104 @@
+{
+  "manifest": {
+    "appVersion": "task009-fixture",
+    "buildNumber": "009",
+    "capabilities": [
+      "snow-distance-breakdown-v1",
+      "snow-lift-exclusion-v1",
+      "snow-segments-v1",
+      "snow-sports-v1"
+    ],
+    "createdAt": "2026-01-15T12:00:00Z",
+    "formatDescription": "portable-session-export",
+    "includesAccountData": false,
+    "includesAchievements": false,
+    "includesMotionSamples": false,
+    "localeIdentifier": "en_US",
+    "packageType": "export",
+    "schemaVersion": 2,
+    "sessionCount": 1
+  },
+  "sessions": [
+    {
+      "exportedAt": "2026-01-15T12:00:00Z",
+      "id": "00000000-0000-0000-0000-000000001001",
+      "motionSamples": [],
+      "privacyNotes": [
+        "Task 009 deterministic JSON fixture; no account data, achievements, or Drive state included."
+      ],
+      "session": {
+        "endDate": "2026-01-15T12:30:00Z",
+        "fallEvents": [],
+        "id": "00000000-0000-0000-0000-000000001001",
+        "motionSamples": [],
+        "powerType": "humanPowered",
+        "sportMode": {
+          "snow": {
+            "_0": "skiing"
+          }
+        },
+        "startDate": "2026-01-15T09:00:00Z",
+        "trickEvents": []
+      },
+      "snowPayload": {
+        "capabilities": [
+          "snow-distance-breakdown-v1",
+          "snow-lift-exclusion-v1",
+          "snow-segments-v1",
+          "snow-sports-v1"
+        ],
+        "distanceBreakdown": {
+          "liftDistanceMeters": 0.0,
+          "routeDistanceMeters": 1250.0,
+          "skiDistanceMeters": 1250.0,
+          "unknownDistanceMeters": 0.0
+        },
+        "generatedAt": "2026-01-15T12:00:00Z",
+        "payloadVersion": "snow-payload-1.0",
+        "runs": [
+          {
+            "averageSpeedMetersPerSecond": 8.4,
+            "endDate": "2026-01-15T09:11:30Z",
+            "id": "00000000-0000-0000-0000-000000002001",
+            "isManualEnd": false,
+            "runNumber": 1,
+            "segmentIDs": [
+              "00000000-0000-0000-0000-000000003001"
+            ],
+            "sessionID": "00000000-0000-0000-0000-000000001001",
+            "skiDistanceMeters": 1250.0,
+            "startDate": "2026-01-15T09:05:00Z",
+            "topSpeedMetersPerSecond": 18.2,
+            "verticalDropMeters": 230.0
+          }
+        ],
+        "segments": [
+          {
+            "averageSpeedMetersPerSecond": 8.4,
+            "confidence": 0.91,
+            "countsTowardSkiDistance": true,
+            "distanceMeters": 1250.0,
+            "endAltitudeMeters": 1550.0,
+            "endDate": "2026-01-15T09:11:30Z",
+            "id": "00000000-0000-0000-0000-000000003001",
+            "maxSpeedMetersPerSecond": 18.2,
+            "runID": "00000000-0000-0000-0000-000000002001",
+            "sessionID": "00000000-0000-0000-0000-000000001001",
+            "sourceSampleIDs": [],
+            "startAltitudeMeters": 1780.0,
+            "startDate": "2026-01-15T09:05:00Z",
+            "type": "downhillRun",
+            "verticalDeltaMeters": -230.0
+          }
+        ],
+        "sessionID": "00000000-0000-0000-0000-000000001001",
+        "verticalMetrics": {
+          "maxAltitudeMeters": 1780.0,
+          "minAltitudeMeters": 1550.0,
+          "totalVerticalDropMeters": 230.0,
+          "totalVerticalGainMeters": 0.0
+        }
+      }
+    }
+  ]
+}

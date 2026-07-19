@@ -7,12 +7,16 @@ import SwiftUI
 struct SessionStartView: View {
     @ObservedObject var subscriptionStatus: SubscriptionStatusViewModel
     @ObservedObject var sessionRecording: SessionRecordingViewModel
+    #if DEBUG
+    @ObservedObject private var debugRuntimeOptions = DebugRuntimeOptions.shared
+    #endif
     private let rootNavigationAccessory: AnyView?
     private let onOpenAchievements: () -> Void
 
     @State private var selectedCategory: SessionStartSportCategory = .skateboard
     @State private var selectedBoardMode: BoardMode = .streetPark
     @State private var selectedInlineMode: InlineMode = .urbanFreestyle
+    @State private var selectedSnowDiscipline: SnowDiscipline = .snowboard
     @State private var selectedPowerType: PowerType = .humanPowered
     @State private var upgradePromptFeature: GatedFeature?
     @State private var paywallFeature: GatedFeature?
@@ -77,9 +81,12 @@ struct SessionStartView: View {
                         )
                         .padding(.top, topPadding)
 
-                        SportCategoryPickerView(selectedCategory: $selectedCategory)
+                        SportCategoryPickerView(
+                            selectedCategory: $selectedCategory,
+                            availableCategories: availableSportCategories
+                        )
                             .onChange(of: selectedCategory) { _, newCategory in
-                                if newCategory == .inline {
+                                if newCategory == .inline || newCategory == .snow {
                                     selectedPowerType = .humanPowered
                                 }
                                 clearIncompatibleSelectedEquipment()
@@ -210,11 +217,35 @@ struct SessionStartView: View {
                 clearUnavailableSelectedSpot()
             }
         }
+        #if DEBUG
+        .onChange(of: debugRuntimeOptions.isSnowModeEntryEnabled) { _, _ in
+            enforceAvailableSelectedCategory()
+        }
+        #endif
         .onChange(of: selectedBoardMode) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedInlineMode) { _, _ in clearIncompatibleSelectedEquipment() }
+        .onChange(of: selectedSnowDiscipline) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: selectedPowerType) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: equipmentManager.equipment) { _, _ in clearIncompatibleSelectedEquipment() }
         .onChange(of: spotsManager.spots) { _, _ in clearUnavailableSelectedSpot() }
+    }
+
+    private var availableSportCategories: [SessionStartSportCategory] {
+        #if DEBUG
+        SessionStartSportCategory.userFacingCases(isSnowEntryEnabled: debugRuntimeOptions.isSnowModeEntryEnabled)
+        #else
+        SessionStartSportCategory.userFacingCases(isSnowEntryEnabled: false)
+        #endif
+    }
+
+    private func enforceAvailableSelectedCategory() {
+        guard availableSportCategories.contains(selectedCategory) else {
+            selectedCategory = .skateboard
+            selectedPowerType = .humanPowered
+            clearIncompatibleSelectedEquipment()
+            return
+        }
+        clearIncompatibleSelectedEquipment()
     }
 
     private func shouldShowStickyRootNavigation(topInset: CGFloat) -> Bool {
@@ -341,6 +372,11 @@ struct SessionStartView: View {
                     showPaywall(for: feature)
                 }
             )
+        case .snow:
+            SnowDisciplineSelectorView(
+                selectedDiscipline: $selectedSnowDiscipline,
+                accentColor: selectedCategory.accentColor
+            )
         }
     }
 
@@ -350,6 +386,8 @@ struct SessionStartView: View {
             return .skateboard(selectedBoardMode)
         case .inline:
             return .inline(selectedInlineMode)
+        case .snow:
+            return .snow(selectedSnowDiscipline)
         }
     }
 

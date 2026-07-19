@@ -89,7 +89,8 @@ def ensure_package_schema() -> None:
     for token in [
         "enum SkateTrackPackageType",
         "case export",
-        "static let currentSchemaVersion = 1",
+        "static let currentSchemaVersion = 2",
+        "static let supportedSchemaVersions: Set<Int> = [1, 2]",
         "schemaVersion: Int",
         "includesAccountData",
         "includesAchievements",

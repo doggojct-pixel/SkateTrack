@@ -95,7 +95,7 @@ enum WearReminderEngine {
                 return 300
             case .inline(.aggressive):
                 return 200
-            case .inline(.urbanFreestyle), .inline(.slalom), .skateboard:
+            case .inline(.urbanFreestyle), .inline(.slalom), .skateboard, .snow:
                 return 250
             }
         }

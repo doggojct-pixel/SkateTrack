@@ -27,6 +27,7 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
     let routeQualitySummary: RouteQualitySummary?
     let exportedAt: Date
     let privacyNotes: [String]
+    let snowPayload: SkateTrackPackageSnowPayload?
 
     init(
         id: UUID = UUID(),
@@ -36,7 +37,8 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
         exportedAt: Date = Date(),
         privacyNotes: [String] = [
             "No account session, Google token, Drive state, achievements, or weekly challenge records are included."
-        ]
+        ],
+        snowPayload: SkateTrackPackageSnowPayload? = nil
     ) {
         self.id = id
         self.session = session
@@ -44,6 +46,7 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
         self.routeQualitySummary = routeQualitySummary ?? session.routeQualitySummary ?? RouteQualitySummary.make(from: motionSamples)
         self.exportedAt = exportedAt
         self.privacyNotes = privacyNotes
+        self.snowPayload = snowPayload
     }
 
     var sampleCount: Int {
@@ -52,5 +55,9 @@ struct SkateTrackPackageSession: Codable, Sendable, Equatable, Identifiable {
 
     var hasRouteSamples: Bool {
         motionSamples.contains { $0.gpsCoordinate != nil }
+    }
+
+    var hasSnowPayload: Bool {
+        snowPayload != nil
     }
 }

@@ -8,6 +8,7 @@ import SwiftUI
 struct SkateTrackApp: App {
     @StateObject private var subscriptionStatus = useSubscriptionStatus()
     @StateObject private var sessionRecording = SkateTrackAppDependencies.makeSessionRecordingViewModel()
+    @StateObject private var watchBridgePublisher = WatchBridgeActivityPublisher()
 
     var body: some Scene {
         WindowGroup {
@@ -17,6 +18,9 @@ struct SkateTrackApp: App {
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(SkateTrackSessionStartColors.navy.ignoresSafeArea())
+            .task {
+                watchBridgePublisher.activate()
+            }
         }
     }
 

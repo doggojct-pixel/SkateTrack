@@ -1,5 +1,5 @@
 // [協作區] Shared/Models/SportMode.swift
-// 用途：定義 SkateTrack 跨平台共用的滑板與直排輪運動模式。
+// 用途：定義 SkateTrack 跨平台共用的滑板、直排輪與雪地運動模式。
 // 委派至：後續 Task 的 session recording、feature flags、analytics 與 UI 選擇器。
 
 import Foundation
@@ -47,6 +47,7 @@ enum InlineMode: String, Codable, Sendable, CaseIterable {
 enum SportMode: Codable, Sendable, Equatable {
     case skateboard(BoardMode)
     case inline(InlineMode)
+    case snow(SnowDiscipline)
 
     var sportLocalizationKey: String {
         switch self {
@@ -54,6 +55,8 @@ enum SportMode: Codable, Sendable, Equatable {
             return "sport.skateboard"
         case .inline:
             return "sport.inline"
+        case .snow:
+            return "snow.sport.title"
         }
     }
 
@@ -63,6 +66,8 @@ enum SportMode: Codable, Sendable, Equatable {
             return boardMode.localizationKey
         case let .inline(inlineMode):
             return inlineMode.localizationKey
+        case let .snow(discipline):
+            return discipline.localizationKey
         }
     }
 
@@ -71,6 +76,17 @@ enum SportMode: Codable, Sendable, Equatable {
         case .skateboard:
             return true
         case .inline:
+            return false
+        case .snow:
+            return false
+        }
+    }
+
+    var requiresEquipmentSelection: Bool {
+        switch self {
+        case .skateboard, .inline:
+            return true
+        case .snow:
             return false
         }
     }

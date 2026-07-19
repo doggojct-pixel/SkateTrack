@@ -6,9 +6,20 @@ import SwiftUI
 
 private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
     case sessionBrowser
+    #if DEBUG
+    case snowAnalysisPreview
+    #endif
     case analytics
     case videoOverlay
     case cloudSync
+
+    static var allCases: [MacRootDestination] {
+        #if DEBUG
+        return [.sessionBrowser, .snowAnalysisPreview, .analytics, .videoOverlay, .cloudSync]
+        #else
+        return [.sessionBrowser, .analytics, .videoOverlay, .cloudSync]
+        #endif
+    }
 
     var id: String { rawValue }
 
@@ -16,6 +27,10 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .sessionBrowser:
             return "mac.import.sidebar.sessions"
+        #if DEBUG
+        case .snowAnalysisPreview:
+            return "mac.snow.sidebar.debug_preview"
+        #endif
         case .analytics:
             return "mac.import.sidebar.analytics"
         case .videoOverlay:
@@ -29,6 +44,10 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .sessionBrowser:
             return "mac.import.sidebar.sessions.subtitle"
+        #if DEBUG
+        case .snowAnalysisPreview:
+            return "mac.snow.sidebar.debug_preview.subtitle"
+        #endif
         case .analytics:
             return "mac.import.sidebar.analytics.subtitle"
         case .videoOverlay:
@@ -42,6 +61,10 @@ private enum MacRootDestination: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .sessionBrowser:
             return "list.bullet.rectangle"
+        #if DEBUG
+        case .snowAnalysisPreview:
+            return "snowflake"
+        #endif
         case .analytics:
             return "chart.xyaxis.line"
         case .videoOverlay:
@@ -115,6 +138,10 @@ private struct MacRootDetailView: View {
         switch selection {
         case .sessionBrowser:
             MacSessionBrowserView(viewModel: packageViewModel)
+        #if DEBUG
+        case .snowAnalysisPreview:
+            MacSnowDebugPreviewContainer()
+        #endif
         case .analytics:
             MacLockedDestinationView(
                 destination: selection,
@@ -139,6 +166,21 @@ private struct MacRootDetailView: View {
         }
     }
 }
+
+#if DEBUG
+private struct MacSnowDebugPreviewContainer: View {
+    @StateObject private var viewModel = MacSnowAnalysisViewModel()
+
+    var body: some View {
+        MacSnowRootView(viewModel: viewModel)
+            .task {
+                if viewModel.analysis == nil {
+                    viewModel.loadMockScenario(.resortDay)
+                }
+            }
+    }
+}
+#endif
 
 private struct MacLockedDestinationView: View {
     let destination: MacRootDestination

@@ -8,17 +8,20 @@ struct SkateTrackPackageImportCoordinator {
     private let fileManager: FileManager
     private let reader: SkateTrackPackageReader
     private let repository: SessionRepositoryProtocol
+    private let snowRepository: SnowSessionRepositoryProtocol
     private let stagingRootURL: URL
 
     init(
         fileManager: FileManager = .default,
         reader: SkateTrackPackageReader = SkateTrackPackageReader(),
         repository: SessionRepositoryProtocol = SessionRepository.shared,
+        snowRepository: SnowSessionRepositoryProtocol = SnowSessionRepository.shared,
         stagingRootURL: URL? = nil
     ) {
         self.fileManager = fileManager
         self.reader = reader
         self.repository = repository
+        self.snowRepository = snowRepository
         self.stagingRootURL = stagingRootURL
             ?? fileManager.temporaryDirectory.appendingPathComponent("SkateTrackImportStaging", isDirectory: true)
     }
@@ -56,10 +59,8 @@ struct SkateTrackPackageImportCoordinator {
             }
 
             do {
-                for packageSession in package.sessions {
-                    let session = try sessionForImport(from: packageSession)
-                    _ = try await repository.saveCompletedSession(session)
-                }
+                try validateSnowPayloads(in: package)
+                try await commit(package: package)
                 results.append(
                     commitResult(
                         candidate,
@@ -68,6 +69,8 @@ struct SkateTrackPackageImportCoordinator {
                         importedCount: package.sessions.count
                     )
                 )
+            } catch let error as SnowPackageImportError {
+                results.append(commitResult(candidate, status: .failed, detailKey: error.detailKey, importedCount: 0))
             } catch {
                 results.append(commitResult(candidate, status: .failed, detailKey: "import.error.commitFailed", importedCount: 0))
             }
@@ -104,6 +107,7 @@ struct SkateTrackPackageImportCoordinator {
 
         do {
             let package = try reader.readPackage(from: stagedURL)
+            try validateSnowPayloads(in: package)
             let sessions = package.sessions
             let sessionIDs = sessions.map { $0.session.id }
             let startDates = sessions.map { $0.session.startDate }
@@ -124,6 +128,14 @@ struct SkateTrackPackageImportCoordinator {
         } catch let error as SkateTrackPackageError {
             let mapped = mapPackageError(error)
             return invalidCandidate(displayName, pathKey: pathKey, status: mapped.status, reason: mapped.reason, stagedURL: stagedURL)
+        } catch is SnowPackageImportError {
+            return invalidCandidate(
+                displayName,
+                pathKey: pathKey,
+                status: .importBlocked,
+                reason: .invalidSnowPayload,
+                stagedURL: stagedURL
+            )
         } catch {
             return invalidCandidate(displayName, pathKey: pathKey, status: .corruptedPackage, reason: .packageDecodingFailed, stagedURL: stagedURL)
         }
@@ -256,6 +268,67 @@ struct SkateTrackPackageImportCoordinator {
         )
     }
 
+    private func commit(package: SkateTrackPackagePayload) async throws {
+        var importedSessionIDs: [UUID] = []
+        do {
+            for packageSession in package.sessions {
+                let session = try sessionForImport(from: packageSession)
+                _ = try await repository.saveCompletedSession(session)
+                importedSessionIDs.append(session.id)
+                try await persistSnowPayloadIfPresent(packageSession.snowPayload)
+            }
+        } catch {
+            await rollbackImportedSessions(importedSessionIDs)
+            throw error
+        }
+    }
+
+    private func persistSnowPayloadIfPresent(
+        _ payload: SkateTrackPackageSnowPayload?
+    ) async throws {
+        guard let payload else { return }
+        do {
+            for run in payload.runs {
+                _ = try await snowRepository.saveRun(run)
+            }
+            for segment in payload.segments {
+                _ = try await snowRepository.saveSegment(segment)
+            }
+        } catch {
+            throw SnowPackageImportError.snowPersistenceFailed
+        }
+    }
+
+    private func rollbackImportedSessions(_ sessionIDs: [UUID]) async {
+        for sessionID in sessionIDs.reversed() {
+            try? await snowRepository.deleteSnowData(sessionID: sessionID)
+            try? await repository.deleteSession(id: sessionID)
+        }
+    }
+
+    private func validateSnowPayloads(in package: SkateTrackPackagePayload) throws {
+        for packageSession in package.sessions {
+            guard let payload = packageSession.snowPayload else { continue }
+            guard case .snow = packageSession.session.sportMode,
+                  payload.payloadVersion == SkateTrackPackageSnowPayload.currentPayloadVersion,
+                  payload.sessionID == packageSession.session.id,
+                  payload.runs.allSatisfy({ $0.sessionID == packageSession.session.id }),
+                  payload.segments.allSatisfy({ $0.sessionID == packageSession.session.id }) else {
+                throw SnowPackageImportError.invalidPayload
+            }
+
+            let runIDs = Set(payload.runs.map(\.id))
+            let segmentIDs = Set(payload.segments.map(\.id))
+            guard runIDs.count == payload.runs.count,
+                  segmentIDs.count == payload.segments.count,
+                  Set(payload.runs.map(\.runNumber)).count == payload.runs.count,
+                  payload.segments.allSatisfy({ $0.runID == nil || runIDs.contains($0.runID!) }),
+                  payload.runs.allSatisfy({ Set($0.segmentIDs).isSubset(of: segmentIDs) }) else {
+                throw SnowPackageImportError.invalidPayload
+            }
+        }
+    }
+
     private func commitResult(
         _ candidate: SkateTrackImportCandidate,
         status: SkateTrackImportCommitStatus,
@@ -278,6 +351,20 @@ struct SkateTrackPackageImportCoordinator {
 
     private func candidateFingerprints(_ candidate: SkateTrackImportCandidate) -> [SkateTrackImportSessionFingerprint] {
         candidate.package?.sessions.map { SkateTrackImportSessionFingerprint(session: $0.session) } ?? []
+    }
+}
+
+private enum SnowPackageImportError: Error {
+    case invalidPayload
+    case snowPersistenceFailed
+
+    var detailKey: String {
+        switch self {
+        case .invalidPayload:
+            return "import.error.invalidSnowPayload"
+        case .snowPersistenceFailed:
+            return "import.error.snowPersistenceFailed"
+        }
     }
 }
 

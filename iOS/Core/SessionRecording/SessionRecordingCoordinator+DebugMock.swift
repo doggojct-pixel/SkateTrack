@@ -84,6 +84,9 @@ struct DebugOutdoorRouteSimulator: Sendable {
         case .inline:
             latitude = 25.032900
             longitude = 121.565200
+        case .snow:
+            latitude = 25.034850
+            longitude = 121.564300
         default:
             latitude = 25.033000
             longitude = 121.565000
@@ -151,6 +154,8 @@ struct DebugOutdoorRouteSimulator: Sendable {
             cruiseSpeed = 13
         case .skateboard(.surfskate), .inline(.slalom):
             cruiseSpeed = 11
+        case .snow:
+            cruiseSpeed = 24
         default:
             cruiseSpeed = 12
         }

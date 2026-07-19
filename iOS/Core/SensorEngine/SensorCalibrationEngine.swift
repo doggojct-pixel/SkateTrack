@@ -71,6 +71,8 @@ final class SensorCalibrationEngine {
             return skateboardPriorityPlan(for: boardMode)
         case let .inline(inlineMode):
             return inlinePriorityPlan(for: inlineMode)
+        case let .snow(discipline):
+            return snowPriorityPlan(for: discipline)
         }
     }
 
@@ -107,6 +109,13 @@ final class SensorCalibrationEngine {
             return SensorFusionPriorityPlan(primary: [.imu], secondary: [.barometer], supplemental: [.gps])
         case .slalom:
             return SensorFusionPriorityPlan(primary: [.imu], secondary: [.gps], supplemental: [.barometer])
+        }
+    }
+
+    private func snowPriorityPlan(for discipline: SnowDiscipline) -> SensorFusionPriorityPlan {
+        switch discipline {
+        case .snowboard, .skiing:
+            return SensorFusionPriorityPlan(primary: [.gps, .barometer], secondary: [.imu], supplemental: [])
         }
     }
 }

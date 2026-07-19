@@ -60,12 +60,20 @@ struct LiveHUDView: View {
                                 .transition(.move(edge: .top).combined(with: .opacity))
                             }
 
-                            speedHero
-                            metricGrid
-                            lowerMetrics
+                            if isSnowMode {
+                                SnowHUDView(
+                                    hudState: sessionRecording.state.snowLiveHUDState,
+                                    recordingState: sessionRecording.state,
+                                    accentColor: accentColor
+                                )
+                            } else {
+                                speedHero
+                                metricGrid
+                                lowerMetrics
 
-                            if isInlineMode {
-                                InlineLiveMetricsView(accentColor: accentColor)
+                                if isInlineMode {
+                                    InlineLiveMetricsView(accentColor: accentColor)
+                                }
                             }
                         }
                         .padding(.horizontal, horizontalPadding)
@@ -391,9 +399,13 @@ struct LiveHUDView: View {
 
     @ViewBuilder
     private var liveModeIcon: some View {
-        if isInlineMode {
+        switch sessionRecording.state.selectedSportMode {
+        case .inline(_)?:
             InlineSkateGlyphView(color: accentColor, size: 24)
-        } else {
+        case .snow(_)?:
+            Image(systemName: "snowflake")
+                .foregroundStyle(accentColor)
+        case .skateboard(_)?, nil:
             Image(systemName: "figure.skateboarding")
                 .foregroundStyle(accentColor)
         }
@@ -445,11 +457,18 @@ struct LiveHUDView: View {
             return SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 
     private var isInlineMode: Bool {
         if case .inline = sessionRecording.state.selectedSportMode { return true }
+        return false
+    }
+
+    private var isSnowMode: Bool {
+        if case .snow = sessionRecording.state.selectedSportMode { return true }
         return false
     }
 

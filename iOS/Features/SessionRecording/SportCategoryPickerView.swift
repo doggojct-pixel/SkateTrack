@@ -1,11 +1,20 @@
 // [協作區] SportCategoryPickerView.swift
-// 用途：顯示 Skateboard / Inline Skating 兩大運動類別切換器。
+// 用途：顯示目前開放的運動類別切換器；Snow 入口在 Phase 1c 未完成前維持 DEBUG-only。
 // 委派至：SessionStartView 管理後續模式與 power type 狀態。
 
 import SwiftUI
 
 struct SportCategoryPickerView: View {
     @Binding var selectedCategory: SessionStartSportCategory
+    let availableCategories: [SessionStartSportCategory]
+
+    init(
+        selectedCategory: Binding<SessionStartSportCategory>,
+        availableCategories: [SessionStartSportCategory] = SessionStartSportCategory.releaseSafeCases
+    ) {
+        _selectedCategory = selectedCategory
+        self.availableCategories = availableCategories
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -16,7 +25,7 @@ struct SportCategoryPickerView: View {
                 .textCase(.uppercase)
 
             HStack(spacing: 10) {
-                ForEach(SessionStartSportCategory.allCases) { category in
+                ForEach(availableCategories) { category in
                     Button {
                         selectedCategory = category
                     } label: {
@@ -38,6 +47,10 @@ struct SportCategoryPickerView: View {
                 .foregroundStyle(category.accentColor)
         case .inline:
             InlineSkateGlyphView(color: category.accentColor, size: 34)
+        case .snow:
+            Image(systemName: category.iconName)
+                .font(.system(size: 25, weight: .black))
+                .foregroundStyle(category.accentColor)
         }
     }
 

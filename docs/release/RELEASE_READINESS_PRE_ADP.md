@@ -294,3 +294,130 @@ Task-030e may be considered ready for merge back to `develop` only after `docs/r
 The 014 final merge gate is a merge-readiness checklist and verifier only. It does not implement product behavior and must preserve no import / merge / route mutation, no package schema change, no Core Data write, no location permission, no user-location display, and no Task-031-prep implementation.
 
 Task-030e-MacViewer-014 verification token: Task-030e-MacViewer-014 final merge gate, TASK030E_FINAL_MERGE_GATE.md, verify_task030e_final_merge_gate.py, develop merge readiness.
+
+## 10. Snow Phase 1c Integration Readiness Boundary
+
+Snow technical integration readiness must remain distinct from commit, merge, public-release, and distribution readiness.
+
+| Readiness layer | Current state | Boundary |
+|---|---|---|
+| A004–A008 technical integration | PASSED | Path-A implementation, aggregate verification, and reviewed operator QA are closed. |
+| A009 documentation closure | PASSED | Documentation/index audits passed; A009 initially stopped on the obsolete aggregate 197-path lock and was closed through A009R1. |
+| A009R1 aggregate stage-progression remediation | PASSED | Exact 198-path validation, three corrected historical-stage applicability classifications, seven regression cases, aggregate/current verifier gates, and documentation consistency passed without product changes. |
+| A010 pre-commit final acceptance | PENDING | Must be independently approved before it starts. |
+| A011 integration commit and push | PENDING | No integration commit or remote branch push exists. |
+| A012 final merge to `develop` | PENDING | `develop` has not been updated by this integration. |
+| Snow public release | NOT_APPROVED | Technical integration does not grant a release-visible Snow entry or public claims. |
+| ADP/TestFlight/App Store distribution | NOT_STARTED | No enrollment, signing/capability change, archive upload, TestFlight, or App Store action is part of A009/A009R1. |
+
+The approved integration branch remains in an uncommitted merge-in-progress state at `HEAD=f48373c6610f35b865ea337953f68e544894f9a5`, `ORIG_HEAD=f48373c6610f35b865ea337953f68e544894f9a5`, and `MERGE_HEAD=c618f399dda786ac8c25946b4b1c67148b190901`.
+
+The accepted A008 manual QA does not remove these release limitations:
+
+- no real paired iPhone/Watch round-trip pass is claimed;
+- no real snow-field validation pass is claimed;
+- Snow entry remains gated unless explicitly approved;
+- `DisabledSnowHealthExporter` remains the production default;
+- Watch Snow provider command methods remain safe no-ops;
+- Watch Unified Sport Routing / Mode Selection remains a post-A012 task; and
+- no resort-grade, professional-grade, safety-grade, medical, emergency-service, or rescue claim is approved.
+
+```text
+A004_TO_A008_TECHNICAL_INTEGRATION=PASSED
+A008_MANUAL_QA=PASSED
+A009_DOCUMENTATION_CLOSURE=PASSED
+A009R1_AGGREGATE_STAGE_PROGRESSION_REMEDIATION=PASSED
+SNOW_INT_A009_RESULT=PASSED
+SNOW_INT_A009R1_RESULT=PASSED_REMEDIATION
+A010_PRE_COMMIT_FINAL_ACCEPTANCE=PENDING
+A011_COMMIT_AND_PUSH=PENDING
+A012_FINAL_MERGE_TO_DEVELOP=PENDING
+CURRENT_INTEGRATION_BRANCH_COMMITTED=NO
+CURRENT_INTEGRATION_BRANCH_PUSHED=NO
+FINAL_MERGE_TO_DEVELOP=NO
+SNOW_PUBLIC_RELEASE_APPROVAL=NO
+ADP_STARTED=NO
+TESTFLIGHT_STARTED=NO
+APP_STORE_ACTION_STARTED=NO
+PRODUCTION_HEALTHKIT_WRITE_ENABLED=NO
+```
+
+## 11. A010R5 no-altitude Snow route remediation readiness
+
+A010R3 remains failed because required manual QA found 0.43 km in the base summary and 0 km in Snow Distance Inspector. A010R4 passed its read-only audit and confirmed that missing-altitude movement correctly remains unknown but lacked a persisted breakdown segment. A010R5 Variant A now uses the same iOS summary-display distance resolver and represents only the uncovered route residual as one terminal unknown segment.
+
+This is not final acceptance. A010R5 automated gates passed historically, but focused manual QA later found the `0.6 km` versus `1 km` presentation mismatch and the original run directory disappeared before authoritative finalization. A010R5 therefore remains `BLOCKED_HISTORICAL`. A010R6, commit/push, merge continuation, final merge, public release, ADP, TestFlight, and App Store actions remain unauthorized.
+
+```text
+SNOW_INT_A010R5_RESULT=BLOCKED_HISTORICAL
+NO_ALTITUDE_ROUTE_BREAKDOWN_REMEDIATION=IMPLEMENTED_AUTOMATED_VERIFIED_PENDING_MANUAL_QA
+A010R5_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=309
+SUMMARY_AND_SNOW_FALLBACK_DISTANCE_USE_SAME_RESOLVER=YES
+SKATETRACK_SCHEMA_VERSION_CHANGED=NO
+SKATETRACK_SUPPORTED_SCHEMA_SET_CHANGED=NO
+PACKAGE_READER_CHANGED=NO
+PACKAGE_WRITER_CHANGED=NO
+BACKUP_FORMAT_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+MIGRATION_LOGIC_CHANGED=NO
+MANUAL_QA_A010R5_FOCUSED=FAILED_HISTORICAL
+A010R6_AUTHORIZED=NO
+COMMIT_AUTHORIZED=NO
+PUSH_AUTHORIZED=NO
+MERGE_CONTINUE_AUTHORIZED=NO
+```
+
+## 12. A010R5R2 distance-presentation remediation readiness
+
+A010R5R1 passed its independent audit: Summary, unknown Timeline, and Inspector receive the same raw route value, while the visible mismatch came solely from the Snow sub-1,000-meter zero-decimal formatter. A010R5R2 retains the metric authority and existing localized `UnitFormatter.distance` conversion, uses up to two fraction digits with no forced trailing zeroes, and adds exact `en`/`zh-Hant`/`ja` downhill-information copy plus a single unknown-only semantic status.
+
+Readiness is limited to the v1.3.6 remediation and corrected v1.3.7.1 post-QA closure. Automated gates are green: 12/12 CURRENT_REQUIRED verifiers, focused 11/11 tests, affected 35/35 regressions, three no-signing builds, and 314/314 complete iOS tests passed. Focused QA-R2-01 through QA-R2-08, ten screenshots, and shared-scheme preservation also passed. A010R5R2R1 remains blocked historical; A010R5R2R2 closes only documentation and aggregate/applicability state. A010R5R3 and A010R5R4 remain deferred/not authorized. A010R6, commit, push, merge continuation, release, ADP, TestFlight, and App Store work remain unstarted.
+
+```text
+A010R5R1_RESULT=PASSED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+DISTANCE_MAXIMUM_FRACTION_DIGITS=2
+DISTANCE_MINIMUM_FRACTION_DIGITS=0
+TRAILING_ZEROES_FORCED=NO
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+COMMIT_AUTHORIZED=NO
+PUSH_AUTHORIZED=NO
+MERGE_CONTINUE_AUTHORIZED=NO
+```
+
+## 13. Snow-Integration-A010R5R2R2 current closure (2026-07-19)
+
+This state is ready only for independent review of the R2R2 evidence ZIP. It does not authorize the A010R6 pre-commit acceptance rerun, integration commit/push, merge continuation, final merge, or release/distribution work.
+
+```text
+A010R5_RESULT=BLOCKED_HISTORICAL
+A010R5R1_RESULT=PASSED_HISTORICAL
+A010R5R2R1_RESULT=BLOCKED_HISTORICAL
+SNOW_INT_A010R5R2_RESULT=PASSED
+MANUAL_QA_A010R5R2_FOCUSED=PASSED
+A010R5R2_AUTOMATED_GATES=PASSED
+CURRENT_REQUIRED_VERIFIERS=12_OF_12_PASSED
+IOS_XCTEST_TOTAL_COUNT=314
+SUMMARY_TIMELINE_INSPECTOR_VISIBLE_DISTANCE_STRING_MATCH=YES
+ZH_HANT_DOWNHILL_INFORMATION_COPY=PASSED
+EN_DOWNHILL_INFORMATION_COPY=PASSED
+JA_DOWNHILL_INFORMATION_COPY=PASSED
+UNKNOWN_ONLY_STATUS_CARD=PASSED
+PACKAGE_SCHEMA_VERSION_CHANGED=NO
+CORE_DATA_MODEL_CHANGED=NO
+A010R5R3_STARTED=NO
+A010R5R4_STARTED=NO
+A010R6_STARTED=NO
+A010R6_AUTHORIZED=NO_UNTIL_A010R5R2R2_INDEPENDENT_REVIEW
+COMMIT_CREATED=NO
+PUSH_CREATED=NO
+MERGE_CONTINUE_PERFORMED=NO
+```

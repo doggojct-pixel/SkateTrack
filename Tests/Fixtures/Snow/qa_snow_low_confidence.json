@@ -1,0 +1,37 @@
+{
+  "capabilities": [
+    "snow-distance-breakdown-v1",
+    "snow-lift-exclusion-v1",
+    "snow-segments-v1",
+    "snow-sports-v1"
+  ],
+  "distanceBreakdown": {
+    "liftDistanceMeters": 0.0,
+    "routeDistanceMeters": 80.0,
+    "skiDistanceMeters": 0.0,
+    "unknownDistanceMeters": 80.0
+  },
+  "generatedAt": "2026-01-15T12:00:00Z",
+  "payloadVersion": "snow-payload-1.0",
+  "runs": [],
+  "segments": [
+    {
+      "averageSpeedMetersPerSecond": 0.9,
+      "confidence": 0.35,
+      "countsTowardSkiDistance": false,
+      "distanceMeters": 80.0,
+      "endDate": "2026-01-15T11:03:00Z",
+      "id": "00000000-0000-0000-0000-000000003004",
+      "maxSpeedMetersPerSecond": 2.4,
+      "sessionID": "00000000-0000-0000-0000-000000001003",
+      "sourceSampleIDs": [],
+      "startDate": "2026-01-15T11:00:00Z",
+      "type": "unknown"
+    }
+  ],
+  "sessionID": "00000000-0000-0000-0000-000000001003",
+  "verticalMetrics": {
+    "totalVerticalDropMeters": 0.0,
+    "totalVerticalGainMeters": 0.0
+  }
+}

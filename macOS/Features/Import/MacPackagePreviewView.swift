@@ -21,12 +21,16 @@ struct MacPackagePreviewView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 22) {
-            header
-            manifestSection
-            sessionSection
-            privacySection
-            lockedNextSteps
+        if let snowAnalysisAvailability = preview.snowAnalysisAvailability {
+            MacSnowPackagePreviewRouteView(availability: snowAnalysisAvailability)
+        } else {
+            VStack(alignment: .leading, spacing: 22) {
+                header
+                manifestSection
+                sessionSection
+                privacySection
+                lockedNextSteps
+            }
         }
     }
 
@@ -217,5 +221,24 @@ private struct MacPreviewMetric: View {
         .padding(16)
         .frame(maxWidth: .infinity, minHeight: 78, alignment: .leading)
         .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+}
+
+
+private struct MacSnowPackagePreviewRouteView: View {
+    @StateObject private var viewModel: MacSnowAnalysisViewModel
+
+    init(availability: MacSnowAnalysisAvailability) {
+        _viewModel = StateObject(wrappedValue: MacSnowAnalysisViewModel(availability: availability))
+    }
+
+    var body: some View {
+        MacSnowRootView(viewModel: viewModel)
+            .frame(minHeight: 760)
+            .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .stroke(.cyan.opacity(0.22), lineWidth: 1)
+            )
     }
 }

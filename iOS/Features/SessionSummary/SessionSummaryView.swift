@@ -12,6 +12,8 @@ struct SessionSummaryView: View {
     @ObservedObject private var subscriptionStatus: SubscriptionStatusViewModel
     @State private var isAdvancedChartsPaywallPresented = false
     @State private var isShareCardPaywallPresented = false
+    @StateObject private var snowSession: SnowSessionViewModel
+    @State private var snowSelection: SnowSummarySelection?
 
     @MainActor
     init(
@@ -26,6 +28,10 @@ struct SessionSummaryView: View {
         _summary = StateObject(
             wrappedValue: useSessionSummary(sessionID: sessionID, initialSession: initialSession)
         )
+        _snowSession = StateObject(
+            wrappedValue: SnowSessionViewModel(sessionID: sessionID)
+        )
+        _snowSelection = State(initialValue: nil)
     }
 
     var body: some View {
@@ -102,8 +108,56 @@ struct SessionSummaryView: View {
                 SessionSpotAttributionView(session: content.session)
             }
             SessionSummaryMetricsGridView(items: metricItems(for: content))
+            if isSnowSession(content.session) {
+                snowSummaryStack
+            }
             summaryDetailStack(content)
         }
+        .task(id: content.session.id) {
+            await loadSnowSummaryIfNeeded(for: content.session)
+        }
+    }
+
+    private var snowSummaryStack: some View {
+        VStack(spacing: 10) {
+            SnowDaySummaryView(state: snowSession.state)
+            SnowSegmentTimelineView(
+                runs: snowSession.state.runs,
+                segments: snowSession.state.segments,
+                selection: Binding(
+                    get: {
+                        SnowSummarySelectionModel.resolvedSelection(
+                            current: snowSelection,
+                            state: snowSession.state
+                        )
+                    },
+                    set: { snowSelection = $0 }
+                )
+            )
+            SnowDistanceInspectorView(
+                snapshot: SnowSummarySelectionModel.inspectorSnapshot(
+                    current: snowSelection,
+                    state: snowSession.state
+                )
+            )
+        }
+        .accessibilityIdentifier("snow-summary-stack")
+    }
+
+    @MainActor
+    private func loadSnowSummaryIfNeeded(for session: SessionData) async {
+        guard isSnowSession(session) else { return }
+        snowSelection = nil
+        await snowSession.load(sessionID: session.id)
+        snowSelection = SnowSummarySelectionModel.resolvedSelection(
+            current: nil,
+            state: snowSession.state
+        )
+    }
+
+    private func isSnowSession(_ session: SessionData) -> Bool {
+        if case .snow = session.sportMode { return true }
+        return false
     }
 
     private func header(_ content: SessionSummaryContent) -> some View {
@@ -314,6 +368,8 @@ private extension SessionSummaryView {
             return session.powerType == .electric ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 }

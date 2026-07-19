@@ -1094,6 +1094,8 @@ enum ActivityFidelityProfile: String, Codable, Sendable, Equatable {
             return .inlineSpeed
         case (.inline, _):
             return .inlineRecreation
+        case (.snow, _):
+            return .snowReserved
         }
     }
 }

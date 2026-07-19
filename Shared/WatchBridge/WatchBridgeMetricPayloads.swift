@@ -20,6 +20,20 @@ public struct WatchBridgeMetricUpdatePayload: Codable, Equatable, Sendable {
     public let elevationLossMeters: Double?
     public let trustLevel: WatchBridgeMetricTrustLevel
     public let sourceLabel: String?
+    public let snowSchemaVersion: String?
+    public let snowMaxSpeedThisRunKmh: Double?
+    public let snowRunNumber: Int?
+    public let snowVerticalDropMeters: Double?
+    public let snowTotalVerticalMeters: Double?
+    public let snowSlopeAngleDegrees: Double?
+    public let snowSegmentType: String?
+    public let snowRunCount: Int?
+    public let snowTotalSkiDistanceMeters: Double?
+    public let snowTotalLiftDistanceMeters: Double?
+    public let snowAverageRunDurationSeconds: Double?
+    public let snowLastRunVerticalDropMeters: Double?
+    public let snowLastRunTopSpeedKmh: Double?
+    public let snowLastRunDurationSeconds: Double?
 
     public init(
         sessionId: UUID? = nil,
@@ -31,7 +45,21 @@ public struct WatchBridgeMetricUpdatePayload: Codable, Equatable, Sendable {
         elevationGainMeters: Double? = nil,
         elevationLossMeters: Double? = nil,
         trustLevel: WatchBridgeMetricTrustLevel = .unknown,
-        sourceLabel: String? = nil
+        sourceLabel: String? = nil,
+        snowSchemaVersion: String? = nil,
+        snowMaxSpeedThisRunKmh: Double? = nil,
+        snowRunNumber: Int? = nil,
+        snowVerticalDropMeters: Double? = nil,
+        snowTotalVerticalMeters: Double? = nil,
+        snowSlopeAngleDegrees: Double? = nil,
+        snowSegmentType: String? = nil,
+        snowRunCount: Int? = nil,
+        snowTotalSkiDistanceMeters: Double? = nil,
+        snowTotalLiftDistanceMeters: Double? = nil,
+        snowAverageRunDurationSeconds: Double? = nil,
+        snowLastRunVerticalDropMeters: Double? = nil,
+        snowLastRunTopSpeedKmh: Double? = nil,
+        snowLastRunDurationSeconds: Double? = nil
     ) {
         self.sessionId = sessionId
         self.updatedAt = updatedAt
@@ -43,6 +71,20 @@ public struct WatchBridgeMetricUpdatePayload: Codable, Equatable, Sendable {
         self.elevationLossMeters = elevationLossMeters
         self.trustLevel = trustLevel
         self.sourceLabel = sourceLabel
+        self.snowSchemaVersion = snowSchemaVersion
+        self.snowMaxSpeedThisRunKmh = snowMaxSpeedThisRunKmh
+        self.snowRunNumber = snowRunNumber
+        self.snowVerticalDropMeters = snowVerticalDropMeters
+        self.snowTotalVerticalMeters = snowTotalVerticalMeters
+        self.snowSlopeAngleDegrees = snowSlopeAngleDegrees
+        self.snowSegmentType = snowSegmentType
+        self.snowRunCount = snowRunCount
+        self.snowTotalSkiDistanceMeters = snowTotalSkiDistanceMeters
+        self.snowTotalLiftDistanceMeters = snowTotalLiftDistanceMeters
+        self.snowAverageRunDurationSeconds = snowAverageRunDurationSeconds
+        self.snowLastRunVerticalDropMeters = snowLastRunVerticalDropMeters
+        self.snowLastRunTopSpeedKmh = snowLastRunTopSpeedKmh
+        self.snowLastRunDurationSeconds = snowLastRunDurationSeconds
     }
 }
 

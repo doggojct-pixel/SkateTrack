@@ -45,6 +45,10 @@ struct EditEquipmentView: View {
         case let .inline(mode):
             boardMode = .streetPark
             inlineMode = mode
+        case .snow:
+            // Snow gear editing is deferred; keep the existing gear editor on safe defaults.
+            boardMode = .streetPark
+            inlineMode = .urbanFreestyle
         }
 
         _name = State(initialValue: equipment?.name ?? "")

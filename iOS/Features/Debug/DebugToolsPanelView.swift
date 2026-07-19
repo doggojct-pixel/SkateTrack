@@ -10,6 +10,7 @@ struct DebugToolsPanelView: View {
     @ObservedObject var sessionRecording: SessionRecordingViewModel
     @ObservedObject var fallDetection: FallDetectionViewModel
     @ObservedObject var emergencyContactStore: EmergencyContactStore
+    @ObservedObject private var debugRuntimeOptions = DebugRuntimeOptions.shared
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -21,6 +22,7 @@ struct DebugToolsPanelView: View {
                         header
                         sessionRuntimeSection
                         recordingDiagnosticsContextSection
+                        snowModeEntrySection
                         fallAlertSection
                         subscriptionSection
                         safetyDataSection
@@ -79,7 +81,6 @@ struct DebugToolsPanelView: View {
         }
     }
 
-
     private var recordingDiagnosticsContextSection: some View {
         debugCard(flag: .recordingDiagnosticsContext) {
             VStack(alignment: .leading, spacing: 10) {
@@ -115,6 +116,58 @@ struct DebugToolsPanelView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
+        }
+    }
+
+    private var snowModeEntrySection: some View {
+        debugCard(flag: .snowModeEntry) {
+            Toggle(
+                "debug.tools.snowMode.toggle",
+                isOn: $debugRuntimeOptions.isSnowModeEntryEnabled
+            )
+            .font(.system(size: 14, weight: .bold, design: .rounded))
+            .foregroundStyle(.white)
+            .tint(SkateTrackSessionStartColors.ice)
+            .accessibilityIdentifier(DebugToolAction.toggleSnowModeEntry.accessibilityIdentifier)
+
+            Picker(
+                "debug.tools.snowHUDScenario.picker",
+                selection: $debugRuntimeOptions.selectedSnowHUDQAScenario
+            ) {
+                Text("debug.tools.snowHUDScenario.live")
+                    .tag(Optional<SnowHUDQAScenario>.none)
+                ForEach(SnowHUDQAScenario.allCases) { scenario in
+                    Text(LocalizedStringKey(scenario.titleLocalizationKey))
+                        .tag(Optional(scenario))
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(SkateTrackSessionStartColors.ice)
+            .accessibilityIdentifier("debug-tools-snow-hud-scenario-picker")
+
+            Text("debug.tools.snowHUDScenario.hint")
+                .font(.system(size: 11, weight: .semibold, design: .rounded))
+                .foregroundStyle(SkateTrackSessionStartColors.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: 10) {
+                Image(systemName: "snowflake")
+                    .font(.system(size: 18, weight: .black))
+                    .foregroundStyle(SkateTrackSessionStartColors.ice)
+                    .frame(width: 32, height: 32)
+                    .background(SkateTrackSessionStartColors.ice.opacity(0.14))
+                    .clipShape(Circle())
+
+                Text(
+                    debugRuntimeOptions.isSnowModeEntryEnabled
+                    ? "debug.tools.snowMode.entryEnabledHint"
+                    : "debug.tools.snowMode.entryDisabledHint"
+                )
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(SkateTrackSessionStartColors.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .accessibilityIdentifier("debug-tools-snow-mode-entry-note")
         }
     }
 

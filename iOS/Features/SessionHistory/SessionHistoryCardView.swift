@@ -19,6 +19,8 @@ struct SessionHistoryCardView: View {
             return session.powerType == .electric ? SkateTrackSessionStartColors.amber : SkateTrackSessionStartColors.accent
         case .inline:
             return SkateTrackSessionStartColors.purple
+        case .snow:
+            return SkateTrackSessionStartColors.ice
         }
     }
 
