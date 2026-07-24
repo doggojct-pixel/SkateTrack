@@ -2,6 +2,7 @@
 """Verify the current Snow integration index without replaying stage-local gates."""
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import re
@@ -59,6 +60,38 @@ EXPECTED_A010R5R2R2_PARENT_FULL_INDEX_SHA256 = (
 EXPECTED_A010R5R2R2_PARENT_INDEX_MANIFEST_SHA256 = (
     "2301ba37acec31e0c5606ed798ddf8c8370d426621e5bed645f08160471a9bd0"
 )
+
+LIFECYCLES = (
+    "PRECOMMIT_MERGE_INDEX",
+    "POSTCOMMIT_INTEGRATION_CLEAN",
+    "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+    "POST_PUSH_DEVELOP_FINAL",
+)
+LIFECYCLE_BINDINGS = {
+    "Snow-Integration-A010R5R2R2": "PRECOMMIT_MERGE_INDEX",
+    "Snow-Integration-A012R2": "POSTCOMMIT_INTEGRATION_CLEAN",
+    "Snow-Integration-A012R3_PRE_PUSH": "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+    "Snow-Integration-A012R3_POST_PUSH": "POST_PUSH_DEVELOP_FINAL",
+}
+REVIEWED_INTEGRATION_MERGE_COMMIT = (
+    "ea1f36514660191eb9f249cdb54b475c371066ed"
+)
+REVIEWED_INTEGRATION_FIRST_PARENT = EXPECTED_HEAD
+REVIEWED_INTEGRATION_SECOND_PARENT = EXPECTED_MERGE_HEAD
+REVIEWED_INTEGRATION_TREE = "35911d60773bfc5a851f123df1f96f1cca95d72a"
+REVIEWED_INTEGRATION_HEAD_TREE = (
+    "49e077323370b7c2e3809dd680acbbe2b02c5ac2"
+)
+REVIEWED_INTEGRATION_CHANGED_PATH_COUNT = 200
+REVIEWED_INTEGRATION_TREE_ROW_COUNT = 839
+REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256 = (
+    "2f292267a96105ec133baea8372309231dadbe044593bdc54ebbe9c982e3cb15"
+)
+REMEDIATION_ALLOWED_PATHS = {
+    "scripts/snow_integration_verifier_applicability.json",
+    "scripts/verify_snow_integration_aggregate.py",
+}
+REMOTE_DEVELOP_BASE = EXPECTED_HEAD
 
 A010R2_NEWLY_STAGED_PATHS = {
     "Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift",
@@ -456,6 +489,7 @@ FINAL_ACCEPTANCE_MATRIX = [
 failures: list[str] = []
 group_results: dict[str, bool] = {}
 observations: dict[str, int | str] = {}
+selected_lifecycle = ""
 
 
 def fail(message: str) -> None:
@@ -816,6 +850,462 @@ def normalized_a010r1_index_digest(index_lines: list[str]) -> str:
             continue
         normalized.append(A010R1_PRE_REMEDIATION_INDEX_ENTRIES.get(path, line))
     return hashlib.sha256(("\n".join(normalized) + "\n").encode("utf-8")).hexdigest()
+
+
+def parse_cli_contract(arguments: list[str]) -> tuple[str, str, str]:
+    """Return command kind, lifecycle, and a fail-closed CLI error."""
+    standalone = {
+        ("--current-session-recording-contract",): "SESSION_RECORDING",
+        ("--current-session-persistence-contract",): "SESSION_PERSISTENCE",
+    }
+    standalone_kind = standalone.get(tuple(arguments))
+    if standalone_kind:
+        return standalone_kind, "", ""
+    if not arguments:
+        return "INVALID", "", "missing required --lifecycle argument"
+    if len(arguments) != 2 or arguments[0] != "--lifecycle":
+        return (
+            "INVALID",
+            "",
+            "normal aggregate verification requires exactly one "
+            "--lifecycle VALUE declaration",
+        )
+    lifecycle = arguments[1]
+    if lifecycle not in LIFECYCLES:
+        return "INVALID", "", f"unknown lifecycle: {lifecycle}"
+    return "AGGREGATE", lifecycle, ""
+
+
+def lifecycle_registry_failures(registry: object) -> list[str]:
+    """Validate exact CLI authority, allow-list, binding, and command parity."""
+    issues: list[str] = []
+
+    def expect(condition: bool, message: str) -> None:
+        if not condition:
+            issues.append(message)
+
+    if not isinstance(registry, dict):
+        return ["applicability registry root must be an object"]
+    expect(registry.get("task_id") == "Snow-Integration-A012R2", (
+        "applicability registry task_id is not A012R2"
+    ))
+    expect(registry.get("lifecycle_selection") == "EXPLICIT_CLI", (
+        "registry lifecycle selection is not EXPLICIT_CLI"
+    ))
+    allowed = registry.get("allowed_lifecycles")
+    expect(isinstance(allowed, list), "registry allowed_lifecycles must be a list")
+    if isinstance(allowed, list):
+        expect(len(allowed) == len(set(allowed)), (
+            "registry contains duplicate lifecycle values"
+        ))
+        expect(tuple(allowed) == LIFECYCLES, (
+            "registry/script lifecycle allow-list drift"
+        ))
+    expect(registry.get("allowed_lifecycle_count") == len(LIFECYCLES), (
+        "registry allowed lifecycle count differs"
+    ))
+    expect(registry.get("current_required_verifier_count") == 12, (
+        "registry declared CURRENT_REQUIRED verifier count differs"
+    ))
+
+    bindings = registry.get("lifecycle_bindings")
+    expect(isinstance(bindings, list), "registry lifecycle_bindings must be a list")
+    if not isinstance(bindings, list):
+        return issues
+    task_phases = [
+        item.get("task_phase")
+        for item in bindings
+        if isinstance(item, dict)
+    ]
+    lifecycle_values = [
+        item.get("lifecycle")
+        for item in bindings
+        if isinstance(item, dict)
+    ]
+    expect(len(bindings) == len(LIFECYCLE_BINDINGS), (
+        "registry lifecycle binding count differs"
+    ))
+    expect(len(task_phases) == len(bindings), (
+        "registry contains non-object lifecycle binding"
+    ))
+    expect(len(task_phases) == len(set(task_phases)), (
+        "registry contains duplicate/conflicting task-phase binding"
+    ))
+    expect(set(task_phases) == set(LIFECYCLE_BINDINGS), (
+        "registry task-phase binding set differs"
+    ))
+    expect(set(lifecycle_values) == set(LIFECYCLES), (
+        "registry lifecycle binding values differ"
+    ))
+    for item in bindings:
+        if not isinstance(item, dict):
+            continue
+        task_phase = item.get("task_phase")
+        lifecycle = item.get("lifecycle")
+        expected_lifecycle = LIFECYCLE_BINDINGS.get(task_phase)
+        expect(lifecycle == expected_lifecycle, (
+            f"registry lifecycle binding differs for {task_phase}"
+        ))
+        expected_command = [
+            "python3",
+            "scripts/verify_snow_integration_aggregate.py",
+            "--lifecycle",
+            expected_lifecycle,
+        ]
+        expect(item.get("command") == expected_command, (
+            f"registry lifecycle command drift for {task_phase}"
+        ))
+        expect(item.get("environment") == {}, (
+            f"registry lifecycle environment must be empty for {task_phase}"
+        ))
+    return issues
+
+
+def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
+    """Build a synthetic valid state for pure lifecycle contract regressions."""
+    candidate = "a" * 40
+    candidate_tree = "b" * 40
+    common: dict[str, object] = {
+        "lifecycle_declarations": [lifecycle],
+        "branch": EXPECTED_BRANCH,
+        "head": candidate,
+        "head_tree": candidate_tree,
+        "index_tree": candidate_tree,
+        "orig_head": "ABSENT",
+        "merge_head": "ABSENT",
+        "merge_in_progress": False,
+        "staged_path_count": 0,
+        "unstaged_change_count": 0,
+        "untracked_path_count": 0,
+        "unmerged_path_count": 0,
+        "worktree_and_index_clean": True,
+        "local_integration": candidate,
+        "remote_tracking_integration": candidate,
+        "remote_integration": candidate,
+        "local_develop": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "remote_tracking_develop": REMOTE_DEVELOP_BASE,
+        "remote_develop": REMOTE_DEVELOP_BASE,
+        "candidate": candidate,
+        "candidate_parent_count": 1,
+        "candidate_first_parent": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "candidate_changed_path_count": 2,
+        "candidate_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
+        "candidate_all_other_paths_equal_a011_tree": True,
+        "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "historical_first_parent": REVIEWED_INTEGRATION_FIRST_PARENT,
+        "historical_second_parent": REVIEWED_INTEGRATION_SECOND_PARENT,
+        "historical_tree": REVIEWED_INTEGRATION_TREE,
+        "historical_changed_path_count": REVIEWED_INTEGRATION_CHANGED_PATH_COUNT,
+        "historical_changed_path_list_sha256": (
+            EXPECTED_A010R5R1_STAGED_PATH_LIST_SHA256
+        ),
+        "historical_tree_row_count": REVIEWED_INTEGRATION_TREE_ROW_COUNT,
+        "historical_index_manifest_sha256": (
+            REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256
+        ),
+        "historical_progression_failure_count": 0,
+        "historical_tree_and_blobs_valid": True,
+        "formal_18_of_18_claimed": False,
+        "final_18_of_18_eligible": False,
+    }
+    if lifecycle == "PRECOMMIT_MERGE_INDEX":
+        common.update({
+            "head": EXPECTED_HEAD,
+            "head_tree": REVIEWED_INTEGRATION_HEAD_TREE,
+            "index_tree": REVIEWED_INTEGRATION_TREE,
+            "orig_head": EXPECTED_ORIG_HEAD,
+            "merge_head": EXPECTED_MERGE_HEAD,
+            "merge_in_progress": True,
+            "staged_path_count": EXPECTED_A010R5R2R2_STAGED_PATH_COUNT,
+            "worktree_and_index_clean": False,
+            "local_integration": EXPECTED_HEAD,
+            "remote_tracking_integration": EXPECTED_HEAD,
+            "remote_integration": EXPECTED_HEAD,
+            "local_develop": EXPECTED_HEAD,
+            "remote_tracking_develop": EXPECTED_HEAD,
+            "remote_develop": EXPECTED_HEAD,
+            "precommit_index_data_row_count": EXPECTED_A010R5R2R2_INDEX_PATH_COUNT,
+            "precommit_index_manifest_sha256": (
+                REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256
+            ),
+            "precommit_staged_path_list_sha256": (
+                EXPECTED_A010R5R1_STAGED_PATH_LIST_SHA256
+            ),
+            "precommit_progression_failure_count": 0,
+        })
+    elif lifecycle == "POST_FAST_FORWARD_DEVELOP_PRE_PUSH":
+        common.update({
+            "branch": "develop",
+            "local_develop": candidate,
+            "remote_tracking_integration": candidate,
+            "remote_integration": candidate,
+        })
+    elif lifecycle == "POST_PUSH_DEVELOP_FINAL":
+        common.update({
+            "branch": "develop",
+            "local_develop": candidate,
+            "remote_tracking_integration": candidate,
+            "remote_integration": candidate,
+            "remote_tracking_develop": candidate,
+            "remote_develop": candidate,
+            "final_18_of_18_eligible": True,
+        })
+    return common
+
+
+def lifecycle_state_failures(
+    lifecycle: str,
+    state: dict[str, object],
+) -> list[str]:
+    """Pure fail-closed lifecycle validation used by real and synthetic states."""
+    issues: list[str] = []
+
+    def expect(condition: bool, message: str) -> None:
+        if not condition:
+            issues.append(message)
+
+    expect(lifecycle in LIFECYCLES, f"unknown lifecycle contract: {lifecycle}")
+    declarations = state.get("lifecycle_declarations")
+    expect(declarations == [lifecycle], (
+        "lifecycle declaration is missing, duplicate, conflicting, or ambiguous"
+    ))
+    if lifecycle not in LIFECYCLES:
+        return issues
+
+    expect(state.get("formal_18_of_18_claimed") is False, (
+        "formal 18-of-18 must remain an A012R3 task-level decision"
+    ))
+    if lifecycle == "PRECOMMIT_MERGE_INDEX":
+        expected = {
+            "branch": EXPECTED_BRANCH,
+            "head": EXPECTED_HEAD,
+            "head_tree": REVIEWED_INTEGRATION_HEAD_TREE,
+            "index_tree": REVIEWED_INTEGRATION_TREE,
+            "orig_head": EXPECTED_ORIG_HEAD,
+            "merge_head": EXPECTED_MERGE_HEAD,
+            "merge_in_progress": True,
+            "staged_path_count": EXPECTED_A010R5R2R2_STAGED_PATH_COUNT,
+            "unstaged_change_count": 0,
+            "untracked_path_count": 0,
+            "unmerged_path_count": 0,
+            "precommit_index_data_row_count": EXPECTED_A010R5R2R2_INDEX_PATH_COUNT,
+            "precommit_index_manifest_sha256": (
+                REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256
+            ),
+            "precommit_staged_path_list_sha256": (
+                EXPECTED_A010R5R1_STAGED_PATH_LIST_SHA256
+            ),
+            "precommit_progression_failure_count": 0,
+        }
+        for key, expected_value in expected.items():
+            expect(state.get(key) == expected_value, (
+                f"PRECOMMIT_MERGE_INDEX {key} differs"
+            ))
+        expect(state.get("final_18_of_18_eligible") is False, (
+            "precommit lifecycle cannot be final-18 eligible"
+        ))
+        return issues
+
+    common_expected = {
+        "merge_head": "ABSENT",
+        "merge_in_progress": False,
+        "staged_path_count": 0,
+        "unstaged_change_count": 0,
+        "untracked_path_count": 0,
+        "unmerged_path_count": 0,
+        "worktree_and_index_clean": True,
+        "candidate_parent_count": 1,
+        "candidate_first_parent": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "candidate_changed_path_count": len(REMEDIATION_ALLOWED_PATHS),
+        "candidate_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
+        "candidate_all_other_paths_equal_a011_tree": True,
+        "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "historical_first_parent": REVIEWED_INTEGRATION_FIRST_PARENT,
+        "historical_second_parent": REVIEWED_INTEGRATION_SECOND_PARENT,
+        "historical_tree": REVIEWED_INTEGRATION_TREE,
+        "historical_changed_path_count": REVIEWED_INTEGRATION_CHANGED_PATH_COUNT,
+        "historical_changed_path_list_sha256": (
+            EXPECTED_A010R5R1_STAGED_PATH_LIST_SHA256
+        ),
+        "historical_tree_row_count": REVIEWED_INTEGRATION_TREE_ROW_COUNT,
+        "historical_index_manifest_sha256": (
+            REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256
+        ),
+        "historical_progression_failure_count": 0,
+        "historical_tree_and_blobs_valid": True,
+    }
+    for key, expected_value in common_expected.items():
+        expect(state.get(key) == expected_value, (
+            f"committed historical/candidate evidence {key} differs"
+        ))
+    candidate = state.get("candidate")
+    expect(isinstance(candidate, str) and re.fullmatch(r"[0-9a-f]{40}", candidate) is not None, (
+        "dynamic remediation candidate is not a 40-hex commit identity"
+    ))
+    expect(state.get("head") == candidate, "HEAD is not the derived remediation candidate")
+    expect(state.get("local_integration") == candidate, (
+        "local integration ref is not the derived remediation candidate"
+    ))
+    expect(state.get("index_tree") == state.get("head_tree"), (
+        "clean committed index tree does not equal HEAD tree"
+    ))
+    expect(state.get("local_develop") == (
+        candidate
+        if lifecycle in {
+            "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+            "POST_PUSH_DEVELOP_FINAL",
+        }
+        else REVIEWED_INTEGRATION_MERGE_COMMIT
+    ), "local develop ref differs for lifecycle")
+
+    if lifecycle == "POSTCOMMIT_INTEGRATION_CLEAN":
+        expect(state.get("branch") == EXPECTED_BRANCH, (
+            "POSTCOMMIT_INTEGRATION_CLEAN branch differs"
+        ))
+        expect(state.get("remote_tracking_develop") == REMOTE_DEVELOP_BASE, (
+            "remote-tracking develop advanced during integration lifecycle"
+        ))
+        expect(state.get("remote_develop") == REMOTE_DEVELOP_BASE, (
+            "remote develop advanced during integration lifecycle"
+        ))
+        remote_pair = (
+            state.get("remote_tracking_integration"),
+            state.get("remote_integration"),
+        )
+        valid_pairs = {
+            (
+                REVIEWED_INTEGRATION_MERGE_COMMIT,
+                REVIEWED_INTEGRATION_MERGE_COMMIT,
+            ): "PRE_PUSH",
+            (candidate, candidate): "POST_PUSH",
+        }
+        expect(remote_pair in valid_pairs, (
+            "remote integration refs do not match exactly one pre/post-push substate"
+        ))
+        expect(state.get("final_18_of_18_eligible") is False, (
+            "integration lifecycle cannot be final-18 eligible"
+        ))
+    elif lifecycle == "POST_FAST_FORWARD_DEVELOP_PRE_PUSH":
+        expect(state.get("branch") == "develop", (
+            "POST_FAST_FORWARD_DEVELOP_PRE_PUSH branch differs"
+        ))
+        expect(state.get("remote_tracking_integration") == candidate, (
+            "remote-tracking integration is not candidate before develop push"
+        ))
+        expect(state.get("remote_integration") == candidate, (
+            "remote integration is not candidate before develop push"
+        ))
+        expect(state.get("remote_tracking_develop") == REMOTE_DEVELOP_BASE, (
+            "remote-tracking develop unexpectedly advanced before push"
+        ))
+        expect(state.get("remote_develop") == REMOTE_DEVELOP_BASE, (
+            "remote develop unexpectedly advanced before push"
+        ))
+        expect(state.get("final_18_of_18_eligible") is False, (
+            "pre-push develop lifecycle cannot be final-18 eligible"
+        ))
+    elif lifecycle == "POST_PUSH_DEVELOP_FINAL":
+        expect(state.get("branch") == "develop", (
+            "POST_PUSH_DEVELOP_FINAL branch differs"
+        ))
+        for key in (
+            "remote_tracking_integration",
+            "remote_integration",
+            "remote_tracking_develop",
+            "remote_develop",
+        ):
+            expect(state.get(key) == candidate, (
+                f"final lifecycle {key} is not candidate"
+            ))
+        expect(state.get("final_18_of_18_eligible") is True, (
+            "final lifecycle is not eligible by Git/static contract"
+        ))
+    return issues
+
+
+def lifecycle_regression_results() -> dict[str, bool]:
+    """Return the required four positive and eleven negative pure regressions."""
+    positive = {
+        "PRECOMMIT_MERGE_INDEX_VALID": "PRECOMMIT_MERGE_INDEX",
+        "POSTCOMMIT_INTEGRATION_CLEAN_VALID": "POSTCOMMIT_INTEGRATION_CLEAN",
+        "POST_FAST_FORWARD_DEVELOP_PRE_PUSH_VALID": (
+            "POST_FAST_FORWARD_DEVELOP_PRE_PUSH"
+        ),
+        "POST_PUSH_DEVELOP_FINAL_VALID": "POST_PUSH_DEVELOP_FINAL",
+    }
+    results = {
+        name: not lifecycle_state_failures(
+            lifecycle,
+            valid_lifecycle_state_fixture(lifecycle),
+        )
+        for name, lifecycle in positive.items()
+    }
+
+    negative_mutations: dict[str, tuple[str, str, object]] = {
+        "WRONG_BRANCH_FOR_LIFECYCLE": (
+            "POSTCOMMIT_INTEGRATION_CLEAN", "branch", "develop"
+        ),
+        "WRONG_HEAD_OR_TREE": (
+            "PRECOMMIT_MERGE_INDEX", "head_tree", "0" * 40
+        ),
+        "UNEXPECTED_MERGE_HEAD": (
+            "POSTCOMMIT_INTEGRATION_CLEAN", "merge_head", EXPECTED_MERGE_HEAD
+        ),
+        "UNEXPECTED_STAGED_CHANGE_IN_CLEAN_LIFECYCLE": (
+            "POSTCOMMIT_INTEGRATION_CLEAN", "staged_path_count", 1
+        ),
+        "MISSING_HISTORICAL_PATH": (
+            "POSTCOMMIT_INTEGRATION_CLEAN",
+            "historical_changed_path_count",
+            REVIEWED_INTEGRATION_CHANGED_PATH_COUNT - 1,
+        ),
+        "MUTATED_HISTORICAL_TREE_OR_BLOB": (
+            "POSTCOMMIT_INTEGRATION_CLEAN",
+            "historical_tree_and_blobs_valid",
+            False,
+        ),
+        "REMOTE_INTEGRATION_MISMATCH": (
+            "POSTCOMMIT_INTEGRATION_CLEAN",
+            "remote_integration",
+            "c" * 40,
+        ),
+        "REMOTE_DEVELOP_UNEXPECTED_ADVANCE": (
+            "POSTCOMMIT_INTEGRATION_CLEAN",
+            "remote_develop",
+            "d" * 40,
+        ),
+        "FALSE_18_OF_18_BEFORE_REMOTE_PUSH": (
+            "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+            "formal_18_of_18_claimed",
+            True,
+        ),
+        "FINAL_MODE_REMOTE_DEVELOP_MISMATCH": (
+            "POST_PUSH_DEVELOP_FINAL",
+            "remote_develop",
+            REMOTE_DEVELOP_BASE,
+        ),
+        "AMBIGUOUS_LIFECYCLE_STATE": (
+            "POSTCOMMIT_INTEGRATION_CLEAN",
+            "lifecycle_declarations",
+            ["POSTCOMMIT_INTEGRATION_CLEAN", "POST_PUSH_DEVELOP_FINAL"],
+        ),
+    }
+    for name, (lifecycle, key, value) in negative_mutations.items():
+        state = copy.deepcopy(valid_lifecycle_state_fixture(lifecycle))
+        state[key] = value
+        if name == "UNEXPECTED_MERGE_HEAD":
+            state["merge_in_progress"] = True
+        results[name] = bool(lifecycle_state_failures(lifecycle, state))
+    return results
+
+
+def legacy_aggregate_regression_results() -> dict[str, bool]:
+    """Expose the existing active-stale-marker regression family as pure logic."""
+    final_contract = "\n".join(A010R5R2R2_REQUIRED_DOCUMENT_TOKENS)
+    return {
+        marker: bool(active_stale_pre_qa_markers(f"{final_contract}\n{marker}\n"))
+        for marker in A010R5R2R2_STALE_PRE_QA_MARKERS
+    }
 
 
 def stage_progression_failures(
@@ -1330,9 +1820,8 @@ def verify_registry() -> None:
         return
 
     check(registry.get("schema_version") == 1, "unexpected applicability registry schema")
-    check(registry.get("task_id") == "Snow-Integration-A010R5R2R2", (
-        "applicability registry task_id is not A010R5R2R2"
-    ))
+    for issue in lifecycle_registry_failures(registry):
+        fail(issue)
     progression = registry.get("a010r2_stage_progression")
     check(isinstance(progression, dict), "registry A010R2 stage progression is missing")
     if isinstance(progression, dict):
@@ -1524,6 +2013,26 @@ def verify_registry() -> None:
             for field in ("historical_task", "obsolete_assertion", "reason", "replacement"):
                 check(bool(entry.get(field)), f"excluded verifier lacks {field}: {path}")
 
+    aggregate_entries = [
+        entry for entry in entries
+        if isinstance(entry, dict)
+        and entry.get("path") == "scripts/verify_snow_integration_aggregate.py"
+    ]
+    check(len(aggregate_entries) == 1, (
+        "registry must contain exactly one aggregate verifier entry"
+    ))
+    if len(aggregate_entries) == 1:
+        check(
+            aggregate_entries[0].get("command")
+            == [
+                "python3",
+                "scripts/verify_snow_integration_aggregate.py",
+                "--lifecycle",
+                LIFECYCLE_BINDINGS["Snow-Integration-A012R2"],
+            ],
+            "aggregate CURRENT_REQUIRED command differs from A012R2 lifecycle binding",
+        )
+
     check(len(entries) == 25, f"expected 25 relevant verifiers, found {len(entries)}")
     check(counts["CURRENT_REQUIRED"] == 12, "expected 12 CURRENT_REQUIRED verifiers")
     check(counts["HISTORICAL_STAGE_LOCAL"] == 12, "expected 12 historical stage-local verifiers")
@@ -1532,49 +2041,380 @@ def verify_registry() -> None:
     mark_group("registry", start)
 
 
-def verify_git_state() -> None:
-    start = len(failures)
+def optional_git_ref(ref_name: str) -> str:
+    result = run(["git", "-C", str(ROOT), "rev-parse", "-q", "--verify", ref_name])
+    if result.returncode == 0:
+        return result.stdout.strip()
+    if result.returncode == 1:
+        return "ABSENT"
+    fail(f"git rev-parse {ref_name} failed: {result.stderr.strip()}")
+    return "ERROR"
+
+
+def remote_branch_ref(branch: str) -> str:
+    result = run([
+        "git", "-C", str(ROOT), "ls-remote", "--heads",
+        "origin", f"refs/heads/{branch}",
+    ])
+    if result.returncode != 0:
+        fail(f"git ls-remote {branch} failed: {result.stderr.strip()}")
+        return "ERROR"
+    rows = nonempty_lines(result.stdout)
+    if len(rows) != 1:
+        fail(f"remote branch {branch} resolved to {len(rows)} rows")
+        return "ABSENT" if not rows else "AMBIGUOUS"
+    fields = rows[0].split()
+    if len(fields) != 2 or fields[1] != f"refs/heads/{branch}":
+        fail(f"remote branch {branch} returned malformed evidence")
+        return "ERROR"
+    return fields[0]
+
+
+def index_manifest_sha256(index_lines: list[str]) -> str:
+    rows = ["mode\tblob_hash\tstage\tpath"]
+    for line in index_lines:
+        mode_blob_stage, separator, path = line.partition("\t")
+        if not separator:
+            return "MALFORMED"
+        fields = mode_blob_stage.split()
+        if len(fields) != 3:
+            return "MALFORMED"
+        rows.append("\t".join([fields[0], fields[1], fields[2], path]))
+    return hashlib.sha256(("\n".join(rows) + "\n").encode("utf-8")).hexdigest()
+
+
+def committed_tree_index_lines(commit: str) -> list[str]:
+    result = run(["git", "-C", str(ROOT), "ls-tree", "-r", commit])
+    if result.returncode != 0:
+        fail(f"unable to read committed tree {commit}: {result.stderr.strip()}")
+        return []
+    lines: list[str] = []
+    for row in result.stdout.splitlines():
+        mode_type_oid, separator, path = row.partition("\t")
+        fields = mode_type_oid.split()
+        if not separator or len(fields) != 3:
+            fail(f"malformed committed tree row for {commit}: {row}")
+            continue
+        mode, object_type, oid = fields
+        if object_type != "blob":
+            fail(f"non-blob committed tree row for {commit}: {row}")
+            continue
+        lines.append(f"{mode} {oid} 0\t{path}")
+    return lines
+
+
+def committed_historical_evidence() -> tuple[dict[str, object], dict[str, int | str]]:
+    parent_line = git(
+        "rev-list", "--parents", "-n", "1", REVIEWED_INTEGRATION_MERGE_COMMIT
+    ).strip().split()
+    parent_values = parent_line[1:] if parent_line else []
+    tree = git(
+        "rev-parse", f"{REVIEWED_INTEGRATION_MERGE_COMMIT}^{{tree}}"
+    ).strip()
+    changed_paths = nonempty_lines(git(
+        "diff", "--name-only", REVIEWED_INTEGRATION_FIRST_PARENT,
+        REVIEWED_INTEGRATION_MERGE_COMMIT,
+    ))
+    changed_digest = hashlib.sha256(
+        ("\n".join(sorted(changed_paths)) + "\n").encode("utf-8")
+    ).hexdigest()
+    historical_index_lines = committed_tree_index_lines(
+        REVIEWED_INTEGRATION_MERGE_COMMIT
+    )
+    historical_manifest = index_manifest_sha256(historical_index_lines)
+    progression_issues, progression_observations = (
+        a010r5r2r2_stage_progression_failures(
+            changed_paths,
+            historical_index_lines,
+            set(),
+            set(),
+            set(),
+            [],
+        )
+    )
+    a007_first_parent_absent = True
+    for path in sorted(A007_PATHS):
+        result = run([
+            "git", "-C", str(ROOT), "cat-file", "-e",
+            f"{REVIEWED_INTEGRATION_FIRST_PARENT}:{path}",
+        ])
+        if result.returncode == 0:
+            a007_first_parent_absent = False
+            progression_issues.append(
+                f"A007 path unexpectedly exists in historical first parent: {path}"
+            )
+
+    exact_parents = parent_values == [
+        REVIEWED_INTEGRATION_FIRST_PARENT,
+        REVIEWED_INTEGRATION_SECOND_PARENT,
+    ]
+    exact_tree = tree == REVIEWED_INTEGRATION_TREE
+    exact_paths = (
+        len(changed_paths) == REVIEWED_INTEGRATION_CHANGED_PATH_COUNT
+        and changed_digest == EXPECTED_A010R5R1_STAGED_PATH_LIST_SHA256
+    )
+    exact_rows = len(historical_index_lines) == REVIEWED_INTEGRATION_TREE_ROW_COUNT
+    exact_manifest = (
+        historical_manifest == REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256
+    )
+    state = {
+        "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "historical_first_parent": (
+            parent_values[0] if len(parent_values) > 0 else "ABSENT"
+        ),
+        "historical_second_parent": (
+            parent_values[1] if len(parent_values) > 1 else "ABSENT"
+        ),
+        "historical_tree": tree,
+        "historical_changed_path_count": len(changed_paths),
+        "historical_changed_path_list_sha256": changed_digest,
+        "historical_tree_row_count": len(historical_index_lines),
+        "historical_index_manifest_sha256": historical_manifest,
+        "historical_progression_failure_count": len(progression_issues),
+        "historical_tree_and_blobs_valid": (
+            exact_parents
+            and exact_tree
+            and exact_paths
+            and exact_rows
+            and exact_manifest
+            and a007_first_parent_absent
+            and not progression_issues
+        ),
+    }
+    observations_for_history = dict(progression_observations)
+    observations_for_history.update({
+        "REVIEWED_INTEGRATION_MERGE_COMMIT": REVIEWED_INTEGRATION_MERGE_COMMIT,
+        "REVIEWED_INTEGRATION_FIRST_PARENT": state["historical_first_parent"],
+        "REVIEWED_INTEGRATION_SECOND_PARENT": state["historical_second_parent"],
+        "REVIEWED_INTEGRATION_TREE": tree,
+        "FIRST_PARENT_CHANGED_PATH_COUNT": len(changed_paths),
+        "FIRST_PARENT_CHANGED_PATH_LIST_SHA256": changed_digest,
+        "COMMITTED_TREE_ROW_COUNT": len(historical_index_lines),
+        "COMMITTED_INDEX_MANIFEST_SHA256": historical_manifest,
+        "HISTORICAL_PROGRESSION_FAILURE_COUNT": len(progression_issues),
+    })
+    return state, observations_for_history
+
+
+def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
     branch = git("branch", "--show-current").strip()
     head = git("rev-parse", "HEAD").strip()
-    orig_head = git("rev-parse", "ORIG_HEAD").strip()
-    merge_head = git("rev-parse", "MERGE_HEAD").strip()
+    head_tree = git("rev-parse", "HEAD^{tree}").strip()
     staged_paths = nonempty_lines(git("diff", "--cached", "--name-only"))
     unstaged_paths = set(nonempty_lines(git("diff", "--name-only")))
-    untracked_paths = set(nonempty_lines(git("ls-files", "--others", "--exclude-standard")))
-    unmerged_paths = set(nonempty_lines(git("diff", "--name-only", "--diff-filter=U")))
+    untracked_paths = set(nonempty_lines(
+        git("ls-files", "--others", "--exclude-standard")
+    ))
+    unmerged_paths = set(nonempty_lines(
+        git("diff", "--name-only", "--diff-filter=U")
+    ))
     unmerged_index = nonempty_lines(git("ls-files", "-u"))
-
-    check(branch == EXPECTED_BRANCH, f"branch changed: {branch}")
-    check(head == EXPECTED_HEAD, f"HEAD changed: {head}")
-    check(orig_head == EXPECTED_ORIG_HEAD, f"ORIG_HEAD changed: {orig_head}")
-    check(merge_head == EXPECTED_MERGE_HEAD, f"MERGE_HEAD changed: {merge_head}")
-    check((ROOT / ".git/MERGE_HEAD").is_file(), "merge is no longer in progress")
+    merge_head = optional_git_ref("MERGE_HEAD")
+    merge_in_progress = merge_head not in {"ABSENT", "ERROR"}
     index_lines = git("ls-files", "-s").splitlines()
-    stage_issues, stage_observations = a010r5r2r2_stage_progression_failures(
-        staged_paths,
-        index_lines,
-        unstaged_paths,
-        untracked_paths,
-        unmerged_paths,
-        unmerged_index,
+    clean = (
+        not staged_paths
+        and not unstaged_paths
+        and not untracked_paths
+        and not unmerged_paths
+        and not unmerged_index
+        and not merge_in_progress
     )
-    for issue in stage_issues:
-        fail(issue)
-    observations.update(stage_observations)
+    state: dict[str, object] = {
+        "lifecycle_declarations": [lifecycle],
+        "branch": branch,
+        "head": head,
+        "head_tree": head_tree,
+        "index_tree": head_tree if clean else "UNRESOLVED",
+        "orig_head": optional_git_ref("ORIG_HEAD"),
+        "merge_head": merge_head,
+        "merge_in_progress": merge_in_progress,
+        "staged_path_count": len(staged_paths),
+        "unstaged_change_count": len(unstaged_paths),
+        "untracked_path_count": len(untracked_paths),
+        "unmerged_path_count": len(unmerged_paths) + len(unmerged_index),
+        "worktree_and_index_clean": clean,
+        "local_integration": git(
+            "rev-parse", f"refs/heads/{EXPECTED_BRANCH}"
+        ).strip(),
+        "remote_tracking_integration": git(
+            "rev-parse", f"refs/remotes/origin/{EXPECTED_BRANCH}"
+        ).strip(),
+        "remote_integration": remote_branch_ref(EXPECTED_BRANCH),
+        "local_develop": git("rev-parse", "refs/heads/develop").strip(),
+        "remote_tracking_develop": git(
+            "rev-parse", "refs/remotes/origin/develop"
+        ).strip(),
+        "remote_develop": remote_branch_ref("develop"),
+        "formal_18_of_18_claimed": False,
+        "final_18_of_18_eligible": lifecycle == "POST_PUSH_DEVELOP_FINAL",
+    }
 
-    for path in sorted(A007_PATHS):
-        result = run(["git", "-C", str(ROOT), "cat-file", "-e", f"{EXPECTED_HEAD}:{path}"])
-        check(result.returncode != 0, f"A007 path unexpectedly exists in frozen HEAD: {path}")
+    if lifecycle == "PRECOMMIT_MERGE_INDEX":
+        progression_issues, progression_observations = (
+            a010r5r2r2_stage_progression_failures(
+                staged_paths,
+                index_lines,
+                unstaged_paths,
+                untracked_paths,
+                unmerged_paths,
+                unmerged_index,
+            )
+        )
+        reviewed_index_lines = committed_tree_index_lines(
+            REVIEWED_INTEGRATION_MERGE_COMMIT
+        )
+        state.update({
+            "index_tree": (
+                REVIEWED_INTEGRATION_TREE
+                if index_lines == reviewed_index_lines
+                else "MISMATCH"
+            ),
+            "precommit_index_data_row_count": len(index_lines),
+            "precommit_index_manifest_sha256": index_manifest_sha256(index_lines),
+            "precommit_staged_path_list_sha256": hashlib.sha256(
+                ("\n".join(sorted(staged_paths)) + "\n").encode("utf-8")
+            ).hexdigest(),
+            "precommit_progression_failure_count": len(progression_issues),
+        })
+        for issue in progression_issues:
+            fail(issue)
+        observations.update(progression_observations)
+    else:
+        historical_state, historical_observations = (
+            committed_historical_evidence()
+        )
+        state.update(historical_state)
+        observations.update(historical_observations)
+        candidate_parent_line = git(
+            "rev-list", "--parents", "-n", "1", head
+        ).strip().split()
+        candidate_parents = candidate_parent_line[1:] if candidate_parent_line else []
+        candidate_changed_paths = nonempty_lines(git(
+            "diff", "--name-only", REVIEWED_INTEGRATION_MERGE_COMMIT, head
+        ))
+        state.update({
+            "candidate": head,
+            "candidate_parent_count": len(candidate_parents),
+            "candidate_first_parent": (
+                candidate_parents[0] if candidate_parents else "ABSENT"
+            ),
+            "candidate_changed_path_count": len(candidate_changed_paths),
+            "candidate_changed_paths": sorted(candidate_changed_paths),
+            "candidate_all_other_paths_equal_a011_tree": (
+                set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+            ),
+        })
+        observations.update({
+            "CANDIDATE_COMMIT": head,
+            "CANDIDATE_TREE": head_tree,
+            "CANDIDATE_PARENT_COUNT": len(candidate_parents),
+            "CANDIDATE_FIRST_PARENT": state["candidate_first_parent"],
+            "CANDIDATE_CHANGED_PATH_COUNT": len(candidate_changed_paths),
+            "CANDIDATE_CHANGED_PATHS": ",".join(sorted(candidate_changed_paths)),
+            "CANDIDATE_CHANGED_PATH_SET_EXACT": (
+                "YES"
+                if set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+                else "NO"
+            ),
+            "ALL_OTHER_PATHS_EQUAL_A011_TREE": (
+                "YES"
+                if set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+                else "NO"
+            ),
+        })
+    return state
+
+
+def verify_lifecycle_regressions() -> None:
+    start = len(failures)
+    results = lifecycle_regression_results()
+    positive_names = {
+        "PRECOMMIT_MERGE_INDEX_VALID",
+        "POSTCOMMIT_INTEGRATION_CLEAN_VALID",
+        "POST_FAST_FORWARD_DEVELOP_PRE_PUSH_VALID",
+        "POST_PUSH_DEVELOP_FINAL_VALID",
+    }
+    negative_names = set(results) - positive_names
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(len(positive_names) == 4, "lifecycle positive regression count differs")
+    check(len(negative_names) == 11, "lifecycle negative regression count differs")
+    check(not positive_failures, (
+        f"lifecycle positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"lifecycle negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "LIFECYCLE_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "LIFECYCLE_POSITIVE_REGRESSION_FAILURE_COUNT": len(positive_failures),
+        "LIFECYCLE_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "LIFECYCLE_NEGATIVE_REGRESSION_FAILURE_COUNT": len(negative_failures),
+        "REAL_REPOSITORY_INDEX_MUTATED_FOR_NEGATIVE_TESTS": "NO",
+        "REAL_REPOSITORY_REFS_MUTATED_FOR_NEGATIVE_TESTS": "NO",
+    })
+    mark_group("lifecycle_regressions", start)
+
+
+def verify_git_state(lifecycle: str) -> None:
+    start = len(failures)
+    state = capture_lifecycle_state(lifecycle)
+    for issue in lifecycle_state_failures(lifecycle, state):
+        fail(issue)
+
+    remote_phase = "NOT_APPLICABLE"
+    if lifecycle == "POSTCOMMIT_INTEGRATION_CLEAN":
+        candidate = state.get("candidate")
+        remote_pair = (
+            state.get("remote_tracking_integration"),
+            state.get("remote_integration"),
+        )
+        if remote_pair == (
+            REVIEWED_INTEGRATION_MERGE_COMMIT,
+            REVIEWED_INTEGRATION_MERGE_COMMIT,
+        ):
+            remote_phase = "PRE_PUSH"
+        elif remote_pair == (candidate, candidate):
+            remote_phase = "POST_PUSH"
 
     observations.update({
-        "CURRENT_BRANCH": branch,
-        "HEAD": head,
-        "ORIG_HEAD": orig_head,
-        "MERGE_HEAD": merge_head,
-        "MERGE_IN_PROGRESS": "YES" if (ROOT / ".git/MERGE_HEAD").is_file() else "NO",
-        "UNMERGED_PATH_COUNT": len(unmerged_paths) + len(unmerged_index),
-        "UNSTAGED_CHANGE_COUNT": len(unstaged_paths | untracked_paths),
-        "STAGED_PATH_COUNT_FINAL": len(staged_paths),
+        "LIFECYCLE_SELECTION": "EXPLICIT_CLI",
+        "SELECTED_LIFECYCLE": lifecycle,
+        "CURRENT_BRANCH": state.get("branch", ""),
+        "HEAD": state.get("head", ""),
+        "HEAD_TREE": state.get("head_tree", ""),
+        "INDEX_TREE": state.get("index_tree", ""),
+        "ORIG_HEAD": state.get("orig_head", ""),
+        "MERGE_HEAD": state.get("merge_head", ""),
+        "MERGE_IN_PROGRESS": (
+            "YES" if state.get("merge_in_progress") else "NO"
+        ),
+        "STAGED_PATH_COUNT_FINAL": state.get("staged_path_count", -1),
+        "UNSTAGED_CHANGE_COUNT": state.get("unstaged_change_count", -1),
+        "UNTRACKED_PATH_COUNT": state.get("untracked_path_count", -1),
+        "UNMERGED_PATH_COUNT": state.get("unmerged_path_count", -1),
+        "WORKTREE_AND_INDEX_CLEAN": (
+            "YES" if state.get("worktree_and_index_clean") else "NO"
+        ),
+        "LOCAL_INTEGRATION_REF": state.get("local_integration", ""),
+        "REMOTE_TRACKING_INTEGRATION_REF": (
+            state.get("remote_tracking_integration", "")
+        ),
+        "REMOTE_INTEGRATION_REF": state.get("remote_integration", ""),
+        "LOCAL_DEVELOP_REF": state.get("local_develop", ""),
+        "REMOTE_TRACKING_DEVELOP_REF": state.get(
+            "remote_tracking_develop", ""
+        ),
+        "REMOTE_DEVELOP_REF": state.get("remote_develop", ""),
+        "POSTCOMMIT_INTEGRATION_REMOTE_PHASE": remote_phase,
+        "FINAL_18_OF_18_ELIGIBLE_BY_GIT_AND_STATIC_CONTRACT": (
+            "YES" if state.get("final_18_of_18_eligible") else "NO"
+        ),
         "A007_CHANGED_PATH_COUNT": len(A007_PATHS),
         "A007_CHANGED_PATHS": ",".join(sorted(A007_PATHS)),
         "A007_UNAPPROVED_CHANGED_PATH_COUNT": 0,
@@ -2096,11 +2936,8 @@ def verify_a010r5r2r2_closure_contract() -> None:
         f"{stale_occurrences}"
     ))
 
-    negative_case_results = []
-    final_contract = "\n".join(A010R5R2R2_REQUIRED_DOCUMENT_TOKENS)
-    for marker in A010R5R2R2_STALE_PRE_QA_MARKERS:
-        rejected = bool(active_stale_pre_qa_markers(f"{final_contract}\n{marker}\n"))
-        negative_case_results.append(rejected)
+    legacy_regressions = legacy_aggregate_regression_results()
+    for marker, rejected in legacy_regressions.items():
         check(rejected, f"negative regression did not reject active stale marker: {marker}")
 
     superseded_history = (
@@ -2118,9 +2955,13 @@ def verify_a010r5r2r2_closure_contract() -> None:
             "PASSED" if closure_passed else "FAILED"
         ),
         "ACTIVE_STALE_PRE_QA_MARKER_COUNT": len(stale_occurrences),
-        "AGGREGATE_NEGATIVE_REGRESSION_CASE_COUNT": len(negative_case_results),
+        "AGGREGATE_NEGATIVE_REGRESSION_CASE_COUNT": len(legacy_regressions),
         "AGGREGATE_NEGATIVE_REGRESSION_RESULT": (
-            "PASSED" if all(negative_case_results) else "FAILED"
+            "PASSED" if all(legacy_regressions.values()) else "FAILED"
+        ),
+        "LEGACY_AGGREGATE_REGRESSION_CASE_COUNT": len(legacy_regressions),
+        "LEGACY_AGGREGATE_REGRESSION_FAILURE_COUNT": sum(
+            not passed for passed in legacy_regressions.values()
         ),
         "A010R5R2_REPO_DOCUMENTATION_FINAL_STATE": (
             "PASSED" if closure_passed else "FAILED"
@@ -2575,7 +3416,11 @@ def verify_acceptance_matrix() -> None:
     check(len(names) == len(set(names)), "final acceptance matrix contains duplicate criteria")
     check(all(status in allowed_statuses for status in statuses), "invalid final acceptance status")
     expected_pending = {
-        "FINAL_MERGE_TO_DEVELOP_RESULT": "PENDING_A012_FINAL_MERGE",
+        "FINAL_MERGE_TO_DEVELOP_RESULT": (
+            "PASSED_NOW"
+            if selected_lifecycle == "POST_PUSH_DEVELOP_FINAL"
+            else "PENDING_A012_FINAL_MERGE"
+        ),
     }
     matrix = dict(resolved_matrix)
     for name, expected_status in expected_pending.items():
@@ -2601,13 +3446,19 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
         "PACKAGE_BACKUP_V1_V2_COMPATIBILITY": "package_backup",
     }
     required_groups = {
-        "registry", "git", "prototype", "sport", "motion",
+        "registry", "lifecycle_regressions", "git", "prototype", "sport", "motion",
         "a010r5_remediation", "a010r5r2_presentation", "a010r5r2r2_closure",
         "authority_visualization", "persistence", "package_backup",
         "health_forbidden", "watchbridge", "localization_project",
     }
     resolved: list[tuple[str, str]] = []
     for name, status in FINAL_ACCEPTANCE_MATRIX:
+        if (
+            name == "FINAL_MERGE_TO_DEVELOP_RESULT"
+            and selected_lifecycle == "POST_PUSH_DEVELOP_FINAL"
+            and group_results.get("git", False)
+        ):
+            status = "PASSED_NOW"
         group = criterion_groups.get(name)
         if group and status == "PASSED_NOW" and not group_results.get(group, False):
             status = "PENDING_A010_FINAL_GATE"
@@ -2736,9 +3587,24 @@ def emit_results() -> None:
         "YES" if group_results.get("git") else "NO",
     )
     output_marker("AGGREGATE_BROAD_GUARD_REMOVAL_COUNT", 0)
+    output_marker(
+        "LIFECYCLE_SELECTION_MECHANISM",
+        "EXPLICIT_CLI_PLUS_APPLICABILITY_JSON_PLUS_EXACT_GIT_REF_TREE_STATE_VALIDATION",
+    )
+    output_marker("ENVIRONMENT_VARIABLE_AS_LIFECYCLE_AUTHORITY", "NO")
+    output_marker("MISSING_LIFECYCLE_ARGUMENT", "FAIL_CLOSED")
+    output_marker("UNKNOWN_LIFECYCLE_ARGUMENT", "FAIL_CLOSED")
+    output_marker("DUPLICATE_OR_CONFLICTING_LIFECYCLE_DECLARATION", "FAIL_CLOSED")
+    output_marker("AMBIGUOUS_OR_PARTIAL_STATE", "FAIL_CLOSED")
 
     for index, (name, status) in enumerate(current_acceptance_matrix(), start=1):
         output_marker(f"FINAL_ACCEPTANCE_{index:02d}_{name}", status)
+    output_marker(
+        "FINAL_ACCEPTANCE_18_OF_18",
+        "NOT_PASSED_REQUIRES_A012R3_FRESH_TASK_GATES",
+    )
+    output_marker("A012_RESULT", "FAILED_HISTORICAL")
+    output_marker("A012R3_STARTED", "NO")
 
     output_marker("BUILD_GATE_REQUIRED_FOR_A008R1", "YES")
     output_marker("XCTEST_GATE_REQUIRED_FOR_A008R1", "YES")
@@ -2807,9 +3673,12 @@ def emit_results() -> None:
     )
 
 
-def main() -> int:
+def main(lifecycle: str) -> int:
+    global selected_lifecycle
+    selected_lifecycle = lifecycle
     verify_registry()
-    verify_git_state()
+    verify_lifecycle_regressions()
+    verify_git_state(lifecycle)
     verify_conflicts_and_prototype_quarantine()
     verify_sport_mode()
     verify_motion_and_threshold_locks()
@@ -2828,11 +3697,12 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    if sys.argv[1:] == ["--current-session-recording-contract"]:
+    command_kind, lifecycle_argument, cli_error = parse_cli_contract(sys.argv[1:])
+    if command_kind == "SESSION_RECORDING":
         sys.exit(verify_current_session_recording_contract())
-    if sys.argv[1:] == ["--current-session-persistence-contract"]:
+    if command_kind == "SESSION_PERSISTENCE":
         sys.exit(verify_current_session_persistence_contract())
-    if sys.argv[1:]:
-        print(f"unsupported arguments: {' '.join(sys.argv[1:])}", file=sys.stderr)
+    if cli_error:
+        print(f"lifecycle contract error: {cli_error}", file=sys.stderr)
         sys.exit(2)
-    sys.exit(main())
+    sys.exit(main(lifecycle_argument))

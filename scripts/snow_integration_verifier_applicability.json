@@ -1,7 +1,42 @@
 {
   "schema_version": 1,
-  "task_id": "Snow-Integration-A010R5R2R2",
+  "task_id": "Snow-Integration-A012R2",
   "aggregate_verifier": "scripts/verify_snow_integration_aggregate.py",
+  "lifecycle_selection": "EXPLICIT_CLI",
+  "allowed_lifecycle_count": 4,
+  "allowed_lifecycles": [
+    "PRECOMMIT_MERGE_INDEX",
+    "POSTCOMMIT_INTEGRATION_CLEAN",
+    "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+    "POST_PUSH_DEVELOP_FINAL"
+  ],
+  "current_required_verifier_count": 12,
+  "lifecycle_bindings": [
+    {
+      "task_phase": "Snow-Integration-A010R5R2R2",
+      "lifecycle": "PRECOMMIT_MERGE_INDEX",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--lifecycle", "PRECOMMIT_MERGE_INDEX"],
+      "environment": {}
+    },
+    {
+      "task_phase": "Snow-Integration-A012R2",
+      "lifecycle": "POSTCOMMIT_INTEGRATION_CLEAN",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--lifecycle", "POSTCOMMIT_INTEGRATION_CLEAN"],
+      "environment": {}
+    },
+    {
+      "task_phase": "Snow-Integration-A012R3_PRE_PUSH",
+      "lifecycle": "POST_FAST_FORWARD_DEVELOP_PRE_PUSH",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--lifecycle", "POST_FAST_FORWARD_DEVELOP_PRE_PUSH"],
+      "environment": {}
+    },
+    {
+      "task_phase": "Snow-Integration-A012R3_POST_PUSH",
+      "lifecycle": "POST_PUSH_DEVELOP_FINAL",
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--lifecycle", "POST_PUSH_DEVELOP_FINAL"],
+      "environment": {}
+    }
+  ],
   "a010r2_stage_progression": {
     "expected_staged_path_count": 199,
     "newly_staged_paths": [
@@ -126,9 +161,9 @@
       "path": "scripts/verify_snow_integration_aggregate.py",
       "classification": "CURRENT_REQUIRED",
       "historical_task": "Snow-Integration-A007/A010R5R2R2",
-      "command": ["python3", "scripts/verify_snow_integration_aggregate.py"],
+      "command": ["python3", "scripts/verify_snow_integration_aggregate.py", "--lifecycle", "POSTCOMMIT_INTEGRATION_CLEAN"],
       "environment": {},
-      "reason": "Authoritative current A010R5R2R2 exact nine-blob documentation/aggregate closure, active stale-state rejection, A010R5R2 zero-new-path presentation remediation, prior no-altitude unknown-distance remediation, format locks, Watch package contract, and historical aggregate gate."
+      "reason": "Authoritative lifecycle-aware current aggregate for A012R2, preserving immutable A010R5R2R2 historical closure evidence and all current Snow integration contracts."
     },
     {
       "path": "scripts/verify_a008r1_manual_qa_readiness.py",
