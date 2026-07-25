@@ -2925,6 +2925,7 @@ def active_stale_pre_qa_markers(text: str) -> list[str]:
 
 def verify_a010r5r2r2_closure_contract() -> None:
     start = len(failures)
+    final_contract = "\n".join(A010R5R2R2_REQUIRED_DOCUMENT_TOKENS)
     stale_occurrences: list[str] = []
     for path in sorted(A010R5R2R2_DOCUMENT_PATHS):
         text = require_tokens(path, A010R5R2R2_REQUIRED_DOCUMENT_TOKENS)
