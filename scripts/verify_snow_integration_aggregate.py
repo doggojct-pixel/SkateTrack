@@ -91,6 +91,16 @@ REMEDIATION_ALLOWED_PATHS = {
     "scripts/snow_integration_verifier_applicability.json",
     "scripts/verify_snow_integration_aggregate.py",
 }
+REMEDIATION_ROOT = REVIEWED_INTEGRATION_MERGE_COMMIT
+CHAIN_ANCHOR_1 = "dfbd1a176ad9bef630dd824cfe31b432bcddc557"
+CHAIN_ANCHOR_1_PARENT = REMEDIATION_ROOT
+CHAIN_ANCHOR_1_CHANGED_PATHS = REMEDIATION_ALLOWED_PATHS
+CHAIN_ANCHOR_2 = "6629c024e12a5c71665b43d26e45a3fc333a5150"
+CHAIN_ANCHOR_2_PARENT = CHAIN_ANCHOR_1
+CHAIN_TIP_CHANGED_PATHS = {
+    "scripts/verify_snow_integration_aggregate.py",
+}
+CHAIN_REMOTE_PHASES = {"PRE_PUSH", "POST_PUSH"}
 REMOTE_DEVELOP_BASE = EXPECTED_HEAD
 
 A010R2_NEWLY_STAGED_PATHS = {
@@ -961,10 +971,217 @@ def lifecycle_registry_failures(registry: object) -> list[str]:
     return issues
 
 
+def valid_remediation_chain_fixture(
+    remote_phase: str = "PRE_PUSH",
+) -> dict[str, object]:
+    """Build a valid three-commit chain without touching the real repository."""
+    tip = "a" * 40
+    return {
+        "root": REMEDIATION_ROOT,
+        "tip": tip,
+        "remote_phase": remote_phase,
+        "commits": [
+            {
+                "oid": CHAIN_ANCHOR_1,
+                "parents": [CHAIN_ANCHOR_1_PARENT],
+                "changed_paths": sorted(CHAIN_ANCHOR_1_CHANGED_PATHS),
+            },
+            {
+                "oid": CHAIN_ANCHOR_2,
+                "parents": [CHAIN_ANCHOR_2_PARENT],
+                "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+            },
+            {
+                "oid": tip,
+                "parents": [CHAIN_ANCHOR_2],
+                "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+            },
+        ],
+        "cumulative_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
+        "all_other_path_mode_blob_entries_equal_root": True,
+    }
+
+
+def remediation_chain_failures(chain: object) -> list[str]:
+    """Validate the exact anchored, linear, three-commit remediation chain."""
+    issues: list[str] = []
+
+    def expect(condition: bool, message: str) -> None:
+        if not condition:
+            issues.append(message)
+
+    expect(isinstance(chain, dict), "remediation chain evidence is not an object")
+    if not isinstance(chain, dict):
+        return issues
+
+    root = chain.get("root")
+    tip = chain.get("tip")
+    remote_phase = chain.get("remote_phase")
+    commits = chain.get("commits")
+    expect(root == REMEDIATION_ROOT, "remediation root differs")
+    expect(
+        isinstance(tip, str)
+        and re.fullmatch(r"[0-9a-f]{40}", tip) is not None
+        and tip not in {REMEDIATION_ROOT, CHAIN_ANCHOR_1, CHAIN_ANCHOR_2},
+        "dynamic remediation tip identity is invalid",
+    )
+    expect(remote_phase in CHAIN_REMOTE_PHASES, "remediation remote phase differs")
+    expect(isinstance(commits, list), "remediation commit sequence is not a list")
+    if not isinstance(commits, list):
+        return issues
+
+    expected_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, tip]
+    actual_oids = [
+        commit.get("oid") if isinstance(commit, dict) else None
+        for commit in commits
+    ]
+    expect(len(commits) == 3, "remediation chain commit count differs")
+    expect(actual_oids == expected_oids, "remediation chain order or identities differ")
+
+    expected_commits = [
+        (
+            CHAIN_ANCHOR_1,
+            [CHAIN_ANCHOR_1_PARENT],
+            sorted(CHAIN_ANCHOR_1_CHANGED_PATHS),
+        ),
+        (
+            CHAIN_ANCHOR_2,
+            [CHAIN_ANCHOR_2_PARENT],
+            sorted(CHAIN_TIP_CHANGED_PATHS),
+        ),
+        (
+            tip,
+            [CHAIN_ANCHOR_2],
+            sorted(CHAIN_TIP_CHANGED_PATHS),
+        ),
+    ]
+    for index, (expected_oid, expected_parents, expected_paths) in enumerate(
+        expected_commits
+    ):
+        if index >= len(commits):
+            expect(False, f"remediation commit {index + 1} is missing")
+            continue
+        commit = commits[index]
+        expect(isinstance(commit, dict), (
+            f"remediation commit {index + 1} evidence is not an object"
+        ))
+        if not isinstance(commit, dict):
+            continue
+        expect(commit.get("oid") == expected_oid, (
+            f"remediation commit {index + 1} identity differs"
+        ))
+        parents = commit.get("parents")
+        expect(isinstance(parents, list), (
+            f"remediation commit {index + 1} parents are not a list"
+        ))
+        if isinstance(parents, list):
+            expect(len(parents) == 1, (
+                f"remediation commit {index + 1} is not single-parent"
+            ))
+            expect(parents == expected_parents, (
+                f"remediation commit {index + 1} parent differs"
+            ))
+        changed_paths = commit.get("changed_paths")
+        expect(isinstance(changed_paths, list), (
+            f"remediation commit {index + 1} changed paths are not a list"
+        ))
+        if isinstance(changed_paths, list):
+            expect(changed_paths == expected_paths, (
+                f"remediation commit {index + 1} changed path set differs"
+            ))
+
+    expect(
+        chain.get("cumulative_changed_paths")
+        == sorted(REMEDIATION_ALLOWED_PATHS),
+        "cumulative remediation changed path set differs",
+    )
+    expect(
+        chain.get("all_other_path_mode_blob_entries_equal_root") is True,
+        "a non-remediation path mode/blob entry differs from remediation root",
+    )
+    return issues
+
+
+def remediation_chain_regression_results() -> dict[str, bool]:
+    """Return two valid and eleven rejected synthetic chain cases."""
+    results = {
+        "VALID_THREE_COMMIT_CHAIN_PRE_PUSH": not remediation_chain_failures(
+            valid_remediation_chain_fixture("PRE_PUSH")
+        ),
+        "VALID_THREE_COMMIT_CHAIN_POST_PUSH": not remediation_chain_failures(
+            valid_remediation_chain_fixture("POST_PUSH")
+        ),
+    }
+
+    mutations: dict[str, object] = {}
+
+    missing_anchor_1 = valid_remediation_chain_fixture()
+    missing_anchor_1["commits"].pop(0)
+    mutations["MISSING_DFBD_ANCHOR"] = missing_anchor_1
+
+    missing_anchor_2 = valid_remediation_chain_fixture()
+    missing_anchor_2["commits"].pop(1)
+    mutations["MISSING_6629_ANCHOR"] = missing_anchor_2
+
+    substituted_anchor = valid_remediation_chain_fixture()
+    substituted_anchor["commits"][0]["oid"] = "b" * 40
+    mutations["ANCHOR_COMMIT_HASH_SUBSTITUTION"] = substituted_anchor
+
+    wrong_order = valid_remediation_chain_fixture()
+    wrong_order["commits"][0], wrong_order["commits"][1] = (
+        wrong_order["commits"][1],
+        wrong_order["commits"][0],
+    )
+    mutations["WRONG_CHAIN_ORDER"] = wrong_order
+
+    wrong_tip_parent = valid_remediation_chain_fixture()
+    wrong_tip_parent["commits"][2]["parents"] = [CHAIN_ANCHOR_1]
+    mutations["TIP_PARENT_NOT_6629"] = wrong_tip_parent
+
+    wrong_anchor_parent = valid_remediation_chain_fixture()
+    wrong_anchor_parent["commits"][1]["parents"] = [REMEDIATION_ROOT]
+    mutations["ANCHOR_PARENT_MISMATCH"] = wrong_anchor_parent
+
+    merge_commit = valid_remediation_chain_fixture()
+    merge_commit["commits"][1]["parents"].append("c" * 40)
+    mutations["MERGE_COMMIT_IN_CHAIN"] = merge_commit
+
+    extra_commit = valid_remediation_chain_fixture()
+    extra_commit["commits"].append({
+        "oid": "d" * 40,
+        "parents": [extra_commit["tip"]],
+        "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+    })
+    mutations["EXTRA_COMMIT_IN_CHAIN"] = extra_commit
+
+    unauthorized_intermediate = valid_remediation_chain_fixture()
+    unauthorized_intermediate["commits"][1]["changed_paths"].append(
+        "Shared/Unauthorized.swift"
+    )
+    mutations["UNAUTHORIZED_INTERMEDIATE_PATH"] = unauthorized_intermediate
+
+    unauthorized_tip = valid_remediation_chain_fixture()
+    unauthorized_tip["commits"][2]["changed_paths"].append(
+        "Shared/Unauthorized.swift"
+    )
+    mutations["UNAUTHORIZED_TIP_PATH"] = unauthorized_tip
+
+    cumulative_mismatch = valid_remediation_chain_fixture()
+    cumulative_mismatch["cumulative_changed_paths"] = sorted(
+        CHAIN_TIP_CHANGED_PATHS
+    )
+    mutations["CUMULATIVE_CHANGED_PATH_SET_MISMATCH"] = cumulative_mismatch
+
+    for name, chain in mutations.items():
+        results[name] = bool(remediation_chain_failures(chain))
+    return results
+
+
 def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
     """Build a synthetic valid state for pure lifecycle contract regressions."""
     candidate = "a" * 40
     candidate_tree = "b" * 40
+    chain = valid_remediation_chain_fixture("POST_PUSH")
     common: dict[str, object] = {
         "lifecycle_declarations": [lifecycle],
         "branch": EXPECTED_BRANCH,
@@ -987,10 +1204,11 @@ def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
         "remote_develop": REMOTE_DEVELOP_BASE,
         "candidate": candidate,
         "candidate_parent_count": 1,
-        "candidate_first_parent": REVIEWED_INTEGRATION_MERGE_COMMIT,
-        "candidate_changed_path_count": 2,
-        "candidate_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
+        "candidate_first_parent": CHAIN_ANCHOR_2,
+        "candidate_changed_path_count": 1,
+        "candidate_changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
         "candidate_all_other_paths_equal_a011_tree": True,
+        "remediation_chain": chain,
         "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
         "historical_first_parent": REVIEWED_INTEGRATION_FIRST_PARENT,
         "historical_second_parent": REVIEWED_INTEGRATION_SECOND_PARENT,
@@ -1114,11 +1332,6 @@ def lifecycle_state_failures(
         "untracked_path_count": 0,
         "unmerged_path_count": 0,
         "worktree_and_index_clean": True,
-        "candidate_parent_count": 1,
-        "candidate_first_parent": REVIEWED_INTEGRATION_MERGE_COMMIT,
-        "candidate_changed_path_count": len(REMEDIATION_ALLOWED_PATHS),
-        "candidate_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
-        "candidate_all_other_paths_equal_a011_tree": True,
         "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
         "historical_first_parent": REVIEWED_INTEGRATION_FIRST_PARENT,
         "historical_second_parent": REVIEWED_INTEGRATION_SECOND_PARENT,
@@ -1146,6 +1359,13 @@ def lifecycle_state_failures(
     expect(state.get("local_integration") == candidate, (
         "local integration ref is not the derived remediation candidate"
     ))
+    chain = state.get("remediation_chain")
+    for issue in remediation_chain_failures(chain):
+        issues.append(f"strict remediation chain: {issue}")
+    if isinstance(chain, dict):
+        expect(chain.get("tip") == candidate, (
+            "remediation chain tip is not the derived remediation candidate"
+        ))
     expect(state.get("index_tree") == state.get("head_tree"), (
         "clean committed index tree does not equal HEAD tree"
     ))
@@ -1182,6 +1402,10 @@ def lifecycle_state_failures(
         expect(remote_pair in valid_pairs, (
             "remote integration refs do not match exactly one pre/post-push substate"
         ))
+        if isinstance(chain, dict) and remote_pair in valid_pairs:
+            expect(chain.get("remote_phase") == valid_pairs[remote_pair], (
+                "remediation chain remote phase differs from integration refs"
+            ))
         expect(state.get("final_18_of_18_eligible") is False, (
             "integration lifecycle cannot be final-18 eligible"
         ))
@@ -1195,6 +1419,10 @@ def lifecycle_state_failures(
         expect(state.get("remote_integration") == candidate, (
             "remote integration is not candidate before develop push"
         ))
+        if isinstance(chain, dict):
+            expect(chain.get("remote_phase") == "POST_PUSH", (
+                "develop pre-push lifecycle requires pushed integration chain"
+            ))
         expect(state.get("remote_tracking_develop") == REMOTE_DEVELOP_BASE, (
             "remote-tracking develop unexpectedly advanced before push"
         ))
@@ -1216,6 +1444,10 @@ def lifecycle_state_failures(
         ):
             expect(state.get(key) == candidate, (
                 f"final lifecycle {key} is not candidate"
+            ))
+        if isinstance(chain, dict):
+            expect(chain.get("remote_phase") == "POST_PUSH", (
+                "final lifecycle requires pushed integration chain"
             ))
         expect(state.get("final_18_of_18_eligible") is True, (
             "final lifecycle is not eligible by Git/static contract"
@@ -2196,6 +2428,197 @@ def committed_historical_evidence() -> tuple[dict[str, object], dict[str, int | 
     return state, observations_for_history
 
 
+def committed_tree_entries(commit: str) -> dict[str, str]:
+    """Return exact mode/type/object entries for every path in a commit."""
+    result = run(["git", "-C", str(ROOT), "ls-tree", "-r", commit])
+    if result.returncode != 0:
+        fail(f"unable to read tree entries for {commit}: {result.stderr.strip()}")
+        return {}
+    entries: dict[str, str] = {}
+    for row in result.stdout.splitlines():
+        mode_type_oid, separator, path = row.partition("\t")
+        fields = mode_type_oid.split()
+        if not separator or len(fields) != 3 or not path:
+            fail(f"malformed tree entry for {commit}: {row}")
+            continue
+        if path in entries:
+            fail(f"duplicate tree entry for {commit}: {path}")
+            continue
+        entries[path] = " ".join(fields)
+    return entries
+
+
+def capture_remediation_chain(tip: str, remote_phase: str) -> dict[str, object]:
+    """Capture exact first-parent, per-commit, cumulative, and tree evidence."""
+    sequence = nonempty_lines(git(
+        "rev-list", "--first-parent", "--reverse",
+        f"{REMEDIATION_ROOT}..{tip}",
+    ))
+    commits: list[dict[str, object]] = []
+    for oid in sequence:
+        parent_line = git("rev-list", "--parents", "-n", "1", oid).strip().split()
+        parents = parent_line[1:] if parent_line else []
+        changed_paths = nonempty_lines(git(
+            "diff-tree", "--no-commit-id", "--name-only", "-r", oid
+        ))
+        commits.append({
+            "oid": oid,
+            "parents": parents,
+            "changed_paths": sorted(changed_paths),
+        })
+
+    cumulative_changed_paths = nonempty_lines(git(
+        "diff", "--name-only", REMEDIATION_ROOT, tip
+    ))
+    root_entries = committed_tree_entries(REMEDIATION_ROOT)
+    tip_entries = committed_tree_entries(tip)
+    non_remediation_paths = (
+        set(root_entries) | set(tip_entries)
+    ) - REMEDIATION_ALLOWED_PATHS
+    all_other_entries_equal = all(
+        root_entries.get(path) == tip_entries.get(path)
+        for path in non_remediation_paths
+    )
+    return {
+        "root": REMEDIATION_ROOT,
+        "tip": tip,
+        "remote_phase": remote_phase,
+        "commits": commits,
+        "cumulative_changed_paths": sorted(cumulative_changed_paths),
+        "all_other_path_mode_blob_entries_equal_root": (
+            all_other_entries_equal
+        ),
+    }
+
+
+def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | str]:
+    """Convert chain evidence into stable task markers."""
+    commits_value = chain.get("commits")
+    commits = commits_value if isinstance(commits_value, list) else []
+    tip = chain.get("tip")
+    expected_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, tip]
+    actual_oids = [
+        commit.get("oid") if isinstance(commit, dict) else None
+        for commit in commits
+    ]
+    expected_oid_set = set(expected_oids)
+    actual_oid_set = set(actual_oids)
+    merge_count = sum(
+        1
+        for commit in commits
+        if isinstance(commit, dict)
+        and isinstance(commit.get("parents"), list)
+        and len(commit["parents"]) > 1
+    )
+    linear_single_parent = (
+        len(commits) == 3
+        and all(
+            isinstance(commit, dict)
+            and isinstance(commit.get("parents"), list)
+            and len(commit["parents"]) == 1
+            for commit in commits
+        )
+    )
+
+    commit_by_oid = {
+        commit.get("oid"): commit
+        for commit in commits
+        if isinstance(commit, dict)
+    }
+    anchor_1 = commit_by_oid.get(CHAIN_ANCHOR_1, {})
+    anchor_2 = commit_by_oid.get(CHAIN_ANCHOR_2, {})
+    tip_commit = commit_by_oid.get(tip, {})
+
+    def parents_of(commit: object) -> list[object]:
+        if not isinstance(commit, dict):
+            return []
+        parents = commit.get("parents")
+        return parents if isinstance(parents, list) else []
+
+    def paths_of(commit: object) -> list[object]:
+        if not isinstance(commit, dict):
+            return []
+        paths = commit.get("changed_paths")
+        return paths if isinstance(paths, list) else []
+
+    anchor_1_parents = parents_of(anchor_1)
+    anchor_2_parents = parents_of(anchor_2)
+    tip_parents = parents_of(tip_commit)
+    anchor_1_paths = paths_of(anchor_1)
+    anchor_2_paths = paths_of(anchor_2)
+    tip_paths = paths_of(tip_commit)
+    cumulative_value = chain.get("cumulative_changed_paths")
+    cumulative_paths = (
+        cumulative_value if isinstance(cumulative_value, list) else []
+    )
+    return {
+        "REMEDIATION_ROOT": str(chain.get("root", "")),
+        "CHAIN_ANCHOR_1": CHAIN_ANCHOR_1,
+        "CHAIN_ANCHOR_1_PARENT": (
+            str(anchor_1_parents[0]) if anchor_1_parents else "ABSENT"
+        ),
+        "CHAIN_ANCHOR_1_PARENT_COUNT": len(anchor_1_parents),
+        "CHAIN_ANCHOR_1_CHANGED_PATH_COUNT": len(anchor_1_paths),
+        "CHAIN_ANCHOR_1_CHANGED_PATHS": ",".join(
+            str(path) for path in anchor_1_paths
+        ),
+        "CHAIN_ANCHOR_2": CHAIN_ANCHOR_2,
+        "CHAIN_ANCHOR_2_PARENT": (
+            str(anchor_2_parents[0]) if anchor_2_parents else "ABSENT"
+        ),
+        "CHAIN_ANCHOR_2_PARENT_COUNT": len(anchor_2_parents),
+        "CHAIN_ANCHOR_2_CHANGED_PATH_COUNT": len(anchor_2_paths),
+        "CHAIN_ANCHOR_2_CHANGED_PATH": ",".join(
+            str(path) for path in anchor_2_paths
+        ),
+        "CHAIN_TIP": str(tip),
+        "CHAIN_TIP_PARENT_COUNT": len(tip_parents),
+        "CHAIN_TIP_FIRST_PARENT": (
+            str(tip_parents[0]) if tip_parents else "ABSENT"
+        ),
+        "CHAIN_TIP_CHANGED_PATH_COUNT": len(tip_paths),
+        "CHAIN_TIP_CHANGED_PATH": ",".join(
+            str(path) for path in tip_paths
+        ),
+        "REMEDIATION_CHAIN_COMMIT_COUNT": len(commits),
+        "REMEDIATION_CHAIN_ORDER_EXACT": (
+            "YES" if actual_oids == expected_oids else "NO"
+        ),
+        "REMEDIATION_CHAIN_LINEAR_SINGLE_PARENT": (
+            "YES" if linear_single_parent else "NO"
+        ),
+        "REMEDIATION_CHAIN_MERGE_COMMIT_COUNT": merge_count,
+        "REMEDIATION_CHAIN_EXTRA_COMMIT_COUNT": len(
+            actual_oid_set - expected_oid_set
+        ),
+        "REMEDIATION_CHAIN_MISSING_COMMIT_COUNT": len(
+            expected_oid_set - actual_oid_set
+        ),
+        "CUMULATIVE_CHANGED_PATH_COUNT": len(cumulative_paths),
+        "CUMULATIVE_CHANGED_PATH_SET_EXACT": (
+            "YES"
+            if cumulative_paths == sorted(REMEDIATION_ALLOWED_PATHS)
+            else "NO"
+        ),
+        "ALL_OTHER_PATH_MODE_BLOB_ENTRIES_EQUAL_REMEDIATION_ROOT": (
+            "YES"
+            if chain.get(
+                "all_other_path_mode_blob_entries_equal_root"
+            ) is True
+            else "NO"
+        ),
+        "A012R2R2_COMMIT": str(tip),
+        "A012R2R2_COMMIT_PARENT_COUNT": len(tip_parents),
+        "A012R2R2_COMMIT_FIRST_PARENT": (
+            str(tip_parents[0]) if tip_parents else "ABSENT"
+        ),
+        "A012R2R2_COMMIT_CHANGED_PATH_COUNT": len(tip_paths),
+        "A012R2R2_COMMIT_CHANGED_PATH": ",".join(
+            str(path) for path in tip_paths
+        ),
+    }
+
+
 def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
     branch = git("branch", "--show-current").strip()
     head = git("rev-parse", "HEAD").strip()
@@ -2286,13 +2709,43 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
         )
         state.update(historical_state)
         observations.update(historical_observations)
-        candidate_parent_line = git(
-            "rev-list", "--parents", "-n", "1", head
-        ).strip().split()
-        candidate_parents = candidate_parent_line[1:] if candidate_parent_line else []
-        candidate_changed_paths = nonempty_lines(git(
-            "diff", "--name-only", REVIEWED_INTEGRATION_MERGE_COMMIT, head
-        ))
+        remote_pair = (
+            state.get("remote_tracking_integration"),
+            state.get("remote_integration"),
+        )
+        if remote_pair == (REMEDIATION_ROOT, REMEDIATION_ROOT):
+            remote_phase = "PRE_PUSH"
+        elif remote_pair == (head, head):
+            remote_phase = "POST_PUSH"
+        else:
+            remote_phase = "INVALID"
+        chain = capture_remediation_chain(head, remote_phase)
+        chain_commits_value = chain.get("commits")
+        chain_commits = (
+            chain_commits_value
+            if isinstance(chain_commits_value, list)
+            else []
+        )
+        tip_commit = next(
+            (
+                commit
+                for commit in chain_commits
+                if isinstance(commit, dict) and commit.get("oid") == head
+            ),
+            {},
+        )
+        candidate_parents_value = tip_commit.get("parents")
+        candidate_parents = (
+            candidate_parents_value
+            if isinstance(candidate_parents_value, list)
+            else []
+        )
+        candidate_paths_value = tip_commit.get("changed_paths")
+        candidate_changed_paths = (
+            candidate_paths_value
+            if isinstance(candidate_paths_value, list)
+            else []
+        )
         state.update({
             "candidate": head,
             "candidate_parent_count": len(candidate_parents),
@@ -2302,9 +2755,13 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             "candidate_changed_path_count": len(candidate_changed_paths),
             "candidate_changed_paths": sorted(candidate_changed_paths),
             "candidate_all_other_paths_equal_a011_tree": (
-                set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+                chain.get(
+                    "all_other_path_mode_blob_entries_equal_root"
+                ) is True
             ),
+            "remediation_chain": chain,
         })
+        observations.update(remediation_chain_observations(chain))
         observations.update({
             "CANDIDATE_COMMIT": head,
             "CANDIDATE_TREE": head_tree,
@@ -2314,12 +2771,14 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             "CANDIDATE_CHANGED_PATHS": ",".join(sorted(candidate_changed_paths)),
             "CANDIDATE_CHANGED_PATH_SET_EXACT": (
                 "YES"
-                if set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+                if candidate_changed_paths == sorted(CHAIN_TIP_CHANGED_PATHS)
                 else "NO"
             ),
             "ALL_OTHER_PATHS_EQUAL_A011_TREE": (
                 "YES"
-                if set(candidate_changed_paths) == REMEDIATION_ALLOWED_PATHS
+                if chain.get(
+                    "all_other_path_mode_blob_entries_equal_root"
+                ) is True
                 else "NO"
             ),
         })
@@ -2359,6 +2818,54 @@ def verify_lifecycle_regressions() -> None:
         "REAL_REPOSITORY_REFS_MUTATED_FOR_NEGATIVE_TESTS": "NO",
     })
     mark_group("lifecycle_regressions", start)
+
+
+def verify_chain_regressions() -> None:
+    start = len(failures)
+    results = remediation_chain_regression_results()
+    positive_names = {
+        "VALID_THREE_COMMIT_CHAIN_PRE_PUSH",
+        "VALID_THREE_COMMIT_CHAIN_POST_PUSH",
+    }
+    negative_names = {
+        "MISSING_DFBD_ANCHOR",
+        "MISSING_6629_ANCHOR",
+        "ANCHOR_COMMIT_HASH_SUBSTITUTION",
+        "WRONG_CHAIN_ORDER",
+        "TIP_PARENT_NOT_6629",
+        "ANCHOR_PARENT_MISMATCH",
+        "MERGE_COMMIT_IN_CHAIN",
+        "EXTRA_COMMIT_IN_CHAIN",
+        "UNAUTHORIZED_INTERMEDIATE_PATH",
+        "UNAUTHORIZED_TIP_PATH",
+        "CUMULATIVE_CHANGED_PATH_SET_MISMATCH",
+    }
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(set(results) == positive_names | negative_names, (
+        "chain regression case names differ"
+    ))
+    check(len(positive_names) == 2, "chain positive regression count differs")
+    check(len(negative_names) == 11, "chain negative regression count differs")
+    check(not positive_failures, (
+        f"chain positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"chain negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "CHAIN_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "CHAIN_POSITIVE_REGRESSION_FAILURE_COUNT": len(positive_failures),
+        "CHAIN_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "CHAIN_NEGATIVE_REGRESSION_FAILURE_COUNT": len(negative_failures),
+        "REAL_REPOSITORY_REFS_MUTATED_FOR_CHAIN_TESTS": "NO",
+        "REAL_REPOSITORY_INDEX_MUTATED_FOR_CHAIN_TESTS": "NO",
+    })
+    mark_group("chain_regressions", start)
 
 
 def verify_git_state(lifecycle: str) -> None:
@@ -3447,8 +3954,9 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
         "PACKAGE_BACKUP_V1_V2_COMPATIBILITY": "package_backup",
     }
     required_groups = {
-        "registry", "lifecycle_regressions", "git", "prototype", "sport", "motion",
-        "a010r5_remediation", "a010r5r2_presentation", "a010r5r2r2_closure",
+        "registry", "chain_regressions", "lifecycle_regressions", "git",
+        "prototype", "sport", "motion", "a010r5_remediation",
+        "a010r5r2_presentation", "a010r5r2r2_closure",
         "authority_visualization", "persistence", "package_backup",
         "health_forbidden", "watchbridge", "localization_project",
     }
@@ -3597,6 +4105,15 @@ def emit_results() -> None:
     output_marker("UNKNOWN_LIFECYCLE_ARGUMENT", "FAIL_CLOSED")
     output_marker("DUPLICATE_OR_CONFLICTING_LIFECYCLE_DECLARATION", "FAIL_CLOSED")
     output_marker("AMBIGUOUS_OR_PARTIAL_STATE", "FAIL_CLOSED")
+    output_marker(
+        "STRICT_LINEAR_REMEDIATION_CHAIN_CONTRACT",
+        "PASSED"
+        if (
+            group_results.get("chain_regressions", False)
+            and group_results.get("git", False)
+        )
+        else "FAILED",
+    )
 
     for index, (name, status) in enumerate(current_acceptance_matrix(), start=1):
         output_marker(f"FINAL_ACCEPTANCE_{index:02d}_{name}", status)
@@ -3605,6 +4122,8 @@ def emit_results() -> None:
         "NOT_PASSED_REQUIRES_A012R3_FRESH_TASK_GATES",
     )
     output_marker("A012_RESULT", "FAILED_HISTORICAL")
+    output_marker("A012R2_RESULT", "FAILED_HISTORICAL")
+    output_marker("A012R2R1_RESULT", "FAILED_HISTORICAL")
     output_marker("A012R3_STARTED", "NO")
 
     output_marker("BUILD_GATE_REQUIRED_FOR_A008R1", "YES")
@@ -3645,6 +4164,9 @@ def emit_results() -> None:
     output_marker("WATCHOS_BUILD_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
     output_marker("MACOS_BUILD_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
     output_marker("IOS_XCTEST_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
+    output_marker("BUILD_GATE_SKIPPED", "YES_ONE_VERIFIER_FILE_ONLY")
+    output_marker("XCTEST_GATE_SKIPPED", "YES_ONE_VERIFIER_FILE_ONLY")
+    output_marker("MANUAL_QA_SKIPPED", "YES_NO_RUNTIME_OR_UI_CHANGE")
     output_marker(
         "MANUAL_QA",
         "NOT_REPEATED_REUSE_APPROVED_A010R5R2_EVIDENCE",
@@ -3664,6 +4186,32 @@ def emit_results() -> None:
         "A010R5R2_AGGREGATE_FINAL_STATE",
         "PASSED" if task_passed else "FAILED",
     )
+    output_marker(
+        "SNOW_INT_A012R2R2_RESULT",
+        "PASSED" if task_passed else "FAILED",
+    )
+    output_marker(
+        "A012R2R2_COMMIT_CREATED",
+        "YES"
+        if selected_lifecycle != "PRECOMMIT_MERGE_INDEX"
+        and observations.get("REMEDIATION_CHAIN_COMMIT_COUNT") == 3
+        else "NO",
+    )
+    output_marker(
+        "INTEGRATION_REMEDIATION_CHAIN_PUSHED",
+        "YES"
+        if (
+            task_passed
+            and observations.get(
+                "POSTCOMMIT_INTEGRATION_REMOTE_PHASE"
+            ) == "POST_PUSH"
+        )
+        else "NO",
+    )
+    output_marker(
+        "REMOTE_INTEGRATION_BRANCH_VERIFIED",
+        "YES" if task_passed else "NO",
+    )
 
     for message in failures:
         print(f"FAIL: {message}", file=sys.stderr)
@@ -3678,6 +4226,7 @@ def main(lifecycle: str) -> int:
     global selected_lifecycle
     selected_lifecycle = lifecycle
     verify_registry()
+    verify_chain_regressions()
     verify_lifecycle_regressions()
     verify_git_state(lifecycle)
     verify_conflicts_and_prototype_quarantine()
