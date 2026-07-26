@@ -87,21 +87,34 @@ REVIEWED_INTEGRATION_TREE_ROW_COUNT = 839
 REVIEWED_INTEGRATION_INDEX_MANIFEST_SHA256 = (
     "2f292267a96105ec133baea8372309231dadbe044593bdc54ebbe9c982e3cb15"
 )
-REMEDIATION_ALLOWED_PATHS = {
+CHAIN_ANCHOR_1_CHANGED_PATHS = {
     "scripts/snow_integration_verifier_applicability.json",
     "scripts/verify_snow_integration_aggregate.py",
 }
 REMEDIATION_ROOT = REVIEWED_INTEGRATION_MERGE_COMMIT
 CHAIN_ANCHOR_1 = "dfbd1a176ad9bef630dd824cfe31b432bcddc557"
 CHAIN_ANCHOR_1_PARENT = REMEDIATION_ROOT
-CHAIN_ANCHOR_1_CHANGED_PATHS = REMEDIATION_ALLOWED_PATHS
 CHAIN_ANCHOR_2 = "6629c024e12a5c71665b43d26e45a3fc333a5150"
 CHAIN_ANCHOR_2_PARENT = CHAIN_ANCHOR_1
-CHAIN_TIP_CHANGED_PATHS = {
+CHAIN_ANCHOR_2_CHANGED_PATHS = {
     "scripts/verify_snow_integration_aggregate.py",
 }
+CHAIN_ANCHOR_3 = "501d2f2c25b805b412479437f0a7ca80ffd6cc1d"
+CHAIN_ANCHOR_3_PARENT = CHAIN_ANCHOR_2
+CHAIN_ANCHOR_3_CHANGED_PATHS = CHAIN_ANCHOR_2_CHANGED_PATHS
+DYNAMIC_SUFFIX_MIN_COMMIT_COUNT = 1
+DYNAMIC_SUFFIX_MAX_COMMIT_COUNT = 4
+DYNAMIC_SUFFIX_ALLOWED_PATHS = {
+    "scripts/verify_shared_models.py",
+    "scripts/verify_snow_integration_aggregate.py",
+}
+REMEDIATION_CUMULATIVE_CHANGED_PATHS = (
+    CHAIN_ANCHOR_1_CHANGED_PATHS | DYNAMIC_SUFFIX_ALLOWED_PATHS
+)
 CHAIN_REMOTE_PHASES = {"PRE_PUSH", "POST_PUSH"}
 REMOTE_DEVELOP_BASE = EXPECTED_HEAD
+IMMUTABLE_A005_BASE_COMMIT = EXPECTED_HEAD
+IMMUTABLE_REVIEWED_FINAL_COMMIT = REVIEWED_INTEGRATION_MERGE_COMMIT
 
 A010R2_NEWLY_STAGED_PATHS = {
     "Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift",
@@ -558,16 +571,203 @@ def a010r5_parent_blob_text(rel_path: str) -> str:
     return result.stdout
 
 
-def head_text(rel_path: str) -> str:
+def immutable_commit_blob(commit: str, rel_path: str) -> bytes | None:
     result = subprocess.run(
-        ["git", "-C", str(ROOT), "show", f"HEAD:{rel_path}"],
+        ["git", "-C", str(ROOT), "cat-file", "blob", f"{commit}:{rel_path}"],
         check=False,
         capture_output=True,
-        text=True,
     )
-    if result.returncode != 0:
-        raise RuntimeError(f"unable to read HEAD baseline for {rel_path}")
-    return result.stdout
+    return result.stdout if result.returncode == 0 else None
+
+
+def immutable_baseline_fixture() -> dict[str, object]:
+    """Return a compact valid fixture for immutable-history pure regressions."""
+    return {
+        "source": "IMMUTABLE_GIT_OBJECTS",
+        "base_commit": IMMUTABLE_A005_BASE_COMMIT,
+        "reviewed_commit": IMMUTABLE_REVIEWED_FINAL_COMMIT,
+        "base_object_present": True,
+        "reviewed_object_present": True,
+        "motion_current_equals_reviewed": True,
+        "motion_base_lines": 2106,
+        "motion_reviewed_lines": 2108,
+        "coordinator_current_equals_reviewed": True,
+        "coordinator_base_lines": 1340,
+        "coordinator_a010r4_lines": 1395,
+        "coordinator_reviewed_lines": 1403,
+        "a010r4_frozen_blob_matches": True,
+        "debugmock_current_equals_reviewed": True,
+        "debugmock_base_lines": 232,
+        "debugmock_reviewed_lines": 237,
+        "use_recording_current_equals_reviewed": True,
+        "use_recording_base_lines": 538,
+        "use_recording_reviewed_lines": 566,
+    }
+
+
+def immutable_common_failures(evidence: dict[str, object]) -> list[str]:
+    issues: list[str] = []
+    if evidence.get("source") != "IMMUTABLE_GIT_OBJECTS":
+        issues.append("historical baseline source is not immutable")
+    if evidence.get("base_commit") != IMMUTABLE_A005_BASE_COMMIT:
+        issues.append("immutable A005 baseline commit differs")
+    if evidence.get("reviewed_commit") != IMMUTABLE_REVIEWED_FINAL_COMMIT:
+        issues.append("immutable reviewed-final commit differs")
+    if evidence.get("base_object_present") is not True:
+        issues.append("immutable A005 Git object is missing")
+    if evidence.get("reviewed_object_present") is not True:
+        issues.append("immutable reviewed-final Git object is missing")
+    return issues
+
+
+def motion_sample_immutable_failures(evidence: dict[str, object]) -> list[str]:
+    issues = immutable_common_failures(evidence)
+    if evidence.get("motion_current_equals_reviewed") is not True:
+        issues.append("current MotionSample differs from reviewed final")
+    if (
+        evidence.get("motion_reviewed_lines", -1)
+        - evidence.get("motion_base_lines", -1)
+        != 2
+    ):
+        issues.append("MotionSample A005-to-reviewed growth differs")
+    return issues
+
+
+def coordinator_immutable_failures(evidence: dict[str, object]) -> list[str]:
+    issues = immutable_common_failures(evidence)
+    if evidence.get("coordinator_current_equals_reviewed") is not True:
+        issues.append("current SessionRecordingCoordinator differs from reviewed final")
+    if evidence.get("a010r4_frozen_blob_matches") is not True:
+        issues.append("A010R4 frozen coordinator blob differs")
+    if (
+        evidence.get("coordinator_a010r4_lines", -1)
+        - evidence.get("coordinator_base_lines", -1)
+        != 55
+    ):
+        issues.append("coordinator A005-to-A010R4 growth differs")
+    if (
+        evidence.get("coordinator_reviewed_lines", -1)
+        - evidence.get("coordinator_a010r4_lines", -1)
+        != 8
+    ):
+        issues.append("coordinator A010R4-to-reviewed growth differs")
+    return issues
+
+
+def debugmock_immutable_failures(evidence: dict[str, object]) -> list[str]:
+    issues = immutable_common_failures(evidence)
+    if evidence.get("debugmock_current_equals_reviewed") is not True:
+        issues.append("current DebugMock differs from reviewed final")
+    if (
+        evidence.get("debugmock_reviewed_lines", -1)
+        - evidence.get("debugmock_base_lines", -1)
+        != 5
+    ):
+        issues.append("DebugMock immutable historical growth differs")
+    return issues
+
+
+def use_recording_immutable_failures(evidence: dict[str, object]) -> list[str]:
+    issues = immutable_common_failures(evidence)
+    if evidence.get("use_recording_current_equals_reviewed") is not True:
+        issues.append("current useSessionRecording differs from reviewed final")
+    if (
+        evidence.get("use_recording_reviewed_lines", -1)
+        - evidence.get("use_recording_base_lines", -1)
+        != 28
+    ):
+        issues.append("useSessionRecording immutable historical growth differs")
+    return issues
+
+
+def session_immutable_baseline_failures(
+    evidence: dict[str, object],
+) -> list[str]:
+    return (
+        coordinator_immutable_failures(evidence)
+        + debugmock_immutable_failures(evidence)
+        + use_recording_immutable_failures(evidence)
+    )
+
+
+def capture_immutable_baseline_evidence() -> dict[str, object]:
+    paths = {
+        "motion": "Shared/Models/MotionSample.swift",
+        "coordinator": (
+            "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift"
+        ),
+        "debugmock": (
+            "iOS/Core/SessionRecording/"
+            "SessionRecordingCoordinator+DebugMock.swift"
+        ),
+        "use_recording": "iOS/Hooks/useSessionRecording.swift",
+    }
+    base_blobs = {
+        name: immutable_commit_blob(IMMUTABLE_A005_BASE_COMMIT, path)
+        for name, path in paths.items()
+    }
+    reviewed_blobs = {
+        name: immutable_commit_blob(IMMUTABLE_REVIEWED_FINAL_COMMIT, path)
+        for name, path in paths.items()
+    }
+    current_blobs = {
+        name: (ROOT / path).read_bytes() if (ROOT / path).is_file() else None
+        for name, path in paths.items()
+    }
+    frozen_entry = A010R5_PARENT_INDEX_ENTRIES.get(paths["coordinator"], "")
+    frozen_blob_oid = frozen_entry.split()[1] if frozen_entry else ""
+    frozen_result = subprocess.run(
+        ["git", "-C", str(ROOT), "cat-file", "blob", frozen_blob_oid],
+        check=False,
+        capture_output=True,
+    )
+    frozen_blob = frozen_result.stdout if frozen_result.returncode == 0 else None
+
+    def line_count(blob: object) -> int:
+        return len(blob.splitlines()) if isinstance(blob, bytes) else -1
+
+    return {
+        "source": "IMMUTABLE_GIT_OBJECTS",
+        "base_commit": IMMUTABLE_A005_BASE_COMMIT,
+        "reviewed_commit": IMMUTABLE_REVIEWED_FINAL_COMMIT,
+        "base_object_present": all(
+            isinstance(blob, bytes) for blob in base_blobs.values()
+        ),
+        "reviewed_object_present": all(
+            isinstance(blob, bytes) for blob in reviewed_blobs.values()
+        ),
+        "motion_current_equals_reviewed": (
+            current_blobs["motion"] == reviewed_blobs["motion"]
+            and isinstance(reviewed_blobs["motion"], bytes)
+        ),
+        "motion_base_lines": line_count(base_blobs["motion"]),
+        "motion_reviewed_lines": line_count(reviewed_blobs["motion"]),
+        "coordinator_current_equals_reviewed": (
+            current_blobs["coordinator"] == reviewed_blobs["coordinator"]
+            and isinstance(reviewed_blobs["coordinator"], bytes)
+        ),
+        "coordinator_base_lines": line_count(base_blobs["coordinator"]),
+        "coordinator_a010r4_lines": line_count(frozen_blob),
+        "coordinator_reviewed_lines": line_count(reviewed_blobs["coordinator"]),
+        "a010r4_frozen_blob_matches": (
+            frozen_blob_oid == "feb723b8646b2e9ab38e58c196f2e4a1a5117969"
+            and isinstance(frozen_blob, bytes)
+        ),
+        "debugmock_current_equals_reviewed": (
+            current_blobs["debugmock"] == reviewed_blobs["debugmock"]
+            and isinstance(reviewed_blobs["debugmock"], bytes)
+        ),
+        "debugmock_base_lines": line_count(base_blobs["debugmock"]),
+        "debugmock_reviewed_lines": line_count(reviewed_blobs["debugmock"]),
+        "use_recording_current_equals_reviewed": (
+            current_blobs["use_recording"] == reviewed_blobs["use_recording"]
+            and isinstance(reviewed_blobs["use_recording"], bytes)
+        ),
+        "use_recording_base_lines": line_count(base_blobs["use_recording"]),
+        "use_recording_reviewed_lines": line_count(
+            reviewed_blobs["use_recording"]
+        ),
+    }
 
 
 def emit_standalone_contract_result(name: str, issues: list[str]) -> int:
@@ -638,23 +838,8 @@ def verify_current_session_recording_contract() -> int:
         if (ROOT / rel_path).is_file() and len(read(rel_path).splitlines()) > limit:
             issues.append(f"{rel_path} exceeds {limit} lines")
 
-    try:
-        coordinator_path = "iOS/Core/SessionRecording/SessionRecordingCoordinator.swift"
-        head_count = len(head_text(coordinator_path).splitlines())
-        parent_count = len(a010r5_parent_blob_text(coordinator_path).splitlines())
-        final_count = len(read(coordinator_path).splitlines())
-        if parent_count - head_count != 55:
-            issues.append(f"A005 coordinator parent growth changed: HEAD={head_count}, A010R4={parent_count}")
-        if final_count - parent_count != 8:
-            issues.append(f"A010R5 coordinator growth mismatch: A010R4={parent_count}, final={final_count}, expected=8")
-        for rel_path, expected_growth in {
-            "iOS/Core/SessionRecording/SessionRecordingCoordinator+DebugMock.swift": 5,
-            "iOS/Hooks/useSessionRecording.swift": 28,
-        }.items():
-            if len(read(rel_path).splitlines()) - len(head_text(rel_path).splitlines()) != expected_growth:
-                issues.append(f"historical oversized growth mismatch: {rel_path}")
-    except (KeyError, RuntimeError) as error:
-        issues.append(str(error))
+    immutable_evidence = capture_immutable_baseline_evidence()
+    issues.extend(session_immutable_baseline_failures(immutable_evidence))
 
     project = read("SkateTrack.xcodeproj/project.pbxproj")
     for rel_path in required_files:
@@ -671,6 +856,25 @@ def verify_current_session_recording_contract() -> int:
         for language in ("en", "zh-Hant"):
             if f'"{key}"' not in read(f"Shared/Localization/{language}.lproj/Localizable.strings"):
                 issues.append(f"missing localization key {key} in {language}")
+    print(f"SESSION_A005_BASELINE_COMMIT={IMMUTABLE_A005_BASE_COMMIT}")
+    print("SESSION_A010R4_BASELINE=FROZEN_A010R5_PARENT_INDEX_BLOBS")
+    print(
+        "SESSION_REVIEWED_FINAL_COMMIT="
+        f"{IMMUTABLE_REVIEWED_FINAL_COMMIT}"
+    )
+    print(
+        "SESSION_COORDINATOR_CURRENT_EQUALS_REVIEWED_FINAL="
+        f"{'YES' if immutable_evidence.get('coordinator_current_equals_reviewed') else 'NO'}"
+    )
+    print(
+        "SESSION_DEBUGMOCK_CURRENT_EQUALS_REVIEWED_FINAL="
+        f"{'YES' if immutable_evidence.get('debugmock_current_equals_reviewed') else 'NO'}"
+    )
+    print(
+        "USE_SESSION_RECORDING_CURRENT_EQUALS_REVIEWED_FINAL="
+        f"{'YES' if immutable_evidence.get('use_recording_current_equals_reviewed') else 'NO'}"
+    )
+    print("SYMBOLIC_CURRENT_HEAD_HISTORICAL_BASELINE_COUNT=0")
     return emit_standalone_contract_result("VERIFY_CURRENT_SESSION_RECORDING_CONTRACT_RESULT", issues)
 
 
@@ -973,9 +1177,24 @@ def lifecycle_registry_failures(registry: object) -> list[str]:
 
 def valid_remediation_chain_fixture(
     remote_phase: str = "PRE_PUSH",
+    suffix_count: int = 1,
 ) -> dict[str, object]:
-    """Build a valid three-commit chain without touching the real repository."""
-    tip = "a" * 40
+    """Build a valid anchored chain with a bounded verifier-only suffix."""
+    suffix_oids = [f"{index + 10:040x}" for index in range(suffix_count)]
+    suffix_commits: list[dict[str, object]] = []
+    parent = CHAIN_ANCHOR_3
+    for index, oid in enumerate(suffix_oids):
+        suffix_commits.append({
+            "oid": oid,
+            "parents": [parent],
+            "changed_paths": sorted(
+                DYNAMIC_SUFFIX_ALLOWED_PATHS
+                if index == 0
+                else {"scripts/verify_snow_integration_aggregate.py"}
+            ),
+        })
+        parent = oid
+    tip = suffix_oids[-1] if suffix_oids else CHAIN_ANCHOR_3
     return {
         "root": REMEDIATION_ROOT,
         "tip": tip,
@@ -989,21 +1208,24 @@ def valid_remediation_chain_fixture(
             {
                 "oid": CHAIN_ANCHOR_2,
                 "parents": [CHAIN_ANCHOR_2_PARENT],
-                "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+                "changed_paths": sorted(CHAIN_ANCHOR_2_CHANGED_PATHS),
             },
             {
-                "oid": tip,
-                "parents": [CHAIN_ANCHOR_2],
-                "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+                "oid": CHAIN_ANCHOR_3,
+                "parents": [CHAIN_ANCHOR_3_PARENT],
+                "changed_paths": sorted(CHAIN_ANCHOR_3_CHANGED_PATHS),
             },
+            *suffix_commits,
         ],
-        "cumulative_changed_paths": sorted(REMEDIATION_ALLOWED_PATHS),
+        "cumulative_changed_paths": sorted(
+            REMEDIATION_CUMULATIVE_CHANGED_PATHS
+        ),
         "all_other_path_mode_blob_entries_equal_root": True,
     }
 
 
 def remediation_chain_failures(chain: object) -> list[str]:
-    """Validate the exact anchored, linear, three-commit remediation chain."""
+    """Validate immutable anchors and a bounded linear verifier-only suffix."""
     issues: list[str] = []
 
     def expect(condition: bool, message: str) -> None:
@@ -1022,7 +1244,12 @@ def remediation_chain_failures(chain: object) -> list[str]:
     expect(
         isinstance(tip, str)
         and re.fullmatch(r"[0-9a-f]{40}", tip) is not None
-        and tip not in {REMEDIATION_ROOT, CHAIN_ANCHOR_1, CHAIN_ANCHOR_2},
+        and tip not in {
+            REMEDIATION_ROOT,
+            CHAIN_ANCHOR_1,
+            CHAIN_ANCHOR_2,
+            CHAIN_ANCHOR_3,
+        },
         "dynamic remediation tip identity is invalid",
     )
     expect(remote_phase in CHAIN_REMOTE_PHASES, "remediation remote phase differs")
@@ -1030,15 +1257,15 @@ def remediation_chain_failures(chain: object) -> list[str]:
     if not isinstance(commits, list):
         return issues
 
-    expected_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, tip]
+    fixed_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, CHAIN_ANCHOR_3]
     actual_oids = [
         commit.get("oid") if isinstance(commit, dict) else None
         for commit in commits
     ]
-    expect(len(commits) == 3, "remediation chain commit count differs")
-    expect(actual_oids == expected_oids, "remediation chain order or identities differ")
-
-    expected_commits = [
+    expect(actual_oids[:3] == fixed_oids, (
+        "fixed remediation anchor order or identities differ"
+    ))
+    fixed_commits = [
         (
             CHAIN_ANCHOR_1,
             [CHAIN_ANCHOR_1_PARENT],
@@ -1047,16 +1274,16 @@ def remediation_chain_failures(chain: object) -> list[str]:
         (
             CHAIN_ANCHOR_2,
             [CHAIN_ANCHOR_2_PARENT],
-            sorted(CHAIN_TIP_CHANGED_PATHS),
+            sorted(CHAIN_ANCHOR_2_CHANGED_PATHS),
         ),
         (
-            tip,
-            [CHAIN_ANCHOR_2],
-            sorted(CHAIN_TIP_CHANGED_PATHS),
+            CHAIN_ANCHOR_3,
+            [CHAIN_ANCHOR_3_PARENT],
+            sorted(CHAIN_ANCHOR_3_CHANGED_PATHS),
         ),
     ]
     for index, (expected_oid, expected_parents, expected_paths) in enumerate(
-        expected_commits
+        fixed_commits
     ):
         if index >= len(commits):
             expect(False, f"remediation commit {index + 1} is missing")
@@ -1090,9 +1317,65 @@ def remediation_chain_failures(chain: object) -> list[str]:
                 f"remediation commit {index + 1} changed path set differs"
             ))
 
+    suffix = commits[3:] if len(commits) >= 3 else []
+    expect(
+        DYNAMIC_SUFFIX_MIN_COMMIT_COUNT
+        <= len(suffix)
+        <= DYNAMIC_SUFFIX_MAX_COMMIT_COUNT,
+        "dynamic remediation suffix commit count is outside bounds",
+    )
+    previous = CHAIN_ANCHOR_3
+    for index, commit in enumerate(suffix, start=1):
+        expect(isinstance(commit, dict), (
+            f"dynamic suffix commit {index} evidence is not an object"
+        ))
+        if not isinstance(commit, dict):
+            continue
+        oid = commit.get("oid")
+        parents = commit.get("parents")
+        changed_paths = commit.get("changed_paths")
+        expect(
+            isinstance(oid, str)
+            and re.fullmatch(r"[0-9a-f]{40}", oid) is not None,
+            f"dynamic suffix commit {index} identity is invalid",
+        )
+        expect(
+            isinstance(parents, list) and len(parents) == 1,
+            f"dynamic suffix commit {index} is not single-parent",
+        )
+        if isinstance(parents, list):
+            expect(parents == [previous], (
+                f"dynamic suffix commit {index} parent is nonlinear"
+            ))
+        expect(isinstance(changed_paths, list), (
+            f"dynamic suffix commit {index} changed paths are not a list"
+        ))
+        if isinstance(changed_paths, list):
+            path_set = set(changed_paths)
+            expect(bool(path_set), (
+                f"dynamic suffix commit {index} has an empty delta"
+            ))
+            expect(
+                len(path_set) == len(changed_paths)
+                and path_set <= DYNAMIC_SUFFIX_ALLOWED_PATHS,
+                f"dynamic suffix commit {index} changed path set is unauthorized",
+            )
+        if isinstance(oid, str):
+            previous = oid
+    final_suffix_oid = (
+        suffix[-1].get("oid")
+        if suffix and isinstance(suffix[-1], dict)
+        else None
+    )
+    expect(final_suffix_oid == tip, (
+        "dynamic remediation tip is not the final suffix commit"
+    ))
+    expect(len(actual_oids) == len(set(actual_oids)), (
+        "remediation chain contains duplicate commit identities"
+    ))
     expect(
         chain.get("cumulative_changed_paths")
-        == sorted(REMEDIATION_ALLOWED_PATHS),
+        == sorted(REMEDIATION_CUMULATIVE_CHANGED_PATHS),
         "cumulative remediation changed path set differs",
     )
     expect(
@@ -1103,7 +1386,7 @@ def remediation_chain_failures(chain: object) -> list[str]:
 
 
 def remediation_chain_regression_results() -> dict[str, bool]:
-    """Return two valid and eleven rejected synthetic chain cases."""
+    """Preserve the existing two-positive/eleven-negative chain family."""
     results = {
         "VALID_THREE_COMMIT_CHAIN_PRE_PUSH": not remediation_chain_failures(
             valid_remediation_chain_fixture("PRE_PUSH")
@@ -1143,15 +1426,16 @@ def remediation_chain_regression_results() -> dict[str, bool]:
     mutations["ANCHOR_PARENT_MISMATCH"] = wrong_anchor_parent
 
     merge_commit = valid_remediation_chain_fixture()
-    merge_commit["commits"][1]["parents"].append("c" * 40)
+    merge_commit["commits"][3]["parents"].append("c" * 40)
     mutations["MERGE_COMMIT_IN_CHAIN"] = merge_commit
 
-    extra_commit = valid_remediation_chain_fixture()
+    extra_commit = valid_remediation_chain_fixture(suffix_count=4)
     extra_commit["commits"].append({
         "oid": "d" * 40,
         "parents": [extra_commit["tip"]],
-        "changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+        "changed_paths": ["scripts/verify_snow_integration_aggregate.py"],
     })
+    extra_commit["tip"] = "d" * 40
     mutations["EXTRA_COMMIT_IN_CHAIN"] = extra_commit
 
     unauthorized_intermediate = valid_remediation_chain_fixture()
@@ -1161,14 +1445,14 @@ def remediation_chain_regression_results() -> dict[str, bool]:
     mutations["UNAUTHORIZED_INTERMEDIATE_PATH"] = unauthorized_intermediate
 
     unauthorized_tip = valid_remediation_chain_fixture()
-    unauthorized_tip["commits"][2]["changed_paths"].append(
+    unauthorized_tip["commits"][-1]["changed_paths"].append(
         "Shared/Unauthorized.swift"
     )
     mutations["UNAUTHORIZED_TIP_PATH"] = unauthorized_tip
 
     cumulative_mismatch = valid_remediation_chain_fixture()
     cumulative_mismatch["cumulative_changed_paths"] = sorted(
-        CHAIN_TIP_CHANGED_PATHS
+        DYNAMIC_SUFFIX_ALLOWED_PATHS
     )
     mutations["CUMULATIVE_CHANGED_PATH_SET_MISMATCH"] = cumulative_mismatch
 
@@ -1177,11 +1461,72 @@ def remediation_chain_regression_results() -> dict[str, bool]:
     return results
 
 
+def dynamic_suffix_regression_results() -> dict[str, bool]:
+    """Return the required bounded-suffix positive and negative cases."""
+    results = {
+        "VALID_ONE_COMMIT_SUFFIX": not remediation_chain_failures(
+            valid_remediation_chain_fixture(suffix_count=1)
+        ),
+        "VALID_TWO_COMMIT_SUFFIX": not remediation_chain_failures(
+            valid_remediation_chain_fixture(suffix_count=2)
+        ),
+    }
+    mutations: dict[str, dict[str, object]] = {}
+
+    mutations["EMPTY_SUFFIX"] = valid_remediation_chain_fixture(suffix_count=0)
+
+    too_long = valid_remediation_chain_fixture(suffix_count=4)
+    fifth_oid = "f" * 40
+    too_long["commits"].append({
+        "oid": fifth_oid,
+        "parents": [too_long["tip"]],
+        "changed_paths": ["scripts/verify_snow_integration_aggregate.py"],
+    })
+    too_long["tip"] = fifth_oid
+    mutations["SUFFIX_TOO_LONG"] = too_long
+
+    merge = valid_remediation_chain_fixture()
+    merge["commits"][-1]["parents"].append("e" * 40)
+    mutations["SUFFIX_MERGE_COMMIT"] = merge
+
+    nonlinear = valid_remediation_chain_fixture(suffix_count=2)
+    nonlinear["commits"][-1]["parents"] = [CHAIN_ANCHOR_3]
+    mutations["SUFFIX_NONLINEAR_PARENT"] = nonlinear
+
+    unauthorized = valid_remediation_chain_fixture()
+    unauthorized["commits"][-1]["changed_paths"].append(
+        "Shared/Unauthorized.swift"
+    )
+    mutations["SUFFIX_UNAUTHORIZED_PATH"] = unauthorized
+
+    empty_delta = valid_remediation_chain_fixture()
+    empty_delta["commits"][-1]["changed_paths"] = []
+    mutations["SUFFIX_EMPTY_COMMIT"] = empty_delta
+
+    missing_anchor = valid_remediation_chain_fixture()
+    missing_anchor["commits"].pop(2)
+    mutations["MISSING_FIXED_ANCHOR"] = missing_anchor
+
+    substitute = valid_remediation_chain_fixture()
+    substitute["commits"][2]["oid"] = "e" * 40
+    mutations["FIXED_ANCHOR_SUBSTITUTION"] = substitute
+
+    cumulative = valid_remediation_chain_fixture()
+    cumulative["cumulative_changed_paths"] = sorted(
+        CHAIN_ANCHOR_1_CHANGED_PATHS
+    )
+    mutations["ROOT_TO_TIP_CUMULATIVE_PATH_MISMATCH"] = cumulative
+
+    for name, chain in mutations.items():
+        results[name] = bool(remediation_chain_failures(chain))
+    return results
+
+
 def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
     """Build a synthetic valid state for pure lifecycle contract regressions."""
-    candidate = "a" * 40
-    candidate_tree = "b" * 40
     chain = valid_remediation_chain_fixture("POST_PUSH")
+    candidate = str(chain["tip"])
+    candidate_tree = "b" * 40
     common: dict[str, object] = {
         "lifecycle_declarations": [lifecycle],
         "branch": EXPECTED_BRANCH,
@@ -1204,9 +1549,9 @@ def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
         "remote_develop": REMOTE_DEVELOP_BASE,
         "candidate": candidate,
         "candidate_parent_count": 1,
-        "candidate_first_parent": CHAIN_ANCHOR_2,
-        "candidate_changed_path_count": 1,
-        "candidate_changed_paths": sorted(CHAIN_TIP_CHANGED_PATHS),
+        "candidate_first_parent": CHAIN_ANCHOR_3,
+        "candidate_changed_path_count": 2,
+        "candidate_changed_paths": sorted(DYNAMIC_SUFFIX_ALLOWED_PATHS),
         "candidate_all_other_paths_equal_a011_tree": True,
         "remediation_chain": chain,
         "historical_merge_commit": REVIEWED_INTEGRATION_MERGE_COMMIT,
@@ -1528,6 +1873,171 @@ def lifecycle_regression_results() -> dict[str, bool]:
         if name == "UNEXPECTED_MERGE_HEAD":
             state["merge_in_progress"] = True
         results[name] = bool(lifecycle_state_failures(lifecycle, state))
+    return results
+
+
+def all_immutable_baseline_failures(
+    evidence: dict[str, object],
+) -> list[str]:
+    return (
+        motion_sample_immutable_failures(evidence)
+        + session_immutable_baseline_failures(evidence)
+    )
+
+
+def immutable_baseline_regression_results() -> dict[str, bool]:
+    """Return the required immutable-history positive and negative cases."""
+    fixture = immutable_baseline_fixture()
+    results = {
+        "MOTIONSAMPLE_IMMUTABLE_A005_TO_A011_GROWTH_VALID": (
+            not motion_sample_immutable_failures(copy.deepcopy(fixture))
+        ),
+        "SESSION_COORDINATOR_IMMUTABLE_A005_A010R4_A011_GROWTH_VALID": (
+            not coordinator_immutable_failures(copy.deepcopy(fixture))
+        ),
+        "SESSION_DEBUGMOCK_IMMUTABLE_A005_TO_A011_GROWTH_VALID": (
+            not debugmock_immutable_failures(copy.deepcopy(fixture))
+        ),
+        "USE_SESSION_RECORDING_IMMUTABLE_A005_TO_A011_GROWTH_VALID": (
+            not use_recording_immutable_failures(copy.deepcopy(fixture))
+        ),
+    }
+    mutations: dict[str, tuple[str, object]] = {
+        "SYMBOLIC_HEAD_SUBSTITUTED_FOR_A005_BASELINE": (
+            "source", "SYMBOLIC_CURRENT_HEAD"
+        ),
+        "MISSING_F483_OBJECT": ("base_object_present", False),
+        "MISSING_EA1F_OBJECT": ("reviewed_object_present", False),
+        "CURRENT_MOTIONSAMPLE_DIFFERS_FROM_A011": (
+            "motion_current_equals_reviewed", False
+        ),
+        "MOTIONSAMPLE_GROWTH_NOT_TWO": ("motion_reviewed_lines", 2109),
+        "CURRENT_COORDINATOR_DIFFERS_FROM_A011": (
+            "coordinator_current_equals_reviewed", False
+        ),
+        "A010R4_FROZEN_BLOB_CHANGED": (
+            "a010r4_frozen_blob_matches", False
+        ),
+        "COORDINATOR_A005_TO_A010R4_GROWTH_CHANGED": (
+            "coordinator_a010r4_lines", 1394
+        ),
+        "COORDINATOR_A010R4_TO_FINAL_GROWTH_CHANGED": (
+            "coordinator_reviewed_lines", 1404
+        ),
+        "DEBUGMOCK_HISTORICAL_GROWTH_CHANGED": (
+            "debugmock_reviewed_lines", 238
+        ),
+        "USE_SESSION_RECORDING_HISTORICAL_GROWTH_CHANGED": (
+            "use_recording_reviewed_lines", 567
+        ),
+    }
+    for name, (key, value) in mutations.items():
+        mutated = copy.deepcopy(fixture)
+        mutated[key] = value
+        results[name] = bool(all_immutable_baseline_failures(mutated))
+    return results
+
+
+def truthful_marker_values(
+    remote_phase: str,
+    internal_passed: bool = True,
+) -> dict[str, str]:
+    post_push = remote_phase == "POST_PUSH"
+    aggregate_result = "PASSED" if internal_passed else "FAILED"
+    return {
+        "AGGREGATE_INTERNAL_STATIC_RESULT": aggregate_result,
+        "VERIFY_SNOW_INTEGRATION_AGGREGATE_RESULT": aggregate_result,
+        "REMOTE_INTEGRATION_BRANCH_VERIFIED": (
+            "YES" if post_push and internal_passed else "NO"
+        ),
+        "INTEGRATION_REMEDIATION_CHAIN_PUSHED": (
+            "YES" if post_push and internal_passed else "NO"
+        ),
+        "CURRENT_REQUIRED_EXTERNAL_ROLLUP": (
+            "NOT_EVALUATED_BY_AGGREGATE" if post_push else "PENDING"
+        ),
+        "FINAL_ACCEPTANCE_03_ALL_REQUIRED_SNOW_VERIFY_SCRIPTS_PASS": (
+            "PENDING_TASK_LEVEL_ROLLUP"
+            if post_push
+            else "PENDING_EXTERNAL_CURRENT_REQUIRED_ROLLUP"
+        ),
+        "FINAL_ACCEPTANCE_04_IOS_BUILD": "PENDING_A012R3_FRESH_GATE",
+        "FINAL_ACCEPTANCE_05_WATCHOS_BUILD": "PENDING_A012R3_FRESH_GATE",
+        "FINAL_ACCEPTANCE_06_MACOS_BUILD": "PENDING_A012R3_FRESH_GATE",
+        "FINAL_ACCEPTANCE_07_SNOW_XCTEST_SUITES": (
+            "PENDING_A012R3_FRESH_GATE"
+        ),
+        "FINAL_ACCEPTANCE_18_OF_18": (
+            "NOT_PASSED_REQUIRES_A012R3_FRESH_TASK_GATES"
+        ),
+    }
+
+
+def truthful_marker_failures(
+    remote_phase: str,
+    markers: dict[str, str],
+) -> list[str]:
+    issues: list[str] = []
+    expected = truthful_marker_values(remote_phase)
+    for key, value in expected.items():
+        if markers.get(key) != value:
+            issues.append(f"truthful aggregate marker differs: {key}")
+    if "SNOW_INT_A012R2R3_RESULT" in markers:
+        issues.append("aggregate emitted a current A012R2R3 task result")
+    return issues
+
+
+def marker_regression_results() -> dict[str, bool]:
+    pre_push = truthful_marker_values("PRE_PUSH")
+    post_push = truthful_marker_values("POST_PUSH")
+    results = {
+        "PRE_PUSH_MARKERS_TRUTHFUL": not truthful_marker_failures(
+            "PRE_PUSH", copy.deepcopy(pre_push)
+        ),
+        "POST_PUSH_MARKERS_TRUTHFUL": not truthful_marker_failures(
+            "POST_PUSH", copy.deepcopy(post_push)
+        ),
+    }
+
+    pre_remote = copy.deepcopy(pre_push)
+    pre_remote["REMOTE_INTEGRATION_BRANCH_VERIFIED"] = "YES"
+    results["PRE_PUSH_REMOTE_VERIFIED_FALSE_POSITIVE_REJECTED"] = bool(
+        truthful_marker_failures("PRE_PUSH", pre_remote)
+    )
+
+    pre_task = copy.deepcopy(pre_push)
+    pre_task["SNOW_INT_A012R2R3_RESULT"] = "PASSED"
+    results["PRE_PUSH_TASK_RESULT_FALSE_POSITIVE_REJECTED"] = bool(
+        truthful_marker_failures("PRE_PUSH", pre_task)
+    )
+
+    pre_acceptance = copy.deepcopy(pre_push)
+    pre_acceptance[
+        "FINAL_ACCEPTANCE_03_ALL_REQUIRED_SNOW_VERIFY_SCRIPTS_PASS"
+    ] = "PASSED_NOW"
+    results["PRE_PUSH_FINAL_ACCEPTANCE_03_FALSE_POSITIVE_REJECTED"] = bool(
+        truthful_marker_failures("PRE_PUSH", pre_acceptance)
+    )
+
+    pre_build = copy.deepcopy(pre_push)
+    pre_build["FINAL_ACCEPTANCE_04_IOS_BUILD"] = "PASSED_NOW"
+    pre_build["FINAL_ACCEPTANCE_07_SNOW_XCTEST_SUITES"] = "PASSED_NOW"
+    results["PRE_PUSH_BUILD_XCTEST_FALSE_POSITIVE_REJECTED"] = bool(
+        truthful_marker_failures("PRE_PUSH", pre_build)
+    )
+
+    post_task = copy.deepcopy(post_push)
+    post_task["SNOW_INT_A012R2R3_RESULT"] = "PASSED"
+    post_task["CURRENT_REQUIRED_EXTERNAL_ROLLUP"] = "PASSED"
+    results["POST_PUSH_TASK_RESULT_WITHOUT_CURRENT_REQUIRED_REJECTED"] = bool(
+        truthful_marker_failures("POST_PUSH", post_task)
+    )
+
+    final_18 = copy.deepcopy(post_push)
+    final_18["FINAL_ACCEPTANCE_18_OF_18"] = "PASSED"
+    results["FINAL_18_OF_18_BEFORE_A012R3_REJECTED"] = bool(
+        truthful_marker_failures("POST_PUSH", final_18)
+    )
     return results
 
 
@@ -2474,7 +2984,7 @@ def capture_remediation_chain(tip: str, remote_phase: str) -> dict[str, object]:
     tip_entries = committed_tree_entries(tip)
     non_remediation_paths = (
         set(root_entries) | set(tip_entries)
-    ) - REMEDIATION_ALLOWED_PATHS
+    ) - REMEDIATION_CUMULATIVE_CHANGED_PATHS
     all_other_entries_equal = all(
         root_entries.get(path) == tip_entries.get(path)
         for path in non_remediation_paths
@@ -2496,13 +3006,14 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
     commits_value = chain.get("commits")
     commits = commits_value if isinstance(commits_value, list) else []
     tip = chain.get("tip")
-    expected_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, tip]
     actual_oids = [
         commit.get("oid") if isinstance(commit, dict) else None
         for commit in commits
     ]
-    expected_oid_set = set(expected_oids)
+    fixed_oids = [CHAIN_ANCHOR_1, CHAIN_ANCHOR_2, CHAIN_ANCHOR_3]
+    fixed_oid_set = set(fixed_oids)
     actual_oid_set = set(actual_oids)
+    suffix = commits[3:] if len(commits) >= 3 else []
     merge_count = sum(
         1
         for commit in commits
@@ -2511,12 +3022,21 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
         and len(commit["parents"]) > 1
     )
     linear_single_parent = (
-        len(commits) == 3
+        DYNAMIC_SUFFIX_MIN_COMMIT_COUNT
+        <= len(suffix)
+        <= DYNAMIC_SUFFIX_MAX_COMMIT_COUNT
         and all(
             isinstance(commit, dict)
             and isinstance(commit.get("parents"), list)
             and len(commit["parents"]) == 1
             for commit in commits
+        )
+        and all(
+            isinstance(commit, dict)
+            and commit.get("parents") == [
+                REMEDIATION_ROOT if index == 0 else actual_oids[index - 1]
+            ]
+            for index, commit in enumerate(commits)
         )
     )
 
@@ -2527,6 +3047,7 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
     }
     anchor_1 = commit_by_oid.get(CHAIN_ANCHOR_1, {})
     anchor_2 = commit_by_oid.get(CHAIN_ANCHOR_2, {})
+    anchor_3 = commit_by_oid.get(CHAIN_ANCHOR_3, {})
     tip_commit = commit_by_oid.get(tip, {})
 
     def parents_of(commit: object) -> list[object]:
@@ -2543,9 +3064,11 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
 
     anchor_1_parents = parents_of(anchor_1)
     anchor_2_parents = parents_of(anchor_2)
+    anchor_3_parents = parents_of(anchor_3)
     tip_parents = parents_of(tip_commit)
     anchor_1_paths = paths_of(anchor_1)
     anchor_2_paths = paths_of(anchor_2)
+    anchor_3_paths = paths_of(anchor_3)
     tip_paths = paths_of(tip_commit)
     cumulative_value = chain.get("cumulative_changed_paths")
     cumulative_paths = (
@@ -2571,6 +3094,15 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
         "CHAIN_ANCHOR_2_CHANGED_PATH": ",".join(
             str(path) for path in anchor_2_paths
         ),
+        "CHAIN_ANCHOR_3": CHAIN_ANCHOR_3,
+        "CHAIN_ANCHOR_3_PARENT": (
+            str(anchor_3_parents[0]) if anchor_3_parents else "ABSENT"
+        ),
+        "CHAIN_ANCHOR_3_PARENT_COUNT": len(anchor_3_parents),
+        "CHAIN_ANCHOR_3_CHANGED_PATH_COUNT": len(anchor_3_paths),
+        "CHAIN_ANCHOR_3_CHANGED_PATH": ",".join(
+            str(path) for path in anchor_3_paths
+        ),
         "CHAIN_TIP": str(tip),
         "CHAIN_TIP_PARENT_COUNT": len(tip_parents),
         "CHAIN_TIP_FIRST_PARENT": (
@@ -2581,23 +3113,33 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
             str(path) for path in tip_paths
         ),
         "REMEDIATION_CHAIN_COMMIT_COUNT": len(commits),
+        "DYNAMIC_SUFFIX_COMMIT_COUNT": len(suffix),
+        "DYNAMIC_SUFFIX_MIN_COMMIT_COUNT": DYNAMIC_SUFFIX_MIN_COMMIT_COUNT,
+        "DYNAMIC_SUFFIX_MAX_COMMIT_COUNT": DYNAMIC_SUFFIX_MAX_COMMIT_COUNT,
+        "DYNAMIC_SUFFIX_ALLOWED_PATHS": ",".join(
+            sorted(DYNAMIC_SUFFIX_ALLOWED_PATHS)
+        ),
         "REMEDIATION_CHAIN_ORDER_EXACT": (
-            "YES" if actual_oids == expected_oids else "NO"
+            "YES"
+            if actual_oids[:3] == fixed_oids and linear_single_parent
+            else "NO"
         ),
         "REMEDIATION_CHAIN_LINEAR_SINGLE_PARENT": (
             "YES" if linear_single_parent else "NO"
         ),
         "REMEDIATION_CHAIN_MERGE_COMMIT_COUNT": merge_count,
         "REMEDIATION_CHAIN_EXTRA_COMMIT_COUNT": len(
-            actual_oid_set - expected_oid_set
+            suffix[DYNAMIC_SUFFIX_MAX_COMMIT_COUNT:]
         ),
         "REMEDIATION_CHAIN_MISSING_COMMIT_COUNT": len(
-            expected_oid_set - actual_oid_set
+            fixed_oid_set - actual_oid_set
         ),
         "CUMULATIVE_CHANGED_PATH_COUNT": len(cumulative_paths),
         "CUMULATIVE_CHANGED_PATH_SET_EXACT": (
             "YES"
-            if cumulative_paths == sorted(REMEDIATION_ALLOWED_PATHS)
+            if cumulative_paths == sorted(
+                REMEDIATION_CUMULATIVE_CHANGED_PATHS
+            )
             else "NO"
         ),
         "ALL_OTHER_PATH_MODE_BLOB_ENTRIES_EQUAL_REMEDIATION_ROOT": (
@@ -2607,13 +3149,22 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
             ) is True
             else "NO"
         ),
-        "A012R2R2_COMMIT": str(tip),
-        "A012R2R2_COMMIT_PARENT_COUNT": len(tip_parents),
+        "A012R2R2_COMMIT": CHAIN_ANCHOR_3,
+        "A012R2R2_COMMIT_PARENT_COUNT": len(anchor_3_parents),
         "A012R2R2_COMMIT_FIRST_PARENT": (
+            str(anchor_3_parents[0]) if anchor_3_parents else "ABSENT"
+        ),
+        "A012R2R2_COMMIT_CHANGED_PATH_COUNT": len(anchor_3_paths),
+        "A012R2R2_COMMIT_CHANGED_PATH": ",".join(
+            str(path) for path in anchor_3_paths
+        ),
+        "A012R2R3_COMMIT": str(tip),
+        "A012R2R3_COMMIT_PARENT_COUNT": len(tip_parents),
+        "A012R2R3_COMMIT_FIRST_PARENT": (
             str(tip_parents[0]) if tip_parents else "ABSENT"
         ),
-        "A012R2R2_COMMIT_CHANGED_PATH_COUNT": len(tip_paths),
-        "A012R2R2_COMMIT_CHANGED_PATH": ",".join(
+        "A012R2R3_COMMIT_CHANGED_PATH_COUNT": len(tip_paths),
+        "A012R2R3_COMMIT_CHANGED_PATHS": ",".join(
             str(path) for path in tip_paths
         ),
     }
@@ -2771,7 +3322,8 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             "CANDIDATE_CHANGED_PATHS": ",".join(sorted(candidate_changed_paths)),
             "CANDIDATE_CHANGED_PATH_SET_EXACT": (
                 "YES"
-                if candidate_changed_paths == sorted(CHAIN_TIP_CHANGED_PATHS)
+                if candidate_changed_paths
+                == sorted(DYNAMIC_SUFFIX_ALLOWED_PATHS)
                 else "NO"
             ),
             "ALL_OTHER_PATHS_EQUAL_A011_TREE": (
@@ -2866,6 +3418,145 @@ def verify_chain_regressions() -> None:
         "REAL_REPOSITORY_INDEX_MUTATED_FOR_CHAIN_TESTS": "NO",
     })
     mark_group("chain_regressions", start)
+
+
+def verify_dynamic_suffix_regressions() -> None:
+    start = len(failures)
+    results = dynamic_suffix_regression_results()
+    positive_names = {
+        "VALID_ONE_COMMIT_SUFFIX",
+        "VALID_TWO_COMMIT_SUFFIX",
+    }
+    negative_names = {
+        "EMPTY_SUFFIX",
+        "SUFFIX_TOO_LONG",
+        "SUFFIX_MERGE_COMMIT",
+        "SUFFIX_NONLINEAR_PARENT",
+        "SUFFIX_UNAUTHORIZED_PATH",
+        "SUFFIX_EMPTY_COMMIT",
+        "MISSING_FIXED_ANCHOR",
+        "FIXED_ANCHOR_SUBSTITUTION",
+        "ROOT_TO_TIP_CUMULATIVE_PATH_MISMATCH",
+    }
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(set(results) == positive_names | negative_names, (
+        "dynamic suffix regression case names differ"
+    ))
+    check(not positive_failures, (
+        f"dynamic suffix positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"dynamic suffix negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "DYNAMIC_SUFFIX_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "DYNAMIC_SUFFIX_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "DYNAMIC_SUFFIX_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "DYNAMIC_SUFFIX_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+    })
+    mark_group("dynamic_suffix_regressions", start)
+
+
+def verify_immutable_baseline_regressions() -> None:
+    start = len(failures)
+    results = immutable_baseline_regression_results()
+    positive_names = {
+        "MOTIONSAMPLE_IMMUTABLE_A005_TO_A011_GROWTH_VALID",
+        "SESSION_COORDINATOR_IMMUTABLE_A005_A010R4_A011_GROWTH_VALID",
+        "SESSION_DEBUGMOCK_IMMUTABLE_A005_TO_A011_GROWTH_VALID",
+        "USE_SESSION_RECORDING_IMMUTABLE_A005_TO_A011_GROWTH_VALID",
+    }
+    negative_names = {
+        "SYMBOLIC_HEAD_SUBSTITUTED_FOR_A005_BASELINE",
+        "MISSING_F483_OBJECT",
+        "MISSING_EA1F_OBJECT",
+        "CURRENT_MOTIONSAMPLE_DIFFERS_FROM_A011",
+        "MOTIONSAMPLE_GROWTH_NOT_TWO",
+        "CURRENT_COORDINATOR_DIFFERS_FROM_A011",
+        "A010R4_FROZEN_BLOB_CHANGED",
+        "COORDINATOR_A005_TO_A010R4_GROWTH_CHANGED",
+        "COORDINATOR_A010R4_TO_FINAL_GROWTH_CHANGED",
+        "DEBUGMOCK_HISTORICAL_GROWTH_CHANGED",
+        "USE_SESSION_RECORDING_HISTORICAL_GROWTH_CHANGED",
+    }
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(set(results) == positive_names | negative_names, (
+        "immutable baseline regression case names differ"
+    ))
+    check(not positive_failures, (
+        f"immutable baseline positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"immutable baseline negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "IMMUTABLE_BASELINE_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "IMMUTABLE_BASELINE_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "IMMUTABLE_BASELINE_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "IMMUTABLE_BASELINE_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+    })
+    mark_group("immutable_baseline_regressions", start)
+
+
+def verify_marker_regressions() -> None:
+    start = len(failures)
+    results = marker_regression_results()
+    positive_names = {
+        "PRE_PUSH_MARKERS_TRUTHFUL",
+        "POST_PUSH_MARKERS_TRUTHFUL",
+    }
+    negative_names = {
+        "PRE_PUSH_REMOTE_VERIFIED_FALSE_POSITIVE_REJECTED",
+        "PRE_PUSH_TASK_RESULT_FALSE_POSITIVE_REJECTED",
+        "PRE_PUSH_FINAL_ACCEPTANCE_03_FALSE_POSITIVE_REJECTED",
+        "PRE_PUSH_BUILD_XCTEST_FALSE_POSITIVE_REJECTED",
+        "POST_PUSH_TASK_RESULT_WITHOUT_CURRENT_REQUIRED_REJECTED",
+        "FINAL_18_OF_18_BEFORE_A012R3_REJECTED",
+    }
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(set(results) == positive_names | negative_names, (
+        "truthful marker regression case names differ"
+    ))
+    check(not positive_failures, (
+        f"truthful marker positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"truthful marker negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "TRUTHFUL_MARKER_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "TRUTHFUL_MARKER_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "TRUTHFUL_MARKER_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "TRUTHFUL_MARKER_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+    })
+    mark_group("marker_regressions", start)
 
 
 def verify_git_state(lifecycle: str) -> None:
@@ -3915,6 +4606,9 @@ def verify_acceptance_matrix() -> None:
         "PENDING_A010_FINAL_GATE",
         "PENDING_A011_COMMIT_PUSH",
         "PENDING_A012_FINAL_MERGE",
+        "PENDING_EXTERNAL_CURRENT_REQUIRED_ROLLUP",
+        "PENDING_TASK_LEVEL_ROLLUP",
+        "PENDING_A012R3_FRESH_GATE",
     }
     resolved_matrix = current_acceptance_matrix()
     names = [name for name, _ in resolved_matrix]
@@ -3954,7 +4648,9 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
         "PACKAGE_BACKUP_V1_V2_COMPATIBILITY": "package_backup",
     }
     required_groups = {
-        "registry", "chain_regressions", "lifecycle_regressions", "git",
+        "registry", "chain_regressions", "dynamic_suffix_regressions",
+        "immutable_baseline_regressions", "marker_regressions",
+        "lifecycle_regressions", "git",
         "prototype", "sport", "motion", "a010r5_remediation",
         "a010r5r2_presentation", "a010r5r2r2_closure",
         "authority_visualization", "persistence", "package_backup",
@@ -3975,6 +4671,22 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
             group_results.get(item, False) for item in required_groups
         ):
             status = "PENDING_A010_FINAL_GATE"
+        remote_phase = str(
+            observations.get("POSTCOMMIT_INTEGRATION_REMOTE_PHASE", "PRE_PUSH")
+        )
+        truthful = truthful_marker_values(remote_phase)
+        truthful_overrides = {
+            "ALL_REQUIRED_SNOW_VERIFY_SCRIPTS_PASS": truthful[
+                "FINAL_ACCEPTANCE_03_ALL_REQUIRED_SNOW_VERIFY_SCRIPTS_PASS"
+            ],
+            "IOS_BUILD": truthful["FINAL_ACCEPTANCE_04_IOS_BUILD"],
+            "WATCHOS_BUILD": truthful["FINAL_ACCEPTANCE_05_WATCHOS_BUILD"],
+            "MACOS_BUILD": truthful["FINAL_ACCEPTANCE_06_MACOS_BUILD"],
+            "SNOW_XCTEST_SUITES": truthful[
+                "FINAL_ACCEPTANCE_07_SNOW_XCTEST_SUITES"
+            ],
+        }
+        status = truthful_overrides.get(name, status)
         resolved.append((name, status))
     return resolved
 
@@ -3991,6 +4703,11 @@ def emit_results() -> None:
     for name in sorted(observations):
         output_marker(name, observations[name])
 
+    task_passed = not failures
+    remote_phase = str(
+        observations.get("POSTCOMMIT_INTEGRATION_REMOTE_PHASE", "PRE_PUSH")
+    )
+    truthful_markers = truthful_marker_values(remote_phase, task_passed)
     a010r5_locks_pass = group_results.get("git", False) and observations.get(
         "A010R5_FROZEN_FORMAT_CLASSIFIER_MUTATION_COUNT", 1
     ) == 0
@@ -4110,6 +4827,7 @@ def emit_results() -> None:
         "PASSED"
         if (
             group_results.get("chain_regressions", False)
+            and group_results.get("dynamic_suffix_regressions", False)
             and group_results.get("git", False)
         )
         else "FAILED",
@@ -4119,7 +4837,15 @@ def emit_results() -> None:
         output_marker(f"FINAL_ACCEPTANCE_{index:02d}_{name}", status)
     output_marker(
         "FINAL_ACCEPTANCE_18_OF_18",
-        "NOT_PASSED_REQUIRES_A012R3_FRESH_TASK_GATES",
+        truthful_markers["FINAL_ACCEPTANCE_18_OF_18"],
+    )
+    output_marker(
+        "AGGREGATE_INTERNAL_STATIC_RESULT",
+        truthful_markers["AGGREGATE_INTERNAL_STATIC_RESULT"],
+    )
+    output_marker(
+        "CURRENT_REQUIRED_EXTERNAL_ROLLUP",
+        truthful_markers["CURRENT_REQUIRED_EXTERNAL_ROLLUP"],
     )
     output_marker("A012_RESULT", "FAILED_HISTORICAL")
     output_marker("A012R2_RESULT", "FAILED_HISTORICAL")
@@ -4144,7 +4870,7 @@ def emit_results() -> None:
     output_marker("A010R5_STARTED", "YES")
     output_marker("MANUAL_QA_REQUIRED_FOR_A010R5R2", "YES")
     output_marker("MANUAL_QA_A010R5R2_FOCUSED", "PASSED")
-    output_marker("SNOW_INT_A010R5R2_RESULT", "PASSED")
+    output_marker("SNOW_INT_A010R5R2_RESULT_HISTORICAL", "PASSED")
     output_marker("A010R5R2_CLOSED", "YES")
     output_marker("A010R5R2_STARTED", "YES")
     output_marker("A010R5_RESULT", "BLOCKED_HISTORICAL")
@@ -4164,17 +4890,16 @@ def emit_results() -> None:
     output_marker("WATCHOS_BUILD_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
     output_marker("MACOS_BUILD_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
     output_marker("IOS_XCTEST_GATE", "NOT_REQUIRED_DOCS_AND_VERIFIER_ONLY")
-    output_marker("BUILD_GATE_SKIPPED", "YES_ONE_VERIFIER_FILE_ONLY")
-    output_marker("XCTEST_GATE_SKIPPED", "YES_ONE_VERIFIER_FILE_ONLY")
+    output_marker("BUILD_GATE_SKIPPED", "YES_VERIFIER_ONLY")
+    output_marker("XCTEST_GATE_SKIPPED", "YES_VERIFIER_ONLY")
     output_marker("MANUAL_QA_SKIPPED", "YES_NO_RUNTIME_OR_UI_CHANGE")
     output_marker(
         "MANUAL_QA",
         "NOT_REPEATED_REUSE_APPROVED_A010R5R2_EVIDENCE",
     )
 
-    task_passed = not failures
     output_marker(
-        "SNOW_INT_A010R5R2R2_RESULT",
+        "SNOW_INT_A010R5R2R2_RESULT_HISTORICAL",
         "PASSED" if task_passed else "FAILED",
     )
     output_marker(
@@ -4187,30 +4912,23 @@ def emit_results() -> None:
         "PASSED" if task_passed else "FAILED",
     )
     output_marker(
-        "SNOW_INT_A012R2R2_RESULT",
+        "SNOW_INT_A012R2R2_RESULT_HISTORICAL",
         "PASSED" if task_passed else "FAILED",
     )
     output_marker(
         "A012R2R2_COMMIT_CREATED",
         "YES"
         if selected_lifecycle != "PRECOMMIT_MERGE_INDEX"
-        and observations.get("REMEDIATION_CHAIN_COMMIT_COUNT") == 3
+        and observations.get("CHAIN_ANCHOR_3") == CHAIN_ANCHOR_3
         else "NO",
     )
     output_marker(
         "INTEGRATION_REMEDIATION_CHAIN_PUSHED",
-        "YES"
-        if (
-            task_passed
-            and observations.get(
-                "POSTCOMMIT_INTEGRATION_REMOTE_PHASE"
-            ) == "POST_PUSH"
-        )
-        else "NO",
+        truthful_markers["INTEGRATION_REMEDIATION_CHAIN_PUSHED"],
     )
     output_marker(
         "REMOTE_INTEGRATION_BRANCH_VERIFIED",
-        "YES" if task_passed else "NO",
+        truthful_markers["REMOTE_INTEGRATION_BRANCH_VERIFIED"],
     )
 
     for message in failures:
@@ -4218,7 +4936,7 @@ def emit_results() -> None:
     output_marker("FAILURE_COUNT", len(failures))
     output_marker(
         "VERIFY_SNOW_INTEGRATION_AGGREGATE_RESULT",
-        "PASSED" if not failures else "FAILED",
+        truthful_markers["VERIFY_SNOW_INTEGRATION_AGGREGATE_RESULT"],
     )
 
 
@@ -4227,6 +4945,9 @@ def main(lifecycle: str) -> int:
     selected_lifecycle = lifecycle
     verify_registry()
     verify_chain_regressions()
+    verify_dynamic_suffix_regressions()
+    verify_immutable_baseline_regressions()
+    verify_marker_regressions()
     verify_lifecycle_regressions()
     verify_git_state(lifecycle)
     verify_conflicts_and_prototype_quarantine()
