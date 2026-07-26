@@ -10,6 +10,7 @@ import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
+from types import MappingProxyType
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "scripts/snow_integration_verifier_applicability.json"
@@ -102,6 +103,9 @@ CHAIN_ANCHOR_2_CHANGED_PATHS = {
 CHAIN_ANCHOR_3 = "501d2f2c25b805b412479437f0a7ca80ffd6cc1d"
 CHAIN_ANCHOR_3_PARENT = CHAIN_ANCHOR_2
 CHAIN_ANCHOR_3_CHANGED_PATHS = CHAIN_ANCHOR_2_CHANGED_PATHS
+A012R2R4_FROZEN_PARENT_COMMIT = (
+    "cd051c2e68af605f6cdf5b9360d3ccd13f984906"
+)
 DYNAMIC_SUFFIX_MIN_COMMIT_COUNT = 1
 DYNAMIC_SUFFIX_MAX_COMMIT_COUNT = 4
 DYNAMIC_SUFFIX_ALLOWED_PATHS = {
@@ -115,6 +119,26 @@ CHAIN_REMOTE_PHASES = {"PRE_PUSH", "POST_PUSH"}
 REMOTE_DEVELOP_BASE = EXPECTED_HEAD
 IMMUTABLE_A005_BASE_COMMIT = EXPECTED_HEAD
 IMMUTABLE_REVIEWED_FINAL_COMMIT = REVIEWED_INTEGRATION_MERGE_COMMIT
+
+AUTHORITATIVE_HISTORICAL_RESULT_SOURCE = (
+    "AUTHORITATIVE_HISTORICAL_RESULT_MATRIX"
+)
+AUTHORITATIVE_HISTORICAL_RESULT_MATRIX = MappingProxyType({
+    "SNOW_INT_A010R5R2_RESULT_HISTORICAL": "PASSED",
+    "SNOW_INT_A010R5R2R2_RESULT_HISTORICAL": "PASSED",
+    "SNOW_INT_A010R6R1_RESULT_HISTORICAL": "PASSED",
+    "SNOW_INT_A011_RESULT_HISTORICAL": "PASSED",
+    "SNOW_INT_A012_RESULT_HISTORICAL": "FAILED",
+    "SNOW_INT_A012R1_TECHNICAL_AUDIT_HISTORICAL": "PASSED",
+    "SNOW_INT_A012R1R1_RESULT_HISTORICAL": "PASSED",
+    "SNOW_INT_A012R2_RESULT_HISTORICAL": "FAILED",
+    "SNOW_INT_A012R2R1_RESULT_HISTORICAL": "FAILED",
+    "SNOW_INT_A012R2R2_RESULT_HISTORICAL": "FAILED",
+    "SNOW_INT_A012R2R3_RESULT_HISTORICAL": "FAILED",
+})
+CURRENT_EXECUTOR_TASK_RESULT_MARKERS = frozenset({
+    "SNOW_INT_A012R2R4_RESULT",
+})
 
 A010R2_NEWLY_STAGED_PATHS = {
     "Tests/iOSTests/SkateTrackPackageWatchCompatibilityTests.swift",
@@ -1524,9 +1548,19 @@ def dynamic_suffix_regression_results() -> dict[str, bool]:
 
 def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
     """Build a synthetic valid state for pure lifecycle contract regressions."""
-    chain = valid_remediation_chain_fixture("POST_PUSH")
+    chain_phase = (
+        "PRE_PUSH"
+        if lifecycle == "POSTCOMMIT_INTEGRATION_CLEAN"
+        else "POST_PUSH"
+    )
+    chain = valid_remediation_chain_fixture(chain_phase)
     candidate = str(chain["tip"])
     candidate_tree = "b" * 40
+    integration_remote = (
+        A012R2R4_FROZEN_PARENT_COMMIT
+        if lifecycle == "POSTCOMMIT_INTEGRATION_CLEAN"
+        else candidate
+    )
     common: dict[str, object] = {
         "lifecycle_declarations": [lifecycle],
         "branch": EXPECTED_BRANCH,
@@ -1542,8 +1576,8 @@ def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
         "unmerged_path_count": 0,
         "worktree_and_index_clean": True,
         "local_integration": candidate,
-        "remote_tracking_integration": candidate,
-        "remote_integration": candidate,
+        "remote_tracking_integration": integration_remote,
+        "remote_integration": integration_remote,
         "local_develop": REVIEWED_INTEGRATION_MERGE_COMMIT,
         "remote_tracking_develop": REMOTE_DEVELOP_BASE,
         "remote_develop": REMOTE_DEVELOP_BASE,
@@ -1739,8 +1773,8 @@ def lifecycle_state_failures(
         )
         valid_pairs = {
             (
-                REVIEWED_INTEGRATION_MERGE_COMMIT,
-                REVIEWED_INTEGRATION_MERGE_COMMIT,
+                A012R2R4_FROZEN_PARENT_COMMIT,
+                A012R2R4_FROZEN_PARENT_COMMIT,
             ): "PRE_PUSH",
             (candidate, candidate): "POST_PUSH",
         }
@@ -1935,6 +1969,141 @@ def immutable_baseline_regression_results() -> dict[str, bool]:
         mutated = copy.deepcopy(fixture)
         mutated[key] = value
         results[name] = bool(all_immutable_baseline_failures(mutated))
+    return results
+
+
+def authoritative_historical_result_markers() -> dict[str, str]:
+    """Return reviewed task outcomes without consulting current task state."""
+    return dict(AUTHORITATIVE_HISTORICAL_RESULT_MATRIX)
+
+
+def historical_result_marker_failures(
+    markers: dict[str, str],
+    value_sources: dict[str, str],
+) -> list[str]:
+    """Reject missing, unknown, ambiguous, dynamic, or relabeled history."""
+    issues: list[str] = []
+    expected_names = set(AUTHORITATIVE_HISTORICAL_RESULT_MATRIX)
+    actual_names = set(markers)
+
+    for name in sorted(expected_names - actual_names):
+        issues.append(f"missing required historical result marker: {name}")
+    for name in sorted(actual_names - expected_names):
+        if name in CURRENT_EXECUTOR_TASK_RESULT_MARKERS:
+            issues.append(f"aggregate emitted current executor task result: {name}")
+        elif name.endswith("_RESULT"):
+            issues.append(f"unsuffixed ambiguous historical result marker: {name}")
+        else:
+            issues.append(f"unknown unreviewed historical result marker: {name}")
+
+    for name, authoritative_value in AUTHORITATIVE_HISTORICAL_RESULT_MATRIX.items():
+        if name not in markers:
+            continue
+        if markers[name] != authoritative_value:
+            issues.append(
+                f"historical result differs: {name}={markers[name]} "
+                f"expected {authoritative_value}"
+            )
+        if value_sources.get(name) != AUTHORITATIVE_HISTORICAL_RESULT_SOURCE:
+            issues.append(f"historical result source is not authoritative: {name}")
+    return issues
+
+
+def historical_marker_regression_results() -> dict[str, bool]:
+    """Return all required authoritative-history positive and negative cases."""
+    exact = authoritative_historical_result_markers()
+    exact_sources = {
+        name: AUTHORITATIVE_HISTORICAL_RESULT_SOURCE for name in exact
+    }
+
+    def accepted(
+        markers: dict[str, str],
+        sources: dict[str, str] | None = None,
+    ) -> bool:
+        return not historical_result_marker_failures(
+            markers,
+            exact_sources if sources is None else sources,
+        )
+
+    truthful_marker_values("PRE_PUSH", internal_passed=True)
+    current_pass_matrix = authoritative_historical_result_markers()
+    truthful_marker_values("PRE_PUSH", internal_passed=False)
+    current_failure_matrix = authoritative_historical_result_markers()
+    truthful_marker_values("POST_PUSH", internal_passed=True)
+    post_push_matrix = authoritative_historical_result_markers()
+    lifecycle_matrices = [
+        authoritative_historical_result_markers() for _ in LIFECYCLES
+    ]
+
+    results = {
+        "ALL_HISTORICAL_TASK_RESULT_MARKERS_EXACT": accepted(dict(exact)),
+        "CURRENT_AGGREGATE_PASS_PRESERVES_HISTORICAL_MATRIX": (
+            current_pass_matrix == exact and accepted(current_pass_matrix)
+        ),
+        "CURRENT_AGGREGATE_FAILURE_PRESERVES_HISTORICAL_MATRIX": (
+            current_failure_matrix == exact and accepted(current_failure_matrix)
+        ),
+        "PRE_PUSH_AND_POST_PUSH_PRESERVE_HISTORICAL_MATRIX": (
+            current_pass_matrix == post_push_matrix == exact
+        ),
+        "INTEGRATION_AND_DEVELOP_LIFECYCLES_PRESERVE_HISTORICAL_MATRIX": (
+            all(matrix == exact for matrix in lifecycle_matrices)
+        ),
+    }
+
+    a012r2r2_passed = dict(exact)
+    a012r2r2_passed["SNOW_INT_A012R2R2_RESULT_HISTORICAL"] = "PASSED"
+    results["A012R2R2_HISTORICAL_PASSED_REJECTED"] = not accepted(
+        a012r2r2_passed
+    )
+
+    a012r2r3_passed = dict(exact)
+    a012r2r3_passed["SNOW_INT_A012R2R3_RESULT_HISTORICAL"] = "PASSED"
+    results["A012R2R3_HISTORICAL_PASSED_REJECTED"] = not accepted(
+        a012r2r3_passed
+    )
+
+    current_passed = dict(exact)
+    current_passed["SNOW_INT_A012R2R4_RESULT"] = "PASSED"
+    results["CURRENT_TASK_PASSED_EMITTED_BY_AGGREGATE_REJECTED"] = not accepted(
+        current_passed
+    )
+
+    current_failed = dict(exact)
+    current_failed["SNOW_INT_A012R2R4_RESULT"] = "FAILED"
+    results["CURRENT_TASK_FAILED_EMITTED_BY_AGGREGATE_REJECTED"] = not accepted(
+        current_failed
+    )
+
+    dynamic_sources = {
+        "TASK_PASSED_DEPENDENT_HISTORICAL_MARKER_REJECTED": "task_passed",
+        "LIFECYCLE_DEPENDENT_HISTORICAL_MARKER_REJECTED": "current_lifecycle",
+        "REMOTE_PHASE_DEPENDENT_HISTORICAL_MARKER_REJECTED": "remote_phase",
+        "FAILURE_COUNT_DEPENDENT_HISTORICAL_MARKER_REJECTED": "failure_count",
+    }
+    source_marker = "SNOW_INT_A012R2R2_RESULT_HISTORICAL"
+    for case_name, source_name in dynamic_sources.items():
+        sources = dict(exact_sources)
+        sources[source_marker] = source_name
+        results[case_name] = not accepted(dict(exact), sources)
+
+    unsuffixed = dict(exact)
+    unsuffixed["A012_RESULT"] = "FAILED_HISTORICAL"
+    results["UNSUFFIXED_AMBIGUOUS_HISTORICAL_RESULT_MARKER_REJECTED"] = (
+        not accepted(unsuffixed)
+    )
+
+    missing = dict(exact)
+    missing.pop("SNOW_INT_A011_RESULT_HISTORICAL")
+    results["MISSING_REQUIRED_HISTORICAL_MARKER_REJECTED"] = not accepted(
+        missing
+    )
+
+    unknown = dict(exact)
+    unknown["SNOW_INT_A999_RESULT_HISTORICAL"] = "PASSED"
+    results["UNKNOWN_UNREVIEWED_HISTORICAL_MARKER_REJECTED"] = not accepted(
+        unknown
+    )
     return results
 
 
@@ -3264,7 +3433,10 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             state.get("remote_tracking_integration"),
             state.get("remote_integration"),
         )
-        if remote_pair == (REMEDIATION_ROOT, REMEDIATION_ROOT):
+        if remote_pair == (
+            A012R2R4_FROZEN_PARENT_COMMIT,
+            A012R2R4_FROZEN_PARENT_COMMIT,
+        ):
             remote_phase = "PRE_PUSH"
         elif remote_pair == (head, head):
             remote_phase = "POST_PUSH"
@@ -3516,6 +3688,63 @@ def verify_immutable_baseline_regressions() -> None:
     mark_group("immutable_baseline_regressions", start)
 
 
+def verify_historical_marker_regressions() -> None:
+    start = len(failures)
+    results = historical_marker_regression_results()
+    positive_names = {
+        "ALL_HISTORICAL_TASK_RESULT_MARKERS_EXACT",
+        "CURRENT_AGGREGATE_PASS_PRESERVES_HISTORICAL_MATRIX",
+        "CURRENT_AGGREGATE_FAILURE_PRESERVES_HISTORICAL_MATRIX",
+        "PRE_PUSH_AND_POST_PUSH_PRESERVE_HISTORICAL_MATRIX",
+        "INTEGRATION_AND_DEVELOP_LIFECYCLES_PRESERVE_HISTORICAL_MATRIX",
+    }
+    negative_names = {
+        "A012R2R2_HISTORICAL_PASSED_REJECTED",
+        "A012R2R3_HISTORICAL_PASSED_REJECTED",
+        "CURRENT_TASK_PASSED_EMITTED_BY_AGGREGATE_REJECTED",
+        "CURRENT_TASK_FAILED_EMITTED_BY_AGGREGATE_REJECTED",
+        "TASK_PASSED_DEPENDENT_HISTORICAL_MARKER_REJECTED",
+        "LIFECYCLE_DEPENDENT_HISTORICAL_MARKER_REJECTED",
+        "REMOTE_PHASE_DEPENDENT_HISTORICAL_MARKER_REJECTED",
+        "FAILURE_COUNT_DEPENDENT_HISTORICAL_MARKER_REJECTED",
+        "UNSUFFIXED_AMBIGUOUS_HISTORICAL_RESULT_MARKER_REJECTED",
+        "MISSING_REQUIRED_HISTORICAL_MARKER_REJECTED",
+        "UNKNOWN_UNREVIEWED_HISTORICAL_MARKER_REJECTED",
+    }
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(set(results) == positive_names | negative_names, (
+        "historical marker regression case names differ"
+    ))
+    check(len(positive_names) == 5, (
+        "historical marker positive regression count differs"
+    ))
+    check(len(negative_names) == 11, (
+        "historical marker negative regression count differs"
+    ))
+    check(not positive_failures, (
+        f"historical marker positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"historical marker negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "HISTORICAL_MARKER_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "HISTORICAL_MARKER_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "HISTORICAL_MARKER_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "HISTORICAL_MARKER_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+    })
+    mark_group("historical_marker_regressions", start)
+
+
 def verify_marker_regressions() -> None:
     start = len(failures)
     results = marker_regression_results()
@@ -3573,8 +3802,8 @@ def verify_git_state(lifecycle: str) -> None:
             state.get("remote_integration"),
         )
         if remote_pair == (
-            REVIEWED_INTEGRATION_MERGE_COMMIT,
-            REVIEWED_INTEGRATION_MERGE_COMMIT,
+            A012R2R4_FROZEN_PARENT_COMMIT,
+            A012R2R4_FROZEN_PARENT_COMMIT,
         ):
             remote_phase = "PRE_PUSH"
         elif remote_pair == (candidate, candidate):
@@ -4649,7 +4878,8 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
     }
     required_groups = {
         "registry", "chain_regressions", "dynamic_suffix_regressions",
-        "immutable_baseline_regressions", "marker_regressions",
+        "immutable_baseline_regressions", "historical_marker_regressions",
+        "marker_regressions",
         "lifecycle_regressions", "git",
         "prototype", "sport", "motion", "a010r5_remediation",
         "a010r5r2_presentation", "a010r5r2r2_closure",
@@ -4847,9 +5077,8 @@ def emit_results() -> None:
         "CURRENT_REQUIRED_EXTERNAL_ROLLUP",
         truthful_markers["CURRENT_REQUIRED_EXTERNAL_ROLLUP"],
     )
-    output_marker("A012_RESULT", "FAILED_HISTORICAL")
-    output_marker("A012R2_RESULT", "FAILED_HISTORICAL")
-    output_marker("A012R2R1_RESULT", "FAILED_HISTORICAL")
+    for marker, value in authoritative_historical_result_markers().items():
+        output_marker(marker, value)
     output_marker("A012R3_STARTED", "NO")
 
     output_marker("BUILD_GATE_REQUIRED_FOR_A008R1", "YES")
@@ -4870,12 +5099,8 @@ def emit_results() -> None:
     output_marker("A010R5_STARTED", "YES")
     output_marker("MANUAL_QA_REQUIRED_FOR_A010R5R2", "YES")
     output_marker("MANUAL_QA_A010R5R2_FOCUSED", "PASSED")
-    output_marker("SNOW_INT_A010R5R2_RESULT_HISTORICAL", "PASSED")
     output_marker("A010R5R2_CLOSED", "YES")
     output_marker("A010R5R2_STARTED", "YES")
-    output_marker("A010R5_RESULT", "BLOCKED_HISTORICAL")
-    output_marker("A010R5R1_RESULT", "PASSED_HISTORICAL")
-    output_marker("A010R5R2R1_RESULT", "BLOCKED_HISTORICAL")
     output_marker("A010R5R3_STARTED", "NO")
     output_marker("A010R5R4_STARTED", "NO")
     output_marker("A010R6_STARTED", "NO")
@@ -4898,23 +5123,7 @@ def emit_results() -> None:
         "NOT_REPEATED_REUSE_APPROVED_A010R5R2_EVIDENCE",
     )
 
-    output_marker(
-        "SNOW_INT_A010R5R2R2_RESULT_HISTORICAL",
-        "PASSED" if task_passed else "FAILED",
-    )
-    output_marker(
-        "A010R5R2_FORMAL_CLOSURE",
-        "PASSED" if task_passed else "FAILED",
-    )
     output_marker("A010R5R2_IMPLEMENTATION_AND_MANUAL_QA", "PASSED")
-    output_marker(
-        "A010R5R2_AGGREGATE_FINAL_STATE",
-        "PASSED" if task_passed else "FAILED",
-    )
-    output_marker(
-        "SNOW_INT_A012R2R2_RESULT_HISTORICAL",
-        "PASSED" if task_passed else "FAILED",
-    )
     output_marker(
         "A012R2R2_COMMIT_CREATED",
         "YES"
@@ -4947,6 +5156,7 @@ def main(lifecycle: str) -> int:
     verify_chain_regressions()
     verify_dynamic_suffix_regressions()
     verify_immutable_baseline_regressions()
+    verify_historical_marker_regressions()
     verify_marker_regressions()
     verify_lifecycle_regressions()
     verify_git_state(lifecycle)
