@@ -103,7 +103,10 @@ CHAIN_ANCHOR_2_CHANGED_PATHS = {
 CHAIN_ANCHOR_3 = "501d2f2c25b805b412479437f0a7ca80ffd6cc1d"
 CHAIN_ANCHOR_3_PARENT = CHAIN_ANCHOR_2
 CHAIN_ANCHOR_3_CHANGED_PATHS = CHAIN_ANCHOR_2_CHANGED_PATHS
-A012R2R4_FROZEN_PARENT_COMMIT = (
+CURRENT_REMEDIATION_PRE_PUSH_PARENT = (
+    "54468a9f6c50e898273c78afa53ebf21eb53a28d"
+)
+HISTORICAL_A012R2R3_COMMIT = (
     "cd051c2e68af605f6cdf5b9360d3ccd13f984906"
 )
 DYNAMIC_SUFFIX_MIN_COMMIT_COUNT = 1
@@ -135,9 +138,82 @@ AUTHORITATIVE_HISTORICAL_RESULT_MATRIX = MappingProxyType({
     "SNOW_INT_A012R2R1_RESULT_HISTORICAL": "FAILED",
     "SNOW_INT_A012R2R2_RESULT_HISTORICAL": "FAILED",
     "SNOW_INT_A012R2R3_RESULT_HISTORICAL": "FAILED",
+    "SNOW_INT_A012R2R4_RESULT_HISTORICAL": "BLOCKED",
+    "SNOW_INT_A012R2R5_RESULT_HISTORICAL": "BLOCKED",
 })
 CURRENT_EXECUTOR_TASK_RESULT_MARKERS = frozenset({
     "SNOW_INT_A012R2R4_RESULT",
+    "SNOW_INT_A012R2R5_RESULT",
+    "SNOW_INT_A012R2R5R1_RESULT",
+})
+
+CANONICAL_ALIGNMENT_LINES = (
+    "ALIGNED_BUILD_PLAN_BASE=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3.md",
+    "ALIGNED_BUILD_PLAN_CORRIGENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_1_Corrigendum.md",
+    "ALIGNED_BUILD_PLAN_TEST_REMEDIATION_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_2_Test_Remediation_Addendum.md",
+    "ALIGNED_BUILD_PLAN_DISTANCE_AUDIT_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_3_Distance_Breakdown_Audit_Addendum.md",
+    "ALIGNED_BUILD_PLAN_DISTANCE_REMEDIATION_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_4_Distance_Breakdown_Remediation_Addendum.md",
+    "ALIGNED_BUILD_PLAN_PRESENTATION_DEBUG_AUDIT_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_5_Presentation_Debug_QA_Audit_Addendum.md",
+    "ALIGNED_BUILD_PLAN_PRESENTATION_REMEDIATION_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_6_Distance_Presentation_and_Downhill_Info_Remediation_Addendum.md",
+    "ALIGNED_BUILD_PLAN_POST_QA_CLOSURE_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_7_A010R5R2_Post_QA_Closure_Addendum.md",
+    "ALIGNED_BUILD_PLAN_POST_QA_CLOSURE_CORRIGENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_7_1_A010R5R2_Post_QA_Closure_Corrigendum.md",
+    "ALIGNED_BUILD_PLAN_FINAL_PRECOMMIT_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_8_A010R6_Full_Corrected_PreCommit_Acceptance_Addendum.md",
+    "ALIGNED_BUILD_PLAN_MANUAL_QA_EVIDENCE_CORRIGENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_8_1_A010R6_Manual_QA_Evidence_Source_Corrigendum.md",
+    "ALIGNED_BUILD_PLAN_A011_COMMIT_PUSH_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_9_A011_Reviewed_Integration_Commit_and_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012_FINAL_DEVELOP_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_A012_Final_Develop_Promotion_and_18_of_18_Closure_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012_LIFECYCLE_AUDIT_CORRIGENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_1_A012_Post_Fast_Forward_Aggregate_Lifecycle_Audit_Corrigendum.md",
+    "ALIGNED_BUILD_PLAN_A012R1_EVIDENCE_CORRECTION_CORRIGENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_2_A012R1_Lifecycle_Matrix_Evidence_Correction_Corrigendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2_REMEDIATION_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_3_A012R2_Lifecycle_Aware_Aggregate_Remediation_and_Integration_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R1_CORRECTION_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_4_A012R2R1_Closure_Contract_NameError_Correction_and_Integration_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R2_CHAIN_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_5_A012R2R2_Strict_Linear_Remediation_Chain_and_Integration_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R3_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_6_A012R2R3_Immutable_Baselines_Truthful_Markers_Shadow_Candidate_and_Integration_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R4_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_7_A012R2R4_Authoritative_Historical_Result_Markers_Shadow_Validation_and_Integration_Push_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R5_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_8_A012R2R5_Canonical_Alignment_and_Current_Remediation_Tip_Marker_Closure_Addendum.md",
+    "ALIGNED_BUILD_PLAN_A012R2R5R1_ADDENDUM=SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_8_1_A012R2R5R1_Canonical_Source_Restoration_and_Marker_Closure_Continuation_Addendum.md",
+    "ALIGNED_WORKFLOW=SkateTrack_Collaboration_Workflow_and_Engineering_Rules_EN_v1.6.md",
+    "ALIGNED_SUBTASK=Snow-Integration-A012R2R5R1 — Canonical Source Restoration and Marker Closure Continuation",
+    "APPROVED_INTEGRATION_PATH=PATH_A_HISTORY_PRESERVING_MERGE",
+)
+CANONICAL_ALIGNMENT_BLOCK = "\n".join(CANONICAL_ALIGNMENT_LINES) + "\n"
+CANONICAL_ALIGNMENT_BLOCK_SHA256 = (
+    "c2c807e22772090c276759976feee1de842da6c87e813ddeab48e9b43cf89754"
+)
+FORBIDDEN_ALTERNATE_ALIGNMENT_TOKENS = (
+    "EN_v1.3.1_A005_Acceptance_and_Terminal_Closure_Addendum",
+    "EN_v1.3.2_A006_Immutable_Baselines_and_Constant_Truthfulness_Addendum",
+    "EN_v1.3.3_A007_Immutable_Historical_Baseline_Objects",
+    "EN_v1.3.10.6_A012_Immutable_Baseline_Evidence_and_Reviewed_Integration_Push_Addendum",
+    "ALIGNED_BUILD_PLAN_ADDENDUM=",
+    "ALIGNED_BUILD_PLAN_ADDENDUM_2=",
+)
+CANONICAL_REFERENCE_ROOT = Path(
+    "/Users/doggo/Documents/App軟體區/upload/codex_reference"
+)
+RESTORED_CANONICAL_SOURCE_INVENTORY = MappingProxyType({
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_8_1_A010R6_Manual_QA_Evidence_Source_Corrigendum.md": (
+        "c9b8cf37dd4d883460085de16146f354d85f80252a0290e678329b107f3c87fa", 13135, 449
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_9_A011_Reviewed_Integration_Commit_and_Push_Addendum.md": (
+        "3eb40182f74418f2d0f1fa1f1351ffd61a1391111d7e81812d24c9ff3ac19e8f", 8129, 286
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_A012_Final_Develop_Promotion_and_18_of_18_Closure_Addendum.md": (
+        "cfc4b9701d58fa9375a2dc9b23d0dd10004eee004c47b150b462fa7eb19a7275", 13960, 516
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_1_A012_Post_Fast_Forward_Aggregate_Lifecycle_Audit_Corrigendum.md": (
+        "6d407acad5d757c06612161d5e00025f3f1d201f597cdbc1f279eb7190066ed4", 13624, 468
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_3_A012R2_Lifecycle_Aware_Aggregate_Remediation_and_Integration_Push_Addendum.md": (
+        "fee0a1a26145f39ec83cd1f04ec7f003551efd8ed24f33a95409646b2ba90b1d", 18572, 589
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_5_A012R2R2_Strict_Linear_Remediation_Chain_and_Integration_Push_Addendum.md": (
+        "836f41b4ba707653d75c1397b5f4980977c0b70bd3216afdff847bca33a41ec7", 17804, 591
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_6_A012R2R3_Immutable_Baselines_Truthful_Markers_Shadow_Candidate_and_Integration_Push_Addendum.md": (
+        "61644fe2078346c8888fcf13e5c968645fb29790afad7a52f0ed2fe1a1dcd0d3", 25873, 827
+    ),
+    "SkateTrack_BuildPlan_SnowMode_Phase1c_Integration_Post_Task040_EN_v1_3_10_7_A012R2R4_Authoritative_Historical_Result_Markers_Shadow_Validation_and_Integration_Push_Addendum.md": (
+        "0de6da40697a1255ba885363628f17c1f9568e48a41e8eb11d012c1c91468cb9", 19846, 690
+    ),
 })
 
 A010R2_NEWLY_STAGED_PATHS = {
@@ -1546,6 +1622,254 @@ def dynamic_suffix_regression_results() -> dict[str, bool]:
     return results
 
 
+def current_tip_marker_values(
+    chain: dict[str, object],
+    tip_tree: str,
+) -> dict[str, str]:
+    """Return lifecycle-neutral current-tip and cumulative proof markers."""
+    commits = chain.get("commits")
+    commit_list = commits if isinstance(commits, list) else []
+    tip = str(chain.get("tip", ""))
+    tip_commit = next(
+        (
+            commit
+            for commit in commit_list
+            if isinstance(commit, dict) and commit.get("oid") == tip
+        ),
+        {},
+    )
+    parents = tip_commit.get("parents")
+    parent_list = parents if isinstance(parents, list) else []
+    paths = tip_commit.get("changed_paths")
+    path_list = sorted(paths) if isinstance(paths, list) else []
+    cumulative = chain.get("cumulative_changed_paths")
+    cumulative_paths = sorted(cumulative) if isinstance(cumulative, list) else []
+    chain_valid = not remediation_chain_failures(chain)
+    path_allowed = (
+        bool(path_list)
+        and len(path_list) == len(set(path_list))
+        and set(path_list) <= DYNAMIC_SUFFIX_ALLOWED_PATHS
+    )
+    return {
+        "CURRENT_REMEDIATION_TIP_COMMIT": tip,
+        "CURRENT_REMEDIATION_TIP_TREE": tip_tree,
+        "CURRENT_REMEDIATION_TIP_PARENT_COUNT": str(len(parent_list)),
+        "CURRENT_REMEDIATION_TIP_FIRST_PARENT": (
+            str(parent_list[0]) if parent_list else "ABSENT"
+        ),
+        "CURRENT_REMEDIATION_TIP_CHANGED_PATH_COUNT": str(len(path_list)),
+        "CURRENT_REMEDIATION_TIP_CHANGED_PATHS": ",".join(path_list),
+        "CURRENT_REMEDIATION_TIP_CHANGED_PATH_SET_ALLOWED": (
+            "YES" if path_allowed else "NO"
+        ),
+        "CURRENT_REMEDIATION_TIP_IS_DYNAMIC_SUFFIX_MEMBER": (
+            "YES"
+            if chain_valid
+            and commit_list
+            and isinstance(commit_list[-1], dict)
+            and commit_list[-1].get("oid") == tip
+            else "NO"
+        ),
+        "A012R2R3_COMMIT_HISTORICAL": HISTORICAL_A012R2R3_COMMIT,
+        "ROOT_TO_TIP_CUMULATIVE_CHANGED_PATH_COUNT": str(
+            len(cumulative_paths)
+        ),
+        "ROOT_TO_TIP_CUMULATIVE_CHANGED_PATHS": ",".join(cumulative_paths),
+        "ROOT_TO_TIP_CUMULATIVE_CHANGED_PATH_SET_EXACT": (
+            "YES"
+            if cumulative_paths == sorted(REMEDIATION_CUMULATIVE_CHANGED_PATHS)
+            else "NO"
+        ),
+        "EVERY_REMEDIATION_COMMIT_DELTA_ALLOWED": (
+            "YES" if chain_valid else "NO"
+        ),
+    }
+
+
+def current_tip_marker_failures(
+    markers: dict[str, str],
+    chain: dict[str, object],
+    tip_tree: str,
+) -> list[str]:
+    """Reject stale task labels, missing metadata, and false path proofs."""
+    issues: list[str] = []
+    expected = current_tip_marker_values(chain, tip_tree)
+    forbidden = {
+        "A012R2R3_COMMIT",
+        "A012R2R3_COMMIT_PARENT_COUNT",
+        "A012R2R3_COMMIT_FIRST_PARENT",
+        "A012R2R3_COMMIT_CHANGED_PATH_COUNT",
+        "A012R2R3_COMMIT_CHANGED_PATHS",
+        "A012R2R4_COMMIT",
+        "A012R2R5_COMMIT",
+        "CANDIDATE_CHANGED_PATH_SET_EXACT",
+    }
+    for name in sorted(forbidden & set(markers)):
+        issues.append(f"stale or ambiguous current-tip marker emitted: {name}")
+    for name, value in expected.items():
+        if markers.get(name) != value:
+            issues.append(f"current-tip marker differs: {name}")
+    return issues
+
+
+def current_tip_marker_regression_results() -> dict[str, bool]:
+    """Return the required five-positive/twelve-negative marker matrix."""
+    chain = valid_remediation_chain_fixture(suffix_count=3)
+    tree = "b" * 40
+    exact = current_tip_marker_values(chain, tree)
+    accepted = lambda value: not current_tip_marker_failures(value, chain, tree)
+    results = {
+        "LIFECYCLE_NEUTRAL_CURRENT_TIP_MARKERS_VALID": accepted(dict(exact)),
+        "CURRENT_TIP_METADATA_MATCHES_HEAD": (
+            exact["CURRENT_REMEDIATION_TIP_COMMIT"] == chain["tip"]
+            and exact["CURRENT_REMEDIATION_TIP_TREE"] == tree
+        ),
+        "CURRENT_TIP_CHANGED_PATH_SET_ALLOWED": (
+            exact["CURRENT_REMEDIATION_TIP_CHANGED_PATH_SET_ALLOWED"] == "YES"
+        ),
+        "ROOT_TO_TIP_CUMULATIVE_PATH_SET_EXACT": (
+            exact["ROOT_TO_TIP_CUMULATIVE_CHANGED_PATH_SET_EXACT"] == "YES"
+        ),
+        "A012R2R3_HISTORICAL_COMMIT_FIXED": (
+            exact["A012R2R3_COMMIT_HISTORICAL"]
+            == HISTORICAL_A012R2R3_COMMIT
+        ),
+    }
+    stale_cases = {
+        "CURRENT_TIP_EMITTED_AS_A012R2R3_COMMIT_REJECTED": "A012R2R3_COMMIT",
+        "CURRENT_TIP_EMITTED_AS_A012R2R4_COMMIT_REJECTED": "A012R2R4_COMMIT",
+        "CURRENT_TIP_EMITTED_AS_A012R2R5_COMMIT_REJECTED": "A012R2R5_COMMIT",
+        "STALE_CANDIDATE_CHANGED_PATH_SET_EXACT_REJECTED": (
+            "CANDIDATE_CHANGED_PATH_SET_EXACT"
+        ),
+    }
+    for case_name, marker_name in stale_cases.items():
+        mutated = dict(exact)
+        mutated[marker_name] = str(chain["tip"])
+        results[case_name] = not accepted(mutated)
+    mutations = {
+        "CURRENT_TIP_COMMIT_MISMATCH_REJECTED": (
+            "CURRENT_REMEDIATION_TIP_COMMIT", "f" * 40
+        ),
+        "CURRENT_TIP_TREE_MISMATCH_REJECTED": (
+            "CURRENT_REMEDIATION_TIP_TREE", "e" * 40
+        ),
+        "CURRENT_TIP_PARENT_MISMATCH_REJECTED": (
+            "CURRENT_REMEDIATION_TIP_FIRST_PARENT", "d" * 40
+        ),
+        "CURRENT_TIP_CHANGED_PATH_COUNT_MISMATCH_REJECTED": (
+            "CURRENT_REMEDIATION_TIP_CHANGED_PATH_COUNT", "2"
+        ),
+        "CURRENT_TIP_UNAUTHORIZED_PATH_REJECTED": (
+            "CURRENT_REMEDIATION_TIP_CHANGED_PATH_SET_ALLOWED", "NO"
+        ),
+        "HISTORICAL_A012R2R3_COMMIT_MUTATION_REJECTED": (
+            "A012R2R3_COMMIT_HISTORICAL", "c" * 40
+        ),
+        "FALSE_CUMULATIVE_PATH_EXACTNESS_REJECTED": (
+            "ROOT_TO_TIP_CUMULATIVE_CHANGED_PATH_SET_EXACT", "NO"
+        ),
+    }
+    for case_name, (marker_name, value) in mutations.items():
+        mutated = dict(exact)
+        mutated[marker_name] = value
+        results[case_name] = not accepted(mutated)
+    missing = dict(exact)
+    missing.pop("CURRENT_REMEDIATION_TIP_COMMIT")
+    results["MISSING_CURRENT_TIP_MARKER_REJECTED"] = not accepted(missing)
+    return results
+
+
+def canonical_alignment_failures(
+    identity_block: str,
+    formal_block: str,
+) -> list[str]:
+    """Require byte-identical canonical evidence and reject old naming."""
+    issues: list[str] = []
+    if identity_block != CANONICAL_ALIGNMENT_BLOCK:
+        issues.append("identity canonical alignment block differs")
+    if formal_block != CANONICAL_ALIGNMENT_BLOCK:
+        issues.append("formal canonical alignment block differs")
+    if identity_block != formal_block:
+        issues.append("identity and formal alignment blocks differ")
+    if hashlib.sha256(identity_block.encode("utf-8")).hexdigest() != (
+        CANONICAL_ALIGNMENT_BLOCK_SHA256
+    ):
+        issues.append("canonical alignment block SHA-256 differs")
+    combined = identity_block + formal_block
+    if any(token in combined for token in FORBIDDEN_ALTERNATE_ALIGNMENT_TOKENS):
+        issues.append("forbidden alternate alignment token present")
+    return issues
+
+
+def canonical_alignment_regression_results() -> dict[str, bool]:
+    """Return the required one-positive/five-negative alignment matrix."""
+    exact = CANONICAL_ALIGNMENT_BLOCK
+    accepted = lambda left, right: not canonical_alignment_failures(left, right)
+    results = {"CANONICAL_ALIGNMENT_BLOCK_EXACT": accepted(exact, exact)}
+    wrong_version = exact.replace("_v1_3.md", "_v1_2.md", 1)
+    results["WRONG_VERSION_CHAIN_REJECTED"] = not accepted(
+        wrong_version, wrong_version
+    )
+    lines = list(CANONICAL_ALIGNMENT_LINES)
+    lines[0], lines[1] = lines[1], lines[0]
+    wrong_order = "\n".join(lines) + "\n"
+    results["WRONG_ALIGNMENT_ORDER_REJECTED"] = not accepted(
+        wrong_order, wrong_order
+    )
+    missing = "\n".join(CANONICAL_ALIGNMENT_LINES[:-1]) + "\n"
+    results["MISSING_ALIGNMENT_ENTRY_REJECTED"] = not accepted(missing, missing)
+    alternate = exact + FORBIDDEN_ALTERNATE_ALIGNMENT_TOKENS[0] + "\n"
+    results["ALTERNATE_A005_A006_CHAIN_REJECTED"] = not accepted(
+        alternate, alternate
+    )
+    results["IDENTITY_FORMAL_ALIGNMENT_MISMATCH_REJECTED"] = not accepted(
+        exact, wrong_version
+    )
+    return results
+
+
+def restored_source_inventory_failures(
+    records: dict[str, tuple[str, int, int]],
+) -> list[str]:
+    """Validate the exact restored-source hash, size, and line inventory."""
+    issues: list[str] = []
+    expected_names = set(RESTORED_CANONICAL_SOURCE_INVENTORY)
+    if set(records) != expected_names:
+        issues.append("restored canonical source path set differs")
+    for name, expected in RESTORED_CANONICAL_SOURCE_INVENTORY.items():
+        if records.get(name) != expected:
+            issues.append(f"restored canonical source metadata differs: {name}")
+    return issues
+
+
+def restored_source_inventory_regression_results() -> dict[str, bool]:
+    """Exercise positive and fail-closed restored-source inventory guards."""
+    exact = dict(RESTORED_CANONICAL_SOURCE_INVENTORY)
+    accepted = lambda value: not restored_source_inventory_failures(value)
+    results = {"SOURCE_RESTORATION_INVENTORY_EXACT": accepted(dict(exact))}
+    mutations: dict[str, dict[str, tuple[str, int, int]]] = {}
+    first = next(iter(exact))
+    missing = dict(exact)
+    missing.pop(first)
+    mutations["MISSING_RESTORED_SOURCE_REJECTED"] = missing
+    wrong_hash = dict(exact)
+    wrong_hash[first] = ("0" * 64, exact[first][1], exact[first][2])
+    mutations["RESTORED_SOURCE_HASH_MISMATCH_REJECTED"] = wrong_hash
+    wrong_size = dict(exact)
+    wrong_size[first] = (exact[first][0], exact[first][1] + 1, exact[first][2])
+    mutations["RESTORED_SOURCE_SIZE_MISMATCH_REJECTED"] = wrong_size
+    wrong_lines = dict(exact)
+    wrong_lines[first] = (exact[first][0], exact[first][1], exact[first][2] + 1)
+    mutations["RESTORED_SOURCE_LINE_COUNT_MISMATCH_REJECTED"] = wrong_lines
+    extra = dict(exact)
+    extra["unexpected.md"] = ("0" * 64, 0, 0)
+    mutations["UNEXPECTED_RESTORED_SOURCE_REJECTED"] = extra
+    for name, records in mutations.items():
+        results[name] = not accepted(records)
+    return results
+
+
 def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
     """Build a synthetic valid state for pure lifecycle contract regressions."""
     chain_phase = (
@@ -1557,7 +1881,7 @@ def valid_lifecycle_state_fixture(lifecycle: str) -> dict[str, object]:
     candidate = str(chain["tip"])
     candidate_tree = "b" * 40
     integration_remote = (
-        A012R2R4_FROZEN_PARENT_COMMIT
+        CURRENT_REMEDIATION_PRE_PUSH_PARENT
         if lifecycle == "POSTCOMMIT_INTEGRATION_CLEAN"
         else candidate
     )
@@ -1773,8 +2097,8 @@ def lifecycle_state_failures(
         )
         valid_pairs = {
             (
-                A012R2R4_FROZEN_PARENT_COMMIT,
-                A012R2R4_FROZEN_PARENT_COMMIT,
+                CURRENT_REMEDIATION_PRE_PUSH_PARENT,
+                CURRENT_REMEDIATION_PRE_PUSH_PARENT,
             ): "PRE_PUSH",
             (candidate, candidate): "POST_PUSH",
         }
@@ -3327,15 +3651,7 @@ def remediation_chain_observations(chain: dict[str, object]) -> dict[str, int | 
         "A012R2R2_COMMIT_CHANGED_PATH": ",".join(
             str(path) for path in anchor_3_paths
         ),
-        "A012R2R3_COMMIT": str(tip),
-        "A012R2R3_COMMIT_PARENT_COUNT": len(tip_parents),
-        "A012R2R3_COMMIT_FIRST_PARENT": (
-            str(tip_parents[0]) if tip_parents else "ABSENT"
-        ),
-        "A012R2R3_COMMIT_CHANGED_PATH_COUNT": len(tip_paths),
-        "A012R2R3_COMMIT_CHANGED_PATHS": ",".join(
-            str(path) for path in tip_paths
-        ),
+        "A012R2R3_COMMIT_HISTORICAL": HISTORICAL_A012R2R3_COMMIT,
     }
 
 
@@ -3434,8 +3750,8 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             state.get("remote_integration"),
         )
         if remote_pair == (
-            A012R2R4_FROZEN_PARENT_COMMIT,
-            A012R2R4_FROZEN_PARENT_COMMIT,
+            CURRENT_REMEDIATION_PRE_PUSH_PARENT,
+            CURRENT_REMEDIATION_PRE_PUSH_PARENT,
         ):
             remote_phase = "PRE_PUSH"
         elif remote_pair == (head, head):
@@ -3485,6 +3801,7 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             "remediation_chain": chain,
         })
         observations.update(remediation_chain_observations(chain))
+        observations.update(current_tip_marker_values(chain, head_tree))
         observations.update({
             "CANDIDATE_COMMIT": head,
             "CANDIDATE_TREE": head_tree,
@@ -3492,12 +3809,6 @@ def capture_lifecycle_state(lifecycle: str) -> dict[str, object]:
             "CANDIDATE_FIRST_PARENT": state["candidate_first_parent"],
             "CANDIDATE_CHANGED_PATH_COUNT": len(candidate_changed_paths),
             "CANDIDATE_CHANGED_PATHS": ",".join(sorted(candidate_changed_paths)),
-            "CANDIDATE_CHANGED_PATH_SET_EXACT": (
-                "YES"
-                if candidate_changed_paths
-                == sorted(DYNAMIC_SUFFIX_ALLOWED_PATHS)
-                else "NO"
-            ),
             "ALL_OTHER_PATHS_EQUAL_A011_TREE": (
                 "YES"
                 if chain.get(
@@ -3636,6 +3947,147 @@ def verify_dynamic_suffix_regressions() -> None:
         ),
     })
     mark_group("dynamic_suffix_regressions", start)
+
+
+def verify_current_tip_marker_regressions() -> None:
+    start = len(failures)
+    results = current_tip_marker_regression_results()
+    positive_names = {
+        "LIFECYCLE_NEUTRAL_CURRENT_TIP_MARKERS_VALID",
+        "CURRENT_TIP_METADATA_MATCHES_HEAD",
+        "CURRENT_TIP_CHANGED_PATH_SET_ALLOWED",
+        "ROOT_TO_TIP_CUMULATIVE_PATH_SET_EXACT",
+        "A012R2R3_HISTORICAL_COMMIT_FIXED",
+    }
+    negative_names = set(results) - positive_names
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(len(positive_names) == 5, (
+        "current-tip marker positive regression count differs"
+    ))
+    check(len(negative_names) == 12, (
+        "current-tip marker negative regression count differs"
+    ))
+    check(not positive_failures, (
+        f"current-tip marker positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"current-tip marker negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "CURRENT_TIP_MARKER_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "CURRENT_TIP_MARKER_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "CURRENT_TIP_MARKER_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "CURRENT_TIP_MARKER_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+        "AMBIGUOUS_CANDIDATE_CHANGED_PATH_MARKER_COUNT": 0,
+    })
+    mark_group("current_tip_marker_regressions", start)
+
+
+def verify_canonical_alignment_regressions() -> None:
+    start = len(failures)
+    results = canonical_alignment_regression_results()
+    positive_names = {"CANONICAL_ALIGNMENT_BLOCK_EXACT"}
+    negative_names = set(results) - positive_names
+    positive_failures = sorted(
+        name for name in positive_names if not results.get(name, False)
+    )
+    negative_failures = sorted(
+        name for name in negative_names if not results.get(name, False)
+    )
+    check(len(positive_names) == 1, (
+        "alignment evidence positive regression count differs"
+    ))
+    check(len(negative_names) == 5, (
+        "alignment evidence negative regression count differs"
+    ))
+    check(not positive_failures, (
+        f"alignment evidence positive regressions failed: {positive_failures}"
+    ))
+    check(not negative_failures, (
+        f"alignment evidence negative regressions failed: {negative_failures}"
+    ))
+    observations.update({
+        "CANONICAL_BUILDPLAN_REFERENCE_COUNT": 22,
+        "CANONICAL_ALIGNMENT_BLOCK_LINE_COUNT": len(CANONICAL_ALIGNMENT_LINES),
+        "CANONICAL_ALIGNMENT_BLOCK_SHA256": hashlib.sha256(
+            CANONICAL_ALIGNMENT_BLOCK.encode("utf-8")
+        ).hexdigest(),
+        "FORBIDDEN_ALTERNATE_ALIGNMENT_TOKEN_COUNT": sum(
+            CANONICAL_ALIGNMENT_BLOCK.count(token)
+            for token in FORBIDDEN_ALTERNATE_ALIGNMENT_TOKENS
+        ),
+        "ALIGNMENT_EVIDENCE_POSITIVE_REGRESSION_COUNT": len(positive_names),
+        "ALIGNMENT_EVIDENCE_POSITIVE_REGRESSION_FAILURE_COUNT": len(
+            positive_failures
+        ),
+        "ALIGNMENT_EVIDENCE_NEGATIVE_REGRESSION_COUNT": len(negative_names),
+        "ALIGNMENT_EVIDENCE_NEGATIVE_REGRESSION_FAILURE_COUNT": len(
+            negative_failures
+        ),
+    })
+    mark_group("canonical_alignment_regressions", start)
+
+
+def verify_restored_canonical_sources() -> None:
+    start = len(failures)
+    records: dict[str, tuple[str, int, int]] = {}
+    hash_mismatches = 0
+    size_mismatches = 0
+    line_mismatches = 0
+    for name, expected in RESTORED_CANONICAL_SOURCE_INVENTORY.items():
+        path = CANONICAL_REFERENCE_ROOT / name
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
+        actual = (
+            hashlib.sha256(data).hexdigest(),
+            len(data),
+            len(data.splitlines()),
+        )
+        records[name] = actual
+        hash_mismatches += int(actual[0] != expected[0])
+        size_mismatches += int(actual[1] != expected[1])
+        line_mismatches += int(actual[2] != expected[2])
+    for issue in restored_source_inventory_failures(records):
+        fail(issue)
+    regression_results = restored_source_inventory_regression_results()
+    regression_failures = sorted(
+        name for name, passed in regression_results.items() if not passed
+    )
+    check(not regression_failures, (
+        f"source-restoration regressions failed: {regression_failures}"
+    ))
+    exact = not restored_source_inventory_failures(records)
+    observations.update({
+        "RESTORED_CANONICAL_SOURCE_COUNT": len(
+            RESTORED_CANONICAL_SOURCE_INVENTORY
+        ),
+        "RESTORED_CANONICAL_SOURCE_HASH_MISMATCH_COUNT": hash_mismatches,
+        "RESTORED_CANONICAL_SOURCE_SIZE_MISMATCH_COUNT": size_mismatches,
+        "RESTORED_CANONICAL_SOURCE_LINE_COUNT_MISMATCH_COUNT": line_mismatches,
+        "DESTINATION_CANONICAL_SOURCE_COUNT": len(records),
+        "DESTINATION_CANONICAL_SOURCE_BYTE_IDENTITY": (
+            "YES" if exact else "NO"
+        ),
+        "SOURCE_RESTORATION_POSITIVE_REGRESSION_COUNT": 1,
+        "SOURCE_RESTORATION_NEGATIVE_REGRESSION_COUNT": (
+            len(regression_results) - 1
+        ),
+        "SOURCE_RESTORATION_REGRESSION_FAILURE_COUNT": len(
+            regression_failures
+        ),
+        "CANONICAL_SOURCE_RESTORATION": "PASSED" if exact else "FAILED",
+    })
+    mark_group("source_restoration", start)
 
 
 def verify_immutable_baseline_regressions() -> None:
@@ -3802,8 +4254,8 @@ def verify_git_state(lifecycle: str) -> None:
             state.get("remote_integration"),
         )
         if remote_pair == (
-            A012R2R4_FROZEN_PARENT_COMMIT,
-            A012R2R4_FROZEN_PARENT_COMMIT,
+            CURRENT_REMEDIATION_PRE_PUSH_PARENT,
+            CURRENT_REMEDIATION_PRE_PUSH_PARENT,
         ):
             remote_phase = "PRE_PUSH"
         elif remote_pair == (candidate, candidate):
@@ -4878,6 +5330,8 @@ def current_acceptance_matrix() -> list[tuple[str, str]]:
     }
     required_groups = {
         "registry", "chain_regressions", "dynamic_suffix_regressions",
+        "current_tip_marker_regressions", "canonical_alignment_regressions",
+        "source_restoration",
         "immutable_baseline_regressions", "historical_marker_regressions",
         "marker_regressions",
         "lifecycle_regressions", "git",
@@ -5062,6 +5516,19 @@ def emit_results() -> None:
         )
         else "FAILED",
     )
+    output_marker(
+        "CURRENT_REMEDIATION_TIP_MARKER_CONTRACT",
+        "PASSED"
+        if (
+            group_results.get("current_tip_marker_regressions", False)
+            and group_results.get("git", False)
+        )
+        else "FAILED",
+    )
+    output_marker(
+        "CANONICAL_ALIGNMENT_EVIDENCE_CONTRACT",
+        group_marker("canonical_alignment_regressions"),
+    )
 
     for index, (name, status) in enumerate(current_acceptance_matrix(), start=1):
         output_marker(f"FINAL_ACCEPTANCE_{index:02d}_{name}", status)
@@ -5155,6 +5622,9 @@ def main(lifecycle: str) -> int:
     verify_registry()
     verify_chain_regressions()
     verify_dynamic_suffix_regressions()
+    verify_current_tip_marker_regressions()
+    verify_canonical_alignment_regressions()
+    verify_restored_canonical_sources()
     verify_immutable_baseline_regressions()
     verify_historical_marker_regressions()
     verify_marker_regressions()
